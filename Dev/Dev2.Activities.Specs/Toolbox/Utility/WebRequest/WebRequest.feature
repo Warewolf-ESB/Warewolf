@@ -13,7 +13,7 @@ Scenario: Enter a URL to download html
 	| URL                                                        | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
 	And the debug output as 
-	|                                                   |
+	|                     |
 	| [[result]] = String |
 	
 Scenario Outline: Enter a URL to download html with timeout specified 
@@ -23,15 +23,15 @@ Scenario Outline: Enter a URL to download html with timeout specified
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL   | Header | Time Out Seconds |
-	| <url> |        |           <timeoutSeconds>       |
+	| <url> |        | <timeoutSeconds> |
 	And the debug output as 
 	|                     |
 	| [[result]] = String |
 	Examples:
-	| url                                                          | timeoutSeconds | result            |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | 20          | Wait Successful |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 120          | Wait Successful |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 0          | Wait Successful |
+	| url                                                   | timeoutSeconds | result          |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 20             | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110 | 120            | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110 | 0              | Wait Successful |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
 	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
@@ -57,7 +57,7 @@ Scenario: Enter a badly formed URL
 	| URL             | Header |
 	| www.google.comx |        |
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Enter a URL made up of text and variables with no header
@@ -71,7 +71,7 @@ Scenario: Enter a URL made up of text and variables with no header
 	| URL                                                                                  | Header |
 	| http://[[site]][[file]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
 	And the debug output as 
-	|                                   |
+	|                     |
 	| [[result]] = String |
 
 
@@ -84,10 +84,10 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	Then the result should contain the string "["value1","value2"]"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                   | Header                                                         |
+	| URL                                                   | Header                                                      |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 	And the debug output as 
-	|                                   |
+	|                                  |
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
@@ -99,10 +99,10 @@ Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 	Then the result should contain the string "<string>value1</string>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                   | Header                                                        |
+	| URL                                                   | Header                                                     |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
-	|                                       |
+	|                                      |
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a URL that returns json
@@ -114,7 +114,7 @@ Scenario: Enter a URL that returns json
 	| URL                                                        | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json |        |
 	And the debug output as 
-	|                                   |
+	|                                  |
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL that returns xml
@@ -126,7 +126,7 @@ Scenario: Enter a URL that returns xml
 	| URL                                                       | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml |        |
 	And the debug output as 
-	|                                       |
+	|                                      |
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a blank URL
@@ -138,7 +138,7 @@ Scenario: Enter a blank URL
 	| URL | Header |
 	| ""  |        |
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Enter a URL that is a negative index recordset

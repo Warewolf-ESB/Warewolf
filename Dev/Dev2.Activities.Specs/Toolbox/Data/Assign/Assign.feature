@@ -579,22 +579,24 @@ Scenario: Assign addition of all variables to scalar2
 	And I assign the value 10 to a variable "[[rec(10).test]]"
 	And I assign the value Warewolf to a variable "[[Lr(1).a]]"
 	And I assign the value [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] to a variable "[[new(1).a]]"
+	And I assign the value "[[rec().test]]" to a variable "[[var]]"
 	When the assign tool is executed
 	Then the execution has "NO" error
 	And the debug inputs as
-	| #  | Variable            | New Value           |
-	| 1  | [[rec(1).test]]   = | 1                   |
-	| 2  | [[rec(2).test]]   = | 2                   |
-	| 3  | [[rec(3).test]]   = | 3                   |
-	| 4  | [[rec(4).test]]   = | 4                   |
-	| 5  | [[rec(5).test]]   = | 5                   |
-	| 6  | [[rec(6).test]]   = | 6                   |
-	| 7  | [[rec(7).test]]   = | 7                   |
-	| 8  | [[rec(8).test]]   = | 8                   |
-	| 9  | [[rec(9).test]]   = | 9                   |
-	| 10 | [[rec(10).test]]  = | 10                  |
-	| 11 | [[Lr(1).a]]    =    | Warewolf            |
+	| #  | Variable            | New Value                                                                                                                                                                                |
+	| 1  | [[rec(1).test]]   = | 1                                                                                                                                                                                        |
+	| 2  | [[rec(2).test]]   = | 2                                                                                                                                                                                        |
+	| 3  | [[rec(3).test]]   = | 3                                                                                                                                                                                        |
+	| 4  | [[rec(4).test]]   = | 4                                                                                                                                                                                        |
+	| 5  | [[rec(5).test]]   = | 5                                                                                                                                                                                        |
+	| 6  | [[rec(6).test]]   = | 6                                                                                                                                                                                        |
+	| 7  | [[rec(7).test]]   = | 7                                                                                                                                                                                        |
+	| 8  | [[rec(8).test]]   = | 8                                                                                                                                                                                        |
+	| 9  | [[rec(9).test]]   = | 9                                                                                                                                                                                        |
+	| 10 | [[rec(10).test]]  = | 10                                                                                                                                                                                       |
+	| 11 | [[Lr(1).a]]    =    | Warewolf                                                                                                                                                                                 |
 	| 12 | [[new(1).a]]      = | [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] = 12345678910Warewolf |
+	| 13 | [[var]]      =      | [[rec().test]] = 10                                                                                                                                                                      |
 	And the debug output as
 	| #  |                                         |
 	| 1  | [[rec(1).test]]   =  1                  |
@@ -609,6 +611,7 @@ Scenario: Assign addition of all variables to scalar2
 	| 10 | [[rec(10).test]]  =  10                 |
 	| 11 | [[Lr(1).a]]       =  Warewolf           |
 	| 12 | [[new(1).a]]      = 12345678910Warewolf |
+	| 13 | [[var]]      = 10                       |
 
 
 #Scenario Outline: Assign multiple variables to the end of a recordset1
@@ -723,7 +726,11 @@ Scenario: Assign a variable to another variable
 
 
 
-
+Scenario: Assign a Variable That Does Not Exist
+	Given I assign the value "[[var]]" to a variable "[[a]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the execution has "Variable { var } is NULL." error
 
 
 

@@ -49,7 +49,7 @@ Scenario: Split text to a recordset using Index using Append notation
 	| vowels().row | e     |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	| String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
 	| abcde           | Forward           | No              | 1 | [[vowels().letters]] = | Index | 1     | No      |        |
     And the debug output as
 	| # |                           |

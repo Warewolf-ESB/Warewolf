@@ -108,3 +108,16 @@ Scenario: Replace when negative recordset index is input
 	And I want to replace them with "YYYY"
 	When the replace tool is executed
 	Then the execution has "AN" error
+
+Scenario: Replace when negative recordset index is input
+	Given I have a sentence "[[L]]"
+	And I want to find the characters "XXXX"
+	And I want to replace them with "Parker"
+	When the replace tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as 
+	| In Field(s) | Find | Replace With | Error                                                |
+	| [[L]]       | XXXX | Parker       | The given variable is  |
+
+
+
