@@ -45,12 +45,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new ExecuteMessage { HasError = false };
 
                 string serviceId = null;
+                bool prepairForDeployment = false;
                 StringBuilder tmp;
                 values.TryGetValue("ResourceID", out tmp);
 
                 if (tmp != null)
                 {
                     serviceId = tmp.ToString();
+                }
+
+                values.TryGetValue("PrepairForDeployment", out tmp);
+
+                if (tmp != null)
+                {
+                    prepairForDeployment = bool.Parse(tmp.ToString());
                 }
 
                 Guid resourceId;
@@ -125,6 +133,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 
+                if (prepairForDeployment)
+                    res.Message = DecryptAllPasswords(res.Message);
+
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(res);
             }
@@ -133,6 +144,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Error(err);
                 throw;
             }
+        }
+
+        private StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
+        {
+            return stringBuilder;
+
         }
 
         public DynamicService CreateServiceEntry()
