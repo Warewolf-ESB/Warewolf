@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SetupScenerio()
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             ScenarioContext.Current.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;

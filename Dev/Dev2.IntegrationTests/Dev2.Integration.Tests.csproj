@@ -270,6 +270,7 @@
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
     <Compile Include="Services.Sql\SqlServerTests.cs" />
+    <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
