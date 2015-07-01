@@ -505,7 +505,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             foreach(var item in WorkflowInputs)
             {
-                string error;
                 string val = item.Value;
                 if(item.Value != null && item.Value.IsXml())
                 {
