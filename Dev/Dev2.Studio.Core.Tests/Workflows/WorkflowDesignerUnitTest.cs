@@ -123,8 +123,8 @@ namespace Dev2.Core.Tests.Workflows
         }
 
 
-   
-        
+
+
         /// <summary>
         /// Tests Remove All UnusedDataListItems is able remove all the unused data list items from the data list
         /// </summary>
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowDesigner.DispatcherUpdateAction = (a => DataListSingleton.ActiveDataList.UpdateDataListItems(workflowDesigner.ResourceModel, a));
             IDataListItemModel dataListItem3 = new DataListItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
             workflowDesigner.ChangeIsPossible = true;
-     
+
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
             workflowDesigner.Dispose();
@@ -173,7 +173,7 @@ namespace Dev2.Core.Tests.Workflows
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel dataListItem3 = new DataListItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
-           
+
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
 
@@ -1236,7 +1236,7 @@ namespace Dev2.Core.Tests.Workflows
 
             //------------Setup for test--------------------------
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage { Message = null });
+            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage { Message = null });
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1285,7 +1285,7 @@ namespace Dev2.Core.Tests.Workflows
 
                     ExecuteMessage exeMsg = null;
                     // ReSharper disable ExpressionIsAlwaysNull
-                    resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(exeMsg);
+                    resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
                     // ReSharper restore ExpressionIsAlwaysNull
 
                     var resourceModel = new Mock<IContextualResourceModel>();
@@ -1343,7 +1343,7 @@ namespace Dev2.Core.Tests.Workflows
                     // verify CreateWorkflow called
                     Assert.IsTrue(ok2);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -1364,7 +1364,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var crm = new Mock<IContextualResourceModel>();
@@ -1406,7 +1406,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInvokesWorkflowHelper()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1457,7 +1457,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1770,15 +1770,15 @@ namespace Dev2.Core.Tests.Workflows
         {
             #region Setup view model constructor parameters
 
-            if(Application.Current != null)
+            if (Application.Current != null)
             {
                 try
                 {
                     Application.Current.MainWindow = null;
                 }
-                catch(InvalidOperationException)
+                catch (InvalidOperationException)
                 {
-                    
+
                 }
             }
             var repo = new Mock<IResourceRepository>();
@@ -1791,7 +1791,7 @@ namespace Dev2.Core.Tests.Workflows
             mockRemoteConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://remoteserver:3142/"));
             mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
-            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(mockResourceModel.Object);
+            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(mockResourceModel.Object);
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(model => model.ID).Returns(Guid.Empty);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
@@ -2166,12 +2166,12 @@ namespace Dev2.Core.Tests.Workflows
             //Assert Unique ID has changed
             Assert.IsNotNull(actual);
             Assert.IsNotNull(actual.Content);
-            if(actual.Content != null)
+            if (actual.Content != null)
             {
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if(dev2Activity != null)
+                if (dev2Activity != null)
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
@@ -2201,7 +2201,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
+            foreach (var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 var prop = new Mock<ModelProperty>();
                 prop.Setup(p => p.ClearValue()).Verifiable();
@@ -2225,13 +2225,13 @@ namespace Dev2.Core.Tests.Workflows
 
             var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object);
 
-            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
+            foreach (var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
                 wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-                if(isSelfReference)
+                if (isSelfReference)
                 {
                     prop.Verify(p => p.ClearValue(), Times.Once());
                 }
@@ -2316,7 +2316,7 @@ namespace Dev2.Core.Tests.Workflows
                     prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
                     Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2407,7 +2407,7 @@ namespace Dev2.Core.Tests.Workflows
                     StringAssert.Contains(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2496,7 +2496,7 @@ namespace Dev2.Core.Tests.Workflows
                     StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2583,7 +2583,7 @@ namespace Dev2.Core.Tests.Workflows
                     //Verify
                     Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2671,7 +2671,7 @@ namespace Dev2.Core.Tests.Workflows
                     //Verify
                     Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2757,7 +2757,7 @@ namespace Dev2.Core.Tests.Workflows
                     //Verify
                     Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2788,7 +2788,7 @@ namespace Dev2.Core.Tests.Workflows
             var environmentID = Guid.NewGuid();
 
             Mock<IResourceRepository> mockResRepo = new Mock<IResourceRepository>();
-            mockResRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            mockResRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ID).Returns(null);
@@ -2835,7 +2835,7 @@ namespace Dev2.Core.Tests.Workflows
 
             Mock<IResourceRepository> mockResourceRepo = new Mock<IResourceRepository>();
 
-            mockResourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            mockResourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ID).Returns(environmentID);
@@ -2887,8 +2887,8 @@ namespace Dev2.Core.Tests.Workflows
 
             // If the view model is able to resolve the remote server ID it will search it for the resource
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
-            resourceRepository.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
+            resourceRepository.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var parentEnvironment = new Mock<IEnvironmentModel>();
             parentEnvironment.Setup(c => c.ID).Returns(Guid.NewGuid());
@@ -2949,7 +2949,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -2992,7 +2992,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3072,7 +3072,7 @@ namespace Dev2.Core.Tests.Workflows
             var ID = Guid.NewGuid();
             var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = ID, WorkSurfaceMappingId = ID } };
             ID = Guid.NewGuid();
-            if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
+            if (selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
             {
 
                 states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = ID, WorkSurfaceMappingId = ID });
@@ -3083,12 +3083,12 @@ namespace Dev2.Core.Tests.Workflows
             FlowNode prevNode = null;
 
             var nodes = new List<FlowNode>();
-            foreach(var node in states.Select(state => CreateFlowNode(state.ID, state.DisplayName, selectsModelItem, selectedActivityType)))
+            foreach (var node in states.Select(state => CreateFlowNode(state.ID, state.DisplayName, selectsModelItem, selectedActivityType)))
             {
-                if(prevNode != null)
+                if (prevNode != null)
                 {
                     var flowStep = prevNode as FlowStep;
-                    if(flowStep != null)
+                    if (flowStep != null)
                     {
                         flowStep.Next = node;
                     }
@@ -3111,7 +3111,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3126,15 +3126,15 @@ namespace Dev2.Core.Tests.Workflows
 
             //----------------------- Execute -----------------------//
             var i = 0;
-            foreach(var debugState in states)
+            foreach (var debugState in states)
             {
-                if(selectionType == ActivitySelectionType.None || selectionType == ActivitySelectionType.Remove)
+                if (selectionType == ActivitySelectionType.None || selectionType == ActivitySelectionType.Remove)
                 {
                     // Ensure we have something to clear/remove
                     EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState, SelectionType = ActivitySelectionType.Add });
 
                     // Only issue change event after all have been added
-                    if(++i == states.Count)
+                    if (++i == states.Count)
                     {
                         var selectionBefore = viewModel.Designer.Context.Items.GetValue<Selection>();
                         Assert.AreEqual(states.Count, selectionBefore.SelectionCount);
@@ -3152,7 +3152,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var selection = viewModel.Designer.Context.Items.GetValue<Selection>();
 
-            switch(selectionType)
+            switch (selectionType)
             {
                 case ActivitySelectionType.None:
                     Assert.AreEqual(0, selection.SelectionCount);
@@ -3179,10 +3179,10 @@ namespace Dev2.Core.Tests.Workflows
                     break;
             }
 
-            foreach(var modelItem in selection.SelectedObjects)
+            foreach (var modelItem in selection.SelectedObjects)
             {
                 Assert.AreEqual(selectedActivityType, modelItem.ItemType);
-                if(selectsModelItem)
+                if (selectsModelItem)
                 {
                     var actualID = selectedActivityType == typeof(FlowDecision)
                         ? Guid.Parse(((TestDecisionActivity)modelItem.GetProperty("Condition")).UniqueID)
@@ -3198,7 +3198,7 @@ namespace Dev2.Core.Tests.Workflows
 
         static FlowNode CreateFlowNode(Guid id, string displayName, bool selectsModelItem, Type activityType)
         {
-            if(activityType == typeof(FlowDecision))
+            if (activityType == typeof(FlowDecision))
             {
                 return new FlowDecision(new TestDecisionActivity
                 {
@@ -3232,7 +3232,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -3303,7 +3303,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -3385,7 +3385,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3430,7 +3430,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3472,7 +3472,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3515,7 +3515,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3559,7 +3559,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3603,7 +3603,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3648,7 +3648,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3691,7 +3691,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -3743,7 +3743,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -3790,7 +3790,7 @@ namespace Dev2.Core.Tests.Workflows
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "");
             var settingPath = Path.Combine(appData, @"Local\Warewolf\DebugData\PersistSettings.dat");
 
-            if(File.Exists(settingPath))
+            if (File.Exists(settingPath))
             {
                 File.Delete(settingPath);
             }
@@ -3807,7 +3807,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -3863,7 +3863,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -3923,7 +3923,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -3962,7 +3962,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -4039,11 +4039,11 @@ namespace Dev2.Core.Tests.Workflows
 
             var popupController = new Mock<IPopupController>();
 
-            if(workflowHelper == null)
+            if (workflowHelper == null)
             {
                 var wh = new Mock<IWorkflowHelper>();
                 wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() });
-                if(helperText != null)
+                if (helperText != null)
                 {
                     wh.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(new StringBuilder(helperText));
                 }

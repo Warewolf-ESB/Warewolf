@@ -937,7 +937,7 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceModel.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
@@ -1075,7 +1075,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
             Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
-            foreach(var permission in target.WindowsGroupPermissions)
+            foreach (var permission in target.WindowsGroupPermissions)
             {
                 Assert.IsTrue(permission.IsValid);
                 Assert.IsFalse(permission.IsNew);
@@ -1108,7 +1108,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
             Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
-            foreach(var permission in target.WindowsGroupPermissions)
+            foreach (var permission in target.WindowsGroupPermissions)
             {
                 Assert.IsTrue(permission.IsValid);
                 Assert.IsFalse(permission.IsNew);

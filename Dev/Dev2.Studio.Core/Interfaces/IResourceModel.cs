@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.Interfaces
         List<string> TagList { get; }
         string Tags { get; set; }
         string this[string columnName] { get; }
-        StringBuilder ToServiceDefinition();    
+        StringBuilder ToServiceDefinition(bool prepairForDeployment = false);
         string UnitTestTargetWorkflowService { get; set; }
         string DataList { get; set; }
         bool IsDatabaseService { get; set; }

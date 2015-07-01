@@ -292,7 +292,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var resourceModel = new Mock<IResourceModel>();
 
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
-            var hitCount= 0;
+            var hitCount = 0;
             viewModel.EditEmailSourceCommand.CanExecuteChanged += (sender, args) =>
             {
                 hitCount++;
@@ -304,7 +304,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(3,hitCount);
+            Assert.AreEqual(3, hitCount);
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             var expectedFiles = new List<string>();
             expectedFiles.AddRange(existingFiles);
-            if(selectedFiles != null)
+            if (selectedFiles != null)
             {
                 expectedFiles.AddRange(selectedFiles);
             }
@@ -404,7 +404,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             const string TestFromPassword = "FromPassword";
 
             var result = new ValidationResult { IsValid = isTestResultValid };
-            if(!isTestResultValid)
+            if (!isTestResultValid)
             {
                 result.ErrorMessage = "Unable to connect to SMTP server";
             }
@@ -423,7 +423,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
 
             var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
-            if(hasFromAccount)
+            if (hasFromAccount)
             {
                 modelItem.SetProperty("FromAccount", TestFromAccount);
                 modelItem.SetProperty("Password", TestFromPassword);
@@ -461,7 +461,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsNotNull(postData);
             Assert.AreEqual(expectedPostData, postData);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
-            if(isTestResultValid)
+            if (isTestResultValid)
             {
                 Assert.IsNull(viewModel.Errors);
             }
@@ -505,7 +505,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             expectedSource.UserName = TestFromAccount;
             expectedSource.Password = TestFromPassword;
             expectedSource.TestFromAddress = TestFromAccount;
-            
+
 
             var webRequestInvoker = new Mock<IWebRequestInvoker>();
             webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
@@ -516,7 +516,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.WebRequestInvoker = webRequestInvoker.Object;
 
             Assert.IsTrue(viewModel.CanTestEmailAccount);
-            
+
             //------------Execute Test---------------------------
             viewModel.TestEmailAccountCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -557,7 +557,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             expectedSource.UserName = TestFromAccount;
             expectedSource.Password = TestFromPassword;
             expectedSource.TestFromAddress = TestFromAccount;
-            
+
 
             var webRequestInvoker = new Mock<IWebRequestInvoker>();
             webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
@@ -568,7 +568,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.WebRequestInvoker = webRequestInvoker.Object;
 
             Assert.IsTrue(viewModel.CanTestEmailAccount);
-            
+
             //------------Execute Test---------------------------
             viewModel.TestEmailAccountCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -609,7 +609,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             expectedSource.UserName = TestFromAccount;
             expectedSource.Password = TestFromPassword;
             expectedSource.TestFromAddress = TestFromAccount;
-            
+
 
             var webRequestInvoker = new Mock<IWebRequestInvoker>();
             webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
@@ -620,7 +620,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.WebRequestInvoker = webRequestInvoker.Object;
 
             Assert.IsTrue(viewModel.CanTestEmailAccount);
-            
+
             //------------Execute Test---------------------------
             viewModel.TestEmailAccountCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -1090,7 +1090,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         void Verify_ValidateThis(DsfSendEmailActivity activity, string expectedErrorMessage = null, DependencyProperty isFocusedProperty = null, bool setSelectedEmailSource = true)
         {
             var sources = CreateEmailSources(1);
-            if(setSelectedEmailSource)
+            if (setSelectedEmailSource)
             {
                 activity.SelectedEmailSource = sources[0];
             }
@@ -1103,7 +1103,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            if(string.IsNullOrEmpty(expectedErrorMessage))
+            if (string.IsNullOrEmpty(expectedErrorMessage))
             {
                 Assert.IsNull(viewModel.Errors);
             }
@@ -1218,7 +1218,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         {
             var result = new List<EmailSource>();
 
-            for(var i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 result.Add(new EmailSource
                 {
@@ -1242,7 +1242,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
                 .Returns(sources);
-            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                 .Returns(resourceModel);
 
             var testEmailDesignerViewModel = new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher)

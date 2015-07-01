@@ -23,7 +23,6 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
         [TestCategory("DropboxFileUploadViewModel_Ctor")]
         // ReSharper disable InconsistentNaming
         public void DropboxFileUploadViewModel_Ctor()
-        
         {
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -32,19 +31,18 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
             //------------Setup for test--------------------------
-            var fileOps = new DropBoxUploadFileViewModel(CreateModelItem(),env.Object,agg.Object);
-            Assert.AreEqual(fileOps.Operations[0],"Read File");
+            var fileOps = new DropBoxUploadFileViewModel(CreateModelItem(), env.Object, agg.Object);
+            Assert.AreEqual(fileOps.Operations[0], "Read File");
             Assert.AreEqual(fileOps.Operations[1], "Write File");
-            Assert.AreEqual(3,fileOps.Sources.Count);
-            Assert.AreEqual("Dropbox Source",fileOps.Sources[2].ResourceName);
+            Assert.AreEqual(3, fileOps.Sources.Count);
+            Assert.AreEqual("Dropbox Source", fileOps.Sources[2].ResourceName);
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DropboxFileUploadViewModel_Ctor")]
         // ReSharper disable InconsistentNaming
         public void DropboxFileUploadViewModel_SelectASource_WhenConstructor()
-        
         {
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -53,10 +51,10 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
             //------------Setup for test--------------------------
-            var fileOps = new DropBoxUploadFileViewModel(CreateModelItem(),env.Object,agg.Object);
-            Assert.AreEqual(fileOps.Operations[0],"Read File");
+            var fileOps = new DropBoxUploadFileViewModel(CreateModelItem(), env.Object, agg.Object);
+            Assert.AreEqual(fileOps.Operations[0], "Read File");
             Assert.AreEqual(fileOps.Operations[1], "Write File");
-            Assert.AreEqual(3,fileOps.Sources.Count);
+            Assert.AreEqual(3, fileOps.Sources.Count);
             Assert.AreEqual("Select a OAuth Source...", fileOps.SelectedSource.ResourceName);
         }
 
@@ -79,10 +77,10 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             //------------Execute Test---------------------------
             var availableSources = fileOps.Sources.ToList();
             //------------Assert Results-------------------------
-            Assert.AreEqual(availableSources.Count(),4);
+            Assert.AreEqual(availableSources.Count(), 4);
             Assert.AreEqual(availableSources[0].ResourceName, "Select a OAuth Source...");
             Assert.AreEqual(availableSources[1].ResourceName, "New OAuth Source...");
-            Assert.AreEqual(availableSources[2].ResourceName,"bob");
+            Assert.AreEqual(availableSources[2].ResourceName, "bob");
             Assert.AreEqual(availableSources[3].ResourceName, "dave");
         }
 
@@ -98,15 +96,15 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
 
-            var model =CreateModelItem();
+            var model = CreateModelItem();
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object);
             var availableSources = fileOps.Sources.ToList();
             fileOps.SelectedSource = availableSources[0];
             //------------Execute Test---------------------------
-           
+
             //------------Assert Results-------------------------
-            Assert.AreEqual(model.GetProperty<OauthSource>("SelectedSource"),availableSources[0]);
+            Assert.AreEqual(model.GetProperty<OauthSource>("SelectedSource"), availableSources[0]);
         }
 
 
@@ -128,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             //------------Execute Test---------------------------
             var availableSources = fileOps.Sources.ToList();
             //------------Assert Results-------------------------
-            Assert.AreEqual(model.GetProperty<string>("Operation"),"Read File");
+            Assert.AreEqual(model.GetProperty<string>("Operation"), "Read File");
             Assert.AreEqual(availableSources[0].ResourceName, "Select a OAuth Source...");
             Assert.AreEqual(availableSources[1].ResourceName, "New OAuth Source...");
             Assert.AreEqual(availableSources[2].ResourceName, "bob");
@@ -148,7 +146,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File", SelectedSource = sources[2] };
@@ -157,7 +155,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             //------------Assert Results-------------------------
             agg.Verify(a => a.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SelectedOperation_EditSource")]
@@ -169,7 +167,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File", SelectedSource = sources[0] };
@@ -190,7 +188,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File" };
@@ -199,7 +197,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             Assert.IsTrue(fileOps.IsDropboxSourceSelected);
 
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SelectedOperation_EditSource")]
@@ -211,7 +209,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File" };
@@ -231,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File" };
@@ -244,7 +242,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
 
         List<OauthSource> GetSources()
         {
-            return  new List<OauthSource>{new OauthSource{ResourceName = "bob"} , new OauthSource {ResourceName = "dave"}};
+            return new List<OauthSource> { new OauthSource { ResourceName = "bob" }, new OauthSource { ResourceName = "dave" } };
         }
 
         static ModelItem CreateModelItem()

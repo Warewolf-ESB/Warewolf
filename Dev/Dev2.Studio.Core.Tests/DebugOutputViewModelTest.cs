@@ -265,7 +265,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
 
             // If we get here then we've found the environment based on the environment ID!
-            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
+            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Verifiable();
 
             envList.Add(env.Object);
 
@@ -280,7 +280,7 @@ namespace Dev2.Core.Tests
 
             model.OpenItemCommand.Execute(debugState);
 
-            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false));
+            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false));
         }
 
         [TestMethod]
@@ -345,7 +345,7 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
 
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Executing };
-            for(var i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var state = new Mock<IDebugState>();
                 var stateType = i % 2 == 0 ? StateType.Message : StateType.After;
@@ -651,10 +651,10 @@ namespace Dev2.Core.Tests
 
             viewModel.RootItems.Add(CreateItemViewModel<DebugStringTreeViewItemViewModel>(envRepo, 0, false, null));
 
-            for(var i = 1; i < 6; i++)
+            for (var i = 1; i < 6; i++)
             {
                 var item = CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, i, false, null);
-                for(var j = 0; j < 2; j++)
+                for (var j = 0; j < 2; j++)
                 {
                     CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, j, false, item);
                 }
@@ -668,10 +668,10 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
 
             // Items are selected only if they are DebugStateTreeViewItemViewModel's
-            foreach(var item in viewModel.RootItems)
+            foreach (var item in viewModel.RootItems)
             {
                 Assert.AreEqual(item is DebugStateTreeViewItemViewModel, item.IsSelected);
-                foreach(var child in item.Children)
+                foreach (var child in item.Children)
                 {
                     Assert.AreEqual(child is DebugStateTreeViewItemViewModel, child.IsSelected);
                 }
@@ -710,11 +710,11 @@ namespace Dev2.Core.Tests
         static IDebugTreeViewItemViewModel CreateItemViewModel<T>(IEnvironmentRepository envRepository, int n, bool isSelected, IDebugTreeViewItemViewModel parent)
             where T : IDebugTreeViewItemViewModel
         {
-            if(typeof(T) == typeof(DebugStateTreeViewItemViewModel))
+            if (typeof(T) == typeof(DebugStateTreeViewItemViewModel))
             {
                 var content = new DebugState { DisplayName = "State " + n, ID = Guid.NewGuid(), ActivityType = ActivityType.Step };
                 var viewModel = new DebugStateTreeViewItemViewModel(envRepository) { Parent = parent, Content = content };
-                if(!isSelected)
+                if (!isSelected)
                 {
                     // viewModel.IsSelected is true when the ActivityType is Step
                     viewModel.IsSelected = false;

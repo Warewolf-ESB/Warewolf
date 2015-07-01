@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
         {
             var startIndex = 0;
-            if(modelProperties == null)
+            if (modelProperties == null)
             {
                 modelProperties = new ModelProperty[3];
             }
@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var properties = new Mock<ModelPropertyCollection>();
 
-            foreach(var modelProperty in modelProperties)
+            foreach (var modelProperty in modelProperties)
             {
                 properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
             }
@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             Mock<IResourceRepository> resourceRepository;
             Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             return resourceModel;
         }
 
@@ -89,9 +89,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             environment.Setup(e => e.IsConnected).Returns(true);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if(resourceErrors != null)
+            if (resourceErrors != null)
             {
-                foreach(var resourceError in resourceErrors)
+                foreach (var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }

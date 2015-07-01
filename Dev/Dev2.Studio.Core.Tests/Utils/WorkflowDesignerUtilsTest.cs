@@ -196,7 +196,7 @@ namespace Dev2.Core.Tests.Utils
             var mockedExampleWorkflow = new Mock<IResourceModel>();
 
             mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockedExampleWorkflow.Object);
+            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockedExampleWorkflow.Object);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //------------Execute Test---------------------------
@@ -226,7 +226,7 @@ namespace Dev2.Core.Tests.Utils
             var mockedExampleWorkflow = new Mock<IResourceModel>();
 
             mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockedExampleWorkflow.Object);
+            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockedExampleWorkflow.Object);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //------------Execute Test---------------------------
@@ -249,14 +249,14 @@ namespace Dev2.Core.Tests.Utils
             mockCon.Setup(a => a.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             var envGuid = Guid.NewGuid();
 
-            x.Setup(a=>a.Environment).Returns(mockEnv.Object);
+            x.Setup(a => a.Environment).Returns(mockEnv.Object);
             mockEnv.Setup(a => a.ID).Returns(envGuid);
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
             var act = new DsfActivity("a", "b", "c", "d", "e", "f");
             //------------Execute Test---------------------------
-            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(act,x.Object, mockEnv.Object );
-            Assert.AreEqual("rsaklf",act.FriendlySourceName.Expression.ToString());
-     
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(act, x.Object, mockEnv.Object);
+            Assert.AreEqual("rsaklf", act.FriendlySourceName.Expression.ToString());
+
         }
 
 
