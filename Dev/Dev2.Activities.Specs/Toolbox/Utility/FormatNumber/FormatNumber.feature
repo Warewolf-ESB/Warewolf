@@ -50,7 +50,7 @@ Scenario: Format number rounding normal
 	And I selected rounding "Normal" to 2 
 	And I want to show 3 decimals 
 	When the format number is executed
-	Then the result 788.89 will be returned
+	Then the result 788.890 will be returned
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Number           | Rounding | Rounding Value | Decimals to show |
