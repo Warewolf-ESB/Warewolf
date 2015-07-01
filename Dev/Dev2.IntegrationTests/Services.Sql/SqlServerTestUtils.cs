@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
