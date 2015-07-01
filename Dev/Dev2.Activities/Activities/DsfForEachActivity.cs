@@ -583,7 +583,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                         // Restore Outputs ;)
-                        data = tmp.GetForEachInputs();
+                        data = tmp.GetForEachOutputs();
                         updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
