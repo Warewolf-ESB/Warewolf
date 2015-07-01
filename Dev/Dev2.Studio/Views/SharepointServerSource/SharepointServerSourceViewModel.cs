@@ -12,7 +12,7 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Views.SharepointServerSource
 {
-    public class SharepointServerSourceViewModel:PropertyChangedBase
+    public class SharepointServerSourceViewModel : PropertyChangedBase
     {
         readonly IEnvironmentModel _environment;
         string _serverName;
@@ -35,13 +35,13 @@ namespace Dev2.Views.SharepointServerSource
                 serverSource.DialogResult = true;
                 serverSource.Close();
             });
-            
+
             CancelCommand = new RelayCommand(o =>
             {
                 serverSource.DialogResult = false;
                 serverSource.Close();
             });
-            TestCommand=new RelayCommand(o =>
+            TestCommand = new RelayCommand(o =>
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 var source = CreateSharepointServerSource();
@@ -90,7 +90,7 @@ namespace Dev2.Views.SharepointServerSource
             }
             set
             {
-                if(value.Equals(_isWindows))
+                if (value.Equals(_isWindows))
                 {
                     return;
                 }
@@ -99,7 +99,7 @@ namespace Dev2.Views.SharepointServerSource
                 {
                     AuthenticationType = AuthenticationType.Windows;
                 }
-               
+
                 NotifyOfPropertyChange("IsWindows");
             }
         }
@@ -111,7 +111,7 @@ namespace Dev2.Views.SharepointServerSource
             }
             set
             {
-                if(value.Equals(_isUser))
+                if (value.Equals(_isUser))
                 {
                     return;
                 }
@@ -138,14 +138,14 @@ namespace Dev2.Views.SharepointServerSource
                 var xaml = _resource.WorkflowXaml;
                 if (xaml.IsNullOrEmpty() && _resource.ID != Guid.Empty)
                 {
-                    var message = _environment.ResourceRepository.FetchResourceDefinition(_environment, GlobalConstants.ServerWorkspaceID, _resource.ID);
+                    var message = _environment.ResourceRepository.FetchResourceDefinition(_environment, GlobalConstants.ServerWorkspaceID, _resource.ID, false);
                     xaml = message.Message;
                     if (!xaml.IsNullOrEmpty())
                     {
                         UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
                     }
                 }
-                
+
             }
         }
 
@@ -155,7 +155,7 @@ namespace Dev2.Views.SharepointServerSource
             UserName = sharepointSource.UserName;
             Password = sharepointSource.Password;
             AuthenticationType = sharepointSource.AuthenticationType;
-            
+
         }
 
         public string UserName
@@ -166,7 +166,7 @@ namespace Dev2.Views.SharepointServerSource
             }
             set
             {
-                if(value == _userName)
+                if (value == _userName)
                 {
                     return;
                 }
@@ -182,7 +182,7 @@ namespace Dev2.Views.SharepointServerSource
             }
             set
             {
-                if(value == _password)
+                if (value == _password)
                 {
                     return;
                 }
@@ -199,11 +199,11 @@ namespace Dev2.Views.SharepointServerSource
             set
             {
                 _authenticationType = value;
-                if(_authenticationType == AuthenticationType.Windows)
+                if (_authenticationType == AuthenticationType.Windows)
                 {
                     IsWindows = true;
                 }
-                else if(_authenticationType == AuthenticationType.User)
+                else if (_authenticationType == AuthenticationType.User)
                 {
                     IsUser = true;
                 }

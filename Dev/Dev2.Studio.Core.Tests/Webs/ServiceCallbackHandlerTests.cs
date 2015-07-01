@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests.Webs
             resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true))
                 .Returns(new List<IResourceModel> { resourceModel.Object });
-            resourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            resourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                 .Returns(resourceModel.Object);
         }
 

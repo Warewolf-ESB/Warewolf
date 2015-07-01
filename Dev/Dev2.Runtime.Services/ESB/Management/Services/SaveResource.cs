@@ -37,39 +37,39 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-            Dev2Logger.Log.Info("Save Resource Service");
-            StringBuilder resourceDefinition;
-            string workspaceIdString = string.Empty;
+                Dev2Logger.Log.Info("Save Resource Service");
+                StringBuilder resourceDefinition;
+                string workspaceIdString = string.Empty;
 
-            values.TryGetValue("ResourceXml", out resourceDefinition);
-            StringBuilder tmp;
-            values.TryGetValue("WorkspaceID", out tmp);
-            if(tmp != null)
-            {
-                workspaceIdString = tmp.ToString();
-            }
-            Guid workspaceId;
-            if(!Guid.TryParse(workspaceIdString, out workspaceId))
-            {
-                workspaceId = theWorkspace.ID;
-            }
-
-            if(resourceDefinition == null || resourceDefinition.Length == 0)
-            {
-                throw new InvalidDataContractException("Roles or ResourceXml is missing");
-            }
-
-            var res = new ExecuteMessage { HasError = false };
-
-            List<DynamicServiceObjectBase> compiledResources = null;
-            var errorMessage = Resources.CompilerMessage_BuildFailed + " " + DateTime.Now;
-            try
-            {
-                // Replace with proper object hydration and parsing ;)
-                compiledResources = new ServiceDefinitionLoader().GenerateServiceGraph(resourceDefinition);
-                if(compiledResources.Count == 0)
+                values.TryGetValue("ResourceXml", out resourceDefinition);
+                StringBuilder tmp;
+                values.TryGetValue("WorkspaceID", out tmp);
+                if (tmp != null)
                 {
-                    CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
+                    workspaceIdString = tmp.ToString();
+                }
+                Guid workspaceId;
+                if (!Guid.TryParse(workspaceIdString, out workspaceId))
+                {
+                    workspaceId = theWorkspace.ID;
+                }
+
+                if (resourceDefinition == null || resourceDefinition.Length == 0)
+                {
+                    throw new InvalidDataContractException("Roles or ResourceXml is missing");
+                }
+
+                var res = new ExecuteMessage { HasError = false };
+
+                List<DynamicServiceObjectBase> compiledResources = null;
+                var errorMessage = Resources.CompilerMessage_BuildFailed + " " + DateTime.Now;
+                try
+                {
+                    // Replace with proper object hydration and parsing ;)
+                    compiledResources = new ServiceDefinitionLoader().GenerateServiceGraph(resourceDefinition);
+                    if (compiledResources.Count == 0)
+                    {
+                        CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
                     {
                         new CompileMessageTO
                         {
@@ -79,13 +79,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
 
-                    res.SetMessage(Resources.CompilerMessage_BuildFailed + " " + DateTime.Now);
+                        res.SetMessage(Resources.CompilerMessage_BuildFailed + " " + DateTime.Now);
+                    }
                 }
-            }
-            catch(Exception err)
-            {
-                Dev2Logger.Log.Error(err);
-                CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
+                catch (Exception err)
+                {
+                    Dev2Logger.Log.Error(err);
+                    CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
                     {
@@ -95,17 +95,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 });
 
-                res.SetMessage(errorMessage);
-            }
+                    res.SetMessage(errorMessage);
+                }
 
-            if(compiledResources != null)
-            {
-                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition,null,"Save");
-                res.SetMessage(saveResult.Message + " " + DateTime.Now);
-            }
+                if (compiledResources != null)
+                {
+                    var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, null, "Save");
+                    res.SetMessage(saveResult.Message + " " + DateTime.Now);
+                }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(res);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)
             {

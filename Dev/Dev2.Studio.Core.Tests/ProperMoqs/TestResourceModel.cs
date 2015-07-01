@@ -129,15 +129,15 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public void RaiseEvents()
         {
-            if(OnResourceSaved != null)
+            if (OnResourceSaved != null)
             {
                 OnResourceSaved(this);
             }
-            if(OnDataListChanged != null)
+            if (OnDataListChanged != null)
             {
                 OnDataListChanged();
             }
-            if(OnDesignValidationReceived != null)
+            if (OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, new DesignValidationMemo());
             }
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public string ConnectionString { get; set; }
 
-        public StringBuilder ToServiceDefinition()
+        public StringBuilder ToServiceDefinition(bool prepairForDeployment)
         {
             return new StringBuilder("TestDefinition");
         }
@@ -251,7 +251,7 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }

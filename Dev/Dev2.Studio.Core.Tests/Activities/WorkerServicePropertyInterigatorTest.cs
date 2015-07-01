@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
@@ -68,7 +68,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
@@ -88,7 +88,7 @@ namespace Dev2.Core.Tests.Activities
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
-            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
 
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\" SourceID=\"123456\"></Action>") };
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests.Activities
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
-            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
 
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>") };
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);

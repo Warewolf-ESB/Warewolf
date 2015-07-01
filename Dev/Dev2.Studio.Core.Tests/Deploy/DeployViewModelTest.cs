@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
             studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object,null,null,null,new Mock<IConnectControlSingleton>().Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object);
 
 
 
@@ -110,7 +110,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             // ReSharper disable MaximumChainedReferences
             _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
-    
+
             _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(true);
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
@@ -140,7 +140,7 @@ namespace Dev2.Core.Tests
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object));
             // ReSharper disable ObjectCreationAsStatement
-            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object,null,null,new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object, null, null, new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
             // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -236,7 +236,7 @@ namespace Dev2.Core.Tests
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, asyncWorker, new Mock<IConnectControlSingleton>().Object));
             IStudioResourceRepository studioResourceRepository = mockStudioResourceRepository.Object;
-            var deployViewModel = new DeployViewModel(asyncWorker, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object,null,null,new Mock<IConnectControlSingleton>().Object)
+            var deployViewModel = new DeployViewModel(asyncWorker, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object, null, null, new Mock<IConnectControlSingleton>().Object)
             {
                 SelectedSourceServer = s1,
                 SelectedDestinationServer = s2
@@ -280,8 +280,8 @@ namespace Dev2.Core.Tests
             resourceNode.Setup(res => res.ID).Returns(id);
 
             //Setup Servers
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceNode.Object);
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Verifiable();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceNode.Object);
             resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
                                        It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
 
@@ -307,32 +307,32 @@ namespace Dev2.Core.Tests
 
             //Setup Navigation Tree
 
-            
+
 
             //Setup Server Resources
 
 
             var mockStudioResourceRepository = GetMockStudioResourceRepository();
-            var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,mockStudioResourceRepository.Object);
+            var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, mockStudioResourceRepository.Object);
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object,null,null,null,new Mock<IConnectControlSingleton>().Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
             {
                 Source = sourceDeployNavigationViewModel,
-               Target = sourceDeployNavigationViewModel,
+                Target = sourceDeployNavigationViewModel,
                 SelectedSourceServer = server.Object
             };
             int active = 0;
             int getActive = 0;
             resourceTreeNode.IsChecked = true;
             PrivateObject pvt = new PrivateObject(deployViewModel);
-            pvt.SetField("_setActive",new Action<IEnvironmentModel>( a=>active++));
-            pvt.SetField("_getActive", new Func<IEnvironmentModel> (()=> { getActive++; return  new Mock<IEnvironmentModel>().Object;}));
+            pvt.SetField("_setActive", new Action<IEnvironmentModel>(a => active++));
+            pvt.SetField("_getActive", new Func<IEnvironmentModel>(() => { getActive++; return new Mock<IEnvironmentModel>().Object; }));
             //------------Execute Test--------------------------- 
             deployViewModel.DeployCommand.Execute(null);
 
-            Assert.AreEqual(active,2);
+            Assert.AreEqual(active, 2);
             Assert.AreEqual(getActive, 1);
 
         }
@@ -1165,7 +1165,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string>());
             mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -1200,7 +1200,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
@@ -1223,7 +1223,7 @@ namespace Dev2.Core.Tests
             IExplorerItemModel explorerItemModel;
             IEnvironmentModel environmentModel;
             StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
-     
+
             explorerItemModel.IsChecked = true;
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
@@ -1233,14 +1233,14 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             var sourceID = Guid.NewGuid();
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
-            
+
             explorerItemModel.EnvironmentId = sourceID;
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
@@ -1271,7 +1271,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
@@ -1301,7 +1301,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
@@ -1333,7 +1333,7 @@ namespace Dev2.Core.Tests
             Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
             mockResource.Setup(model => model.ResourceName).Returns("resource");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResource.Object);
             mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
             mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
@@ -1375,8 +1375,8 @@ namespace Dev2.Core.Tests
             resourceNode.Setup(res => res.ID).Returns(id);
 
             //Setup Servers
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceNode.Object);
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Verifiable();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceNode.Object);
             resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
                                        It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
 
@@ -1411,15 +1411,15 @@ namespace Dev2.Core.Tests
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object,null,null,null,new Mock<IConnectControlSingleton>().Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
             {
                 Source = sourceDeployNavigationViewModel,
                 Target = sourceDeployNavigationViewModel,
                 SelectedSourceServer = server.Object
             };
             PrivateObject p = new PrivateObject(deployViewModel);
-            p.SetField("_getActive",new Func<IEnvironmentModel>(()=> new Mock<IEnvironmentModel>().Object));
-            p.SetField("_setActive", new Action<IEnvironmentModel>(a => {}));
+            p.SetField("_getActive", new Func<IEnvironmentModel>(() => new Mock<IEnvironmentModel>().Object));
+            p.SetField("_setActive", new Action<IEnvironmentModel>(a => { }));
             resourceTreeNode.IsChecked = true;
             //------------Execute Test--------------------------- 
             deployViewModel.DeployCommand.Execute(null);

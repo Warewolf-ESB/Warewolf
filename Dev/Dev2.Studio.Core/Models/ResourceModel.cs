@@ -89,7 +89,7 @@ namespace Dev2.Studio.Core.Models
             _tagList = new List<string>();
             Environment = environment;
 
-            if(environment != null && environment.Connection != null)
+            if (environment != null && environment.Connection != null)
             {
                 ServerID = environment.Connection.ServerID;
             }
@@ -129,7 +129,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isWorkflowSaved = value;
-                if(OnResourceSaved != null)
+                if (OnResourceSaved != null)
                 {
                     OnResourceSaved(this);
                 }
@@ -142,7 +142,7 @@ namespace Dev2.Studio.Core.Models
             private set
             {
                 _environment = value;
-                if(value != null && _environment.Connection != null)
+                if (value != null && _environment.Connection != null)
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
 
@@ -195,7 +195,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _id = value;
-                if(_validationService != null)
+                if (_validationService != null)
                 {
                     _validationService.Subscribe(_id, ReceiveDesignValidation);
                 }
@@ -207,7 +207,7 @@ namespace Dev2.Studio.Core.Models
             get { return _userPermissions; }
             set
             {
-                if(value == _userPermissions)
+                if (value == _userPermissions)
                 {
                     return;
                 }
@@ -256,7 +256,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if(string.IsNullOrEmpty(_displayName))
+                if (string.IsNullOrEmpty(_displayName))
                 {
                     _displayName = ResourceType == ResourceType.WorkflowService ? "Workflow" : ResourceType.ToString();
                 }
@@ -300,11 +300,11 @@ namespace Dev2.Studio.Core.Models
             get { return _dataList; }
             set
             {
-                if(value != _dataList)
+                if (value != _dataList)
                 {
                     _dataList = value;
                     NotifyOfPropertyChange("DataList");
-                    if(OnDataListChanged != null)
+                    if (OnDataListChanged != null)
                     {
                         OnDataListChanged();
                     }
@@ -429,7 +429,7 @@ namespace Dev2.Studio.Core.Models
             }
             set
             {
-                if(Equals(value, _versionInfo))
+                if (Equals(value, _versionInfo))
                 {
                     return;
                 }
@@ -449,26 +449,26 @@ namespace Dev2.Studio.Core.Models
 
         void ReceiveDesignValidation(DesignValidationMemo memo)
         {
-            if(memo.Errors.Any(info => info.InstanceID != Guid.Empty))
+            if (memo.Errors.Any(info => info.InstanceID != Guid.Empty))
             {
                 IsValid = memo.IsValid && _errors.Count == 0;
-                if(memo.Errors.Count > 0)
+                if (memo.Errors.Count > 0)
                 {
-                    foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
+                    foreach (var error in Errors.Where(error => !memo.Errors.Contains(error)))
                     {
                         _fixedErrors.Add(error);
                     }
-                    if(_errors.Count > 0)
+                    if (_errors.Count > 0)
                     {
                         _errors.Clear();
                     }
-                    foreach(var error in memo.Errors)
+                    foreach (var error in memo.Errors)
                     {
                         _errors.Add(error);
                     }
                 }
             }
-            if(OnDesignValidationReceived != null)
+            if (OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, memo);
             }
@@ -486,11 +486,11 @@ namespace Dev2.Studio.Core.Models
         // BUG 9634 - 2013.07.17 - TWR : added
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
         {
-            foreach(var error in memo.Errors)
+            foreach (var error in memo.Errors)
             {
                 _errors.Add(error);
             }
-            if(OnEnvironmentValidationReceived != null)
+            if (OnEnvironmentValidationReceived != null)
             {
                 OnEnvironmentValidationReceived(this, memo);
             }
@@ -509,7 +509,7 @@ namespace Dev2.Studio.Core.Models
         public void RemoveError(IErrorInfo error)
         {
             var theError = Errors.FirstOrDefault(info => info.Equals(error)) ?? Errors.FirstOrDefault(info => info.ErrorType == error.ErrorType && info.FixType == error.FixType);
-            if(theError != null)
+            if (theError != null)
             {
                 _fixedErrors.Add(theError);
                 _errors.Remove(theError);
@@ -523,7 +523,7 @@ namespace Dev2.Studio.Core.Models
 
         public void Rollback()
         {
-            foreach(var fixedError in _fixedErrors)
+            foreach (var fixedError in _fixedErrors)
             {
                 _errors.Add(fixedError);
             }
@@ -559,9 +559,9 @@ namespace Dev2.Studio.Core.Models
             Outputs = resourceModel.Outputs;
             WorkflowXaml = resourceModel.WorkflowXaml;
             _errors.Clear();
-            if(resourceModel.Errors != null)
+            if (resourceModel.Errors != null)
             {
-                foreach(var error in resourceModel.Errors)
+                foreach (var error in resourceModel.Errors)
                 {
                     _errors.Add(error);
                 }
@@ -575,19 +575,20 @@ namespace Dev2.Studio.Core.Models
             IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
         }
 
-        public StringBuilder ToServiceDefinition()
+        // TODO: cjr: would be best to have this non default to false, so that will be the next step once it all works
+        public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
         {
             //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
             StringBuilder result = new StringBuilder();
 
-            if(ResourceType == ResourceType.WorkflowService)
+            if (ResourceType == ResourceType.WorkflowService)
             {
                 var xaml = WorkflowXaml;
 
-                if(xaml == null || xaml.Length == 0)
+                if (xaml == null || xaml.Length == 0)
                 {
-                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
-                    if(msg != null && msg.Message != null)
+                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
+                    if (msg != null && msg.Message != null)
                     {
                         xaml = msg.Message;
                     }
@@ -597,24 +598,24 @@ namespace Dev2.Studio.Core.Models
 
                 // save to the string builder ;)
                 XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
-                using(XmlWriter xwriter = XmlWriter.Create(result, xws))
+                using (XmlWriter xwriter = XmlWriter.Create(result, xws))
                 {
                     service.Save(xwriter);
                 }
             }
-            else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
                 result = WorkflowXaml;
 
                 // when null fetch the XAML ;)
-                if(result == null)
+                if (result == null)
                 {
-                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                     result = msg.Message;
 
                 }
 
-                if(ResourceType == ResourceType.Service)
+                if (ResourceType == ResourceType.Service)
                 {
                     var completeDefintion = CreateServiceXElement(result);
                     result = completeDefintion.ToStringBuilder();
@@ -623,11 +624,11 @@ namespace Dev2.Studio.Core.Models
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
                 var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
                 var endNode = result.IndexOf("</Category>", 0, true);
-                if(endNode > startNode)
+                if (endNode > startNode)
                 {
                     var len = (endNode - startNode);
                     var oldCategory = result.Substring(startNode, len);
-                    if(oldCategory != Category)
+                    if (oldCategory != Category)
                     {
                         result = result.Replace(oldCategory, Category);
                     }
@@ -700,16 +701,16 @@ namespace Dev2.Studio.Core.Models
 
         List<XElement> WriteErrors()
         {
-            if(Errors == null || Errors.Count == 0) return null;
+            if (Errors == null || Errors.Count == 0) return null;
             var errorElements = new List<XElement>();
-            foreach(var errorInfo in Errors)
+            foreach (var errorInfo in Errors)
             {
                 var xElement = new XElement("ErrorMessage");
                 xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
                 xElement.Add(new XAttribute("Message", errorInfo.Message ?? ""));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
-                if(!string.IsNullOrEmpty(errorInfo.FixData))
+                if (!string.IsNullOrEmpty(errorInfo.FixData))
                 {
                     xElement.Add(new XCData(errorInfo.FixData));
                 }
@@ -736,14 +737,14 @@ namespace Dev2.Studio.Core.Models
                 string errMsg;
 
 
-                foreach(ValidationAttribute v in validationMap)
+                foreach (ValidationAttribute v in validationMap)
                 {
                     try
                     {
                         v.Validate(prop.GetValue(this, null), columnName);
                         RemoveError(columnName);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         AddError(columnName, v.ErrorMessage);
 
@@ -751,9 +752,9 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
 
-                if(columnName == "ResourceName")
+                if (columnName == "ResourceName")
                 {
-                    if(string.IsNullOrEmpty(ResourceName))
+                    if (string.IsNullOrEmpty(ResourceName))
                     {
                         errMsg = "Resource Name must be entered";
                         AddError("NoResourceName", errMsg);
@@ -762,10 +763,10 @@ namespace Dev2.Studio.Core.Models
                     RemoveError("NoResourceName");
                 }
 
-                if(columnName == "IconPath")
+                if (columnName == "IconPath")
                 {
                     Uri testUri;
-                    if(!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
+                    if (!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
                     {
                         errMsg = "Icon Path Does Not Exist or is not valid";
                         AddError("IconPathFileDoesNotExist", errMsg);
@@ -774,10 +775,10 @@ namespace Dev2.Studio.Core.Models
                     RemoveError("IconPathFileDoesNotExist");
                 }
 
-                if(columnName == "HelpLink")
+                if (columnName == "HelpLink")
                 {
                     Uri testUri;
-                    if(!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
+                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
                     {
                         errMsg = "The help link is not in a valid format";
                         AddError(columnName, errMsg);
@@ -793,7 +794,7 @@ namespace Dev2.Studio.Core.Models
 
         protected override void OnDispose()
         {
-            if(_validationService != null)
+            if (_validationService != null)
             {
                 _validationService.Dispose();
             }
