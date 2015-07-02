@@ -560,11 +560,6 @@ this.ScenarioSetup(scenarioInfo);
                         "To",
                         "Subject",
                         "Body"});
-            table21.AddRow(new string[] {
-                        "[[me(-1).from]] =",
-                        "me@freemail.com",
-                        "Just testing",
-                        "testing email from the cool specflow"});
 #line 164
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden

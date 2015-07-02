@@ -18,23 +18,19 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
-using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
-using Dev2.Server.DataList.Translators;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
@@ -43,18 +39,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
-        protected readonly List<DataListFormat> PublicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
         string _location;
         public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
         {
             //lock(ExecutionObject)
             {
                 string executePayload = "";
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 Guid workspaceGuid;
 
                 if(workspaceId != null)
@@ -173,13 +167,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                     allErrors.AddError(error,true);
                 }
                 // Fetch return type ;)
-                var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
-                                ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+                var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
 
                 // force it to XML if need be ;)
 
                 // Fetch and convert DL ;)
-                if(executionDlid != GlobalConstants.NullDataListID && !dataObject.Environment.HasErrors())
+                if(!dataObject.Environment.HasErrors())
                 {
                     // a normal service request
                     if(!esbExecuteRequest.WasInternalService)
@@ -194,11 +187,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject,resource.DataList.ToString());
+                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }
                             dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
@@ -250,42 +244,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
 
-                // Clean up the datalist from the server
-                if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
-                {
-                    compiler.ForceDeleteDataListByID(executionDlid);
-                    if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
-                    {
-                        DataListRegistar.ClearDataList();
-                    }
-                    else
-                    {
-                        foreach(var thread in dataObject.ThreadsToDispose)
-                        {
-                            DataListRegistar.DisposeScope(thread.Key, executionDlid);
-                        }
-
-                        DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
-                    }
-                }
-
-                // old HTML throw back ;)
-                if(dataObject.ReturnType == EmitionTypes.WIZ)
-                {
-                    int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
-                    int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
-                    int len = (end - start);
-                    if(len > 0)
-                    {
-                        if(dataObject.ReturnType == EmitionTypes.WIZ)
-                        {
-                            string tmp = executePayload.Substring(start, (end - start));
-                            string result = CleanupHtml(tmp);
-                            const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                            return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ContentTypes.Html);
-                        }
-                    }
-                }
 
                 // JSON Data ;)
                 if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
@@ -332,7 +290,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     dataObject.ServiceName = request.ServiceName;
                 }
+                foreach(string key in request.Variables)
+                {
+                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key]);   
             }
+                
+        }
         }
 
         protected static string GetPostData(ICommunicationContext ctx, string postDataListId)
@@ -355,9 +318,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Not an XML payload - Handle it as a GET or POST request ;)
             if(ctx.Request.Method == "GET")
             {
-              baseStr = "";
-                var pairs = String.IsNullOrEmpty(baseStr)? ctx.Request.QueryString : HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")+1));
-                return ExtractKeyValuePairs(pairs);
+                var pairs = ctx.Request.QueryString;
+                return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
             }
 
             if(ctx.Request.Method == "POST")
@@ -406,7 +368,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
 
                         // we need to process it as key value pairs ;)
-                        return ExtractKeyValuePairs(pairs);
+                        return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
                     }
                     catch(Exception ex)
                     {
@@ -440,9 +402,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             return baseStr;
         }
 
-        static string ExtractKeyValuePairs(NameValueCollection pairs)
+        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
         {
-            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
             // Extract request keys ;)
             foreach(var key in pairs.AllKeys)
             {
@@ -454,48 +415,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     return key; //We have a workspace id and XML DataList
                 }
-                string error;
-                bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
-                if(!string.IsNullOrEmpty(error))
-                {
-                    Dev2Logger.Log.Error(error);
-                }
+                boundVariables.Add(key,pairs[key]);
 
-                IBinaryDataListEntry entry;
-                if(bdl.TryGetEntry(key, out entry, out error))
-                {
-                    string res = pairs[key];
-                    if (pairs[key].IsXml())
-                    {
-                        res= GlobalConstants.XMLPrefix+ Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(res));
-                    }
-                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(res, key);
-                    entry.TryPutScalar(item, out error);
-                    if(!string.IsNullOrEmpty(error))
-                    {
-                        Dev2Logger.Log.Error(error);
-                    }
-                }
-                else
-                {
-                    Dev2Logger.Log.Error(error);
-                }
             }
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            Guid pushedId = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
+            ErrorResultTO errors = new ErrorResultTO();
 
-            if(pushedId != Guid.Empty)
-            {
-                var result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-                if(errors.HasErrors())
-                {
-                    Dev2Logger.Log.Error(errors.MakeDisplayReady());
-                }
-
-                return result.ToString();
-            }
 
             Dev2Logger.Log.Error(errors.MakeDisplayReady());
 

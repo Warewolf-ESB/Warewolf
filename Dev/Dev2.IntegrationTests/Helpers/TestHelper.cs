@@ -15,13 +15,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.Integration.Tests.MEF.WebTester;
+using Dev2.Network;
+using Dev2.Threading;
+using Moq;
 
 namespace Dev2.Integration.Tests.Helpers
 {
@@ -58,6 +64,51 @@ namespace Dev2.Integration.Tests.Helpers
             }
 
             return _responseData;
+        }
+
+        public static string ExecuteServiceOnLocalhostUsingProxy(string serviceName, Dictionary<string,string> payloadArguments)
+        {
+            CommunicationControllerFactory fact = new CommunicationControllerFactory();
+            var comm = fact.CreateController(serviceName);
+            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, CreateSynchronousAsyncWorker().Object);
+            prx.Connect(System.Guid.NewGuid());
+            foreach (var payloadArgument in payloadArguments)
+            {
+                comm.AddPayloadArgument(payloadArgument.Key, payloadArgument.Value);
+            }
+            if(comm != null)
+            {
+                var messageToExecute = comm.ExecuteCommand<ExecuteMessage>(prx, Guid.Empty);
+                if(messageToExecute != null)
+                {
+                    var responseMessage = messageToExecute.Message;
+                    if(responseMessage != null)
+                    {
+                        var actual = responseMessage.ToString();
+                        return actual;
+                    }
+                    return "Error: response message empty!";
+                }
+                return "Error: message to send to localhost server could not be generated.";
+            }
+            return "Error: localhost server controller could not be created.";
+        }
+
+        public static Mock<IAsyncWorker> CreateSynchronousAsyncWorker()
+        {
+            var mockWorker = new Mock<IAsyncWorker>();
+            mockWorker.Setup(r => r.Start(It.IsAny<Action>(), It.IsAny<Action>()))
+                .Returns((Action backgroundAction, Action foregroundAction) =>
+                {
+                    var task = new Task(() =>
+                    {
+                        backgroundAction.Invoke();
+                        foregroundAction.Invoke();
+                    });
+                    task.RunSynchronously();
+                    return task;
+                });
+            return mockWorker;
         }
 
         public static string PostDataToWebserver(string postandUrl, out bool wasHttps)

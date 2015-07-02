@@ -18,7 +18,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
@@ -49,13 +48,9 @@ namespace Dev2.PathOperations
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
-            string result;
             try
             {
 
-                // TODO : we need to chunk this in
-                if(!deferredRead)
-                {
                     byte[] bytes;
                     using(var s = path.Get(path.IOPath, _filesToDelete))
                     {
@@ -66,18 +61,12 @@ namespace Dev2.PathOperations
 
                     // TODO : Remove the need for this ;(
                     return Encoding.UTF8.GetString(bytes);
-                }
 
-                // If we want to defer the read of data, just return the file name ;)
-                // Serialize to binary and return 
-                BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
-                result = bdlUtil.SerializeDeferredItem(path);
             }
             finally
             {
                 _filesToDelete.ForEach(RemoveTmpFile);
             }
-            return result;
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)

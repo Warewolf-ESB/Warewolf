@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders());
                     ctx.Send(responseWriter);
                 });
 
@@ -107,7 +107,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Errors.HasErrors())
             {
-                var dlID = Guid.Empty;
                 ErrorResultTO errors;
 
                 if(ExecutingUser == null)
@@ -121,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
-                        dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 
                     t.Start();
@@ -134,7 +133,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
 
-                var compiler = DataListFactory.CreateDataListCompiler();
 
                 if(request.ExecuteResult.Length > 0)
                 {
@@ -144,13 +142,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // return the datalist ;)
                 if(dataObject.IsDebugMode())
                 {
-                    compiler.ForceDeleteDataListByID(dlID);
                     return new StringBuilder("Completed Debug");
                 }
 
-                var result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                compiler.ForceDeleteDataListByID(dlID);
-                return result;
+                return new StringBuilder();
             }
 
             ExecuteMessage msg = new ExecuteMessage { HasError = true };

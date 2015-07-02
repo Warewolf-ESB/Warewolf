@@ -19,9 +19,11 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
+using Newtonsoft.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -166,75 +168,6 @@ namespace Dev2.Data.Util
         public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
         {
             return string.Format("{0}({1}).{2}", rs, idx, field);
-        }
-
-        /// <summary>
-        /// Adds the missing from right.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <param name="errors">The errors.</param>
-        /// <exception cref="System.ArgumentNullException">right</exception>
-        public static void MergeDataList(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
-        {
-
-            if(right == null)
-            {
-                throw new ArgumentNullException("right");
-            }
-
-            if(left == null)
-            {
-                throw new ArgumentException("left");
-            }
-
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-            MergeOp(left, right, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            MergeOp(right, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-        }
-
-        private static void MergeOp(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
-        {
-            IList<string> itemKeys = right.FetchAllUserKeys();
-            errors = new ErrorResultTO();
-
-            foreach(string key in itemKeys)
-            {
-                IBinaryDataListEntry entry;
-
-                string error;
-                if(!left.TryGetEntry(key, out entry, out error))
-                {
-                    // NOTE : DO NOT ADD ERROR, IT IS A MISS AND WE ACCOUNT FOR THIS BELOW
-
-                    // Left does not contain key, get it from the right and add ;)
-                    if(right.TryGetEntry(key, out entry, out error))
-                    {
-                        errors.AddError(error);
-                        // we found it add it to the left ;)
-                        if(entry.IsRecordset)
-                        {
-                            left.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, false,
-                                                            true, out error);
-                            errors.AddError(error);
-                        }
-                        else
-                        {
-                            left.TryCreateScalarTemplate(string.Empty, entry.Namespace, entry.Description, false,
-                                                         out error);
-                            errors.AddError(error);
-                        }
-                    }
-                    else
-                    {
-                        errors.AddError(error);
-                    }
-                }
-            }
         }
 
 
@@ -510,67 +443,6 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Shapes the definitions to data list.
-        /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
-        /// <param name="isDbService"></param>
-        /// <returns></returns>
-        public static StringBuilder ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false, bool isDbService = false)
-        {
-            StringBuilder result = new StringBuilder();
-            IList<IDev2Definition> defs = null;
-            bool isInput = false;
-            errors = new ErrorResultTO();
-
-            if(typeOf == enDev2ArgumentType.Output)
-            {
-                defs = DataListFactory.CreateOutputParser().Parse(arguments);
-            }
-            else if(typeOf == enDev2ArgumentType.Input)
-            {
-                defs = DataListFactory.CreateInputParser().Parse(arguments);
-                isInput = true;
-            }
-
-            if(defs == null)
-            {
-                errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
-            }
-            else
-            {
-                IRecordSetCollection recCol = isDbService ?
-                    DataListFactory.CreateRecordSetCollectionForDbService(defs, !(isInput)) :
-                    DataListFactory.CreateRecordSetCollection(defs, !(isInput));
-
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
-
-                // open datashape
-                result.Append(string.Concat("<", AdlRoot, ">"));
-                result.Append(Environment.NewLine);
-
-                // do we want to do funky things ?!
-                if(flipGeneration)
-                {
-                    isInput = true;
-                }
-
-                // append scalar shape
-                result.Append(BuildDev2ScalarShape(scalarList, isInput));
-                // append record set shape
-                result.Append(BuildDev2RecordSetShape(recCol, isInput));
-
-                // close datashape
-                result.Append(Environment.NewLine);
-                result.Append(string.Concat("</", AdlRoot, ">"));
-            }
-
-            return result;
-        }
-        
         /// <summary>
         /// Shapes the definitions to data list.
         /// </summary>
@@ -1709,5 +1581,181 @@ namespace Dev2.Data.Util
             }
             return false;
         }
+
+
+        public static string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction)
+        {
+            DefinitionBuilder db = new DefinitionBuilder();
+
+            if (direction == enDev2ColumnArgumentDirection.Input)
+            {
+                db.ArgumentType = enDev2ArgumentType.Input;
+            }
+            else if (direction == enDev2ColumnArgumentDirection.Output)
+            {
+                db.ArgumentType = enDev2ArgumentType.Output;
+            }
+
+            db.Definitions = GenerateDefsFromDataList(datalist, direction);
+
+            return db.Generate();
+        }
+
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList)
+        {
+            return GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
+        }
+
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            if (!string.IsNullOrEmpty(dataList))
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+
+                XmlNodeList tmpRootNl = xDoc.ChildNodes;
+                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+
+                for (int i = 0; i < nl.Count; i++)
+                {
+                    XmlNode tmpNode = nl[i];
+
+                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
+
+                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    {
+                        if (tmpNode.HasChildNodes)
+                        {
+                            // it is a record set, make it as such
+                            string recordsetName = tmpNode.Name;
+                            // now extract child node defs
+                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            for (int q = 0; q < childNl.Count; q++)
+                            {
+                                var xmlNode = childNl[q];
+                                var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
+                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                                {
+                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                                false, "", false));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // scalar value, make it as such
+                            result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+        static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
+        {
+            return ioDirection == dev2ColumnArgumentDirection ||
+                   (ioDirection == enDev2ColumnArgumentDirection.Both &&
+                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output));
+        }
+
+        static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
+        {
+            XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
+
+            enDev2ColumnArgumentDirection ioDirection;
+            if (ioDirectionAttribute != null)
+            {
+                ioDirection = (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection));
+            }
+            else
+            {
+                ioDirection = enDev2ColumnArgumentDirection.Both;
+            }
+            return ioDirection;
+        }
+
+
+        public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            if (!string.IsNullOrEmpty(dataList))
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+
+                XmlNodeList tmpRootNl = xDoc.ChildNodes;
+                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+
+                for (int i = 0; i < nl.Count; i++)
+                {
+                    XmlNode tmpNode = nl[i];
+
+                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
+
+                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes)
+                    {
+                        result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
+                                                                            false, "", false));
+                    }
+                    else if (tmpNode.HasChildNodes)
+                    {
+                        // it is a record set, make it as such
+                        string recordsetName = tmpNode.Name;
+                        // now extract child node defs
+                        XmlNodeList childNl = tmpNode.ChildNodes;
+                        for (int q = 0; q < childNl.Count; q++)
+                        {
+                            var xmlNode = childNl[q];
+                            var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
+                            if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                            {
+                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                            false, "", false));
+                            }
+                        }
+                    }
+                    else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    {
+                        // scalar value, make it as such
+                        result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                    }
+
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts from to.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        public static T ConvertFromJsonToModel<T>(StringBuilder payload)
+        {
+
+            T obj = JsonConvert.DeserializeObject<T>(payload.ToString());
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Converts the model to json.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        public static StringBuilder ConvertModelToJson<T>(T payload)
+        {
+            var result = new StringBuilder(JsonConvert.SerializeObject(payload));
+
+            return result;
+        }
+
     }
 }

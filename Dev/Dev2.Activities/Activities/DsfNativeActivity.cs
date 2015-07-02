@@ -22,10 +22,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
@@ -159,14 +156,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
 
             // we need to register this child thread with the DataListRegistar so we can scope correctly ;)
-            DataListRegistar.RegisterActivityThreadToParentId(dataObject.ParentThreadID, Thread.CurrentThread.ManagedThreadId);
 
-            if(compiler != null)
-            {
+           
                 string errorString = dataObject.Environment.FetchErrors();
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
@@ -174,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
-            }
+            
 
             _previousParentInstanceID = dataObject.ParentInstanceID;
             _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
@@ -199,10 +193,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 Dev2Logger.Log.Error("OnExecute", ex);
-                var errorString = ex.Message;
+                errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
-                if(compiler != null)
+                if(dataObject.Environment != null)
                 {
                     dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
                 }
@@ -213,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var resumable = dataObject.WorkflowResumeable;
                     OnExecutedCompleted(context, false, resumable);
-                    if(compiler != null)
+                    if(dataObject.Environment != null)
                     {
                         DoErrorHandling(dataObject);
                     }
@@ -344,21 +338,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = SimulationRepository.Instance.Get(key);
             if(result != null && result.Value != null)
             {
-                var dataListExecutionID = context.GetValue(DataListExecutionID);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 var dataObject = context.GetExtension<IDSFDataObject>();
 
-                if(compiler != null && dataObject != null)
+                if(dataObject != null)
                 {
                     var allErrors = new ErrorResultTO();
-                    var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
-                    compiler.Merge(dataList, result.Value, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
-                    compiler.Shape(dataListExecutionID, enDev2ArgumentType.Output, OutputMapping, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
                     if(allErrors.HasErrors())
@@ -376,15 +365,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
-            var dataListExecutionID = DataListExecutionID.Get(context);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var dataObject = context.GetExtension<IDSFDataObject>();
 
             if(dataObject.ForceDeleteAtNextNativeActivityCleanup)
             {
                 // Used for web-pages to signal a force delete after checks of what would become a zombie datalist ;)
                 dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                compiler.ForceDeleteDataListByID(dataListExecutionID);
             }
 
             if(!dataObject.IsDebugNested)
@@ -423,19 +409,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
 
         public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
-
-        #endregion
-
-        #region GetDataList
-
-        protected static IBinaryDataList GetDataList(NativeActivityContext context)
-        {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            return compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-        }
 
         #endregion
 
@@ -753,7 +726,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
             if(NextNodes != null && NextNodes.Count()>0)
             {
-                    NextNodes.First().Execute(data);
+              
                     return NextNodes.First();
              }
             return null;

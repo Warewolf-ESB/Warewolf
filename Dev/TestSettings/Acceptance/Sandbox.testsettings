@@ -10,7 +10,7 @@
     <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll" />
   </Deployment>
   <NamingScheme baseName="AcceptanceTesting" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
+  <Scripts setupScript="..\Dev\TestScripts\Server\Startup.bat" cleanupScript="..\Dev\TestScripts\Server\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" hostProcessPlatform="MSIL">
     <Buckets size="1" />

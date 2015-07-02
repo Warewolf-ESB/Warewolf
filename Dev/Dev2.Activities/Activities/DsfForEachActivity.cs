@@ -688,7 +688,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
               
-                operationalData.IncIterationCount();
 
                 if(operationalData.IndexIterator.HasMore())
                 {
