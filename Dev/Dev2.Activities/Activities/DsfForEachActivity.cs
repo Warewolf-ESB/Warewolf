@@ -150,6 +150,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private Variable<string> _origInput = new Variable<string>("origInput");
         private Variable<string> _origOutput = new Variable<string>("origOutput");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
+        readonly object _forEachExecutionObject = new object();
+        
 
 
         #endregion Properties
@@ -170,6 +172,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Ctor
 
         #region CacheMetaData
+//
+//        public override IDev2ActivityIOMapping Clone()
+//        {
+//            var forEachActivity = new DsfForEachActivity();
+//            forEachActivity.CsvIndexes = CsvIndexes;
+//            forEachActivity.DataFunc = DataFunc;
+//            forEachActivity.ElementName = ElementName;
+//            forEachActivity.FailOnFirstError = FailOnFirstError;
+//            forEachActivity.ForEachElementName = ForEachElementName;
+//            forEachActivity.ForEachType = ForEachType;
+//            forEachActivity.From = From;
+//            forEachActivity.NumOfExections = NumOfExections;
+//            forEachActivity.FromDisplayName = FromDisplayName;
+//            forEachActivity.PreservedDataList = PreservedDataList;
+//            forEachActivity.Recordset = Recordset;
+//            forEachActivity.To = To;            
+//            return forEachActivity;
+//        }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -199,87 +219,90 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
-            
-
-           
-            dataObject.ForEachNestingLevel++;
-            ErrorResultTO allErrors = new ErrorResultTO();
-
-            InitializeDebug(dataObject);
-            try
+            lock(_forEachExecutionObject)
             {
-                ErrorResultTO errors;
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+                IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-                if(errors.HasErrors())
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+
+
+
+                dataObject.ForEachNestingLevel++;
+                ErrorResultTO allErrors = new ErrorResultTO();
+
+                InitializeDebug(dataObject);
+                try
                 {
-                    allErrors.MergeErrors(errors);
-                    return;
-                }
+                    ErrorResultTO errors;
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
-                if(dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.Before);
-                }
-
-                dataObject.ParentInstanceID = UniqueID;
-
-                allErrors.MergeErrors(errors);
-                string error;
-                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
-                allErrors.AddError(error);
-
-                exePayload.InnerActivity = innerA;
-
-                operationalData = exePayload;
-                // flag it as scoped so we can use a single DataList
-                dataObject.IsDataListScoped = true;
-                dataObject.IsDebugNested = true;
-
-                if(exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
-                {
-                    int idx = exePayload.IndexIterator.FetchNextIndex();
-                    if(exePayload.ForEachType != enForEachType.NumOfExecution)
+                    if(errors.HasErrors())
                     {
-                        IterateIOMapping(idx);
-                    }
-                    else
-                    {
-                        dataObject.IsDataListScoped = false;
+                        allErrors.MergeErrors(errors);
+                        return;
                     }
 
-                    // schedule the func to execute ;)
+                    if(dataObject.IsDebugMode())
+                    {
+                        DispatchDebugState(dataObject, StateType.Before);
+                    }
+
                     dataObject.ParentInstanceID = UniqueID;
 
-                    context.ScheduleFunc(DataFunc, string.Empty, ActivityCompleted);
-                }
+                    allErrors.MergeErrors(errors);
+                    string error;
+                    ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                    allErrors.AddError(error);
 
-            }
-            catch(Exception e)
-            {
-                Dev2Logger.Log.Error("DSFForEach", e);
-                allErrors.AddError(e.Message);
-            }
-            finally
-            {
-                // Handle Errors
-                if(allErrors.HasErrors())
-                {
-                    DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    foreach (var fetchError in allErrors.FetchErrors())
+                    exePayload.InnerActivity = innerA;
+
+                    operationalData = exePayload;
+                    // flag it as scoped so we can use a single DataList
+                    dataObject.IsDataListScoped = true;
+                    dataObject.IsDebugNested = true;
+
+                    if(exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
                     {
-                        dataObject.Environment.AddError(fetchError);
+                        int idx = exePayload.IndexIterator.FetchNextIndex();
+                        if(exePayload.ForEachType != enForEachType.NumOfExecution)
+                        {
+                            IterateIOMapping(idx);
+                        }
+                        else
+                        {
+                            dataObject.IsDataListScoped = false;
+                        }
+
+                        // schedule the func to execute ;)
+                        dataObject.ParentInstanceID = UniqueID;
+
+                        context.ScheduleFunc(DataFunc, string.Empty, ActivityCompleted);
                     }
-                    
-                    dataObject.ParentInstanceID = _previousParentId;
+
                 }
-                if(dataObject.IsDebugMode())
+                catch(Exception e)
                 {
-                    DispatchDebugState(dataObject, StateType.After);
+                    Dev2Logger.Log.Error("DSFForEach", e);
+                    allErrors.AddError(e.Message);
+                }
+                finally
+                {
+                    // Handle Errors
+                    if(allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfForEachActivity", allErrors);
+                        foreach(var fetchError in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.AddError(fetchError);
+                        }
+
+                        dataObject.ParentInstanceID = _previousParentId;
+                    }
+                    if(dataObject.IsDebugMode())
+                    {
+                        DispatchDebugState(dataObject, StateType.After);
+                    }
                 }
             }
         }
@@ -557,7 +580,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // this is wrong, we need the last index ;)
 
                     int idx = operationalData.IterationCount;
-
+                    
                     //Handle csv and range differently ;)
                     if(ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
                     {
@@ -652,6 +675,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 throw new Exception("DsfForEachActivity - RestoreHandlerFunction has encountered a null Function");
             }
+            _inputsToken = "*";
+            _outputsToken = "*";           
         }
 
         private ForEachInnerActivityTO GetInnerActivity(out string error)
@@ -661,14 +686,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                var tmp = DataFunc.Handler as IDev2ActivityIOMapping;
+                var dev2ActivityIOMapping = DataFunc.Handler as IDev2ActivityIOMapping;
 
-                if(tmp == null)
+
+                if (dev2ActivityIOMapping == null)
                 {
                     error = "Can not execute a For Each with no content";
                 }
                 else
                 {
+                    var tmp = dev2ActivityIOMapping;
                     result = new ForEachInnerActivityTO(tmp);
                 }
             }
@@ -760,14 +787,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _previousParentId = dataObject.ParentInstanceID;
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+            lock(_forEachExecutionObject)
+            {
+                _previousParentId = dataObject.ParentInstanceID;
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
 
 
 
-            dataObject.ForEachNestingLevel++;
-            ErrorResultTO allErrors = new ErrorResultTO();
+                dataObject.ForEachNestingLevel++;
+                ErrorResultTO allErrors = new ErrorResultTO();
             IIndexIterator itr=null;
             InitializeDebug(dataObject);
             try
@@ -843,17 +872,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    foreach (var fetchError in allErrors.FetchErrors())
+                    if(ForEachType != enForEachType.NumOfExecution)
                     {
-                        dataObject.Environment.AddError(fetchError);
+                        RestoreHandlerFn();
                     }
 
                     dataObject.ParentInstanceID = _previousParentId;
+                    dataObject.ForEachNestingLevel--;
+                    dataObject.IsDebugNested = false;
+                    // Handle Errors
+                    if(allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfForEachActivity", allErrors);
+                        foreach(var fetchError in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.AddError(fetchError);
+                        }
+
+                        dataObject.ParentInstanceID = _previousParentId;
+                    }
+
+
+
                 }
-        
-
-
             }
         }
 
