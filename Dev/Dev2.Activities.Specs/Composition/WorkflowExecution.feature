@@ -4169,3 +4169,18 @@ Scenario: Executing WF In ForEach with Sequence using Data from and Outside WF u
 	| Input to Service | From Variable | Output from Service | To Variable |
 	When "TestForEachSeqActivity" is executed
 	Then the workflow execution has "NO" error
+
+
+Scenario: workflow without StackOverflow exception check
+         Given I have a workflow "Testing - LoopTest"
+         And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "Testing - LoopTest" is executed
+         Then the workflow execution has "NO" error      
+
+Scenario: Executing WF on a remote server 
+         Given I have a workflow "TestRemoteTools"
+         And "Testing - LoopTest" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "TestRemoteTools" is executed
+         Then the workflow execution has "NO" error     
