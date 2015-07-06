@@ -65,6 +65,8 @@
 ####################################################################################
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/bin
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/obj
+/Dev/ConsoleApplicationToTestNetwork/bin
+/Dev/ConsoleApplicationToTestNetwork/obj
 /Dev/Dev2.Activities/bin
 /Dev/Dev2.Activities/obj
 /Dev/Dev2.Activities.Designers/bin
@@ -171,6 +173,12 @@
 /Dev/Dev2.Scheduler.Test/obj
 /Dev/Dev2.Server.Tests/bin
 /Dev/Dev2.Server.Tests/obj
+/Dev/Dev2.SignalR.Wrappers/bin
+/Dev/Dev2.SignalR.Wrappers/obj
+/Dev/Dev2.SignalR.Wrappers.New/bin
+/Dev/Dev2.SignalR.Wrappers.New/obj
+/Dev/Dev2.SignalR.Wrappers.Old/bin
+/Dev/Dev2.SignalR.Wrappers.Old/obj
 /Dev/Dev2.Sql.Tests/bin
 /Dev/Dev2.Sql.Tests/obj
 /Dev/Dev2.TaskScheduler.Wrappers.Test/bin

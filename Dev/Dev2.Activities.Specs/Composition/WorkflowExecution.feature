@@ -4163,9 +4163,14 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-Scenario: Executing WF In ForEach with Sequence using Data from and Outside WF using a ForEach
-	Given I have a workflow "TestForEachSeqActivity"
-	And "TestForEachSeqActivity" contains "TestUsingTestSubWFInSeqWorkaround" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	When "TestForEachSeqActivity" is executed
-	Then the workflow execution has "NO" error
+
+Scenario: ForEach using * in CSV executed as a sub execution should maintain data integrity
+	  Given I have a workflow "Spec - Test For Each Shared Memory"
+	  And "Spec - Test For Each Shared Memory" contains "Test For Each Shared Memory" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Spec - Test For Each Shared Memory" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Test For Each Shared Memory' in Workflow 'Spec - Test For Each Shared Memory' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |

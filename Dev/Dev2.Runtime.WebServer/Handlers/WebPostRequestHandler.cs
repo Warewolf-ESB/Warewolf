@@ -27,7 +27,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceID = GetWorkspaceID(ctx);
 
             var requestTO = new WebRequestTO();
-            var xml = GetPostData(ctx, postDataListID);
+            var xml = GetPostData(ctx);
 
             if(!String.IsNullOrEmpty(xml))
             {
@@ -40,10 +40,17 @@ namespace Dev2.Runtime.WebServer.Handlers
             requestTO.WebServerUrl = ctx.Request.Uri.ToString();
             requestTO.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-
+            var variables = ctx.Request.BoundVariables;
+            if (variables != null)
+            {
+                foreach (string key in variables)
+                {
+                    requestTO.Variables.Add(key, variables[key]);
+                }
+            }
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
-
+            requestTO.Variables.Add(ctx.Request.BoundVariables);
             var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
 
