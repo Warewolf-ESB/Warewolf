@@ -7,7 +7,7 @@
 
 Background: Setup for sharepoint scenerio
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And all items are deleted from the list
 	And I map the list input fields as
 	| Variable                      | Field Name         |
@@ -41,7 +41,7 @@ Background: Setup for sharepoint scenerio
 
 Scenario: Delete Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And I have result variable as "[[Result]]"
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
@@ -52,7 +52,7 @@ Scenario: Delete Item from list with no criteria
 
 Scenario: Delete Item from Sharepoint list with Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| IntField   | Equals      | 2     |      |    |
@@ -69,7 +69,7 @@ Scenario: Delete Item from Sharepoint list with Equal criteria
 
 Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name    | Search Type | Value | From | To |
 	| CurrencyField | >           | 10    |      |    |
@@ -86,7 +86,7 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 
 Scenario: Delete Item from list with Greater Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| IntField   | >=          | 1     |      |    |
@@ -103,7 +103,7 @@ Scenario: Delete Item from list with Greater Than Equal criteria
 
 Scenario: Delete Item from Sharepoint list with Less Than criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| IntField   | <           | 2     |      |    |
@@ -120,7 +120,7 @@ Scenario: Delete Item from Sharepoint list with Less Than criteria
 
 Scenario: Delete Item from list with Less Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| IntField   | <=          | 2     |      |    |
@@ -137,7 +137,7 @@ Scenario: Delete Item from list with Less Than Equal criteria
 
 Scenario: Delete Item from Sharepoint list with Not Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| IntField   | <>          | 2     |      |    |
@@ -154,7 +154,7 @@ Scenario: Delete Item from Sharepoint list with Not Equal criteria
 
 Scenario: Delete Item from list with Contains criteria
 		Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value    | From | To |
 	| Title      | Contains    | Warewolf |      |    |
@@ -171,7 +171,7 @@ Scenario: Delete Item from list with Contains criteria
 
 Scenario: Delete Item from list with Begins With criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value    | From | To |
 	| Title      | Begins With | Warewolf |      |    |
@@ -188,7 +188,7 @@ Scenario: Delete Item from list with Begins With criteria
 
 Scenario: Delete Item from list with Multiple criteria return multiple results
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| Title      | Contains    | o     |      |    |
@@ -207,7 +207,7 @@ Scenario: Delete Item from list with Multiple criteria return multiple results
 
 Scenario: Delete Item from list with Multiple criteria return single results
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| Title      | Contains    | 1     |      |    |
@@ -226,7 +226,7 @@ Scenario: Delete Item from list with Multiple criteria return single results
 
 Scenario: Delete Item from list with Multiple criteria do not match all criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| Title      | Contains    | 2     |      |    |
@@ -247,7 +247,7 @@ Scenario: Delete Item from list with Multiple criteria do not match all criteria
 	
 Scenario: Delete Item from list with Multiple criteria match all criteria finds nothing
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Delete" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| Title      | Contains    | z     |      |    |
