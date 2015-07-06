@@ -13,6 +13,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Communication;
+using Dev2.SignalR.Wrappers;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,7 +33,7 @@ namespace Dev2.Core.Tests.Network
         {
             //------------Setup for test--------------------------
             var serverMsg = "server result";
-            var mockHubProxy = new Mock<IHubProxy>();
+            var mockHubProxy = new Mock<IHubProxyWrapper>();
             var ExpectedResult = new Receipt {PartID = 0, ResultParts = 1};
             mockHubProxy.Setup(proxy => proxy.Invoke<Receipt>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<Receipt>(() => ExpectedResult));
             mockHubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(new Task<string>(() => serverMsg));
@@ -54,7 +55,7 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxy_AddDebugWriter_WithArgs_ShouldInvokeCorrectly()
         {
             //------------Setup for test--------------------------
-            var mockHubProxy = new Mock<IHubProxy>();
+            var mockHubProxy = new Mock<IHubProxyWrapper>();
             mockHubProxy.Setup(proxy => proxy.Invoke("AddDebugWriter", It.IsAny<Guid>())).Returns(new Task(() => { }));
             var serverProxy = new TestServerProxy();
             serverProxy.SetEsbProxy(mockHubProxy.Object);

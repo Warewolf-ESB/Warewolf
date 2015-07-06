@@ -16,7 +16,8 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Explorer;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Threading;
+using Dev2.SignalR.Wrappers;
+using Dev2.SignalR.Wrappers.New;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -106,7 +107,7 @@ namespace Dev2.Core.Tests.Network
                 };
             bool authorisedBeforeStateChange = serverProxy.IsAuthorized;
             //------------Execute Test---------------------------
-            serverProxy.CallHubConnectionChanged(new StateChange(ConnectionState.Connected, ConnectionState.Reconnecting));
+            serverProxy.CallHubConnectionChanged(new StateChangeWrapped(ConnectionStateWrapped.Connected, ConnectionStateWrapped.Reconnecting));
             //------------Assert Results-------------------------
             Assert.IsTrue(authorisedBeforeStateChange);
             Assert.IsFalse(serverProxy.IsAuthorized);
@@ -132,7 +133,7 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxy_HandleItemAdded()
         {
             //------------Setup for test--------------------------
-            var serverProxy = new ServerProxy(new Uri("http://bob"));
+            var serverProxy = new ServerProxyWithChunking(new Uri("http://bob"));
             var serverGuid = Guid.NewGuid();
             var ItemGuid = Guid.Empty;
             try
@@ -297,7 +298,7 @@ namespace Dev2.Core.Tests.Network
 
     }
 
-    internal class TestServerProxy : ServerProxy
+    internal class TestServerProxy : ServerProxyWithoutChunking
     {
         // TODO: Move this constructor to a test class!!
         public TestServerProxy(string uri, string userName, string password)
@@ -310,12 +311,12 @@ namespace Dev2.Core.Tests.Network
 
         }
 
-        public void CallHubConnectionChanged(StateChange stateChange)
+        public void CallHubConnectionChanged(IStateChangeWrapped stateChange)
         {
             HubConnectionStateChanged(stateChange);
         }
 
-        public void SetEsbProxy(IHubProxy hubProxy)
+        public void SetEsbProxy(IHubProxyWrapper hubProxy)
         {
             EsbProxy = hubProxy;
         }
