@@ -200,18 +200,3 @@ Scenario: Output values in recordset with numeric notation
 	And the debug output as
 	|                       |
 	| [[rs(1).a]] = 4,8,12 |
-
-Scenario: Output values in multiple result variables
-    Given the sentence "abc3cde3fgh3"
-	And I selected Index "All Occurrences"
-	And I search for characters "3"
-	And I selected direction as "Left to Right"
-	And result variable as "[[res]],[[rs(*).a]]"
-	When the data find index tool is executed
-	Then the execution has "An" error
-	And the debug inputs as
-	| In Field     | Index           | Characters | Direction     |
-	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
-	And the debug output as
-	|                       |
-	| [[res]],[[rs(*).a]] = |

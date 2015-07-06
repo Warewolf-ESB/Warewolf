@@ -15,10 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -81,18 +78,14 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
-            Guid executionId = dlId;
             allErrors.MergeErrors(errorResultTo);
 
             try
             {
                 if(!errorResultTo.HasErrors())
                 {
-                    IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     if(allErrors.HasErrors())
                     {
@@ -109,28 +102,7 @@ namespace Dev2.Activities
                         AddDebugInputItem(Script, dataObject.Environment);
                     }
 
-                    int iterationCounter = 0;
-
-                    while(colItr.HasMoreData())
-                    {
-                        dynamic value = null;
-
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-                            toUpsert.Add(region, null);
-                            toUpsert.FlushIterationFrame();
-
-                            if(dataObject.IsDebugMode())
-                            {
-                                // ReSharper disable ExpressionIsAlwaysNull
-                                AddDebugOutputItem(new DebugOutputParams(region, value, executionId, iterationCounter));
-                                // ReSharper restore ExpressionIsAlwaysNull
-                            }
-                        }
-
-                        iterationCounter++;
-                    }
+                   
 
                     allErrors.MergeErrors(errorResultTo);
                 }

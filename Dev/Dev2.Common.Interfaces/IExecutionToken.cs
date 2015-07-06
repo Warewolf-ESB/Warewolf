@@ -10,7 +10,7 @@
 */
 
 
-namespace Dev2.Runtime.Execution
+namespace Dev2.Common.Interfaces
 {
     public interface IExecutionToken
     {

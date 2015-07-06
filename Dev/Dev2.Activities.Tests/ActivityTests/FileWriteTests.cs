@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -34,35 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-// ReSharper disable InconsistentNaming
-        public void FileWriteActivity_GetInputs_Expected_Seven_Input()
-// ReSharper restore InconsistentNaming
-        {
-            DsfFileWrite testAct = new DsfFileWrite();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(9, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void FileWriteActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfFileWrite testAct = new DsfFileWrite();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         // ReSharper disable InconsistentNaming
 

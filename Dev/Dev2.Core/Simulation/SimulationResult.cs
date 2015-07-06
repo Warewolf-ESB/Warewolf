@@ -10,7 +10,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Simulation
 {
@@ -35,7 +34,7 @@ namespace Dev2.Simulation
         /// <summary>
         ///     Gets or sets the value.
         /// </summary>
-        public IBinaryDataList Value { get; set; }
+        public object Value { get; set; }
 
         #endregion
 
@@ -48,7 +47,7 @@ namespace Dev2.Simulation
                 throw new ArgumentNullException("info");
             }
             Key = (ISimulationKey) info.GetValue("Key", typeof (ISimulationKey));
-            Value = (IBinaryDataList) info.GetValue("Value", typeof (IBinaryDataList));
+            Value = info.GetValue("Value", typeof (object));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

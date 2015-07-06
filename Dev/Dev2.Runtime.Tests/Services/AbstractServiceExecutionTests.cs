@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
                                                "</CommsEngineResponseViewModels>";
             //exe
             ErrorResultTO errors;
-            webServiceMock.MockExecuteImpl(null,out errors);
+            webServiceMock.MockExecuteImpl(out errors);
             Assert.IsFalse(errors.HasErrors(),"Error while parsing crazy xml");
 
             //assert
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Runtime.Services
             webServiceMock.ReturnFromExecute = "{\"CommsEngineCommunicationToUpdate\":null,\"CommsEngineCommunicationToSend\":[{\"CommunicationRequestID\":\"60d47fa8-f208-e511-a221-0018fefdef3a\",\"PolicyNo\":\"AA1001366\",\"EventType\":\"DebitFailed\",\"EventSource\":\"Collections\",\"MessageContent\":\"Hi there!  Your  debit order didn't go through this month. Please give us a shout on 087 357 6529 so we can make sure we've got your details right. Love, The Unlimited\",\"DeliveryAddress\":\"0825688436\",\"OriginalAddress\":\"sample string 10\",\"ScheduledFor\":\"2015-05-27T15:30:02\",\"CommunicationsProfile\":\"sample string 12\",\"CommunicationType\":\"SMS\",\"Subject\":\"Default Subject\",\"Attachments\":\"\",\"HTML\":null,\"AttemptCount\":null,\"Priority\":1,\"MetaData\":\"sample string 15\"}],\"CommsEngineCommunicationAdded\":null,\"CommsEngineCommunicationToView\":null,\"StatusCode\":1,\"Message\":null,\"Exception\":null,\"Result\":\"OK\",\"ResponseDate\":\"2015/06/02 09:58:20 AM\"}";
             //------------Execute Test---------------------------
             ErrorResultTO errors;
-            webServiceMock.MockExecuteImpl(null, out errors);
+            webServiceMock.MockExecuteImpl(out errors);
             //------------Assert Results-------------------------
             Assert.IsFalse(errors.HasErrors(), "Error while parsing object json");
             var warewolfEvalResult = webServiceMock.DataObj.Environment.Eval("[[CommsEngineCommunicationToSend().MessageContent]]") as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;

@@ -16,10 +16,10 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
@@ -144,12 +144,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            var next = resource.Execute(dataObject);
-            while(next!= null)
-            {
-                next = next.Execute(dataObject);
-   
-            }
+            EvalInner(dataObject, resource);
            
         }
         
@@ -159,7 +154,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
         {
             if(errors == null)
             {
@@ -198,7 +193,16 @@ namespace Dev2.Runtime.ESB.Execution
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            resource.Execute(dsfDataObject);
+            EvalInner(dsfDataObject, resource);
+        }
+
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        {
+            var next = resource.Execute(dsfDataObject);
+            while(next != null)
+            {
+                next = next.Execute(dsfDataObject);
+            }
         }
     }
 }

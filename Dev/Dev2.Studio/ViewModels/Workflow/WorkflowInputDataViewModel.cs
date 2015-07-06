@@ -13,15 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -126,7 +125,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Binary backing object for the data list
         /// </summary>
-        IBinaryDataList DataList { get; set; }
+        IDataListModel DataList { get; set; }
 
         /// <summary>
         /// The transfer object that holds all the information needed for a debug session
@@ -386,12 +385,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(itemToAdd != null && itemToAdd.IsRecordset)
             {
-                string error;
-                IBinaryDataListEntry recordset;
-                DataList.TryGetEntry(itemToAdd.Recordset, out recordset, out error);
+                IRecordSet recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
                 if(recordset != null)
                 {
-                    IList<Dev2Column> recsetCols = recordset.Columns.Where(cc => cc.ColumnIODirection == enDev2ColumnArgumentDirection.Input || cc.ColumnIODirection == enDev2ColumnArgumentDirection.Both).ToList();
+                    var recsetCols = new List<IScalar>();
+                    foreach (var column in recordset.Columns)
+                    {
+                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                        recsetCols.AddRange(cols);
+                    }
+
                     var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
                     IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
                     var lastItem = dataListItems.Last();
@@ -489,42 +492,48 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return itemsRemoved;
         }
-
+        protected const string RootTag = "DataList";
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
         public void SetXmlData()
         {
-            var compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty.ToStringBuilder(), DebugTo.DataList.ToStringBuilder() ?? "<Datalist></Datalist>".ToStringBuilder(), out errors);
-            DataList = compiler.FetchBinaryDataList(dl, out errors);
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
+            var recordSets = new List<IRecordSet>();
 
             foreach(var item in WorkflowInputs)
             {
-                string error;
                 string val = item.Value;
                 if(item.Value != null && item.Value.IsXml())
                 {
-                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(val)));
+                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
                 }
                 if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
                 {
-                    DataList.TryCreateRecordsetValue(val, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
+                    var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
+                    if (recordSet==null)
+                    {
+                        recordSet = new RecordSet{Name = item.Recordset};
+                        recordSet.Columns = new Dictionary<int, List<IScalar>>();
+                        recordSets.Add(recordSet);
+                    }
+                    recordSet.AddColumn(item.Value, item.Field, Convert.ToInt32(item.RecordsetIndex));
                 }
                 else if(!item.IsRecordset)
                 {
-                    DataList.TryCreateScalarValue(val, item.Field, out error);
+                    DoScalarAppending(result,item);
                 }
+                }
+            foreach(var recordSet in recordSets)
+            {
+                DoRecordSetAppending(recordSet,result);
             }
-
-            var dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
-            var dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+            result.Append("</" + RootTag + ">");
             try
             {
-                XmlData = XElement.Parse(dataListString.ToString()).ToString();
+                XmlData = XElement.Parse(result.ToString()).ToString();
             }
             catch(Exception)
             {
@@ -532,19 +541,75 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        internal static void DoScalarAppending(StringBuilder result, IDataListItem val)
+        {
+
+            var fName = val.Field;
+            result.Append("<");
+            result.Append(fName);
+            result.Append(">");
+            try
+            {
+                result.Append(val.Value);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+            }
+            result.Append("</");
+            result.Append(fName);
+            result.Append(">");
+        }
+
+        internal static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
+        {
+            var cnt = recordSet.Columns.Max(pair => pair.Key);
+            
+            for (var i = 1; i <= cnt; i++)
+            {
+                var rowData = recordSet.Columns[i];
+
+                result.Append("<");
+                result.Append(recordSet.Name);
+                result.Append(">");
+                foreach (var col in rowData)
+                {
+
+                    var fName = col.Name;
+
+                    
+
+                        result.Append("<");
+                        result.Append(fName);
+                        result.Append(">");
+                        try
+                        {
+                            result.Append(col.Value);
+                        }
+                        // ReSharper disable EmptyGeneralCatchClause
+                        catch (Exception)
+                        {
+                        }
+                        result.Append("</");
+                        result.Append(fName);
+                        result.Append(">");
+                    }
+
+                result.Append("</");
+                result.Append(recordSet.Name);
+                result.Append(">");
+            }
+        }
         /// <summary>
         /// Used to transform the XML into WorkflowInputs
         /// </summary>
         public void SetWorkflowInputData()
         {
-            string error;
-            DataList = Broker.DeSerialize(XmlData, DebugTo.DataList, enTranslationTypes.XML, out error);
-            if(string.IsNullOrEmpty(error))
-            {
                 WorkflowInputs.Clear();
+            DataList.PopulateWithData(XmlData);
                 _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
             }
-        }
 
         /// <summary>
         /// Used for just adding a blank row to a recordset
@@ -557,12 +622,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool itemsAdded = false;
             if(selectedItem != null && selectedItem.IsRecordset)
             {
-                string error;
-                IBinaryDataListEntry recordset;
-                DataList.TryGetEntry(selectedItem.Recordset, out recordset, out error);
+                var recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == selectedItem.Recordset);
                 if(recordset != null)
                 {
-                    IList<Dev2Column> recsetCols = recordset.Columns;
+                    var recsetCols = new List<IScalar>();
+                    foreach(var column in recordset.Columns)
+                    {
+                        recsetCols.AddRange(column.Value);
+                    }
                     IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
                     IDataListItem lastItem = numberOfRows.Last();
                     int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
@@ -578,33 +645,28 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected override void OnDispose()
         {
-            if(DataList != null)
-            {
-                var compiler = DataListFactory.CreateDataListCompiler();
-                compiler.ForceDeleteDataListByID(DataList.UID);
-            }
         }
 
         #endregion Methods
 
         #region Private Methods
 
-        private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<Dev2Column> columns, int indexToInsertAt, int indexNum)
+        private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;
             if(dlItem.IsRecordset)
             {
-                IList<Dev2Column> recsetCols = columns;
-                foreach(Dev2Column col in recsetCols)
+                IList<IScalar> recsetCols = columns;
+                foreach(var col in recsetCols)
                 {
                     WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
                     {
-                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.ColumnName),
+                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
                         Value = string.Empty,
                         IsRecordset = dlItem.IsRecordset,
                         Recordset = dlItem.Recordset,
-                        Field = col.ColumnName,
-                        Description = col.ColumnDescription,
+                        Field = col.Name,
+                        Description = col.Description,
                         RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
                     });
                     itemsAdded = true;

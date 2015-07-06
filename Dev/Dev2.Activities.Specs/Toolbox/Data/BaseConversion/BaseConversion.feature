@@ -694,9 +694,9 @@ Examples:
 
 Scenario: Convert a Variable That Does Not Exist
 	Given I have a convert variable "[[var]]" with a value of "[[a]]"
+	And I convert a variable "[[var]]" from type "Text" to type "Binary" 
 	When the base conversion tool is executed
-	Then the execution has "AN" error
-	And the execution has "Variable { var } is NULL." error
+	Then the execution has "AN" error	
 
 Scenario Outline: Convert an empty recordset * 
 	Given I convert a variable "<Variable>" with a value of "<value>"

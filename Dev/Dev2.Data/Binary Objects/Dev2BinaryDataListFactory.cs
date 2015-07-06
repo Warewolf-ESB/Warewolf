@@ -44,25 +44,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        /// Creates the data list.
-        /// </summary>
-        /// <returns></returns>
-        public static IBinaryDataList CreateDataList()
-        {
-            return new BinaryDataList();
-        }
-
-        /// <summary>
-        /// Creates the data list
-        /// </summary>
-        /// <param name="parentID">The parent ID.</param>
-        /// <returns></returns>
-        public static IBinaryDataList CreateDataList(Guid parentID)
-        {
-            return new BinaryDataList(parentID);
-        }
-
-        /// <summary>
         /// Creates the binary item.
         /// </summary>
         /// <param name="val">The val.</param>
