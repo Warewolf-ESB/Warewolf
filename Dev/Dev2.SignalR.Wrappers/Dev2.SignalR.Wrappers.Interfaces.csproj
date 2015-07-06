@@ -7,7 +7,7 @@
     <ProjectGuid>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.SignalR.Wrappers</RootNamespace>
+    <RootNamespace>Dev2.SignalR.Wrappers.Interfaces</RootNamespace>
     <AssemblyName>Dev2.SignalR.Wrappers</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
