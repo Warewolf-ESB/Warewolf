@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -149,7 +150,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 // Build EsbExecutionRequest - Internal Services Require This ;)
                 EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
-
+                foreach(string key in webRequest.Variables)
+                {
+                    esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
+                }
                 Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
                 if(canExecute)
