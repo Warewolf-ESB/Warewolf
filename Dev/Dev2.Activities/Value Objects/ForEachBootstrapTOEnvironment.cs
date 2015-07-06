@@ -164,5 +164,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             return result;
         }
 
+        public void IncIterationCount()
+        {
+            IterationCount++;
+        }
     }
 }
