@@ -15,10 +15,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using System.Windows.Input;
+using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -537,29 +538,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string WriteToResourceModel()
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            string result = string.Empty;
-            string errorString;
             ScalarCollection.ForEach(FixNamingForScalar);
             AddRecordsetNamesIfMissing();
-            IBinaryDataList postDl = ConvertIDataListItemModelsToIBinaryDataList(out errorString);
-
-            if(string.IsNullOrEmpty(errorString))
+            var result = GetDataListString();
+            if(Resource != null)
             {
-                ErrorResultTO errors;
-                result = CreateXmlDataFromBinaryDataList(postDl, out errors);
-                if(Resource != null)
-                {
                     Resource.DataList = result;
-                }
             }
-
-            compiler.ForceDeleteDataListByID(postDl.UID);
-            if(!string.IsNullOrEmpty(errorString))
-            {
-                throw new Exception(errorString);
-            }
-
             return result;
         }
 
@@ -583,7 +568,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         while(childrenCount < childrenNum)
                         {
                             IDataListItemModel child = recset.Children[childrenCount];
-
+                            
                             if(!string.IsNullOrWhiteSpace(child.DisplayName))
                             {
                                 int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
@@ -902,31 +887,17 @@ namespace Dev2.Studio.ViewModels.DataList
         public void CreateListsOfIDataListItemModelToBindTo(out string errorString)
         {
             errorString = string.Empty;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             if(!string.IsNullOrEmpty(Resource.DataList))
             {
                 ErrorResultTO errors = new ErrorResultTO();
                 try
                 {
-                    IBinaryDataList binarnyDl = CreateBinaryDataListFromXmlData(Resource.DataList, out errors);
-                    if (!errors.HasErrors())
-                    {
-                        ConvertBinaryDataListToListOfIDataListItemModels(binarnyDl, out errorString);
-                    }
-                    else
-                    {
-                        string errorMessage = errors.FetchErrors().Aggregate(string.Empty, (current, error) => current + error);
-                        throw new Exception(errorMessage);
-                    }
-                    if (binarnyDl != null)
-                        compiler.ForceDeleteDataListByID(binarnyDl.UID);
+                    ConvertDataListStringToCollections(Resource.DataList);
                 }
                 catch(Exception)
                 {
                     errors.AddError("Invalid variable list. Please insure that your variable list has valid entries");
                 }
-               
-
             }
             else
             {
@@ -946,8 +917,6 @@ namespace Dev2.Studio.ViewModels.DataList
             varNode.Children = ScalarCollection;
             BaseCollection.Add(varNode);
 
-            //AddRecordsetNamesIfMissing();
-
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if(RecsetCollection.Count == 0)
             {
@@ -962,125 +931,223 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection.Clear();
         }
 
-        /// <summary>
-        ///     Creates a binary data list from XML data.
-        /// </summary>
-        /// <param name="xmlDataList">The XML data list.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        private IBinaryDataList CreateBinaryDataListFromXmlData(string xmlDataList, out ErrorResultTO errors)
-        {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IBinaryDataList result = null;
-            var allErrors = new ErrorResultTO();
-            Guid dlGuid = compiler.ConvertTo(
-                DataListFormat.CreateFormat(GlobalConstants._Studio_XML), xmlDataList.ToStringBuilder(), xmlDataList.ToStringBuilder(), out errors);
 
-            if(!errors.HasErrors())
+        public void ConvertDataListStringToCollections(string dataList)
+        {
+            if (string.IsNullOrEmpty(dataList))
             {
-                result = compiler.FetchBinaryDataList(dlGuid, out errors);
-                if(errors.HasErrors())
-                {
-                    allErrors.MergeErrors(errors);
-                }
+                return;
             }
-
-            compiler.ForceDeleteDataListByID(dlGuid);
-            return result;
-        }
-
-
-        /// <summary>
-        ///     Creates the XML data from binary data list.
-        /// </summary>
-        /// <param name="binaryDataList">The binary data list.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        private string CreateXmlDataFromBinaryDataList(IBinaryDataList binaryDataList, out ErrorResultTO errors)
-        {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid dlGuid = compiler.PushBinaryDataList(binaryDataList.UID, binaryDataList, out errors);
-            string result = compiler.ConvertFrom(dlGuid,
-                                                  DataListFormat.CreateFormat(GlobalConstants._Studio_XML),
-                                                  enTranslationDepth.Shape, out errors).ToString();
-
-            return result;
-        }
-
-        /// <summary>
-        ///     Converts a binary data list to list a data list item view models.
-        /// </summary>
-        /// <param name="dataListToConvert">The data list to convert.</param>
-        /// <param name="errorString">The error string.</param>
-        /// <returns></returns>
-        private void ConvertBinaryDataListToListOfIDataListItemModels(IBinaryDataList dataListToConvert,
-                                                                      out string errorString)
-        {
-            errorString = string.Empty;
             RecsetCollection.Clear();
             ScalarCollection.Clear();
-
-            IList<IBinaryDataListEntry> listOfEntries = dataListToConvert.FetchAllEntries();
-
-            foreach(var entry in listOfEntries)
+            try
             {
-                if(entry.IsRecordset)
+                var xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+                if (xDoc.DocumentElement != null)
                 {
-                    var recset = DataListItemModelFactory.CreateDataListModel(entry.Namespace, entry.Description, entry.ColumnIODirection);
-
-                    recset.IsEditable = entry.IsEditable;
-
-                    foreach(var col in entry.Columns)
+                    var children = xDoc.DocumentElement.ChildNodes;
+                    foreach (XmlNode c in children)
                     {
-                        var child = DataListItemModelFactory.CreateDataListModel(col.ColumnName, col.ColumnDescription, col.ColumnIODirection);
-
-                        child.Parent = recset;
-                        child.IsEditable = col.IsEditable;
-                        recset.Children.Add(child);
+                        if (!DataListUtil.IsSystemTag(c.Name))
+                        {
+                            if (c.HasChildNodes)
+                            {
+                                AddRecordSets(c);
+                            }
+                            else
+                            {
+                                AddScalars(c);
+                            }
+                        }
                     }
-
-                    RecsetCollection.Add(recset);
                 }
-                else
-                {
-                    var scalar = DataListItemModelFactory.CreateDataListModel(entry.Namespace, entry.Description, entry.ColumnIODirection);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+            }
+            
 
-                    scalar.IsEditable = entry.IsEditable;
-                    ScalarCollection.Add(scalar);
-                }
+        }
+
+        void AddScalars(XmlNode c)
+        {
+            if(c.Attributes != null)
+            {
+                var scalar = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
+                scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
+                ScalarCollection.Add(scalar);
+            }
+            else
+            {
+                var scalar = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
+                scalar.IsEditable = ParseIsEditable(null);
+                ScalarCollection.Add(scalar);
             }
         }
 
-        /// <summary>
-        ///     Converts a list of data list item view models to a binary data list.
-        /// </summary>
-        /// <param name="errorString">The error string.</param>
-        /// <returns></returns>
-        private IBinaryDataList ConvertIDataListItemModelsToIBinaryDataList(out string errorString)
+        void AddRecordSets(XmlNode c)
         {
-            errorString = string.Empty;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
+            var cols = new List<IDataListItemModel>();
+            {
+                foreach(XmlNode subc in c.ChildNodes)
+                {
+                    // It is possible for the .Attributes property to be null, a check should be added
+                    CreateColumns(subc, cols);
+                }
+                var recset = CreateRecordSet(c);
+                AddColumnsToRecordSet(cols, recset);
+            }
+        }
+
+        static void AddColumnsToRecordSet(IEnumerable<IDataListItemModel> cols, IDataListItemModel recset)
+        {
+            foreach(var col in cols)
+            {
+                col.Parent = recset;
+                recset.Children.Add(col);
+            }
+        }
+
+        IDataListItemModel CreateRecordSet(XmlNode c)
+        {
+            IDataListItemModel recset;
+            if(c.Attributes != null)
+            {
+                recset = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
+                recset.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
+                RecsetCollection.Add(recset);
+            }
+            else
+            {
+                recset = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
+                recset.IsEditable = ParseIsEditable(null);
+
+                RecsetCollection.Add(recset);
+            }
+            return recset;
+        }
+
+        void CreateColumns(XmlNode subc, List<IDataListItemModel> cols)
+        {
+            if(subc.Attributes != null)
+            {
+                var child = DataListItemModelFactory.CreateDataListModel(subc.Name, ParseDescription(subc.Attributes[Description]), ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection]));
+                child.IsEditable = ParseIsEditable(subc.Attributes[IsEditable]);
+                cols.Add(child);
+            }
+            else
+            {
+                var child = DataListItemModelFactory.CreateDataListModel(subc.Name, ParseDescription(null), ParseColumnIODirection(null));
+                child.IsEditable = ParseIsEditable(null);
+                cols.Add(child);
+            }
+        }
+
+        private string ParseDescription(XmlAttribute attr)
+        {
+            var result = string.Empty;
+            if (attr != null)
+            {
+                result = attr.Value;
+            }
+            return result;
+        }
+
+        private bool ParseIsEditable(XmlAttribute attr)
+        {
+            var result = true;
+            if (attr != null)
+            {
+                Boolean.TryParse(attr.Value, out result);
+            }
+
+            return result;
+        }
+
+        // ReSharper disable InconsistentNaming
+        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
+        // ReSharper restore InconsistentNaming
+        {
+            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+
+            if (attr == null)
+            {
+                return result;
+            }
+            if (!Enum.TryParse(attr.Value, true, out result))
+            {
+                result = enDev2ColumnArgumentDirection.None;
+            }
+            return result;
+        }
+
+
+        private const string RootTag = "DataList";
+        private const string Description = "Description";
+        private const string IsEditable = "IsEditable";
+
+        public string GetDataListString()
+        {
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
+            foreach (var recSet in RecsetCollection ?? new OptomizedObservableCollection<IDataListItemModel>())
+            {
+                if (string.IsNullOrEmpty(recSet.Name))
+                {
+                    continue;
+                }
+                IEnumerable<IDataListItemModel> filledRecordSet = recSet.Children.Where(c => !c.IsBlank && !c.HasError);
+                IList<Dev2Column> cols = filledRecordSet.Select(child => DataListFactory.CreateDev2Column(child.Name, child.Description, child.IsEditable, child.ColumnIODirection))
+                                                         .ToList();
+
+                AddItemToBuilder(result, recSet);
+                result.Append(">");
+                foreach (var col in cols)
+                {
+                    result.Append("<");
+                    result.Append(col.ColumnName);
+                    result.Append(" " + Description + "=\"");
+                    result.Append(col.ColumnDescription);
+                    result.Append("\" ");
+                    result.Append(IsEditable + "=\"");
+                    result.Append(col.IsEditable);
+                    result.Append("\" ");
+                    // Travis.Frisinger - Added Column direction
+                    result.Append(GlobalConstants.DataListIoColDirection + "=\"");
+                    result.Append(col.ColumnIODirection);
+                    result.Append("\" ");
+                    result.Append("/>");
+                }
+                result.Append("</");
+                result.Append(recSet.Name);
+                result.Append(">");
+            }
 
             IList<IDataListItemModel> filledScalars =
                 ScalarCollection != null ? ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() : new List<IDataListItemModel>();
-            foreach(var scalar in filledScalars)
+            foreach (var scalar in filledScalars)
             {
-                result.TryCreateScalarTemplate
-                    (string.Empty, scalar.Name, scalar.Description
-                     , true, scalar.IsEditable, scalar.ColumnIODirection, out errorString);
+                AddItemToBuilder(result, scalar);
+                result.Append("/>");
             }
+            result.Append("</" + RootTag + ">");
+            return result.ToString();
+        }
 
-            foreach(var recset in RecsetCollection ?? new OptomizedObservableCollection<IDataListItemModel>())
-            {
-                if(recset.IsBlank) continue;
-                IEnumerable<IDataListItemModel> filledRecordSets = recset.Children.Where(c => !c.IsBlank && !c.HasError);
-                IList<Dev2Column> cols = filledRecordSets.Select(child => DataListFactory.CreateDev2Column(child.Name, child.Description, child.IsEditable, child.ColumnIODirection))
-                                                         .ToList();
-
-                result.TryCreateRecordsetTemplate(recset.Name, recset.Description, cols, true, recset.IsEditable, recset.ColumnIODirection, out errorString);
-            }
-
-            return result;
+        void AddItemToBuilder(StringBuilder result, IDataListItemModel recSet)
+        {
+            result.Append("<");
+            result.Append(recSet.Name);
+            result.Append(" " + Description + "=\"");
+            result.Append(recSet.Description);
+            result.Append("\" ");
+            result.Append(IsEditable + "=\"");
+            result.Append(recSet.IsEditable);
+            result.Append("\" ");
+            result.Append(GlobalConstants.DataListIoColDirection + "=\"");
+            result.Append(recSet.ColumnIODirection);
+            result.Append("\" ");
         }
 
         /// <summary>

@@ -16,6 +16,7 @@ using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -124,12 +125,10 @@ namespace Dev2.Runtime.ESB.WF
                 }
 
                 // Force a save to the server ;)
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
 
                 wfApp.Extensions.Add(dataTransferObject);
-                wfApp.Extensions.Add(compiler);
                 wfApp.Extensions.Add(parser);
 
             }

@@ -3,7 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -172,13 +171,7 @@ namespace Dev2.Activities
         {
             return GetForEachItems(Result);
         }
-        private void AddDebugOutputItem(string expression, Guid executionId)
-        {
-            ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var entry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            AddDebugOutputItem(new DebugItemVariableParams(expression, "", entry, executionId));
-        }
+        
         #endregion
     }
 }

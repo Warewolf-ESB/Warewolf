@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -114,9 +113,6 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ResourceID = dataObject.ResourceID;
             var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
             bool addExceptionToErrorList = true;
@@ -164,7 +160,7 @@ namespace Dev2.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, "", "="));
                     }
                 }
-                if(toUpsert.IsDebug)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);

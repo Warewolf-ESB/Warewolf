@@ -14,7 +14,6 @@ using System.Diagnostics;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Data.Storage;
 
 namespace Dev2.Data
 {
@@ -38,22 +37,18 @@ namespace Dev2.Data
 
 
                 Dev2Logger.Log.Info(String.Format(@"
-    DataList Memory Reserved(mb): {0}
-    DataList Memory Usage(mb): {1}
-    Process Memory Usage(mb): {2}
-    Number of Requests: {3} 
-    Time Taken(Ms): {4}   
-    Uptime: {5}",
-                                                  BinaryDataListStorageLayer.GetCapacityMemoryInMb().ToString("####.####"),
-                                                  BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####"),
-                                                  GC.GetTotalMemory(false) / 10000000,
-                                                  ServerStats.TotalRequests,
-                                                  ServerStats.TotalTime,
-                                                  DateTime.Now - Process.GetCurrentProcess().StartTime));
+    Process Memory Usage(mb): {0}
+    Number of Requests: {1} 
+    Time Taken(Ms): {2}   
+    Uptime: {3}",
+                    GC.GetTotalMemory(false) / 10000000,
+                    ServerStats.TotalRequests,
+                    ServerStats.TotalTime,
+                    DateTime.Now - Process.GetCurrentProcess().StartTime));
             }
-// ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
             catch
-// ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
             {
                 // cant have any errors here
             }

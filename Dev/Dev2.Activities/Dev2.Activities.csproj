@@ -197,17 +197,13 @@
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
-    <Compile Include="Activities\Debug\DebugTOParams.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
-    <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
-    <Compile Include="Activities\Debug\DebugOutputParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
-    <Compile Include="Activities\Debug\DebugUtil.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />
@@ -354,7 +350,6 @@
     <Compile Include="TO\XPathDTO.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Utilities\ActivityHelper.cs" />
-    <Compile Include="Utilities\ActivityInputOutputUtils.cs" />
     <Compile Include="Utilities\FindRecordsDisplayUtil.cs" />
     <Compile Include="Utilities\IWorkflowHelper.cs" />
     <Compile Include="Utilities\WorkflowHelper.cs" />
