@@ -6,7 +6,7 @@ Feature: UpdateItemInList
 
 Background: Setup for sharepoint scenerio
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And all items are deleted from the list
 	And I map the list input fields as
 	| Variable                      | Field Name         |
@@ -39,7 +39,7 @@ Background: Setup for sharepoint scenerio
 
 Scenario: Update all items in list with static data
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable                             |
 	| Name       | Updated From Warewolf                |
@@ -58,7 +58,7 @@ Scenario: Update all items in list with static data
 	
 Scenario: Update all items in list with static data and filter
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable                             |
 	| Name       | Updated From Warewolf                |
@@ -81,7 +81,7 @@ Scenario: Update all items in list with static data and filter
 
 Scenario: Update all items in list with static data and filter contains
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable                             |
 	| Name       | Updated From Warewolf                |
@@ -104,7 +104,7 @@ Scenario: Update all items in list with static data and filter contains
 	
 Scenario: Update all items in list with static data and filter contains returns multiple items
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable                             |
 	| Name       | Updated From Warewolf                |
@@ -127,7 +127,7 @@ Scenario: Update all items in list with static data and filter contains returns 
 	
 Scenario: Update all items in list with static data and filter has variable
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable                             |
 	| Name       | Updated From Warewolf                |
@@ -151,7 +151,7 @@ Scenario: Update all items in list with static data and filter has variable
 	
 Scenario: Update all items in list with scalar data and filter has variable
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable        |
 	| Name       | [[updateName]]  |
@@ -177,7 +177,7 @@ Scenario: Update all items in list with scalar data and filter has variable
 	
 Scenario: Update all items in list with recordset data
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Update" list
 	And I map the list update fields as
 	| Field Name | Variable        |
 	| Name       | [[rec(*).name]]  |

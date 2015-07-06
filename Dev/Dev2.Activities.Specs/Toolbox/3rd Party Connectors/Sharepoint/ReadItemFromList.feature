@@ -6,7 +6,7 @@
 
 Background: Setup for sharepoint scenerio
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And all items are deleted from the list
 	And I map the list input fields as
 	| Variable                      | Field Name         |
@@ -39,7 +39,7 @@ Background: Setup for sharepoint scenerio
 
 Scenario: Read Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | ID         |
@@ -67,7 +67,7 @@ Scenario: Read Item from list with no criteria
 
 Scenario: Read Item from Sharepoint list with Equal criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -95,7 +95,7 @@ Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 
 Scenario: Read Item from Sharepoint list with Greater Than criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -123,7 +123,7 @@ Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 
 Scenario: Read Item from list with Greater Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -157,7 +157,7 @@ Scenario: Read Item from list with Greater Than Equal criteria
 
 Scenario: Read Item from Sharepoint list with Less Than criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField         |
@@ -185,7 +185,7 @@ Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 
 Scenario: Read Item from list with Less Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField         |
@@ -219,7 +219,7 @@ Scenario: Read Item from list with Less Than Equal criteria
 
 Scenario: Read Item from Sharepoint list with Not Equal criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField         |
@@ -247,7 +247,7 @@ Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 
 Scenario: Read Item from list with Contains criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField         |
@@ -281,7 +281,7 @@ Scenario: Read Item from list with Contains criteria
 
 Scenario: Read Item from list with Begins With criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -315,7 +315,7 @@ Scenario: Read Item from list with Begins With criteria
 
 Scenario: Read Item from list with Multiple criteria return multiple results
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -351,7 +351,7 @@ Scenario: Read Item from list with Multiple criteria return multiple results
 
 Scenario: Read Item from list with Multiple criteria return single results
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField   |
@@ -381,7 +381,7 @@ Scenario: Read Item from list with Multiple criteria return single results
 
 Scenario: Read Item from list with Multiple criteria do not match all criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
+	And I select "AcceptanceTesting_Read" list
 	And I map the list fields as
 		| Variable         | Field Name |
 		| [[list().id]]    | IntField         |
