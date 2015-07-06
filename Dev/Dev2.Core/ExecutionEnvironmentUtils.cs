@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Util;
+using Newtonsoft.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -208,6 +210,15 @@ namespace Dev2
         {
 
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
+            if(toLoad.IsJSON())
+            {
+                XNode node = JsonConvert.DeserializeXNode(toLoad, "Root");
+                if(node == null)
+                {
+                    return;
+                }
+                toLoad = node.ToString();
+            }
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
