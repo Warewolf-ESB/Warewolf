@@ -1,0 +1,416 @@
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.csprojResolveAssemblyReference.cache
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe.config
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Owin.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Caliburn.Micro.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Weave.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Windows.Threading.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Ionic.Zip.Reduced.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Renci.SshNet.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\XPath20Api.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Vestris.ResourceLib.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\MySql.Data.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Common.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Cors.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Windows.Interactivity.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CubicOrange.Windows.Forms.ActiveDirectory.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.v12.1.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Interfaces.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Text.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\DropNet.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\RestSharp.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Jurassic.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronPython.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.Libraries.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Dynamic.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.Metadata.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.xml
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.exe
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.Wpf.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.DockManager.v12.1.dll
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.pdb
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\makecert.exe
+E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\CreateCertificate.bat
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe.config
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Security.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Owin.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Caliburn.Micro.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Weave.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Windows.Threading.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Windows.Interactivity.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.Wpf.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.DockManager.v12.1.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Common.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.v12.1.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Ionic.Zip.Reduced.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CubicOrange.Windows.Forms.ActiveDirectory.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Vestris.ResourceLib.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Renci.SshNet.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\XPath20Api.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\MySql.Data.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Cors.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\DropNet.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Interfaces.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Text.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\RestSharp.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Jurassic.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronPython.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.Libraries.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Dynamic.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.Metadata.dll
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Security.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.pdb
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.xml
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.csprojResolveAssemblyReference.cache
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.exe
+E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\makecert.exe
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\CreateCertificate.bat
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe.config
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Security.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Owin.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Caliburn.Micro.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Weave.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Windows.Threading.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Windows.Interactivity.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CefSharp.Wpf.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.DockManager.v12.1.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Common.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.v12.1.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.Old.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.Old.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.New.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Ionic.Zip.Reduced.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\CubicOrange.Windows.Forms.ActiveDirectory.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Vestris.ResourceLib.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Sharepoint.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Renci.SshNet.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\XPath20Api.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\DropNet.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.SharePoint.Client.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Interfaces.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ServiceStack.Text.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\RestSharp.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Jurassic.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronPython.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\IronRuby.Libraries.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Dynamic.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Scripting.Metadata.dll
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.Interfaces.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Infrastructure.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Network.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.WebServer.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Studio.Core.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Security.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Newtonsoft.Json.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskScheduler.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Win32.TaskSchedulerEditor.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Configuration.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Common.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Linq.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Interfaces.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Diagnostics.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\log4net.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Reactive.Core.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Data.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Core.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.Services.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Net.Http.Formatting.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Runtime.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Storage.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Hosting.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.Owin.Cors.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\System.Web.Http.Owin.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Activities.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.Old.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.SignalR.Wrappers.New.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Util.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\GroupControls.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\TimeSpan2.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\AeroWizard.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.CustomControls.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ChinhDo.Transactions.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.Sharepoint.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfLanguageParser.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\WarewolfParserInterop.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FSharp.Core.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Sql.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Warewolf.ResourceManagement.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Scheduler.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Services.Execution.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Instrumentation.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Development.Languages.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\FsLexYacc.Runtime.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.TaskScheduler.Wrappers.pdb
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Trackerbird.Tracker.xml
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.csprojResolveAssemblyReference.cache
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.exe
+D:\Git Repositories\Warewolf-ESB\Dev\ConsoleApplicationToTestNetwork\obj\Debug\ConsoleApplicationToTestNetwork.pdb

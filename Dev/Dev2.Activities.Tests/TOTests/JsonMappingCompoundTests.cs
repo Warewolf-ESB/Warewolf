@@ -310,7 +310,7 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[rec(1).b]]", "500");
             dataObject.Environment.Assign("[[rec(2).a]]", "60");
             dataObject.Environment.Assign("[[rec(2).b]]", "600");
-            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0,@"{""myName"":{""a"":10,""b"":20}}", dataObject);
+            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, @"{""myName"":{""a"":10,""b"":20}}", dataObject);
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -349,19 +349,24 @@ namespace Dev2.Tests.Activities.TOTests
             compound: new JsonMappingTo
                 {
                     SourceName = expression,
-                    DestinationName = "myName"
+                    DestinationName = name
                 }
             );
             var a = jsonMappingCompound.ComplexEvaluatedResultIndexed(index);
-            if(a is JProperty)
+            if (a is JProperty)
             {
                 var jp = new JObject { a };
                 Assert.AreEqual(expected, jp
-                .ToString(Formatting.None));  
-            }
-            //------------Execute Test---------------------------
-            else Assert.AreEqual(expected, new JObject(new JProperty(name, jsonMappingCompound.ComplexEvaluatedResultIndexed(index)))
                 .ToString(Formatting.None));
+            }
+            else
+            {
+                var jp = new JProperty(name, jsonMappingCompound.ComplexEvaluatedResultIndexed(index));
+                var j = new JObject(jp);
+                var s = j.ToString(Formatting.None);
+                Assert.AreEqual(expected,
+                s);
+            }
 
         }
 

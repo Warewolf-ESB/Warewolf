@@ -20,19 +20,19 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.SignalR.Wrappers;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface IEnvironmentConnection
+    public interface IEnvironmentConnection:IDisposable
     {
         // PBI 6690 - 2013.07.04 - TWR : added
         IEventPublisher ServerEvents { get; }
 
-        Guid ServerID { get; }
+        Guid ServerID { get; set; }
         Guid WorkspaceID { get; }
 
         Uri AppServerUri { get; }
@@ -42,19 +42,19 @@ namespace Dev2.Studio.Core.Interfaces
         string Password { get; }
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         event EventHandler PermissionsChanged;
-        bool IsAuthorized { get; }
+        bool IsAuthorized { get; set; }
 
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
 
-        IHubProxy EsbProxy { get; }
+        IHubProxyWrapper EsbProxy { get; }
 
         bool IsConnected { get; }
         string Alias { get; set; }
         string DisplayName { get; set; }
 
-        void Connect(Guid Id);
+        void Connect(Guid id);
         void Disconnect();
-
+        Guid ID { get; }
         // BUG 9634 - 2013.07.17 - TWR : added
         void Verify(Action<ConnectResult> callback, bool wait = true);
 
@@ -68,6 +68,6 @@ namespace Dev2.Studio.Core.Interfaces
         IPrincipal Principal { get; }
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
-        HubConnection HubConnection { get; }
+        IHubConnectionWrapper HubConnection { get; }
     }
 }

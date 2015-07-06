@@ -107,9 +107,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -132,7 +132,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -256,8 +256,12 @@
     <Compile Include="NavigationViewModelTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\ServerProxyChunkedTests.Specs.cs" />
+    <Compile Include="Network\ServerProxyChunkedTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
+    <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
+    <Compile Include="Network\ServerProxyWithFallbackTests.UnitTests.cs" />
     <Compile Include="PopupControllerTests.cs" />
     <Compile Include="Repositories\StudioResourceRepositoryTests.cs" />
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
@@ -459,6 +463,14 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj">
+      <Project>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</Project>
+      <Name>Dev2.SignalR.Wrappers.New</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
