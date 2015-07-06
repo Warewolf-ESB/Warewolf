@@ -377,8 +377,14 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             if (baseStr.Contains("?"))
             {
-                NameValueCollection args = HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")));
-                var url = baseStr.Substring(0, baseStr.IndexOf("?") + 1);
+                var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
+                var query = baseStr.Substring(startQueryString+1);
+                if(query.IsJSON())
+                {
+                    return baseStr;
+                }
+                NameValueCollection args = HttpUtility.ParseQueryString(query);
+                var url = baseStr.Substring(0, startQueryString + 1);
                 List<string> results = new List<string>();
                 foreach (var arg in args.AllKeys)
                 {
