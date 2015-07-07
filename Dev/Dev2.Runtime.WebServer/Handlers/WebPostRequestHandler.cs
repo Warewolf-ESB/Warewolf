@@ -50,7 +50,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
-            requestTO.Variables.Add(ctx.Request.BoundVariables);
+           // requestTO.Variables.Add(ctx.Request.BoundVariables);
             var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
 
