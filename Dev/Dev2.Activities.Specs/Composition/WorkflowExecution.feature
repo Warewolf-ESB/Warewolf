@@ -4174,3 +4174,14 @@ Scenario: ForEach using * in CSV executed as a sub execution should maintain dat
 	  And the 'Test For Each Shared Memory' in Workflow 'Spec - Test For Each Shared Memory' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+Scenario: Sharepoint Acceptance Tests
+	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
+	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Sharepoint Acceptance Tests Outer" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Sharepoint Connectors Testing' in Workflow 'Sharepoint Acceptance Tests Outer' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
