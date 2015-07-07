@@ -388,11 +388,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 List<string> results = new List<string>();
                 foreach (var arg in args.AllKeys)
                 {
-
-                    if (args[arg].IsXml())
+                    var txt = args[arg];
+                    if(txt.IsXml())
                     {
-                        var txt = args[arg];
-                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt))));
+                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
+                    }
+                    else
+                    {
+                        results.Add(string.Format("{0}={1}", arg, txt));
                     }
                 }
 
