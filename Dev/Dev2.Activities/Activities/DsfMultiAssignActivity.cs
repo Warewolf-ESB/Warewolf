@@ -203,8 +203,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+              //      DispatchDebugState(dataObject, StateType.Before);
+                 //   DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }

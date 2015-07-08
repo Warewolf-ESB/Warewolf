@@ -63,7 +63,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="debugState">The state to be written.</param>
         public void Write(IDebugState debugState)
         {
-            SendDebugState(debugState as DebugState);
+           // SendDebugState(debugState as DebugState);
         }
 
         #endregion

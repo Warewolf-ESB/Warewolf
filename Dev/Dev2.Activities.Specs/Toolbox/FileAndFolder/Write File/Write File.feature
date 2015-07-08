@@ -21,17 +21,17 @@ Scenario Outline: Write file at location
 		| <resultVar> = <result> |
 		Examples: 
 		| Name                     | source   | sourceLocation                                                  | method        | content        | username          | password | resultVar              | result  | errorOccured |
-		| Local with Overwrite     | [[path]] | c:\filetowrite0.txt                                             | Overwrite     | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
+		| Local with Overwrite     | [[path]] |  c:\Temp\filetowrite0.txt                                             | Overwrite     | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| UNC with Overwrite       | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite0.txt | Overwrite     | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTP with Overwrite       | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite0.txt          | Overwrite     | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTPS with Overwrite      | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite0.txt          | Overwrite     | warewolf rules | integrationtester | I73573r0 | [[result]]             | Success | NO           |
 		| SFTP with Overwrite      | [[path]] | sftp://localhost/filetowrite0.txt                               | Overwrite     | warewolf rules | dev2              | Q/ulw&]  | [[result]]             | Success | NO           |
-		| Local with Append Top    | [[path]] | c:\filetowrite1.txt                                             | Append Top    | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
+		| Local with Append Top    | [[path]] |  c:\Temp\filetowrite1.txt                                             | Append Top    | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| UNC with Append Top      | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite1.txt | Append Top    | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTP with Append Top      | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite1.txt          | Append Top    | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTPS with Append Top     | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite1.txt          | Append Top    | warewolf rules | integrationtester | I73573r0 | [[result]]             | Success | NO           |
 		| SFTP with Append Top     | [[path]] | sftp://localhost/filetowrite1.txt                               | Append Top    | warewolf rules | dev2              | Q/ulw&]  | [[result]]             | Success | NO           |
-		| Local with Append Bottom | [[path]] | c:\filetowrite2.txt                                             | Append Bottom | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
+		| Local with Append Bottom | [[path]] | c:\Temp\filetowrite2.txt                                             | Append Bottom | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| UNC with Append Bottom   | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite2.txt | Append Bottom | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTP with Append Bottom   | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | ""                | ""       | [[result]]             | Success | NO           |
 		| FTPS with Append Bottom  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | integrationtester | I73573r0 | [[result]]             | Success | NO           |
@@ -52,7 +52,7 @@ Scenario Outline: Write file at location
 
 
 Scenario: Write file with carriage returns
-	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
+	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
 	And source credentials as '' and ''	
 	And Method is 'Overwrite'
 	And the input contents from a file 'infile1WithCarriageReturn.txt'     
@@ -62,7 +62,7 @@ Scenario: Write file with carriage returns
 	And the execution has "NO" error
 
 Scenario: Write file when contents has variables that cannot be evealuated
-	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
+	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
 	And source credentials as '' and ''	
 	And Method is 'Overwrite'
 	And the input contents from a file 'filewithvariables.txt'     
