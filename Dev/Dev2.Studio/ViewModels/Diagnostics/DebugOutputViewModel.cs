@@ -23,6 +23,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Messages;
@@ -57,7 +58,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly IDebugOutputFilterStrategy _debugOutputFilterStrategy;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
-
+        readonly IPopupController _popup;
         readonly object _syncContext = new object();
 
         int _depthMin;
@@ -109,6 +110,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
 
             SessionID = Guid.NewGuid();
+            _popup = CustomContainer.Get<IPopupController>();
         }
 
         #endregion
@@ -532,7 +534,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 catch(Exception ex)
                 {
                     Dev2Logger.Log.Error(ex);
-                    throw;
+                    if (ex.Message.Contains("The remote name could not be resolved"))
+                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please insure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "");
+                    else
+                        throw;
                 }
             }
         }
