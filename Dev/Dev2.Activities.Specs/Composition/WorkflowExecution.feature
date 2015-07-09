@@ -319,7 +319,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | [[a]]    | Index | 4     |         | Left      |
 	  | [[b]]    | Index | 8     |         | Left      |
 	  And "WorkflowWithAssignDataMergeAndDataSplittools" contains Data Split "Data Split" as
-	  | String                  | Variable     | Type  | At | Include    | Escape |
+	  | String                  | Variable    | Type  | At | Include    | Escape |
 	  | [[result]][[split().a]] | [[rec().b]] | Index | 4  | Unselected |        |
 	  |                         | [[rec().b]] | Index | 8  | Unselected |        |
 	  When "WorkflowWithAssignDataMergeAndDataSplittools" is executed
@@ -342,9 +342,9 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |                           |
 	  | [[result]] = TestWarewolf |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
-	  | String to Split            | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | String to Split                                | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
 	  | [[result]][[split().a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
-	  |                            |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
+	  |                                                |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).b]] = Test     |
@@ -384,7 +384,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | # |                      |
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
+	  | String to Split     | Process Direction | Skip blank rows | # |                | With  | Using     | Include | Escape |
 	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[b]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
@@ -849,8 +849,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 3 | [[rs(1).a]] = rec(1).a |
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
-	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | # |                     | With  | Using | Pad | Align |
+	  | 1 | [[b]] = warewolf    | Index | "8"   | ""  | Left  |
 	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
@@ -1055,7 +1055,7 @@ Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset var
 	  | [[rec().a]] | new().a    |
 	  | [[new().a]] | dd/mm/yyyy |	 	  
 	  And "WorkflowWithAssignandDateTimetool" contains Date and Time "AddDate" as
-      | Input     | Input Format    | Add Time | Output Format | Result  |
+      | Input     | Input Format     | Add Time | Output Format | Result  |
       | [[[[a]]]] | [[[[rec(1).a]]]] | 1        | dd/mm/yyyy    | [[res]] |
 	  When "WorkflowWithAssignandDateTimetool" is executed
 	  Then the workflow execution has "NO" error
@@ -1104,7 +1104,7 @@ Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset vari
 	   | 3 | [[rec(1).a]] = new().a    |
 	   | 4 | [[new(1).a]] = 01/02/2014 |
 	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
-	   | Input 1                       | Input 2                | Input Format | Output In |
+	   | Input 1                   | Input 2            | Input Format | Output In |
 	   | [[new(1).a]] = 01/02/2014 | [[b]] = 01/02/2016 | dd/mm/yyyy   | Years     |
 	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
 	   |                |
@@ -1422,7 +1422,7 @@ Scenario: Workflow with Assign and ForEach
      And "WFWithAssignForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"
 	 And "ForEachTest" contains workflow "11714Nested" with mapping as
 	 | Input to Service | From Variable | Output from Service | To Variable |
-	 | a                | [[Warewolf]]      |                     |             |
+	 | a                | [[Warewolf]]  |                     |             |
 	 When "WFWithAssignForEach" is executed
 	 Then the workflow execution has "NO" error
 	 And the 'ForEachTest' in WorkFlow 'WFWithAssignForEach' debug inputs as 
@@ -2664,14 +2664,14 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | # |                 |
 	  | 1 | [[res]] =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-	  | # |                      | With  | Using | Pad | Align |
-	  | 1 | [[Value]]Test =  | Index | "4"   | ""  | Left  |
+	  | # |                 | With  | Using | Pad | Align |
+	  | 1 | [[Value]]Test = | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
 	  |              |
 	  | [[result]] = |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-	  | String to Split         | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	  | [[Value12]]Test =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  | String to Split   | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | [[Value12]]Test = | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
 	  | # |                |
 
@@ -4178,10 +4178,25 @@ Scenario: ForEach using * in CSV executed as a sub execution should maintain dat
 Scenario: Sharepoint Acceptance Tests
 	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
 	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable |
+	| Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  When "Sharepoint Acceptance Tests Outer" is executed
-	  Then the workflow execution has "NO" error	  
+	Then the workflow execution has "NO" error
 	  And the 'Sharepoint Connectors Testing' in Workflow 'Sharepoint Acceptance Tests Outer' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+
+Scenario: workflow without StackOverflow exception check
+         Given I have a workflow "Testing - LoopTest"
+         And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "Testing - LoopTest" is executed
+         Then the workflow execution has "NO" error      
+
+Scenario: Executing WF on a remote server 
+         Given I have a workflow "TestRemoteTools"
+         And "Testing - LoopTest" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "TestRemoteTools" is executed
+         Then the workflow execution has "NO" error     

@@ -14,7 +14,7 @@ Scenario: Generate Letters
 	| Random  | Length |
 	| Letters | 10     |
 	And the debug output as 
-	|                      |
+	|                     |
 	| [[result]] = String |
 
 Scenario: Generate Letters and Numbers
@@ -265,8 +265,8 @@ Scenario: Generate a Number between double min and double max
 	And the random value will be between "-0.000000000000005" and "170000000000000" inclusive 
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Random  | From | To |
-	| Numbers | -0.000000000000005    | 170000000000000  |
+	| Random  | From               | To              |
+	| Numbers | -0.000000000000005 | 170000000000000 |
 	And the debug output as 
 	|                     |
 	| [[result]] = Double |
@@ -295,8 +295,8 @@ Scenario: Generate a Number between double min and double max with no decimals
 	And the random value will be between "0" and "170000000000000" inclusive 
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Random  | From | To |
-	| Numbers | 0    | 170000000000000  |
+	| Random  | From | To              |
+	| Numbers | 0    | 170000000000000 |
 	And the debug output as 
 	|                     |
 	| [[result]] = Double |

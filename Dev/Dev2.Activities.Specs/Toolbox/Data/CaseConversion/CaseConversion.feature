@@ -334,7 +334,11 @@ Examples:
 
 
 
-
+	Scenario: Convert a Variable That Does Not Exist
+	Given I have a case convert variable "[[var]]" with a value of "[[a]]"
+	When the case conversion tool is executed
+	Then the execution has "AN" error
+	And the execution has "Variable { var } is NULL." error
 
 
 

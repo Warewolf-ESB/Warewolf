@@ -108,3 +108,36 @@ Scenario: Replace when negative recordset index is input
 	And I want to replace them with "YYYY"
 	When the replace tool is executed
 	Then the execution has "AN" error
+
+Scenario: Replace when undifined recordset index is input
+	Given I have a sentence "[[L]]"
+	And I want to find the characters "XXXX"
+	And I want to replace them with "Parker"
+	When the replace tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as 
+	| In Field(s) | Find | Replace With | Error                                                 |
+	| [[L]]       | XXXX | Parker       | The given variable is not represent in the dictionary |
+
+Scenario Outline: Replace when the recordset is numeric
+	Given I have a replace variable "<var>" equal to "<value>"
+	And I have a sentence "<var>"
+	And I want to find the characters "<characters>"
+	And I want to replace them with "<replacement>"
+	When the replace tool is executed
+	Then the replace result should be "<count>"
+	And "<var>" should be "<result>"
+	And the execution has "NO" error
+Examples: 
+| No | var           | value    | characters                                            | replacement                                           | count | result                 |
+| 1  | [[a]]         | 54575    | 5                                                     | 2                                                     | 3     | 24272                  |
+| 2  | [[b]]         |          | [[c]] =""                                             | [[d]] =""                                             | 0     |                        |
+| 3  | [[rs(1).set]] | Warewolf | rs(2).set="w"                                         | [[rs(3).set]]="m"                                     | 2     | rs(1).set = "maremolf" |
+| 4  | [[c]]         | hello    | [[rec().set]]="h"                                     | [[rs().set]]="h"                                      | 1     | Hello                  |
+| 5  | [[rs(1).set]] | Warewolf | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | rs().set="h"                                          | 1     | Wahewolf               |
+| 6  | [[rs(1).set]] | Warewolf | [[rs(2).set]] = "w"                                   | [[rs([[a]]).set]] {[[a]]= 3} = "m"                    | 2     | maremolf               |
+| 7  | [[rs(1).set]] | Warewolf | rs().set="h"                                          | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | 1     | Wahewolf               |
+
+
+
+
