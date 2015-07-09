@@ -346,7 +346,7 @@ Scenario: Merge a variable inside the invalid varaible
 	| [[result]] = |
 
 #----------------->
-Scenario: Merge a scalar to a scalar using merge type none
+Scenario: Merge a scalar to a scalar using merge type none 2
 	Given a merge variable "[[a]]" equal to "Warewolf " 
 	And a merge variable "[[b]]" equal to "Rocks"		
 	And a merge variable "[[c]]" equal to "10"		
@@ -378,7 +378,7 @@ Examples:
 	| 4  | New Line |
 	| 5  | Tab      | 
 
-Scenario: Merge a recordset table and free text using Tab
+Scenario: Merge a recordset table and free text using Tab 2
 	Given a merge recordset
 	| rs     | val |
 	| rs().r | 10  |

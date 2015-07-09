@@ -285,6 +285,10 @@
 /Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.ResourceManagement/bin
 /Dev/Warewolf.ResourceManagement/obj
+/Dev/Warewol.Studio.Themes.Luna/bin
+/Dev/Warewol.Studio.Themes.Luna/obj
+/Dev/Warewolf.Studio.ServerProxyLayer/bin
+/Dev/Warewolf.Studio.ServerProxyLayer/obj
 
 
 ####################################################################################
