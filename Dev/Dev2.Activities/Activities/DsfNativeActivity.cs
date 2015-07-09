@@ -78,8 +78,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsEndedOnError { get; set; }
 
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
-        protected List<DebugItem> _debugInputs = new List<DebugItem>();
-        protected List<DebugItem> _debugOutputs = new List<DebugItem>();
+        protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
+        protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
 
         internal readonly IDebugDispatcher _debugDispatcher;

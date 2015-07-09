@@ -231,6 +231,7 @@ namespace Dev2.Runtime.ESB.Control
                     if(resource.DataList != null)
                     {
                         ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
+                        
                     }
                 }
                 dataObject.RawPayload = new StringBuilder();

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -149,7 +150,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 // Build EsbExecutionRequest - Internal Services Require This ;)
                 EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
-
+                foreach(string key in webRequest.Variables)
+                {
+                    esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
+                }
                 Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
                 if(canExecute)
@@ -263,7 +267,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
                 dataObject.Environment = null;
-                // else handle the format requested ;)
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
         }
@@ -298,7 +301,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
         }
 
-        protected static string GetPostData(ICommunicationContext ctx, string postDataListId)
+        protected static string GetPostData(ICommunicationContext ctx)
         {
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
             baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
@@ -308,14 +311,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if(startIdx > 0)
                 {
                     var payload = baseStr.Substring((startIdx + 1));
-                    if(payload.IsXml())
+                    if(payload.IsXml() || payload.IsJSON())
                     {
                         return payload;
                     }
                 }
             }
 
-            // Not an XML payload - Handle it as a GET or POST request ;)
             if(ctx.Request.Method == "GET")
             {
                 var pairs = ctx.Request.QueryString;
@@ -329,18 +331,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                     try
                     {
                         string data = reader.ReadToEnd();
-                        if(DataListUtil.IsXml(data))
+                        if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
                         {
                             return data;
                         }
 
-                        // very simple JSON check!!!
-                        if(DataListUtil.IsJson(data))
-                        {
-                            throw new Exception("Unsupported Request : POST Request with JSON stream");
-                        }
+                        
 
-                        // Process POST key value pairs ;)
                         NameValueCollection pairs = new NameValueCollection(5);
                         var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                         foreach(var keyValuePair in keyValuePairs)
@@ -352,22 +349,18 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                             else if(keyValue.Length == 1)
                             {
-                                //We have DataWithout an Equals
-                                if(keyValue[0].IsXml())
+                                if(keyValue[0].IsXml() || keyValue[0].IsJSON())
                                 {
                                     pairs.Add(keyValue[0], keyValue[0]);
                                 }
                             }
                         }
 
-                        // so some silly chicken sent an empty body on POST with GET style query string parameters
-                        // this silly chicken really needs to understand how the flipping request structure should work.
                         if(pairs.Count == 0)
                         {
                             pairs = ctx.Request.QueryString;
                         }
 
-                        // we need to process it as key value pairs ;)
                         return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
                     }
                     catch(Exception ex)
@@ -384,16 +377,25 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             if (baseStr.Contains("?"))
             {
-                NameValueCollection args = HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")));
-                var url = baseStr.Substring(0, baseStr.IndexOf("?") + 1);
+                var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
+                var query = baseStr.Substring(startQueryString+1);
+                if(query.IsJSON())
+                {
+                    return baseStr;
+                }
+                NameValueCollection args = HttpUtility.ParseQueryString(query);
+                var url = baseStr.Substring(0, startQueryString + 1);
                 List<string> results = new List<string>();
                 foreach (var arg in args.AllKeys)
                 {
-
-                    if (args[arg].IsXml())
+                    var txt = args[arg];
+                    if(txt.IsXml())
                     {
-                        var txt = args[arg];
-                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt))));
+                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
+                    }
+                    else
+                    {
+                        results.Add(string.Format("{0}={1}", arg, txt));
                     }
                 }
 
@@ -411,7 +413,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     continue;
                 }
-                if(key.IsXml())
+                if(key.IsXml() || key.IsJSON())
                 {
                     return key; //We have a workspace id and XML DataList
                 }

@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.SignalR.Wrappers.Old;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 
@@ -277,6 +278,20 @@ namespace Dev2.Runtime.ServiceModel
 
                         return "Success";
                     }
+                        catch(Exception)
+                        {
+                            // Credentials = client.Credentials 
+                            var hub2 = new HubConnectionWrapperOld(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
+                            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+#pragma warning disable 168
+                            var proxy = hub2.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+#pragma warning restore 168
+                            hub2.Start().Wait();
+
+                            Dev2Logger.Log.Debug("Hub State : " + hub2.State);
+
+                            return "Success";
+                        }
                     finally
                     {
                         if(hub != null)
