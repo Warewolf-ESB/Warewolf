@@ -20,6 +20,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -202,8 +203,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-              //      DispatchDebugState(dataObject, StateType.Before);
-                 //   DispatchDebugState(dataObject, StateType.After);
+                   DispatchDebugState(dataObject, StateType.Before);
+                   DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
