@@ -397,6 +397,7 @@ namespace Dev2.Activities
                 psi.RedirectStandardInput = true;
                 psi.RedirectStandardOutput = true;
                 psi.CreateNoWindow = true;
+                psi.Verb = "runas";
             }
 
             return psi;
