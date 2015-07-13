@@ -38,7 +38,6 @@ namespace Dev2.DynamicServices
         #region Class Members
 
         private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
-        private ErrorResultTO _errors;
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
         private readonly Stack<IExecutionEnvironment> _environments; 
@@ -170,7 +169,7 @@ namespace Dev2.DynamicServices
                     xmldata = "NULL";
                 }
 
-                Errors.AddError("Failed to parse XML INPUT [ " + xmldata + " ]");
+               Environment.Errors.Add("Failed to parse XML INPUT [ " + xmldata + " ]");
             }
 
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
@@ -251,11 +250,11 @@ namespace Dev2.DynamicServices
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
 
-        public ErrorResultTO Errors
-        {
-            get { return _errors ?? (_errors = new ErrorResultTO()); }
-            set { _errors = value; }
-        }
+        //public ErrorResultTO Errors
+        //{
+        //    get { return _errors ?? (_errors = new ErrorResultTO()); }
+        //    set { _errors = value; }
+        //}
 
         public int NumberOfSteps { get; set; }
         public IPrincipal ExecutingUser { get; set; }
@@ -339,7 +338,7 @@ namespace Dev2.DynamicServices
             result.DatalistInMergeID = DatalistInMergeID;
             result.DatalistInMergeType = DatalistInMergeType;
             result.EnvironmentID = EnvironmentID;
-            result.Errors = Errors;
+       
             result.ExecutionCallbackID = ExecutionCallbackID;
             result.ExecutionOrigin = ExecutionOrigin;
             result.ExecutionOriginDescription = ExecutionOriginDescription;

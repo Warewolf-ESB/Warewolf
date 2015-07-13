@@ -138,26 +138,26 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | [[Name]] = Azerbaijan |
 
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignWithRemote"
-	 And "TestAssignWithRemote" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignWithRemoteNoError1"
+	 And "TestAssignWithRemoteNoError1" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignWithRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignWithRemoteNoError1" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
-	| input            | [[inputData]] | output              | [[output]]       |
-	|                  |               | values(*).upper     | [[values().up]]  |
-	|                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignWithRemote" is executed
+	| inputData            | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).up     | [[values().up]]  |
+	|                  |               | values(*).low     | [[values().low]] |
+	  When "TestAssignWithRemoteNoError1" is executed
 	  Then the workflow execution has "NO" error
-	   And the 'AssignData' in WorkFlow 'TestAssignWithRemote' debug inputs as
+	   And the 'AssignData' in WorkFlow 'TestAssignWithRemoteNoError1' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignWithRemote' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemoteNoError1' debug inputs as
 	  |                       |
-	  | [[input]] = hello |
+	  | [[inputData]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -167,9 +167,9 @@ Scenario: Workflow with an assign and remote workflow
 	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                             |
 	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).upper]] = HELLO |
-	  | 3 | [[values(1).lower]] = hello |	  	 
-	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemote' debug outputs as
+	  | 2 | [[values(1).up]] = HELLO |
+	  | 3 | [[values(1).low]] = hello |	  	 
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as
 	  |                           |
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
@@ -3835,24 +3835,24 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemote123"
-	  And "TestAssignWithRemote123" contains an Assign "AssignData" as
+	  Given I have a workflow "TestAssignWithRemote12345"
+	  And "TestAssignWithRemote12345" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemote123" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  And "TestAssignWithRemote12345" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  | input            | [[inputData]] | output              | [[output]]       |
+	  | inputData        | [[inputData]] | output              | [[output]]       |
 	  |                  |               | values(*).upper     | [[values().&up]] |
 	  |                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignWithRemote123" is executed
-	  Then the "TestAssignWithRemote123" workflow execution has "AN" error
-	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	  When "TestAssignWithRemote12345" is executed
+	  Then the "TestAssignWithRemote12345" workflow execution has "AN" error
+	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote12345' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignWithRemote123' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemote12345' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote12345' debug inputs as
 	  |                       |
 	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as

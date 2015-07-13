@@ -512,7 +512,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 141
- testRunner.Given("I have a workflow \"TestAssignWithRemote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"TestAssignWithRemoteNoError1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -521,7 +521,7 @@ this.FeatureBackground();
                         "[[inputData]]",
                         "hello"});
 #line 142
-  testRunner.And("\"TestAssignWithRemote\" contains an Assign \"AssignData\" as", ((string)(null)), table26, "And ");
+  testRunner.And("\"TestAssignWithRemoteNoError1\" contains an Assign \"AssignData\" as", ((string)(null)), table26, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -529,25 +529,25 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table27.AddRow(new string[] {
-                        "input",
+                        "inputData",
                         "[[inputData]]",
                         "output",
                         "[[output]]"});
             table27.AddRow(new string[] {
                         "",
                         "",
-                        "values(*).upper",
+                        "values(*).up",
                         "[[values().up]]"});
             table27.AddRow(new string[] {
                         "",
                         "",
-                        "values(*).lower",
+                        "values(*).low",
                         "[[values().low]]"});
 #line 145
- testRunner.And("\"TestAssignWithRemote\" contains \"WorkflowUsedBySpecs\" from server \"Remote Connect" +
-                    "ion Integration\" with mapping as", ((string)(null)), table27, "And ");
+ testRunner.And("\"TestAssignWithRemoteNoError1\" contains \"WorkflowUsedBySpecs\" from server \"Remote" +
+                    " Connection Integration\" with mapping as", ((string)(null)), table27, "And ");
 #line 150
-   testRunner.When("\"TestAssignWithRemote\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"TestAssignWithRemoteNoError1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 151
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -560,7 +560,7 @@ this.FeatureBackground();
                         "[[inputData]] =",
                         "hello"});
 #line 152
-    testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemote\' debug inputs as", ((string)(null)), table28, "And ");
+    testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemoteNoError1\' debug inputs as", ((string)(null)), table28, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -569,14 +569,15 @@ this.FeatureBackground();
                         "1",
                         "[[inputData]] = hello"});
 #line 155
-   testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemote\' debug outputs as", ((string)(null)), table29, "And ");
+   testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemoteNoError1\' debug outputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table30.AddRow(new string[] {
-                        "[[input]] = hello"});
+                        "[[inputData]] = hello"});
 #line 158
-    testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemote\' debug inputs as", ((string)(null)), table30, "And ");
+    testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemoteNoError1\' debug inputs" +
+                    " as", ((string)(null)), table30, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -604,10 +605,10 @@ this.FeatureBackground();
                         "[[output]] = HELLO"});
             table33.AddRow(new string[] {
                         "2",
-                        "[[values(1).upper]] = HELLO"});
+                        "[[values(1).up]] = HELLO"});
             table33.AddRow(new string[] {
                         "3",
-                        "[[values(1).lower]] = hello"});
+                        "[[values(1).low]] = hello"});
 #line 167
    testRunner.And("the \'Final Assign (3)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table33, "And ");
 #line hidden
@@ -620,7 +621,8 @@ this.FeatureBackground();
             table34.AddRow(new string[] {
                         "[[values(1).low]] = hello"});
 #line 172
-   testRunner.And("the \'WorkflowUsedBySpecs\' in Workflow \'TestAssignWithRemote\' debug outputs as", ((string)(null)), table34, "And ");
+   testRunner.And("the \'WorkflowUsedBySpecs\' in Workflow \'TestAssignWithRemoteNoError1\' debug output" +
+                    "s as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9873,7 +9875,7 @@ this.FeatureBackground();
                         "#",
                         ""});
 #line 2675
-      testRunner.And("the \'Data Split\' in Workflow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
+   testRunner.And("the \'Data Split\' in Workflow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
                     "ues2\' debug outputs as", ((string)(null)), table532, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -13912,7 +13914,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 3838
-   testRunner.Given("I have a workflow \"TestAssignWithRemote123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"TestAssignWithRemote12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table785 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -13921,7 +13923,7 @@ this.FeatureBackground();
                         "[[inputData]]",
                         "hello"});
 #line 3839
-   testRunner.And("\"TestAssignWithRemote123\" contains an Assign \"AssignData\" as", ((string)(null)), table785, "And ");
+   testRunner.And("\"TestAssignWithRemote12345\" contains an Assign \"AssignData\" as", ((string)(null)), table785, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table786 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -13929,7 +13931,7 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table786.AddRow(new string[] {
-                        "input",
+                        "inputData",
                         "[[inputData]]",
                         "output",
                         "[[output]]"});
@@ -13944,12 +13946,12 @@ this.FeatureBackground();
                         "values(*).lower",
                         "[[values().low]]"});
 #line 3842
-   testRunner.And("\"TestAssignWithRemote123\" contains \"WorkflowUsedBySpecs\" from server \"Remote Conn" +
-                    "ection Integration\" with mapping as", ((string)(null)), table786, "And ");
+   testRunner.And("\"TestAssignWithRemote12345\" contains \"WorkflowUsedBySpecs\" from server \"Remote Co" +
+                    "nnection Integration\" with mapping as", ((string)(null)), table786, "And ");
 #line 3847
-   testRunner.When("\"TestAssignWithRemote123\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"TestAssignWithRemote12345\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3848
-   testRunner.Then("the \"TestAssignWithRemote123\" workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("the \"TestAssignWithRemote12345\" workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table787 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -13960,7 +13962,7 @@ this.FeatureBackground();
                         "[[inputData]] =",
                         "hello"});
 #line 3849
-   testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table787, "And ");
+   testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemote12345\' debug inputs as", ((string)(null)), table787, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table788 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -13969,14 +13971,15 @@ this.FeatureBackground();
                         "1",
                         "[[inputData]] = hello"});
 #line 3852
-   testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemote123\' debug outputs as", ((string)(null)), table788, "And ");
+   testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemote12345\' debug outputs as", ((string)(null)), table788, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table789 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table789.AddRow(new string[] {
                         "[[input]] = hello"});
 #line 3855
-    testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table789, "And ");
+    testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemote12345\' debug inputs as" +
+                    "", ((string)(null)), table789, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table790 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -15229,7 +15232,7 @@ this.FeatureBackground();
 #line 4183
    testRunner.When("\"Sharepoint Acceptance Tests Outer\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4184
-   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table829 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
@@ -15249,23 +15252,23 @@ this.FeatureBackground();
         public virtual void WorkflowWithoutStackOverflowExceptionCheck()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("workflow without StackOverflow exception check", ((string[])(null)));
-#line 4174
+#line 4190
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4175
+#line 4191
          testRunner.Given("I have a workflow \"Testing - LoopTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table827 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table830 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4176
-         testRunner.And("\"Testing - LoopTest\" contains \"LoopTest\" from server \"localhost\" with mapping as", ((string)(null)), table827, "And ");
-#line 4178
+#line 4192
+         testRunner.And("\"Testing - LoopTest\" contains \"LoopTest\" from server \"localhost\" with mapping as", ((string)(null)), table830, "And ");
+#line 4194
          testRunner.When("\"Testing - LoopTest\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4179
+#line 4195
          testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -15278,24 +15281,24 @@ this.FeatureBackground();
         public virtual void ExecutingWFOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WF on a remote server", ((string[])(null)));
-#line 4181
+#line 4197
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4182
+#line 4198
          testRunner.Given("I have a workflow \"TestRemoteTools\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table828 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table831 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4183
+#line 4199
          testRunner.And("\"Testing - LoopTest\" contains \"TestRemoteTools\" from server \"Remote Connection In" +
-                    "tegration\" with mapping as", ((string)(null)), table828, "And ");
-#line 4185
+                    "tegration\" with mapping as", ((string)(null)), table831, "And ");
+#line 4201
          testRunner.When("\"TestRemoteTools\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4186
+#line 4202
          testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

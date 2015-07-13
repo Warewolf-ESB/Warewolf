@@ -190,6 +190,7 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             OnCompleted(dataObject);
+            DoErrorHandling(dataObject);
         }
 
         void OnCompleted(IDSFDataObject dataObject)
@@ -197,6 +198,7 @@ namespace Dev2.Activities
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
             dataObject.ForEachNestingLevel--;
+            //DoErrorHandling(dataObject);
         }
 
         public override enFindMissingType GetFindMissingType()

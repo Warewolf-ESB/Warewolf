@@ -40,7 +40,7 @@ namespace Dev2
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
-        ErrorResultTO Errors { get; set; }
+      //  ErrorResultTO Errors { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }

@@ -105,7 +105,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ClientID = Guid.Parse(connectionId);
             dataObject.ExecutingUser = ExecutingUser;
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
-            if(!dataObject.Errors.HasErrors())
+            if(!dataObject.Environment.HasErrors())
             {
                 ErrorResultTO errors;
 
@@ -149,7 +149,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             ExecuteMessage msg = new ExecuteMessage { HasError = true };
-            msg.SetMessage(dataObject.Errors.MakeDisplayReady());
+            msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);

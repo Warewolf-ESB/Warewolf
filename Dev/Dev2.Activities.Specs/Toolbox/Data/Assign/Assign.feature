@@ -596,7 +596,7 @@ Scenario: Assign addition of all variables to scalar2
 	| 10 | [[rec(10).test]]  = | 10                                                                                                                                                                                       |
 	| 11 | [[Lr(1).a]]    =    | Warewolf                                                                                                                                                                                 |
 	| 12 | [[new(1).a]]      = | [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] = 12345678910Warewolf |
-	| 13 | [[var]]      =      | [[rec().test]] = 10                                                                                                                                                                      |
+	| 13 | [[var]]      =      | [[rec(1).test]] = 10                                                                                                                                                                      |
 	And the debug output as
 	| #  |                                         |
 	| 1  | [[rec(1).test]]   =  1                  |
@@ -730,7 +730,7 @@ Scenario: Assign a Variable That Does Not Exist
 	Given I assign the value "[[var]]" to a variable "[[a]]"
 	When the assign tool is executed
 	Then the execution has "AN" error
-	And the execution has "Variable { var } is NULL." error
+	And the execution has "Scalar value { var } is NULL" error
 
 
 
