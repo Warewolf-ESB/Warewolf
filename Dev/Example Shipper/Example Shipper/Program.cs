@@ -46,26 +46,28 @@ namespace Example_Shipper
                     buildNewServerID.Append(data.Substring(restOfDefinitionStartIndex,data.Length-restOfDefinitionStartIndex));
                     data = buildNewServerID.ToString();
 
-                    // remove the signature ;)
-                    var idx = data.IndexOf("<Signature", StringComparison.Ordinal);
-                    StringBuilder buildWithoutSignature = new StringBuilder();
-                    buildWithoutSignature.Append(data.Substring(0, data.IndexOf("<Signature", StringComparison.Ordinal)));
-
-                    if (data.Contains("</Actions>"))
+                    if (data.Contains("<Signature"))
                     {
-                        buildWithoutSignature.Append("</Actions>");
-                    }
+                        // remove the signature ;)
+                        var buildWithoutSignature = new StringBuilder();
+                        buildWithoutSignature.Append(data.Substring(0, data.IndexOf("<Signature", StringComparison.Ordinal)));
 
-                    if (data.Contains("</Source>"))
-                    {
-                        buildWithoutSignature.Append("</Source>");
-                    }
-                    else if (data.Contains("</Service>"))
-                    {
-                        buildWithoutSignature.Append("</Service>");
-                    }
+                        if (data.Contains("</Actions>"))
+                        {
+                            buildWithoutSignature.Append("</Actions>");
+                        }
 
-                    data = buildWithoutSignature.ToString();
+                        if (data.Contains("</Source>"))
+                        {
+                            buildWithoutSignature.Append("</Source>");
+                        }
+                        else if (data.Contains("</Service>"))
+                        {
+                            buildWithoutSignature.Append("</Service>");
+                        }
+
+                        data = buildWithoutSignature.ToString();
+                    }
 
                     if (theFile != null)
                     {
