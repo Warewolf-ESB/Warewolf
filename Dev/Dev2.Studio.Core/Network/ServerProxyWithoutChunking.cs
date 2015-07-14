@@ -548,18 +548,18 @@ namespace Dev2.Network
 
             envelope.Content = payload.ToString();
             var result = new StringBuilder();
-            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
+            Task<string> invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
             Wait(invoke, result);
             if (invoke.IsFaulted)
             {
                 throw new Exception("Task execution in faulted state.");
             }
-            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-            Wait(fragmentInvoke, result);
-            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-            {
-                result.Append(fragmentInvoke.Result);
-            }
+//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+//            Wait(fragmentInvoke, result);
+//            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
+//            {
+//                result.Append(fragmentInvoke.Result);
+//            }
 
             // prune any result for old datalist junk ;)
             if (result.Length > 0)
