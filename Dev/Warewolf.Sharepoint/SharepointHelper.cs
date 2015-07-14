@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.SharePoint.Client;
@@ -34,6 +35,25 @@ namespace Warewolf.Sharepoint
             else
             {
                 ctx.Credentials = new NetworkCredential(UserName,Password);
+            }
+            return ctx;
+        }
+        
+        public ClientContext GetContextWithOnlineCredentials()
+        {
+            var ctx = new ClientContext(Server);
+            if(string.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))
+            {
+                ctx.Credentials = CredentialCache.DefaultNetworkCredentials;
+            }
+            else
+            {
+                var secureString = new SecureString();
+                foreach(var c in Password)
+                {
+                    secureString.AppendChar(c);
+                }
+                ctx.Credentials = new SharePointOnlineCredentials(UserName,secureString);
             }
             return ctx;
         }
@@ -137,9 +157,21 @@ namespace Warewolf.Sharepoint
                     ctx.ExecuteQuery();
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                result = "Test Failed: " + e.Message;
+                try
+                {
+                    using (var ctx = GetContextWithOnlineCredentials())
+                    {
+                        Web web = ctx.Web;
+                        ctx.Load(web);
+                        ctx.ExecuteQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = "Test Failed: " + ex.Message;
+                }
             }
 
             return result;

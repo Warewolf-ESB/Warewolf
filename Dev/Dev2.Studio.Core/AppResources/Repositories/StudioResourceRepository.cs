@@ -520,7 +520,7 @@ namespace Dev2.AppResources.Repositories
                 {
                     resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
-                else if(item.ResourceType >= ResourceType.DbSource && item.ResourceType!=ResourceType.SharepointServerSource && item.ResourceType!=ResourceType.OauthSource)
+                else if(item.ResourceType >= ResourceType.DbSource)
                 {
                     resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
