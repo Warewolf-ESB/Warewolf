@@ -516,25 +516,25 @@ namespace Dev2.AppResources.Repositories
             // ReSharper restore ImplicitlyCapturedClosure
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
-                if(item.ResourceType == ResourceType.ServerSource)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType >= ResourceType.DbSource)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType == ResourceType.WorkflowService)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
-                }
+                resourceRepository.LoadResourceFromWorkspace(item.ResourceId,GlobalConstants.ServerWorkspaceID);
+//                if(item.ResourceType == ResourceType.ServerSource)
+//                {
+//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType >= ResourceType.DbSource)
+//                {
+//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
+//                {
+//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType == ResourceType.WorkflowService)
+//                {
+//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
+//                }
             }
-            else
-            {
+           
                 lock(_syncRoot)
                 {
                     if(parent != null && !alreadyAdded )
@@ -555,7 +555,7 @@ namespace Dev2.AppResources.Repositories
 
                         }
                     }
-                }
+                
             }
         }
 
