@@ -127,19 +127,11 @@ namespace Dev2.Activities.Sharepoint
                                     try
                                     {
                                         var sharepointValue = listItem[fieldName.InternalName];
+                                        
                                         if (sharepointValue != null)
                                         {
-                                            var userValue = sharepointValue as FieldUserValue;
-                                            var fieldValue = sharepointValue as FieldLookupValue;
-                                            if (userValue != null)
-                                            {
-                                                sharepointValue = userValue.LookupValue;
-                                            }
-                                            if (fieldValue != null)
-                                            {
-                                                sharepointValue = fieldValue.LookupValue;
-                                            }
-                                            listItemValue = sharepointValue.ToString();
+                                            var sharepointVal = GetSharepointValue(sharepointValue);                                            
+                                            listItemValue = sharepointVal.ToString();
                                         }
                                     }
                                     catch (Exception e)
@@ -182,6 +174,63 @@ namespace Dev2.Activities.Sharepoint
                     DispatchDebugState(dataObject, StateType.After);
                 }
             }
+        }
+
+        object GetSharepointValue(object sharepointValue)
+        {
+            var type = sharepointValue.GetType();
+            var val = sharepointValue;
+            if(type == typeof(FieldUserValue))
+            {
+                var fieldValue = sharepointValue as FieldUserValue;
+                if(fieldValue != null)
+                {
+                    return fieldValue.LookupValue;
+                }
+            }
+            else if(type == typeof(FieldLookupValue))
+            {
+                var fieldValue = sharepointValue as FieldLookupValue;
+                if (fieldValue != null)
+                {
+                    return fieldValue.LookupValue;
+                }
+            }
+            else if (type == typeof(FieldUrlValue))
+            {
+                var fieldValue = sharepointValue as FieldUrlValue;
+                if (fieldValue != null)
+                {
+                    return fieldValue.Url;
+                }
+            }
+            else if (type == typeof(FieldGeolocationValue))
+            {
+                var fieldValue = sharepointValue as FieldGeolocationValue;
+                if (fieldValue != null)
+                {
+                    return string.Join(",",fieldValue.Longitude,fieldValue.Latitude,fieldValue.Altitude,fieldValue.Measure);
+                }
+            }
+            else if (type == typeof(FieldLookupValue[]))
+            {
+                var fieldValue = sharepointValue as FieldLookupValue[];
+                if (fieldValue != null)
+                {
+                    var returnString = string.Join(",",fieldValue.Select(value => value.LookupValue));
+                    return returnString;
+                }
+            }
+            else if (type == typeof(FieldUserValue[]))
+            {
+                var fieldValue = sharepointValue as FieldLookupValue[];
+                if (fieldValue != null)
+                {
+                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
+                    return returnString;
+                }
+            }
+            return val;
         }
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
