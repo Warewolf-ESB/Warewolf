@@ -36,7 +36,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public int GetHashCode(WorkSurfaceContextViewModel obj)
         {
-            return base.GetHashCode();
+            return obj.WorkSurfaceKey.GetHashCode();
         }
     }
 }

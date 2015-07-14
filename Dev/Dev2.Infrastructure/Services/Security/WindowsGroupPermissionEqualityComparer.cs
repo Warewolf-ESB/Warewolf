@@ -49,15 +49,15 @@ namespace Dev2.Services.Security
         /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
         public int GetHashCode(WindowsGroupPermission obj)
         {
-            var hashCode = 0;
-            hashCode += obj.Permissions.GetHashCode() + obj.ResourceID.GetHashCode();
+            var hashCode = 397;
+            hashCode += obj.Permissions.GetHashCode() ^ obj.ResourceID.GetHashCode();
             if(!string.IsNullOrEmpty(obj.ResourceName))
             {
-                hashCode += obj.ResourceName.GetHashCode();
+                hashCode += hashCode^ obj.ResourceName.GetHashCode();
             }
             if(!string.IsNullOrEmpty(obj.WindowsGroup))
             {
-                hashCode += obj.WindowsGroup.GetHashCode();
+                hashCode +=  hashCode^ obj.WindowsGroup.GetHashCode();
             }
             return hashCode;
         }

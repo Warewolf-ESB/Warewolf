@@ -37,7 +37,7 @@ using Warewolf.Storage;
 // ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
@@ -795,7 +795,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return new List<IActionableErrorInfo>();
         }
 
-        #region Overrides of Object
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(DsfNativeActivity<T> other)
+        {
+            if(ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(UniqueID, other.UniqueID);
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -806,15 +826,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            var act = obj as IDev2Activity;
-            if (act == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return act.UniqueID == UniqueID;
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            return Equals((DsfNativeActivity<T>)obj);
         }
-
-        #region Overrides of Object
 
         /// <summary>
         /// Serves as a hash function for a particular type. 
@@ -824,10 +849,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return (UniqueID != null ? UniqueID.GetHashCode() : 0);
         }
 
-        #endregion
+        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
+        {
+            return !Equals(left, right);
+        }
 
         #endregion
     }
