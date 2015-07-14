@@ -3835,26 +3835,26 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemote12345"
-	  And "TestAssignWithRemote12345" contains an Assign "AssignData" as
+	  Given I have a workflow "TestAssignWithRemoteOutputsError"
+	  And "TestAssignWithRemoteOutputsError" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemote12345" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  And "TestAssignWithRemoteOutputsError" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  | inputData        | [[inputData]] | output              | [[output]]       |
-	  |                  |               | values(*).upper     | [[values().&up]] |
-	  |                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignWithRemote12345" is executed
-	  Then the "TestAssignWithRemote12345" workflow execution has "AN" error
-	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote12345' debug inputs as
+	  |                  |               | values(*).up     | [[values().&up]] |
+	  |                  |               | values(*).low     | [[values().low]] |
+	  When "TestAssignWithRemoteOutputsError" is executed
+	  Then the "TestAssignWithRemoteOutputsError" workflow execution has "AN" error
+	  And the 'AssignData' in WorkFlow 'TestAssignWithRemoteOutputsError' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignWithRemote12345' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemoteOutputsError' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote12345' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemoteOutputsError' debug inputs as
 	  |                       |
-	  | [[input]] = hello |
+	  | [[inputData]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -3864,8 +3864,8 @@ Scenario: Error from workflow service is expected to buble out
 	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                             |
 	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).upper]] = HELLO |
-	  | 3 | [[values(1).lower]] = hello |	  	 
+	  | 2 | [[values(1).up]] = HELLO |
+	  | 3 | [[values(1).low]] = hello |	  	 
 
 Scenario Outline: Workflow to Workflow Mappings 
 Given I have a workflow "<Name>"
