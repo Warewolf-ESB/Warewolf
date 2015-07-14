@@ -31,7 +31,7 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState, IEquatable<DebugState>
+    public class DebugState : IDebugState, IEquatable<IDebugState>
     {
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
