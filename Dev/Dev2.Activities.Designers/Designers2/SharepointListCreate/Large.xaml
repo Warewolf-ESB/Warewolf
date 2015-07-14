@@ -231,7 +231,7 @@
             <Label Content="Result"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    DefaultText="[[InsertSuccess]]"
+                                    DefaultText="[[CreateSuccess]]"
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"

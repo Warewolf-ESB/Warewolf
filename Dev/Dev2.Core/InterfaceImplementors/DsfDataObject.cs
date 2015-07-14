@@ -159,18 +159,7 @@ namespace Dev2.DynamicServices
                     // finally set raw payload
                     RawPayload = new StringBuilder(xmldata);
                 }
-            }
-            else
-            {
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (xmldata == null)
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                {
-                    xmldata = "NULL";
-                }
-
-               Environment.Errors.Add("Failed to parse XML INPUT [ " + xmldata + " ]");
-            }
+            }            
 
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {

@@ -308,8 +308,10 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void CreateSharepointServerSource()
         {
+            IsRefreshing = true;
             EventPublisher.Publish(new ShowNewResourceWizard("SharepointServerSource"));
             RefreshSharepointSources();
+            IsRefreshing = false;
         }
 
         static string GetListName(SharepointListTo table)

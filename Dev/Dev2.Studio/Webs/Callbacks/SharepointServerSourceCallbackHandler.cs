@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -45,7 +46,8 @@ namespace Dev2.Webs.Callbacks
             string resName = jsonObj.resourceName;
             string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
             var source = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
-            environmentModel.ResourceRepository.SaveResource(environmentModel,source , GlobalConstants.ServerWorkspaceID);
+            environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
+            
         }
 
         protected virtual void StartUriProcess(string uri)

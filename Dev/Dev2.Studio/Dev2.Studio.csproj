@@ -1098,6 +1098,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\SharepointLogo.png" />
     <Resource Include="Images\dropbox-windows.png" />
     <Resource Include="Images\SplashImage_New_2014.jpg" />
     <Resource Include="Images\EmailSource-32.png" />

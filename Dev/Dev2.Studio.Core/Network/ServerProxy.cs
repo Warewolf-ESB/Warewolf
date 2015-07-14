@@ -31,7 +31,6 @@ namespace Dev2.Network
     public class ServerProxy :  IEnvironmentConnection
     {
         IEnvironmentConnection _wrappedConnection;
-        IEnvironmentConnection _fallbackConnection;
 
 
         
@@ -40,7 +39,7 @@ namespace Dev2.Network
         {
            _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
 
-            _fallbackConnection = new ServerProxyWithChunking(serverUri);
+            
             SetupPassthroughEvents();
         }
 
@@ -48,18 +47,13 @@ namespace Dev2.Network
         {
             _wrappedConnection.PermissionsChanged += (sender, args) => RaisePermissionsChanged();
             _wrappedConnection.PermissionsModified += (sender, list) => RaisePermissionsModified(list);
-            _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);
-            _fallbackConnection.PermissionsChanged += (sender, args) => RaisePermissionsChanged();
-            _fallbackConnection.PermissionsModified += (sender, list) => RaisePermissionsModified(list);
-            _fallbackConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);
+            _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);           
         }
 
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
 
             _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
-
-            _fallbackConnection = new ServerProxyWithChunking(serverUri, credentials, worker);
             SetupPassthroughEvents();
 
         }
@@ -71,7 +65,6 @@ namespace Dev2.Network
         public ServerProxy(string webAddress, string userName, string password)
         {
             _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
-            _fallbackConnection = new ServerProxyWithChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
 
@@ -85,7 +78,6 @@ namespace Dev2.Network
         public void Dispose()
         {
             _wrappedConnection.Dispose();
-            _fallbackConnection.Dispose();
         }
 
         #endregion
@@ -218,7 +210,8 @@ namespace Dev2.Network
              catch( FallbackException)
             {
                 Dev2Logger.Log.Info("Falling Back to previos signal r client");
-                _wrappedConnection = _fallbackConnection;
+                _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri);
+                SetupPassthroughEvents();
                 _wrappedConnection.Connect(_wrappedConnection.ID);
             }
             catch (Exception err)
