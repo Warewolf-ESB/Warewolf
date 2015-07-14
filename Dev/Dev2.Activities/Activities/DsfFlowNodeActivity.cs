@@ -379,7 +379,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+   
+
+
+                return UniqueID.GetHashCode();
+
+
+
         }
 
         #endregion

@@ -31,7 +31,7 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState
+    public class DebugState : IDebugState, IEquatable<IDebugState>
     {
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
@@ -651,31 +651,78 @@ namespace Dev2.Diagnostics.Debug
 
         #region Implementation of IEquatable<IDebugState>
 
+
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDebugState other)
         {
-            if(other == null)
+            if(ReferenceEquals(null, other))
             {
                 return false;
             }
-
-            return ID == other.ID && SessionID == other.SessionID;
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return ID.Equals(other.ID) && SessionID.Equals(other.SessionID);
         }
 
-        public override bool Equals(Object obj)
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
         {
-            if(obj == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-
-            var stateObj = obj as IDebugState;
-            return stateObj != null && Equals(stateObj);
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            return Equals((DebugState)obj);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override int GetHashCode()
         {
-            return ID.GetHashCode() ^ SessionID.GetHashCode();
+            unchecked
+            {
+                return (ID.GetHashCode() * 397) ^ SessionID.GetHashCode();
+            }
         }
+
+        public static bool operator ==(DebugState left, DebugState right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(DebugState left, DebugState right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion
 
         #endregion
     }
