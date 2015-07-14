@@ -31,12 +31,8 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState, IEquatable<IDebugState>
+    public class DebugState : IDebugState
     {
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance has an error.
-        /// </summary>
-        private readonly string _tempPath;
         private DateTime _startTime;
         private DateTime _endTime;
 
@@ -47,10 +43,10 @@ namespace Dev2.Diagnostics.Debug
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
 
-            _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
-            if(!Directory.Exists(_tempPath))
+            var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            if(!Directory.Exists(tempPath))
             {
-                Directory.CreateDirectory(_tempPath);
+                Directory.CreateDirectory(tempPath);
             }
         }
 
@@ -691,7 +687,7 @@ namespace Dev2.Diagnostics.Debug
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }

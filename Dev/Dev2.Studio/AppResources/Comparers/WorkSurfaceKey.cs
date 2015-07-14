@@ -13,6 +13,7 @@ using System;
 using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.Comparers
 {
     /// <summary>
@@ -73,7 +74,7 @@ namespace Dev2.Studio.AppResources.Comparers
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }
