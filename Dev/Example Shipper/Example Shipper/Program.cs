@@ -12,6 +12,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace Example_Shipper
 {
@@ -37,12 +38,34 @@ namespace Example_Shipper
                     // set type to Unknown ;)
                     data = data.Replace("ResourceType=\"WorkflowService\"", "ResourceType=\"Unknown\"");
 
+                    // set the server ID
+                    StringBuilder buildNewServerID = new StringBuilder();
+                    buildNewServerID.Append(data.Substring(0,data.IndexOf("ServerID=\"")+"ServerID=\"".Length));
+                    buildNewServerID.Append("51A58300-7E9D-4927-A57B-E5D700B11B55");
+                    int restOfDefinitionStartIndex = data.IndexOf("ServerID=\"") + "ServerID=\"".Length + Guid.Empty.ToString().Length;
+                    buildNewServerID.Append(data.Substring(restOfDefinitionStartIndex,data.Length-restOfDefinitionStartIndex));
+                    data = buildNewServerID.ToString();
+
                     // remove the signature ;)
-                    var idx = data.IndexOf("</Action>", StringComparison.Ordinal);
+                    var idx = data.IndexOf("<Signature", StringComparison.Ordinal);
+                    StringBuilder buildWithoutSignature = new StringBuilder();
+                    buildWithoutSignature.Append(data.Substring(0, data.IndexOf("<Signature", StringComparison.Ordinal)));
 
-                    data = data.Substring(0, (idx + 9));
+                    if (data.Contains("</Actions>"))
+                    {
+                        buildWithoutSignature.Append("</Actions>");
+                    }
 
-                    data += "</Service>";
+                    if (data.Contains("</Source>"))
+                    {
+                        buildWithoutSignature.Append("</Source>");
+                    }
+                    else if (data.Contains("</Service>"))
+                    {
+                        buildWithoutSignature.Append("</Service>");
+                    }
+
+                    data = buildWithoutSignature.ToString();
 
                     if (theFile != null)
                     {
