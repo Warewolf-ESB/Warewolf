@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Text;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.DirectoryServices.ActiveDirectory;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Activities

@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Security.Principal;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +27,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         {
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
-            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var currentUser = WindowsIdentity.GetCurrent(false);
 
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 
@@ -51,7 +52,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
-            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var currentUser = WindowsIdentity.GetCurrent(false);
 
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 

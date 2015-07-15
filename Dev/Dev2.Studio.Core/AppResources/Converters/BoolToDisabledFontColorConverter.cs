@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -18,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class BoolToDisabledFontColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var val = value as bool?;
 
@@ -30,7 +31,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return val.Value ? SystemColors.ControlTextBrush : SystemColors.GrayTextBrush;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Binding.DoNothing;
         }

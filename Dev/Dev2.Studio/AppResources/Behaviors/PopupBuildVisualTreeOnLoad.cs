@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interactivity;
 
@@ -22,14 +23,14 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.Loaded += AssociatedObject_Loaded;
         }
 
-        private void AssociatedObject_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
 
-            AssociatedObject.Visibility = System.Windows.Visibility.Hidden;
+            AssociatedObject.Visibility = Visibility.Hidden;
             AssociatedObject.IsOpen = true;
             AssociatedObject.IsOpen = false;
-            AssociatedObject.Visibility = System.Windows.Visibility.Visible;
+            AssociatedObject.Visibility = Visibility.Visible;
         }
     }
 }

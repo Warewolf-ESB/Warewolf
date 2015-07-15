@@ -21,6 +21,7 @@ using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
+using Ionic.Zlib;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
@@ -580,12 +581,12 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        Ionic.Zlib.CompressionLevel ExtractZipCompressionLevel(string lvl)
+        CompressionLevel ExtractZipCompressionLevel(string lvl)
         {
-            var lvls = Enum.GetValues(typeof(Ionic.Zlib.CompressionLevel));
+            var lvls = Enum.GetValues(typeof(CompressionLevel));
             var pos = 0;
             //19.09.2012: massimo.guerrera - Changed to default instead of none
-            Ionic.Zlib.CompressionLevel clvl = Ionic.Zlib.CompressionLevel.Default;
+            CompressionLevel clvl = CompressionLevel.Default;
 
             while(pos < lvls.Length && lvls.GetValue(pos).ToString() != lvl)
             {
@@ -594,7 +595,7 @@ namespace Dev2.PathOperations
 
             if(pos < lvls.Length)
             {
-                clvl = (Ionic.Zlib.CompressionLevel)lvls.GetValue(pos);
+                clvl = (CompressionLevel)lvls.GetValue(pos);
             }
 
             return clvl;

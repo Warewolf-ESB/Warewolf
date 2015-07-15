@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Controls
 {
@@ -30,6 +31,6 @@ namespace System.Windows.Controls
     /// </param>
     /// <param name="e">Event data for the event.</param>
     /// <QualityBand>Preview</QualityBand>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances", Justification = "To match pattern of RoutedPropertyChangedEventHandler<T>")]
+    [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances", Justification = "To match pattern of RoutedPropertyChangedEventHandler<T>")]
     public delegate void RoutedPropertyChangingEventHandler<T>(object sender, RoutedPropertyChangingEventArgs<T> e);
 }

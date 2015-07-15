@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Configuration;
 using System.Net;
 using Dev2.Helpers;
 using Dev2.Studio.Utils;
@@ -168,7 +169,7 @@ namespace Dev2.Studio.Core.Helpers
 
         public static bool InstallerTesting
         {
-            get { return System.Configuration.ConfigurationManager.AppSettings["InstallerTesting"] == null || bool.Parse(System.Configuration.ConfigurationManager.AppSettings["InstallerTesting"]); }
+            get { return ConfigurationManager.AppSettings["InstallerTesting"] == null || bool.Parse(ConfigurationManager.AppSettings["InstallerTesting"]); }
         }
 
 
@@ -176,14 +177,14 @@ namespace Dev2.Studio.Core.Helpers
         {
             get
             {
-                return InstallerTesting ? System.Configuration.ConfigurationManager.AppSettings["TestVersionLocation"] : System.Configuration.ConfigurationManager.AppSettings["VersionLocation"];
+                return InstallerTesting ? ConfigurationManager.AppSettings["TestVersionLocation"] : ConfigurationManager.AppSettings["VersionLocation"];
             }
         }
         public static string WarewolfChecksum
         {
             get
             {
-                return InstallerTesting ? System.Configuration.ConfigurationManager.AppSettings["TestCheckSumLocation"] : System.Configuration.ConfigurationManager.AppSettings["CheckSumLocation"];
+                return InstallerTesting ? ConfigurationManager.AppSettings["TestCheckSumLocation"] : ConfigurationManager.AppSettings["CheckSumLocation"];
             }
         }
     }

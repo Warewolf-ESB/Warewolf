@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -102,7 +103,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
-            System.Diagnostics.Debug.WriteLine("Resolving : " + args.Name);
+            Debug.WriteLine("Resolving : " + args.Name);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
             return Assembly.LoadFile(Path.Combine(new[] { directoryName, tokens[0] + ".dll" }));
         }

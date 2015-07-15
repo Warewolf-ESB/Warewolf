@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -35,7 +36,6 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -120,12 +120,12 @@ namespace BusinessDesignStudio.Unit.Tests
             const string outputData = "outputs";
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.DbService);
             resourceData.Inputs = inputData;
             resourceData.Outputs = outputData;
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(inputData, model.Inputs);
@@ -139,10 +139,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.DbService);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
@@ -156,10 +156,10 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.DbSource);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
@@ -173,10 +173,10 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.EmailSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.EmailSource);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png");
@@ -190,10 +190,10 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.PluginSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.PluginSource);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
@@ -207,10 +207,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WebService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.WebService);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
@@ -223,10 +223,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WebSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.WebSource);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
@@ -239,10 +239,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WorkflowService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.WorkflowService);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png");
@@ -255,10 +255,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.Server);
+            var resourceData = BuildSerializableResourceFromName("TestWF", ResourceType.Server);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
@@ -271,10 +271,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("Unsaved 1", Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, true);
+            var resourceData = BuildSerializableResourceFromName("Unsaved 1", ResourceType.WorkflowService, true);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
@@ -294,7 +294,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, ResourceType.Server);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -458,7 +458,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsTrue(resources.Equals(2));
             var resource = _repo.All().First();
 
-            Assert.IsTrue(resource.ResourceType == ResourceType.WorkflowService);
+            Assert.IsTrue(resource.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             Assert.IsTrue(resource.ResourceName == "TestWorkflowService");
         }
 
@@ -488,7 +488,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string Reserved1 = "TestName1";
             const string Reserved2 = "TestName2";
 
-            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, Dev2.Common.Interfaces.Data.ResourceType.ReservedService);
+            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, ResourceType.ReservedService);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -530,12 +530,12 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             Setup();
             var model = new Mock<IResourceModel>();
-            model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
+            model.Setup(c => c.ResourceType).Returns(Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
             //model.SetupGet(p => p.ResourceName).Returns("My WF");
             //model.SetupGet(p => p.Category).Returns("Root");
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, ResourceType.Server);
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
             int callCnt = 0;
@@ -585,7 +585,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, ResourceType.Server);
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
             int callCnt = 0;
@@ -633,7 +633,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var model = new Mock<IResourceModel>();
             model.SetupGet(p => p.ResourceName).Returns("My WF");
             model.SetupGet(p => p.Category).Returns("Root");
-            model.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
+            model.Setup(c => c.ResourceType).Returns(Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
 
             var conn = SetupConnection();
 
@@ -1542,7 +1542,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
             mockStudioResourceRepository.Setup(a => a.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel());
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(2));
@@ -1584,7 +1584,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(6));
@@ -1627,7 +1627,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(2));
@@ -1671,7 +1671,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(8));
@@ -1696,7 +1696,7 @@ namespace BusinessDesignStudio.Unit.Tests
                         }
                 };
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, ResourceType.WorkflowService, errors);
 
             var msg = new ExecuteMessage { HasError = false };
 
@@ -1725,7 +1725,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, reloadedResources.Count);
@@ -1765,7 +1765,7 @@ namespace BusinessDesignStudio.Unit.Tests
                         }
                 };
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, ResourceType.WorkflowService, errors);
 
 
 
@@ -1799,7 +1799,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindResourcesByID_With_NullParameters_Expected_ReturnsEmptyList()
         {
             ResourceRepository resourceRepository = GetResourceRepository();
-            var result = resourceRepository.FindResourcesByID(null, null, ResourceType.Source);
+            var result = resourceRepository.FindResourcesByID(null, null, Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
         }
@@ -1816,7 +1816,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
 
-            var result = resourceRepository.FindResourcesByID(env.Object, servers, ResourceType.Source);
+            var result = resourceRepository.FindResourcesByID(env.Object, servers, Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
 
             Assert.AreNotEqual(0, result.Count);
         }
@@ -2064,7 +2064,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var newGuid = Guid.NewGuid();
 
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, ResourceType.Server);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -2125,7 +2125,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     }
             };
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { id }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors, false);
+            var resourceData = BuildResourceObjectFromGuids(new[] { id }, ResourceType.WorkflowService, errors, false);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -2307,7 +2307,7 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
@@ -2323,7 +2323,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
+            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
         }
 
         [TestMethod]
@@ -2347,7 +2347,7 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
 
             var theModel = new ResourceModel(srcModel.Object) { ID = theID, ResourceName = "some resource" };
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
@@ -2382,7 +2382,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
 
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
             targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
 
             Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
@@ -2394,7 +2394,7 @@ namespace BusinessDesignStudio.Unit.Tests
             List<IResourceModel> reloadResources = new List<IResourceModel> { reloadedResource.Object };
 
 
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Returns(reloadResources);
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Returns(reloadResources);
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
@@ -2410,7 +2410,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
+            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
 
         }
 
@@ -2499,7 +2499,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             var vm = new ResourceRepository(mockEnvironment.Object);
-            vm.RenameCategory("Test Category", "New Test Category", ResourceType.WorkflowService);
+            vm.RenameCategory("Test Category", "New Test Category", Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
 
             mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
@@ -2581,7 +2581,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion
 
 
-        private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Common.Interfaces.Data.ResourceType typeOf, bool isNewResource = false)
+        private SerializableResource BuildSerializableResourceFromName(string name, ResourceType typeOf, bool isNewResource = false)
         {
 
             SerializableResource sr = new SerializableResource
@@ -2606,7 +2606,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="names">The names.</param>
         /// <param name="typeOf">The type of.</param>
         /// <returns></returns>
-        private string BuildResourceObjectFromNames(string[] names, Dev2.Common.Interfaces.Data.ResourceType typeOf)
+        private string BuildResourceObjectFromNames(string[] names, ResourceType typeOf)
         {
             List<SerializableResource> theResources = new List<SerializableResource>();
 
@@ -2641,7 +2641,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="isValid"></param>
         /// <param name="cat"></param>
         /// <returns></returns>
-        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Common.Interfaces.Data.ResourceType theType = Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
+        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, ResourceType theType = ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
         {
             if(errors == null)
             {

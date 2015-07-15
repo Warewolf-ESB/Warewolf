@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
 // ReSharper disable once CheckNamespace
@@ -18,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
     [ValueConversion(typeof(string), typeof(bool))]
     public class SplitTypeToEnabledConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool result = false;
             if(value != null)
@@ -32,7 +33,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return result;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

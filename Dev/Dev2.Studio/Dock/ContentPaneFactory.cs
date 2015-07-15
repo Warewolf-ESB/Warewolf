@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
@@ -165,7 +166,7 @@ namespace Dev2.Studio.Dock
         }
 
         //Juries TODO improve (remove typing tied to contentfactory)
-        private void ViewModelDeactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
+        private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
             if(e.WasClosed)
             {

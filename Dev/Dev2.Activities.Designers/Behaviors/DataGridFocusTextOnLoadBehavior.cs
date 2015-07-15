@@ -11,6 +11,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Interfaces;
@@ -62,7 +63,7 @@ namespace Dev2.Activities
             _textBox.LostKeyboardFocus += _textBox_LostKeyboardFocus;
         }
 
-        void _textBox_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        void _textBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             _textBox.Focus();
             _stealCount++;

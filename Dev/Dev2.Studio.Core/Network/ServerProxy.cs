@@ -25,7 +25,6 @@ using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 
-
 namespace Dev2.Network
 {
     public class ServerProxy :  IEnvironmentConnection

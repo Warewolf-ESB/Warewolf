@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
@@ -23,14 +24,14 @@ namespace Dev2.Data.ServiceModel
         public SharepointSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.SharepointServerSource;
+            ResourceType = ResourceType.SharepointServerSource;
             AuthenticationType = AuthenticationType.Windows;
         }
 
         public SharepointSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.SharepointServerSource;
+            ResourceType = ResourceType.SharepointServerSource;
             AuthenticationType = AuthenticationType.Windows;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

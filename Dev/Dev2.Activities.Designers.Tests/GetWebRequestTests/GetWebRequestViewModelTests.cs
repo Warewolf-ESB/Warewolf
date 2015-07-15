@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

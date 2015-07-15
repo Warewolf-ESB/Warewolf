@@ -11,23 +11,24 @@
 
 using System;
 using Dev2.DataList.Contract;
+using Dev2.Services.Execution;
 
 namespace Dev2.Activities
 {
     public class MockDsfPluginActivity : DsfPluginActivity
     {
 
-        public Services.Execution.PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
+        public PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
         {
             return GetNewPluginServiceExecution(context);
         }
 
-        public System.Guid MockExecutePluginService(Services.Execution.PluginServiceExecution container)
+        public Guid MockExecutePluginService(PluginServiceExecution container)
         {
             return ExecutePluginService(container);
         }
 
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
+        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
         }
@@ -36,17 +37,17 @@ namespace Dev2.Activities
     public class FaultyMockDsfPluginActivity : DsfPluginActivity
     {
 
-        public Services.Execution.PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
+        public PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
         {
             return GetNewPluginServiceExecution(context);
         }
 
-        public System.Guid MockExecutePluginService(Services.Execution.PluginServiceExecution container)
+        public Guid MockExecutePluginService(PluginServiceExecution container)
         {
             return ExecutePluginService(container);
         }
 
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
+        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             
             tmpErrors = new ErrorResultTO();

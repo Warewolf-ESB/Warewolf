@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Diagnostics;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Debug
 {
@@ -177,7 +178,7 @@ namespace Dev2.Activities.Debug
                                 Variable = DataListUtil.IsEvaluated(_assignedToVariableName) ? _assignedToVariableName : null,
                                 Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
                                 GroupName = null,
-                                Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
+                                Value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
                                 GroupIndex = 0
                             });
                         }
@@ -233,7 +234,7 @@ namespace Dev2.Activities.Debug
                                     Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                                     Operator = debugOperator,
                                     GroupName = groupName,
-                                    Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                                    Value = ExecutionEnvironment.WarewolfAtomToString(item),
                                     GroupIndex = grpIdx
                                 };
                                 results.Add(debugItemResult);
@@ -315,7 +316,7 @@ namespace Dev2.Activities.Debug
                             Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                             Operator = debugOperator,
                             GroupName = groupName,
-                            Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                            Value = ExecutionEnvironment.WarewolfAtomToString(item),
                             GroupIndex = grpIdx
                         });
                     }

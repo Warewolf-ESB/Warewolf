@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 {

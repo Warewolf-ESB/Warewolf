@@ -10,7 +10,10 @@
 */
 
 using System;
+using System.Windows.Media;
 using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 
 // ReSharper disable once CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio
@@ -24,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
             Description = description;
         }
 
-        public void Complete(ICSharpCode.AvalonEdit.Editing.TextArea textArea, ICSharpCode.AvalonEdit.Document.ISegment completionSegment, EventArgs insertionRequestEventArgs)
+        public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
         {
             textArea.Document.Replace(completionSegment, Text);
         }
@@ -40,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
             private set;
         }
 
-        public System.Windows.Media.ImageSource Image
+        public ImageSource Image
         {
             get { return null; }
         }

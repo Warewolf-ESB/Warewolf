@@ -26,7 +26,6 @@ using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decision;
-using Dev2.Runtime.Configuration.Settings;
 using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

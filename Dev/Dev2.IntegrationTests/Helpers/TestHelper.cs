@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -23,7 +21,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Diagnostics.Debug;
 using Dev2.Integration.Tests.MEF.WebTester;
 using Dev2.Network;
 using Dev2.Threading;
@@ -71,7 +68,7 @@ namespace Dev2.Integration.Tests.Helpers
             CommunicationControllerFactory fact = new CommunicationControllerFactory();
             var comm = fact.CreateController(serviceName);
             var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, CreateSynchronousAsyncWorker().Object);
-            prx.Connect(System.Guid.NewGuid());
+            prx.Connect(Guid.NewGuid());
             foreach (var payloadArgument in payloadArguments)
             {
                 comm.AddPayloadArgument(payloadArgument.Key, payloadArgument.Value);

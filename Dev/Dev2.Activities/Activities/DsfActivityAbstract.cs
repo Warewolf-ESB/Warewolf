@@ -14,6 +14,7 @@ using System.Activities;
 using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Activity;
@@ -99,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public Activity Create(System.Windows.DependencyObject target)
+        public Activity Create(DependencyObject target)
         {
             return this;
         }

@@ -11,6 +11,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -28,7 +29,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2Action_Construct")]
         public void TaskShedulerWrapper_Dev2Action_Construct()
         {
-            using ( Microsoft.Win32.TaskScheduler.Action act = new Microsoft.Win32.TaskScheduler.ExecAction("bob","dave","jane"))
+            using ( Microsoft.Win32.TaskScheduler.Action act = new ExecAction("bob","dave","jane"))
             {
                 Dev2Action wrapped = new Dev2Action(act);
                 wrapped.Id = Guid.NewGuid().ToString();

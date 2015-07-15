@@ -20,6 +20,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
+using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -28,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, Workspaces.IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
