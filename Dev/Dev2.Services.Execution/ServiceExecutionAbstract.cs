@@ -68,13 +68,13 @@ namespace Dev2.Services.Execution
 
         public abstract void BeforeExecution(ErrorResultTO errors);
 
-        public virtual Guid Execute(out ErrorResultTO errors)
+        public virtual Guid Execute(out ErrorResultTO errors, int update)
         {
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
             errors.MergeErrors(ErrorResult);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ExecuteImpl(compiler, out errors);
+            ExecuteImpl(compiler, out errors, update);
             return DataObj.DataListID;
         }
 
@@ -116,7 +116,7 @@ namespace Dev2.Services.Execution
         public TService Service { get; set; }
         public string InstanceInputDefinitions { get; set; }
 
-        protected void ExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
+        protected void ExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
 
@@ -159,7 +159,7 @@ namespace Dev2.Services.Execution
                 var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteService(inputs as IEnumerable<MethodParameter>, out invokeErrors, outputFormatter);
+                    ExecuteService(inputs, out invokeErrors, update, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
@@ -186,7 +186,7 @@ namespace Dev2.Services.Execution
                         {
                             toInject = sai.DefaultValue;
                         }
-                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject));
+                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
                         itrCollection.AddVariableToIterateOn(paramIterator);
                         itrs.Add(paramIterator);
                     }
@@ -195,7 +195,7 @@ namespace Dev2.Services.Execution
 
                     while (itrCollection.HasMoreData())
                     {
-                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, outputFormatter);
+                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, update, outputFormatter);
                         errors.MergeErrors(invokeErrors);
                     }
                 }
@@ -222,7 +222,7 @@ namespace Dev2.Services.Execution
         #region ExecuteService
 
         private void ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
-            IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
+            IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors,int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             if (methodParameters.Any())
@@ -249,7 +249,7 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                ExecuteService(methodParameters, out invokeErrors, formater);
+                ExecuteService(methodParameters, out invokeErrors, update, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
@@ -258,7 +258,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
+        private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors,int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             try
@@ -271,14 +271,14 @@ namespace Dev2.Services.Execution
                     {
                         var methodParameter = new MethodParameter();
                         methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestBody);
-                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody));
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody, update));
                         parameters.Add(methodParameter);
                     }
                     if (!String.IsNullOrEmpty(webService.RequestHeaders))
                     {
                         var methodParameter = new MethodParameter();
                         methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestHeaders);
-                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders));
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders, update));
                         parameters.Add(methodParameter);
                     }
                 }
@@ -298,11 +298,11 @@ namespace Dev2.Services.Execution
                     var formattedPayload = formater != null
                             ? formater.Format(result).ToString()
                             : result;
-                    PushXmlIntoEnvironment(formattedPayload);
+                    PushXmlIntoEnvironment(formattedPayload, update);
                 }
                 else
                 {
-                    PushXmlIntoEnvironment(result);
+                    PushXmlIntoEnvironment(result, update);
                 }
             }
             catch (Exception ex)
@@ -315,7 +315,7 @@ namespace Dev2.Services.Execution
 
         #region MergeResultIntoDataList
 
-        public void PushXmlIntoEnvironment(string input)
+        public void PushXmlIntoEnvironment(string input,int update)
         {
 
             if (input != string.Empty)
@@ -335,7 +335,7 @@ namespace Dev2.Services.Execution
 
                         // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
                         var outputDefs = DataListFactory.CreateOutputParser().Parse(InstanceOutputDefintions);
-                        TryConvert(children, outputDefs, indexCache);
+                        TryConvert(children, outputDefs, indexCache, update);
                     }
                 }
                 catch (Exception e)
@@ -348,7 +348,7 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int level = 0)
+        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update,int level = 0)
         {
             // spin through each element in the XML
             foreach (XmlNode c in children)
@@ -375,7 +375,7 @@ namespace Dev2.Services.Execution
                                 {
                                     if (definition.MapsTo == subc.Name)
                                     {
-                                        DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml));
+                                        DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
                                     }
                                 }
 
@@ -389,7 +389,7 @@ namespace Dev2.Services.Execution
                             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
                             if(scalarName != null)
                             {
-                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), c1.InnerXml);
+                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), c1.InnerXml, update);
                             }
                         }
                     }
@@ -398,7 +398,7 @@ namespace Dev2.Services.Execution
                         if (level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, outputDefs, indexCache, ++level);
+                            TryConvert(c.ChildNodes, outputDefs, indexCache, update, ++level);
                         }
                     }
                 }

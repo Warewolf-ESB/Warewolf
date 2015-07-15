@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             return null;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
         }
 

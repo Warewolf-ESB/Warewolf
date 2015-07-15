@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
-            var result = _databaseServiceExecution.Execute(out errors);
+            var result = _databaseServiceExecution.Execute(out errors, update);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
         }

@@ -21,11 +21,11 @@ namespace Dev2.Activities
        public IEnumerable<IDev2Activity> TrueArm { get; set; }
        public IEnumerable<IDev2Activity> FalseArm { get; set; }
        public Dev2DecisionStack Conditions { get; set; }
-       public DsfFlowDecisionActivity _inner;    
+       public DsfFlowDecisionActivity Inner;    
         #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner)
         {
-            _inner = inner;
+            Inner = inner;
         }
         public DsfDecision()
         {
@@ -59,15 +59,15 @@ namespace Dev2.Activities
 
         private  Dev2Decision parseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
-            var col1 =env.EvalAsList(decision.Col1);
-            var col2 = env.EvalAsList(decision.Col2);
-            var col3 = env.EvalAsList(decision.Col3);
+            var col1 =env.EvalAsList(decision.Col1, 0);
+            var col2 = env.EvalAsList(decision.Col2, 0);
+            var col3 = env.EvalAsList(decision.Col3, 0);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override IDev2Activity Execute(IDSFDataObject dataObject)
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
@@ -112,8 +112,8 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
                 if (resultval)
                 {
@@ -160,14 +160,14 @@ namespace Dev2.Activities
 
         #endregion
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
            
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
         }
@@ -232,13 +232,13 @@ namespace Dev2.Activities
             }
 
             var val =  result.Select(a => a as DebugItem).ToList();
-            _inner.SetDebugInputs(val);
+            Inner.SetDebugInputs(val);
             return val;
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return _debugOutputs;
         }
@@ -246,23 +246,23 @@ namespace Dev2.Activities
         #endregion
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, string _theResult)
+        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, string theResult)
         {
             var result = new List<DebugItem>();
-            string resultString = _theResult;
+            string resultString = theResult;
             DebugItem itemToAdd = new DebugItem();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            DataListFactory.CreateDataListCompiler();
             var dds = Conditions;
 
             try
             {
 
 
-                if (_theResult == "True")
+                if (theResult == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if (_theResult == "False")
+                else if (theResult == "False")
                 {
                     resultString = dds.FalseArmText;
                 }
@@ -280,7 +280,7 @@ namespace Dev2.Activities
 
             }
 
-            _inner.SetDebugOutputs(result);
+            Inner.SetDebugOutputs(result);
             return result;
         }
 
@@ -297,7 +297,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

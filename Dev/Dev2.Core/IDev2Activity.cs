@@ -12,7 +12,7 @@ namespace Dev2
         string UniqueID { get; set; }
         IList<IActionableErrorInfo> PerformValidation();
         enFindMissingType GetFindMissingType();
-        IDev2Activity Execute(IDSFDataObject data);
+        IDev2Activity Execute(IDSFDataObject data, int update);
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
     }

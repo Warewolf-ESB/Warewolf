@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             throw new NotImplementedException();
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
         }
 

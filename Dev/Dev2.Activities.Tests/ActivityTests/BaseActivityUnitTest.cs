@@ -190,7 +190,7 @@ namespace ActivityUnitTests
                     };
 
                 }
-                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl);
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, update);
                 dataObject.IsDebug = isDebug;
 
                 // we now need to set a thread ID ;)
@@ -345,8 +345,8 @@ namespace ActivityUnitTests
             var result = ExecuteProcess(null, true, null, isRemoteInvoke);
             if(result != null)
             {
-                inputResults = activity.GetDebugInputs(result.Environment);
-                outputResults = activity.GetDebugOutputs(result.Environment);
+                inputResults = activity.GetDebugInputs(result.Environment, update);
+                outputResults = activity.GetDebugOutputs(result.Environment, update);
 
                
             }
@@ -373,8 +373,8 @@ namespace ActivityUnitTests
             outputResults = null;
             if(result != null)
             {
-                inputResults = activity.GetDebugInputs(result.Environment);
-                outputResults = activity.GetDebugOutputs(result.Environment);
+                inputResults = activity.GetDebugInputs(result.Environment, update);
+                outputResults = activity.GetDebugOutputs(result.Environment, update);
 
                 
             }
@@ -444,7 +444,7 @@ namespace ActivityUnitTests
             }
             try
             {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve)));
+                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve), update));
             }
             catch( Exception err)
             {
@@ -465,7 +465,7 @@ namespace ActivityUnitTests
                 {
                     variableName = DataListUtil.CreateRecordsetDisplayValue(recordSet, fieldNameToRetrieve, "*");
                 }
-                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName));
+                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName), update);
 
                 if (warewolfEvalResult == null)
                 {
@@ -495,7 +495,7 @@ namespace ActivityUnitTests
 
         protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
         {
-            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]");
+            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]", update);
             error = "";
             var retrieveAllRecordSetFieldValues = (List<string>)retVals;
             return retrieveAllRecordSetFieldValues.Where(s => !string.IsNullOrEmpty(s)).ToList();

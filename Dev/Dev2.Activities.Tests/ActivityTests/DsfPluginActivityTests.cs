@@ -84,14 +84,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var pluginActivity = new MockDsfPluginActivity();
             var errors = new ErrorResultTO();
             var mockContainer = new Mock<PluginServiceExecution>(new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>()), It.IsAny<bool>());
-            mockContainer.Setup(c => c.Execute(out errors)).Verifiable();
+            mockContainer.Setup(c => c.Execute(out errors, update)).Verifiable();
 
             //exe
             pluginActivity.MockExecutePluginService(mockContainer.Object);
 
             //assert
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin service");
-            mockContainer.Verify(c => c.Execute(out errors), Times.Once());
+            mockContainer.Verify(c => c.Execute(out errors, update), Times.Once());
         }
 
         #endregion

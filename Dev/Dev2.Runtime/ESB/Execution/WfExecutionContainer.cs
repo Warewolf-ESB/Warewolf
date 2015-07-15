@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, update), itemToAdd);
                 results.Add(itemToAdd);
             }
 
@@ -198,10 +198,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
         {
-            var next = resource.Execute(dsfDataObject);
+            var next = resource.Execute(dsfDataObject, update);
             while(next != null)
             {
-                next = next.Execute(dsfDataObject);
+                next = next.Execute(dsfDataObject, update);
             }
         }
     }

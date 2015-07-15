@@ -236,7 +236,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if(resource.DataList != null)
                     {
-                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
+                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), update);
                     }
                 }
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
@@ -387,7 +387,7 @@ namespace Dev2.Runtime.ESB.Control
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
-            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
+            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
             innerEnvironment.Errors.ForEach(s => dataObject.Environment.AddError(s));
             return innerEnvironment;
         }

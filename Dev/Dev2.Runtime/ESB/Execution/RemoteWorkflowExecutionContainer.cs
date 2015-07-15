@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void PerformLogExecution(string logUri)
         {
             
-            var expressionsEntry = DataObject.Environment.Eval(logUri);
+            var expressionsEntry = DataObject.Environment.Eval(logUri, update);
             var itr = new WarewolfIterator(expressionsEntry);
             while (itr.HasMoreData())
             {
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
 
             // get data in a format we can send ;)
-            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString(), update);
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
@@ -124,7 +124,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString(), update);
             Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;

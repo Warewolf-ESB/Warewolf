@@ -244,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.Before, update);
                     }
 
                     dataObject.ParentInstanceID = UniqueID;
@@ -300,7 +300,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.After, update);
                     }
                 }
             }
@@ -524,29 +524,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
 
 
-                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment, update), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment, update), debugItem);
      
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
  
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
 
-                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(To, "To", environment, update), debugItem);
 
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
     
 
-                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment, update), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
@@ -753,7 +753,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -762,7 +762,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -784,7 +784,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.ForEach;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             lock(_forEachExecutionObject)
             {
@@ -810,14 +810,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.AddError(error);
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.Before, update);
 
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     dataObject.IsDebugNested = true;
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.After, update);
                     }
                     exePayload.InnerActivity = innerA;
                     var ind = itr.MaxIndex();
@@ -832,7 +832,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             IterateIOMapping(idx);
                         }
 
-                        exeAct.Execute(dataObject);
+                        exeAct.Execute(dataObject, update);
 
                         count++;
                         operationalData.IncIterationCount();

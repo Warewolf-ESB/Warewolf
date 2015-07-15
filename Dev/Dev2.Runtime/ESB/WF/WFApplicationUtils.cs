@@ -149,7 +149,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 DebugItem itemToAdd = new DebugItem();
-                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment), itemToAdd);
+                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, update), itemToAdd);
                 results.Add(itemToAdd);
             }
 

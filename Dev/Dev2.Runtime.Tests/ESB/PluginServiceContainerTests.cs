@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.ESB
             var mockServiceExecution = new Mock<IServiceExecution>();
             ErrorResultTO errors;
             Guid expected = Guid.NewGuid();
-            mockServiceExecution.Setup(execution => execution.Execute(out errors)).Returns(expected);
+            mockServiceExecution.Setup(execution => execution.Execute(out errors, update)).Returns(expected);
             PluginServiceContainer pluginServiceContainer = new PluginServiceContainer(mockServiceExecution.Object);
             //------------Execute Test---------------------------
             Guid actual = pluginServiceContainer.Execute(out errors);

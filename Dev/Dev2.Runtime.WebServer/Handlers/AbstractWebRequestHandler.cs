@@ -194,11 +194,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString(), update);
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString(), update);
                             }
                             dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }

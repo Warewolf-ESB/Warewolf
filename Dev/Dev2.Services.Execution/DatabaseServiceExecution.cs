@@ -247,7 +247,7 @@ namespace Dev2.Services.Execution
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
                                         var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
-                                        environment.Assign(displayExpression, item.ToString());
+                                        environment.Assign(displayExpression, item.ToString(), 0);
                                     }
 
                                     idx++;
@@ -277,7 +277,7 @@ namespace Dev2.Services.Execution
                                 }
                                 pos++;
                             }
-                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
+                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString(), 0);
                         }
                     }
                 }

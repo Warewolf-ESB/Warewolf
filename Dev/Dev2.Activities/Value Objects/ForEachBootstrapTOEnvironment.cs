@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             {
                 case enForEachType.InRecordset:
                     
-                    var records = compiler.EvalRecordSetIndexes(recordsetName);
+                    var records = compiler.EvalRecordSetIndexes(recordsetName, update);
                     if (!compiler.HasRecordSet(recordsetName) )
                     {
                         errors.AddError("When selecting a recordset only valid recordsets can be used");
@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     
 
-                    var evalledFrom = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from));
+                    var evalledFrom = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from, update));
                     int intFrom;
                     if (!int.TryParse(evalledFrom, out intFrom) || intFrom < 1)
                     {
@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         break;
                     }
 
-                    var evalledTo= Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to));
+                    var evalledTo= Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to, update));
                
                     int intTo;
                     if (!int.TryParse(evalledTo, out intTo) || intTo < 1)
@@ -133,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     break;
                 case enForEachType.InCSV:
-                    var csvIndexedsItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers));
+                    var csvIndexedsItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers, update));
 
                     ErrorResultTO allErrors;
                     List<int> listOfIndexes = SplitOutCsvIndexes(csvIndexedsItr, out allErrors);
@@ -156,7 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     }
 
                     int intExNum;
-                    var numOfExItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes));
+                    var numOfExItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes, update));
 
                     if (!int.TryParse(numOfExItr, out intExNum))
                     {

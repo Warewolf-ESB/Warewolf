@@ -893,12 +893,12 @@ namespace WarewolfParsingTest
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
             // ReSharper restore UnusedVariable
             ExecutionEnvironment  env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
-            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"));
+            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"), update);
             Assert.AreEqual(items.ToArray()[0],1);
 
         }
@@ -925,12 +925,12 @@ namespace WarewolfParsingTest
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
             // ReSharper restore UnusedVariable
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
-            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"));
+            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"), update);
 
             IEnumerable<int> enumerable = items as int[] ?? items.ToArray();
             Assert.AreEqual(enumerable.ToArray()[0], 1);
@@ -948,15 +948,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(1)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(1)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "26");
@@ -975,15 +975,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(3)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(3)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "25");
@@ -1002,15 +1002,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(3)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(3)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "26");
@@ -1028,15 +1028,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(3)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(3)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "26");
@@ -1058,15 +1058,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(2)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(2)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "25");
@@ -1087,20 +1087,20 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(2)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(2)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "25");
 
-            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]", update);
 
 
             Assert.AreEqual(items[0], "26");
@@ -1119,30 +1119,30 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), update);
 
 
-            env.EvalDelete("[[rec(2)]]");
+            env.EvalDelete("[[rec(2)]]", update);
         
-            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
-            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"), update);
 
 
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
             Assert.AreEqual(items[0], "yyy");
             Assert.AreEqual(items[1], "24");
             Assert.AreEqual(items[2], "1");
             Assert.AreEqual(items[3], "aaa");
-            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]", update);
             Assert.AreEqual(items[0], "xxx");
             Assert.AreEqual(items[1], "22");
             Assert.AreEqual(items[2], "27");
@@ -1165,32 +1165,32 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), update);
 
 
-            env.EvalDelete("[[rec(2)]]");
+            env.EvalDelete("[[rec(2)]]", update);
 
-            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
-            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"), update);
 
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
             Assert.AreEqual(items[0], "yyy");
             Assert.AreEqual(items[1], "24");
             Assert.AreEqual(items[2], "1");
             Assert.AreEqual(items[3], "222");
             Assert.AreEqual(items[4], "aaa");
-            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]", update);
             Assert.AreEqual(items[0], "xxx");
             Assert.AreEqual(items[1], "22");
             Assert.AreEqual(items[2], "27");
@@ -1213,32 +1213,32 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), update);
 
 
-            env.EvalDelete("[[rec(2)]]");
+            env.EvalDelete("[[rec(2)]]", update);
 
-            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
-            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
-            env.EvalDelete("[[rec(7)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"), update);
+            env.EvalDelete("[[rec(7)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
             Assert.AreEqual(items[0], "yyy");
             Assert.AreEqual(items[1], "24");
             Assert.AreEqual(items[2], "1");
 
             Assert.AreEqual(items[3], "aaa");
-            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]", update);
             Assert.AreEqual(items[0], "xxx");
             Assert.AreEqual(items[1], "22");
             Assert.AreEqual(items[2], "27");
@@ -1263,33 +1263,33 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), update);
 
 
-            env.EvalDelete("[[rec(2)]]");
+            env.EvalDelete("[[rec(2)]]", update);
 
-            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
-            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
-            env.EvalDelete("[[rec(7)]]");
-            env.EvalDelete("[[rec()]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"), update);
+            env.EvalDelete("[[rec(7)]]", update);
+            env.EvalDelete("[[rec()]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
             Assert.AreEqual(items[0], "yyy");
             Assert.AreEqual(items[1], "24");
             Assert.AreEqual(items[2], "1");
 
    
-            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]", update);
             Assert.AreEqual(items[0], "xxx");
             Assert.AreEqual(items[1], "22");
             Assert.AreEqual(items[2], "27");
@@ -1312,27 +1312,27 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
-            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), update);
 
 
-            env.EvalDelete("[[rec(2)]]");
+            env.EvalDelete("[[rec(2)]]", update);
 
-            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
-            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
-            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
-            env.EvalDelete("[[rec(7)]]");
-            env.EvalDelete("[[rec(*)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"), update);
+            env.EvalDelete("[[rec(7)]]", update);
+            env.EvalDelete("[[rec(*)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
             Assert.AreEqual(items.Count, 0);
 
 
@@ -1358,15 +1358,15 @@ namespace WarewolfParsingTest
 
 
             ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
-            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
-            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"), update);
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "28"), update);
 
 
 
-            env.EvalDelete("[[rec(2)]]");
-            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            env.EvalDelete("[[rec(2)]]", update);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", update);
 
 
             Assert.AreEqual(items[0], "25");

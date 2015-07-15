@@ -20,7 +20,7 @@ namespace Dev2.Services.Execution
         string InstanceInputDefinitions { get; set; }
 
         void BeforeExecution(ErrorResultTO errors);
-        Guid Execute(out ErrorResultTO errors);
+        Guid Execute(out ErrorResultTO errors, int update);
         void AfterExecution(ErrorResultTO errors);
     }
 }

@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             List<DebugItem> result = new List<DebugItem>();
             DebugItem itemToAdd = new DebugItem();
@@ -60,9 +60,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             InitializeDebug(context.GetExtension<IDSFDataObject>());
-            DispatchDebugState(dataObject, StateType.Before);
+            DispatchDebugState(dataObject, StateType.Before, 0);
 
-            DispatchDebugState(dataObject, StateType.After);
+            DispatchDebugState(dataObject, StateType.After, 0);
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -94,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
         }
 
