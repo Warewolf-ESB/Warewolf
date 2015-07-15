@@ -39,23 +39,21 @@ namespace Example_Shipper
                     data = data.Replace("ResourceType=\"WorkflowService\"", "ResourceType=\"Unknown\"");
 
                     // set the server ID
-                    StringBuilder buildNewServerID = new StringBuilder();
-                    buildNewServerID.Append(data.Substring(0,data.IndexOf("ServerID=\"")+"ServerID=\"".Length));
-                    buildNewServerID.Append("51A58300-7E9D-4927-A57B-E5D700B11B55");
-                    int restOfDefinitionStartIndex = data.IndexOf("ServerID=\"") + "ServerID=\"".Length + Guid.Empty.ToString().Length;
-                    buildNewServerID.Append(data.Substring(restOfDefinitionStartIndex,data.Length-restOfDefinitionStartIndex));
-                    data = buildNewServerID.ToString();
+                    if (!data.Contains("ServerID=\"51A58300-7E9D-4927-A57B-E5D700B11B55\""))
+                    {
+                        StringBuilder buildNewServerID = new StringBuilder();
+                        buildNewServerID.Append(data.Substring(0, data.IndexOf("ServerID=\"") + "ServerID=\"".Length));
+                        buildNewServerID.Append("51A58300-7E9D-4927-A57B-E5D700B11B55");
+                        int restOfDefinitionStartIndex = data.IndexOf("ServerID=\"") + "ServerID=\"".Length + Guid.Empty.ToString().Length;
+                        buildNewServerID.Append(data.Substring(restOfDefinitionStartIndex, data.Length - restOfDefinitionStartIndex));
+                        data = buildNewServerID.ToString();
+                    }
 
                     if (data.Contains("<Signature"))
                     {
                         // remove the signature ;)
                         var buildWithoutSignature = new StringBuilder();
                         buildWithoutSignature.Append(data.Substring(0, data.IndexOf("<Signature", StringComparison.Ordinal)));
-
-                        if (data.Contains("</Actions>"))
-                        {
-                            buildWithoutSignature.Append("</Actions>");
-                        }
 
                         if (data.Contains("</Source>"))
                         {
