@@ -219,7 +219,7 @@ and ParseLanguageExpressionWithoutUpdate  (lang:string) : LanguageExpression=
     then 
         let exp = ParseCache.TryFind lang
         match exp with 
-        | Some a ->  a
+        | Some a  ->  a
         | None -> 
                     let lexbuf = LexBuffer<string>.FromString lang 
                     let buffer = Parser.start Lexer.tokenstream lexbuf
@@ -326,7 +326,7 @@ and  ReduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
     let lang = langs.Trim() 
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
-                    | Some a ->  a
+                    | Some a  when update = 0 ->  a
                     | _->    
                         let temp = ParseLanguageExpression lang update
                         temp
@@ -374,7 +374,7 @@ and  EvalForDataMerge  (env: WarewolfEnvironment) (update:int) (lang:string) : W
     
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
-                    | Some a ->  a
+                    | Some a  when update = 0 ->  a
                     | _->    
                         let temp = ParseLanguageExpression lang update
                         temp
@@ -390,7 +390,7 @@ and  EvalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : 
     let lang = langs.Trim() 
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
-                    | Some a ->  a
+                    | Some a  when update = 0 ->  a
                     | _->    
                         let temp = ParseLanguageExpression lang update
                         temp
@@ -404,7 +404,7 @@ and  EvalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : 
                                     | IndexExpression exp -> match exp with
                                                                 | WarewolfAtomAtomExpression a -> lang
                                                                 |_->     sprintf "[[%s(%s).%s]]" a.Name (Eval  env update  (LanguageExpressionToString exp)|> EvalResultToString) a.Column  
-                                    | _->lang
+                                    | _->buffer |> LanguageExpressionToString
         | _ -> lang
 
 
@@ -429,7 +429,7 @@ and  EvalWithPositions  (env: WarewolfEnvironment)  (update:int)  (lang:string) 
     
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
-                    | Some a ->  a
+                    | Some a  when update = 0 ->  a
                     | _->    
                         let temp = ParseLanguageExpression lang update
                         temp
@@ -466,7 +466,7 @@ and  EvalIndexes  (env: WarewolfEnvironment) (update:int)  (lang:string) =
             failwith "not a recordset"
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
-                    | Some a ->  a
+                    | Some a  when update = 0  ->  a
                     | _->    
                         let temp = ParseLanguageExpression lang update
                         temp

@@ -116,7 +116,7 @@ namespace Dev2.Runtime.ESB
             var time = new System.Diagnostics.Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
-
+            int update = 0;
             // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
             if(dataObject.Environment.HasErrors())
             {
@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ESB
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
-                                result = container.Execute(out invokeErrors);
+                                result = container.Execute(out invokeErrors, update);
                                 errors.MergeErrors(invokeErrors);
                             }
                             #endregion

@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
                 {
                     if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                     {
-                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2));
+                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2), 0);
                     }
                     row++;
                 }
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         public void ThenTheLengthResultShouldBe(string expectedResult)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]"));
+            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]",0));
             expectedResult = expectedResult.Replace('"', ' ').Trim();
            
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;

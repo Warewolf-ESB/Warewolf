@@ -204,6 +204,9 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
+
+
+            int update = 0;
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
@@ -307,12 +310,12 @@ namespace Dev2.Runtime.ESB.Control
 
        
 
-        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
             errors = null;
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
-            executionContainer.PerformLogExecution(uri);
+            executionContainer.PerformLogExecution(uri, update);
         }
 
         /// <summary>
@@ -323,8 +326,9 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
@@ -342,7 +346,7 @@ namespace Dev2.Runtime.ESB.Control
             if(dataObject.RunWorkflowAsync)
             {
                 _doNotWipeDataList = true;
-                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors);
+                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
                 errors.MergeErrors(invokeErrors);
             }
             else
@@ -369,8 +373,8 @@ namespace Dev2.Runtime.ESB.Control
                     {
                         executionContainer.InstanceInputDefinition = inputDefs;
                         executionContainer.InstanceOutputDefinition = outputDefs;
-                        executionContainer.Execute(out invokeErrors);
-                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
+                        executionContainer.Execute(out invokeErrors, update);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update);
                         errors.MergeErrors(invokeErrors);
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -383,7 +387,7 @@ namespace Dev2.Runtime.ESB.Control
             return new ExecutionEnvironment();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
@@ -419,7 +423,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
         {
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();
@@ -446,7 +450,7 @@ namespace Dev2.Runtime.ESB.Control
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        executionContainer.Execute(out error);
+                        executionContainer.Execute(out error, update);
                         return clonedDataObject;
                     }).ContinueWith(task =>
                     {
@@ -529,13 +533,13 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors)
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, int update)
         {
             var serviceID = dataObject.ResourceID;
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
-            var curDlid = generateInvokeContainer.Execute(out errors);
+            var curDlid = generateInvokeContainer.Execute(out errors, update);
             var compiler = DataListFactory.CreateDataListCompiler();
             var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
             var jsonSerializerSettings = new JsonSerializerSettings();

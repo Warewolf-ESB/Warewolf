@@ -87,7 +87,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 if (DataListUtil.IsValueRecordset(variable))
                 {
-                    result.Environment.EvalAsListOfStrings(variable);
+                    result.Environment.EvalAsListOfStrings(variable, 0);
                 }
                 else
                 {
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                var recordSetValues =result.Environment.EvalAsListOfStrings(variable);
+                var recordSetValues = result.Environment.EvalAsListOfStrings(variable, 0);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 

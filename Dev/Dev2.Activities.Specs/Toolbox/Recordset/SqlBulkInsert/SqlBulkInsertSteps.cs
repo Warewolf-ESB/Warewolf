@@ -118,7 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 {
                     var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
                     var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
-                    DataObject.Environment.AssignWithFrame(assignValue);
+                    DataObject.Environment.AssignWithFrame(assignValue, 0);
                     i++;
                 }
                 DataObject.Environment.CommitAssign();

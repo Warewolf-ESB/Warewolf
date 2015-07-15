@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
             throw new NotImplementedException();
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject,int update)
         {
         }
     }

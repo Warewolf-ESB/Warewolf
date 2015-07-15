@@ -18,7 +18,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
             //------------Assert Results-------------------------
@@ -32,13 +32,13 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[rec().a]]", "Test", update);
-            env.Assign("[[rec().a]]", "Test2", update);
-            env.Assign("[[rec().a]]", "Test4", update);
-            env.Assign("[[rec().a]]", "Test5", update);
+            env.Assign("[[rec().a]]", "Test", 0);
+            env.Assign("[[rec().a]]", "Test2", 0);
+            env.Assign("[[rec().a]]", "Test4", 0);
+            env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
@@ -53,13 +53,13 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[rec().a]]", "Test", update);
-            env.Assign("[[rec().a]]", "Test2", update);
-            env.Assign("[[rec().a]]", "Test4", update);
-            env.Assign("[[rec().a]]", "Test5", update);
+            env.Assign("[[rec().a]]", "Test", 0);
+            env.Assign("[[rec().a]]", "Test2", 0);
+            env.Assign("[[rec().a]]", "Test4", 0);
+            env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
@@ -78,13 +78,13 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[rec().a]]", "Test", update);
-            env.Assign("[[rec().a]]", "Test2", update);
-            env.Assign("[[rec().a]]", "Test4", update);
-            env.Assign("[[rec().a]]", "Test5", update);
+            env.Assign("[[rec().a]]", "Test", 0);
+            env.Assign("[[rec().a]]", "Test2", 0);
+            env.Assign("[[rec().a]]", "Test4", 0);
+            env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(3).a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(3).a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
@@ -103,10 +103,10 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[rec().a]]", "Test", update);
+            env.Assign("[[rec().a]]", "Test", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
@@ -125,10 +125,10 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[a]]", "Test", update);
+            env.Assign("[[a]]", "Test", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var value = warewolfListIterator.FetchNextValue(warewolfIterator);
@@ -148,13 +148,13 @@ namespace Dev2.Data.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            env.Assign("[[rec().a]]", "Test", update);
-            env.Assign("[[rec().a]]", "Test2", update);
-            env.Assign("[[rec().a]]", "Test4", update);
-            env.Assign("[[rec().a]]", "Test5", update);
+            env.Assign("[[rec().a]]", "Test", 0);
+            env.Assign("[[rec().a]]", "Test2", 0);
+            env.Assign("[[rec().a]]", "Test4", 0);
+            env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
             var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", update));
+            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
             warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
             var hasMoreData = warewolfListIterator.HasMoreData();

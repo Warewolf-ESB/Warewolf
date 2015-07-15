@@ -232,6 +232,7 @@ namespace Dev2.DynamicServices
         }
 
         public IEsbChannel EsbChannel { get; set; }
+        public int ForEachUpdateValue { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 

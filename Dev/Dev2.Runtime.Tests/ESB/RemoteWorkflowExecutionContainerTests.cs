@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ESB
             var container = CreateExecutionContainer(resourceCatalog.Object);
 
             ErrorResultTO errors;
-            container.Execute(out errors);
+            container.Execute(out errors, 0);
 
             Assert.AreEqual(_connection.WebAddress, container.GetRequestUri, "ExecuteGetRequest did not fetch web address from resource catalog connection.");
             Assert.AreEqual(_connection.WebAddress, container.FetchRemoteDebugItemsUri, "FetchRemoteDebugItems did not fetch web address from resource catalog connection.");
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.ESB
             var container = CreateExecutionContainer(resourceCatalog.Object);
 
             ErrorResultTO errors;
-            container.Execute(out errors);
+            container.Execute(out errors, 0);
 
             Assert.AreEqual("Server source not found.", errors.MakeDisplayReady(), "Execute did not return an error for a non-existent resource catalog connection.");
         }
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.ESB
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object);
             //------------Execute Test---------------------------
-            container.PerformLogExecution(LogUri);
+            container.PerformLogExecution(LogUri, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(LogUri, container.LogExecutionUrl);
         }
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Runtime.ESB
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Err/></DataList>", "<root><ADL><Err>Error Message</Err></ADL></root>");
             //------------Execute Test---------------------------
-            container.PerformLogExecution(LogUri);
+            container.PerformLogExecution(LogUri, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
 
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime.ESB
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Errors><Err></Err></Errors></DataList>", "<root><ADL><Errors><Err>Error Message</Err></Errors></ADL></root>");
             //------------Execute Test---------------------------
-            container.PerformLogExecution(LogUri);
+            container.PerformLogExecution(LogUri, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
         }
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Runtime.ESB
             dataObj.Setup(d => d.ServiceName).Returns("Test");
             dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
             dataObj.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj.Object,new StringBuilder(dataListData),dataListShape, update);
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj.Object,new StringBuilder(dataListData),dataListShape, 0);
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();

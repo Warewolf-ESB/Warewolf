@@ -96,5 +96,6 @@ namespace Dev2
         void PushEnvironment(IExecutionEnvironment env);
 
         IEsbChannel EsbChannel { get; set; }
+        int ForEachUpdateValue { get; set; }
     }
 }

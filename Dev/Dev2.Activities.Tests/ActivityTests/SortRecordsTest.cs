@@ -412,7 +412,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestData = ActivityStrings.SortDataList;
             IDSFDataObject result = ExecuteProcess(isDebug:true);
-            var debug = act.GetDebugInputs(null, update);
+            var debug = act.GetDebugInputs(null, 0);
             Assert.AreEqual(debug.Count,2);
             // remove test datalist ;)
         }
@@ -439,7 +439,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
             // remove test datalist ;)
-            var debugOut = act.GetDebugOutputs(null, update);
+            var debugOut = act.GetDebugOutputs(null, 0);
             Assert.AreEqual(1,debugOut.Count);
             Assert.AreEqual(10,debugOut[0].ResultsList.Count);
         }
@@ -464,7 +464,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           );
             IDSFDataObject result = ExecuteProcess(isDebug: true);
             // remove test datalist ;)
-            var debugOut = act.GetDebugOutputs(null, update);
+            var debugOut = act.GetDebugOutputs(null, 0);
             Assert.AreEqual(0, debugOut.Count);
         }
         #region Private Test Methods

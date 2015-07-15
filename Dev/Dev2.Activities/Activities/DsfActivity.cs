@@ -427,7 +427,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
             return Guid.NewGuid();
         }

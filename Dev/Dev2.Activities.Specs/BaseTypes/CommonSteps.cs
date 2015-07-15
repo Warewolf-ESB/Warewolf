@@ -496,7 +496,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             catch
             {
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<bool>>("activity");
-                return activity.GetDebugInputs(result.Environment)
+                return activity.GetDebugInputs(result.Environment, 0)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
@@ -505,7 +505,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
-            return dsfActivityAbstractString.GetDebugInputs(dl)
+            return dsfActivityAbstractString.GetDebugInputs(dl, 0)
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
@@ -518,7 +518,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             try
             {
                 var activity = act as DsfActivityAbstract<string> ?? ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return activity.GetDebugOutputs(dl)
+                return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
@@ -526,7 +526,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
 
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<bool>>("activity");
-                return activity.GetDebugOutputs(dl)
+                return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }

@@ -250,7 +250,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
-                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors, update);
                     if(tmpErrors != null)
                     {
                         dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());

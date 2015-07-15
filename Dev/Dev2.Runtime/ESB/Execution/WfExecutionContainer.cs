@@ -53,8 +53,9 @@ namespace Dev2.Runtime.ESB.Execution
         /// Executes the specified errors.
         /// </summary>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
@@ -144,7 +145,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            EvalInner(dataObject, resource);
+            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
            
         }
         
@@ -166,7 +167,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, update), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, 0), itemToAdd); //todo:confirm
                 results.Add(itemToAdd);
             }
 
@@ -189,14 +190,14 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
-        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject)
+        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject,int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            EvalInner(dsfDataObject, resource);
+            EvalInner(dsfDataObject, resource, update);
         }
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)
         {
             var next = resource.Execute(dsfDataObject, update);
             while(next != null)

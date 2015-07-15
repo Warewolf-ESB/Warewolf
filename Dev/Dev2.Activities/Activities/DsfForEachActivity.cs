@@ -234,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, 0);
 
                     if(errors.HasErrors())
                     {
@@ -244,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before, update);
+                        DispatchDebugState(dataObject, StateType.Before, 0);
                     }
 
                     dataObject.ParentInstanceID = UniqueID;
@@ -300,7 +300,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.After, update);
+                        DispatchDebugState(dataObject, StateType.After, 0);
                     }
                 }
             }
@@ -509,12 +509,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         /// <summary>
         /// Fetches the type of the execution.
-        /// </summary>        
+        /// </summary>
         /// <param name="dataObject">The data object.</param>
         /// <param name="environment"></param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
         {
             if(dataObject.IsDebugMode())
             {
@@ -551,7 +552,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors, update);
 
             return result;
 
@@ -801,7 +802,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
 
                     var itr = exePayload.IndexIterator;
                     string error;
@@ -827,12 +828,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         operationalData = exePayload;
                         int idx = exePayload.IndexIterator.FetchNextIndex();
+                        int innerupdate = 0;
                         if(exePayload.ForEachType != enForEachType.NumOfExecution)
                         {
-                            IterateIOMapping(idx);
+                            //IterateIOMapping(idx);
+                            innerupdate = idx;
                         }
 
-                        exeAct.Execute(dataObject, update);
+                        exeAct.Execute(dataObject, innerupdate);
 
                         count++;
                         operationalData.IncIterationCount();

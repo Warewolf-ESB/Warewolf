@@ -309,12 +309,12 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             return Guid.NewGuid();
         }
 
-        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, int update)
         {
             throw new NotImplementedException();
         }
 
-        public string FindServiceShape(Guid workspaceID, string serviceName)
+        public string FindServiceShape(Guid workspaceID, string serviceName, int update)
         {
             throw new NotImplementedException();
         }
@@ -343,12 +343,12 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         }
 
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri,
-                                           out ErrorResultTO errors)
+                                           out ErrorResultTO errors, int update)
         {
             throw new NotImplementedException();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
         {
             return null;
         }
@@ -360,7 +360,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         #endregion
 
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
-                                      out ErrorResultTO errors)
+                                      out ErrorResultTO errors, int update)
         {
             List<string> inputList;
             List<string> outputList;

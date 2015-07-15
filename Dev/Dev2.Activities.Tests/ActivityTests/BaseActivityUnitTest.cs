@@ -190,7 +190,7 @@ namespace ActivityUnitTests
                     };
 
                 }
-                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, update);
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
                 dataObject.IsDebug = isDebug;
 
                 // we now need to set a thread ID ;)
@@ -217,7 +217,7 @@ namespace ActivityUnitTests
                 dataObject.ResourceID = Guid.NewGuid();
             }
             dataObject.Environment = DataObject.Environment;
-            wfec.Eval(FlowchartProcess,dataObject.ResourceID,dataObject);
+            wfec.Eval(FlowchartProcess,dataObject.ResourceID,dataObject, 0);
             DataObject = dataObject;
             return dataObject;
         }
@@ -265,12 +265,12 @@ namespace ActivityUnitTests
 
             // we need to set this now ;)
 
-            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Verifiable();
+            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0)).Verifiable();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
-            wfec.Eval(FlowchartProcess,Guid.NewGuid(),dataObject);
+            wfec.Eval(FlowchartProcess,Guid.NewGuid(),dataObject, 0);
 
             return mockChannel;
         }
@@ -317,7 +317,7 @@ namespace ActivityUnitTests
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, channel);
 
             errors.ClearErrors();
-            dataObject.DataListID = wfec.Execute(out errors);
+            dataObject.DataListID = wfec.Execute(out errors, 0);
 
         }
 
@@ -345,8 +345,8 @@ namespace ActivityUnitTests
             var result = ExecuteProcess(null, true, null, isRemoteInvoke);
             if(result != null)
             {
-                inputResults = activity.GetDebugInputs(result.Environment, update);
-                outputResults = activity.GetDebugOutputs(result.Environment, update);
+                inputResults = activity.GetDebugInputs(result.Environment, 0);
+                outputResults = activity.GetDebugOutputs(result.Environment, 0);
 
                
             }
@@ -373,8 +373,8 @@ namespace ActivityUnitTests
             outputResults = null;
             if(result != null)
             {
-                inputResults = activity.GetDebugInputs(result.Environment, update);
-                outputResults = activity.GetDebugOutputs(result.Environment, update);
+                inputResults = activity.GetDebugInputs(result.Environment, 0);
+                outputResults = activity.GetDebugOutputs(result.Environment, 0);
 
                 
             }
@@ -444,7 +444,7 @@ namespace ActivityUnitTests
             }
             try
             {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve), update));
+                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve), 0));
             }
             catch( Exception err)
             {
@@ -465,7 +465,7 @@ namespace ActivityUnitTests
                 {
                     variableName = DataListUtil.CreateRecordsetDisplayValue(recordSet, fieldNameToRetrieve, "*");
                 }
-                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName), update);
+                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName), 0);
 
                 if (warewolfEvalResult == null)
                 {
@@ -495,7 +495,7 @@ namespace ActivityUnitTests
 
         protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
         {
-            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]", update);
+            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]", 0);
             error = "";
             var retrieveAllRecordSetFieldValues = (List<string>)retVals;
             return retrieveAllRecordSetFieldValues.Where(s => !string.IsNullOrEmpty(s)).ToList();
