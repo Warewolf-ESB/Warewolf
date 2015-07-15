@@ -8,16 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Services.Sql

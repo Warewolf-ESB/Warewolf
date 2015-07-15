@@ -14,6 +14,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -47,14 +48,14 @@ namespace Dev2.Data.ServiceModel
 
         public Connection()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.Server;
+            ResourceType = ResourceType.Server;
             VersionInfo = new VersionInfo();
         }
 
         public Connection(XElement xml)
             : base(xml)
          {
-            ResourceType = Common.Interfaces.Data.ResourceType.Server;
+            ResourceType = ResourceType.Server;
 
             var connectionString = xml.AttributeSafe("ConnectionString");
             var props = connectionString.Split(';');

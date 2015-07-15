@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -29,7 +30,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             MismatchVisibilityValue = Visibility.Collapsed;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value == null || value.GetType() != Type)
             {
@@ -39,7 +40,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return MatchingVisibilityValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

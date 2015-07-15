@@ -13,10 +13,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests

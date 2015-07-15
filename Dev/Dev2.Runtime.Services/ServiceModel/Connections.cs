@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -231,7 +232,7 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var principle = System.Threading.Thread.CurrentPrincipal;
+            var principle = Thread.CurrentPrincipal;
             var identity = principle.Identity as WindowsIdentity;
             WindowsImpersonationContext context = null;
 

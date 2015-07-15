@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 
@@ -33,12 +34,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return _dataListViewModels;
         }
 
-        public ICollection<IDataListViewModel> Find(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression)
+        public ICollection<IDataListViewModel> Find(Expression<Func<IDataListViewModel, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public IDataListViewModel FindSingle(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression)
+        public IDataListViewModel FindSingle(Expression<Func<IDataListViewModel, bool>> expression)
         {
             throw new NotImplementedException();
         }

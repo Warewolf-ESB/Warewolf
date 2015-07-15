@@ -11,7 +11,11 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Permissions;
+using System.Windows;
+using Castle.DynamicProxy.Generators;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
@@ -32,7 +36,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
         }
 
         [TestMethod]
@@ -100,7 +104,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_GetDataReturnsExplorerItemModelWorkflowService_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.WorkflowService };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
@@ -117,7 +121,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_LocalResourceOnRemoteDesignSurface_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService,EnvironmentId = Guid.NewGuid()};
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.WorkflowService,EnvironmentId = Guid.NewGuid()};
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
             var differentEnvironment = new Mock<IEnvironmentModel>();
@@ -139,7 +143,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView());
 
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbSource };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbSource };
             //------------Execute Test---------------------------
             bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ExplorerItemModel" }, data));
             //------------Assert Results-------------------------
@@ -151,7 +155,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var environmentMock = new Mock<IEnvironmentModel>();
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService, EnvironmentId = environmentMock.Object.ID };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.WorkflowService, EnvironmentId = environmentMock.Object.ID };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             dataContext.Setup(model => model.EnvironmentModel).Returns(environmentMock.Object);
 
@@ -170,7 +174,7 @@ namespace Dev2.Core.Tests
             object dataContext = new object();
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext));
 
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbService };
             //------------Execute Test---------------------------
             bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ExplorerItemModel" }, data));
             //------------Assert Results-------------------------
@@ -186,7 +190,7 @@ namespace Dev2.Core.Tests
             object dataContext = new object();
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext));
 
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbService };
             //------------Execute Test---------------------------
             bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "WorkflowItemTypeNameFormat" }, data));
             //------------Assert Results-------------------------
@@ -200,7 +204,7 @@ namespace Dev2.Core.Tests
             var environmentMock = new Mock<IEnvironmentModel>();
             Guid guid = Guid.NewGuid();
             environmentMock.Setup(model => model.ID).Returns(guid);
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbService, EnvironmentId = environmentMock.Object.ID };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbService, EnvironmentId = environmentMock.Object.ID };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             dataContext.Setup(model => model.EnvironmentModel).Returns(environmentMock.Object);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
@@ -217,7 +221,7 @@ namespace Dev2.Core.Tests
             var environmentMock = new Mock<IEnvironmentModel>();
             Guid guid = Guid.NewGuid();
             environmentMock.Setup(model => model.ID).Returns(guid);
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbService, EnvironmentId = environmentMock.Object.ID };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbService, EnvironmentId = environmentMock.Object.ID };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.NewGuid());
@@ -235,7 +239,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_WorkflowDesignerView_DataContextIsNotWorkflowDesignerViewModel_True()
         {
             //------------Setup for test--------------------------
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.DbService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.DbService };
 
             var dataContext = new object();
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext));
@@ -253,7 +257,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_UserIsAuthorized_False()
         {
             //------------Setup for test--------------------------
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = ResourceType.WorkflowService };
 
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
@@ -274,7 +278,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_UserIsNotAuthorized_True()
         {
             //------------Setup for test--------------------------
-            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.View, ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService };
+            var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.View, ResourceType = ResourceType.WorkflowService };
 
             var dataContext = new object();
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext));
@@ -286,27 +290,27 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(canDoDrop);
         }
 
-        System.Windows.IDataObject GetMockDataObjectWithFormatData(string[] formats, object data)
+        IDataObject GetMockDataObjectWithFormatData(string[] formats, object data)
         {
-            var mock = new Mock<System.Windows.IDataObject>();
+            var mock = new Mock<IDataObject>();
             mock.Setup(d => d.GetFormats()).Returns(formats);
             mock.Setup(d => d.GetData(It.IsAny<string>())).Returns(data);
             return mock.Object;
         }
 
-        System.Windows.IDataObject GetMockDataObjectWithFormatNoData(string[] formats)
+        IDataObject GetMockDataObjectWithFormatNoData(string[] formats)
         {
             return GetMockDataObjectWithFormatData(formats, null);
         }
 
-        System.Windows.IDataObject GetMockDataObjectWithFormat(string[] formats)
+        IDataObject GetMockDataObjectWithFormat(string[] formats)
         {
-            var mock = new Mock<System.Windows.IDataObject>();
+            var mock = new Mock<IDataObject>();
             mock.Setup(d => d.GetFormats()).Returns(formats);
             return mock.Object;
         }
 
-        System.Windows.IDataObject GetMockDataObjectNoFormats()
+        IDataObject GetMockDataObjectNoFormats()
         {
             return GetMockDataObjectWithFormat(new string[0]);
         }

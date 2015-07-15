@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Common;
 
 namespace WarewolfParserInterop
 {
@@ -141,7 +143,7 @@ namespace WarewolfParserInterop
 
       // ReSharper restore FunctionNeverReturns
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -152,14 +154,14 @@ namespace WarewolfParserInterop
             {
                 if (i < _count)
                     return _values[i];
-                throw new Dev2.Common.Common.NullValueInVariableException("the recordset does not have the row"+i,"");
+                throw new NullValueInVariableException("the recordset does not have the row"+i,"");
             }
             set {
                 if (i < _count)
                     _values[i] = value;
                 else if (i == Count)
                     AddSomething(value);
-                else throw new Dev2.Common.Common.NullValueInVariableException("the recordset does not have the row" + i, "");
+                else throw new NullValueInVariableException("the recordset does not have the row" + i, "");
                 
             }
         }

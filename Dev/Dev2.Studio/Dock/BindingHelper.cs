@@ -12,6 +12,7 @@
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Xml;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Dock
@@ -73,7 +74,7 @@ namespace Dev2.Studio.Dock
         private static bool IsXmlNodeHelper(object item)
         {
             _xmlLoaded = true;
-            return item is System.Xml.XmlNode;
+            return item is XmlNode;
         }
         #endregion //IsXmlNode
 

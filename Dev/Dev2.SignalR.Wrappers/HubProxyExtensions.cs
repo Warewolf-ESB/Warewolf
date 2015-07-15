@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNet.SignalR.Client;
-
-namespace Dev2.SignalR.Wrappers
+﻿namespace Dev2.SignalR.Wrappers
 {
     /// <summary>
     /// Extensions to the <see cref="IHubProxy"/>.

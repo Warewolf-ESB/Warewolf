@@ -246,7 +246,7 @@ namespace Dev2.Services.Execution
 
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
-                                        var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
+                                        var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
                                         environment.Assign(displayExpression, item.ToString());
                                     }
 

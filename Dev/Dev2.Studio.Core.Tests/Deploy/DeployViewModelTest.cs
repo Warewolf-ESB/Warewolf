@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
@@ -490,7 +491,7 @@ namespace Dev2.Core.Tests
             var treeParent = new ExplorerItemModel
             {
                 DisplayName = "Test Category",
-                ResourceType = Common.Interfaces.Data.ResourceType.Folder,
+                ResourceType = ResourceType.Folder,
                 IsDeploySourceExpanded = false
             };
             const string expectedResourceName = "Test Resource";
@@ -566,7 +567,7 @@ namespace Dev2.Core.Tests
             var treeParent = new ExplorerItemModel
             {
                 DisplayName = "Test Category",
-                ResourceType = Common.Interfaces.Data.ResourceType.Folder,
+                ResourceType = ResourceType.Folder,
                 IsDeploySourceExpanded = false
             };
             const string expectedResourceName = "Test Resource";

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Dev2.Runtime.WebServer.Hubs;
+using System.Threading;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Network;
@@ -53,7 +53,7 @@ namespace ConsoleApplicationToTestNetwork
                         timingsPerRound.Add(elapsed.TotalMilliseconds);
 
                         // give the server time to clear it's queue 
-                        System.Threading.Thread.Sleep((int)Math.Round(elapsed.TotalMilliseconds) * 2);
+                        Thread.Sleep((int)Math.Round(elapsed.TotalMilliseconds) * 2);
                     }
                     string toAdd = string.Format("{0}, {1}", sb.Length, timingsPerRound.Sum() / roundsPerPacketStep);
                     Console.WriteLine(toAdd);
@@ -67,7 +67,7 @@ namespace ConsoleApplicationToTestNetwork
                         (int)((tmpSb.Length - sb.Length) * (incrementingFactor - 1))));
                 }
             }
-            System.IO.File.WriteAllLines(outFileName, timings.ToArray());
+            File.WriteAllLines(outFileName, timings.ToArray());
             //Console.ReadKey();
         }
     }

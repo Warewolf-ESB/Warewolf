@@ -14,15 +14,17 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security.Permissions;
 using System.Windows;
+using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Environments;
 using Dev2.Models;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,7 +40,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
         }
 
         [TestMethod]
@@ -465,7 +467,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             SetupEnvironmentRepo(Guid.Empty);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = Common.Interfaces.Data.ResourceType.DbService, EnvironmentId = Guid.Empty });
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = ResourceType.DbService, EnvironmentId = Guid.Empty });
             //------------Execute Test---------------------------
             bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
@@ -521,7 +523,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
                 mockEnvironmentModel.Setup(model => model.Name).Returns("testEnv");
                 var resourceModel = new ResourceModel(mockEnvironmentModel.Object)
                     {
-                        ResourceType = ResourceType.Service,
+                        ResourceType = Studio.Core.AppResources.Enums.ResourceType.Service,
                         ServerResourceType = "DbService",
                         ResourceName = "MyDBService",
                         IconPath = "IconPath"

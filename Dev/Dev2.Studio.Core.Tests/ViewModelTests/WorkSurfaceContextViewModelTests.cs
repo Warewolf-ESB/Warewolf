@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -1231,7 +1232,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             get { throw new NotImplementedException(); }
         }
 
-        public System.Activities.Presentation.WorkflowDesigner Designer
+        public WorkflowDesigner Designer
         {
             get { throw new NotImplementedException(); }
         }

@@ -1,18 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
-using Dev2.Explorer;
 using Dev2.Network;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.SignalR.Wrappers;
-using Dev2.SignalR.Wrappers.New;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

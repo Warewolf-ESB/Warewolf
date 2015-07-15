@@ -25,9 +25,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -221,7 +223,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _timer.Start();
         }
 
-        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void t_Elapsed(object sender, ElapsedEventArgs e)
         {
 
             if (_changeIsPossible)
@@ -1136,7 +1138,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (designerConfigService != null)
                 {
                     // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                    designerConfigService.TargetFrameworkName = new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5));
+                    designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
                     designerConfigService.AutoConnectEnabled = true;
                     designerConfigService.AutoSplitEnabled = true;
                     designerConfigService.PanModeEnabled = true;

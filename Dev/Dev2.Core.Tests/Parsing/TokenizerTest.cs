@@ -13,6 +13,7 @@ using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Parsing.Intellisense;
+using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -573,16 +574,16 @@ namespace Unlimited.UnitTest.Framework.Parsing
         #endregion
 
         #region TestGrammer
-        private sealed class TestGrammer : System.Parsing.SyntaxAnalysis.AbstractSyntaxTreeGrammer<Token, TokenKind, Node>
+        private sealed class TestGrammer : AbstractSyntaxTreeGrammer<Token, TokenKind, Node>
         {
-            private static readonly System.Parsing.SyntaxAnalysis.GrammerGroup _testGroup = new System.Parsing.SyntaxAnalysis.GrammerGroup("Test Grammer");
+            private static readonly GrammerGroup _testGroup = new GrammerGroup("Test Grammer");
 
             private int _operation;
 
-            public System.Parsing.SyntaxAnalysis.ASTGrammerBehaviourRegistry CachedRegistry;
+            public ASTGrammerBehaviourRegistry CachedRegistry;
             public Tokenizer<Token, TokenKind> Tokenizer;
 
-            public override System.Parsing.SyntaxAnalysis.GrammerGroup GrammerGroup { get { return _testGroup; } }
+            public override GrammerGroup GrammerGroup { get { return _testGroup; } }
 
             public TestGrammer(int operation)
             {
@@ -602,12 +603,12 @@ namespace Unlimited.UnitTest.Framework.Parsing
                 }
             }
 
-            protected override Node BuildNode(System.Parsing.SyntaxAnalysis.AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
+            protected override Node BuildNode(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
             {
                 throw new NotImplementedException();
             }
 
-            protected override void OnRegisterTriggers(System.Parsing.SyntaxAnalysis.ASTGrammerBehaviourRegistry triggerRegistry)
+            protected override void OnRegisterTriggers(ASTGrammerBehaviourRegistry triggerRegistry)
             {
                 if(_operation == 1)
                 {

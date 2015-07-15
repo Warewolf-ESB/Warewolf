@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Dev2.AppResources.Converters;
 using Dev2.Common.Interfaces.Data;
@@ -25,7 +26,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         {
             if(!UriParser.IsKnownScheme("pack"))
                 // ReSharper disable ObjectCreationAsStatement
-                new System.Windows.Application();
+                new Application();
             // ReSharper restore ObjectCreationAsStatement
         }
 

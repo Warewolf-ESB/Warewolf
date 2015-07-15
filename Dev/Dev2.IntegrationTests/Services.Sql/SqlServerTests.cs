@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_Connect_InvalidLogin_ThrowsSqlException()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.Password = Guid.NewGuid().ToString(); // Random invalid password
 
             var sqlServer = new SqlServer();
@@ -41,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_Connect_ValidLogin_IsConnectedIsTrue()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var sqlServer = new SqlServer();
             try
@@ -64,7 +65,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_Connect_UserIDInDomainFormat_ConnectionStringIsNotIntegratedSecurityEqualsSSPI()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Dev2\\TestUser";
 
             var sqlServer = new SqlServer();
@@ -97,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchDatabases_SortedListOfNames()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var expected = new List<string>();
             using (var connection = new SqlConnection(dbSource.ConnectionString))
@@ -133,7 +134,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchDataTable_CorrectDataReturned()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var sqlServer = new SqlServer();
             try
@@ -144,7 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 var actual = sqlServer.FetchDataTable(new SqlParameter("@Prefix", "a"));
 
                 //------------Assert Results-------------------------
-                Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.Verify_DataTable_CountriesPrefixIsA(actual);
+                SqlServerTestUtils.Verify_DataTable_CountriesPrefixIsA(actual);
             }
             finally
             {
@@ -158,7 +159,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchDataSet_CorrectDataReturned()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var sqlServer = new SqlServer();
             try
@@ -173,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
                 var actual = actualDataSet.Tables[0];
 
-                Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.Verify_DataTable_CountriesPrefixIsA(actual);
+                SqlServerTestUtils.Verify_DataTable_CountriesPrefixIsA(actual);
             }
             finally
             {
@@ -187,7 +188,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_CreateCommand_TranactionNotStarted_CommandTransactionIsNull()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var sqlServer = new SqlServer();
             try
@@ -213,7 +214,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_CreateCommand_TranactionStarted_CommandTransactionIsNotNull()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             var sqlServer = new SqlServer();
             try
@@ -241,7 +242,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchStoredProcedures_CorrectDataReturned()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             IDbCommand procedureCommand = null;
             List<IDbDataParameter> procedureCommandParameters = null;
@@ -286,8 +287,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
 
             //------------Assert Results-------------------------
-            Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.Verify_FetchStoredProcedures_Pr_CitiesGetCountries(procedureCommand, procedureCommandParameters, procedureHelpText);
-            Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.Verify_FetchStoredProcedures_Fn_Greeting(functionCommand, functionCommandParameters, functionHelpText);
+            SqlServerTestUtils.Verify_FetchStoredProcedures_Pr_CitiesGetCountries(procedureCommand, procedureCommandParameters, procedureHelpText);
+            SqlServerTestUtils.Verify_FetchStoredProcedures_Fn_Greeting(functionCommand, functionCommandParameters, functionHelpText);
         }
 
         [TestMethod]
@@ -296,7 +297,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchStoredProcedures_WithClrTypeStoredProcedure_CorrectDataReturned()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             List<IDbDataParameter> procedureCommandParameters = null;
             string procedureHelpText = null;
@@ -326,7 +327,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
 
             //------------Assert Results-------------------------
-            Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.Verify_FetchStoredProcedures_WarewolfRunForSql(procedureCommandParameters, procedureHelpText);
+            SqlServerTestUtils.Verify_FetchStoredProcedures_WarewolfRunForSql(procedureCommandParameters, procedureHelpText);
         }
 
 
@@ -336,7 +337,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SqlServer_FetchTableValuedFunctions_AssertSelectTextIsDifferent()
         {
             //------------Setup for test--------------------------
-            var dbSource = Dev2.Integration.Tests.Services.Sql.SqlServerTestUtils.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
 
             List<IDbDataParameter> procedureCommandParameters = null;
             string procedureHelpText = null;

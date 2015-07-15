@@ -9,7 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
+using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using Dev2.Network;
 using Dev2.Services.Security;
@@ -18,11 +22,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
-using System.Linq;
-using System.Security.Principal;
 using TechTalk.SpecFlow;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 namespace Dev2.Activities.Specs.Permissions

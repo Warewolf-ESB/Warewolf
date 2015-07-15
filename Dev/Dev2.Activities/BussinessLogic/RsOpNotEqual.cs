@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList
 {
