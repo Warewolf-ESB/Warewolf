@@ -856,7 +856,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(ForEachType != enForEachType.NumOfExecution)
                     {
-                        RestoreHandlerFn();
+                        //RestoreHandlerFn();
                     }
 
                     dataObject.ParentInstanceID = _previousParentId;

@@ -250,38 +250,12 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         [Then(@"The mapping uses the following indexes")]
         public void ThenTheMappingUsesTheFollowingIndexes(Table table)
         {
-            var inputDefs = ScenarioContext.Current.Get<List<string>>("inputDefs");
-            var outputDefs = ScenarioContext.Current.Get<List<string>>("outputDefs");
 
-            var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapFrom);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapFrom);
-            var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
-            string outRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapTo);
-            string outColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapTo);
-
-            int inCount = 0;
-            foreach(string inputDef in inputDefs)
+            var updateValues = ScenarioContext.Current.Get<List<int>>("indexUpdate").Select(a => a.ToString());
+            foreach(var tableRow in table.Rows)
             {
-                XElement inputEle = XElement.Parse(inputDef);
-                var child = inputEle.Descendants("Input").First();
-                string value = child.Attribute("Source").Value;
-                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", inRecordset, table.Rows[inCount][0], inColumn), value);
-                inCount++;
-            }
-
-            int outCount = 0;
-            foreach(string outputDef in outputDefs)
-            {
-                XElement inputEle = XElement.Parse(outputDef);
-                var child = inputEle.Descendants("Output").First();
-                string valueMapsTo = child.Attribute("MapsTo").Value;
-                string valueValue = child.Attribute("Value").Value;
-                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", outRecordset, table.Rows[outCount][0], outColumn),
-                                valueMapsTo);
-                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", outRecordset, table.Rows[outCount][0], outColumn),
-                                valueValue);
-                outCount++;
+              Assert.IsTrue(updateValues.Contains(tableRow[0]));
+              
             }
         }
 
@@ -364,6 +338,12 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         {
             List<string> inputList;
             List<string> outputList;
+            List<int> updateValues;
+            if (!ScenarioContext.Current.TryGetValue("indexUpdate", out updateValues))
+            {
+                updateValues = new List<int>();
+                ScenarioContext.Current.Add("indexUpdate", updateValues);
+            }
 
             if(!ScenarioContext.Current.TryGetValue("inputDefs", out inputList))
             {
@@ -379,7 +359,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
             inputList.Add(inputDefs);
             outputList.Add(outputDefs);
-
+            updateValues.Add(update);
             errors = new ErrorResultTO();
             return dataObject.Environment;
         }
