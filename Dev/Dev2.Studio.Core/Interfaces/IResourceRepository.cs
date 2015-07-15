@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -30,6 +31,7 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceRepository : IDisposable
     {
         List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        Task<List<IResourceModel>> ReloadResourceAsync(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         void Rename(string resourceId, string newName);
         void DeployResource(IResourceModel resource);
@@ -85,5 +87,8 @@ namespace Dev2.Studio.Core.Interfaces
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, AppResources.Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
+        void SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
+
+        void LoadResourceFromWorkspaceAsync(Guid resourceId, Guid? serverWorkspaceID);
     }
 }

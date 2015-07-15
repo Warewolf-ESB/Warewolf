@@ -530,7 +530,7 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId, Guid dataListId)
         {
-            if (payload == null || payload.Length == 0)
+            if(payload == null || payload.Length == 0)
             {
                 throw new ArgumentNullException("payload");
             }
@@ -538,38 +538,31 @@ namespace Dev2.Network
             Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
-            var length = payload.Length;
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
                 PartID = 0,
-                Type = typeof(Envelope)
+                Type = typeof(Envelope),
+                Content = payload.ToString()
             };
 
-            envelope.Content = payload.ToString();
             var result = new StringBuilder();
-            Task<string> invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
-            Wait(invoke, result);
-            if (invoke.IsFaulted)
-            {
-                throw new Exception("Task execution in faulted state.");
-            }
-//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-//            Wait(fragmentInvoke, result);
-//            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-//            {
-//                result.Append(fragmentInvoke.Result);
-//            }
+            var invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
 
-            // prune any result for old datalist junk ;)
-            if (result.Length > 0)
+            Wait(invoke, result);
+            if(invoke.IsFaulted)
+            {
+                throw new Exception("Task execution in faulted state. Error:" + result);
+            }
+            result = new StringBuilder(invoke.Result);
+            if(result.Length > 0)
             {
                 // Only return Dev2System.ManagmentServicePayload if present ;)
                 var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if (start > 0)
+                if(start > 0)
                 {
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start < end && (end - start) > 1)
+                    if(start < end && (end - start) > 1)
                     {
                         // we can return the trimmed payload instead
                         start += (GlobalConstants.ManagementServicePayload.Length + 2);
@@ -579,6 +572,69 @@ namespace Dev2.Network
             }
 
             return result;
+        }
+
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        {
+            if (payload == null || payload.Length == 0)
+            {
+                throw new ArgumentNullException("payload");
+            }
+
+            Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
+
+            // build up payload 
+            var messageId = Guid.NewGuid();
+            var envelope = new Envelope
+            {
+                PartID = 0,
+                Type = typeof(Envelope),
+                Content = payload.ToString()
+            };
+
+            var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId).ConfigureAwait(false);
+//            var continuation = invoke.ContinueWith(task =>
+//            {
+//                if(task.IsFaulted)
+//                {
+//                    throw new Exception("Task execution in faulted state. Error:" + result);
+//                }
+//                result = new StringBuilder(invoke.Result);
+//                if(result.Length > 0)
+//                {
+//                    // Only return Dev2System.ManagmentServicePayload if present ;)
+//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+//                    if(start > 0)
+//                    {
+//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+//                        if(start < end && (end - start) > 1)
+//                        {
+//                            // we can return the trimmed payload instead
+//                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
+//                            return new StringBuilder(result.Substring(start, (end - start)));
+//                        }
+//                    }
+//                }
+//
+//                return result;
+//            });
+//            invoke.Start();
+            return new StringBuilder(invoke);
+//            Wait(invoke, result);
+//            if (invoke.IsFaulted)
+//            {
+//                
+//            }
+            
+//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+//            Wait(fragmentInvoke, result);
+//            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
+//            {
+//                result.Append(fragmentInvoke.Result);
+//            }
+
+            // prune any result for old datalist junk ;)
+            
         }
 
         protected virtual T Wait<T>(Task<T> task, StringBuilder result)

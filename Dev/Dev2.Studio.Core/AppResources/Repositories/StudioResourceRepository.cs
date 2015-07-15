@@ -494,7 +494,7 @@ namespace Dev2.AppResources.Repositories
                 update(item);
         }
 
-        public void ItemAddedMessageHandler(IExplorerItem item)
+        public async void ItemAddedMessageHandler(IExplorerItem item)
         {
             var environmentId = item.ServerId;
             var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
@@ -516,46 +516,45 @@ namespace Dev2.AppResources.Repositories
             // ReSharper restore ImplicitlyCapturedClosure
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
-                resourceRepository.LoadResourceFromWorkspace(item.ResourceId,GlobalConstants.ServerWorkspaceID);
+               resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId,GlobalConstants.ServerWorkspaceID);
 //                if(item.ResourceType == ResourceType.ServerSource)
 //                {
-//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
 //                }
 //                else if(item.ResourceType >= ResourceType.DbSource)
 //                {
-//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
 //                }
 //                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
 //                {
-//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
 //                }
 //                else if(item.ResourceType == ResourceType.WorkflowService)
 //                {
-//                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
 //                }
             }
-           
-                lock(_syncRoot)
-                {
-                    if(parent != null && !alreadyAdded )
-                    {
-                        explorerItem.EnvironmentId = parent.EnvironmentId;
-                        explorerItem.Parent = parent;
-                        if(parent.Children == null)
-                        {
-                            parent.Children = new ObservableCollection<IExplorerItemModel>();
-                        }
-                        if(_currentDispatcher == null)
-                        {
-                            AddChildItem(parent, explorerItem);
-                        }
-                        else
-                        {
-                            PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
 
-                        }
+            lock(_syncRoot)
+            {
+                if(parent != null && !alreadyAdded)
+                {
+                    explorerItem.EnvironmentId = parent.EnvironmentId;
+                    explorerItem.Parent = parent;
+                    if(parent.Children == null)
+                    {
+                        parent.Children = new ObservableCollection<IExplorerItemModel>();
                     }
-                
+                    if(_currentDispatcher == null)
+                    {
+                        AddChildItem(parent, explorerItem);
+                    }
+                    else
+                    {
+                        PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
+
+                    }
+                }
             }
         }
 

@@ -614,6 +614,86 @@ namespace Dev2.Network
 
         }
 
+        public Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        {
+            if (payload == null || payload.Length == 0)
+            {
+                throw new ArgumentNullException("payload");
+            }
+
+            Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
+
+            // build up payload 
+            var length = payload.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+
+            var messageId = Guid.NewGuid();
+            List<Envelope> mailToSend = new List<Envelope>();
+            for (int i = 0; i < rounds; i++)
+            {
+                var envelope = new Envelope { PartID = i, Type = typeof(Envelope) };
+
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if (len > (payload.Length - startIdx))
+                {
+                    len = (payload.Length - startIdx);
+                }
+
+                envelope.Content = payload.Substring(startIdx, len);
+                startIdx += len;
+
+                mailToSend.Add(envelope);
+            }
+
+            // Send and receive chunks from the server ;)
+            var result = new StringBuilder();
+            for (int i = 0; i < mailToSend.Count; i++)
+            {
+                bool isEnd = (i + 1 == mailToSend.Count);
+                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, dataListId, messageId);
+                Wait(invoke, result);
+                if (invoke.IsFaulted)
+                {
+                    break;
+                }
+                // now build up the result in fragments ;)
+                if (isEnd)
+                {
+                    var totalToFetch = invoke.Result.ResultParts;
+                    for (int q = 0; q < totalToFetch; q++)
+                    {
+                        Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageId });
+                        Wait(fragmentInvoke, result);
+                        if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
+                        {
+                            result.Append(fragmentInvoke.Result);
+                        }
+                    }
+                }
+            }
+
+            // prune any result for old datalist junk ;)
+            if (result.Length > 0)
+            {
+                // Only return Dev2System.ManagmentServicePayload if present ;)
+                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                if (start > 0)
+                {
+                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start < end && (end - start) > 1)
+                    {
+                        // we can return the trimmed payload instead
+                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
+                        return Task.FromResult(new StringBuilder(result.Substring(start, (end - start))));
+                    }
+                }
+            }
+
+            return Task.FromResult(result);
+
+        }
+
         protected virtual T Wait<T>(Task<T> task, StringBuilder result)
         {
             return Wait(task, result, GlobalConstants.NetworkTimeOut);
