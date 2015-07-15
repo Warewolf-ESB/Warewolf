@@ -154,7 +154,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
 
                         SqlDbType sqlDataType;
-                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:(row["DataType"] as Type).Name;
+                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:((Type)row["DataType"]).Name;
                         if(Enum.TryParse(typeValue, true, out sqlDataType))
                         {
                             dbColumn.SqlDataType = sqlDataType;

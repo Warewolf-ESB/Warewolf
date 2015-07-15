@@ -28,15 +28,13 @@ namespace Dev2.Integration.Tests.Mocks
             {
                 if(datathing == null)
                     throw new Exception();
-                else
-                    return datathing;
+                return datathing;
             }
             set
             {
                 if(value == String.Empty)
                     throw new ArgumentNullException();
-                else
-                    datathing = value;
+                datathing = value;
             }
         }
         internal List<DataObjectChild> Datachildren { get; set; }

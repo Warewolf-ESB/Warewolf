@@ -195,6 +195,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
             }
             catch{
+                //Possible exception as the scenerio could already have hit this
             }
             
             bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,

@@ -506,11 +506,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             foreach(var item in WorkflowInputs)
             {
                 string val = item.Value;
-                if(item.Value != null && item.Value.IsXml())
+                if (val != null && val.IsXml())
                 {
                     val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
                 }
-                if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
+                if (item.IsRecordset && !string.IsNullOrEmpty(val))
                 {
                     var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
                     if (recordSet==null)

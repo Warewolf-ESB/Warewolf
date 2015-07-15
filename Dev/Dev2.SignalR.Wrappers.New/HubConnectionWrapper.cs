@@ -15,9 +15,20 @@ namespace Dev2.SignalR.Wrappers.New
         public HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-            _wrapped.Error += exception => Error(exception);
-            _wrapped.Closed += delegate { Closed(); };
-            _wrapped.StateChanged += change => StateChanged(new StateChangeWrapped(change));
+            if(Error != null)
+            {
+                _wrapped.Error += exception => Error(exception);
+            }
+            _wrapped.Closed += delegate {
+                                            if(Closed != null)
+                                            {
+                                                Closed();
+                                            }
+            };
+            if(StateChanged != null)
+            {
+                _wrapped.StateChanged += change => StateChanged(new StateChangeWrapped(change));
+            }
         }
 
         public HubConnectionWrapper(string uriString)

@@ -122,6 +122,10 @@ namespace Dev2.Activities
             protected override WebRequest GetWebRequest(Uri address)
             {
                 var webRequest = base.GetWebRequest(address);
+                if(webRequest == null)
+                {
+                    throw new Exception("Error getting web request");
+                }
                 webRequest.Timeout = _timeoutMilliseconds;
                 return webRequest;
             }

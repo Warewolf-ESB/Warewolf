@@ -116,7 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
             ScenarioContext.Current.Add("url", url);
-            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds.ToString());
+            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds);
         }
 
 

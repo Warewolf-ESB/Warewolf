@@ -59,26 +59,28 @@ namespace Dev2.Runtime.ServiceModel.Data
                     fieldName = defaultFieldName;
                 }
 
-                // Bug 10532 - Amend to remove : from the alias ;)
-                var fieldAlias = fieldName.Replace(":", "");
-
-                var pathLoop = path;
-                var rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ?? new RecordsetField { Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias };
-                rsField.Name = fieldName;
-
-                var rs = result.FirstOrDefault(r => r.Name == rsName);
-                if(rs == null)
+                if(fieldName != null)
                 {
-                    rs = new Recordset { Name = rsName };
-                    result.Add(rs);
-                }
-                var fieldIndex = rs.Fields.Count;
-                rs.Fields.Add(rsField);
+                    var fieldAlias = fieldName.Replace(":", "");
 
-                var data = path.SampleData.Split(',');
-                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
-                {
-                    rs.SetValue(recordIndex, fieldIndex, data[recordIndex]);
+                    var pathLoop = path;
+                    var rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ?? new RecordsetField { Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias };
+                    rsField.Name = fieldName;
+
+                    var rs = result.FirstOrDefault(r => r.Name == rsName);
+                    if(rs == null)
+                    {
+                        rs = new Recordset { Name = rsName };
+                        result.Add(rs);
+                    }
+                    var fieldIndex = rs.Fields.Count;
+                    rs.Fields.Add(rsField);
+
+                    var data = path.SampleData.Split(',');
+                    for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
+                    {
+                        rs.SetValue(recordIndex, fieldIndex, data[recordIndex]);
+                    }
                 }
             }
             return result;

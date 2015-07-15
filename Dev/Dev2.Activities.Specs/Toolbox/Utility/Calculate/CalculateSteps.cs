@@ -130,17 +130,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 Assert.IsTrue(int.TryParse(actualValue, out outval));
                 return;
             }
+            if (string.IsNullOrEmpty(expectedResult))
+            {
+                actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
+            }
             else
             {
-
-                if (string.IsNullOrEmpty(expectedResult))
-                {
-                    actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
-                }
-                else
-                {
-                    actualValue.Should().Be(expectedResult);
-                }
+                actualValue.Should().Be(expectedResult);
             }
         }
 

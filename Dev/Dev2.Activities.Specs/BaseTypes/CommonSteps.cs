@@ -401,7 +401,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             double compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
-                Math.Round((double)(inputFile.Length) / (double)(outputFile.Length), 1));
+                Math.Round(inputFile.Length / (double)(outputFile.Length), 1));
         }
 
         public static void AddVariableToVariableList(string resultVariable)

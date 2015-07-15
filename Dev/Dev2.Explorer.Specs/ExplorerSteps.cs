@@ -274,10 +274,13 @@ namespace Dev2.Explorer.Specs
             var item = repository.Load(Guid.Empty)
                                 .Children.First(a => a.DisplayName == "ExplorerSpecsRenameItem")
                       .Children.FirstOrDefault(a => a.DisplayName == itemToRename);
-            item.DisplayName = p1;
+            if(item != null)
+            {
+                item.DisplayName = p1;
 
-            var result = repository.RenameItem(item, p1, Guid.Empty);
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+                var result = repository.RenameItem(item, p1, Guid.Empty);
+                Assert.AreEqual(result.Status, ExecStatus.Success);
+            }
             var explorerItemModel = repository.Load(Guid.Empty);
             ScenarioContext.Current.Add("localhost", explorerItemModel);
             ScenarioContext.Current.Add("newName", explorerItemModel);

@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.TOTests
                 dn = "a", dns = "as", dnf = "af";
             var scalarsSn = new[] { "[[x().z]]", "[[x]]", sn, sns, snf };
             var scalarsDn = new[] { "z", "x", dn, dns, dnf };
-            var scalarsV = new object[] { new object[] { null }, (object)null, (int)10, (string)"hellow world", (double)9.9 };
+            var scalarsV = new[] { new object[] { null }, (object)null, 10, "hellow world", 9.9 };
             for (int i = 0; i < scalarsSn.Length; i++)
             {
                 var jsonMappingEvaluatedLocal = new JsonMappingEvaluated(
