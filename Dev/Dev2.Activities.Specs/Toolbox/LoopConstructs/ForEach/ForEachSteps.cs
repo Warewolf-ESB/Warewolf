@@ -16,7 +16,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
@@ -327,7 +326,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             return null;
         }
 
-        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
         {
         }
 

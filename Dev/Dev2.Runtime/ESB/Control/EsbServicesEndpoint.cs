@@ -206,7 +206,6 @@ namespace Dev2.Runtime.ESB.Control
         {
 
 
-            int update = 0;
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
@@ -239,7 +238,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if(resource.DataList != null)
                     {
-                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), update);
+                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), 0);
                     }
                 }
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
@@ -363,7 +362,7 @@ namespace Dev2.Runtime.ESB.Control
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
-                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs,update);
                     if (!isLocal)
                     {
                         _doNotWipeDataList = true;
@@ -396,9 +395,9 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
         {
-            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs,update);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
@@ -444,7 +443,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if(!invokeErrors.HasErrors())
                 {
-                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");

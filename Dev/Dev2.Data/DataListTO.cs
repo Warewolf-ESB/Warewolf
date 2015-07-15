@@ -14,6 +14,10 @@ namespace Dev2.Data
         {
             Inputs = new List<string>();
             Outputs = new List<string>();
+            if(string.IsNullOrEmpty(dataList))
+            {
+                return;
+            }
             using (var stringReader = new StringReader(dataList))
             {
                 var xDoc = XDocument.Load(stringReader);

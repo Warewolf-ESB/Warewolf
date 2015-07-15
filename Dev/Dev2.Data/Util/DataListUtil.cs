@@ -575,32 +575,26 @@ namespace Dev2.Data.Util
         /// Shapes the definitions to data list.
         /// </summary>
         /// <returns></returns>
-        public static IExecutionEnvironment InputsToEnvironment(IExecutionEnvironment outerEnvironment,string inputDefs)
+        public static IExecutionEnvironment InputsToEnvironment(IExecutionEnvironment outerEnvironment, string inputDefs, int update)
         {
             var env = new ExecutionEnvironment();
 
             try
             {
-
-        
-            var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
-
-            IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
-
-            IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
-
-            CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env);
-            CreateScalarInputs(outerEnvironment, inputScalarList, env);
+                var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
+                IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
+                IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+                CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env,update);
+                CreateScalarInputs(outerEnvironment, inputScalarList, env,update);
             }
             finally
             {
-                
                 env.CommitAssign();
             }
             return env;
         }
 
-        static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env)
+        static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update)
         {
             foreach(var recordSetDefinition in inputRecSets.RecordSets)
             {
@@ -623,7 +617,7 @@ namespace Dev2.Data.Util
                                     continue;
                                 }
                             }
-                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, 0);
+                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
 
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
@@ -643,7 +637,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env)
+        static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env, int update)
         {
             foreach(var dev2Definition in inputScalarList)
             {
@@ -655,7 +649,7 @@ namespace Dev2.Data.Util
                 {
                     if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, 0);
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
                             ScalarAtomList(warewolfEvalResult, env, dev2Definition);
@@ -1564,14 +1558,9 @@ namespace Dev2.Data.Util
         {
             try
             {
-
-
                 var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
-
-                IRecordSetCollection outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
-
-                IList<IDev2Definition> outputScalarList = DataListFactory.CreateScalarList(outputs, true);
-
+                var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
+                var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
                 foreach (var recordSetDefinition in outputRecSets.RecordSets)
                 {
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
@@ -1585,7 +1574,6 @@ namespace Dev2.Data.Util
                         }
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
-
                             var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
                             var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, update);
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -1598,7 +1586,6 @@ namespace Dev2.Data.Util
                                     {
                                         if (recsetResult != null)
                                         {
-
                                             environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
                                         }
                                     }

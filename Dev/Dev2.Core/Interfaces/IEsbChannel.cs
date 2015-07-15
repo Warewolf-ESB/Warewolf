@@ -92,7 +92,7 @@ namespace Dev2
 
         IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update);
 
-        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs);
+        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel
