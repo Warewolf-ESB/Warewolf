@@ -494,7 +494,7 @@ namespace Dev2.AppResources.Repositories
                 update(item);
         }
 
-        public async void ItemAddedMessageHandler(IExplorerItem item)
+        public void ItemAddedMessageHandler(IExplorerItem item)
         {
             var environmentId = item.ServerId;
             var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
