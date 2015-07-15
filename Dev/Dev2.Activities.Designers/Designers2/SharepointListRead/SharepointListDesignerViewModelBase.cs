@@ -387,8 +387,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                     var fieldMappings = columnList.Select(mapping =>
                     {
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ","").Replace(".",""),GetValidVariableName(mapping),"*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName,mapping.Type.ToString());
-                        sharepointReadListTo.IsRequired = mapping.IsRequired;
+                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
                         return sharepointReadListTo;
                     }).ToList();
                     if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
