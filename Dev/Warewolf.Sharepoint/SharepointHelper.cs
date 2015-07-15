@@ -66,10 +66,7 @@ namespace Warewolf.Sharepoint
                 var listCollection = context.Web.Lists;
                 context.Load(listCollection);
                 context.ExecuteQuery();
-                foreach(var list in listCollection)
-                {
-                    lists.Add(new SharepointListTo{FullName = list.Title});
-                }
+                lists.AddRange(listCollection.Select(list => new SharepointListTo { FullName = list.Title }));
             }
             return lists;
         }
@@ -82,11 +79,7 @@ namespace Warewolf.Sharepoint
                 var list = LoadFieldsForList(listName, ctx, editableFieldsOnly);
                 ctx.ExecuteQuery();
                 var fieldCollection = list.Fields;
-                foreach(var field in fieldCollection)
-                {
-                    var sharepointFieldTo = CreateSharepointFieldToFromSharepointField(field);
-                    fields.Add(sharepointFieldTo);
-                }
+                fields.AddRange(fieldCollection.Select(field => CreateSharepointFieldToFromSharepointField(field)));
             }
             return fields;
         }
