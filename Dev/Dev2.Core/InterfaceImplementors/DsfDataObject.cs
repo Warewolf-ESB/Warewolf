@@ -378,6 +378,7 @@ namespace Dev2.DynamicServices
             result.Environment = Environment;
             result.EsbChannel = EsbChannel;
             result.ExecutionToken = ExecutionToken;
+            result.ForEachUpdateValue = ForEachUpdateValue;
             return result;
         }
 
