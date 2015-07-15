@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.AspNet.SignalR.Client.Old;
 using Microsoft.AspNet.SignalR.Client.Old.Hubs;
 using Newtonsoft.Json.Linq;

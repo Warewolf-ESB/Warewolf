@@ -7,11 +7,13 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
+
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {

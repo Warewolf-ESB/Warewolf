@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Properties;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -741,7 +742,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 QuickVariableInputViewModel.Overwrite = true;
                 QuickVariableInputViewModel.IsOverwriteEnabled = false;
                 QuickVariableInputViewModel.RemoveEmptyEntries = false;
-                QuickVariableInputViewModel.SplitType = Core.QuickVariableInput.QuickVariableInputViewModel.SplitTypeNewLine;
+                QuickVariableInputViewModel.SplitType = QuickVariableInputViewModel.SplitTypeNewLine;
                 QuickVariableInputViewModel.VariableListString = string.Join(Environment.NewLine, mappings.Select(GetFieldName));
                 QuickVariableInputViewModel.Prefix = GetRecordsetName(mappings) + "(*).";
             }

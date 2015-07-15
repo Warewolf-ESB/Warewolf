@@ -92,8 +92,7 @@ namespace System.Windows.Controls
                 }
                 else if(value)
                 {
-                    throw new InvalidOperationException(Dev2.Runtime.Configuration.Properties
-                        .Resources.RoutedPropertyChangingEventArgs_CancelSet_InvalidOperation);
+                    throw new InvalidOperationException(Dev2.Runtime.Configuration.Properties.Resources.RoutedPropertyChangingEventArgs_CancelSet_InvalidOperation);
                 }
             }
         }

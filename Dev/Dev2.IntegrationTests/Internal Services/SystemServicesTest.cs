@@ -9,14 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
-using System.Net;
-using Dev2.Communication;
-using Dev2.Controller;
 using Dev2.Integration.Tests.Helpers;
-using Dev2.Network;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable CheckNamespace

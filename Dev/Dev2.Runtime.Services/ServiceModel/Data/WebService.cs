@@ -16,6 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Util;
@@ -62,7 +63,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
+            ResourceType = ResourceType.WebService;
             Source = new WebSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -71,7 +72,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebService(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
+            ResourceType = ResourceType.WebService;
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {

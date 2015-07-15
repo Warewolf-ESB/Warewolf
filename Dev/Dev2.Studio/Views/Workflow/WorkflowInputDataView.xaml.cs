@@ -23,6 +23,7 @@ using Dev2.UI;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Indentation;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -50,7 +51,7 @@ namespace Dev2.Studio.Views.Workflow
 
             _foldingStrategy = new XmlFoldingStrategy();
             _foldingManager = FoldingManager.Install(_editor.TextArea);
-            _editor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
+            _editor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
 
             _foldingUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
             _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;

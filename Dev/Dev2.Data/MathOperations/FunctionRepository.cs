@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Infragistics.Calculations.CalcManager;
@@ -52,7 +53,7 @@ namespace Dev2.MathOperations
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public ICollection<IFunction> Find(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression)
+        public ICollection<IFunction> Find(Expression<Func<IFunction, bool>> expression)
         {
             if(expression != null)
             {
@@ -68,7 +69,7 @@ namespace Dev2.MathOperations
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public IFunction FindSingle(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression)
+        public IFunction FindSingle(Expression<Func<IFunction, bool>> expression)
         {
             if(expression != null)
             {

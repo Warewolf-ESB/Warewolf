@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Settings;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
@@ -54,8 +55,8 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
-        Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv);
-        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Data.Settings.Settings settings);
+        Settings ReadSettings(IEnvironmentModel currentEnv);
+        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Settings settings);
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
@@ -85,7 +86,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
 
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
-        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, AppResources.Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
         void SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
 

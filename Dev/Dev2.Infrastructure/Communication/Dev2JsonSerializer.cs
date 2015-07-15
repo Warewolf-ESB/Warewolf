@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -30,7 +31,7 @@ namespace Dev2.Communication
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             };
         readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
             {

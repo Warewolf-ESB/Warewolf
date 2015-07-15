@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -26,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
                 BitmapImage image = new BitmapImage();
                 if (value != null && value.ToString() != string.Empty) {
@@ -47,7 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
             throw new NotImplementedException();
         }
 

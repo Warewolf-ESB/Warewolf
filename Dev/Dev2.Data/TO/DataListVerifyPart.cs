@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Data.Interfaces;
 
 namespace Dev2.DataList.Contract
@@ -61,7 +62,7 @@ namespace Dev2.DataList.Contract
             {
                 if(recordset.Contains("[") && recordset.Contains("]"))
                 {
-                    int start = recordset.IndexOf("(", System.StringComparison.Ordinal);
+                    int start = recordset.IndexOf("(", StringComparison.Ordinal);
                     if(start != -1)
                     {
                         Recordset = recordset.Substring(0, (start));
@@ -108,7 +109,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
-                            string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
+                            string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
 
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")." + field + "]]";
                         }
@@ -121,7 +122,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
-                            string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
+                            string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";
                         }
                         else

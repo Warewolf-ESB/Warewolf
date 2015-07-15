@@ -11,6 +11,7 @@
 
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.CustomControls
@@ -18,7 +19,7 @@ namespace Dev2.Studio.CustomControls
     /// <summary>
     /// A Button-derived control that adds an IsSplitterExpanded property for custom template triggering.
     /// </summary>
-    public class SplitterExpansionButton : System.Windows.Controls.Button
+    public class SplitterExpansionButton : Button
     {
         static SplitterExpansionButton()
         {

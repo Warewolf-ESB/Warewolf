@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
 // ReSharper disable once CheckNamespace
@@ -24,13 +25,13 @@ namespace Dev2.Studio.Core.AppResources.Converters
             NullValueReplacement = true;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var b = value as bool?;
             return b ?? NullValueReplacement;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Dev2.Common;
 
@@ -66,7 +67,7 @@ namespace Dev2.Studio.AppResources.Converters
 
         private BitmapSource BitmapSourceFromIcon(Icon icon)
         {
-            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
     }
 }

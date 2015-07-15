@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dev2.Threading
@@ -88,7 +89,7 @@ namespace Dev2.Threading
         {
             // Get the UI thread's context
             // NOTE: System.Threading.SynchronizationContext.Current is null when testing so use default instead
-            var context = System.Threading.SynchronizationContext.Current != null
+            var context = SynchronizationContext.Current != null
                 ? TaskScheduler.FromCurrentSynchronizationContext()
                 : TaskScheduler.Default;
             return context;

@@ -26,7 +26,6 @@ using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 
-
 namespace Dev2.Network
 {
     public class ServerProxy :  IEnvironmentConnection
@@ -51,7 +50,9 @@ namespace Dev2.Network
             _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);           
         }
 
+        // ReSharper disable MemberCanBeProtected.Global
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
+            // ReSharper restore MemberCanBeProtected.Global
         {
 
             _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
@@ -316,7 +317,9 @@ namespace Dev2.Network
             }
         }
 
+        // ReSharper disable UnusedMember.Local
         void UpdateIsAuthorized(bool isAuthorized)
+            // ReSharper restore UnusedMember.Local
         {
             if (IsAuthorized != isAuthorized)
             {
@@ -325,7 +328,9 @@ namespace Dev2.Network
             }
         }
 
+        // ReSharper disable VirtualMemberNeverOverriden.Global
         protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
+            // ReSharper restore VirtualMemberNeverOverriden.Global
         {
             var handler = NetworkStateChanged;
             if (handler != null)

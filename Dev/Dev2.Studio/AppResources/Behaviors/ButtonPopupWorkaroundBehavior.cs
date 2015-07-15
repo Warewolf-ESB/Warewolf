@@ -12,6 +12,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
@@ -99,7 +100,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs" /> instance containing the event data.</param>
-        private void AssociatedObject_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void AssociatedObject_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _isButtonDown = true;
         }
@@ -109,7 +110,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs" /> instance containing the event data.</param>
-        private void AssociatedObject_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void AssociatedObject_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if(_isButtonDown == false)
             {

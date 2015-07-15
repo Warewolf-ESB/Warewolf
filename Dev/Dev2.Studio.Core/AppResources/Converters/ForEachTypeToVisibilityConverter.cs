@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
@@ -22,7 +23,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
     [ValueConversion(typeof(enForEachType), typeof(Visibility))]
     public class ForEachTypeToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value == null)
             {
@@ -41,7 +42,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

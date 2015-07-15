@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 
@@ -66,7 +67,7 @@ namespace Dev2.Validation
 
             if (DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
             {
-                var validRegions = DataList.Contract.DataListCleaningUtils.SplitIntoRegions(value);
+                var validRegions = DataListCleaningUtils.SplitIntoRegions(value);
                 foreach (var region in validRegions)
                 {
                     var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(region), "");

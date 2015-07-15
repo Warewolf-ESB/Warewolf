@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,7 +45,7 @@ namespace Dev2.Activities.Designers2.CommandLine
             Errors = null;
             var errors = new List<IActionableErrorInfo>();
 
-            System.Action onError = () => IsCommandFileNameFocused = true;
+            Action onError = () => IsCommandFileNameFocused = true;
 
             string commandValue;
             errors.AddError(CommandFileName.TryParseVariables(out commandValue, onError));

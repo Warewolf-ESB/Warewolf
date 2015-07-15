@@ -39,12 +39,11 @@ namespace Dev2.Validation
             ErrorText = JsonMappingCompoundTo.ValidateInput(to);
             if (string.IsNullOrEmpty(ErrorText))
                 return null;
-            else
-                return new ActionableErrorInfo
-                {
-                    ErrorType = Common.Interfaces.Infrastructure.Providers.Errors.ErrorType.Critical,
-                    Message = ErrorText,
-                };
+            return new ActionableErrorInfo
+            {
+                ErrorType = ErrorType.Critical,
+                Message = ErrorText,
+            };
         }
 
     }

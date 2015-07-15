@@ -9,9 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Runtime.Security;
 using System.Collections.Specialized;
+using Dev2.Runtime.Security;
 
 namespace Dev2.Tests.Runtime.Services
 {

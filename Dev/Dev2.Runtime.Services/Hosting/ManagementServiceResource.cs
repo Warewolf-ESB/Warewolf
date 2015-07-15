@@ -10,6 +10,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -28,7 +29,7 @@ namespace Dev2.Runtime.Hosting
             Service = service;
             ResourceID = service.ID == Guid.Empty ? Guid.NewGuid() : service.ID;
             ResourceName = service.Name;
-            ResourceType = Common.Interfaces.Data.ResourceType.ReservedService;
+            ResourceType = ResourceType.ReservedService;
             ResourcePath = service.Name;
             DataList = service.DataListSpecification;
         }

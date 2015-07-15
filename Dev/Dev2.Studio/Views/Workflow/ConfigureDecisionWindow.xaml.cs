@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.ComponentModel;
 using System.Windows;
 
 // ReSharper disable once CheckNamespace
@@ -24,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             InitializeComponent();
         }
 
-        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void WindowClosing(object sender, CancelEventArgs e)
         {
             dynamic data = DataContext;
             if(!data.CanSelect)
