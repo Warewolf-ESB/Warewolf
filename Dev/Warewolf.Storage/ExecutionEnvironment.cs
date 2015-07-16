@@ -50,7 +50,8 @@ namespace Warewolf.Storage
 
         void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause);
 
-        IList<string> Errors { get; } 
+        IList<string> Errors { get; }
+        IList<string> AllErrors { get; } 
         void AddError(string error);
 
 
@@ -73,11 +74,13 @@ namespace Warewolf.Storage
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         DataASTMutable.WarewolfEnvironment _env;
-    
+        IList<string> _allErrors;
+
         public  ExecutionEnvironment()
         {
             _env = PublicFunctions.CreateEnv("");
             Errors = new List<string>();
+            AllErrors = new List<string>();
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
@@ -435,6 +438,11 @@ namespace Warewolf.Storage
         }
 
         public IList<string> Errors { get; private set; }
+        public IList<string> AllErrors
+        {
+            get;
+            private set;
+        }
 
         public void AddError(string error)
         {
@@ -449,12 +457,12 @@ namespace Warewolf.Storage
 
         public string FetchErrors()
         {
-            return string.Join(Environment.NewLine,Errors);
+            return string.Join(Environment.NewLine,AllErrors);
         }
 
         public bool HasErrors()
         {
-            return Errors.Count(s => !string.IsNullOrEmpty(s))>0;
+            return AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
         }
 
 

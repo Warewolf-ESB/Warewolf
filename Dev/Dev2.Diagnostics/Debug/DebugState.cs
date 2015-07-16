@@ -35,6 +35,7 @@ namespace Dev2.Diagnostics.Debug
     {
         private DateTime _startTime;
         private DateTime _endTime;
+        string _errorMessage;
 
         #region Ctor
 
@@ -99,7 +100,17 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the error message
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the activity version.

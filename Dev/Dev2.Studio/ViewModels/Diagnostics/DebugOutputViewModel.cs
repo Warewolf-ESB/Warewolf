@@ -731,7 +731,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if (content.StateType == StateType.Duration)
             {
-                var item = _contentItems.FirstOrDefault(a => a.ID == content.WorkSurfaceMappingId);
+                var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
                 if(item!= null)
                 {
                     item.EndTime = content.EndTime;
