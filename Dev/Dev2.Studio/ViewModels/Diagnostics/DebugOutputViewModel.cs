@@ -72,13 +72,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ICommand _openItemCommand;
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
         string _searchText = string.Empty;
-        bool _showDuratrion;
+        bool _showDuration = true;
         bool _showInputs = true;
         bool _showOptions;
         ICommand _showOptionsCommand;
         bool _showOutputs = true;
         bool _showServer = true;
-        bool _showTime;
+        bool _showTime = true;
         bool _showType = true;
         bool _showVersion;
         bool _skipOptionsCommandExecute;
@@ -345,13 +345,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///     <c>true</c> if [show duratrion]; otherwise, <c>false</c>.
         /// </value>
-        public bool ShowDuratrion
+        public bool ShowDuration
         {
-            get { return _showDuratrion; }
+            get { return _showDuration; }
             set
             {
-                _showDuratrion = value;
-                NotifyOfPropertyChange(() => ShowDuratrion);
+                _showDuration = value;
+                NotifyOfPropertyChange(() => ShowDuration);
             }
         }
 
