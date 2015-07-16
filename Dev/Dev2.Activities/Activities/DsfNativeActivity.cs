@@ -587,6 +587,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
+            foreach(var err in dataObject.Environment.Errors)
+            {
+                dataObject.Environment.AllErrors.Add(err);
+            }
+          dataObject.Environment.Errors.Clear();
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
@@ -720,7 +725,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var className = GetType().Name;
                 Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
-
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data);
             }
             catch (Exception ex)
