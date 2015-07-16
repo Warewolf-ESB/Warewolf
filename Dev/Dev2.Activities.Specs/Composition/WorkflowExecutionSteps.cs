@@ -236,14 +236,24 @@ namespace Dev2.Activities.Specs.Composition
         void Append(IDebugState debugState)
         {
             List<IDebugState> debugStates;
+            List<IDebugState> debugStatesDuration;
             string workflowName;
             IEnvironmentModel environmentModel;
             TryGetValue("debugStates", out debugStates);
+            TryGetValue("debugStatesDuration", out debugStatesDuration);
             TryGetValue("parentWorkflowName", out workflowName);
             TryGetValue("environment", out environmentModel);
+            if(debugStatesDuration == null)
+            {
+                debugStatesDuration = new List<IDebugState>();
+                Add("debugStatesDuration",debugStatesDuration);
+            }
             if(debugState.WorkspaceID == environmentModel.Connection.WorkspaceID)
             {
+                if(debugState.StateType!=StateType.Duration)
                 debugStates.Add(debugState);
+                else
+                debugStatesDuration.Add(debugState);
             }
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
@@ -805,6 +815,20 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
+        [Then(@"the ""(.*)"" has a start and end duration")]
+        public void ThenTheHasAStartAndEndDuration(string workflowName)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            var start = debugStates.First(wf => wf.Name.Equals("Start"));
+            Assert.IsTrue(start.Duration.Ticks>0);
+            var end = debugStates.First(wf => wf.Name.Equals("End"));
+            Assert.IsTrue(end.Duration.Ticks > 0);
+        }
 
         [Then(@"the nested '(.*)' in WorkFlow '(.*)' debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)

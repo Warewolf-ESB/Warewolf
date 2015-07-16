@@ -570,7 +570,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
-                if(stateType == StateType.After)
+                if(stateType == StateType.After || stateType == StateType.Duration)
                 {
                     // Free up debug state
                     _debugState = null;
@@ -599,7 +599,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-            UpdateDebugParentID(dataObject);
+            if (stateType != StateType.Duration)
+            {
+                UpdateDebugParentID(dataObject);
+            }
             if(remoteID != Guid.Empty)
             {
                 UniqueID = Guid.NewGuid().ToString();

@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Sequence")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence.SequenceFeature.FeatureSetup(null);
             }
         }
         
@@ -122,6 +122,8 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var2]] = 2"});
 #line 18
           testRunner.And("the \"TestAssign\" debug outputs as", ((string)(null)), table3, "And ");
+#line 22
+    testRunner.And("the Sequence Has a Duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
