@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var serviceName = GetServiceName(ctx);
             var instanceId = GetInstanceID(ctx);
             var bookmark = GetBookmark(ctx);
-            var postDataListID = GetDataListID(ctx);
+            GetDataListID(ctx);
             var workspaceID = GetWorkspaceID(ctx);
             var formData = new WebRequestTO();
 

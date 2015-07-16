@@ -43,13 +43,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected ErrorResultTO errorsTo;
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         [GeneralSettings("IsSimulationEnabled")]
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public bool IsSimulationEnabled { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         // ReSharper disable RedundantAssignment
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        // ReSharper disable MemberCanBeProtected.Global
         public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        // ReSharper restore MemberCanBeProtected.Global
         // ReSharper restore RedundantAssignment
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        // ReSharper disable UnusedMember.Global
         public IDataListCompiler Compiler { get; set; }
+        // ReSharper restore UnusedMember.Global
         // END TODO: Remove legacy properties 
 
         public InOutArgument<List<string>> AmbientDataList { get; set; }
@@ -61,7 +67,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsWorkflow { get; set; }
         public string ParentServiceName { get; set; }
+        // ReSharper disable UnusedMember.Global
         public string ParentServiceID { get; set; }
+        // ReSharper restore UnusedMember.Global
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
@@ -82,8 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
         protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
-
-        internal readonly IDebugDispatcher _debugDispatcher;
+        readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
         string _previousParentInstanceID;
         IDebugState _debugState;
@@ -326,7 +333,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// When overridden runs the activity's simulation logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
+        // ReSharper disable VirtualMemberNeverOverriden.Global
         protected virtual void OnExecuteSimulation(NativeActivityContext context)
+            // ReSharper restore VirtualMemberNeverOverriden.Global
         {
             var rootInfo = context.GetExtension<WorkflowInstanceInfo>();
 
@@ -428,7 +437,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
+        // ReSharper disable MemberCanBeProtected.Global
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+            // ReSharper restore MemberCanBeProtected.Global
         {
             
             

@@ -872,8 +872,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         }
 
-        readonly object _debugDispatch = new object();
-
         #endregion
 
         #region QueuePending
