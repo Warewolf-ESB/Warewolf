@@ -499,7 +499,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 //May already been removed
             }
-            var debugStates = testDebugWriter.DebugStates.ToList();
+            var debugStates = testDebugWriter.DebugStates.Where(a=>a.StateType!=StateType.Duration).ToList();
+            var duration = testDebugWriter.DebugStates.Where(a => a.StateType == StateType.Duration).ToList();
+            ScenarioContext.Current.Add("duration", duration);
             testDebugWriter.DebugStates.Clear();
             ScenarioContext.Current.Add("result", result);
             CheckDebugStates(debugStates);
@@ -531,6 +533,15 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 //                            sequence.Activities.Add(activity.Value);
 //                        }
             return sequence;
+        }
+        [Then(@"the Sequence Has a Duration")]
+        public void ThenTheSequenceHasADuration()
+        {
+           var  dur =  ScenarioContext.Current.Get<IEnumerable<IDebugState>>("duration");
+            Assert.IsNotNull(dur);
+            Assert.IsTrue(dur.Count()==1);
+            Assert.IsTrue(dur.First().EndTime.Subtract(DateTime.Now).Ticks < 10000);
+
         }
 
 

@@ -47,6 +47,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         Clear = 16,
         Start = 32,
         End = 64,
-        All = 128
+        All = 128,
+        Duration = 256
     }
 }

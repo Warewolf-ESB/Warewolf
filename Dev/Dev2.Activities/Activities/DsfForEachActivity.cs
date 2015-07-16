@@ -80,7 +80,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [Inputs("FromDisplayName")]
         [FindMissing]
+        // ReSharper disable UnusedMember.Global
         public string FromDisplayName
+            // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -109,7 +111,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        // ReSharper disable UnusedMember.Global
         public int ExecutionCount
+            // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -123,24 +127,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         // ReSharper restore MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
+        // ReSharper disable UnusedMember.Global
         public Variable test { get; set; }
+        // ReSharper restore UnusedMember.Global
 // ReSharper restore InconsistentNaming
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
+        // ReSharper disable UnusedMember.Global
         public bool FailOnFirstError { get; set; }
+        // ReSharper restore UnusedMember.Global
         // ReSharper disable UnusedAutoPropertyAccessor.Local
+        // ReSharper disable UnusedMember.Global
         public string ElementName { private set; get; }
+        // ReSharper restore UnusedMember.Global
+        // ReSharper disable UnusedMember.Global
         public string PreservedDataList { private set; get; }
+        // ReSharper restore UnusedMember.Global
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 #pragma warning disable 169
+        // ReSharper disable UnusedMember.Local
         private List<bool> _results = new List<bool>();
+        // ReSharper restore UnusedMember.Local
 #pragma warning restore 169
 
         // REMOVE : No longer used
 #pragma warning disable 169
+        // ReSharper disable UnusedMember.Local
         DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
+        // ReSharper restore UnusedMember.Local
 #pragma warning restore 169
 
         // used to avoid IO mapping adjustment issues ;)
@@ -845,7 +861,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             allErrors.MergeErrors(errors);
                         }
-
+          
+                    }
+                    if (dataObject.IsDebugMode())
+                    {
+                        DispatchDebugState(dataObject, StateType.Duration);
                     }
                 }
                 catch(Exception e)

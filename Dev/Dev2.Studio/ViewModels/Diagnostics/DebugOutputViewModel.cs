@@ -72,13 +72,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ICommand _openItemCommand;
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
         string _searchText = string.Empty;
-        bool _showDuratrion;
+        bool _showDuration = true;
         bool _showInputs = true;
         bool _showOptions;
         ICommand _showOptionsCommand;
         bool _showOutputs = true;
         bool _showServer = true;
-        bool _showTime;
+        bool _showTime = true;
         bool _showType = true;
         bool _showVersion;
         bool _skipOptionsCommandExecute;
@@ -345,13 +345,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///     <c>true</c> if [show duratrion]; otherwise, <c>false</c>.
         /// </value>
-        public bool ShowDuratrion
+        public bool ShowDuration
         {
-            get { return _showDuratrion; }
+            get { return _showDuration; }
             set
             {
-                _showDuratrion = value;
-                NotifyOfPropertyChange(() => ShowDuratrion);
+                _showDuration = value;
+                NotifyOfPropertyChange(() => ShowDuration);
             }
         }
 
@@ -729,36 +729,46 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         // BUG 9735 - 2013.06.22 - TWR : refactored
         void AddItemToTree(IDebugState content)
         {
-            var environmentId = content.EnvironmentID;
-            var isRemote = environmentId != Guid.Empty;
-            if(isRemote)
+            if (content.StateType == StateType.Duration)
             {
-               Thread.Sleep(500);
-            }
-            if(isRemote)
-            {
-                var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
-                if(remoteEnvironmentModel != null)
+                var item = _contentItems.FirstOrDefault(a => a.ID == content.WorkSurfaceMappingId);
+                if(item!= null)
                 {
-                    if(!remoteEnvironmentModel.IsConnected)
+                    item.EndTime = content.EndTime;
+                }
+            }
+            else
+            {
+                var environmentId = content.EnvironmentID;
+                var isRemote = environmentId != Guid.Empty;
+                if (isRemote)
+                {
+                    Thread.Sleep(500);
+                }
+                if (isRemote)
+                {
+                    var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
+                    if (remoteEnvironmentModel != null)
                     {
-                        remoteEnvironmentModel.Connect();
-                    }
-                    if(content.ParentID != Guid.Empty)
-                    {
-                        if(remoteEnvironmentModel.AuthorizationService != null)
+                        if (!remoteEnvironmentModel.IsConnected)
                         {
-                            var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
-                            if(!remoteResourcePermissions.HasFlag(Permissions.View))
+                            remoteEnvironmentModel.Connect();
+                        }
+                        if (content.ParentID != Guid.Empty)
+                        {
+                            if (remoteEnvironmentModel.AuthorizationService != null)
                             {
-                                return;
+                                var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
+                                if (!remoteResourcePermissions.HasFlag(Permissions.View))
+                                {
+                                    return;
+                                }
                             }
                         }
                     }
                 }
+                _contentItems.Add(content);
             }
-            _contentItems.Add(content);
-
             lock(_syncContext)
             {
                 if(_isRebuildingTree)
@@ -861,8 +871,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
 
         }
-
-        readonly object _debugDispatch = new object();
 
         #endregion
 

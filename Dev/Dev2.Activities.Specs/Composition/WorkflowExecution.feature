@@ -16,6 +16,7 @@ Scenario: Simple workflow executing against the server
 	  | [[rec().a]] | no    |	 
 	  When "WorkflowWithAssign" is executed
 	  Then the workflow execution has "NO" error
+	  And the "WorkflowWithAssign" has a start and end duration
 	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssign' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | yes       |
