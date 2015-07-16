@@ -591,7 +591,8 @@ namespace Dev2.Network
                 Content = payload.ToString()
             };
 
-            var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId).ConfigureAwait(false);
+            //var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId).ConfigureAwait(false);
+            var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
 //            var continuation = invoke.ContinueWith(task =>
 //            {
 //                if(task.IsFaulted)

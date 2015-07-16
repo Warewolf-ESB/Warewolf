@@ -19,18 +19,18 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxy_ExecuteCommand_WithArgs_ShouldInvokeCorrectly()
         {
             //------------Setup for test--------------------------
-            var serverMsg = "server result";
+            const string ServerMsg = "server result";
             var mockHubProxy = new Mock<IHubProxyWrapper>();
-            var ExpectedResult = new Receipt {PartID = 0, ResultParts = 1};
-            mockHubProxy.Setup(proxy => proxy.Invoke<Receipt>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<Receipt>(() => ExpectedResult));
-            mockHubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(new Task<string>(() => serverMsg));
-            var serverProxy = new TestServerProxy();
+            var expectedResult = new Receipt { PartID = 0, ResultParts = 1 };
+            mockHubProxy.Setup(proxy => proxy.Invoke<Receipt>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<Receipt>(() => expectedResult));
+            mockHubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(new Task<string>(() => ServerMsg));
+            var serverProxy = new TestServerProxyWithChunking();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------
             var resultOfExecution = serverProxy.ExecuteCommand(new StringBuilder("some payload"), Guid.NewGuid(), Guid.NewGuid());
             //------------Assert Results-------------------------
             mockHubProxy.VerifyAll();
-            Assert.AreEqual(serverMsg, resultOfExecution.ToString());
+            Assert.AreEqual(ServerMsg, resultOfExecution.ToString());
         }
 
         //Given a ServerProxy
@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var mockHubProxy = new Mock<IHubProxyWrapper>();
             mockHubProxy.Setup(proxy => proxy.Invoke("AddDebugWriter", It.IsAny<Guid>())).Returns(new Task(() => { }));
-            var serverProxy = new TestServerProxy();
+            var serverProxy = new TestServerProxyWithChunking();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------
             serverProxy.AddDebugWriter(Guid.NewGuid());

@@ -88,8 +88,8 @@ namespace Dev2.Studio.Core.Interfaces
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
-        void SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
+        Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
 
-        void LoadResourceFromWorkspaceAsync(Guid resourceId, Guid? serverWorkspaceID);
+        void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
     }
 }

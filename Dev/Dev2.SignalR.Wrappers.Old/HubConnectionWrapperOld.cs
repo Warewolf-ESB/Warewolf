@@ -14,37 +14,46 @@ namespace Dev2.SignalR.Wrappers.Old
 
         public HubConnectionWrapperOld(string uri)
         {
-     
-
-            _wrapped = new HubConnection(uri);
-            _wrapped.Error += exception => {
-                                               if(Error != null)
-                                               {
-                                                   Error(exception);
-                                               }
-            };
-            _wrapped.Closed += delegate {
-                                            if(Closed != null)
-                                            {
-                                                Closed();
-                                            }
-            };
-            _wrapped.StateChanged += change => {
-                                                   if(StateChanged != null)
-                                                   {
-                                                       StateChanged(new StateChangeWrappedOld(change));
-                                                   }
-            };
+            _wrapped = new HubConnection(uri);            
         }
         public IHubProxyWrapper CreateHubProxy(string hubName)
         {
             return new HubProxyWrapperOld(_wrapped.CreateHubProxy(hubName));
         }
-       
 
-        public event Action<Exception> Error;
-        public event Action Closed;
-        public event Action<IStateChangeWrapped> StateChanged;
+
+        public event Action<Exception> Error
+        {
+            add
+            {
+                _wrapped.Error += value;
+            }
+            remove
+            {
+                _wrapped.Error -= value;
+            }
+        }
+        public event Action Closed
+        {
+            add
+            {
+                _wrapped.Closed += value;
+            }
+            remove
+            {
+                _wrapped.Closed -= value;
+            }
+        }
+        public event Action<IStateChangeWrapped> StateChanged
+        {
+            add
+            {
+                _wrapped.StateChanged += change => value(new StateChangeWrappedOld(change));
+            }
+            remove
+            {
+            }
+        }
         public ConnectionStateWrapped State
         {
             get

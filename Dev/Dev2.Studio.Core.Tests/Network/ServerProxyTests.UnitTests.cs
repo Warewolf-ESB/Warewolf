@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Network
             Dev2JsonSerializer dev = new Dev2JsonSerializer();
             var output = dev.SerializeToBuilder(item);
             PrivateObject p = new PrivateObject(serverProxy);
-            p.Invoke("OnItemAddedMessageReceived", new object[] { output.ToString() });
+            p.Invoke("OnItemAddedMessageReceived", output.ToString());
             Assert.AreEqual(ItemGuid,serverGuid);
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");

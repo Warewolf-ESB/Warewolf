@@ -862,27 +862,28 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public async void SaveResourceAsync(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
+        public async Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
         {
             var comsController = GetCommunicationController("SaveResourceService");
             comsController.AddPayloadArgument("ResourceXml", resourceDefinition);
             comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
 
             var con = targetEnvironment.Connection;
-            await comsController.ExecuteCommandAsync<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            return await comsController.ExecuteCommandAsync<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
         }
 
-        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, Guid? serverWorkspaceID)
+        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID)
         {
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), Enums.ResourceType.WorkflowService));
+            var name = Enum.GetName(typeof(ResourceType), resourceType);
+            comsController.AddPayloadArgument("ResourceType", name);
             var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
             var toReloadResources = await comsController.ExecuteCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
