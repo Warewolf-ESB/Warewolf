@@ -30,7 +30,6 @@ using Dev2.Explorer;
 using Dev2.Models;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
@@ -516,44 +515,43 @@ namespace Dev2.AppResources.Repositories
             // ReSharper restore ImplicitlyCapturedClosure
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
-                if(item.ResourceType == ResourceType.ServerSource)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType >= ResourceType.DbSource)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
-                }
-                else if(item.ResourceType == ResourceType.WorkflowService)
-                {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
-                }
+               resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId,GlobalConstants.ServerWorkspaceID);
+//                if(item.ResourceType == ResourceType.ServerSource)
+//                {
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType >= ResourceType.DbSource)
+//                {
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
+//                {
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
+//                }
+//                else if(item.ResourceType == ResourceType.WorkflowService)
+//                {
+//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
+//                }
             }
-            else
-            {
-                lock(_syncRoot)
-                {
-                    if(parent != null && !alreadyAdded )
-                    {
-                        explorerItem.EnvironmentId = parent.EnvironmentId;
-                        explorerItem.Parent = parent;
-                        if(parent.Children == null)
-                        {
-                            parent.Children = new ObservableCollection<IExplorerItemModel>();
-                        }
-                        if(_currentDispatcher == null)
-                        {
-                            AddChildItem(parent, explorerItem);
-                        }
-                        else
-                        {
-                            PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
 
-                        }
+            lock(_syncRoot)
+            {
+                if(parent != null && !alreadyAdded)
+                {
+                    explorerItem.EnvironmentId = parent.EnvironmentId;
+                    explorerItem.Parent = parent;
+                    if(parent.Children == null)
+                    {
+                        parent.Children = new ObservableCollection<IExplorerItemModel>();
+                    }
+                    if(_currentDispatcher == null)
+                    {
+                        AddChildItem(parent, explorerItem);
+                    }
+                    else
+                    {
+                        PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
+
                     }
                 }
             }

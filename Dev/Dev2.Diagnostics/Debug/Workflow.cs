@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Dev2.Diagnostics.Debug
@@ -20,7 +21,7 @@ namespace Dev2.Diagnostics.Debug
     {
         public IList<DebugState> DebugStates { get; set; }
 
-        public System.Xml.Schema.XmlSchema GetSchema()
+        public XmlSchema GetSchema()
         {
             return null;
         }

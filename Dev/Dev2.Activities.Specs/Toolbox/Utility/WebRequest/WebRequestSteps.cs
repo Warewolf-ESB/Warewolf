@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -117,7 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
             ScenarioContext.Current.Add("url", url);
-            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds.ToString());
+            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds);
         }
 
 

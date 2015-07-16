@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Diagnostics
 {
     public class DebugItemResultEqualityComparer : IEqualityComparer<IDebugItemResult>

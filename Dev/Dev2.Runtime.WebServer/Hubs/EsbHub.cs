@@ -16,7 +16,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -159,12 +158,12 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="dataListId">The data list unique identifier.</param>
         /// <param name="messageId">The message unique identifier.</param>
         /// <returns></returns>
-        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
+        public async Task<string> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
             try
             {
-                var task = new Task<Receipt>(() =>
+                var task = new Task<string>(() =>
                 {
                     try
                     {
@@ -179,36 +178,20 @@ namespace Dev2.Runtime.WebServer.Hubs
                         MessageCache.TryRemove(messageId, out sb);
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
-                        var user = string.Empty;
                         // ReSharper disable ConditionIsAlwaysTrueOrFalse
                         if (Context.User.Identity != null)
                         // ReSharper restore ConditionIsAlwaysTrueOrFalse
                         {
-                            user = Context.User.Identity.Name;
+                            var user = Context.User.Identity.Name;
                             // set correct principle ;)
                             Thread.CurrentPrincipal = Context.User;
                             Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                         }
 
                         var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
-                        var length = processRequest.Length;
-
-                        // always place requesting user in here ;)
-                        var future = new FutureReceipt
-                        {
-                            PartID = 0,
-                            RequestID = messageId,
-                            User = user
-                        };
 
                         var value = processRequest.ToString();
-
-                        if (!ResultsCache.Instance.AddResult(future, value))
-                        {
-                            Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
-                        }
-
-                        return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
+                        return value;
 
                     }
                     catch (Exception e)

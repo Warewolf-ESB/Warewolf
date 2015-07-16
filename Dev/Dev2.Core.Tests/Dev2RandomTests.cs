@@ -104,7 +104,7 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForPositiveCase()
         {
-            double moreThanMaxInt = (double)((double)int.MaxValue + 1), lessThanMaxDouble = (double)(double.MaxValue - 1);
+            double moreThanMaxInt = (double)int.MaxValue + 1, lessThanMaxDouble = double.MaxValue - 1;
             double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, moreThanMaxInt, lessThanMaxDouble));
             Assert.IsTrue(result <= lessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= moreThanMaxInt, "Dev2Random generated a number below the specified range");
@@ -113,7 +113,7 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForNegativeCase()
         {
-            double lessThanMinInt = (double)((double)int.MinValue - 1), lessThanMaxDouble = (double)(double.MaxValue - 1);
+            double lessThanMinInt = (double)int.MinValue - 1, lessThanMaxDouble = double.MaxValue - 1;
             double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, lessThanMinInt, lessThanMaxDouble));
             Assert.IsTrue(result <= lessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= lessThanMinInt, "Dev2Random generated a number below the specified range");

@@ -17,6 +17,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
 using IronRuby;
+using IronRuby.Builtins;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 
@@ -130,7 +131,7 @@ namespace Dev2.Development.Languages.Scripting
 
                     if (name == "IronRuby.Libraries, Version=1.1.4.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1")
                     {
-                        return IntrospectionExtensions.GetTypeInfo(typeof(IronRuby.Builtins.Integer)).Assembly;
+                        return IntrospectionExtensions.GetTypeInfo(typeof(Integer)).Assembly;
                     }
 
                     return base.LoadAssembly(name);

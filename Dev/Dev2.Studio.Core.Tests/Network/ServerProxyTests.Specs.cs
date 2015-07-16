@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
-using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

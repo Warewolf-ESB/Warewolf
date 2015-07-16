@@ -207,21 +207,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             {
                 Assert.IsNull(viewModel.Errors);
             }
-            else
-            {
-                if (viewModel.Errors != null)
-                {
-
-                    Assert.IsNotNull(viewModel.Errors);
-                    Assert.AreEqual(1, viewModel.Errors.Count);
-
-                    var error = viewModel.Errors[0];
-                    Assert.AreEqual(string.Format(string.Empty), error.Message);
-
-                    error.Do();
-                    Assert.IsTrue(_onErrorAssigned);
-                }
-            }
         }
 
         [TestMethod]
@@ -264,25 +249,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
                 var path = scheme + "://tmp.txt";
                 const string ExpectedMessageFormat = null;
                 var viewModel = VerifyValidatePath(scheme + "://tmp.txt", true, path, ExpectedMessageFormat);
-                if (string.IsNullOrEmpty(ExpectedMessageFormat))
-                {
-                    Assert.IsNull(viewModel.Errors);
-                }
-                else
-                {
-                    if (viewModel.Errors != null)
-                    {
-
-                        Assert.IsNotNull(viewModel.Errors);
-                        Assert.AreEqual(1, viewModel.Errors.Count);
-
-                        var error = viewModel.Errors[0];
-                        Assert.AreEqual(string.Format(string.Empty), error.Message);
-
-                        error.Do();
-                        Assert.IsTrue(_onErrorAssigned);
-                    }
-                }
+                Assert.IsNull(viewModel.Errors);
             }
         }
 

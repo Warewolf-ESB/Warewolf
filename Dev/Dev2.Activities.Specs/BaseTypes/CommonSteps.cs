@@ -9,30 +9,29 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using ActivityUnitTests;
-using FluentAssertions;
+using Dev2.Activities.Specs.Toolbox.FileAndFolder;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Activities.Specs.Toolbox.FileAndFolder;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Warewolf.Storage;
-using System.IO;
-using System.Text;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -391,10 +390,10 @@ namespace Dev2.Activities.Specs.BaseTypes
             var source = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string inputFilePath, outputFilePath, error;
 
-            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder)),
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(SourceHolder)),
                                        out inputFilePath, out error);
 
-            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder)),
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(DestinationHolder)),
                                            out outputFilePath, out error);
 
             var inputFile = new FileInfo(inputFilePath);
@@ -402,7 +401,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             double compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
-                Math.Round((double)(inputFile.Length) / (double)(outputFile.Length), 1));
+                Math.Round(inputFile.Length / (double)(outputFile.Length), 1));
         }
 
         public static void AddVariableToVariableList(string resultVariable)

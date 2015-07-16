@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -164,7 +163,7 @@ namespace Dev2.Integration.Tests
 
         private static string GetProcessPath(string processName)
         {
-            var query = new System.Management.SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
             ManagementObjectCollection processes;
             //initialize the searcher with the query it is
             //supposed to execute

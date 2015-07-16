@@ -1449,12 +1449,6 @@ namespace Dev2.Data.Util
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
                     if (outPutRecSet != null)
                     {
-                        var startIndex = 0;
-                        var recordSetName = recordSetDefinition.SetName;
-                        if(environment.HasRecordSet(AddBracketsToValueIfNotExist(MakeValueIntoHighLevelRecordset(recordSetName))))
-                        {
-                            startIndex = environment.GetLength(recordSetName);
-                        }
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
 
@@ -1479,7 +1473,7 @@ namespace Dev2.Data.Util
                                         if (recsetResult != null)
                                         {
                                             
-                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, startIndex);
+                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult);
                                         }
                                     }
                                     if (enRecordsetIndexType == enRecordsetIndexType.Numeric)

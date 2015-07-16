@@ -37,6 +37,7 @@ using Warewolf.Storage;
 // ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
+    // ReSharper disable once RedundantExtendsListEntry
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
@@ -724,7 +725,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             
-            if(NextNodes != null && NextNodes.Count()>0)
+            if(NextNodes != null && NextNodes.Any())
             {
               
                     return NextNodes.First();
@@ -834,7 +835,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }

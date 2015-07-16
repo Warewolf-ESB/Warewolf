@@ -7,11 +7,13 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +60,7 @@ namespace Dev2.Studio
         public App()
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
-            AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.WindowsPrincipal);
+            AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
             InitializeComponent();

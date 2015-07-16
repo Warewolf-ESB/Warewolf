@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Security.Principal;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -54,7 +55,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
             // Get the current executing user ;)
-            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var currentUser = WindowsIdentity.GetCurrent(false);
             var machineName = Environment.MachineName;
             var userAddString = wso.FormatUserForInsert(currentUser.Name, machineName);
 

@@ -1,13 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.AspNet.SignalR.Client.Old;
 using Microsoft.AspNet.SignalR.Client.Old.Hubs;
 using Newtonsoft.Json.Linq;
 
-namespace Dev2.SignalR.Wrappers.New
+namespace Dev2.SignalR.Wrappers.Old
 {
     public class HubProxyWrapperOld : IHubProxyWrapper
     {
@@ -108,24 +106,11 @@ namespace Dev2.SignalR.Wrappers.New
             }
         }
         public event Action<IList<JToken>> Received;
-        public Subscription Wrapped { get; private set; }
+        Subscription Wrapped { get; set; }
     }
 
     public class StateChangeWrappedOld : IStateChangeWrapped
     {
-        private StateChange change;
-
-        /// <summary>
-        /// Creates a new stance of <see cref="StateChange"/>.
-        /// </summary>
-        /// <param name="oldState">The old state of the connection.</param>
-        /// <param name="newState">The new state of the connection.</param>
-        public StateChangeWrappedOld(ConnectionStateWrapped oldState, ConnectionStateWrapped newState)
-        {
-            OldState = oldState;
-            NewState = newState;
-        }
-
         public StateChangeWrappedOld(StateChange change)
         {
 
@@ -145,6 +130,4 @@ namespace Dev2.SignalR.Wrappers.New
 
 
     }
-    public class HttpClientExceptionWrappedOld: HttpClientException  { }
-
 }

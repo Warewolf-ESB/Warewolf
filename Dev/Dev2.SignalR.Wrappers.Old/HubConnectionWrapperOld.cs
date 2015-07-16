@@ -2,16 +2,13 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Dev2.SignalR.Wrappers.New;
 using Microsoft.AspNet.SignalR.Client.Old;
 
 namespace Dev2.SignalR.Wrappers.Old
 {
     public class HubConnectionWrapperOld : IHubConnectionWrapper
     {
-        ConnectionStateWrapped _state;
-       HubConnection _wrapped;
-        ICredentials _credentials;
+        readonly HubConnection _wrapped;
 
         #region Implementation of IHubConnectionWrapper
 

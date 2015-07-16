@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Settings;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
@@ -30,6 +32,7 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceRepository : IDisposable
     {
         List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        Task<List<IResourceModel>> ReloadResourceAsync(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         void Rename(string resourceId, string newName);
         void DeployResource(IResourceModel resource);
@@ -52,8 +55,8 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
-        Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv);
-        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Data.Settings.Settings settings);
+        Settings ReadSettings(IEnvironmentModel currentEnv);
+        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Settings settings);
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
@@ -83,7 +86,10 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
 
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
-        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, AppResources.Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
+        void SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
+
+        void LoadResourceFromWorkspaceAsync(Guid resourceId, Guid? serverWorkspaceID);
     }
 }

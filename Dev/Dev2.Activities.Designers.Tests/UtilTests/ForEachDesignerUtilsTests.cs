@@ -12,7 +12,9 @@
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
+using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +31,7 @@ namespace Dev2.Core.Tests.Activities
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
         }
 
         [TestMethod]

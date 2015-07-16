@@ -7,17 +7,13 @@ namespace Dev2.SignalR.Wrappers.New
 {
     public class HubConnectionWrapper : IHubConnectionWrapper
     {
-        ConnectionStateWrapped _state;
-        HubConnection _wrapped;
+        readonly HubConnection _wrapped;
 
         #region Implementation of IHubConnectionWrapper
 
-        public HubConnectionWrapper(HubConnection wrapped)
+        private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-            _wrapped.Error += exception => Error(exception);
-            _wrapped.Closed += delegate { Closed(); };
-            _wrapped.StateChanged += change => StateChanged(new StateChangeWrapped(change));
         }
 
         public HubConnectionWrapper(string uriString)
@@ -31,9 +27,38 @@ namespace Dev2.SignalR.Wrappers.New
            return new HubProxyWrapper(_wrapped.CreateHubProxy(hubName));
         }
 
-        public event Action<Exception> Error;
-        public event Action Closed;
-        public event Action<IStateChangeWrapped> StateChanged;
+        public event Action<Exception> Error
+        {
+            add
+            {
+                _wrapped.Error += value;
+            }
+            remove
+            {
+                _wrapped.Error -= value;
+            }
+        }
+        public event Action Closed
+        {
+            add
+            {
+                _wrapped.Closed += value;
+            }
+            remove
+            {
+                _wrapped.Closed -= value;
+            }
+        }
+        public event Action<IStateChangeWrapped> StateChanged
+        {
+            add
+            {
+                _wrapped.StateChanged += change => value(new StateChangeWrapped(change));
+            }
+            remove
+            {
+            }
+        }
         public ConnectionStateWrapped State
         {
             get

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Network;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data.ServiceModel.Messages;
@@ -44,6 +45,7 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler PermissionsChanged;
         bool IsAuthorized { get; set; }
 
+        Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
 
         IHubProxyWrapper EsbProxy { get; }

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -54,14 +55,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
+            ResourceType = ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
         }
 
         public WebSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
+            ResourceType = ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using System.Windows.Media.Animation;
 using Dev2.Models;
 
 // ReSharper disable CheckNamespace
@@ -33,15 +34,15 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Dependency Properties
 
-        public System.Windows.Media.Animation.Storyboard InsertAnimation
+        public Storyboard InsertAnimation
         {
-            get { return (System.Windows.Media.Animation.Storyboard)GetValue(InsertAnimationProperty); }
+            get { return (Storyboard)GetValue(InsertAnimationProperty); }
             set { SetValue(InsertAnimationProperty, value); }
         }
 
         public static readonly DependencyProperty InsertAnimationProperty =
             DependencyProperty.Register("InsertAnimation",
-            typeof(System.Windows.Media.Animation.Storyboard),
+            typeof(Storyboard),
             typeof(TreeViewFocusOnAddBehavior), new PropertyMetadata(null));
 
         #endregion Dependency Properties

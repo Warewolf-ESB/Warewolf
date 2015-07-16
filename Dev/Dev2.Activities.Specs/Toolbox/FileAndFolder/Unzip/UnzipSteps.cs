@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Threading.Tasks;
+
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
     [Binding]

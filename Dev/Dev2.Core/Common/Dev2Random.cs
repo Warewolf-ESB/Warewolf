@@ -82,13 +82,14 @@ namespace Dev2.Common
                 Math.Abs(from),
                 Math.Abs(to)
                 );
-            return (uint)(Math.Max(DecimalPlaces(smallest), DecimalPlaces(largest)));
+            return Math.Max(DecimalPlaces(smallest), DecimalPlaces(largest));
         }
 
         private uint DecimalPlaces(double x)
         {
             uint places = 0;
-            for (; ((x * Math.Pow(10, (double)places)) % 1) != 0; places++) ;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            for (; ((x * Math.Pow(10, places)) % 1) != 0; places++) ;
             return places;
         }
         private string GenerateLetters(int length, ref int seed)

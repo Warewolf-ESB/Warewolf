@@ -15,6 +15,7 @@ using System.Xml;
 using System.Xml.Schema;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Diagnostics
 {
     [Serializable]
@@ -70,7 +71,7 @@ namespace Dev2.Diagnostics
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }

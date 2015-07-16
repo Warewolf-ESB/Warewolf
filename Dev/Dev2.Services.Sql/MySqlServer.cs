@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
@@ -408,7 +407,7 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var parameterName = System.Text.Encoding.Default.GetString(row[0] as byte[]); ;
+                var parameterName = Encoding.Default.GetString(row[0] as byte[]); ;
                 parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                 var parameternames = parameterName.Split(new[] { ',' });
                 foreach(var parameter in parameternames)

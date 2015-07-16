@@ -1862,6 +1862,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var aggregator = new Mock<EventAggregator>();
 #pragma warning disable 219
+            // ReSharper disable NotAccessedVariable
             Guid resourceGuid;
 
             string oldName;

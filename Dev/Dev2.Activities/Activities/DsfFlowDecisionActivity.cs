@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
@@ -31,24 +32,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override void UpdateForEachInputs(IList<System.Tuple<string, string>> updates)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<System.Tuple<string, string>> updates)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject)

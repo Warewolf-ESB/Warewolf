@@ -15,6 +15,7 @@ using System.Net;
 using System.Network;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -24,7 +25,6 @@ using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
-
 
 namespace Dev2.Network
 {
@@ -166,6 +166,10 @@ namespace Dev2.Network
             return _wrappedConnection.ExecuteCommand(xmlRequest,workspaceId,dataListId);
         }
 
+        public Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId)
+        {
+            return _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId, dataListId);
+        }
         public IHubProxyWrapper EsbProxy
         {
             get

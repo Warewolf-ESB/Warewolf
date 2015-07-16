@@ -45,8 +45,12 @@ namespace Dev2.Webs.Callbacks
             string resName = jsonObj.resourceName;
             string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
             var source = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
-            environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
-            
+
+            environmentModel.ResourceRepository.SaveResourceAsync(environmentModel, source, GlobalConstants.ServerWorkspaceID);
+//            if(executeMessage.HasError)
+//            {
+//                CustomContainer.Get<IPopupController>().ShowSaveErrorDialog(executeMessage.Message.ToString());
+//            }
         }
 
         protected virtual void StartUriProcess(string uri)

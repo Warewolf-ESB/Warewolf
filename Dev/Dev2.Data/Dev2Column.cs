@@ -12,6 +12,7 @@
 using System;
 using Dev2.Data.Binary_Objects;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract.Binary_Objects
 {
     [Serializable]
@@ -155,7 +156,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }

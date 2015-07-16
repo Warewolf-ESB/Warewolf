@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+
 namespace WarewolfParsingTest
 {
     [TestClass]
@@ -152,7 +153,7 @@ namespace WarewolfParsingTest
         private DataASTMutable.WarewolfEnvironment CreateTestEnvWithData()
         {
 
-            var assigns = new List<IAssignValue>
+            IEnumerable<IAssignValue> assigns = new List<IAssignValue>
              {
                  new AssignValue("[[rec().a]]", "2"),
                  new AssignValue("[[rec().a]]", "4"),
@@ -165,7 +166,7 @@ namespace WarewolfParsingTest
              };
             var env = WarewolfTestData.CreateTestEnvEmpty("");
 
-            var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
+            var env2 = PublicFunctions.EvalMultiAssign(assigns, env: env);
             return env2;
         }
 

@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
@@ -81,7 +82,7 @@ namespace Dev2
         {
             try
             {
-                using (new System.Runtime.MemoryFailPoint(1000)) // 20 megabytes
+                using (new MemoryFailPoint(1000)) // 20 megabytes
                 {
                    return RunMain(arguments);
                 }
