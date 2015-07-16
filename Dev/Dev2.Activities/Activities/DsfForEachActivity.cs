@@ -845,7 +845,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             allErrors.MergeErrors(errors);
                         }
-
+          
+                    }
+                    if (dataObject.IsDebugMode())
+                    {
+                        DispatchDebugState(dataObject, StateType.Duration);
                     }
                 }
                 catch(Exception e)

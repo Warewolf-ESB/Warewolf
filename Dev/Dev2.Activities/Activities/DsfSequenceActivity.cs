@@ -182,7 +182,10 @@ namespace Dev2.Activities
                     act.Execute(dataObject);
                 }
             }
-            
+           if (dataObject.IsDebugMode())
+           {
+               DispatchDebugState(dataObject, StateType.Duration);
+           }
             OnCompleted(dataObject);
         }
 

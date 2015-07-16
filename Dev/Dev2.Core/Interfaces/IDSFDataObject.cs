@@ -97,5 +97,6 @@ namespace Dev2
         void PushEnvironment(IExecutionEnvironment env);
 
         IEsbChannel EsbChannel { get; set; }
+        DateTime StartTime { get; set; }
     }
 }

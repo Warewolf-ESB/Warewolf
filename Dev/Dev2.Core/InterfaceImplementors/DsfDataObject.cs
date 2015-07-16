@@ -220,6 +220,7 @@ namespace Dev2.DynamicServices
         }
 
         public IEsbChannel EsbChannel { get; set; }
+        public DateTime StartTime { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 

@@ -77,6 +77,12 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                     _debugInputs = CreateDebugInputs(dataObject.Environment);
 
+                if (dataObject.IsDebugMode())
+                {
+
+                    DispatchDebugState(dataObject, StateType.Before);
+                }
+
                 var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
 
 
@@ -112,7 +118,6 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
                 if (resultval)
