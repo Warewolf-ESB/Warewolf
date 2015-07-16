@@ -166,9 +166,9 @@ namespace Dev2.Network
             return _wrappedConnection.ExecuteCommand(xmlRequest,workspaceId,dataListId);
         }
 
-        public Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId)
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId)
         {
-            return _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId, dataListId);
+            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId, dataListId);
         }
         public IHubProxyWrapper EsbProxy
         {
@@ -215,7 +215,7 @@ namespace Dev2.Network
             }
              catch( FallbackException)
             {
-                Dev2Logger.Log.Info("Falling Back to previos signal r client");
+                Dev2Logger.Log.Info("Falling Back to previous signal r client");
                 _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri);
                 SetupPassthroughEvents();
                 _wrappedConnection.Connect(_wrappedConnection.ID);

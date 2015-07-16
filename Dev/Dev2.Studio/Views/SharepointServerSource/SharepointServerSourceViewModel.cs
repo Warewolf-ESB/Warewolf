@@ -140,12 +140,11 @@ namespace Dev2.Views.SharepointServerSource
                 {
                     var message = _environment.ResourceRepository.FetchResourceDefinition(_environment, GlobalConstants.ServerWorkspaceID, _resource.ID);
                     xaml = message.Message;
-                    if (!xaml.IsNullOrEmpty())
-                    {
-                        UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
-                    }
                 }
-                
+                if (!xaml.IsNullOrEmpty())
+                {
+                    UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
+                }
             }
         }
 

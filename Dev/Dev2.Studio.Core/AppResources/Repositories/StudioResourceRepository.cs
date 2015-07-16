@@ -515,23 +515,22 @@ namespace Dev2.AppResources.Repositories
             // ReSharper restore ImplicitlyCapturedClosure
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
-               resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId,GlobalConstants.ServerWorkspaceID);
-//                if(item.ResourceType == ResourceType.ServerSource)
-//                {
-//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-//                }
-//                else if(item.ResourceType >= ResourceType.DbSource)
-//                {
-//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-//                }
-//                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
-//                {
-//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
-//                }
-//                else if(item.ResourceType == ResourceType.WorkflowService)
-//                {
-//                    await resourceRepository.ReloadResourceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
-//                }
+                if(item.ResourceType == ResourceType.ServerSource)
+                {
+                   resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                }
+                else if(item.ResourceType >= ResourceType.DbSource)
+                {
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                }
+                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
+                {
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
+                }
+                else if(item.ResourceType == ResourceType.WorkflowService)
+                {
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
+                }
             }
 
             lock(_syncRoot)
