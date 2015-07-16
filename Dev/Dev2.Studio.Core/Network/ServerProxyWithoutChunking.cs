@@ -84,8 +84,7 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            //HubConnection.TraceLevel = TraceLevels.All;
-            //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
+            
             InitializeEsbProxy();
             _asyncWorker = worker;
 
