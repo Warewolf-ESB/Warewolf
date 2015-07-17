@@ -21,11 +21,16 @@ namespace Dev2.Views.SharepointServerSource
         string _userName;
         string _password;
         string _testResult;
+        
         IContextualResourceModel _resource;
         AuthenticationType _authenticationType;
+        bool _testComplete;
+        bool _isLoading;
 
         public SharepointServerSourceViewModel(SharepointServerSource serverSource, IEnvironmentModel environment)
         {
+            IsLoading = false;
+            TestComplete = false;
             _environment = environment;
             ServerName = "";
             AuthenticationType = AuthenticationType.Windows;
@@ -34,7 +39,7 @@ namespace Dev2.Views.SharepointServerSource
             {
                 serverSource.DialogResult = true;
                 serverSource.Close();
-            });
+            }, o => TestComplete);
             
             CancelCommand = new RelayCommand(o =>
             {
@@ -43,12 +48,14 @@ namespace Dev2.Views.SharepointServerSource
             });
             TestCommand=new RelayCommand(o =>
             {
+                IsLoading = true;
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 var source = CreateSharepointServerSource();
                 var comsController = new CommunicationController { ServiceName = "TestSharepointServerService" };
                 comsController.AddPayloadArgument("SharepointServer", serializer.SerializeToBuilder(source));
                 TestResult = comsController.ExecuteCommand<string>(environment.Connection, GlobalConstants.ServerWorkspaceID);
-            });
+                IsLoading = false;
+            }, o => !TestComplete);
         }
 
         public string TestResult
@@ -60,6 +67,10 @@ namespace Dev2.Views.SharepointServerSource
             set
             {
                 _testResult = value;
+                if (!_testResult.Contains("Failed"))
+                {
+                    TestComplete = true;
+                }
                 NotifyOfPropertyChange("TestResult");
             }
         }
@@ -145,6 +156,34 @@ namespace Dev2.Views.SharepointServerSource
                 {
                     UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
                 }
+            }
+        }
+
+        public bool TestComplete
+        {
+            get { return _testComplete; }
+            set
+            {
+                _testComplete = value;
+                NotifyOfPropertyChange("TestComplete");
+                var command = SaveCommand as RelayCommand;
+                if (command != null)
+                {
+                    command.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                _isLoading = value;
+                NotifyOfPropertyChange(() => IsLoading);
             }
         }
 
