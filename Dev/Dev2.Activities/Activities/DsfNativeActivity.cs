@@ -441,7 +441,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? dt=null)
             // ReSharper restore MemberCanBeProtected.Global
         {
-            
+            bool clearErrors = false;
+            try
+            {
+
             
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -496,8 +499,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                bool hasError = dataObject.Environment.HasErrors();
-
+                bool hasError = dataObject.Environment.Errors.Any();
+                clearErrors = hasError;
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
@@ -589,12 +592,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
-            foreach(var err in dataObject.Environment.Errors)
-            {
-                dataObject.Environment.AllErrors.Add(err);
+         
+
             }
-            //if (stateType == StateType.Before || stateType == StateType.After)
-            //dataObject.Environment.Errors.Clear();
+            finally
+            {
+                if (clearErrors)
+                {
+                    foreach (var error in dataObject.Environment.Errors)
+                    {
+                        dataObject.Environment.AllErrors.Add(error);
+
+                    }
+                    dataObject.Environment.Errors.Clear();
+                }
+            }
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
@@ -731,6 +743,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data);
+
             }
             catch (Exception ex)
             {
@@ -744,6 +757,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DoErrorHandling(data);
                 }
+             
+
 
             }
 
