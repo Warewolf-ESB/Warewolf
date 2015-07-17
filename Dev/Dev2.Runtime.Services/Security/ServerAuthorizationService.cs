@@ -124,6 +124,8 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbOnConnected:
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                 case WebServerRequestType.ResourcesSendMemo:
+                case WebServerRequestType.WebExecuteGetRootLevelApisJson:
+                case WebServerRequestType.WebExecuteGetApisJsonForFolder:
                     result = IsAuthorizedToConnect(request.User);
                     break;
             }

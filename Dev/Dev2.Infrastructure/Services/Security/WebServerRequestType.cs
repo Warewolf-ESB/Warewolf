@@ -33,6 +33,8 @@ namespace Dev2.Services.Security
         WebExecuteSecureWorkflow,
         WebExecutePublicWorkflow,
         WebExecuteGetLogFile,
+        WebExecuteGetRootLevelApisJson,
+        WebExecuteGetApisJsonForFolder,
         WebBookmarkWorkflow,
 
         // See Hubs
