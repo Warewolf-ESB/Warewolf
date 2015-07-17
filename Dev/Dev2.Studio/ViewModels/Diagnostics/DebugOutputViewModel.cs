@@ -732,9 +732,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (content.StateType == StateType.Duration)
             {
                 var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
-                if(item!= null)
+           
+                if (item != null)
                 {
                     item.EndTime = content.EndTime;
+                    //RebuildTree();
                 }
             }
             else
@@ -768,28 +770,29 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     }
                 }
                 _contentItems.Add(content);
-            }
-            lock(_syncContext)
-            {
-                if(_isRebuildingTree)
-                {
-                    return;
-                }
-            }
 
-            var application = Application.Current;
-            if(application != null)
-            {
-                var dispatcher = application.Dispatcher;
-                var contentToDispatch = content;
-                if(dispatcher != null && dispatcher.CheckAccess())
+                lock (_syncContext)
                 {
-                    dispatcher.Invoke(() => AddItemToTreeImpl(contentToDispatch));
+                    if (_isRebuildingTree)
+                    {
+                        return;
+                    }
                 }
-            }
-            else
-            {
-                AddItemToTreeImpl(content);
+
+                var application = Application.Current;
+                if (application != null)
+                {
+                    var dispatcher = application.Dispatcher;
+                    var contentToDispatch = content;
+                    if (dispatcher != null && dispatcher.CheckAccess())
+                    {
+                        dispatcher.Invoke(() => AddItemToTreeImpl(contentToDispatch));
+                    }
+                }
+                else
+                {
+                    AddItemToTreeImpl(content);
+                }
             }
         }
 
@@ -860,6 +863,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             return;
                         }
+                     
                         theParent.AppendError(content.ErrorMessage);
                         theParent.HasError = true;
                     }

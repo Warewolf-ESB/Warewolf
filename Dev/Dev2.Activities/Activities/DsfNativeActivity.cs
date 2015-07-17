@@ -438,10 +438,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region DispatchDebugState
 
         // ReSharper disable MemberCanBeProtected.Global
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? dt=null)
             // ReSharper restore MemberCanBeProtected.Global
         {
-            
+            bool clearErrors = false;
+            try
+            {
+
             
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -450,7 +453,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, false, "");
+                    InitializeDebugState(stateType, dataObject, remoteID, false, "",dt);
                 }
 
                 if (_debugState != null)
@@ -492,27 +495,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.Inputs.Add(debugItem);
                     }
                 }
+                       
             }
             else
             {
-                bool hasError = dataObject.Environment.HasErrors();
-
+                bool hasError = dataObject.Environment.Errors.Any();
+                clearErrors = hasError;
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors);
+                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors.Distinct());
                 }
 
                 if(_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage);
+                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage,dt);
                 }
 
                 if(_debugState != null)
                 {
                     _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
                     _debugState.StateType = stateType;
-                    _debugState.EndTime = DateTime.Now;
+                    _debugState.EndTime = dt?? DateTime.Now;
                     _debugState.HasError = hasError;
                     _debugState.ErrorMessage = errorMessage;
                     try
@@ -539,6 +543,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.HasError = true;
                     }
                 }
+         
             }
 
             if(_debugState != null &&  (_debugState.StateType!=StateType.Duration) &&(!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
@@ -587,11 +592,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
-            foreach(var err in dataObject.Environment.Errors)
-            {
-                dataObject.Environment.AllErrors.Add(err);
+         
+
             }
-          dataObject.Environment.Errors.Clear();
+            finally
+            {
+                if (clearErrors)
+                {
+                    foreach (var error in dataObject.Environment.Errors)
+                    {
+                        dataObject.Environment.AllErrors.Add(error);
+
+                    }
+                    dataObject.Environment.Errors.Clear();
+                }
+            }
         }
 
         void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
@@ -611,7 +626,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
+        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
@@ -630,8 +645,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now,
+                StartTime = dt ?? DateTime.Now,
+                EndTime = dt ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = ShouldExecuteSimulation,
@@ -728,6 +743,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data);
+
             }
             catch (Exception ex)
             {
@@ -741,6 +757,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DoErrorHandling(data);
                 }
+             
+
 
             }
 

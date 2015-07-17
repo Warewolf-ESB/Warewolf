@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.WF
         {
             _add = add;
         }
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible=true)
         {
             errors = new ErrorResultTO();
             if(dataObject != null)
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     existingErrors = errorMessage;
                 }
-                else
+                else if(!existingErrors.Contains(errorMessage))
                 {
                     existingErrors += Environment.NewLine + errorMessage;
                 }
@@ -81,7 +81,8 @@ namespace Dev2.Runtime.ESB.WF
                     ClientID = dataObject.ClientID,
                     Name = stateType.ToString(),
                     HasError = hasErrors || hasError,
-                    ErrorMessage = existingErrors
+                    ErrorMessage = existingErrors,
+                    IsDurationVisible = durationVisible
                 };
 
                 if(interrogateInputs)

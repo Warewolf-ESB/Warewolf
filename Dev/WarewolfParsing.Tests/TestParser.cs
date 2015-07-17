@@ -1487,7 +1487,43 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Errors")]
+        public void WarewolfEnvironment_ErrorsAreUnique()
+        {
 
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AddError("bob");
+            Assert.AreEqual(env.Errors.Count,1);
+            env.AddError("bob");
+            Assert.AreEqual(env.Errors.Count, 1);
+            env.AddError("dave");
+            Assert.AreEqual(env.Errors.Count, 2);
+            env.AddError("dave");
+            Assert.AreEqual(env.Errors.Count, 2);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Errors")]
+        public void WarewolfEnvironment_AllErrorsAreUnique()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AllErrors.Add("bob");
+            Assert.AreEqual(env.AllErrors.Count, 1);
+            env.AllErrors.Add("bob");
+            Assert.AreEqual(env.AllErrors.Count, 1);
+            env.AllErrors.Add("dave");
+            Assert.AreEqual(env.AllErrors.Count, 2);
+            env.AllErrors.Add("dave");
+            Assert.AreEqual(env.AllErrors.Count, 2);
+
+        }
         
         // ReSharper restore InconsistentNaming
     }
