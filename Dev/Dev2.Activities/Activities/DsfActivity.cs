@@ -561,6 +561,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
                     DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Duration);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;

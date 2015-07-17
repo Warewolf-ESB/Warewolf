@@ -14,8 +14,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -31,11 +33,12 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState
+    public class DebugState : IDebugState,INotifyPropertyChanged
     {
         private DateTime _startTime;
         private DateTime _endTime;
         string _errorMessage;
+        bool _isDurationVisible;
 
         #region Ctor
 
@@ -44,13 +47,19 @@ namespace Dev2.Diagnostics.Debug
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
 
+
+            IsDurationVisible = true;
+        }
+
+
+         static DebugState()
+        {
             var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
-            if(!Directory.Exists(tempPath))
+            if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);
             }
         }
-
         #endregion
 
         #region IDebugState - Properties
@@ -174,6 +183,9 @@ namespace Dev2.Diagnostics.Debug
             set
             {
                 _endTime = value;
+                OnPropertyChanged("EndTime");
+                OnPropertyChanged("DurationString");
+                OnPropertyChanged("Duration");
             }
         }
 
@@ -656,6 +668,18 @@ namespace Dev2.Diagnostics.Debug
                    OriginalInstanceID == ID;
         }
 
+        public bool IsDurationVisible
+        {
+            get
+            {
+                return _isDurationVisible;
+            }
+            set
+            {
+                _isDurationVisible = value;
+            }
+        }
+
         #region Implementation of IEquatable<IDebugState>
 
 
@@ -732,5 +756,16 @@ namespace Dev2.Diagnostics.Debug
         #endregion
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

@@ -645,12 +645,13 @@
                                        AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="5"
+                                           Visibility="{Binding  Content.IsDurationVisible, Converter={StaticResource BoolToVisConverter}}"
                                            Grid.Column="1"
                                            Style="{StaticResource DurationVisibility}">
                             <Run Text="Duration" />
                             <Run Text=": " />
-                            </TextBlock>
-                                <TextBlock Grid.Row="5"
+                            </TextBlock >
+                                <TextBlock Grid.Row="5"   Visibility="{Binding Content.IsDurationVisible, Converter={StaticResource BoolToVisConverter}}"
                                            Grid.Column="2"
                                            Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}"
                                            Style="{StaticResource DurationVisibility}"
