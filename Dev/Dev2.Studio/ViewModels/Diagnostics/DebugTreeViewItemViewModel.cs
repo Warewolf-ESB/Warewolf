@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -61,8 +62,10 @@ namespace Dev2.ViewModels.Diagnostics
                 if(Content.HasError)
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
-                    currentError.Append(errorMessage);
-                    Content.ErrorMessage = currentError.ToString();
+                    if(!currentError.Contains(errorMessage))
+                    {  currentError.Append(errorMessage);
+                        Content.ErrorMessage = currentError.ToString();
+                    }
                 }
                 else Content.ErrorMessage = errorMessage;
                 Content.HasError = true;

@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     existingErrors = errorMessage;
                 }
-                else
+                else if(!existingErrors.Contains(errorMessage))
                 {
                     existingErrors += Environment.NewLine + errorMessage;
                 }

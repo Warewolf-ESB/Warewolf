@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             if(string.IsNullOrWhiteSpace(Format))
             {
-                var dateTimeFormatInfo = CultureInfo.InvariantCulture.DateTimeFormat;
+                var dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
                 var customFormat = dateTimeFormatInfo.ShortDatePattern+" "+dateTimeFormatInfo.LongTimePattern.Replace("ss", "ss.ffff");
                 return dateTime.ToString(customFormat);
             }

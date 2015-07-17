@@ -863,6 +863,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             return;
                         }
+                     
                         theParent.AppendError(content.ErrorMessage);
                         theParent.HasError = true;
                     }
