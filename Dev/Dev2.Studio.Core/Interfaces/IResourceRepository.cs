@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
-        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepairForDeployment);
+        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         Settings ReadSettings(IEnvironmentModel currentEnv);
