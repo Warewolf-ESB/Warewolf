@@ -39,6 +39,7 @@ namespace Dev2.Diagnostics.Debug
         private DateTime _endTime;
         string _errorMessage;
         bool _isDurationVisible;
+        string _server;
 
         #region Ctor
 
@@ -203,7 +204,17 @@ namespace Dev2.Diagnostics.Debug
         ///     Gets or sets the server name.
         /// </summary>
         [XmlIgnore]
-        public string Server { get; set; }
+        public string Server
+        {
+            get
+            {
+                return _server;
+            }
+            set
+            {
+                _server = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the workspace ID.

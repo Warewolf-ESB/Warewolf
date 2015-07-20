@@ -18,9 +18,11 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.XML;
 using Dev2.Util;
@@ -342,7 +344,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
-
+            var cat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns("bob");
+            cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
+            activity.SetResourceCatalog(cat.Object);
             var actual = activity.TestInitializeDebugState(StateType, dataObj, remoteID, HasError, ErrorMessage);
 
             Assert.AreEqual(activity.UniqueGuid, actual.ID, "DispatchDebugState did not set the DebugState's ID.");
@@ -350,7 +356,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(StateType, actual.StateType, "DispatchDebugState did not set the DebugState's StateType.");
             Assert.AreEqual(HasError, actual.HasError, "DispatchDebugState did not set the DebugState's HasError.");
             Assert.AreEqual(ErrorMessage, actual.ErrorMessage, "DispatchDebugState did not set the DebugState's ErrorMessage.");
-            Assert.AreEqual(remoteID.ToString(), actual.Server, "DispatchDebugState did not set the DebugState's Server.");
+            Assert.AreEqual("localhost", actual.Server, "DispatchDebugState did not set the DebugState's Server.");
 
             Assert.AreEqual(dataObj.WorkspaceID, actual.WorkspaceID, "DispatchDebugState did not set the DebugState's WorkspaceID.");
             Assert.AreEqual(dataObj.ServerID, actual.ServerID, "DispatchDebugState did not set the DebugState's ServerID.");

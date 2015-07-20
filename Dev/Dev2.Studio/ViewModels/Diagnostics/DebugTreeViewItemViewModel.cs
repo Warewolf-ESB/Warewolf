@@ -93,41 +93,38 @@ namespace Dev2.ViewModels.Diagnostics
             // check for remote server ID ;)
             Guid serverID;
             var isRemote = Guid.TryParse(content.Server, out serverID);
-
-            // avoid flagging empty guid as valid ;)
-            if(isRemote && serverID == Guid.Empty)
+            if (isRemote|| String.IsNullOrEmpty( content.Server)) //todo:Technical debt. this must be removed on a major upgrade
             {
-                isRemote = false;
-            }
 
-            var envID = content.EnvironmentID;
 
-            var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
-            if (env == null)
-            {
-                var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
-                if(environmentModels != null)
+                var envID = content.EnvironmentID;
+
+                var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
+                if (env == null)
                 {
-                    env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                    var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
+                    if (environmentModels != null)
+                    {
+                        env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                    }
+                    else
+                    {
+                        env = _environmentRepository.Source;
+                    }
+                }
+                if (Equals(env, _environmentRepository.Source) )
+                {
+                    // We have an unknown remote server ;)
+                    content.Server = "Unknown Remote Server";
                 }
                 else
                 {
-                    env = _environmentRepository.Source;
+                    if (env != null)
+                    {
+                        content.Server = env.Name;
+                    }
                 }
             }
-            if(Equals(env, _environmentRepository.Source) && isRemote)
-            {
-                // We have an unknown remote server ;)
-                content.Server = "Unknown Remote Server";
-            }
-            else
-            {
-                if(env != null)
-                {
-                    content.Server = env.Name;
-                }
-            }
-
             BuildBindableListFromDebugItems(content.Inputs, _inputs);
             BuildBindableListFromDebugItems(content.Outputs, _outputs);
 

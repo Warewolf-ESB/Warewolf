@@ -27,6 +27,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
@@ -95,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _previousParentInstanceID;
         IDebugState _debugState;
         bool _isOnDemandSimulation;
-
+        IResourceCatalog _resourceCatalog;
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
 
@@ -120,10 +121,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected DsfNativeActivity(bool isExecuteAsync, string displayName)
             : this(isExecuteAsync, displayName, DebugDispatcher.Instance)
         {
+           
         }
 
         protected DsfNativeActivity(bool isExecuteAsync, string displayName, IDebugDispatcher debugDispatcher)
         {
+            _resourceCatalog = ResourceCatalog.Instance;
             if(debugDispatcher == null)
             {
                 throw new ArgumentNullException("debugDispatcher");
@@ -626,6 +629,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before)
+        {
+            if(_debugState!= null)
+            {
+                Guid remoteID;
+                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                string name = remoteID != Guid.Empty ? _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                _debugState.Server = name;
+            }
+            DispatchDebugState(dataObject,before);
+        }
+
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
         {
             Guid parentInstanceID;
@@ -638,6 +653,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 UniqueID = Guid.NewGuid().ToString();
             }
+            string name = remoteID != Guid.Empty ? _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
@@ -653,7 +669,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ServerID = dataObject.ServerID,
                 OriginatingResourceID = dataObject.ResourceID,
                 OriginalInstanceID = dataObject.OriginalInstanceID,
-                Server = remoteID.ToString(),
+                Server = name,
                 Version = string.Empty,
                 Name = GetType().Name,
                 HasError = hasError,
@@ -663,7 +679,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-
+        public  void SetResourceCatalog(IResourceCatalog catalogue)
+        {
+            _resourceCatalog = catalogue;
+        }
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);

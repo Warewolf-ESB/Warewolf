@@ -484,7 +484,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before);
                 }
 
                 Guid resourceId = dataObject.ResourceID;
@@ -576,6 +576,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
         }
+
+
 
         #endregion
 

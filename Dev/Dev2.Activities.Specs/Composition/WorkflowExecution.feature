@@ -175,6 +175,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' has a debug Server Name of ""Remote Connection Integration""
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"

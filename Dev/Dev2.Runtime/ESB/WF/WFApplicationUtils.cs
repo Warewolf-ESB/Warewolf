@@ -60,6 +60,10 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     existingErrors += Environment.NewLine + errorMessage;
                 }
+                Guid remoteID;
+                Guid.TryParse(dataObject.RemoteInvokerID,out remoteID) ;
+                string name = remoteID != Guid.Empty ? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+
                 var debugState = new DebugState
                 {
                     ID = dataObject.OriginalInstanceID,
@@ -74,7 +78,7 @@ namespace Dev2.Runtime.ESB.WF
                     ServerID = dataObject.ServerID,
                     OriginatingResourceID = dataObject.ResourceID,
                     OriginalInstanceID = dataObject.OriginalInstanceID,
-                    Server = string.Empty,
+                    Server = name,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
                     EnvironmentID = dataObject.EnvironmentID,
