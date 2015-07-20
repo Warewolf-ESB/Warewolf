@@ -64,7 +64,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             Lists = new ObservableCollection<SharepointListTo>();
 
             EditSharepointServerCommand = new RelayCommand(o => EditSharepointSource(), o => IsSharepointServerSelected);
-            RefreshListsCommand = new RelayCommand(o => RefreshLists(), o => IsListSelected);
+            RefreshListsCommand = new RelayCommand(o =>
+            {
+                RefreshSharepointSources();
+                RefreshLists();
+            });
             
             RefreshSharepointSources(true);
             

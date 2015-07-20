@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -9,6 +11,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -20,7 +23,7 @@ namespace Dev2
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
-            StringBuilder result = new StringBuilder("<" + "DataList" + ">");
+            StringBuilder result = new StringBuilder("<DataList>");
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
             var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
@@ -89,7 +92,7 @@ namespace Dev2
                 }
             }
 
-            result.Append("</" + "DataList" + ">");
+            result.Append("</DataList>");
 
 
             return result.ToString();
@@ -251,9 +254,7 @@ namespace Dev2
         {
             try
             {
-
-           
-            // spin through each element in the XML
+                // spin through each element in the XML
             foreach (XmlNode c in children)
             {
                 if (c.Name != GlobalConstants.NaughtyTextNode)
@@ -316,6 +317,7 @@ namespace Dev2
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         static string RemoveXMLPrefix(string a)
         {
             if(a.StartsWith(GlobalConstants.XMLPrefix))
@@ -330,7 +332,7 @@ namespace Dev2
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
-            StringBuilder result = new StringBuilder("<" + "DataList" + ">");
+            StringBuilder result = new StringBuilder("<DataList>");
             var scalarOutputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset);
             var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
@@ -390,11 +392,69 @@ namespace Dev2
                 }
             }
 
-            result.Append("</" + "DataList" + ">");
+            result.Append("</DataList>");
 
 
             return result.ToString();
         }
 
+        public static string GetSwaggerOutputForService(IDSFDataObject dataObject, string dataList)
+        {
+            var dataListTO = new DataListTO(dataList);
+
+            var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
+
+            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
+
+            var parameters = new List<dynamic>();
+            foreach (var scalarInput in scalarInputs)
+            {
+                parameters.Add(new
+                {
+                    name = scalarInput,
+                    @in = "query",
+                    required = true,
+                    type = "string"
+                });
+            }
+            dynamic swaggerObject = new
+            {
+                swagger = 2,
+                info = new
+                {
+                    title = "",
+                    description = "",
+                    version = ""
+                },
+                host = EnvironmentVariables.WebServerUri,
+                basePath = "/",
+                schemes = new[] { "http", "https" },
+                produces = "application/json",
+                paths = new
+                {
+                    dataObject.ServiceName,
+                    get = new
+                    {
+                        summary = "",
+                        description = "",
+                        parameters=parameters
+                    }
+                },
+                responses = new
+                {
+                    success=scalarOutputs
+                }
+
+            };
+            
+            var converter = new JsonSerializer();
+            StringBuilder result = new StringBuilder();
+            var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Newtonsoft.Json.Formatting.Indented };
+            converter.Serialize(jsonTextWriter, swaggerObject);
+            jsonTextWriter.Flush();
+            return result.ToString();
+        }
     }
+
+
 }

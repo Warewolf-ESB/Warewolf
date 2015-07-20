@@ -114,6 +114,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                             dataObject.ServiceName = serviceName;
                         }
 
+                        if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                        {
+                            dataObject.ReturnType = EmitionTypes.SWAGGER;
+                        }
+
                     }
                 }
                 else
@@ -196,6 +201,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
                                 executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
+                            }else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
+                            {
+                                formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(dataObject, resource.DataList.ToString());
                             }
                             dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }

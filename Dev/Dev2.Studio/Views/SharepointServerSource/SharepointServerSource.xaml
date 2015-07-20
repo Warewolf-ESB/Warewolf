@@ -88,6 +88,13 @@
             <TextBlock Style="{StaticResource TextBlockErrorStyle}"
                        Margin="0,0,3,0" 
                        Text="{Binding TestResult}"></TextBlock>
+            <customControls:CircularProgressBar Height="14"
+                                                Width="14"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,0,3,0"
+                                                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterPositive},Mode=OneWay}"
+                                                AutomationProperties.AutomationId="UI_SettingsProgress_Indicator" />
             <Button Width="50" Command="{Binding TestCommand}" Margin="0,0,3,0">Test</Button>
             <Button Width="50" Command="{Binding SaveCommand}" Margin="0,0,3,0">Save</Button>
             <Button Width="50" Command="{Binding CancelCommand}">Cancel</Button>

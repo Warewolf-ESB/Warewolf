@@ -19,6 +19,7 @@ namespace Dev2.Runtime.WebServer.Responses
     {
         readonly string _text;
         readonly MediaTypeHeaderValue _contentType;
+        readonly bool _enforceSizeCap;
 
         public StringResponseWriter(string text, string contentType)
             : this(text, MediaTypeHeaderValue.Parse(contentType))
@@ -30,6 +31,12 @@ namespace Dev2.Runtime.WebServer.Responses
             VerifyArgument.IsNotNull("mediaType", contentType);
             _text = text;
             _contentType = contentType;
+            _enforceSizeCap = true;
+        }
+        
+        public StringResponseWriter(string text, MediaTypeHeaderValue contentType,bool enforceSizeCap):this(text,contentType)
+        {
+            _enforceSizeCap = enforceSizeCap;
         }
 
         public void Write(WebServerContext context)
@@ -43,7 +50,7 @@ namespace Dev2.Runtime.WebServer.Responses
         void UpdateContentDisposition(HttpResponseMessage responseMessage)
         {
             var contentLength = Encoding.UTF8.GetByteCount(_text);
-            if(contentLength > WebServerStartup.SizeCapForDownload)
+            if(contentLength > WebServerStartup.SizeCapForDownload && _enforceSizeCap)
             {
                 string extension = null;
                 if(ContentTypes.Json.Equals(_contentType))
