@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -28,7 +29,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
         }
 
         // ReSharper disable once InconsistentNaming
-        private void DataGrid_LoadingRow(System.Object sender, DataGridRowEventArgs e)
+        private void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
         {
             e.Row.Tag = e.Row.GetIndex();
         }

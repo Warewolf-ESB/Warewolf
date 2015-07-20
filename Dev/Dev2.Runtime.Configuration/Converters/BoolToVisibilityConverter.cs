@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -26,7 +27,7 @@ namespace Dev2.Runtime.Configuration.Converters
             FalseValue = Visibility.Collapsed;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool? boolValue = value as bool?;
 
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.Configuration.Converters
             return FalseValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Binding.DoNothing;
         }

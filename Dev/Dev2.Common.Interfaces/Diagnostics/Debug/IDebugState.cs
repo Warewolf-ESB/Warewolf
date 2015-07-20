@@ -155,5 +155,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool IsFinalStep();
 
         bool IsFirstStep();
+
+        bool IsDurationVisible { get; set; }
     }
 }

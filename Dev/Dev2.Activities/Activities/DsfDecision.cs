@@ -17,20 +17,22 @@ namespace Dev2.Activities
 {
     public class DsfDecision:DsfActivityAbstract<string>
     {
+        
 
+        // ReSharper disable MemberCanBePrivate.Global
        public IEnumerable<IDev2Activity> TrueArm { get; set; }
+  
        public IEnumerable<IDev2Activity> FalseArm { get; set; }
        public Dev2DecisionStack Conditions { get; set; }
-       public DsfFlowDecisionActivity _inner;    
+       // ReSharper restore MemberCanBePrivate.Global
+        readonly DsfFlowDecisionActivity _inner;    
         #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner)
         {
             _inner = inner;
         }
-        public DsfDecision()
-        {
- 
-        }
+
+        public DsfDecision() { }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
@@ -65,7 +67,9 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        #region Overrides of DsfNativeActivity<string>
+
+        public override IDev2Activity Execute(IDSFDataObject dataObject)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
@@ -75,15 +79,21 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                     _debugInputs = CreateDebugInputs(dataObject.Environment);
 
+                if (dataObject.IsDebugMode())
+                {
+
+                    DispatchDebugState(dataObject, StateType.Before);
+                }
+
                 var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
 
 
                 var factory = Dev2DecisionFactory.Instance();
                 var res = stack.SelectMany(a =>
                 {
-                    if(a.EvaluationFn == enDecisionType.IsError)
+                    if (a.EvaluationFn == enDecisionType.IsError)
                     {
-                        return new []{dataObject.Environment.Errors.Count > 0};
+                        return new[] { dataObject.Environment.Errors.Count > 0 };
                     }
                     if (a.EvaluationFn == enDecisionType.IsNotError)
                     {
@@ -106,11 +116,10 @@ namespace Dev2.Activities
                 });
                 var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
                 if (dataObject.IsDebugMode())
-                    _debugOutputs = GetDebugOutputs(dataObject.Environment, resultval.ToString());
+                    _debugOutputs = GetDebugOutputs(resultval.ToString());
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
                 if (resultval)
@@ -118,10 +127,7 @@ namespace Dev2.Activities
                     if (TrueArm != null)
                     {
                         var activity = TrueArm.FirstOrDefault();
-                        if (activity != null)
-                        {
-                            activity.Execute(dataObject);
-                        }
+                        return activity;
                     }
                 }
                 else
@@ -129,10 +135,7 @@ namespace Dev2.Activities
                     if (FalseArm != null)
                     {
                         var activity = FalseArm.FirstOrDefault();
-                        if (activity != null)
-                        {
-                            activity.Execute(dataObject);
-                        }
+                        return activity;
                     }
                 }
             }
@@ -152,13 +155,16 @@ namespace Dev2.Activities
 
                 }
 
-                if (dataObject.IsDebugMode())
-                {
 
-                    //DispatchDebugState(dataObject, StateType.Before);
-                    //DispatchDebugState(dataObject, StateType.After);
-                }
             }
+            return null;
+        }
+
+        #endregion
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+           
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -170,7 +176,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public  List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
+        List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
             List<IDebugItem> result = new List<IDebugItem>();
 
@@ -187,11 +193,11 @@ namespace Dev2.Activities
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col2, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col3, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dev2Decision.Col3, out error);
                     allErrors.MergeErrors(error);
                 }
 
@@ -242,23 +248,22 @@ namespace Dev2.Activities
         #endregion
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, string _theResult)
+        List<DebugItem> GetDebugOutputs(string theResult)
         {
             var result = new List<DebugItem>();
-            string resultString = _theResult;
+            string resultString = theResult;
             DebugItem itemToAdd = new DebugItem();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             var dds = Conditions;
 
             try
             {
 
 
-                if (_theResult == "True")
+                if (theResult == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if (_theResult == "False")
+                else if (theResult == "False")
                 {
                     resultString = dds.FalseArmText;
                 }
@@ -281,7 +286,7 @@ namespace Dev2.Activities
         }
 
 
-        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
             error = new ErrorResultTO();
             if (expression != null && DataListUtil.IsEvaluated(expression))
@@ -326,6 +331,6 @@ namespace Dev2.Activities
         }
         #endregion
 
-        public bool And { get; set; }
+        public bool And { private get; set; }
     }
 }

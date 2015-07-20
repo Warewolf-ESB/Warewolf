@@ -9,7 +9,6 @@
 */
 
 using System.ServiceModel;
-using Warewolf.Storage;
 
 namespace Dev2
 {

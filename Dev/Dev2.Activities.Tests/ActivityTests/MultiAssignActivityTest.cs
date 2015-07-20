@@ -935,7 +935,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(result.Environment.HasErrors());
         }
 
         #endregion Calculate Mode Tests

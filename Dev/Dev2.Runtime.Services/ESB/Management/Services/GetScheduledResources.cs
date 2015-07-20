@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -50,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 }));
                 return sb;
             }

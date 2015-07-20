@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.SharePoint.Client;
@@ -37,6 +38,25 @@ namespace Warewolf.Sharepoint
             }
             return ctx;
         }
+        
+        public ClientContext GetContextWithOnlineCredentials()
+        {
+            var ctx = new ClientContext(Server);
+            if(string.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))
+            {
+                ctx.Credentials = CredentialCache.DefaultNetworkCredentials;
+            }
+            else
+            {
+                var secureString = new SecureString();
+                foreach(var c in Password)
+                {
+                    secureString.AppendChar(c);
+                }
+                ctx.Credentials = new SharePointOnlineCredentials(UserName,secureString);
+            }
+            return ctx;
+        }
 
         public List<SharepointListTo> LoadLists()
         {
@@ -46,10 +66,7 @@ namespace Warewolf.Sharepoint
                 var listCollection = context.Web.Lists;
                 context.Load(listCollection);
                 context.ExecuteQuery();
-                foreach(var list in listCollection)
-                {
-                    lists.Add(new SharepointListTo{FullName = list.Title});
-                }
+                lists.AddRange(listCollection.Select(list => new SharepointListTo { FullName = list.Title }));
             }
             return lists;
         }
@@ -62,11 +79,7 @@ namespace Warewolf.Sharepoint
                 var list = LoadFieldsForList(listName, ctx, editableFieldsOnly);
                 ctx.ExecuteQuery();
                 var fieldCollection = list.Fields;
-                foreach(var field in fieldCollection)
-                {
-                    var sharepointFieldTo = CreateSharepointFieldToFromSharepointField(field);
-                    fields.Add(sharepointFieldTo);
-                }
+                fields.AddRange(fieldCollection.Select(field => CreateSharepointFieldToFromSharepointField(field)));
             }
             return fields;
         }
@@ -137,9 +150,21 @@ namespace Warewolf.Sharepoint
                     ctx.ExecuteQuery();
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                result = "Test Failed: " + e.Message;
+                try
+                {
+                    using (var ctx = GetContextWithOnlineCredentials())
+                    {
+                        Web web = ctx.Web;
+                        ctx.Load(web);
+                        ctx.ExecuteQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = "Test Failed: " + ex.Message;
+                }
             }
 
             return result;

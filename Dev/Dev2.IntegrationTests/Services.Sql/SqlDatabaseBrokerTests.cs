@@ -9,15 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
@@ -34,7 +33,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
-                var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 var result = broker.GetServiceMethods(dbSource);
                 Assert.AreEqual(true, result.Count > 0);
@@ -52,7 +51,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
-                var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 try
                 {
@@ -76,7 +75,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
         // ReSharper restore InconsistentNaming
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -91,7 +90,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         // ReSharper restore InconsistentNaming
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             var broker = new SqlDatabaseBroker();
             var result = broker.GetServiceMethods(dbSource);
             Assert.AreEqual(true, result.Count > 0);
@@ -107,7 +106,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
-                var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var serviceConn = new DbService
                 {
                     ResourceID = Guid.NewGuid(),
@@ -140,7 +139,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
-                var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
 
                 var serviceConn = new DbService
                 {
@@ -184,7 +183,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
         // ReSharper restore InconsistentNaming
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -213,7 +212,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
         // ReSharper restore InconsistentNaming
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             var serviceConn = new DbService
             {
                 ResourceID = Guid.NewGuid(),
@@ -257,7 +256,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     Name = "Collections",
                 },
-                Source = SqlServerTests.CreateDev2TestingDbSource()
+                Source = SqlServerTestUtils.CreateDev2TestingDbSource()
             };
 
             var broker = new SqlDatabaseBroker();

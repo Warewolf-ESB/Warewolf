@@ -15,10 +15,11 @@ using System.Xml;
 using System.Xml.Schema;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Diagnostics
 {
     [Serializable]
-    public class DebugItemResult : IDebugItemResult
+    public class DebugItemResult : IDebugItemResult, IEquatable<DebugItemResult>
     {
         public DebugItemResultType Type { get; set; }
         public string Label { get; set; }
@@ -30,6 +31,86 @@ namespace Dev2.Diagnostics
         public string MoreLink { get; set; }
   
         #region IXmlSerializable
+
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(DebugItemResult other)
+        {
+            if(ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Type == other.Type && string.Equals(Label, other.Label) && string.Equals(Variable, other.Variable) && string.Equals(Operator, other.Operator) && string.Equals(GroupName, other.GroupName) && GroupIndex == other.GroupIndex && string.Equals(Value, other.Value) && string.Equals(MoreLink, other.MoreLink);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            if(ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((DebugItemResult)obj);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int)Type;
+                hashCode = (hashCode * 397) ^ (Label != null ? Label.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Variable != null ? Variable.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Operator != null ? Operator.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (GroupName != null ? GroupName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ GroupIndex;
+                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MoreLink != null ? MoreLink.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(DebugItemResult left, DebugItemResult right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(DebugItemResult left, DebugItemResult right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion
 
         public XmlSchema GetSchema()
         {

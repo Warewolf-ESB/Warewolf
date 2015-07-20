@@ -14,8 +14,59 @@ using System.Runtime.Serialization;
 namespace Dev2.Simulation
 {
     [Serializable]
-    public class SimulationKey : ISimulationKey
+    public class SimulationKey : ISimulationKey, IEquatable<SimulationKey>
     {
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(SimulationKey other)
+        {
+            if(ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(WorkflowID, other.WorkflowID) && string.Equals(ActivityID, other.ActivityID) && string.Equals(ScenarioID, other.ScenarioID);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (WorkflowID != null ? WorkflowID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ActivityID != null ? ActivityID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ScenarioID != null ? ScenarioID.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(SimulationKey left, SimulationKey right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(SimulationKey left, SimulationKey right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion
+
         public SimulationKey()
         {
         }
@@ -61,24 +112,21 @@ namespace Dev2.Simulation
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-
-            var item = obj as ISimulationKey;
-            return item != null && Equals(item);
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((SimulationKey)obj);
         }
 
-        public override int GetHashCode()
-        {
-            string workflowID = string.IsNullOrEmpty(WorkflowID) ? string.Empty : WorkflowID;
-            string activityID = string.IsNullOrEmpty(ActivityID) ? string.Empty : ActivityID;
-            string scenarioID = string.IsNullOrEmpty(ScenarioID) ? string.Empty : ScenarioID;
-            return workflowID.GetHashCode() ^
-                   activityID.GetHashCode() ^
-                   scenarioID.GetHashCode();
-        }
 
         #endregion
 

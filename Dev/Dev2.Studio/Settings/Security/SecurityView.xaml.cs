@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -46,7 +47,7 @@ namespace Dev2.Settings.Security
             lcv.CustomSort = new WindowsGroupPermissionComparer(direction, column.SortMemberPath);
         }
 
-        private void DataGrid_LoadingRow(System.Object sender, DataGridRowEventArgs e)
+        private void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
         {
             e.Row.Tag = e.Row.GetIndex();
         }

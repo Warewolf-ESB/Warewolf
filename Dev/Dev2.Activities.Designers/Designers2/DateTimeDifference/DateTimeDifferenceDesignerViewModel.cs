@@ -15,7 +15,6 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.DateAndTime;
 
-
 namespace Dev2.Activities.Designers2.DateTimeDifference
 {
     public class DateTimeDifferenceDesignerViewModel : ActivityDesignerViewModel

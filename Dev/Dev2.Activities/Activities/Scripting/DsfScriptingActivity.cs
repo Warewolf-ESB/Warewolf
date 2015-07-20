@@ -23,6 +23,7 @@ using Dev2.DataList.Contract;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Microsoft.CSharp.RuntimeBinder;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
@@ -81,6 +82,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
+
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -150,7 +152,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                if(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException))
+                if(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
                 {
                     allErrors.AddError("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result");
                 }

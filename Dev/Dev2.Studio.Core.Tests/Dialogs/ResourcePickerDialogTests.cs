@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -29,7 +30,6 @@ using Dev2.Dialogs;
 using Dev2.Explorer;
 using Dev2.Models;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Workflow;
@@ -290,9 +290,9 @@ namespace Dev2.Core.Tests.Dialogs
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
-            ExplorerItemModel server2Item = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Server 2", ResourceType = Common.Interfaces.Data.ResourceType.Server };
+            ExplorerItemModel server2Item = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Server 2", ResourceType = ResourceType.Server };
 
-            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Resource Server 2", ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService };
+            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Resource Server 2", ResourceType = ResourceType.WorkflowService };
             server2Item.Children.Add(resourceItemServer2);
             repository.ExplorerItemModels.Add(server2Item);
 
@@ -315,24 +315,24 @@ namespace Dev2.Core.Tests.Dialogs
         {
             var workflow1 = new ServerExplorerItem
             {
-                ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService,
+                ResourceType = ResourceType.WorkflowService,
                 DisplayName = "workflow1",
                 ResourceId = string.IsNullOrEmpty(workFlowId) ? Guid.NewGuid() : Guid.Parse(workFlowId),
                 Permissions = Permissions.Administrator
             };
 
-            var dbService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.DbService, DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
-            var webService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.WebService, DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var pluginService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.PluginService, DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var dbSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.DbSource, DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var webSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.WebSource, DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var pluginSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.PluginSource, DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var emailSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.EmailSource, DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var serverSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.ServerSource, DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder2 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var subfolder1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var localhost = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Server, DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var dbService1 = new ServerExplorerItem { ResourceType = ResourceType.DbService, DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
+            var webService1 = new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var pluginService1 = new ServerExplorerItem { ResourceType = ResourceType.PluginService, DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var dbSource1 = new ServerExplorerItem { ResourceType = ResourceType.DbSource, DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var webSource1 = new ServerExplorerItem { ResourceType = ResourceType.WebSource, DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var pluginSource1 = new ServerExplorerItem { ResourceType = ResourceType.PluginSource, DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var emailSource1 = new ServerExplorerItem { ResourceType = ResourceType.EmailSource, DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var serverSource1 = new ServerExplorerItem { ResourceType = ResourceType.ServerSource, DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder1 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder2 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var subfolder1 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var localhost = new ServerExplorerItem { ResourceType = ResourceType.Server, DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
 
             dbService1.Parent = webService1.Parent = pluginService1.Parent = subfolder1.Parent = folder1;
             dbSource1.Parent = webSource1.Parent = pluginSource1.Parent = emailSource1.Parent = serverSource1.Parent = folder2;
@@ -482,20 +482,20 @@ namespace Dev2.Core.Tests.Dialogs
         static Mock<IResourceRepository> CreateMockResourceRepository(Mock<IEnvironmentModel> mockEnvironmentModel)
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel.Setup(r => r.Category).Returns("Testing");
             mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
             mockResourceModel.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
 
             var mockResourceModel1 = new Mock<IContextualResourceModel>();
-            mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel1.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
 
 
             var mockResourceModel2 = new Mock<IContextualResourceModel>();
-            mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            mockResourceModel2.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             mockResourceModel2.Setup(r => r.Category).Returns("Testing2");
             mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
             mockResourceModel2.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);

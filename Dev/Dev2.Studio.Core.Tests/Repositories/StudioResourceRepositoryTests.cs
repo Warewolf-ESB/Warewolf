@@ -1885,7 +1885,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -1968,7 +1968,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Source), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -2008,7 +2008,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.WorkflowService), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]

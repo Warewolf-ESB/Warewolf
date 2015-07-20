@@ -11,7 +11,6 @@
 
 using System;
 using System.Activities;
-
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -1237,17 +1236,17 @@ namespace Dev2.Runtime.Hosting
 
             if(result.Status == ExecStatus.Success)
             {
-                if(ResourceSaved != null)
-                {
-                    if(workspaceID == GlobalConstants.ServerWorkspaceID)
-                    {
-                        ResourceSaved(resource);
-                    }
-                }
                 if (workspaceID == GlobalConstants.ServerWorkspaceID)
                 {
                     CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
                     SavedResourceCompileMessage(workspaceID, resource, result.Message);
+                }
+                if (ResourceSaved != null)
+                {
+                    if (workspaceID == GlobalConstants.ServerWorkspaceID)
+                    {
+                        ResourceSaved(resource);
+                    }
                 }
             }
 

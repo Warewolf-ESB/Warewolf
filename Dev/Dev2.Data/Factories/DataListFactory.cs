@@ -13,15 +13,10 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
-using Dev2.Data.DataListCache;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
-using Dev2.Server.Datalist;
-using Dev2.Server.DataList;
-using Dev2.Server.DataList.Translators;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -31,9 +26,6 @@ namespace Dev2.DataList.Contract
     {
         #region Class Members
 
-        private static readonly object CacheGuard = new object();
-        private static volatile IEnvironmentModelDataListCompiler _serverCompilerCache;
-        private static volatile IDataListServer _serverCache;
 
         #endregion Class Members
 
@@ -122,11 +114,6 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public static IDataValue CreateNewDataValue(string val, string tagName, bool isSystemRegion)
-        {
-            return new DataValue(val, tagName, isSystemRegion);
-        }
-
         public static IDev2LanguageParser CreateOutputParser()
         {
             return new OutputLanguageParser();
@@ -137,68 +124,7 @@ namespace Dev2.DataList.Contract
             return new InputLanguageParser();
         }
 
-        public static IDataListCompiler CreateDataListCompiler()
-        {
-            return CreateDataListCompiler(CreateServerDataListCompiler());
-        }
-
-        public static IDataListCompiler CreateDataListCompiler(IEnvironmentModelDataListCompiler serverDataListCompiler)
-        {
-            return new DataListCompiler(CreateServerDataListCompiler());
-        }
-
-        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
-        {
-            if(_serverCompilerCache == null)
-            {
-                lock(CacheGuard)
-                {
-                    if(_serverCompilerCache == null)
-                    {
-                        _serverCompilerCache = CreateServerDataListCompiler(CreateDataListServer());
-                    }
-                }
-            }
-            return _serverCompilerCache;
-        }
-
-        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler(IDataListServer dataListServer)
-        {
-            return new ServerDataListCompiler(dataListServer);
-        }
-
-        public static IDataListServer CreateDataListServer()
-        {
-            if(_serverCache == null)
-            {
-                lock(CacheGuard)
-                {
-                    if(_serverCache == null)
-                    {
-                        _serverCache = CreateDataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
-                    }
-                }
-            }
-
-            return _serverCache;
-        }
-
-        public static IDataListServer CreateDataListServer(IDataListPersistenceProvider persistenceProvider)
-        {
-
-            // This needs to remain reflection based, it is payed only once!!!!!!
-
-            DataListTranslatorFactory dltf = new DataListTranslatorFactory();
-            IDataListServer svr = new DataListServer(persistenceProvider);
-
-            foreach(var translator in dltf.FetchAll())
-            {
-                svr.AddTranslator(translator);
-            }
-
-            return svr;
-        }
-
+        
         public static ISystemTag CreateSystemTag(enSystemTag tag)
         {
             return new SystemTag(tag.ToString());
@@ -287,6 +213,8 @@ namespace Dev2.DataList.Contract
         {
             return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase, from, to, requireAllFieldsToMatch);
         }
+
+
 
         /// <summary>
         /// Creates a new Dev2Column object for a recordset

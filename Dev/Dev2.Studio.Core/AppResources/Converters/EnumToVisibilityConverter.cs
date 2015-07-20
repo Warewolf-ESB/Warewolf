@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -45,7 +46,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         #endregion VisibleEnumValues
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(!value.GetType().IsEnum)
             {
@@ -60,7 +61,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Binding.DoNothing;
         }

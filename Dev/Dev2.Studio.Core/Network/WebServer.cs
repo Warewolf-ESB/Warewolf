@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.Network
                     throw new ArgumentOutOfRangeException("urlType");
             }
             
-            var relativeUrl = string.Format("/services/{0}.{1}?", resourceModel.Category, urlExtension);
+            var relativeUrl = string.Format("/secure/{0}.{1}?", resourceModel.Category, urlExtension);
             relativeUrl += xmlData;
             relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
             Uri url;

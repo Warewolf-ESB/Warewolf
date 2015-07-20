@@ -131,7 +131,7 @@
                 <Style.Triggers>
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding DataContext.ShowDuratrion, ElementName=DebugOutput}"
+                            <Condition Binding="{Binding DataContext.ShowDuration, ElementName=DebugOutput}"
                                        Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeWorkflow}}"
                                        Value="Visible" />
@@ -143,7 +143,7 @@
                     </MultiDataTrigger>
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding DataContext.ShowDuratrion, ElementName=DebugOutput}"
+                            <Condition Binding="{Binding DataContext.ShowDuration, ElementName=DebugOutput}"
                                        Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeStep}}"
                                        Value="Visible" />
@@ -349,7 +349,7 @@
                     <CheckBox IsChecked="{Binding ShowTime}"
                               Content="Time"
                               AutomationProperties.AutomationId="UI_DebugOutputShowTimeOption_AutoID" />
-                    <CheckBox IsChecked="{Binding ShowDuratrion}"
+                    <CheckBox IsChecked="{Binding ShowDuration}"
                               Content="Duration"
                               AutomationProperties.AutomationId="UI_DebugOutputShowDuration_AutoID" />
                     <CheckBox IsChecked="{Binding ShowInputs}"
@@ -645,12 +645,13 @@
                                        AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="5"
+                                           Visibility="{Binding  Content.IsDurationVisible, Converter={StaticResource BoolToVisConverter}}"
                                            Grid.Column="1"
                                            Style="{StaticResource DurationVisibility}">
                             <Run Text="Duration" />
                             <Run Text=": " />
-                            </TextBlock>
-                                <TextBlock Grid.Row="5"
+                            </TextBlock >
+                                <TextBlock Grid.Row="5"   Visibility="{Binding Content.IsDurationVisible, Converter={StaticResource BoolToVisConverter}}"
                                            Grid.Column="2"
                                            Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}"
                                            Style="{StaticResource DurationVisibility}"

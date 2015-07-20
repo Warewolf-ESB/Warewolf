@@ -22,11 +22,11 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.TO;
 using Dev2.Util;
+using Dev2.Validation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
-using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 
@@ -74,8 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             var allErrors = new ErrorResultTO();
             var errors = new ErrorResultTO();

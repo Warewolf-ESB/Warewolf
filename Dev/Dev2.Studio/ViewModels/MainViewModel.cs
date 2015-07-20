@@ -778,13 +778,13 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public System.Action<IContextualResourceModel, IEnvironmentModel, string, string> ShowSaveDialog
+        public Action<IContextualResourceModel, IEnvironmentModel, string, string> ShowSaveDialog
         {
             get { return _showSaveDialog ?? RootWebSite.ShowNewOAuthsourceSaveDialog; }
             set { _showSaveDialog = value; }
         }
-
-        public System.Action<IContextualResourceModel, IEnvironmentModel, string, string, string, AuthenticationType> ShowSharepointSourceServerSaveDialog
+        
+        public Action<IContextualResourceModel, IEnvironmentModel, string, string,string,AuthenticationType> ShowSharepointSourceServerSaveDialog
         {
             get { return _showSharepointServerSourceSaveDialog ?? RootWebSite.ShowNewSharepointServerSourceSaveDialog; }
             set { _showSharepointServerSourceSaveDialog = value; }

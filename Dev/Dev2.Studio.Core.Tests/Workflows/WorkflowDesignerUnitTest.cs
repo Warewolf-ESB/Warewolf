@@ -21,11 +21,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Foreach;
+using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.Service;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -1377,7 +1381,7 @@ namespace Dev2.Core.Tests.Workflows
             wfd.InitializeDesigner(attr);
 
             var designerConfigService = wfd.Designer.Context.Services.GetService<DesignerConfigurationService>();
-            Assert.AreEqual(new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5)), designerConfigService.TargetFrameworkName);
+            Assert.AreEqual(new FrameworkName(".NETFramework", new Version(4, 5)), designerConfigService.TargetFrameworkName);
             Assert.IsTrue(designerConfigService.AutoConnectEnabled);
             Assert.IsTrue(designerConfigService.AutoSplitEnabled);
             Assert.IsTrue(designerConfigService.BackgroundValidationEnabled);
@@ -4017,10 +4021,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var designerAttributes = new Dictionary<Type, Type>
             {
-                { typeof(DsfActivity), typeof(Dev2.Activities.Designers2.Service.ServiceDesigner) },
-                { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, 
+                { typeof(DsfActivity), typeof(ServiceDesigner) },
+                { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) }, 
                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) }, 
-                { typeof(DsfCountRecordsetActivity), typeof(Dev2.Activities.Designers2.CountRecords.CountRecordsDesigner) }
+                { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) }
             };
 
             wf.InitializeDesigner(designerAttributes);

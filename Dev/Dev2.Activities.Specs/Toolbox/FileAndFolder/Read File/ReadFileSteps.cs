@@ -9,14 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Statements;
 using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System;
-using System.IO;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 {

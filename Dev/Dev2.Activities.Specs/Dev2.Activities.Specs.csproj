@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -47,7 +47,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -67,7 +67,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -174,9 +174,16 @@
     <Reference Include="netDumbster">
       <HintPath>..\packages\netDumbster.1.3.0.7\lib\net40\netDumbster.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -215,8 +222,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\Dev2.IntegrationTests\Services.Sql\SqlServerTests.cs">
-      <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTests.cs</Link>
+    <Compile Include="..\Dev2.IntegrationTests\Services.Sql\SqlServerTestUtils.cs">
+      <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTestUtilss.cs</Link>
     </Compile>
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
@@ -252,30 +259,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInList.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CreateItemInList.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInListSteps.cs" />
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItem1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeleteItem.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItemFromListSteps.cs" />
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReadItemFromList.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromListSteps.cs" />
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInList.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UpdateItemInList.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInListSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -521,7 +504,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Composition\WorkflowExecution.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput></None><None Include="Explorer\Explorer.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>Explorer.feature.cs</LastGenOutput></None><None Include="Permissions\Settings Permissions.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput></None>
+    <None Include="Composition\WorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Explorer\Explorer.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Permissions\Settings Permissions.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
+    </None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
@@ -530,22 +524,6 @@
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInList.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CreateItemInList.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItem.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeleteItem1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ReadItemFromList.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInList.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>UpdateItemInList.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -837,6 +815,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Toolbox\3rd Party Connectors\Sharepoint\" />
     <Folder Include="WarewolfVersionUpdater\" />
   </ItemGroup>
   <ItemGroup>

@@ -138,9 +138,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client.Old">
+      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.Old.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,9 +158,9 @@
     <Reference Include="Microsoft.Win32.TaskSchedulerEditor">
       <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="PresentationFramework.Classic" />
@@ -1069,6 +1072,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Warewolf Studio.exe.config">
@@ -1092,6 +1098,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\SharepointLogo.png" />
     <Resource Include="Images\dropbox-windows.png" />
     <Resource Include="Images\SplashImage_New_2014.jpg" />
     <Resource Include="Images\EmailSource-32.png" />
@@ -1356,6 +1363,10 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>

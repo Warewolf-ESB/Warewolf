@@ -13,8 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Dev2.Common.ExtMethods;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList
 {

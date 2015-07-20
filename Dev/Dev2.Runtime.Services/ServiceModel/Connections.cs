@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -24,6 +25,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.SignalR.Wrappers.Old;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 
@@ -230,7 +232,7 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var principle = System.Threading.Thread.CurrentPrincipal;
+            var principle = Thread.CurrentPrincipal;
             var identity = principle.Identity as WindowsIdentity;
             WindowsImpersonationContext context = null;
 
@@ -277,6 +279,20 @@ namespace Dev2.Runtime.ServiceModel
 
                         return "Success";
                     }
+                        catch(Exception)
+                        {
+                            // Credentials = client.Credentials 
+                            var hub2 = new HubConnectionWrapperOld(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
+                            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+#pragma warning disable 168
+                            var proxy = hub2.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+#pragma warning restore 168
+                            hub2.Start().Wait();
+
+                            Dev2Logger.Log.Debug("Hub State : " + hub2.State);
+
+                            return "Success";
+                        }
                     finally
                     {
                         if(hub != null)

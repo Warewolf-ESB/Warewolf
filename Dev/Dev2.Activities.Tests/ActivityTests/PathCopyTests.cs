@@ -15,7 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.Data.PathOperations.Interfaces;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,30 +36,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void PathCopyActivity_GetInputs_Expected_Six_Input()
-        {
-            DsfPathCopy testAct = new DsfPathCopy();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 8);
-        }
-
-        [TestMethod]
-        public void PathCopyActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfPathCopy testAct = new DsfPathCopy();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
-        }
-
-        #endregion Get Input/Output Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

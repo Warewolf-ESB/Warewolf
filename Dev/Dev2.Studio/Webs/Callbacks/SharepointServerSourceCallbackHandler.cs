@@ -5,6 +5,8 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Utils;
 
@@ -44,8 +46,14 @@ namespace Dev2.Webs.Callbacks
             // ReSharper disable once MaximumChainedReferences
             string resName = jsonObj.resourceName;
             string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
-            var source = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
-            environmentModel.ResourceRepository.SaveResource(environmentModel,source , GlobalConstants.ServerWorkspaceID);
+            var sharepointSource = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
+            var source = sharepointSource.ToStringBuilder();
+
+            var messaage = environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
+            if(!messaage.HasError)
+            {
+                environmentModel.ResourceRepository.ReloadResource(sharepointSource.ResourceID, ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+            }
         }
 
         protected virtual void StartUriProcess(string uri)

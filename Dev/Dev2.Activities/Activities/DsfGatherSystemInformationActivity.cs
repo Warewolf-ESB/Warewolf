@@ -21,9 +21,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -102,14 +100,10 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = (dataObject.IsDebugMode());
-            toUpsert.ResourceID = dataObject.ResourceID;
             if(dataObject.ExecutingUser != null)
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;

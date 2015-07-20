@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Security.Principal;
 using System.Text;
@@ -33,11 +32,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             var serviceName = GetServiceName(ctx);
             var instanceId = GetInstanceID(ctx);
             var bookmark = GetBookmark(ctx);
-            var postDataListID = GetDataListID(ctx);
+            GetDataListID(ctx);
             var workspaceID = GetWorkspaceID(ctx);
             var formData = new WebRequestTO();
 
-            var xml = GetPostData(ctx, postDataListID);
+            var xml = GetPostData(ctx);
 
             if(!String.IsNullOrEmpty(xml))
             {
@@ -62,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders());
                     ctx.Send(responseWriter);
                 });
 
@@ -95,6 +94,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
@@ -105,9 +105,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ClientID = Guid.Parse(connectionId);
             dataObject.ExecutingUser = ExecutingUser;
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
-            if(!dataObject.Errors.HasErrors())
+            if(!dataObject.Environment.HasErrors())
             {
-                var dlID = Guid.Empty;
                 ErrorResultTO errors;
 
                 if(ExecutingUser == null)
@@ -121,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
-                        dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 
                     t.Start();
@@ -134,7 +133,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
 
-                var compiler = DataListFactory.CreateDataListCompiler();
 
                 if(request.ExecuteResult.Length > 0)
                 {
@@ -144,17 +142,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // return the datalist ;)
                 if(dataObject.IsDebugMode())
                 {
-                    compiler.ForceDeleteDataListByID(dlID);
                     return new StringBuilder("Completed Debug");
                 }
 
-                var result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                compiler.ForceDeleteDataListByID(dlID);
-                return result;
+                return new StringBuilder();
             }
 
             ExecuteMessage msg = new ExecuteMessage { HasError = true };
-            msg.SetMessage(dataObject.Errors.MakeDisplayReady());
+            msg.SetMessage(String.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);

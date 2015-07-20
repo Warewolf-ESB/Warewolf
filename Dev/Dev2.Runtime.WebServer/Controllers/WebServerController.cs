@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Collections.Specialized;
 using System.Net.Http;
 using System.Web.Http;
@@ -158,10 +158,21 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Services/{*__name__}")]
         public HttpResponseMessage ExecuteWorkflow(string __name__)
         {
+
+            if(__name__.EndsWith("apis.json"))
+            {
+                var path = __name__.Split(new []{"/apis.json"},StringSplitOptions.RemoveEmptyEntries);
+                var requestVar = new NameValueCollection
+                {
+                    { "path", path[0] }
+                };
+                return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
+            }
             var requestVariables = new NameValueCollection
             {
                 { "servicename", __name__ }
             };
+            
 
             return Request.Method == HttpMethod.Post
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
@@ -193,5 +204,15 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             return ProcessRequest<GetLogFileServiceHandler>();
         }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("apis.json")]
+        public HttpResponseMessage ExecuteGetRootLevelApisJson()
+        {
+            var requestVariables = new NameValueCollection();
+            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
+        } 
+
     }
 }

@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -17,7 +18,7 @@ namespace Dev2.AppResources.Converters
 {
     public class DataGridRowNumberConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             //get the grid and the item
             var item = values[0];
@@ -31,7 +32,7 @@ namespace Dev2.AppResources.Converters
             return index;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

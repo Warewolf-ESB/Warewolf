@@ -12,14 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2
 {
-    public class CaseConverter : ICaseConverter
+    public class CaseConverter
     {
         #region Class Members
 
@@ -44,31 +40,6 @@ namespace Dev2
         #endregion Ctor
 
         #region Methods
-
-        public IBinaryDataListItem TryConvert(string conversionType, IBinaryDataListItem item)
-        {
-            Func<string, string> returnedFunc;
-            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type",
-                GlobalConstants.EvalautionScalar);
-            if (_convertFunctions.TryGetValue(conversionType, out returnedFunc))
-            {
-                if (returnedFunc != null)
-                {
-                    string tmp = returnedFunc.Invoke(item.TheValue);
-                    if (item.Namespace != string.Empty)
-                    {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName,
-                            item.ItemCollectionIndex);
-                    }
-                    else
-                    {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.FieldName);
-                    }
-                }
-            }
-
-            return result;
-        }
 
         #endregion Methods
 

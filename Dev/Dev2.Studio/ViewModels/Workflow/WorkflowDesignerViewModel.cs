@@ -25,9 +25,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -82,6 +84,7 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -220,7 +223,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _timer.Start();
         }
 
-        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void t_Elapsed(object sender, ElapsedEventArgs e)
         {
 
             if (_changeIsPossible)
@@ -874,10 +877,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
-                IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"').ToStringBuilder());
+                    var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
                     {
                         var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
@@ -1136,7 +1138,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (designerConfigService != null)
                 {
                     // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                    designerConfigService.TargetFrameworkName = new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5));
+                    designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
                     designerConfigService.AutoConnectEnabled = true;
                     designerConfigService.AutoSplitEnabled = true;
                     designerConfigService.PanModeEnabled = true;
@@ -1415,25 +1417,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-            // we got the correct model and clean it ;)
-            var theText = _workflowHelper.SanitizeXaml(xaml);
-
-            var length = theText.Length;
-            var startIdx = 0;
-            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
-            // now load the designer in chunks ;)
-            for (int i = 0; i < rounds; i++)
-            {
-                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                if (len > (theText.Length - startIdx))
-                {
-                    len = (theText.Length - startIdx);
-                }
-
-                _wd.Text += theText.Substring(startIdx, len);
-                startIdx += len;
-            }
+            var designerText = _workflowHelper.SanitizeXaml(xaml);
+            _wd.Text = designerText.ToString();
         }
 
         void SelectedItemChanged(Selection item)

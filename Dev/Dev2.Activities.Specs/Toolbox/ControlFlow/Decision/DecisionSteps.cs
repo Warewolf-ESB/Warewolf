@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -196,6 +195,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
             }
             catch{
+                //Possible exception as the scenerio could already have hit this
             }
             
             bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,

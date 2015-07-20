@@ -10,10 +10,9 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
+using Dev2.TO;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
-using Dev2.TO;
 
 namespace Dev2.Tests.Activities.Validation
 {

@@ -102,8 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             var env = dataObject.Environment;
             InitializeDebug(dataObject);

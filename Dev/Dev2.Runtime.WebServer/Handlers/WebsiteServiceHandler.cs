@@ -9,9 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.IO;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.WebServer.Responses;
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var userPrinciple = ctx.Request.User;
                 if(userPrinciple != null)
                 {
-                    System.Threading.Thread.CurrentPrincipal = userPrinciple;
+                    Thread.CurrentPrincipal = userPrinciple;
                     Dev2Logger.Log.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
                 }
 

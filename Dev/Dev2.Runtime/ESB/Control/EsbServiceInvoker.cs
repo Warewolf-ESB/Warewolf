@@ -21,8 +21,10 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -113,7 +115,7 @@ namespace Dev2.Runtime.ESB
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             var result = GlobalConstants.NullDataListID;
-            var time = new System.Diagnostics.Stopwatch();
+            var time = new Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
 
@@ -201,8 +203,8 @@ namespace Dev2.Runtime.ESB
             finally
             {
                 time.Stop();
-                Common.Interfaces.ServerStats.IncrementTotalRequests();
-                Common.Interfaces.ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
+                ServerStats.IncrementTotalRequests();
+                ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
                 // BUG 9706 - 2013.06.22 - TWR : added
                 DispatchDebugErrors(errors, dataObject, StateType.End);
             }

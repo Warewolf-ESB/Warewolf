@@ -16,7 +16,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -72,13 +71,13 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void AddItemMessage(IExplorerItem addedItem)
         {
-            if(addedItem != null)
+            if (addedItem != null)
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
-            }           
+            }
         }
 
         #endregion
@@ -92,7 +91,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            if(Context == null)
+            if (Context == null)
             {
                 return;
             }
@@ -108,7 +107,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
         {
-            SendResourcesAffectedMemo(resourceId,compileMessageTos);
+            SendResourcesAffectedMemo(resourceId, compileMessageTos);
         }
 
         public async Task AddDebugWriter(Guid workspaceId)
@@ -127,7 +126,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             // Set Requesting User as per what is authorized ;)
             // Sneaky people may try to forge packets to get payload ;)
-            if(Context.User.Identity.Name != null)
+            if (Context.User.Identity.Name != null)
             {
                 receipt.User = Context.User.Identity.Name;
             }
@@ -140,7 +139,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 task.Start();
                 return await task;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Log.Error(this, e);
@@ -159,77 +158,43 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="dataListId">The data list unique identifier.</param>
         /// <param name="messageId">The message unique identifier.</param>
         /// <returns></returns>
-        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
+        public async Task<string> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
             try
             {
-                var task = new Task<Receipt>(() =>
+                var task = new Task<string>(() =>
                 {
                     try
                     {
                         StringBuilder sb;
-                        if(!MessageCache.TryGetValue(messageId, out sb))
+                        if (!MessageCache.TryGetValue(messageId, out sb))
                         {
                             sb = new StringBuilder();
                             MessageCache.TryAdd(messageId, sb);
                         }
                         sb.Append(envelope.Content);
 
-                        if(endOfStream)
+                        MessageCache.TryRemove(messageId, out sb);
+                        var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
+
+                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        if (Context.User.Identity != null)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
                         {
-                            MessageCache.TryRemove(messageId, out sb);
-                            var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
-
-                            var user = string.Empty;
-                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                            if(Context.User.Identity != null)
-                                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                            {
-                                user = Context.User.Identity.Name;
-                                // set correct principle ;)
-                                Thread.CurrentPrincipal = Context.User;
-                                Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
-                            }
-
-                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
-                            // Convert to chunked msg store for fetch ;)
-                            var length = processRequest.Length;
-                            var startIdx = 0;
-                            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
-                            for(var q = 0; q < rounds; q++)
-                            {
-                                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                                if(len > (length - startIdx))
-                                {
-                                    len = (length - startIdx);
-                                }
-
-                                // always place requesting user in here ;)
-                                var future = new FutureReceipt
-                                {
-                                    PartID = q,
-                                    RequestID = messageId,
-                                    User = user
-                                };
-
-                                var value = processRequest.Substring(startIdx, len);
-
-                                if(!ResultsCache.Instance.AddResult(future, value))
-                                {
-                                    Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
-                                }
-
-                                startIdx += len;
-                            }
-
-                            return new Receipt { PartID = envelope.PartID, ResultParts = rounds };
+                            var user = Context.User.Identity.Name;
+                            // set correct principle ;)
+                            Thread.CurrentPrincipal = Context.User;
+                            Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                         }
 
-                        return new Receipt { PartID = envelope.PartID, ResultParts = -1 };
+                        var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
+
+                        var value = processRequest.ToString();
+                        return value;
+
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e);
                     }
@@ -238,7 +203,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 task.Start();
                 return await task;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
             }
@@ -301,8 +266,8 @@ namespace Dev2.Runtime.WebServer.Hubs
             var debugSerializated = _serializer.Serialize(debugState);
 
             var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-            //var user = hubCallerConnectionContext.All;
+           // var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }
 
@@ -310,7 +275,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             where TMemo : IMemo, new()
         {
             var messageArray = messages.ToArray();
-            if(messageArray.Length == 0)
+            if (messageArray.Length == 0)
             {
                 return;
             }
@@ -328,14 +293,14 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
 
-            foreach(var grouping in groupings)
+            foreach (var grouping in groupings)
             {
-                if(grouping.Key == Guid.Empty)
+                if (grouping.Key == Guid.Empty)
                 {
                     continue;
                 }
                 memo.InstanceID = grouping.Key;
-                foreach(var message in grouping)
+                foreach (var message in grouping)
                 {
                     memo.WorkspaceID = message.WorkspaceID;
                     coalesceErrors(memo, message);
@@ -376,26 +341,27 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnReconnected();
         }
 
-        public override Task OnDisconnected()
-        {
-            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
-            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            if(authorizationServiceBase != null)
-            {
-                authorizationServiceBase.Dispose();
-            }
+        // TODO: cjr - deprecated in 2.2.0 of SignalR - need work or alternative 
+        //public override Task OnDisconnected()
+        //{
+        //    ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
+        //    var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+        //    if(authorizationServiceBase != null)
+        //    {
+        //        authorizationServiceBase.Dispose();
+        //    }
 
-            if (ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved = null;
-            }
-            if (ResourceCatalog.Instance.SendResourceMessages == null)
-            {
-                ResourceCatalog.Instance.SendResourceMessages = null;
-            }
-            ResourceCatalog.Instance.Dispose();
-            return base.OnDisconnected();
-        }
+        //    if (ResourceCatalog.Instance.ResourceSaved == null)
+        //    {
+        //        ResourceCatalog.Instance.ResourceSaved = null;
+        //    }
+        //    if (ResourceCatalog.Instance.SendResourceMessages == null)
+        //    {
+        //        ResourceCatalog.Instance.SendResourceMessages = null;
+        //    }
+        //    ResourceCatalog.Instance.Dispose();
+        //    return base.OnDisconnected();
+        //}
 
         void ConnectionActions()
         {
@@ -407,7 +373,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendWorkspaceID(workspaceId);
             user.SendServerID(HostSecurityProvider.Instance.ServerID);
-            PermissionsHaveBeenModified(null,null);
+            PermissionsHaveBeenModified(null, null);
         }
 
         protected void SetupEvents()
@@ -415,11 +381,11 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
-            if(ResourceCatalog.Instance.ResourceSaved == null)
+            if (ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
             }
-            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            if (ResourceCatalog.Instance.SendResourceMessages == null)
             {
                 ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }

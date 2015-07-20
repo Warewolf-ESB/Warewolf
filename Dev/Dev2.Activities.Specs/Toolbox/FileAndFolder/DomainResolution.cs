@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
 using System.DirectoryServices.ActiveDirectory;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder

@@ -335,9 +335,12 @@ Examples:
 
 
 
-
-
-
+	Scenario: Convert a Variable That Does Not Exist
+	Given I have a case convert variable "[[my(1).sentenct]]" with a value of "[[a]]"
+	And I convert a variable "[[my(1).sentenct]]" to "lower"		
+	When the case conversion tool is executed
+	Then the execution has "AN" error
+	And the execution has "invalid recordset" error
 
 
 

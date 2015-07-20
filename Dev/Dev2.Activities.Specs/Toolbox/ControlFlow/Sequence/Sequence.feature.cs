@@ -122,6 +122,8 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var2]] = 2"});
 #line 18
           testRunner.And("the \"TestAssign\" debug outputs as", ((string)(null)), table3, "And ");
+#line 22
+    testRunner.And("the Sequence Has a Duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1963,7 +1965,7 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 534
     testRunner.And("call the web service \"http://tst-ci-remote:3142/services/Test/OnError_WriteErrorS" +
-                    "eq.xml?error=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "eq.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 535
     testRunner.When("the Sequence tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 536

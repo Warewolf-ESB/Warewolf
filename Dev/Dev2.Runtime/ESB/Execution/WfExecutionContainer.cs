@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Utilities;
 using Dev2.Workspaces;
 using Warewolf.Storage;
 
@@ -33,19 +32,12 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        readonly IWorkflowHelper _workflowHelper;
 
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
-        {
-          
-        }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IWorkflowHelper workflowHelper)
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _workflowHelper = workflowHelper;
         }
 
         /// <summary>
@@ -108,12 +100,12 @@ namespace Dev2.Runtime.ESB.Execution
                 ErrorResultTO invokeErrors;
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, null, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true,false,false);
                 }
                 Eval(DataObject.ResourceID, DataObject);
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, false, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
                 result = DataObject.DataListID;
             }
@@ -132,19 +124,15 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2Logger.Log.Error(ex);
                 errors.AddError(ex.Message);
             }
-            finally
-            {
-                //ServiceAction.PushActivity(activity);
-            }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
-
-            resource.Execute(dataObject);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            EvalInner(dataObject, resource);
+           
         }
         
 
@@ -153,7 +141,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
         {
             if(errors == null)
             {
@@ -192,7 +180,16 @@ namespace Dev2.Runtime.ESB.Execution
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            resource.Execute(dsfDataObject);
+            EvalInner(dsfDataObject, resource);
+        }
+
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        {
+            var next = resource.Execute(dsfDataObject);
+            while(next != null)
+            {
+                next = next.Execute(dsfDataObject);
+            }
         }
     }
 }

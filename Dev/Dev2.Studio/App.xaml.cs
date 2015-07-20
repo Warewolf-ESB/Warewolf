@@ -7,11 +7,13 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +60,7 @@ namespace Dev2.Studio
         public App()
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
-            AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.WindowsPrincipal);
+            AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
             InitializeComponent();
@@ -95,7 +97,7 @@ namespace Dev2.Studio
                                         ? new Mutex(true, e.Args[0], out createdNew)
                                         : new Mutex(true, "Warewolf Studio", out createdNew);
 
-            if(createdNew)
+            if (createdNew)
             {
                 _processGuard = localprocessGuard;
             }
@@ -134,7 +136,7 @@ namespace Dev2.Studio
             Tracker.Stop();
 
             // this is already handled ;)
-            if(_mainViewModel != null)
+            if (_mainViewModel != null)
             {
                 _mainViewModel.PersistTabs(true);
             }
@@ -158,7 +160,7 @@ namespace Dev2.Studio
 
         void ForceShutdown()
         {
-            if(ShouldRestart)
+            if (ShouldRestart)
             {
                 Task.Run(() => Process.Start(ResourceAssembly.Location, Guid.NewGuid().ToString()));
             }
@@ -205,7 +207,7 @@ namespace Dev2.Studio
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
-            if(_appExceptionHandler != null)
+            if (_appExceptionHandler != null)
             {
                 e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
             }

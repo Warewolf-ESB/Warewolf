@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+
 namespace WarewolfParsingTest
 {
     [TestClass]
@@ -152,7 +153,7 @@ namespace WarewolfParsingTest
         private DataASTMutable.WarewolfEnvironment CreateTestEnvWithData()
         {
 
-            var assigns = new List<IAssignValue>
+            IEnumerable<IAssignValue> assigns = new List<IAssignValue>
              {
                  new AssignValue("[[rec().a]]", "2"),
                  new AssignValue("[[rec().a]]", "4"),
@@ -165,7 +166,7 @@ namespace WarewolfParsingTest
              };
             var env = WarewolfTestData.CreateTestEnvEmpty("");
 
-            var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
+            var env2 = PublicFunctions.EvalMultiAssign(assigns, env: env);
             return env2;
         }
 
@@ -1486,7 +1487,43 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Errors")]
+        public void WarewolfEnvironment_ErrorsAreUnique()
+        {
 
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AddError("bob");
+            Assert.AreEqual(env.Errors.Count,1);
+            env.AddError("bob");
+            Assert.AreEqual(env.Errors.Count, 1);
+            env.AddError("dave");
+            Assert.AreEqual(env.Errors.Count, 2);
+            env.AddError("dave");
+            Assert.AreEqual(env.Errors.Count, 2);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Errors")]
+        public void WarewolfEnvironment_AllErrorsAreUnique()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AllErrors.Add("bob");
+            Assert.AreEqual(env.AllErrors.Count, 1);
+            env.AllErrors.Add("bob");
+            Assert.AreEqual(env.AllErrors.Count, 1);
+            env.AllErrors.Add("dave");
+            Assert.AreEqual(env.AllErrors.Count, 2);
+            env.AllErrors.Add("dave");
+            Assert.AreEqual(env.AllErrors.Count, 2);
+
+        }
         
         // ReSharper restore InconsistentNaming
     }

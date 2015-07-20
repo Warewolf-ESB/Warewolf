@@ -290,6 +290,7 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
         {
+            if (value == null) return -1;
             int index;
             int length = value.Length;
             int maxSearchLength = (sb.Length - length) + 1;

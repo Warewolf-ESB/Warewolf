@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Models;
@@ -76,16 +77,16 @@ namespace Dev2.Studio.Views.Workflow
                 ExplorerItemModel explorerItemModel = objectData as ExplorerItemModel;
                 if(explorerItemModel != null)
                 {
-                    if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && explorerItemModel.ResourceType >= Common.Interfaces.Data.ResourceType.DbService)
+                    if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && explorerItemModel.ResourceType >= ResourceType.DbService)
                     {
                         return true;
                     }
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService)
+                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == ResourceType.WorkflowService)
                     {
                         CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null);
                         return true;
                     }
-                    if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= Common.Interfaces.Data.ResourceType.WebService)
+                    if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= ResourceType.WebService)
                     {
                         return false;
                     }

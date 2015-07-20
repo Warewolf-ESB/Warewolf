@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Diagnostics
 {
     public class DebugItemResultEqualityComparer : IEqualityComparer<IDebugItemResult>
@@ -33,8 +34,20 @@ namespace Dev2.Diagnostics
 
         public int GetHashCode(IDebugItemResult obj)
         {
-            var hCode = obj.Value.Length ^ obj.GroupName.Length ^ obj.GroupIndex ^ obj.MoreLink.Length;
-            return hCode.GetHashCode();
+            unchecked
+            {
+                var hashCode = typeof(IDebugItemResult).GetHashCode();
+                hashCode = (hashCode * 397) ^ (obj.Label != null ? obj.Label.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.Variable != null ? obj.Variable.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.Operator != null ? obj.Operator.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.GroupName != null ? obj.GroupName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ obj.GroupIndex;
+                hashCode = (hashCode * 397) ^ (obj.Value != null ? obj.Value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.MoreLink != null ? obj.MoreLink.GetHashCode() : 0);
+                return hashCode;
+            }
+
+
         }
 
 

@@ -183,8 +183,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             _dataObject = dataObject;
 

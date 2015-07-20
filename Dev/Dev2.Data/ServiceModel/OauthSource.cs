@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Warewolf.Security.Encryption;
 
@@ -25,7 +26,7 @@ namespace Dev2.Data.ServiceModel
         public OauthSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.OauthSource;
+            ResourceType = ResourceType.OauthSource;
             Secret = string.Empty;
             Key = string.Empty;
         }
@@ -33,7 +34,7 @@ namespace Dev2.Data.ServiceModel
         public OauthSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.OauthSource;
+            ResourceType = ResourceType.OauthSource;
 
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

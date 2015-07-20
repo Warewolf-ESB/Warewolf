@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -35,7 +33,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SetupScenerio()
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             ScenarioContext.Current.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
@@ -108,8 +106,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
         private void AddTableToDataList(Table table)
         {
-            var compiler = DataListFactory.CreateDataListCompiler();
-            ScenarioContext.Current.Add("compiler", compiler);
             // build up DataTable
             foreach (TableRow row in table.Rows)
             {

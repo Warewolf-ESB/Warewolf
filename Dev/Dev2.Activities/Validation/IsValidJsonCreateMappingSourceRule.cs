@@ -9,14 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace Dev2.Validation
 {
@@ -53,12 +50,11 @@ namespace Dev2.Validation
             ErrorText = JsonMappingCompoundTo.IsValidJsonMappingInput(to.SourceName, to.DestinationName);
             if (string.IsNullOrEmpty(ErrorText))
                 return null;
-            else
-                return new ActionableErrorInfo
-                {
-                    ErrorType = Common.Interfaces.Infrastructure.Providers.Errors.ErrorType.Critical,
-                    Message = ErrorText,
-                };
+            return new ActionableErrorInfo
+            {
+                ErrorType = ErrorType.Critical,
+                Message = ErrorText,
+            };
         }
 
     }

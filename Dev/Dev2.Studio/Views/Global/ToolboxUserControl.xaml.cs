@@ -174,10 +174,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             category = GetToolboxCategoryByName("SharePoint");
             if (category != null)
             {
-                category.Add(new ToolboxItemWrapper(typeof(SharepointReadListActivity), "/images/ToolFindRecords-32.png", "Read List Item(s)"));
-                category.Add(new ToolboxItemWrapper(typeof(SharepointCreateListItemActivity), "/images/ToolFindRecords-32.png", "Create List Item(s)"));
-                category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/ToolFindRecords-32.png", "Delete List Item(s)"));
-                category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/ToolFindRecords-32.png", "Update List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointReadListActivity), "/images/SharepointLogo.png", "Read List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointCreateListItemActivity), "/images/SharepointLogo.png", "Create List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/SharepointLogo.png", "Delete List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/SharepointLogo.png", "Update List Item(s)"));
             }
         }
 

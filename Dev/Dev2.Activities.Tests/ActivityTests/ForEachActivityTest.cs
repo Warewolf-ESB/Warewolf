@@ -30,7 +30,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class ForEachActivityTest : BaseActivityUnitTest
     {
-        private new static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();
 
         /// <summary>
         ///Gets or sets the test context which provides

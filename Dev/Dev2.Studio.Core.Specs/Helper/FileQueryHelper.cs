@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Intellisense.Helper;
-using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Specs.Helper
 {

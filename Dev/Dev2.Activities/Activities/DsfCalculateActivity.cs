@@ -19,7 +19,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -76,8 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();

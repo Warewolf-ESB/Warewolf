@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +16,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
@@ -101,12 +99,8 @@ namespace Dev2.Runtime.Services.Specs.WebService
         {
             When(@"the mapping is generated");
             ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
             var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
-            var shape = compiler.ShapeDev2DefinitionsToDataList(webService.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", shape, out errors);
             var dataObj = new Mock<IDSFDataObject>();
-            dataObj.Setup(d => d.DataListID).Returns(dataListID);
 
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
 
@@ -118,6 +112,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             serviceExecution.InstanceOutputDefintions = webService.OutputSpecification;
             Guid executeID = serviceExecution.Execute(out errors);
             ScenarioContext.Current.Add("DataListID", executeID);
+            ScenarioContext.Current.Add("DataObject", dataObj.Object);
         }
 
         [Then(@"the mapping should contain the primitive array")]
@@ -139,12 +134,8 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Then(@"I have the following data")]
         public void ThenIHaveTheFollowingData(Table table)
         {
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = ScenarioContext.Current.Get<Guid>("DataListID");
-            ErrorResultTO errors;
-            var result = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-            Assert.IsNotNull(result);
-            var resultXml = XElement.Parse(result.ToString());
+            var dataObject = ScenarioContext.Current.Get<IDSFDataObject>("DataObject");
+            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,""));
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
             {

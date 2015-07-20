@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
+
+using TechTalk.SpecFlow;
+
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
 {
-    using TechTalk.SpecFlow;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Calculate")))
             {
-                Dev2.Activities.Specs.Toolbox.Utility.Calculate.CalculateFeature.FeatureSetup(null);
+                FeatureSetup(null);
             }
         }
         
@@ -266,7 +266,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using incorrect argument expression for formula", ((string[])(null)));
 #line 75
- this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 76
  testRunner.Given("I have the formula \"sum([[b]]+[[c]])\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 77

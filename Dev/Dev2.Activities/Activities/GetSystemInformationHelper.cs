@@ -12,13 +12,13 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
-using Dev2.Common.DateAndTime.TO;
 using Microsoft.VisualBasic.Devices;
 
 // ReSharper disable InconsistentNaming
@@ -96,7 +96,7 @@ namespace Dev2.Activities
         public string GetDiskSpaceAvailableInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(DriveInfo driveInfo1 in DriveInfo.GetDrives())
             {
                 try
                 {
@@ -115,7 +115,7 @@ namespace Dev2.Activities
         public string GetDiskSpaceTotalInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(DriveInfo driveInfo1 in DriveInfo.GetDrives())
             {
                 try
                 {

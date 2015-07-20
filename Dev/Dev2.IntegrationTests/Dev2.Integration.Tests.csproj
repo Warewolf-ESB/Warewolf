@@ -34,7 +34,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -132,9 +132,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Client">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions">
@@ -164,9 +163,8 @@
     <Reference Include="MvvmFoundation.Wpf">
       <HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Nuane.SftpLite">
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
@@ -270,6 +268,7 @@
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
     <Compile Include="Services.Sql\SqlServerTests.cs" />
+    <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />

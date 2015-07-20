@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -131,17 +130,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 Assert.IsTrue(int.TryParse(actualValue, out outval));
                 return;
             }
+            if (string.IsNullOrEmpty(expectedResult))
+            {
+                actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
+            }
             else
             {
-
-                if (string.IsNullOrEmpty(expectedResult))
-                {
-                    actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
-                }
-                else
-                {
-                    actualValue.Should().Be(expectedResult);
-                }
+                actualValue.Should().Be(expectedResult);
             }
         }
 

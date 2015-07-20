@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -17,7 +14,7 @@ namespace Dev2.CustomControls
            "Watermark",
            typeof(object),
            typeof(WatermarkTextBox),
-           new FrameworkPropertyMetadata((object)null, new PropertyChangedCallback(OnWatermarkChanged)));
+           new FrameworkPropertyMetadata(null, OnWatermarkChanged));
 
         #region Private Fields
 
@@ -27,7 +24,7 @@ namespace Dev2.CustomControls
 
         public static object GetWatermark(DependencyObject d)
         {
-            return (object)d.GetValue(WatermarkProperty);
+            return d.GetValue(WatermarkProperty);
         }
 
         public static void SetWatermark(DependencyObject d, object value)
@@ -174,21 +171,17 @@ namespace Dev2.CustomControls
             {
                 return (c as ComboBox).Text == string.Empty;
             }
-            else if (c is TextBoxBase)
+            if (c is TextBoxBase)
             {
-                return (c as TextBox).Text == string.Empty;
+                var textBox = c as TextBox;
+                return textBox != null && textBox.Text == string.Empty;
             }
-            else if (c is ItemsControl)
+            if (c is ItemsControl)
             {
                 return (c as ItemsControl).Items.Count == 0;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-
-
 
         protected override void OnTextChanged(TextChangedEventArgs e)
         {

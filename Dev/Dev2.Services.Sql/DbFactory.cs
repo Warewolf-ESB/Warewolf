@@ -9,9 +9,11 @@
 */
 
 using System;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Warewolf.Security.Encryption;
@@ -21,6 +23,8 @@ namespace Dev2.Services.Sql
     [ExcludeFromCodeCoverage]
     internal class DbFactory : IDbFactory
     {
+        SqlConnection _sqlConnection;
+
         #region Implementation of IDbFactory
 
         public IDbConnection CreateConnection(string connectionString)
@@ -30,7 +34,26 @@ namespace Dev2.Services.Sql
             {
                 connectionString = DpapiWrapper.Decrypt(connectionString);
             }
-            return new SqlConnection(connectionString);
+            _sqlConnection = new SqlConnection(connectionString);
+            _sqlConnection.FireInfoMessageEventOnUserErrors = true;
+            _sqlConnection.StatisticsEnabled = true;
+            _sqlConnection.InfoMessage += (sender, args) =>
+            {
+                Dev2Logger.Log.Debug("Sql Server:" + args.Message + " Source:" + args.Source);
+                foreach (SqlError error in args.Errors)
+                {
+                    var errorMessages = new StringBuilder();
+                    errorMessages.Append("Index #" + error.Number + Environment.NewLine +
+                                        "Message: " + error.Message + Environment.NewLine +
+                                        "LineNumber: " + error.LineNumber + Environment.NewLine +
+                                        "Source: " + error.Source + Environment.NewLine +
+                                        "Procedure: " + error.Procedure + Environment.NewLine);
+
+                    Dev2Logger.Log.Error("Sql Error:" + errorMessages.ToString());
+                }
+                
+            };
+            return _sqlConnection;
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
@@ -44,19 +67,8 @@ namespace Dev2.Services.Sql
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
-
             return GetSqlServerSchema(connection, collectionName);
-
         }
-
-        //DataTable GetMySqlServerSchema(IDbConnection connection)
-        //{
-        //    if(! (connection is MySqlConnection))
-        //        throw new Exception("Invalid Mqsql Connection");
-
-        //    return ((MySqlConnection)connection).GetSchema();
-
-        //}
 
         static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
         {
@@ -77,6 +89,11 @@ namespace Dev2.Services.Sql
         {
             var table = new DataTable();
             table.Load(reader, LoadOption.OverwriteChanges);
+            var retrieveStatistics = _sqlConnection.RetrieveStatistics();
+            foreach (DictionaryEntry retrieveStatistic in retrieveStatistics)
+            {
+                Dev2Logger.Log.Debug("Sql Stat:"+retrieveStatistic.Key+": "+retrieveStatistic.Value);
+            }
             return table;
         }
 

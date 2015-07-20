@@ -53,49 +53,53 @@ namespace Dev2.Activities
             return null;
         }
 
+          public override IDev2Activity Execute(IDSFDataObject dataObject)
+          {
+              _debugOutputs.Clear();
+              _debugInputs.Clear();
+
+              try
+              {
+
+
+                  Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
+
+
+                  Debug(dataObject, firstOrDefault, ds);
+                  if (firstOrDefault != null)
+                  {
+                      var a = firstOrDefault;
+                      if (Switches.ContainsKey(a))
+                      {
+                          return Switches[a];
+                      }
+                      else
+                      {
+                          if (Default != null)
+                          {
+                              var activity = Default.FirstOrDefault();
+                            return activity;
+                      }
+                  }
+              }
+              }
+              catch (Exception err)
+              {
+                  dataObject.Environment.Errors.Add(err.Message);
+              }
+              finally
+              {
+
+              }
+              
+          
+              return null;
+          }
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-            _debugOutputs.Clear();
-            _debugInputs.Clear();
-
-            try
-            {
-
-
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
-
-
-                Debug(dataObject, firstOrDefault, ds);
-                if (firstOrDefault != null)
-                {
-                    var a = firstOrDefault;
-                    if (Switches.ContainsKey(a))
-                    {
-                        Switches[a].Execute(dataObject);
-                    }
-                    else
-                    {
-                        if(Default != null)
-                        {
-                            var activity = Default.FirstOrDefault();
-                            if (activity != null)
-                            {
-                                activity.Execute(dataObject);
-                            }
-                        }
-                    }
-                }
-            }
-            catch(Exception err)
-            {
-                dataObject.Environment.Errors.Add(err.Message);
-            }
-            finally
-            {
-                
-            }
+           
         }
 
         void Debug(IDSFDataObject dataObject, string firstOrDefault, Dev2Switch ds)

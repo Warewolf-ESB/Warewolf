@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Security.Principal;
 using Dev2.Workspaces;
@@ -32,10 +31,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
         readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients, WorkspaceRepository.Instance));
 
-        readonly IHubConnectionContext _clients;
+        readonly IHubConnectionContext<dynamic> _clients;
         readonly IWorkspaceRepository _workspaceRepository;
 
-        Server(IHubConnectionContext clients, IWorkspaceRepository workspaceRepository)
+        Server(IHubConnectionContext<dynamic> clients, IWorkspaceRepository workspaceRepository)
         {
             VerifyArgument.IsNotNull("clients", clients);
             VerifyArgument.IsNotNull("workspaceRepository", workspaceRepository);
@@ -50,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendMemo(string memo, string connectionID = null)
         {
-            if(string.IsNullOrEmpty(connectionID))
+            if (string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendMemo(memo);
             }
@@ -62,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendDebugState(string debugState, string connectionID = null)
         {
-            if(string.IsNullOrEmpty(connectionID))
+            if (string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendDebugState(debugState);
             }
@@ -74,7 +73,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendWorkspaceID(Guid workspaceID, string connectionID = null)
         {
-            if(string.IsNullOrEmpty(connectionID))
+            if (string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendWorkspaceID(workspaceID);
             }
@@ -86,7 +85,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendServerID(Guid serverID, string connectionID = null)
         {
-            if(string.IsNullOrEmpty(connectionID))
+            if (string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendServerID(serverID);
             }

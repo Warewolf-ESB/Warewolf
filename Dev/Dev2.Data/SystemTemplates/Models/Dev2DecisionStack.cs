@@ -151,7 +151,6 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveDummyOptionsFromModel(StringBuilder val)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
 
@@ -159,7 +158,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             try
             {
-                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(tmp);
+                Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp.ToString());
 
                 if(dds.TheStack != null)
                 {
@@ -168,7 +167,7 @@ namespace Dev2.Data.SystemTemplates.Models
                     dds.TheStack = toKeep;
                 }
 
-                tmp = compiler.ConvertModelToJson(dds);
+                tmp = new StringBuilder(JsonConvert.SerializeObject(dds));
             }
             catch(Exception ex)
             {

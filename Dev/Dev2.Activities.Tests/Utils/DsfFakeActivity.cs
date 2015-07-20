@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -21,7 +22,7 @@ namespace Dev2.Tests.Activities.Utils
     /// </summary>
     public class DsfFakeActivity : DsfActivityAbstract<bool>
     {
-        protected override void OnExecute(System.Activities.NativeActivityContext context)
+        protected override void OnExecute(NativeActivityContext context)
         {
             throw new NotImplementedException();
         }

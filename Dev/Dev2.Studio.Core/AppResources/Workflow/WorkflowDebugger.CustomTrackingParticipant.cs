@@ -43,7 +43,10 @@ namespace Dev2.Studio.Core.AppResources.Workflow
             }
             else
             {
-                TrackingRecordReceived(this, new CustomTrackingEventArgs(record, timeout, null));
+                if(TrackingRecordReceived != null)
+                {
+                    TrackingRecordReceived(this, new CustomTrackingEventArgs(record, timeout, null));
+                }
             }
         }
 

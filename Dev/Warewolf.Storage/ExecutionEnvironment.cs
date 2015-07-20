@@ -16,11 +16,9 @@ namespace Warewolf.Storage
         WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp);
         void Assign(string exp, string value);
 
-        void MultiAssign(IEnumerable<IAssignValue> values);
 
         void AssignWithFrame(IAssignValue values);
 
-        int GetEvaluationResultAsInt(string exp);
 
         int GetLength(string recordSetName);
 
@@ -34,7 +32,7 @@ namespace Warewolf.Storage
 
         void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
-        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex);
+        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
         void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
@@ -52,7 +50,8 @@ namespace Warewolf.Storage
 
         void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause);
 
-        IList<string> Errors { get; } 
+        HashSet<string> Errors { get; set; }
+        HashSet<string> AllErrors { get; } 
         void AddError(string error);
 
 
@@ -63,7 +62,6 @@ namespace Warewolf.Storage
 
         bool HasErrors();
 
-        string ToLast(string rawValue);
 
         string EvalToExpression(string exp);
 
@@ -76,11 +74,13 @@ namespace Warewolf.Storage
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         DataASTMutable.WarewolfEnvironment _env;
-    
+        IList<string> _allErrors;
+
         public  ExecutionEnvironment()
         {
             _env = PublicFunctions.CreateEnv("");
-            Errors = new List<string>();
+            Errors = new HashSet<string>();
+            AllErrors = new HashSet<string>(); 
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
@@ -136,16 +136,7 @@ namespace Warewolf.Storage
 
         public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp)
         {
-
-            try
-            {
-                return WarewolfDataEvaluationCommon.EvalForDataMerge( _env,exp);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
+            return WarewolfDataEvaluationCommon.EvalForDataMerge( _env,exp);
         }
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList)
@@ -169,8 +160,7 @@ namespace Warewolf.Storage
                 return ;
             }
 
-            
-            var envTemp =  PublicFunctions.EvalAssignWithFrame( new AssignValue( exp,value), _env);
+            var envTemp =  PublicFunctions.EvalAssignWithFrame( new AssignValue(exp,value), _env);
             
             _env = envTemp;
             CommitAssign();
@@ -178,22 +168,6 @@ namespace Warewolf.Storage
         }
 
 
-        public void MultiAssign(IEnumerable<IAssignValue> values)
-        {
-            try
-            {
-            var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
-            _env = envTemp;
-        }
-            catch(Exception err)
-            {
-
-               Errors.Add(err.Message);
-               throw;
-            }
-          
-
-        }
 
         public void AssignWithFrame(IAssignValue values)
         {
@@ -215,48 +189,6 @@ namespace Warewolf.Storage
             }
         
   
-        }
-
-        public int GetEvaluationResultAsInt(string exp)
-        {
-            var result = Eval(exp);
-            if(result.IsWarewolfAtomResult)
-            {
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
-                // ReSharper restore PossibleNullReferenceException
-                if(x.IsInt)
-                {
-                    var resultvalue = x as DataASTMutable.WarewolfAtom.Int;
-                    // ReSharper disable PossibleNullReferenceException
-                    return resultvalue.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                }
-                return 0;
-            }
-                // ReSharper disable once RedundantIfElseBlock
-            else if(result.IsWarewolfRecordSetResult)
-            {
-                var x = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                // ReSharper disable PossibleNullReferenceException
-                return  x.Item.Data[PublicFunctions.PositionColumn].Count;
-                // ReSharper restore PossibleNullReferenceException
-            }
-            else
-            {
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.Last();
-                // ReSharper restore PossibleNullReferenceException
-                // ReSharper restore PossibleNullReferenceException
-                if (x.IsInt)
-                {
-                    var resultvalue = x as DataASTMutable.WarewolfAtom.Int;
-                    // ReSharper disable PossibleNullReferenceException
-                    return resultvalue.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                }
-                return 0;
-            }
         }
 
         public int GetLength(string recordSetName)
@@ -404,7 +336,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, false);
         }
 
-        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex)
+        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
         {
             bool exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
             if (!exists)
@@ -412,6 +344,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists);
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataASTMutable.WarewolfAtom> item, bool shouldUseLast)
         {
            _env = PublicFunctions.EvalAssignFromList(assignValue, item,_env,shouldUseLast);
@@ -504,7 +437,12 @@ namespace Warewolf.Storage
 
         }
 
-        public IList<string> Errors { get; private set; }
+        public HashSet<string> Errors { get;  set; }
+        public HashSet<string> AllErrors
+        {
+            get;
+            private set;
+        }
 
         public void AddError(string error)
         {
@@ -519,33 +457,14 @@ namespace Warewolf.Storage
 
         public string FetchErrors()
         {
-            return string.Join(Environment.NewLine,Errors);
+            return string.Join(Environment.NewLine,AllErrors.Union(Errors));
         }
 
         public bool HasErrors()
         {
-            return Errors.Count(s => !string.IsNullOrEmpty(s))>0;
+            return Errors.Count(s => !string.IsNullOrEmpty(s))+ AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
         }
 
-        public string ToLast(string rawValue)
-        {
-            var output = WarewolfDataEvaluationCommon.ParseLanguageExpression(rawValue);
-            if (output.IsRecordSetExpression)
-            {
-
-                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
-                var i = GetLength(outputidentifier.Name);
-                return "[[" + outputidentifier.Name + "(" + i + ")." + outputidentifier.Column + "]]";
-            }
-            if(output.IsRecordSetExpression)
-            {
-                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetNameExpression).Item;
-                var i = GetLength(outputidentifier.Name);
-                if (Equals(outputidentifier.Index, LanguageAST.Index.Star))
-                    return "[[" + outputidentifier.Name + "(" + i + ") "+"]]";
-            }
-            return rawValue;
-        }
 
         public string EvalToExpression(string exp)
         {
@@ -614,31 +533,10 @@ namespace Warewolf.Storage
             return recordset;
         }
 
-        public static string ConvertToColumnWithStar(string inputVariable, string val )
-        {
-           var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(inputVariable);
-            if(x.IsRecordSetNameExpression)
-            {
-                var outputval = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                return String.Format( "[[{0}(*).{1}]]",outputval.Item.Name,val);
-            }
-            return inputVariable;
-        }
-
         public static  bool IsValidRecordSetIndex (string exp)
         {
             return PublicFunctions.IsValidRecsetExpression(exp);
         }
 
-        public static string ConvertToColumnWithNumeric(string inputVariable, string val,string index)
-        {
-            var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(inputVariable);
-            if (x.IsRecordSetNameExpression)
-            {
-                var outputval = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                return String.Format("[[{0}({1}).{2}]]", outputval.Item.Name,index, val);
-            }
-            return inputVariable;
-        }
     }
 }

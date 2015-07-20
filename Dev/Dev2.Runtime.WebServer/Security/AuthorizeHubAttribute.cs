@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using Dev2.Common;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR;
@@ -40,14 +38,6 @@ namespace Dev2.Runtime.WebServer.Security
             VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
             VerifyArgument.IsNotNull("request", request);
             var result = request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
-
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if(request.User.Identity != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
-            {
-                Dev2Logger.Log.Debug("AuthorizeHubConnection For [ " + request.User.Identity.Name + " ]");
-            }
-
             return result;
         }
 

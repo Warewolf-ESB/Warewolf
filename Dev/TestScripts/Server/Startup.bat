@@ -37,7 +37,7 @@ GOTO WaitForServerStart
 :RegularStartup
 START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
 
-rem using the "ping" command as make-shift wait or sleep command, wait for server started file to appear
+REM using the "ping" command as make-shift wait (or sleep) command, so we're now waiting for the server started file to appear - Ashley
 :WaitForServerStart
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto exit 
 rem wait for 5 seconds before trying again

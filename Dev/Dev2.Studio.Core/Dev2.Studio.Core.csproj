@@ -7,6 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A58B157B-960B-4E84-8957-24E4884C5C77}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Dev2.Studio.Core</AssemblyName>
@@ -102,16 +103,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client.Old, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.Old.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -283,6 +288,8 @@
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
+    <Compile Include="Network\ServerProxyWithChunking.cs" />
+    <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
       <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -501,9 +508,6 @@
     <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
-    <Compile Include="Wizards\Interfaces\IActivityGeneralSettingsWizardCallbackHandler.cs" />
-    <Compile Include="Wizards\Interfaces\IActivitySettingsWizardCallbackHandler.cs" />
-    <Compile Include="Wizards\Interfaces\IActivitySpecificSettingsWizardCallbackHandler.cs" />
     <Compile Include="Wizards\Interfaces\IWizardCallbackHandler.cs" />
     <Compile Include="Wizards\WizardInvocationTO.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
@@ -577,6 +581,18 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj">
+      <Project>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</Project>
+      <Name>Dev2.SignalR.Wrappers.New</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj">
+      <Project>{ca1ec490-5138-4714-8188-15d4bf6334da}</Project>
+      <Name>Dev2.SignalR.Wrappers.Old</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>

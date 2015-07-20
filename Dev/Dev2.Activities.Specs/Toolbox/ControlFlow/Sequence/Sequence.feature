@@ -19,7 +19,7 @@ Scenario: Execute Sequence with Assign
           | # |              |
           | 1 | [[var1]] = 1 |
           | 2 | [[var2]] = 2 |           
-	
+		  And the Sequence Has a Duration
 Scenario: Execute a Sequence with Assign and Calculate
        Given I have a Sequence "Test"
 	   And "Test" contains an Assign "SetVariables" as
@@ -531,7 +531,7 @@ Scenario: Sending Error in error variable and calling webservice when inner acti
 	  | Input1     | Input2     | Input Format | Output In | Result      |
 	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd | Years     | [[result1]] |  
     And assign error to variable "[[error]]"
-    And call the web service "http://tst-ci-remote:3142/services/Test/OnError_WriteErrorSeq.xml?error=[[error]]"
+    And call the web service "http://tst-ci-remote:3142/services/Test/OnError_WriteErrorSeq.xml?errorLog=[[error]]"
     When the Sequence tool is executed
     Then the execution has "AN" error
     And the result from the web service "http://tst-ci-remote:3142/services/Test/OnError_ReadErrorSeq.xml" will have the same data as variable "[[error]]"

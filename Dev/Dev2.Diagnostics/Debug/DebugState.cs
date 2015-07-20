@@ -14,8 +14,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -31,14 +33,12 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState
+    public class DebugState : IDebugState,INotifyPropertyChanged
     {
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance has an error.
-        /// </summary>
-        private readonly string _tempPath;
         private DateTime _startTime;
         private DateTime _endTime;
+        string _errorMessage;
+        bool _isDurationVisible;
 
         #region Ctor
 
@@ -47,13 +47,19 @@ namespace Dev2.Diagnostics.Debug
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
 
-            _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
-            if(!Directory.Exists(_tempPath))
-            {
-                Directory.CreateDirectory(_tempPath);
-            }
+
+            IsDurationVisible = true;
         }
 
+
+         static DebugState()
+        {
+            var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+        }
         #endregion
 
         #region IDebugState - Properties
@@ -103,7 +109,17 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the error message
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the activity version.
@@ -167,6 +183,9 @@ namespace Dev2.Diagnostics.Debug
             set
             {
                 _endTime = value;
+                OnPropertyChanged("EndTime");
+                OnPropertyChanged("DurationString");
+                OnPropertyChanged("Duration");
             }
         }
 
@@ -649,34 +668,104 @@ namespace Dev2.Diagnostics.Debug
                    OriginalInstanceID == ID;
         }
 
+        public bool IsDurationVisible
+        {
+            get
+            {
+                return _isDurationVisible;
+            }
+            set
+            {
+                _isDurationVisible = value;
+            }
+        }
+
         #region Implementation of IEquatable<IDebugState>
 
+
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IDebugState other)
         {
-            if(other == null)
+            if(ReferenceEquals(null, other))
             {
                 return false;
             }
-
-            return ID == other.ID && SessionID == other.SessionID;
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return ID.Equals(other.ID) && SessionID.Equals(other.SessionID);
         }
 
-        public override bool Equals(Object obj)
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
         {
-            if(obj == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-
-            var stateObj = obj as IDebugState;
-            return stateObj != null && Equals(stateObj);
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((DebugState)obj);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override int GetHashCode()
         {
-            return ID.GetHashCode() ^ SessionID.GetHashCode();
+            unchecked
+            {
+                return (ID.GetHashCode() * 397) ^ SessionID.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(DebugState left, DebugState right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(DebugState left, DebugState right)
+        {
+            return !Equals(left, right);
         }
 
         #endregion
+
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

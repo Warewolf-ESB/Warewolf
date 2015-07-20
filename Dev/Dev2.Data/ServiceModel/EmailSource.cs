@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Warewolf.Security.Encryption;
+using Dev2.Common.Interfaces.Data;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -67,7 +68,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public EmailSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.EmailSource;
+            ResourceType = ResourceType.EmailSource;
             Timeout = DefaultTimeout;
             Port = DefaultPort;
         }
@@ -75,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public EmailSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.EmailSource;
+            ResourceType = ResourceType.EmailSource;
             Timeout = DefaultTimeout;
             Port = DefaultPort;
 

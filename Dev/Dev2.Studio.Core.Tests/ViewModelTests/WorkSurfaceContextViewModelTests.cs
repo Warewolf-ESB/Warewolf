@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -1154,10 +1155,22 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         public void Deactivate(bool close)
         {
-            Activated(this, null);
-            AttemptingDeactivation(null, null);
-            Deactivated(null, null);
-            PropertyChanged(null, null);
+            if(Activated != null)
+            {
+                Activated(this, null);
+            }
+            if(AttemptingDeactivation != null)
+            {
+                AttemptingDeactivation(null, null);
+            }
+            if(Deactivated != null)
+            {
+                Deactivated(null, null);
+            }
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(null, null);
+            }
         }
 
         public event EventHandler<DeactivationEventArgs> AttemptingDeactivation;
@@ -1231,7 +1244,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             get { throw new NotImplementedException(); }
         }
 
-        public System.Activities.Presentation.WorkflowDesigner Designer
+        public WorkflowDesigner Designer
         {
             get { throw new NotImplementedException(); }
         }

@@ -39,14 +39,13 @@ namespace Dev2.Runtime.ESB.WF
         {
             _add = add;
         }
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible=true)
         {
             errors = new ErrorResultTO();
             if(dataObject != null)
             {
                 Guid parentInstanceId;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 bool hasError = dataObject.Environment.HasErrors();
                 var errorMessage = String.Empty;
                 if(hasError)
@@ -57,7 +56,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     existingErrors = errorMessage;
                 }
-                else
+                else if(!existingErrors.Contains(errorMessage))
                 {
                     existingErrors += Environment.NewLine + errorMessage;
                 }
@@ -82,13 +81,14 @@ namespace Dev2.Runtime.ESB.WF
                     ClientID = dataObject.ClientID,
                     Name = stateType.ToString(),
                     HasError = hasErrors || hasError,
-                    ErrorMessage = existingErrors
+                    ErrorMessage = existingErrors,
+                    IsDurationVisible = durationVisible
                 };
 
                 if(interrogateInputs)
                 {
                     ErrorResultTO invokeErrors;
-                    var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
+                    var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
                     var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Inputs.AddRange(inputs);
@@ -96,8 +96,8 @@ namespace Dev2.Runtime.ESB.WF
                 if(interrogateOutputs)
                 {
                     ErrorResultTO invokeErrors;
-                    
-                    var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
+
+                    var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
                     var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Outputs.AddRange(inputs);
