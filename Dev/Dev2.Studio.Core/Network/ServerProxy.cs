@@ -212,13 +212,17 @@ namespace Dev2.Network
             try
             {
                 _wrappedConnection.Connect(_wrappedConnection.ID);
+           
             }
              catch( FallbackException)
             {
                 Dev2Logger.Log.Info("Falling Back to previous signal r client");
-                _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri);
+                var name = _wrappedConnection.DisplayName;
+                _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri){DisplayName = name};
+
                 SetupPassthroughEvents();
                 _wrappedConnection.Connect(_wrappedConnection.ID);
+                _wrappedConnection.DisplayName = name;
             }
             catch (Exception err)
             {

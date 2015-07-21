@@ -69,22 +69,27 @@ namespace Dev2.Core.Tests.Network
             var serverGuid = Guid.NewGuid();
             PrivateObject p = new PrivateObject(serverProxy);
             var wrapped = new Mock<IEnvironmentConnection>();
+            wrapped.Setup(a => a.DisplayName).Returns("moo");
+            wrapped.Setup(a => a.Connect(It.IsAny<Guid>())).Throws(new FallbackException());
+            wrapped.Setup(a => a.WebServerUri).Returns( new Uri("http://bob"));
             p.SetField("_wrappedConnection", wrapped.Object);
-
+   
             try
             {
                 serverProxy.Connect(serverGuid);
 
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch
-            // ReSharper restore EmptyGeneralCatchClause
+            catch(Exception err)
             {
 
-
+               Assert.IsNotNull(err);
             }
-            var con = p.GetField("_wrappedConnection");
+            var con = p.GetField("_wrappedConnection") as IEnvironmentConnection;
             Assert.IsNotNull(con);
+            Assert.AreNotEqual(con,wrapped.Object);
+            Assert.AreEqual("moo",con.DisplayName);
+            
 
         }
 

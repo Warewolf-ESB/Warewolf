@@ -366,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(actual.IsSimulation, "DispatchDebugState did not set the DebugState's IsSimulation.");
             Assert.AreEqual(ActivityType.Workflow, actual.ActivityType, "DispatchDebugState did not set the DebugState's ActivityType.");
 
-            Assert.AreEqual(dataObj.EnvironmentID, actual.EnvironmentID, "DispatchDebugState did not set the DebugState's EnvironmentID.");
+            Assert.AreEqual(dataObj.DebugEnvironmentId, actual.EnvironmentID, "DispatchDebugState did not set the DebugState's EnvironmentID.");
         }
 
         #endregion

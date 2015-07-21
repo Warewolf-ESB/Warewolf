@@ -301,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Server = string.Empty,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.EnvironmentID,
+                    EnvironmentID = dataObject.DebugEnvironmentId,
                     Name = GetType().Name,
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
@@ -635,7 +635,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Guid remoteID;
                 Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
-                string name = remoteID != Guid.Empty ? _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
                 _debugState.Server = name;
             }
             DispatchDebugState(dataObject,before);
@@ -691,7 +692,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Name = GetType().Name,
                 HasError = hasError,
                 ErrorMessage = errorMessage,
-                EnvironmentID = dataObject.EnvironmentID,
+                EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
             };
         }

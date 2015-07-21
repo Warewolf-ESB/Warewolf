@@ -40,6 +40,7 @@ namespace Dev2.Diagnostics.Debug
         string _errorMessage;
         bool _isDurationVisible;
         string _server;
+        Guid _environmentID;
 
         #region Ctor
 
@@ -83,7 +84,17 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Gets or sets the environment ID.
         /// </summary>
-        public Guid EnvironmentID { get; set; }
+        public Guid EnvironmentID
+        {
+            get
+            {
+                return _environmentID;
+            }
+            set
+            {
+                _environmentID = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the client ID.
@@ -184,7 +195,7 @@ namespace Dev2.Diagnostics.Debug
             set
             {
                 _endTime = value;
-                OnPropertyChanged("EndTime");
+                OnPropertyChanged();
                 OnPropertyChanged("DurationString");
                 OnPropertyChanged("Duration");
             }

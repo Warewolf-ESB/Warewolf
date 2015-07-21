@@ -752,6 +752,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
+                        if (content.Server == "localhost")
+                            content.Server = remoteEnvironmentModel.Name;
                         if (!remoteEnvironmentModel.IsConnected)
                         {
                             remoteEnvironmentModel.Connect();

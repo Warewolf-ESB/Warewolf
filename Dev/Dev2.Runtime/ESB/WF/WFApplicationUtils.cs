@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.WF
                     Server = name,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.EnvironmentID,
+                    EnvironmentID = dataObject.DebugEnvironmentId,
                     ClientID = dataObject.ClientID,
                     Name = stateType.ToString(),
                     HasError = hasErrors || hasError,

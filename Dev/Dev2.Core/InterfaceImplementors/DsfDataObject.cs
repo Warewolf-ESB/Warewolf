@@ -94,6 +94,7 @@ namespace Dev2.DynamicServices
                     if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
                     {
                         EnvironmentID = environmentId;
+                        DebugEnvironmentId = environmentId;
                     }
 
                     bool isOnDemandSimulation = false;
@@ -167,6 +168,18 @@ namespace Dev2.DynamicServices
             }
         }
 
+        public Guid DebugEnvironmentId
+        {
+            get
+            {
+                return _debugEnvironmentId;
+            }
+            set
+            {
+                _debugEnvironmentId = value;
+            }
+        }
+
         private string ExtractValue(XElement xe, string elementName)
         {
             IEnumerable<XElement> tmp = xe.Descendants(elementName);
@@ -180,6 +193,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
+        Guid _debugEnvironmentId;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -328,7 +342,7 @@ namespace Dev2.DynamicServices
             result.DatalistInMergeID = DatalistInMergeID;
             result.DatalistInMergeType = DatalistInMergeType;
             result.EnvironmentID = EnvironmentID;
-       
+            result.DebugEnvironmentId = DebugEnvironmentId;
             result.ExecutionCallbackID = ExecutionCallbackID;
             result.ExecutionOrigin = ExecutionOrigin;
             result.ExecutionOriginDescription = ExecutionOriginDescription;
