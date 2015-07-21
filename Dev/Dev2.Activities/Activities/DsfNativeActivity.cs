@@ -653,7 +653,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 UniqueID = Guid.NewGuid().ToString();
             }
-            string name = remoteID != Guid.Empty ? _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+
+            string name;
+            if(remoteID != Guid.Empty)
+            {
+                var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                if(resource != null)
+                {
+                    name = resource.ResourceName;
+                }
+                else
+                {
+                    name = remoteID.ToString();
+                }
+            }
+            else
+            {
+                name = "localhost";
+            }
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
