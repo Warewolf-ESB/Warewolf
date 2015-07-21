@@ -95,6 +95,8 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test--------------------------
             EnvironmentVariables.WebServerUri = "http://localhost:3142/";
             var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
             var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
@@ -125,6 +127,8 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test--------------------------
             EnvironmentVariables.WebServerUri = "http://localhost:3142/";
             var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
             var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
