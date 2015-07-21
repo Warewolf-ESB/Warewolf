@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -37,9 +40,11 @@ namespace Dev2
                     {
                         warewolfEvalResult = environment.Eval(name);
                     }
-                    catch
+                    // ReSharper disable once RESP510236
+                    // ReSharper disable once RESP510241
+                    catch(Exception e)
                     {
-                        //Possible that the output defs have variables that were never initialised (i.e. null)
+                        Dev2Logger.Log.Debug("Null Variable",e);
                     }
                     var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
@@ -326,7 +331,7 @@ namespace Dev2
             return a;
         }
 
-        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList)
+        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, string dataList)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -396,61 +401,70 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetSwaggerOutputForService(IDSFDataObject dataObject, string dataList)
+        public static string GetSwaggerOutputForService(IResource resource, string dataList)
         {
+            if(resource==null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            if (string.IsNullOrEmpty(dataList))
+            {
+                throw new ArgumentNullException("dataList");
+            }
             var dataListTO = new DataListTO(dataList);
 
             var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
 
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
 
-            var parameters = new List<dynamic>();
-            foreach (var scalarInput in scalarInputs)
+            var parameters = scalarInputs.Select(scalarInput => new JObject
             {
-                parameters.Add(new
-                {
-                    name = scalarInput,
-                    @in = "query",
-                    required = true,
-                    type = "string"
-                });
-            }
-            dynamic swaggerObject = new
-            {
-                swagger = 2,
-                info = new
-                {
-                    title = "",
-                    description = "",
-                    version = ""
-                },
-                host = EnvironmentVariables.WebServerUri,
-                basePath = "/",
-                schemes = new[] { "http", "https" },
-                produces = "application/json",
-                paths = new
-                {
-                    dataObject.ServiceName,
-                    get = new
-                    {
-                        summary = "",
-                        description = "",
-                        parameters=parameters
-                    }
-                },
-                responses = new
-                {
-                    success=scalarOutputs
-                }
+                { "name", scalarInput }, { "in", "query" }, { "required", true }, { "type", "string" }
+            }).ToList();
 
+            var jsonSwaggerInfoObject = new JObject
+            {
+                { "title", new JValue("") }, 
+                { "description", new JValue("") },
+                { "version", new JValue(resource.VersionInfo.VersionNumber) }
+            };
+
+            var jsonSwaggerPathObject = new JObject
+            {
+                {"serviceName",new JValue(resource.ResourceName)},
+                {"get", new JObject
+                    {
+                        {"summary",new JValue("")},
+                        {"description",new JValue("")},
+                        {"parameters",new JArray(parameters)}
+                    }
+                }
+            };
+
+            var jsonSwaggerResponsesObject = new JObject
+            {
+                {"200",new JArray(scalarOutputs)}
+            };
+
+            var jsonSwaggerObject = new JObject
+            {
+                { "swagger", new JValue(2) }, 
+                { "info", jsonSwaggerInfoObject },
+                { "host", new JValue(EnvironmentVariables.WebServerUri) }, 
+                { "basePath", new JValue("/") }, 
+                { "schemes", new JArray("http", "https") }, 
+                { "produces", new JValue("application/json") }, 
+                { "paths",jsonSwaggerPathObject },
+                { "responses", jsonSwaggerResponsesObject }
             };
             
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Newtonsoft.Json.Formatting.Indented };
-            converter.Serialize(jsonTextWriter, swaggerObject);
+            converter.Serialize(jsonTextWriter, jsonSwaggerObject);
             jsonTextWriter.Flush();
-            return result.ToString();
+            var resultString = Regex.Replace(result.ToString(), @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+            return resultString;
         }
     }
 

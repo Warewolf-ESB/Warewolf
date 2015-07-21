@@ -98,7 +98,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
 
             // get data in a format we can send ;)
-            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString());
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
