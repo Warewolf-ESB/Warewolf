@@ -123,7 +123,11 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public string Name { get { return Connection.DisplayName; } set { Connection.DisplayName = value; } }
+        public string Name { get { return Connection.DisplayName; } 
+            set
+            {
+                Connection.DisplayName = value;
+            } }
 
         public bool IsConnected { get { return Connection.IsConnected; } }
 

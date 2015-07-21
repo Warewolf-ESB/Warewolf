@@ -195,7 +195,7 @@ namespace Dev2.Diagnostics.Debug
             set
             {
                 _endTime = value;
-                OnPropertyChanged("EndTime");
+                OnPropertyChanged();
                 OnPropertyChanged("DurationString");
                 OnPropertyChanged("Duration");
             }
