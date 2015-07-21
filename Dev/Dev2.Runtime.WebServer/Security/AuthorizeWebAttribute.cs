@@ -12,7 +12,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -46,9 +45,8 @@ namespace Dev2.Runtime.WebServer.Security
 
             if (user == null && actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow")
             {
-                var genericIdentity = new GenericIdentity("GenericPublicUser");
-                user = new GenericPrincipal(genericIdentity, new string[0]);
-                actionContext.ControllerContext.RequestContext.Principal = user; 
+                user = GlobalConstants.GenericPrincipal;
+                actionContext.ControllerContext.RequestContext.Principal = user;
             }
 
             if(!user.IsAuthenticated())
