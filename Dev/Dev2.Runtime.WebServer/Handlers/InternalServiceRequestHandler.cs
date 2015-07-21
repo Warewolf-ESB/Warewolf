@@ -97,6 +97,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
+           
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             if(resource != null)
             {

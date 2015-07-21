@@ -97,5 +97,6 @@ namespace Dev2
 
         IEsbChannel EsbChannel { get; set; }
         DateTime StartTime { get; set; }
+        Guid DebugEnvironmentId { get; set; }
     }
 }
