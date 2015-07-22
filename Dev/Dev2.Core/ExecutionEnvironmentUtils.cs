@@ -416,21 +416,24 @@ namespace Dev2
             var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetInputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            JToken definitionObject = null;
+            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
             List<JObject> parameters = null;
             var isScalarInputOnly = true;
+            var dataListSchema = new Dictionary<string, Schema>
+                {
+                    {"Output",new Schema
+                    {
+                        Type = "object",
+                        Properties = BuildDefinition(scalarOutputs,recSetOutputs)
+                    }}
+                };
+            
             if(recSetInputs.Any())
             {
-                var dataListSchema = new Dictionary<string,Schema>
-                {
-                    {
-                        "DataList",new Schema{
-                    Type = "object",
-                    Properties = BuildDefinition(scalarInputs, recSetInputs)
-                }}};
-                var serialized = JsonConvert.SerializeObject(dataListSchema);
-                JToken des = JsonConvert.DeserializeObject(serialized) as JToken;
-                definitionObject = des;
+                dataListSchema.Add("DataList",new Schema{
+                                    Type = "object",
+                                    Properties = BuildDefinition(scalarInputs, recSetInputs)
+                                  });
                 isScalarInputOnly = false;
             }
             else
@@ -440,6 +443,9 @@ namespace Dev2
                     { "name", scalarInput }, { "in", "query" }, { "required", true }, { "type", "string" }
                 }).ToList();
             }
+            var serialized = JsonConvert.SerializeObject(dataListSchema);
+            JToken des = JsonConvert.DeserializeObject(serialized) as JToken;
+            var definitionObject = des;
             var jsonSwaggerInfoObject = new JObject
             {
                 { "title", new JValue("") },
@@ -462,7 +468,13 @@ namespace Dev2
 
             var jsonSwaggerResponsesObject = new JObject
             {
-                {"200",new JArray(scalarOutputs)}
+                {"200",new JObject
+                {
+                    {"schema",new JObject
+                    {
+                        {"$ref","#/definition/Output"}
+                    }}
+                }}
             };
 
             var jsonSwaggerObject = new JObject
@@ -487,10 +499,10 @@ namespace Dev2
             return resultString;
         }
 
-        static Dictionary<string,Schema> BuildDefinition(IEnumerable<string> scalarInputs, IEnumerable<string> recSetInputs)
+        static Dictionary<string,Schema> BuildDefinition(IEnumerable<string> scalars, IEnumerable<string> recSets)
         {
-            var groupedRecSets = recSetInputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            var recSetItems = scalarInputs.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema { Type = "string" });
+            var groupedRecSets = recSets.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            var recSetItems = scalars.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema { Type = "string" });
             foreach(var groupedRecSet in groupedRecSets)
             {
                 var recSetName = groupedRecSet.Key;
@@ -506,6 +518,7 @@ namespace Dev2
             return recSetItems;
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         static Dictionary<string,Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet)
         {
             return groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
@@ -514,16 +527,13 @@ namespace Dev2
 
     public class Schema
     {
-
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
         [JsonProperty("type")]
         public string Type { get; set; }
 
-//        public Schema items;
         [JsonProperty("properties", NullValueHandling = NullValueHandling.Ignore)]
         public IDictionary<string, Schema> Properties { get; set; }
-//        public Schema additionalProperties;
-
-
 
     }
 
