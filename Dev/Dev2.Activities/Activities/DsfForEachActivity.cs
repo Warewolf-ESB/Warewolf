@@ -188,24 +188,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Ctor
 
         #region CacheMetaData
-//
-//        public override IDev2ActivityIOMapping Clone()
-//        {
-//            var forEachActivity = new DsfForEachActivity();
-//            forEachActivity.CsvIndexes = CsvIndexes;
-//            forEachActivity.DataFunc = DataFunc;
-//            forEachActivity.ElementName = ElementName;
-//            forEachActivity.FailOnFirstError = FailOnFirstError;
-//            forEachActivity.ForEachElementName = ForEachElementName;
-//            forEachActivity.ForEachType = ForEachType;
-//            forEachActivity.From = From;
-//            forEachActivity.NumOfExections = NumOfExections;
-//            forEachActivity.FromDisplayName = FromDisplayName;
-//            forEachActivity.PreservedDataList = PreservedDataList;
-//            forEachActivity.Recordset = Recordset;
-//            forEachActivity.To = To;            
-//            return forEachActivity;
-//        }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
