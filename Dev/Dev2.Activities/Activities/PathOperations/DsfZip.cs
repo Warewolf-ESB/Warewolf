@@ -75,20 +75,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         #endregion Properties
 
-        protected override void AddDebugInputItems(IExecutionEnvironment environment, int update)
+        protected override void AddDebugInputItems(IExecutionEnvironment environment)
         {
-            AddDebugInputItem(CompressionRatio, "Compression Ratio",environment, update);
+            AddDebugInputItem(CompressionRatio, "Compression Ratio",environment);
         }
 
-        protected override void AddItemsToIterator(IExecutionEnvironment environment, int update)
+        protected override void AddItemsToIterator(IExecutionEnvironment environment)
         {
-            _compresItr = new WarewolfIterator(environment.Eval(CompressionRatio, update));
+            _compresItr = new WarewolfIterator(environment.Eval(CompressionRatio));
             ColItr.AddVariableToIterateOn(_compresItr);
 
-            _archNameItr = new WarewolfIterator(environment.Eval(ArchiveName, update));
+            _archNameItr = new WarewolfIterator(environment.Eval(ArchiveName));
             ColItr.AddVariableToIterateOn(_archNameItr);
 
-            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword, update));
+            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword));
             ColItr.AddVariableToIterateOn(_archPassItr);
 
         }

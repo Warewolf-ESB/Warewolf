@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public override Guid Execute(out ErrorResultTO errors, int update)
+        public override Guid Execute(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();

@@ -22,7 +22,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
         {
             var execErrors = new ErrorResultTO();
 
@@ -36,7 +36,7 @@ namespace Dev2.Activities
                 databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
             }
             //ServiceExecution.DataObj = dataObject;
-            var result = ServiceExecution.Execute(out execErrors, update);
+            var result = ServiceExecution.Execute(out execErrors);
             var fetchErrors = execErrors.FetchErrors();
             foreach(var error in fetchErrors)
             {

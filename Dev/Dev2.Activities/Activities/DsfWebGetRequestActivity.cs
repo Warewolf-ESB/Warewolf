@@ -75,10 +75,10 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
@@ -95,12 +95,12 @@ namespace Dev2.Activities
                 if(dataObject.IsDebugMode())
                 {
                     DebugItem debugItem = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
+                    AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment), debugItem);
                     _debugInputs.Add(debugItem);
                 }
                 var colItr = new WarewolfListIterator();
-                var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
-                var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
+                var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url));
+                var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers));
                 colItr.AddVariableToIterateOn(urlitr);
                 colItr.AddVariableToIterateOn(headerItr);
                 const int IndexToUpsertTo = 1;
@@ -122,7 +122,7 @@ namespace Dev2.Activities
                         if(dataObject.IsDebugMode())
                         {
                             DebugItem debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
+                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment), debugItem);
                             _debugInputs.Add(debugItem);
                         }
                     }
@@ -130,7 +130,7 @@ namespace Dev2.Activities
                     var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, result, dataObject, update);
+                    PushResultsToDataList(expression, result, dataObject);
                 }
             }
             catch(Exception e)
@@ -146,12 +146,12 @@ namespace Dev2.Activities
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                     var expression = GetExpression(1);
-                    PushResultsToDataList(expression, null, dataObject, update);
+                    PushResultsToDataList(expression, null, dataObject);
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -170,21 +170,21 @@ namespace Dev2.Activities
             return expression;
         }
 
-        void PushResultsToDataList(string expression,  string result, IDSFDataObject dataObject,int update)
+        void PushResultsToDataList(string expression,  string result, IDSFDataObject dataObject)
         {
-            UpdateResultRegions(expression, dataObject.Environment, result, update);
+            UpdateResultRegions(expression, dataObject.Environment, result);
             if(dataObject.IsDebugMode())
             {
                 
-                    AddDebugOutputItem(new DebugEvalResult(expression,"",dataObject.Environment, update));
+                    AddDebugOutputItem(new DebugEvalResult(expression,"",dataObject.Environment));
             }
         }
 
-        void UpdateResultRegions(string expression, IExecutionEnvironment environment, string result, int update)
+        void UpdateResultRegions(string expression, IExecutionEnvironment environment, string result)
         {
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
-                environment.Assign(region, result, update);
+                environment.Assign(region, result);
             }
         }
 
@@ -192,7 +192,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -205,7 +205,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

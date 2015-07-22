@@ -59,10 +59,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -74,12 +74,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ValidateRecordsetName(RecordsetName, errors);
 
-                GetDebug(dataObject, update);
-                dataObject.Environment.EvalDelete(RecordsetName, update);
+                GetDebug(dataObject);
+                dataObject.Environment.EvalDelete(RecordsetName);
                 if (!string.IsNullOrEmpty(Result))
                 {
-                    dataObject.Environment.Assign(Result, "Success", update);
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    dataObject.Environment.Assign(Result, "Success");
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
             catch(Exception e)
@@ -97,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.AddError(errorString);
                     if (!string.IsNullOrEmpty(Result))
                     {
-                        dataObject.Environment.Assign(Result, "Failure", update);
+                        dataObject.Environment.Assign(Result, "Failure");
                     }
                 }
 
@@ -107,13 +107,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
                     }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void GetDebug(IDSFDataObject dataObject, int update)
+        void GetDebug(IDSFDataObject dataObject)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
                 {
-                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment, update));
+                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment));
                 }
 
             }
@@ -144,14 +144,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return _debugInputs;
         }
 
    
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
             return _debugOutputs;
         }

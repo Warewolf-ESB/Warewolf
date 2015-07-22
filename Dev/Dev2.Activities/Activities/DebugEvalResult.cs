@@ -17,7 +17,7 @@ namespace Dev2.Activities
         readonly string _label;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, bool isDataMerge = false)
         {
             _inputVariable = inputVariable.Trim();
             _label = label;
@@ -33,7 +33,7 @@ namespace Dev2.Activities
                 }
                 if (isDataMerge)
                 {
-                    var evalForDataMerge = environment.EvalForDataMerge(_inputVariable, update);
+                    var evalForDataMerge = environment.EvalForDataMerge(_inputVariable);
                     var innerIterator = new WarewolfListIterator();
                     var innerListOfIters = new List<WarewolfIterator>();
                     foreach (var listOfIterator in evalForDataMerge)
@@ -58,17 +58,17 @@ namespace Dev2.Activities
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
                         _inputVariable = finalString;
-                        _evalResult = environment.Eval(finalString, update);
+                        _evalResult = environment.Eval(finalString);
                     }
                 }
                 else
                 {
-                    var evalToExpression = environment.EvalToExpression(_inputVariable, update);
+                    var evalToExpression = environment.EvalToExpression(_inputVariable);
                     if (DataListUtil.IsEvaluated(evalToExpression))
                     {
                         _inputVariable = evalToExpression;
                     }
-                    _evalResult = environment.Eval(_inputVariable, update);
+                    _evalResult = environment.Eval(_inputVariable);
                 }
 
             }

@@ -29,7 +29,7 @@ namespace Dev2.Activities
         #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner)
         {
-            Inner = inner;
+            _inner = inner;
         }
 
         public DsfDecision() { }
@@ -61,9 +61,9 @@ namespace Dev2.Activities
 
         private  Dev2Decision parseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
-            var col1 =env.EvalAsList(decision.Col1, 0);
-            var col2 = env.EvalAsList(decision.Col2, 0);
-            var col3 = env.EvalAsList(decision.Col3, 0);
+            var col1 =env.EvalAsList(decision.Col1);
+            var col2 = env.EvalAsList(decision.Col2);
+            var col3 = env.EvalAsList(decision.Col3);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
@@ -169,7 +169,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return _debugInputs;
         }
@@ -234,13 +234,13 @@ namespace Dev2.Activities
             }
 
             var val =  result.Select(a => a as DebugItem).ToList();
-            Inner.SetDebugInputs(val);
+            _inner.SetDebugInputs(val);
             return val;
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
             return _debugOutputs;
         }
@@ -281,7 +281,7 @@ namespace Dev2.Activities
 
             }
 
-            Inner.SetDebugOutputs(result);
+            _inner.SetDebugOutputs(result);
             return result;
         }
 
@@ -298,7 +298,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

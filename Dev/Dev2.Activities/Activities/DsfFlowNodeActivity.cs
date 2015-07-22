@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(_dataObject, StateType.Before, 0);
+                DispatchDebugState(_dataObject, StateType.Before);
             }
 
        
@@ -126,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject != null && dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.After, 0);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 OnExecutedCompleted(context, false, false);
@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After, 0);
+                DispatchDebugState(dataObject, StateType.After);
             }
             OnExecutedCompleted(faultContext, true, false);
         }
@@ -158,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             if (_debugInputs != null && _debugInputs.Count > 0)
             {
@@ -207,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
 
-                var a = env.Eval(ds.SwitchVariable, 0);
+                var a = env.Eval(ds.SwitchVariable);
                 var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -240,7 +240,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }
@@ -273,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             if (_debugOutputs != null && _debugOutputs.Count > 0)
             {

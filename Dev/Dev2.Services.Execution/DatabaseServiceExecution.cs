@@ -277,7 +277,7 @@ namespace Dev2.Services.Execution
                                 }
                                 pos++;
                             }
-                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString(), 0);
+                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
                         }
                     }
                 }

@@ -43,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             FileContents = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
 
@@ -51,26 +51,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
             colItr.AddVariableToIterateOn(passItr);
 
-            var contentItr =new WarewolfIterator(dataObject.Environment.Eval(FileContents, update));
+            var contentItr =new WarewolfIterator(dataObject.Environment.Eval(FileContents));
             colItr.AddVariableToIterateOn(contentItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(OutputPath, "Output Path", dataObject.Environment, update);
+                AddDebugInputItem(OutputPath, "Output Path", dataObject.Environment);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
-                AddDebugInputItem(FileContents, "File Contents", dataObject.Environment, update);
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
+                AddDebugInputItem(FileContents, "File Contents", dataObject.Environment);
             }
 
             while(colItr.HasMoreData())

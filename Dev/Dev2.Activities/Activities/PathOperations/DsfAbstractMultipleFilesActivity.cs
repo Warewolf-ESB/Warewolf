@@ -44,7 +44,8 @@ namespace Dev2.Activities.PathOperations
 
         protected IWarewolfListIterator ColItr;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject,
+                                                                 out ErrorResultTO allErrors)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
   
@@ -52,41 +53,41 @@ namespace Dev2.Activities.PathOperations
             ColItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables          
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath, update));
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath));
             ColItr.AddVariableToIterateOn(inputItr);
 
            
-            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
+            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
             ColItr.AddVariableToIterateOn(outputItr);
 
            
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
             ColItr.AddVariableToIterateOn(unameItr);
 
             
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
             ColItr.AddVariableToIterateOn(passItr);
 
             
-            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername, update));
+            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername));
             ColItr.AddVariableToIterateOn(desunameItr);
 
             
-            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPassword, update));
+            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPassword));
             ColItr.AddVariableToIterateOn(despassItr);
 
-            AddItemsToIterator(dataObject.Environment, update);
+            AddItemsToIterator(dataObject.Environment);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment, update));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
-                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment, update));
-                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername, update);
+                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment));
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment));
+                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername);
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItems(dataObject.Environment, update);
+                AddDebugInputItems(dataObject.Environment);
             }
 
             while(ColItr.HasMoreData())
@@ -149,11 +150,11 @@ namespace Dev2.Activities.PathOperations
 
         }
 
-        protected virtual void AddItemsToIterator(IExecutionEnvironment environment, int update)
+        protected virtual void AddItemsToIterator(IExecutionEnvironment environment)
         {
         }
 
-        protected virtual void AddDebugInputItems(IExecutionEnvironment environment, int update)
+        protected virtual void AddDebugInputItems(IExecutionEnvironment environment)
         {
         }
 

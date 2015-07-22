@@ -77,10 +77,10 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -96,10 +96,10 @@ namespace Dev2.Activities
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
+                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env));
                     }
 
-                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(Script, update);
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(Script);
                     var innerIterator = new WarewolfListIterator();
                     var innerListOfIters = new List<WarewolfIterator>();
 
@@ -123,7 +123,7 @@ namespace Dev2.Activities
                     var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
-                        inputListResult = dataObject.Environment.Eval(finalString, update);
+                        inputListResult = dataObject.Environment.Eval(finalString);
                     }
 
                     allErrors.MergeErrors(errors);
@@ -141,10 +141,10 @@ namespace Dev2.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            env.Assign(region, value, update);
+                            env.Assign(region, value);
                             if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                                AddDebugOutputItem(new DebugEvalResult(region, "", env));
                             }
                         }
                     }
@@ -177,8 +177,8 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -215,7 +215,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -224,7 +224,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

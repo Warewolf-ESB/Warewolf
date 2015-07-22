@@ -94,10 +94,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -112,18 +112,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(expression, "Number", dataObject.Environment, update);
+                    AddDebugInputItem(expression, "Number", dataObject.Environment);
                     if(!String.IsNullOrEmpty(RoundingType))
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
                     }
-                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment, update);
-                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment, update);
+                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment);
+                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment);
                 }
                 var colItr = new WarewolfListIterator();
-                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment, update);
-                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment, update);
-                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment, update);
+                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
+                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
+                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
                 colItr.AddVariableToIterateOn(expressionIterator);
                 colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
                 colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
@@ -159,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        UpdateResultRegions(dataObject.Environment, result, update);
+                        UpdateResultRegions(dataObject.Environment, result);
                         if(dataObject.IsDebugMode())
                         {
                             AddDebugOutputItem(new DebugItemStaticDataParams(result, Result, "", "="));
@@ -187,27 +187,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void UpdateResultRegions(IExecutionEnvironment environment, string result, int update)
+        void UpdateResultRegions(IExecutionEnvironment environment, string result)
         {
-            environment.Assign(Result, result, update);
+            environment.Assign(Result, result);
         }
 
         #endregion
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
             DebugItem itemToAdd = new DebugItem();
             if (environment != null)
             {
-                AddDebugItem(new DebugEvalResult(expression, labelText, environment, update), itemToAdd);
+                AddDebugItem(new DebugEvalResult(expression, labelText, environment), itemToAdd);
             }
             else
             {
@@ -221,7 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -230,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

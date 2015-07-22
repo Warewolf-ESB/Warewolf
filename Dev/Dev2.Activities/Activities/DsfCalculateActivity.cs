@@ -70,10 +70,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -87,13 +87,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(dataObject.Environment, update);
+                    AddDebugInputItem(dataObject.Environment);
                 }
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
-                var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
+                var warewolfEvalResult = dataObject.Environment.Eval(calc);
                 var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                 if(scalarResult != null && scalarResult.Item.IsNothing)
                 {
@@ -104,12 +104,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while(warewolfListIterator.HasMoreData())
                 {
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
-                    dataObject.Environment.Assign(Result, result, update);
+                    dataObject.Environment.Assign(Result, result);
                 }
 
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(Result, dataObject.Environment, update);
+                    AddDebugOutputItem(Result, dataObject.Environment);
                 }
                 allErrors.MergeErrors(errors);
             }
@@ -132,10 +132,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(Result, dataObject.Environment, update);
+                        AddDebugOutputItem(Result, dataObject.Environment);
                     }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -144,21 +144,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(IExecutionEnvironment environment,int update)
+        private void AddDebugInputItem(IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update));
+            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment));
         }
 
-        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
+        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment)
         {
-            AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
+            AddDebugOutputItem(new DebugEvalResult(expression, "", environment));
         }
 
         #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

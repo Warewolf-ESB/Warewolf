@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.ESB
             ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            container.Execute(out errors, 0);
+            container.Execute(out errors);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(5, errors.FetchErrors().Count);
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Overrides of WebServiceContainerMock
 
-        public override Guid Execute(out ErrorResultTO errors, int update)
+        public override Guid Execute(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             errors.AddError(" [[CityName]] does not exist in your Data List");

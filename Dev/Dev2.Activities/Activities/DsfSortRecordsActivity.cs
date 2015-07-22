@@ -63,10 +63,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -78,11 +78,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(SortField, "Sort Field", dataObject.Environment, update);
+                    AddDebugInputItem(SortField, "Sort Field", dataObject.Environment);
                 }
                 if(!string.IsNullOrEmpty(SortField))
                 {
-                    dataObject.Environment.SortRecordSet(SortField, descOrder, update);
+                    dataObject.Environment.SortRecordSet(SortField, descOrder);
                 }
                 else
                 {
@@ -105,19 +105,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DebugOutputs(dataObject, update);
+                    DebugOutputs(dataObject);
 
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void DebugOutputs(IDSFDataObject dataObject,int update)
+        void DebugOutputs(IDSFDataObject dataObject)
         {
             if(dataObject.IsDebugMode())
             {
-                var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField), update);
+                var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField));
                 if(data.IsWarewolfAtomListresult)
                 {
                     var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -136,9 +136,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, int update)
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env)
         {
-            var data =  env.Eval(env.ToStar( expression), update);
+            var data =  env.Eval(env.ToStar( expression));
             if (data.IsWarewolfAtomListresult)
             {
                 var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -207,13 +207,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return _debugInputs;
         }
 
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
             return _debugOutputs;
         }

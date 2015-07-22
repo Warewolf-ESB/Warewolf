@@ -69,10 +69,10 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -97,7 +97,7 @@ namespace Dev2.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(Script, dataObject.Environment, update);
+                        AddDebugInputItem(Script, dataObject.Environment);
                     }
 
                    
@@ -117,7 +117,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     dataObject.Environment.AddError(allErrors.MakeDataListReady());
-                    dataObject.Environment.Assign(Result, null, update);
+                    dataObject.Environment.Assign(Result, null);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -127,8 +127,8 @@ namespace Dev2.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
 
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -162,16 +162,16 @@ namespace Dev2.Activities
         #region Private Methods
 
 
-        private void AddDebugInputItem(string scriptExpression, IExecutionEnvironment executionEnvironment, int update)
+        private void AddDebugInputItem(string scriptExpression, IExecutionEnvironment executionEnvironment)
         {
-            AddDebugInputItem(new DebugEvalResult(scriptExpression, "Script", executionEnvironment, update));
+            AddDebugInputItem(new DebugEvalResult(scriptExpression, "Script", executionEnvironment));
         }
 
         #endregion
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -180,7 +180,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

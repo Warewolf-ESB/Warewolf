@@ -66,10 +66,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -93,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if(dataObject.IsDebugMode())
                         {
-                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
+                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
@@ -109,15 +109,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 count = dataObject.Environment.GetCount(rs);
                             }
                             var value = count.ToString();
-                            dataObject.Environment.Assign(CountNumber, value, update);
-                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+                            dataObject.Environment.Assign(CountNumber, value);
+                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment));
                         }
                     }
                     catch(Exception e)
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
-                        dataObject.Environment.Assign(CountNumber, "0", update);
+                        dataObject.Environment.Assign(CountNumber, "0");
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
                     }
                 }
@@ -134,8 +134,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -144,12 +144,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

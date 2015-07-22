@@ -116,8 +116,8 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before, 0);
-                DispatchDebugState(dataObject, StateType.After, 0);
+                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.After);
                 if(_inner != null)
                 {
                     _inner.SetDebugInputs(_debugInputs);

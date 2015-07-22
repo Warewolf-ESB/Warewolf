@@ -281,7 +281,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.Before, 0);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
                 
@@ -325,7 +325,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
                             
                             // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, 0); // careful of zero if wf comes back
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
                             
                             allErrors.MergeErrors(tmpErrors);
 
@@ -356,13 +356,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), 0);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.After, 0);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;
@@ -419,7 +419,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
  
             esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
@@ -441,7 +441,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DsfActivity;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -553,7 +553,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
                 }
@@ -590,13 +590,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-            return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
+            return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser, int update)
+        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
@@ -607,7 +607,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     continue;
                 }
-                var tmpEntry = env.Eval( dev2Definition.RawValue, update);
+                var tmpEntry = env.Eval( dev2Definition.RawValue);
 
                 DebugItem itemToAdd = new DebugItem();
                 if (tmpEntry.IsWarewolfAtomResult)
@@ -658,15 +658,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overrides of DsfNativeActivity<bool>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
-            GetDebugOutputsFromEnv(env, update);
+            GetDebugOutputsFromEnv(env);
             return _debugOutputs;
         }
 
         #endregion
 
-        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment, int update)
+        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
@@ -676,7 +676,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     results.Add(itemToAdd);
                 }
                 catch (Exception e)

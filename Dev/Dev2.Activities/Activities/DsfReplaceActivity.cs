@@ -101,10 +101,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -124,33 +124,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment, update));
+                        AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment));
                         if(Find != null)
                         {
-                            AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment, update));
+                            AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
                         }
                         if(ReplaceWith != null)
                         {
-                            AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment, update));
+                            AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment));
                         }
                     }
                 }
                 IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
 
-                var finRes = dataObject.Environment.Eval(Find, update);
+                var finRes = dataObject.Environment.Eval(Find);
                 if (ExecutionEnvironment.IsNothing(finRes))
                 {
                     if (!string.IsNullOrEmpty(Result))
                     {
-                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update);
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
                     }
                 }
                 else
                 {
-                    var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find, update));
+                    var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
                     iteratorCollection.AddVariableToIterateOn(itrFind);
 
-                    var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith, update));
+                    var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
                     iteratorCollection.AddVariableToIterateOn(itrReplace);
                     var rule = new IsSingleValueRule(() => Result);
                     var single = rule.Check();
@@ -174,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                                 if (!string.IsNullOrEmpty(findValue))
                                 {
-                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)), update);
+                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
                                 }
 
                                 replacementTotal += replacementCount;
@@ -184,7 +184,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         if (replacementCount > 0)
                                         {
-                                            AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment, update));
+                                            AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
                                         }
                                     }
                                 }
@@ -193,14 +193,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if (!string.IsNullOrEmpty(Result))
                     {
-                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update);
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
                     }
                 }
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     if(!string.IsNullOrEmpty(Result))
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
                 }
                 // now push the result to the server
@@ -222,13 +222,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfReplaceActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, null, update);
+                    dataObject.Environment.Assign(Result, null);
                 }
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -248,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

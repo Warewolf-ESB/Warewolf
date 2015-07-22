@@ -129,10 +129,10 @@ namespace Dev2.Activities
             // ReSharper restore MethodTooLong
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -161,36 +161,36 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment, update));
+                        AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment));
                     }
-                    AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
+                    AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment));
                 }
                 var colItr = new WarewolfListIterator();
 
-                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
+                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty));
                 colItr.AddVariableToIterateOn(fromAccountItr);
 
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
                 colItr.AddVariableToIterateOn(passwordItr);
 
-                var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
+                var toItr = new WarewolfIterator(dataObject.Environment.Eval(To));
                 colItr.AddVariableToIterateOn(toItr);
 
-                var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
+                var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc));
                 colItr.AddVariableToIterateOn(ccItr);
 
-                var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
+                var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc));
                 colItr.AddVariableToIterateOn(bccItr);
 
-                var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
+                var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject));
                 colItr.AddVariableToIterateOn(subjectItr);
 
-                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty, update));
+                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty));
                 colItr.AddVariableToIterateOn(bodyItr);
 
-                var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
+                var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty));
                 colItr.AddVariableToIterateOn(attachmentsItr);
 
                 if(!allErrors.HasErrors())
@@ -202,14 +202,14 @@ namespace Dev2.Activities
                         allErrors.MergeErrors(errors);
                         if(!allErrors.HasErrors())
                         {
-                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
+                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result);
                         }
                     }
                     if(IsDebug && !allErrors.HasErrors())
                     {
                         if (!string.IsNullOrEmpty(Result))
                         {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                         }
                     }
                 }
@@ -240,7 +240,7 @@ namespace Dev2.Activities
                     {
                         dataObject.Environment.Errors.Add(err);
                     }
-                    UpsertResult(indexToUpsertTo, dataObject.Environment, null, update);
+                    UpsertResult(indexToUpsertTo, dataObject.Environment, null);
                     if(dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
@@ -249,8 +249,8 @@ namespace Dev2.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace Dev2.Activities
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
-        private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
+        private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result)
         {
             string expression;
             if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
@@ -279,7 +279,7 @@ namespace Dev2.Activities
             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
-                environment.Assign(region, result, update);
+                environment.Assign(region, result);
                 indexToUpsertTo++;
             }
             return indexToUpsertTo;
@@ -468,7 +468,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -477,7 +477,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

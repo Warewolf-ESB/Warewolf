@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         #region Execute
 
-        public override Guid Execute(out ErrorResultTO errors, int update)
+        public override Guid Execute(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             _databaseServiceExecution.BeforeExecution(errors);
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Execution
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
-            var result = _databaseServiceExecution.Execute(out errors, update);
+            var result = _databaseServiceExecution.Execute(out errors);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
         }

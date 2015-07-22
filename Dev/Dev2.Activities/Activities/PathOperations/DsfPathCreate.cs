@@ -41,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OutputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors)
         {
 
             IList<OutputTO> outputs = new List<OutputTO>();
@@ -51,20 +51,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             //get all the possible paths for all the string variables
             
-            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
+            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
             colItr.AddVariableToIterateOn(outputItr);
 
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
             colItr.AddVariableToIterateOn(passItr);
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(new DebugEvalResult(OutputPath, "File or Folder", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "File or Folder", dataObject.Environment));
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
             }
 
             while(colItr.HasMoreData())

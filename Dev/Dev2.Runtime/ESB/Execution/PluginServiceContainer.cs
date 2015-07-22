@@ -34,12 +34,12 @@ namespace Dev2.Runtime.ESB.Execution
             _pluginServiceExecution = pluginServiceExecution;
         }
 
-        public override Guid Execute(out ErrorResultTO errors, int update)
+        public override Guid Execute(out ErrorResultTO errors)
         {
             _pluginServiceExecution.InstanceInputDefinitions = InstanceInputDefinition;
             _pluginServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
 
-            var result = _pluginServiceExecution.Execute(out errors, update);
+            var result = _pluginServiceExecution.Execute(out errors);
             return result;
         }
 

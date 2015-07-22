@@ -128,10 +128,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
             _indexCounter = 1;
@@ -146,12 +146,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var sourceString = SourceString ?? "";
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env, update));
+                    AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env));
                     AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
                     AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
-                    AddDebug(ResultsCollection, dataObject.Environment, update);
+                    AddDebug(ResultsCollection, dataObject.Environment);
                 }
-                var res = new WarewolfIterator(env.Eval(sourceString, update));
+                var res = new WarewolfIterator(env.Eval(sourceString));
                 iter.AddVariableToIterateOn(res);
                 IDictionary<string, int> positions = new Dictionary<string, int>();
                 CleanArguments(ResultsCollection);
@@ -194,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         ErrorResultTO errors;
-                        IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out errors, update);
+                        IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out errors);
                         allErrors.MergeErrors(errors);
 
                         if(!allErrors.HasErrors())
@@ -228,7 +228,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             if(!String.IsNullOrEmpty(tovar))
                                             {
                                                 var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
-                                                env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                                                env.AssignWithFrame(new AssignValue(assignToVar, ""));
                                                 positions[tovar] = positions[tovar] + 1;
                                             }
                                         }
@@ -250,15 +250,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
                                         if(ExecutionEnvironment.IsRecordsetIdentifier(assignVar))
                                         {
-                                            env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                                            env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }
                                         else if(ExecutionEnvironment.IsScalar(assignVar) && positions[outputVar] == 1)
                                         {
-                                            env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                                            env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }
                                         else
                                         {
-                                            env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                                            env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }
                                         positions[outputVar] = positions[outputVar] + 1;
                                     }
@@ -266,7 +266,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         var debugItem = new DebugItem();
                                         var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+                                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env), debugItem);
                                         if(!debugDictionary.Contains(outputVarTo))
                                         {
                                             debugDictionary.Add(outputVarTo);
@@ -298,7 +298,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
                         var dataSplitUsesStarForOutput = varDebug.Replace("().", "(*).");
-                        AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env), debugItem);
                         _debugOutputs.Add(debugItem);
                         outputIndex++;
                     }
@@ -322,8 +322,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -425,7 +425,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        private IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
+        private IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors)
         {
             Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
             errors = new ErrorResultTO();
@@ -440,7 +440,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Index":
                         try
                         {
-                            entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
+                            entry = compiler.EvalAsListOfStrings(t.At).FirstOrDefault();
                             if(entry== null) throw new Exception("null iterator expression");
                             string index = entry;
                             int indexNum = Convert.ToInt32(index);
@@ -480,13 +480,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Chars":
                         if(!string.IsNullOrEmpty(t.At))
                         {
-                            entry = compiler.EvalAsListOfStrings(t.At, update).FirstOrDefault();
+                            entry = compiler.EvalAsListOfStrings(t.At).FirstOrDefault();
 
                            
                             string escape = t.EscapeChar;
                             if(!String.IsNullOrEmpty(escape))
                             {
-                                escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();
+                                escape = compiler.EvalAsListOfStrings(t.EscapeChar).FirstOrDefault();
                               
                             }
 
@@ -499,7 +499,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.IsNullOrEmpty(dtb.ToTokenize) || errors.HasErrors() ? null : dtb.Generate();
         }
 
-        private void AddDebug(IEnumerable<DataSplitDTO> resultCollection, IExecutionEnvironment env, int update)
+        private void AddDebug(IEnumerable<DataSplitDTO> resultCollection, IExecutionEnvironment env)
         {
             foreach(DataSplitDTO t in resultCollection)
             {
@@ -507,14 +507,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams("",_indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                 if (!string.IsNullOrEmpty(t.OutputVariable))
                 {
-                    AddDebugItem(new DebugEvalResult(t.OutputVariable, "", env, update), debugItem);
+                    AddDebugItem(new DebugEvalResult(t.OutputVariable, "", env), debugItem);
                 }
                 AddDebugItem(new DebugItemStaticDataParams(t.SplitType, "With"), debugItem);
 
                 switch(t.SplitType)
                 {
                     case "Index":
-                        AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(t.At, "Using", env), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
                     case "End":
@@ -530,7 +530,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
                     case "Chars":
-                        AddDebugItem(new DebugEvalResult(t.At, "Using", env, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(t.At, "Using", env), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
                         break;
@@ -569,7 +569,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -582,7 +582,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

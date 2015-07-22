@@ -93,10 +93,10 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
             _debugOutputs.Clear();
 
@@ -113,14 +113,14 @@ namespace Dev2.Activities
                 {
                     if(_isDebugMode)
                     {
-                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
+                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment);
                         AddResultDebugInputs(ResultsCollection, out errors);
                         allErrors.MergeErrors(errors);
                     }
                     if(!allErrors.HasErrors())
                     {
                         var itr = new WarewolfListIterator();
-                        var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
+                        var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString));
                         itr.AddVariableToIterateOn(sourceIterator);
                         while(itr.HasMoreData())
                         {
@@ -131,7 +131,7 @@ namespace Dev2.Activities
                                 {
                                     if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                                     {
-                                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+                                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath);
                                         var xpathIterator = new WarewolfIterator(xpathEntry);
                                         while(xpathIterator.HasMoreData())
                                         {
@@ -160,20 +160,20 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval, update);
+                                                                AssignResult(cleanFieldName, dataObject, eval);
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval, update);
+                                                        AssignResult(variable, dataObject, eval);
                                                     }
                                                 }
                                                 catch(Exception e)
                                                 {
                                                     allErrors.AddError(e.Message);
-                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null);
                                                 }
                                             }
                                         }
@@ -191,7 +191,7 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -215,7 +215,7 @@ namespace Dev2.Activities
                     dataObject.Environment.AddError(errorString);
                     if (actualIndex > -1)
                     {
-                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
+                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null);
                     }
                 }
                 if(_isDebugMode)
@@ -231,22 +231,22 @@ namespace Dev2.Activities
                             }
                             AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
 
-                            AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                         }
                     }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
+        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval)
         {
             var index = 1;
             if(DataListUtil.IsValueScalar(variable))
             {
-                dataObject.Environment.Assign(variable, string.Join(",", eval), update);
+                dataObject.Environment.Assign(variable, string.Join(",", eval));
             }
             else
             {
@@ -258,7 +258,7 @@ namespace Dev2.Activities
                     {
                         correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variable, index);
                     }
-                    dataObject.Environment.Assign(correctedVariable, val, update);
+                    dataObject.Environment.Assign(correctedVariable, val);
                     index++;
                 }
             }
@@ -284,9 +284,9 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddSourceStringDebugInputItem(string expression, IExecutionEnvironment environment, int update)
+        private void AddSourceStringDebugInputItem(string expression, IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugEvalResult(expression, "XML", environment, update));
+            AddDebugInputItem(new DebugEvalResult(expression, "XML", environment));
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -388,7 +388,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -401,7 +401,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

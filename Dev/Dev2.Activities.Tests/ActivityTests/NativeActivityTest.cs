@@ -518,7 +518,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             return null;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
         }
 

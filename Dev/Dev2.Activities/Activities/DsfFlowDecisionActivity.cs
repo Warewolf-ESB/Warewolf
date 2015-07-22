@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw new NotImplementedException();
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
         }
 

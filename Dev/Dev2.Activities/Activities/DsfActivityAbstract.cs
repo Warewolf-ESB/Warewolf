@@ -176,9 +176,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Protected Methods
 
-        protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
+        protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment)
         {
-            var evalled = executionEnvironment.Eval(expression, update);
+            var evalled = executionEnvironment.Eval(expression);
 //            if(ExecutionEnvironment.IsNothing(evalled))
 //                throw  new Exception("Invalid variable: "+expression);
             var expressionIterator = new WarewolfIterator(evalled);

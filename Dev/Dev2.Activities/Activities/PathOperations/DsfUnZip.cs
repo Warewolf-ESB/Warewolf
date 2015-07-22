@@ -72,13 +72,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected override void AddItemsToIterator(IExecutionEnvironment environment,int update)
+        protected override void AddItemsToIterator(IExecutionEnvironment environment)
         {
-            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword, update));
+            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword));
             ColItr.AddVariableToIterateOn(_archPassItr);
         }
 
-        protected override void AddDebugInputItems(IExecutionEnvironment environment, int update)
+        protected override void AddDebugInputItems(IExecutionEnvironment environment)
         {
             AddDebugInputItemPassword("Archive Password", ArchivePassword);
         }

@@ -78,7 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(FieldValue);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
         }
 

@@ -60,10 +60,10 @@ namespace Dev2.Runtime.ESB.Execution
             _resourceCatalog = resourceCatalog;
         }
 
-        public void PerformLogExecution(string logUri, int update)
+        public void PerformLogExecution(string logUri)
         {
             
-            var expressionsEntry = DataObject.Environment.Eval(logUri, update);
+            var expressionsEntry = DataObject.Environment.Eval(logUri);
             var itr = new WarewolfIterator(expressionsEntry);
             while (itr.HasMoreData())
             {
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Execution
             buildGetWebRequest.GetResponseAsync();
         }
 
-        public override Guid Execute(out ErrorResultTO errors, int update)
+        public override Guid Execute(out ErrorResultTO errors)
         {
             Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
@@ -123,7 +123,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString(), update);
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
             Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;

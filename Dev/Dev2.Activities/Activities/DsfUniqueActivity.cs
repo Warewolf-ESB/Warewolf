@@ -73,10 +73,10 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
             var allErrors = new ErrorResultTO();
@@ -87,7 +87,7 @@ namespace Dev2.Activities
 
             try
             {
-                PreExecution(dataObject, fromFields, update);
+                PreExecution(dataObject, fromFields);
                 if(String.IsNullOrEmpty(InFields))
                 {
                     throw new Exception("Invalid In fields");
@@ -109,7 +109,7 @@ namespace Dev2.Activities
                     throw new Exception("invalid selected fields");
                 }
 
-                dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields, update);
+                dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields);
             }
             catch(Exception e)
             {
@@ -118,7 +118,7 @@ namespace Dev2.Activities
             }
             finally
             {
-                PostExecute(dataObject, toresultfields, allErrors.HasErrors(),update);
+                PostExecute(dataObject, toresultfields, allErrors.HasErrors());
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -132,13 +132,13 @@ namespace Dev2.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, bool hasErrors, int update)
+        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, bool hasErrors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -150,7 +150,7 @@ namespace Dev2.Activities
                     {
                         try
                         {
-                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment, update);
+                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment);
 
                             if (!hasErrors)
                             AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
@@ -167,7 +167,7 @@ namespace Dev2.Activities
             }
         }
 
-        void PreExecution(IDSFDataObject dataObject, IEnumerable<string> fromFields, int update)
+        void PreExecution(IDSFDataObject dataObject, IEnumerable<string> fromFields)
         {
             if(dataObject.IsDebugMode())
             {
@@ -179,7 +179,7 @@ namespace Dev2.Activities
                     {
                         try
                         {
-                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment, update));
+                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment));
                         }
                         catch(Exception)
                         {
@@ -248,7 +248,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfNativeActivity<string>
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -257,7 +257,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

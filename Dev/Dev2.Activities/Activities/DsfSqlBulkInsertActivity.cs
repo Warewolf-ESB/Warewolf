@@ -105,10 +105,10 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -120,17 +120,17 @@ namespace Dev2.Activities
             {
                 IWarewolfIterator batchItr;
                 IWarewolfIterator timeoutItr;
-                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr, update);
+                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr);
 
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if(runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
                 {
-                    DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList, update);
+                    DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList);
                 }
                 else
                 {
-                    DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList, update);
+                    DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList);
                 }
 
                 allErrors.MergeErrors(errorResultTo);
@@ -151,7 +151,7 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
-                    dataObject.Environment.Assign(Result, null, update);
+                    dataObject.Environment.Assign(Result, null);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                     if(dataObject.IsDebugMode())
@@ -161,13 +161,13 @@ namespace Dev2.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        void DoInsertForSqlServer(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IDSFDataObject dataObject, ErrorResultTO allErrors, IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref ErrorResultTO errorResultTo, ref bool addExceptionToErrorList, int update)
+        void DoInsertForSqlServer(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IDSFDataObject dataObject, ErrorResultTO allErrors, IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref ErrorResultTO errorResultTo, ref bool addExceptionToErrorList)
         {
 
             SqlBulkCopy sqlBulkCopy;
@@ -189,7 +189,7 @@ namespace Dev2.Activities
                 if(InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
-                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo, update);
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     iteratorCollection.Types = types;
                     iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
@@ -204,7 +204,7 @@ namespace Dev2.Activities
                     // emit options to debug as per acceptance test ;)
                     if(dataObject.IsDebugMode())
                     {
-                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment, update);
+                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
                         AddOptionsDebugItems();
                     }
                     
@@ -221,7 +221,7 @@ namespace Dev2.Activities
                     }
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
                     SqlBulkInserter.Insert(wrapper, dataTableToInsert);
-                    dataObject.Environment.Assign(Result, "Success", update);
+                    dataObject.Environment.Assign(Result, "Success");
                     if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, ""));
@@ -234,7 +234,7 @@ namespace Dev2.Activities
             }
         }
 
-        void DoInsertForMySql(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator batchItr, IWarewolfIterator timeoutItr, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, ref bool addExceptionToErrorList, int update)
+        void DoInsertForMySql(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator batchItr, IWarewolfIterator timeoutItr, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, ref bool addExceptionToErrorList)
         {
             MySqlBulkLoader sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
             TableName = TableName.Replace("[", "").Replace("]", "");
@@ -258,7 +258,7 @@ namespace Dev2.Activities
                 if (InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
-                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo, update);
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     allErrors.MergeErrors(errorResultTo);
 
                     // oh no, we have an issue, bubble it out ;)
@@ -271,7 +271,7 @@ namespace Dev2.Activities
                     // emit options to debug as per acceptance test ;)
                     if (dataObject.IsDebugMode())
                     {
-                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment, update);
+                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
                         AddOptionsDebugItems();
                     }
 
@@ -291,7 +291,7 @@ namespace Dev2.Activities
                 var inserted = SqlBulkInserter.Insert(wrapper, dataTableToInsert);
                 var resultString = inserted ? "Success" : "Failure";
                 
-                dataObject.Environment.Assign(Result,resultString, update);
+                dataObject.Environment.Assign(Result,resultString);
                 if (dataObject.IsDebugMode())
                 {
                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(resultString, Result, ""));
@@ -322,23 +322,23 @@ namespace Dev2.Activities
             _debugInputs.Add(debugItem);
         }
 
-        void AddBatchSizeAndTimeOutToDebug(IExecutionEnvironment executionEnvironment, int update)
+        void AddBatchSizeAndTimeOutToDebug(IExecutionEnvironment executionEnvironment)
         {
             DebugItem debugItem = new DebugItem();
             if(!string.IsNullOrEmpty(BatchSize))
             {
-                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", executionEnvironment, debugItem, update);
+                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", executionEnvironment, debugItem);
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                AddDebugInputItemFromEntry(Timeout, "Timeout  ", executionEnvironment, debugItem, update);
+                AddDebugInputItemFromEntry(Timeout, "Timeout  ", executionEnvironment, debugItem);
             }
             _debugInputs.Add(debugItem);
         }
 
-        void AddDebugInputItemFromEntry(string expression, string parameterName, IExecutionEnvironment environment, DebugItem debugItem, int update)
+        void AddDebugInputItemFromEntry(string expression, string parameterName, IExecutionEnvironment environment, DebugItem debugItem)
         {
-            AddDebugItem(new DebugEvalResult(expression, parameterName, environment, update), debugItem);
+            AddDebugItem(new DebugEvalResult(expression, parameterName, environment), debugItem);
         }
 
         public SqlBulkCopy SetupSqlBulkCopy(IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
@@ -412,20 +412,20 @@ namespace Dev2.Activities
             }
         }
 
-        IWarewolfListIterator BuildParametersIteratorCollection(IExecutionEnvironment executionEnvironment, out IWarewolfIterator batchIterator, out IWarewolfIterator timeOutIterator, int update)
+        IWarewolfListIterator BuildParametersIteratorCollection(IExecutionEnvironment executionEnvironment, out IWarewolfIterator batchIterator, out IWarewolfIterator timeOutIterator)
         {
             var parametersIteratorCollection = new WarewolfListIterator();
             batchIterator = null;
             timeOutIterator = null;
             if(!String.IsNullOrEmpty(BatchSize))
             {
-                var batchItr = new WarewolfIterator(executionEnvironment.Eval(BatchSize, update));
+                var batchItr = new WarewolfIterator(executionEnvironment.Eval(BatchSize));
                 parametersIteratorCollection.AddVariableToIterateOn(batchItr);
                 batchIterator = batchItr;
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                var timeoutItr = new WarewolfIterator(executionEnvironment.Eval(Timeout, update));
+                var timeoutItr = new WarewolfIterator(executionEnvironment.Eval(Timeout));
                 parametersIteratorCollection.AddVariableToIterateOn(timeoutItr);
                 timeOutIterator = timeoutItr;
             }
@@ -462,7 +462,7 @@ namespace Dev2.Activities
             }
         }
 
-        List<IWarewolfIterator> GetIteratorsFromInputMappings(IDSFDataObject dataObject, IWarewolfListIterator iteratorCollection, out ErrorResultTO errorsResultTo, int update)
+        List<IWarewolfIterator> GetIteratorsFromInputMappings(IDSFDataObject dataObject, IWarewolfListIterator iteratorCollection, out ErrorResultTO errorsResultTo)
         {
             errorsResultTo = new ErrorResultTO();
             var listOfIterators = new List<IWarewolfIterator>();
@@ -481,13 +481,13 @@ namespace Dev2.Activities
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter, update);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter);
                     indexCounter++;
                 }
                 
                     try
                     {
-                        var itr = new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn, update));
+                        var itr = new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
                         iteratorCollection.AddVariableToIterateOn(itr);
                         listOfIterators.Add(itr);
                     }
@@ -502,11 +502,11 @@ namespace Dev2.Activities
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IExecutionEnvironment executionEnvironment, string outputColumnDataType, int indexCounter, int update)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IExecutionEnvironment executionEnvironment, string outputColumnDataType, int indexCounter)
         {
             var itemToAdd = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-            AddDebugItem(new DebugEvalResult(inputColumn, "", executionEnvironment, update), itemToAdd);
+            AddDebugItem(new DebugEvalResult(inputColumn, "", executionEnvironment), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnName, "To Field"), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnDataType, "Type"), itemToAdd);
             _debugInputs.Add(itemToAdd);
@@ -714,7 +714,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -727,7 +727,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

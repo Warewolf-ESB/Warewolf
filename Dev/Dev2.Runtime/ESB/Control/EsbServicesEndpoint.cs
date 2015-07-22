@@ -277,12 +277,12 @@ namespace Dev2.Runtime.ESB.Control
 
        
 
-        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
         {
             errors = null;
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
-            executionContainer.PerformLogExecution(uri, update);
+            executionContainer.PerformLogExecution(uri);
         }
 
         /// <summary>
@@ -293,9 +293,8 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
         /// <returns></returns>
-        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
@@ -328,7 +327,7 @@ namespace Dev2.Runtime.ESB.Control
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
-                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs,update);
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
                     if (!isLocal)
                     {
                         SetRemoteExecutionDataList(dataObject, executionContainer, errors);
@@ -337,8 +336,8 @@ namespace Dev2.Runtime.ESB.Control
                     {
                         executionContainer.InstanceInputDefinition = inputDefs;
                         executionContainer.InstanceOutputDefinition = outputDefs;
-                        executionContainer.Execute(out invokeErrors, update);
-                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update);
+                        executionContainer.Execute(out invokeErrors);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
                         errors.MergeErrors(invokeErrors);
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -351,7 +350,7 @@ namespace Dev2.Runtime.ESB.Control
             return new ExecutionEnvironment();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
@@ -359,9 +358,9 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
         {
-            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs,update);
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
@@ -386,7 +385,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
         {
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();
@@ -407,13 +406,13 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if(!invokeErrors.HasErrors())
                 {
-                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
+                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        executionContainer.Execute(out error, update);
+                        executionContainer.Execute(out error);
                         return clonedDataObject;
                     }).ContinueWith(task =>
                     {

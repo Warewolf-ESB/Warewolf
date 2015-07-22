@@ -102,10 +102,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
 
 
@@ -137,10 +137,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, update, true), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, true), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment, update), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment), debugItem);
 
                         //Old workflows don't have this set. 
                         if(row.Alignment == null)
@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         _debugInputs.Add(debugItem);
                     }
-                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable, update);
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable);
                     var innerIterator = new WarewolfListIterator();
                     var innerListOfIters = new List<WarewolfIterator>();
 
@@ -176,12 +176,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if(DataListUtil.IsFullyEvaluated(finalString))
                     {
-                        inputListResult = dataObject.Environment.Eval(finalString, update);
+                        inputListResult = dataObject.Environment.Eval(finalString);
                     }
 
                     var inputIterator = new WarewolfIterator(inputListResult);
-                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At, update));
-                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding, update));
+                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
+                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
                     warewolfListIterator.AddVariableToIterateOn(inputIterator);
                     warewolfListIterator.AddVariableToIterateOn(atIterator);
                     warewolfListIterator.AddVariableToIterateOn(paddingIterator);
@@ -250,12 +250,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
+                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());
                             allErrors.MergeErrors(errorResultTo);
 
                             if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
                         }
                     }
@@ -285,8 +285,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 #endregion
@@ -409,14 +409,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return _debugInputs;
         }
 
 
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

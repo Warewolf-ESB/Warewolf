@@ -59,7 +59,7 @@ namespace Dev2.Data.Decision
        
             Guid dlId = FetchDataListID(oldAmbientData);
             var env = _environments[dlId];
-            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName, 0));
+            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName));
         
             return output;
 
@@ -71,16 +71,15 @@ namespace Dev2.Data.Decision
         /// </summary>
         /// <param name="decisionDataPayload">The decision data payload.</param>
         /// <param name="oldAmbientData">The old ambient data.</param>
-        /// <param name="update"></param>
         /// <returns></returns>
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
-        public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData,int update)
+        public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
         {
 
             Guid dlId = FetchDataListID(oldAmbientData);
 //            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
-            var dds = EvaluateRegion(newDecisionData, dlId, update);
+            var dds = EvaluateRegion(newDecisionData, dlId);
 
 
               var env =  _environments[dlId];
@@ -167,9 +166,8 @@ namespace Dev2.Data.Decision
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="dlId">The dl ID.</param>
-        /// <param name="update"></param>
         /// <returns></returns>
-        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId,int update)
+        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId)
         {
 
             var env =  _environments[dlId];
@@ -195,7 +193,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col1, update);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col1);
                             dd.Col1 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
@@ -209,7 +207,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col2, update);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col2);
                             dd.Col2 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
@@ -223,7 +221,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col3, update);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col3);
                             dd.Col3 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
                     }
@@ -231,7 +229,7 @@ namespace Dev2.Data.Decision
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
                         ErrorResultTO errors;
-                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors, update);
+                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors);
                     }
                 }
 
@@ -240,12 +238,12 @@ namespace Dev2.Data.Decision
             return null;
         }
 
-        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col,int update)
+        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col)
         {
             var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             try
             {
-                warewolfEvalResult = env.Eval(col, update);
+                warewolfEvalResult = env.Eval(col);
             }
             catch(NullValueInVariableException)
             {
@@ -281,7 +279,7 @@ namespace Dev2.Data.Decision
             return string.Empty;
         }
 
-        Dev2DecisionStack ResolveAllRecords(IExecutionEnvironment env, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors,int update)
+        Dev2DecisionStack ResolveAllRecords(IExecutionEnvironment env, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors)
         {
             if(effectedCols == null)
             {
@@ -292,7 +290,7 @@ namespace Dev2.Data.Decision
             errors = new ErrorResultTO();
             if(effectedCols[0])
             {
-                var data = env.EvalAsListOfStrings(decision.Col1, update);
+                var data = env.EvalAsListOfStrings(decision.Col1);
                
                 int reStackIndex = stackIndex;
 
@@ -306,7 +304,7 @@ namespace Dev2.Data.Decision
             }
             if(effectedCols[1])
             {
-                var data = env.EvalAsListOfStrings(decision.Col2, update);
+                var data = env.EvalAsListOfStrings(decision.Col2);
                 int reStackIndex = stackIndex;
 
                  foreach(var item in data)
@@ -332,7 +330,7 @@ namespace Dev2.Data.Decision
             }
             if(effectedCols[2])
             {
-                var data = env.EvalAsListOfStrings(decision.Col3, update);
+                var data = env.EvalAsListOfStrings(decision.Col3);
                 int reStackIndex = stackIndex;
 
                 foreach (var item in data)
