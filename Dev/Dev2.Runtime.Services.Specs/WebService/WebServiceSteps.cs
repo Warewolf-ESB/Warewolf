@@ -110,7 +110,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             serviceExecution.Service = webService;
             serviceExecution.Source = webSource;
             serviceExecution.InstanceOutputDefintions = webService.OutputSpecification;
-            Guid executeID = serviceExecution.Execute(out errors);
+            Guid executeID = serviceExecution.Execute(out errors,0);
             ScenarioContext.Current.Add("DataListID", executeID);
             ScenarioContext.Current.Add("DataObject", dataObj.Object);
         }
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         public void ThenIHaveTheFollowingData(Table table)
         {
             var dataObject = ScenarioContext.Current.Get<IDSFDataObject>("DataObject");
-            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,""));
+            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,Guid.Empty,"",0));
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
             {

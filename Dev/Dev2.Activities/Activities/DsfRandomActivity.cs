@@ -78,10 +78,10 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
 
@@ -98,12 +98,12 @@ namespace Dev2.Activities
                 {
                     if (dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
+                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType, update);
                     }
 
-                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
-                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
-                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
+                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
+                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
+                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
                     WarewolfListIterator colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
@@ -170,14 +170,14 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            env.Assign(Result, value);
+                            env.Assign(Result, value, update);
                         }
                     }
                 }
                 allErrors.MergeErrors(errors);
                 if (!allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
             }
             catch (Exception e)
@@ -201,8 +201,8 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
@@ -307,7 +307,7 @@ namespace Dev2.Activities
             return lengthNum;
         }
 
-        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType)
+        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType, int update)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 
@@ -318,12 +318,12 @@ namespace Dev2.Activities
 
             if (randomType == enRandomType.Numbers)
             {
-                AddDebugInputItem(new DebugEvalResult(fromExpression, "From", executionEnvironment));
-                AddDebugInputItem(new DebugEvalResult(toExpression, "To", executionEnvironment));
+                AddDebugInputItem(new DebugEvalResult(fromExpression, "From", executionEnvironment, update));
+                AddDebugInputItem(new DebugEvalResult(toExpression, "To", executionEnvironment, update));
             }
             else
             {
-                AddDebugInputItem(new DebugEvalResult(lengthExpression, "Length", executionEnvironment));
+                AddDebugInputItem(new DebugEvalResult(lengthExpression, "Length", executionEnvironment, update));
             }
         }
 
@@ -331,7 +331,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -340,7 +340,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

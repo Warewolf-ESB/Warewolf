@@ -3225,49 +3225,49 @@ Scenario: Example Executing Data - Case Conversion example workflow
 	  | # | Convert                                            | To    |
 	  | 1 | [[sometext]] = gET reaDy FoR sOme Text CONVersionS | UPPER | 
 	  And the 'Case Conversion1 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                                                    |
-	  | 1 | [[sometext]] = GET READY FOR SOME TEXT CONVERSIONS |
-	  And the 'Case Conversion2 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                                                    |
+	   | 1 | [[sometext]] = GET READY FOR SOME TEXT CONVERSIONS |
+	   And the 'Case Conversion2 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                                            | To    |
 	  | 1 | [[sometext]] = GET READY FOR SOME TEXT CONVERSIONS | lower | 
 	  And the 'Case Conversion2 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                                                    |
-	  | 1 | [[sometext]] = get ready for some text conversions |
-	  And the 'Case Conversion3 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                                                    |
+	   | 1 | [[sometext]] = get ready for some text conversions |
+	   And the 'Case Conversion3 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                                            | To       |
 	  | 1 | [[sometext]] = get ready for some text conversions | Sentence | 
 	  And the 'Case Conversion3 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                                                    |
-	  | 1 | [[sometext]] = Get ready for some text conversions |
-	  And the 'Case Conversion4 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                                                    |
+	   | 1 | [[sometext]] = Get ready for some text conversions |
+	     And the 'Case Conversion4 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                                            | To         |
 	  | 1 | [[sometext]] = Get ready for some text conversions | Title Case | 
 	  And the 'Case Conversion4 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                                                    |
-	  | 1 | [[sometext]] = Get Ready For Some Text Conversions |
-	  And the 'Case Conversion5 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                                                    |
+	   | 1 | [[sometext]] = Get Ready For Some Text Conversions |
+	     And the 'Case Conversion5 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                       | To    |
 	  | 1 | [[sometext]] = 1Mixed up 5om3 | UPPER | 
 	  And the 'Case Conversion5 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                               |
-	  | 1 | [[sometext]] = 1MIXED UP 5OM3 |
-	  And the 'Case Conversion6 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                               |
+	   | 1 | [[sometext]] = 1MIXED UP 5OM3 |
+	     And the 'Case Conversion6 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                       | To       |
 	  | 1 | [[sometext]] = 1MIXED UP 5OM3 | lower | 
 	  And the 'Case Conversion6 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                                                    |
-	  | 1 | [[sometext]] = 1mixed up 5om3 |
-	  And the 'Case Conversion7 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                                                    |
+	   | 1 | [[sometext]] = 1mixed up 5om3 |
+	     And the 'Case Conversion7 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                       | To       |
 	  | 1 | [[sometext]] = 1mixed up 5om3 | Sentence | 
 	  And the 'Case Conversion7 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                               |
-	  | 1 | [[sometext]] = 1mixed up 5om3 |
-	  And the 'Case Conversion8 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
+	   | # |                               |
+	   | 1 | [[sometext]] = 1mixed up 5om3 |
+	     And the 'Case Conversion8 (1)' in WorkFlow 'Data - Case Conversion' debug inputs as
 	  | # | Convert                       | To         |
 	  | 1 | [[sometext]] = 1mixed up 5om3 | Title Case | 
 	  And the 'Case Conversion8 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
-	  | # |                               |
+	   | # |                               |
 	  | 1 | [[sometext]] = 1Mixed Up 5Om3 |
 
 
@@ -3279,8 +3279,8 @@ Scenario: Example Executing Data - Data Merge example workflow
 	  When "Data - Data Merge Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
-	  |                                                                |
-	  | [[FileContent]] = String |
+	    |                                                                |
+	    | [[FileContent]] = String |
 	   
 Scenario: Example Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"

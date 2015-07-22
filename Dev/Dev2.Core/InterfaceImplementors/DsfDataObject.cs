@@ -160,12 +160,12 @@ namespace Dev2.DynamicServices
                     // finally set raw payload
                     RawPayload = new StringBuilder(xmldata);
                 }
-            }            
+            }
 
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {
                 RawPayload = new StringBuilder(rawPayload);
-            }
+                }
         }
 
         public Guid DebugEnvironmentId
@@ -235,6 +235,7 @@ namespace Dev2.DynamicServices
 
         public IEsbChannel EsbChannel { get; set; }
         public DateTime StartTime { get; set; }
+        public int ForEachUpdateValue { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 
@@ -254,11 +255,7 @@ namespace Dev2.DynamicServices
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
 
-        //public ErrorResultTO Errors
-        //{
-        //    get { return _errors ?? (_errors = new ErrorResultTO()); }
-        //    set { _errors = value; }
-        //}
+
 
         public int NumberOfSteps { get; set; }
         public IPrincipal ExecutingUser { get; set; }
@@ -380,7 +377,7 @@ namespace Dev2.DynamicServices
             result.Environment = Environment;
             result.EsbChannel = EsbChannel;
             result.ExecutionToken = ExecutionToken;
-          
+            result.ForEachUpdateValue = ForEachUpdateValue;
             return result;
         }
 

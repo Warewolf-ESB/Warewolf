@@ -17,7 +17,7 @@ namespace Dev2.Activities
 {
     public class DsfDecision:DsfActivityAbstract<string>
     {
-        
+
 
         // ReSharper disable MemberCanBePrivate.Global
        public IEnumerable<IDev2Activity> TrueArm { get; set; }
@@ -31,7 +31,7 @@ namespace Dev2.Activities
         {
             _inner = inner;
         }
-
+ 
         public DsfDecision() { }
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -61,15 +61,15 @@ namespace Dev2.Activities
 
         private  Dev2Decision parseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
-            var col1 =env.EvalAsList(decision.Col1);
-            var col2 = env.EvalAsList(decision.Col2);
-            var col3 = env.EvalAsList(decision.Col3);
+            var col1 =env.EvalAsList(decision.Col1, 0);
+            var col2 = env.EvalAsList(decision.Col2, 0);
+            var col3 = env.EvalAsList(decision.Col3, 0);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override IDev2Activity Execute(IDSFDataObject dataObject)
+        public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
@@ -82,7 +82,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before,0);
                 }
 
                 var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
@@ -120,7 +120,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
                 }
                 if (resultval)
                 {
@@ -128,8 +128,8 @@ namespace Dev2.Activities
                     {
                         var activity = TrueArm.FirstOrDefault();
                         return activity;
+                        }
                     }
-                }
                 else
                 {
                     if (FalseArm != null)
@@ -156,20 +156,20 @@ namespace Dev2.Activities
                 }
 
 
-            }
+                }
             return null;
-        }
+            }
 
         #endregion
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
            
         }
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
         }
@@ -240,7 +240,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return _debugOutputs;
         }
@@ -298,7 +298,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

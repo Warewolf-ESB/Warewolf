@@ -121,10 +121,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 ;
 
@@ -143,13 +143,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment, update));
                     AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
-                    AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment, update));
                     AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
                 }
 
-                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters));
+                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters, update));
                 outerIteratorCollection.AddVariableToIterateOn(itrChar);
 
                 var completeResultList = new List<string>();
@@ -158,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
-                    var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField));
+                    var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
                     innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextValue(itrChar);
@@ -189,7 +189,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var rsType = DataListUtil.GetRecordsetIndexType(Result);
                         if(rsType == enRecordsetIndexType.Numeric)
                         {
-                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
+                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
                             allErrors.MergeErrors(errors);
                         }
                         else
@@ -199,12 +199,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if(rsType == enRecordsetIndexType.Blank)
                                 {
-                                    dataObject.Environment.Assign(Result, res);
+                                    dataObject.Environment.Assign(Result, res, update);
                                 }
                                 if(rsType == enRecordsetIndexType.Star)
                                 {
                                     var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
-                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res);
+                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res, update);
                                     idx++;
                                 }
                             }
@@ -212,12 +212,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
+                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
                     }
                     allErrors.MergeErrors(errors);
                     if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
                 }
 
@@ -246,10 +246,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
@@ -262,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(DebugItem debugInput in _debugInputs)
             {
@@ -271,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

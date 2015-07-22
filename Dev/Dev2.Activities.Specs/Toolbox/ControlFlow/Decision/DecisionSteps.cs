@@ -202,7 +202,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                                                                  new List<string>
                                                                                      {
                                                                                          result.DataListID.ToString()
-                                                                                     });
+                                                                                     },0);
             bool expected = Boolean.Parse(expectedRes);
             Assert.AreEqual(expected, actual);
    

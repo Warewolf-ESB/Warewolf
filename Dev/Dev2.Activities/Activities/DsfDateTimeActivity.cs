@@ -113,10 +113,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
 
@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment));
+                        AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
                     }
                     var cultureType = typeof(CultureInfo);
                     var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
@@ -162,12 +162,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugEvalResult(InputFormat, "Input Format", dataObject.Environment));
+                        AddDebugInputItem(new DebugEvalResult(InputFormat, "Input Format", dataObject.Environment, update));
                     }
 
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams(TimeModifierType, "Add Time"), debugItem);
-                    AddDebugItem(new DebugEvalResult(TimeModifierAmountDisplay, "", dataObject.Environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(TimeModifierAmountDisplay, "", dataObject.Environment, update), debugItem);
                     _debugInputs.Add(debugItem);
 
                     if(string.IsNullOrEmpty(OutputFormat))
@@ -179,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugEvalResult(OutputFormat, "Output Format", dataObject.Environment));
+                        AddDebugInputItem(new DebugEvalResult(OutputFormat, "Output Format", dataObject.Environment, update));
                     }
                 }
 
@@ -200,13 +200,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var colItr = new WarewolfListIterator();
 
-                    var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
+                    var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(dtItr);
-                    var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
+                    var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(ifItr);
-                    var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
+                    var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(ofItr);
-                    var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
+                    var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(tmaItr);
 
                     if(!allErrors.HasErrors())
@@ -226,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(format.TryFormat(transObj, out result, out error))
                             {
                                 string expression = Result;
-                                dataObject.Environment.Assign(expression, result);
+                                dataObject.Environment.Assign(expression, result, update);
                             }
                             else
                             {
@@ -235,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                         }
                     }
                 }
@@ -261,8 +261,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
@@ -291,7 +291,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -300,7 +300,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

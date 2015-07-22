@@ -35,10 +35,10 @@ namespace Dev2.Tests.Activities.TOTests
             // ReSharper disable RedundantArgumentName
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
 
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -56,10 +56,10 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -81,12 +81,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -120,12 +120,12 @@ namespace Dev2.Tests.Activities.TOTests
         public void JsonMappingCompoundTo_MaxCount_IsCompound()
         {
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -160,10 +160,10 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -185,12 +185,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             //------------Execute Test---------------------------
 
             // for scalars
@@ -236,12 +236,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             //------------Execute Test---------------------------
 
             var jsonMappingCompound = new JsonMappingCompoundTo(
@@ -304,12 +304,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, @"{""myName"":{""a"":10,""b"":20}}", dataObject);
         }
         [TestMethod]
@@ -319,12 +319,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             CheckComplexEvaluatedResultIndexed("[[rec(*)]]", "myName", 0, @"{""rec"":[{""a"":50,""b"":500},{""a"":60,""b"":600}]}", dataObject);
         }
         [TestMethod]
@@ -334,12 +334,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            dataObject.Environment.Assign("[[a]]", "10", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             CheckComplexEvaluatedResultIndexed("[[rec(*).a]],[[rec(*).b]]", "myName", 0, @"{""myName"":[{""a"":50,""b"":500},{""a"":60,""b"":600}]}", dataObject);
         }
         private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)

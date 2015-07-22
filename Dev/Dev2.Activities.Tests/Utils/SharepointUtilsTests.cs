@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>(), new List<ISharepointFieldTo>());
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>(), new List<ISharepointFieldTo>(),0);
             //------------Assert Results-------------------------
             Assert.AreEqual(CamlQuery.CreateAllItemsQuery().ViewXml,camlQuery.ViewXml);
         }
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>{new SharepointSearchTo("","Equal","Bob",1)}, new List<ISharepointFieldTo>());
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("", "Equal", "Bob", 1) }, new List<ISharepointFieldTo>(), 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(CamlQuery.CreateAllItemsQuery().ViewXml, camlQuery.ViewXml);
         }
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>{new SharepointSearchTo("Title","Equal","",1)}, new List<ISharepointFieldTo>());
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", "", 1) }, new List<ISharepointFieldTo>(), 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(CamlQuery.CreateAllItemsQuery().ViewXml, camlQuery.ViewXml);
         }
@@ -132,7 +132,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>{new SharepointSearchTo(null,"Equal","Bob",1)}, new List<ISharepointFieldTo>());
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo(null, "Equal", "Bob", 1) }, new List<ISharepointFieldTo>(), 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(CamlQuery.CreateAllItemsQuery().ViewXml, camlQuery.ViewXml);
         }
@@ -146,7 +146,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo>{new SharepointSearchTo("Title","Equal",null,1)}, new List<ISharepointFieldTo>());
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", null, 1) }, new List<ISharepointFieldTo>(), 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(CamlQuery.CreateAllItemsQuery().ViewXml, camlQuery.ViewXml);
         }
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", "Bob", 1){InternalName = "Title"} }, new List<ISharepointFieldTo>{new SharepointFieldTo{InternalName = "Title",Type = SharepointFieldType.Text}} );
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", "Bob", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual("<View><Query><Where><FieldRef Name=\"Title\"></FieldRef><Value Type=\"Text\">Bob</Value>"+Environment.NewLine+"</Where></Query></View>",camlQuery.ViewXml);
         }
@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", "Bob", 1) { InternalName = "Title" }, new SharepointSearchTo("ID", "Equal", "1", 1) { InternalName = "ID" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text }, new SharepointFieldTo { InternalName = "ID", Type = SharepointFieldType.Number } });
+            var camlQuery = sharepointUtils.BuildCamlQuery(new ExecutionEnvironment(), new List<SharepointSearchTo> { new SharepointSearchTo("Title", "Equal", "Bob", 1) { InternalName = "Title" }, new SharepointSearchTo("ID", "Equal", "1", 1) { InternalName = "ID" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text }, new SharepointFieldTo { InternalName = "ID", Type = SharepointFieldType.Number } }, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual("<View><Query><Where><And><FieldRef Name=\"Title\"></FieldRef><Value Type=\"Text\">Bob</Value>" + Environment.NewLine + "<FieldRef Name=\"ID\"></FieldRef><Value Type=\"Integer\">1</Value>" + Environment.NewLine + "</And></Where></Query></View>", camlQuery.ViewXml);
         }

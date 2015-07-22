@@ -167,7 +167,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
          {
              var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
              List<TableRow> tableRows = table.Rows.ToList();
-             var recordSets = result.Environment.Eval(variable);
+             var recordSets = result.Environment.Eval(variable, 0);
              if (recordSets.IsWarewolfAtomListresult)
              {
                  // ReSharper disable PossibleNullReferenceException

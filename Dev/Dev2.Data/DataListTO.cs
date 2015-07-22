@@ -97,7 +97,7 @@ namespace Dev2.Data
                 return "";
             }));
         }
-
+        
         void Map(XElement rootEl)
         {
             if (rootEl == null)

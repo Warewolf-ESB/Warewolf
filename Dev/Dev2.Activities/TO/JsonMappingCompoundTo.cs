@@ -41,7 +41,7 @@ namespace Dev2.TO
 
         string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            LanguageAST.LanguageExpression parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName);
+            LanguageAST.LanguageExpression parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName,0);
             if (parsed.IsScalarExpression)
             {
                 return ((LanguageAST.LanguageExpression.ScalarExpression)parsed).Item;
@@ -132,7 +132,7 @@ namespace Dev2.TO
             }
             else
             {
-                if (WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName).IsRecordSetNameExpression)
+                if (WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
                 {
                     Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(_env, Compound.SourceName) };
                 }
@@ -141,7 +141,7 @@ namespace Dev2.TO
                     // we know this is a comma seperated list of expressions
                     Evaluations =
                         // ReSharper disable MaximumChainedReferences
-                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName))
+                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName,0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomAtomExpression)
                             .Select(x =>
@@ -170,9 +170,9 @@ namespace Dev2.TO
                 if (_isCompound == null)
                 {
                     _isCompound = WarewolfDataEvaluationCommon.ParseLanguageExpression(
-                        Compound.SourceName)
+                        Compound.SourceName,0)
                         .IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpression(
-                            Compound.SourceName)
+                            Compound.SourceName,0)
                             .IsRecordSetNameExpression;
 
                 }
@@ -319,7 +319,7 @@ namespace Dev2.TO
         {
             try
             {
-                var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName);
+                var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName,0);
                 if (parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
@@ -366,7 +366,7 @@ namespace Dev2.TO
                 return
                     IsCompound &&
                     Evaluations.Any(x =>
-                    WarewolfDataEvaluationCommon.ParseLanguageExpression(x.Simple.SourceName).IsRecordSetNameExpression);
+                    WarewolfDataEvaluationCommon.ParseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
             }
         }
     }

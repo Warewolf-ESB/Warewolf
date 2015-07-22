@@ -23,7 +23,7 @@ namespace Dev2.Activities.Sharepoint
             return sharepointReadListTos.Where(to => !string.IsNullOrEmpty(to.VariableName));
         }
 
-        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, bool requireAllCriteriaToMatch = true)
+        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch = true)
         {
             var camlQuery = CamlQuery.CreateAllItemsQuery();
             var validFilters = new List<SharepointSearchTo>();
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Sharepoint
                 {
                     var searchTo = sharepointSearchTo;
                     var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == searchTo.InternalName);
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo);
+                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo,update);
                     if (buildQueryFromTo != null)
                     {
                         queryString.AppendLine(string.Join(Environment.NewLine, buildQueryFromTo));
@@ -60,9 +60,9 @@ namespace Dev2.Activities.Sharepoint
             return camlQuery;
         }
 
-        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo)
+        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo,int update)
         {
-            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch));
+            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch,update));
             while (iterator.HasMoreData())
             {
                 var fieldType = sharepointFieldTo.GetFieldType();
