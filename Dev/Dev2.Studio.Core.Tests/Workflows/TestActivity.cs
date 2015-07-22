@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests.Workflows
             return enFindMissingType.StaticActivity;
         }
 
-        public IDev2Activity Execute(IDSFDataObject data)
+        public IDev2Activity Execute(IDSFDataObject data,int update)
         {
             return null;
         }
@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.Workflows
             return enFindMissingType.StaticActivity;
         }
 
-        public IDev2Activity Execute(IDSFDataObject data)
+        public IDev2Activity Execute(IDSFDataObject data, int update)
         {
             return null;
         }

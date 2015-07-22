@@ -474,7 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             esbChannelMock.Setup(channel => channel.FetchServerModel<EmailSource>(
                 It.IsAny<IDSFDataObject>(),
                 It.IsAny<Guid>(),
-                out errorResultTO)).Returns(emailSourceForTesting);
+                out errorResultTO, 0)).Returns(emailSourceForTesting);
             return esbChannelMock;
         }
 

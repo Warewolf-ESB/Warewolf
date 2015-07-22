@@ -105,10 +105,10 @@ namespace Dev2.Activities
                 dataObject.ExecutionToken = exeToken;
             }
 
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             IExecutionToken exeToken = dataObject.ExecutionToken;
 
@@ -120,9 +120,9 @@ namespace Dev2.Activities
             {
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugEvalResult(CommandFileName, "Command", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(CommandFileName, "Command", dataObject.Environment, update));
                 }
-                var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName));
+                var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName, update));
                 if(!allErrors.HasErrors())
                 {
                     while(itr.HasMoreData())
@@ -150,7 +150,7 @@ namespace Dev2.Activities
                             {
                                 if(dataObject.Environment != null)
                                 {
-                                    dataObject.Environment.Assign(region, readValue);
+                                    dataObject.Environment.Assign(region, readValue, update);
                                 }
                             }
                             errorReader.Close();
@@ -161,7 +161,7 @@ namespace Dev2.Activities
                     {
                         if(!string.IsNullOrEmpty(CommandResult))
                         {
-                            AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment));
+                            AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment, update));
                         }
                     }
                 }
@@ -182,7 +182,7 @@ namespace Dev2.Activities
                     {
                         var errorString = allErrors.MakeDisplayReady();
                         dataObject.Environment.AddError(errorString);
-                        dataObject.Environment.Assign(CommandResult, null);
+                        dataObject.Environment.Assign(CommandResult, null, update);
                     }
                 }
                 if(dataObject.IsDebugMode())
@@ -191,8 +191,8 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", CommandResult, ""));
                     }
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
 
                 if(!string.IsNullOrEmpty(_fullPath))
@@ -450,7 +450,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -459,7 +459,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

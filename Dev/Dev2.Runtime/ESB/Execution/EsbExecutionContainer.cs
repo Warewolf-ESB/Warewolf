@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
         }
 
-        public abstract Guid Execute(out ErrorResultTO errors);
+        public abstract Guid Execute(out ErrorResultTO errors, int update);
 
         public abstract IExecutionEnvironment Execute(IDSFDataObject inputs,IDev2Activity activity);
     }

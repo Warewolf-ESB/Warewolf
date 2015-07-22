@@ -95,10 +95,10 @@ namespace Dev2.Activities
             // ReSharper restore MethodTooLong
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
 
@@ -144,14 +144,14 @@ namespace Dev2.Activities
                             {
                                 foreach(var region in regions)
                                 {
-                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val));
+                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val), update);
                                 }
                             }
                         }
                     }
                     catch(Exception err)
                     {
-                        dataObject.Environment.Assign(item.Result, null);
+                        dataObject.Environment.Assign(item.Result, null, update);
                         allErrors.AddError(err.Message);
                     }
                 }
@@ -163,7 +163,7 @@ namespace Dev2.Activities
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
                     }
@@ -195,14 +195,14 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
                     }
 
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
@@ -307,12 +307,12 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

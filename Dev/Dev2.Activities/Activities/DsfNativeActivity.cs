@@ -220,14 +220,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(dataObject.Environment != null)
                     {
-                        DoErrorHandling(dataObject);
+                        DoErrorHandling(dataObject, 0); // old wf code
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(IDSFDataObject dataObject)
+        protected void DoErrorHandling(IDSFDataObject dataObject,int update)
         {
             string errorString = dataObject.Environment.FetchErrors();
             _tmpErrors.AddError(errorString);
@@ -237,25 +237,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(dataObject, errorString);
+                        PerformCustomErrorHandling(dataObject, errorString, update);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError)
+        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError,int update)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
+                    dataObject.Environment.Assign(OnErrorVariable,currentError, update);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
-                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors, update);
                     if(tmpErrors != null)
                     {
                         dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
@@ -427,12 +427,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs/Outputs
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -474,7 +474,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataObject.Environment), _debugState.Inputs);
+                        Copy(GetDebugInputs(dataObject.Environment, update), _debugState.Inputs);
                     }
                     catch (Exception err)
                     {
@@ -534,7 +534,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataObject.Environment), _debugState.Outputs);
+                            Copy(GetDebugOutputs(dataObject.Environment, update), _debugState.Outputs);
                         }
                     }
                     catch(Exception e)
@@ -771,7 +771,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public virtual IDev2Activity Execute(IDSFDataObject data)
+        public virtual IDev2Activity Execute(IDSFDataObject data,int update)
         {
             try
             {
@@ -792,7 +792,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!_isExecuteAsync || _isOnDemandSimulation)
                 {
-                    DoErrorHandling(data);
+                    DoErrorHandling(data, update);
                 }
              
 
@@ -810,7 +810,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        protected abstract void ExecuteTool(IDSFDataObject dataObject);
+        protected abstract void ExecuteTool(IDSFDataObject dataObject,int update);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }

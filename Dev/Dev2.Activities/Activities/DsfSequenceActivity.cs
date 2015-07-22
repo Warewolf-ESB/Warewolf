@@ -52,7 +52,7 @@ namespace Dev2.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -142,7 +142,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before, 0);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
@@ -154,32 +154,32 @@ namespace Dev2.Activities
 
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.After, 0);
             }
             context.ScheduleActivity(_innerSequence, OnCompleted);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _previousParentID = dataObject.ParentInstanceID;
             dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before, update);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
            foreach(var dsfActivity in Activities)
             {
                 var act = dsfActivity as IDev2Activity;
                 if (act != null)
                 {
-                    act.Execute(dataObject);
+                    act.Execute(dataObject, update);
                 }
             }
            if (dataObject.IsDebugMode())

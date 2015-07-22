@@ -333,8 +333,6 @@ Scenario: Execute a foreach over an activity with Csv Indexes 1,2,3
 	| 1     |
 	| 2     |
 	| 3     |
-	| 4     |
-	| 5     |
 	And the execution has "NO" error
 	And the debug inputs as
 	|         | Csv Indexes |
@@ -402,7 +400,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 1
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "NO" error
 	And the debug inputs as
 	|                 | Number |
@@ -420,14 +418,14 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	Then the execution has "NO" error
 	And The mapping uses the following indexes
 	| index |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |			
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |			
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 8      |
