@@ -13,6 +13,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Dev2.Common;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
@@ -76,6 +77,8 @@ namespace Dev2.Runtime.WebServer
 
         AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
         {
+            EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
+            EnvironmentVariables.Port = httpRequest.Url.Port;
             if (httpRequest.RawUrl.StartsWith("/public/"))
             {
                 return AuthenticationSchemes.Anonymous;

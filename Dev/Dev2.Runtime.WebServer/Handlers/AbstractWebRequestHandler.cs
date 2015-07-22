@@ -160,13 +160,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
-                if(canExecute)
+                if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     ErrorResultTO errors;
                     executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
                     allErrors.MergeErrors(errors);
                 }
-                else
+                else if(!canExecute)
                 {
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
                 }
@@ -188,9 +188,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.DataListID = executionDlid;
                         dataObject.WorkspaceID = workspaceGuid;
                         dataObject.ServiceName = serviceName;
-
-
-                        // some silly chicken thinks web request where a good idea for debug ;(
+                        
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
@@ -206,13 +204,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString());
                             }
-                            dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
                         else
                         {
                             executePayload = string.Empty;
                         }
-
                     }
                     else
                     {

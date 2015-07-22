@@ -482,7 +482,7 @@ namespace Dev2
             {
                 { "swagger", new JValue(2) },
                 { "info", jsonSwaggerInfoObject },
-                { "host", new JValue(EnvironmentVariables.WebServerUri) },
+                { "host", new JValue(EnvironmentVariables.PublicWebServerUri) },
                 { "basePath", new JValue("/") },
                 { "schemes", new JArray("http", "https") },
                 { "produces", new JValue("application/json") },
