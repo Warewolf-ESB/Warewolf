@@ -196,7 +196,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(),0);
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {

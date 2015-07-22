@@ -74,8 +74,7 @@ namespace Warewolf.Storage
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         DataASTMutable.WarewolfEnvironment _env;
-        IList<string> _allErrors;
-    
+
         public  ExecutionEnvironment()
         {
             _env = PublicFunctions.CreateEnv("");
@@ -105,19 +104,7 @@ namespace Warewolf.Storage
 
         }
 
-        public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp,int update)
-        {
 
-            try
-            {
-                return WarewolfDataEvaluationCommon.EvalForDataMerge( _env,update,exp);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-        }
           public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp)
         {
             if (string.IsNullOrEmpty(exp))
@@ -126,7 +113,7 @@ namespace Warewolf.Storage
             }
             try
             {
-                return PublicFunctions.EvalEnvExpression(exp, _env);
+                return PublicFunctions.EvalEnvExpression(exp, 0,_env);
             }
             catch (IndexOutOfRangeException)
             {
@@ -183,17 +170,10 @@ namespace Warewolf.Storage
 
         public void MultiAssign(IEnumerable<IAssignValue> values, int update)
         {
-            try
-            {
+            
                 var envTemp = PublicFunctions.EvalMultiAssign(values, update, _env);
                 _env = envTemp;
-            }
-            catch (Exception err)
-            {
 
-
-
-            }
         }
 
         public void AssignWithFrame(IAssignValue values, int update)
@@ -404,8 +384,7 @@ namespace Warewolf.Storage
         {
             AssignWithFrameAndList(exp, recsetResult.Item, false, update);
         }
-
-        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex,int update)
+        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
         {
             bool exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
             if (!exists)

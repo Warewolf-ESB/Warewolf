@@ -806,8 +806,8 @@ namespace WarewolfParsingTest
 
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
-            var res = PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns,0, testEnv);
+            var res = PublicFunctions.EvalEnvExpression("[[rec()]]",0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("29",x.Data[DataASTMutable.PositionColumn][0].ToString()  );
@@ -828,8 +828,8 @@ namespace WarewolfParsingTest
 
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
-            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", testEnv3);
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns,0, testEnv);
+            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]",0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("27", x.Data[DataASTMutable.PositionColumn][0].ToString());

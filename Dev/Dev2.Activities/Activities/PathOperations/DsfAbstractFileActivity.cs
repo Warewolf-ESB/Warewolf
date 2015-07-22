@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            dataObject.Environment.Assign(region, "");
+                            dataObject.Environment.Assign(region, "",update);
                         }
                     }
                     if (dataObject.IsDebugMode())

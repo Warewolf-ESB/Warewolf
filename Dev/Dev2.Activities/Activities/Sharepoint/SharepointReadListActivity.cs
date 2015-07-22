@@ -107,7 +107,7 @@ namespace Dev2.Activities.Sharepoint
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
                     using (var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields,update);
                         List list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);

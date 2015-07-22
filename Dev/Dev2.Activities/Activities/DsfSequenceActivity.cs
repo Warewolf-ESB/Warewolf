@@ -156,7 +156,7 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, 0);
             }
-            context.ScheduleActivity(_innerSequence, OnCompleted);
+           // context.ScheduleActivity(_innerSequence, a=>OnCompleted(a,0));
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -184,16 +184,16 @@ namespace Dev2.Activities
             }
            if (dataObject.IsDebugMode())
            {
-               DispatchDebugState(dataObject, StateType.Duration);
+               DispatchDebugState(dataObject, StateType.Duration,update);
            }
             OnCompleted(dataObject);
         }
 
-        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
+        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, int update)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             OnCompleted(dataObject);
-            DoErrorHandling(dataObject);
+            DoErrorHandling(dataObject,update);
         }
 
         void OnCompleted(IDSFDataObject dataObject)

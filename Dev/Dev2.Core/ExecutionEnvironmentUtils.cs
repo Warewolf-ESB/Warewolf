@@ -99,7 +99,7 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -274,7 +274,7 @@ namespace Dev2
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
                                             var a = subc.InnerXml;
                                             a = RemoveXMLPrefix(a);
-                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a));
+                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a),update);
                                      
                                         }
                                     }
@@ -287,7 +287,7 @@ namespace Dev2
                             // process recordset
                             var a = c.InnerXml;
                             a = RemoveXMLPrefix(a);
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a);
+                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a,update);
                         }
                     }
                     else

@@ -29,7 +29,7 @@ namespace Dev2.Activities
         #region Overrides of DsfNativeActivity<string>
         public DsfDecision(DsfFlowDecisionActivity inner)
         {
-            Inner = inner;
+            _inner = inner;
         }
  
         public DsfDecision() { }
@@ -82,7 +82,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before,0);
                 }
 
                 var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
@@ -234,7 +234,7 @@ namespace Dev2.Activities
             }
 
             var val =  result.Select(a => a as DebugItem).ToList();
-            Inner.SetDebugInputs(val);
+            _inner.SetDebugInputs(val);
             return val;
         }
 
@@ -281,7 +281,7 @@ namespace Dev2.Activities
 
             }
 
-            Inner.SetDebugOutputs(result);
+            _inner.SetDebugOutputs(result);
             return result;
         }
 

@@ -637,7 +637,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
                 _debugState.Server = name;
             }
-            DispatchDebugState(dataObject,before);
+            DispatchDebugState(dataObject,before,0);
         }
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
