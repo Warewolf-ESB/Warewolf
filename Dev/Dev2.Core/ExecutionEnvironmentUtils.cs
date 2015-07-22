@@ -411,29 +411,45 @@ namespace Dev2
             {
                 throw new ArgumentNullException("dataList");
             }
-            var dataListTO = new DataListTO(dataList);
+            List<JObject> parameters;
+            bool isScalarInputOnly;
+            var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
+            var definitionObject = GetParametersDefinition(out parameters, dataList, out isScalarInputOnly);
+            var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" } , {"in","query"},{"required",true},{"schema",new JObject{{"$ref","#/definitions/DataList"}}}});
+            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(resource, parametersForSwagger);
+            var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject);
+            var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
+            return resultString;
+        }
 
+        static JToken GetParametersDefinition(out List<JObject> parameters, string dataList, out bool isScalarInputOnly)
+        {
+            var dataListTO = new DataListTO(dataList);
             var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetInputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
-            List<JObject> parameters = null;
-            var isScalarInputOnly = true;
+            parameters = null;
+            isScalarInputOnly = true;
             var dataListSchema = new Dictionary<string, Schema>
+            {
                 {
-                    {"Output",new Schema
+                    "Output", new Schema
                     {
                         Type = "object",
-                        Properties = BuildDefinition(scalarOutputs,recSetOutputs)
-                    }}
-                };
-            
+                        Properties = BuildDefinition(scalarOutputs, recSetOutputs)
+                    }
+                }
+            };
+
             if(recSetInputs.Any())
             {
-                dataListSchema.Add("DataList",new Schema{
-                                    Type = "object",
-                                    Properties = BuildDefinition(scalarInputs, recSetInputs)
-                                  });
+                dataListSchema.Add("DataList", new Schema
+                {
+                    Type = "object",
+                    Properties = BuildDefinition(scalarInputs, recSetInputs)
+                });
                 isScalarInputOnly = false;
             }
             else
@@ -446,50 +462,11 @@ namespace Dev2
             var serialized = JsonConvert.SerializeObject(dataListSchema);
             JToken des = JsonConvert.DeserializeObject(serialized) as JToken;
             var definitionObject = des;
-            var jsonSwaggerInfoObject = new JObject
-            {
-                { "title", new JValue("") },
-                { "description", new JValue("") },
-                { "version", new JValue(resource.VersionInfo.VersionNumber) }
-            };
-            
-            var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" } , {"in","query"},{"required",true},{"schema",new JObject{{"$ref","#/definitions/DataList"}}}});
-            var jsonSwaggerPathObject = new JObject
-            {
-                {"serviceName",new JValue(resource.ResourceName)},
-                {"get", new JObject
-                    {
-                        {"summary",new JValue("")},
-                        {"description",new JValue("")},
-                        {"parameters",parametersForSwagger}
-                    }
-                }
-            };
+            return definitionObject;
+        }
 
-            var jsonSwaggerResponsesObject = new JObject
-            {
-                {"200",new JObject
-                {
-                    {"schema",new JObject
-                    {
-                        {"$ref","#/definition/Output"}
-                    }}
-                }}
-            };
-
-            var jsonSwaggerObject = new JObject
-            {
-                { "swagger", new JValue(2) }, 
-                { "info", jsonSwaggerInfoObject },
-                { "host", new JValue(EnvironmentVariables.WebServerUri) }, 
-                { "basePath", new JValue("/") }, 
-                { "schemes", new JArray("http", "https") }, 
-                { "produces", new JValue("application/json") }, 
-                { "paths",jsonSwaggerPathObject },
-                { "responses", jsonSwaggerResponsesObject },
-                { "definitions",definitionObject}
-            };
-            
+        static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
+        {
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Newtonsoft.Json.Formatting.Indented };
@@ -497,6 +474,70 @@ namespace Dev2
             jsonTextWriter.Flush();
             var resultString = Regex.Replace(result.ToString(), @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
             return resultString;
+        }
+
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject)
+        {
+            var jsonSwaggerObject = new JObject
+            {
+                { "swagger", new JValue(2) },
+                { "info", jsonSwaggerInfoObject },
+                { "host", new JValue(EnvironmentVariables.WebServerUri) },
+                { "basePath", new JValue("/") },
+                { "schemes", new JArray("http", "https") },
+                { "produces", new JValue("application/json") },
+                { "paths", jsonSwaggerPathObject },
+                { "responses", jsonSwaggerResponsesObject },
+                { "definitions", definitionObject }
+            };
+            return jsonSwaggerObject;
+        }
+
+        static JObject BuildJsonSwaggerResponsesObject()
+        {
+            var jsonSwaggerResponsesObject = new JObject
+            {
+                {
+                    "200", new JObject
+                    {
+                        {
+                            "schema", new JObject
+                            {
+                                { "$ref", "#/definition/Output" }
+                            }
+                        }
+                    }
+                }
+            };
+            return jsonSwaggerResponsesObject;
+        }
+
+        static JObject BuildJsonSwaggerPathObject(IResource resource, JToken parametersForSwagger)
+        {
+            var jsonSwaggerPathObject = new JObject
+            {
+                { "serviceName", new JValue(resource.ResourceName) },
+                {
+                    "get", new JObject
+                    {
+                        { "summary", new JValue("") },
+                        { "description", new JValue("") },
+                        { "parameters", parametersForSwagger }
+                    }
+                }
+            };
+            return jsonSwaggerPathObject;
+        }
+
+        static JObject BuildJsonSwaggerInfoObject(IResource resource)
+        {
+            var jsonSwaggerInfoObject = new JObject
+            {
+                { "title", new JValue("") },
+                { "description", new JValue("") },
+                { "version", new JValue(resource.VersionInfo.VersionNumber) }
+            };
+            return jsonSwaggerInfoObject;
         }
 
         static Dictionary<string,Schema> BuildDefinition(IEnumerable<string> scalars, IEnumerable<string> recSets)
