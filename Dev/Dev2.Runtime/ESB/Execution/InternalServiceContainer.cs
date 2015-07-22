@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Execution
                 request.Args = new Dictionary<string, StringBuilder>();
                 foreach(var input in dataListTO.Inputs)
                 {
-                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input));
+                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();

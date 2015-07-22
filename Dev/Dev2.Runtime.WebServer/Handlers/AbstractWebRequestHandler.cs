@@ -117,9 +117,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                         if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
                         {
                             dataObject.ReturnType = EmitionTypes.SWAGGER;
-                        }
-
                     }
+
+                }
                 }
                 else
                 {
@@ -160,13 +160,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
-                if(canExecute)
+                if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     ErrorResultTO errors;
                     executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
                     allErrors.MergeErrors(errors);
                 }
-                else
+                else if(!canExecute)
                 {
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
                 }
@@ -188,31 +188,27 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.DataListID = executionDlid;
                         dataObject.WorkspaceID = workspaceGuid;
                         dataObject.ServiceName = serviceName;
-
-
-                        // some silly chicken thinks web request where a good idea for debug ;(
+                        
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(),0);
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,Guid.Empty , resource.DataList.ToString(),0);
                             }else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
                             {
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString());
                             }
-                            dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
                         else
                         {
                             executePayload = string.Empty;
                         }
-
                     }
                     else
                     {
@@ -303,7 +299,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 foreach(string key in request.Variables)
                 {
-                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key]);   
+                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key],0);   
             }
                 
         }
@@ -382,9 +378,9 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         static string CleanupXml(string baseStr)
-        {
+                {
             if (baseStr.Contains("?"))
-            {
+                {
                 var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
                 var query = baseStr.Substring(startQueryString+1);
                 if(query.IsJSON())
@@ -400,12 +396,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                     if(txt.IsXml())
                     {
                         results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
-                    }
-                    else
-                    {
-                        results.Add(string.Format("{0}={1}", arg, txt));
-                    }
                 }
+                else
+                {
+                        results.Add(string.Format("{0}={1}", arg, txt));
+                }
+            }
 
                 return url + string.Join("&", results);
             }
@@ -418,7 +414,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             foreach(var key in pairs.AllKeys)
             {
                 if(key == "wid") //Don't add the Workspace ID to DataList
-                {
+            {
                     continue;
                 }
                 if(key.IsXml() || key.IsJSON())

@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                         {
-                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2=="blank"?"":variable.Item2);
+                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2=="blank"?"":variable.Item2,0);
                         }
                         //Build(variable, shape, data, row);
                         row++;
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
-                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
+                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2, 0);
                     //var recSetElement = shape
                     //                  .Descendants(emptyRecord.Item1)
                     //                  .FirstOrDefault();

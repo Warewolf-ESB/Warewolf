@@ -31,7 +31,7 @@ namespace Dev2.Runtime.WebServer
         {
             var apiJson = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Description = "",
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
@@ -41,14 +41,14 @@ namespace Dev2.Runtime.WebServer
             IList<IResource> resourceList;
             if(string.IsNullOrEmpty(path))
             {
-                apiJson.Url = EnvironmentVariables.WebServerUri + "apis.json";
+                apiJson.Url = EnvironmentVariables.PublicWebServerUri + "apis.json";
                 resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourceType==ResourceType.WorkflowService).ToList();
             }
             else
             {
                 var webPath = path.Replace("\\", "/");
                 var searchPath = path.Replace("/", "\\");
-                apiJson.Url = EnvironmentVariables.WebServerUri + webPath + "/apis.json";
+                apiJson.Url = EnvironmentVariables.PublicWebServerUri + webPath + "/apis.json";
                 resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourcePath.Contains(searchPath) && resource.ResourceType == ResourceType.WorkflowService).ToList();
             }
             foreach(var resource in resourceList)
@@ -78,13 +78,13 @@ namespace Dev2.Runtime.WebServer
             var singleApi = new SingleApi
             {
                 Name = resource.ResourceName,
-                BaseUrl = EnvironmentVariables.WebServerUri + accessPath + webPath + ".json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + accessPath + webPath + ".json",
                 Properties = new List<PropertyApi>()
             };
             var propertyApi = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + accessPath + webPath + ".api"
+                Value = EnvironmentVariables.PublicWebServerUri + accessPath + webPath + ".api"
             };
             singleApi.Properties.Add(propertyApi);
             return singleApi;

@@ -25,12 +25,12 @@ namespace Dev2.Activities
 
         public Guid MockExecutePluginService(PluginServiceExecution container)
         {
-            return ExecutePluginService(container);
+            return ExecutePluginService(container, 0);
         }
 
         public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
+            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, 0);
         }
     }
 
@@ -44,7 +44,7 @@ namespace Dev2.Activities
 
         public Guid MockExecutePluginService(PluginServiceExecution container)
         {
-            return ExecutePluginService(container);
+            return ExecutePluginService(container, 0);
         }
 
         public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
