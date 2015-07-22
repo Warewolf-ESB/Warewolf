@@ -22,7 +22,7 @@ namespace Dev2.Activities
         
 
         #region Get Debug Inputs/Outputs
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -31,7 +31,7 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
           return _debugInputs;
         }
@@ -48,10 +48,10 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
 
@@ -74,9 +74,9 @@ namespace Dev2.Activities
                     var variableValue = propertyInfo.GetValue(this) as string;
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment));
+                        AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
                     }
-                    var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment);
+                    var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(dtItr);
                     iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
                 }
@@ -89,7 +89,7 @@ namespace Dev2.Activities
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
                     var result = PerformExecution(evaluatedValues);
-                    dataObject.Environment.Assign(Result, result);
+                    dataObject.Environment.Assign(Result, result, update);
                 }
 
                 allErrors.MergeErrors(errors);
@@ -98,7 +98,7 @@ namespace Dev2.Activities
                 {
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment, update));
                     }
                 }
                 allErrors.MergeErrors(errors);
@@ -117,12 +117,12 @@ namespace Dev2.Activities
                     DisplayAndWriteError(DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
-                    dataObject.Environment.Assign(Result, null);
+                    dataObject.Environment.Assign(Result, null, update);
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }

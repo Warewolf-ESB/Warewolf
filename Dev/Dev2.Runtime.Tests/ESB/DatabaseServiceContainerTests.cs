@@ -42,10 +42,10 @@ namespace Dev2.Tests.Runtime.ESB
             var mockServiceExecution = new Mock<IServiceExecution>();
             ErrorResultTO errors;
             Guid expected = Guid.NewGuid();
-            mockServiceExecution.Setup(execution => execution.Execute(out errors)).Returns(expected);
+            mockServiceExecution.Setup(execution => execution.Execute(out errors, 0)).Returns(expected);
             DatabaseServiceContainer databaseServiceContainer = new DatabaseServiceContainer(mockServiceExecution.Object);
             //------------Execute Test---------------------------
-            Guid actual = databaseServiceContainer.Execute(out errors);
+            Guid actual = databaseServiceContainer.Execute(out errors, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "Execute should return the Guid from the service execution");
         }

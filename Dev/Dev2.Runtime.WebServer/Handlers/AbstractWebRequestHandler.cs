@@ -117,9 +117,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                         if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
                         {
                             dataObject.ReturnType = EmitionTypes.SWAGGER;
-                        }
-
                     }
+
+                }
                 }
                 else
                 {
@@ -200,7 +200,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,Guid.Empty , resource.DataList.ToString(),0);
                             }else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
                             {
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
@@ -303,7 +303,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 foreach(string key in request.Variables)
                 {
-                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key]);   
+                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key],0);   
             }
                 
         }
@@ -382,9 +382,9 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         static string CleanupXml(string baseStr)
-        {
+                {
             if (baseStr.Contains("?"))
-            {
+                {
                 var startQueryString = baseStr.IndexOf("?", StringComparison.Ordinal);
                 var query = baseStr.Substring(startQueryString+1);
                 if(query.IsJSON())
@@ -400,12 +400,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                     if(txt.IsXml())
                     {
                         results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
-                    }
-                    else
-                    {
-                        results.Add(string.Format("{0}={1}", arg, txt));
-                    }
                 }
+                else
+                {
+                        results.Add(string.Format("{0}={1}", arg, txt));
+                }
+            }
 
                 return url + string.Join("&", results);
             }
@@ -418,7 +418,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             foreach(var key in pairs.AllKeys)
             {
                 if(key == "wid") //Don't add the Workspace ID to DataList
-                {
+            {
                     continue;
                 }
                 if(key.IsXml() || key.IsJSON())

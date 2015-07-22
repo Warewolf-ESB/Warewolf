@@ -53,51 +53,51 @@ namespace Dev2.Activities
             return null;
         }
 
-          public override IDev2Activity Execute(IDSFDataObject dataObject)
-          {
-              _debugOutputs.Clear();
-              _debugInputs.Clear();
+          public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+        {
+            _debugOutputs.Clear();
+            _debugInputs.Clear();
 
-              try
-              {
-
-
-                  Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
+            try
+            {
 
 
-                  Debug(dataObject, firstOrDefault, ds);
-                  if (firstOrDefault != null)
-                  {
-                      var a = firstOrDefault;
-                      if (Switches.ContainsKey(a))
-                      {
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
+
+
+                Debug(dataObject, firstOrDefault, ds);
+                if (firstOrDefault != null)
+                {
+                    var a = firstOrDefault;
+                    if (Switches.ContainsKey(a))
+                    {
                           return Switches[a];
-                      }
-                      else
-                      {
+                    }
+                    else
+                    {
                           if (Default != null)
-                          {
-                              var activity = Default.FirstOrDefault();
+                        {
+                            var activity = Default.FirstOrDefault();
                             return activity;
-                      }
-                  }
-              }
-              }
+                            }
+                        }
+                    }
+                }
               catch (Exception err)
-              {
-                  dataObject.Environment.Errors.Add(err.Message);
-              }
-              finally
-              {
-
+            {
+                dataObject.Environment.Errors.Add(err.Message);
+            }
+            finally
+            {
+                
               }
               
           
               return null;
-          }
+            }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
            
         }
@@ -116,8 +116,8 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before);
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.Before, 0);
+                DispatchDebugState(dataObject, StateType.After, 0);
                 if(_inner != null)
                 {
                     _inner.SetDebugInputs(_debugInputs);

@@ -41,7 +41,7 @@ namespace Dev2.Activities.Sharepoint
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject,0);
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Sharepoint
 
         int _indexCounter = 1;
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Sharepoint
                     var env = dataObject.Environment;
                     if (dataObject.IsDebugMode())
                     {
-                        AddInputDebug(env);
+                        AddInputDebug(env,update);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Sharepoint
                         var iteratorList = new WarewolfListIterator();
                         foreach(var sharepointReadListTo in sharepointReadListTos)
                         {
-                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName));
+                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName,update));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
                             listOfIterators.Add(sharepointReadListTo.FieldName,warewolfIterator);
                         }
@@ -123,8 +123,8 @@ namespace Dev2.Activities.Sharepoint
                             ctx.ExecuteQuery();
                         }
                     }
-                    env.Assign(Result,"Success");
-                    AddOutputDebug(dataObject, env);
+                    env.Assign(Result,"Success",update);
+                    AddOutputDebug(dataObject, env,update);
                 }
             }
             catch (Exception e)
@@ -137,30 +137,30 @@ namespace Dev2.Activities.Sharepoint
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    dataObject.Environment.Assign(Result, "Failed");
+                    dataObject.Environment.Assign(Result, "Failed",update);
                     DisplayAndWriteError("SharepointReadListActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before,update);
+                    DispatchDebugState(dataObject, StateType.After,update);
                 }
             }
         }
 
-        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
+        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env,int update)
         {
             if(dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
             {
                 var debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(Result, "", env), debugItem);
+                AddDebugItem(new DebugEvalResult(Result, "", env,update), debugItem);
                 _debugOutputs.Add(debugItem);
             }
         }
 
-        void AddInputDebug(IExecutionEnvironment env)
+        void AddInputDebug(IExecutionEnvironment env,int update)
         {
             var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
@@ -171,14 +171,14 @@ namespace Dev2.Activities.Sharepoint
                 if (!string.IsNullOrEmpty(variableName))
                 {
                     AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
-                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env), debugItem);
+                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env,update), debugItem);
                 }
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -187,7 +187,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

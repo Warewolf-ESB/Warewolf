@@ -61,7 +61,7 @@ namespace Dev2.Services.Execution
 
         public void MockExecuteImpl(out ErrorResultTO errors)
         {
-            ExecuteImpl(out errors);
+            ExecuteImpl(compiler, out errors, 0);
         }
 
         #endregion
