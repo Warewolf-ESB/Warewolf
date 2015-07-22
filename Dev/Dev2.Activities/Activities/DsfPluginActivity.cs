@@ -22,7 +22,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
+        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             _errorsTo = new ErrorResultTO();
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
@@ -30,7 +30,7 @@ namespace Dev2.Activities
             pluginServiceExecution.InstanceOutputDefintions = outputs;
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
-            var result = ExecutePluginService(pluginServiceExecution);
+            var result = ExecutePluginService(pluginServiceExecution, update);
             tmpErrors.MergeErrors(_errorsTo);
             return result;
         }
@@ -39,9 +39,9 @@ namespace Dev2.Activities
 
         #region Protected Helper Functions
 
-        protected virtual Guid ExecutePluginService(PluginServiceExecution container)
+        protected virtual Guid ExecutePluginService(PluginServiceExecution container, int update)
         {
-            return container.Execute(out _errorsTo);
+            return container.Execute(out _errorsTo, update);
         }
 
         protected virtual PluginServiceExecution GetNewPluginServiceExecution(IDSFDataObject context)

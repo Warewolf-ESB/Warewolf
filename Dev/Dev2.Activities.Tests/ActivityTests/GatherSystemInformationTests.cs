@@ -411,8 +411,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess(isDebug: true);
             //------------Assert Results-------------------------
             // remove test datalist ;)
-            var debugOutputs = activity.GetDebugOutputs(null);
-            var debugInputs = activity.GetDebugInputs(null);
+            var debugOutputs = activity.GetDebugOutputs(null, 0);
+            var debugInputs = activity.GetDebugInputs(null, 0);
 
             Assert.AreEqual(1, debugInputs.Count);
             Assert.AreEqual(1, debugOutputs.Count);

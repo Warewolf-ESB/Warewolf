@@ -22,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
 
         //MO - Changed : new ctor that accepts the new arguments
-        public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, IExecutionEnvironment compiler, out ErrorResultTO errors)
+        public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
             ForEachType = forEachType;
@@ -32,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             {
                 case enForEachType.InRecordset:
                     
-                    var records = compiler.EvalRecordSetIndexes(recordsetName);
+                    var records = compiler.EvalRecordSetIndexes(recordsetName, update);
                     if (!compiler.HasRecordSet(recordsetName) )
                     {
                         errors.AddError("When selecting a recordset only valid recordsets can be used");

@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         public string WebRequestRespsonse { get; set; }
 
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
             return DataObject.DataListID;

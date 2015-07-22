@@ -112,7 +112,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            var recordSets = DataObject.Environment.Eval(variable);
+            var recordSets = DataObject.Environment.Eval(variable, 0);
             if (recordSets.IsWarewolfAtomListresult)
             {
                 // ReSharper disable PossibleNullReferenceException

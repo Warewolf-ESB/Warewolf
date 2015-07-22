@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -44,8 +45,9 @@ namespace Dev2.Runtime.ESB.Execution
         /// Executes the specified errors.
         /// </summary>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
@@ -153,7 +155,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, 0), itemToAdd); //todo:confirm
                 results.Add(itemToAdd);
             }
 
@@ -176,7 +178,7 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
-        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject)
+        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject,int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 

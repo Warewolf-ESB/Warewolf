@@ -147,7 +147,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 
             //string error;
 
-            IList<string> recordSetValues = result.Environment.EvalAsListOfStrings(result.Environment.ToStar(resultVariable));
+            IList<string> recordSetValues = result.Environment.EvalAsListOfStrings(result.Environment.ToStar(resultVariable), 0);
 
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
