@@ -1,35 +1,27 @@
-![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
+[![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)](http://warewolf.io/) 
 
-**NOTE:** Warewolf is currently under going some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). For that reason we have set the default branch to development-stable as it the last stable point in the code base before the overhaul began. Please use that branch if you need a stable build. If you want to see how things are progressing with the redesign feel free to grab the development branch.
+
+
+**NOTE:** Warewolf is currently undergoing some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). We’ve set the default branch to *development-stable*, please use that branch if you need a stable build. 
+To see how things are progressing with the redesign feel free to grab the *development branch*.
+
+
 
 **What is Warewolf ESB all about?**
 
-Tired of complicated ESBs? Join the pack! 
-
-We’re making integration into a simple, seamless process. With the easiest service bus available, you can now design, orchestrate and implement communication between software applications. Easily manage messaging, routing, and service co-ordination in a SOA framework. 
+We’re making integration into a simple, seamless process. Warewolf helps you quickly design, orchestrate and implement communication between software applications. Easily manage messaging, routing, and service co-ordination in a SOA framework.
 
 
 
-**Why Warewolf ESB?**
 
-1.	Easiest service bus to learn and use
-2.	Simple, secure business and systems integration
-3.	Easy maintenance and management
+**Who can help?**
 
+Everyone! But it really helps if you’re a C# developer, or a WPF expert.
+You could be recognised as a [top contributor](http://warewolf.io/contributors.php), and even get an original Warewolf T-shirt for your contribution.
 
-
-**Who can join the pack?**
-
-Everyone! But it really helps if you’re a C# developer, or a WPF pack leader.
-
-
-
-**Why should you get your paws dirty?**
-
-Pounce on the opportunity to put your name on it - those who make it could be famous!
 See the list of open issues and bugs [here](https://github.com/Warewolf-ESB/Warewolf-ESB/issues) to get started right away.
 
-
+You can also help by [voting for Warewolf ESB training](http://support.pluralsight.com/forums/127919-new-course-suggestions/suggestions/8878069-warewolf-esb-getting-started) on Pluralsight.
 
 **Need more info?**
 
@@ -47,7 +39,7 @@ Release notes are available at http://warewolf.io/release-notes.php
 
 You can download the latest compiled release from http://warewolf.io
 
-Please note that Warewolf is built for Windows 7 and Windows Server 2008. [We do not yet support Win 8 and above](http://warewolf.io/ESB-blog/why-we-do-not-support-windows-8/).
+Please note that Warewolf is built for Windows 7 and Windows Server 2008. 
 
 
 **LICENCE:** Licensed under [GNU Affero General Public License 3.0](http://www.gnu.org/licenses/agpl-3.0.html) or later
