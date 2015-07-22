@@ -140,7 +140,7 @@ namespace Warewolf.Storage
                    var res =  new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing);
                     res.AddNothing();
                     return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(res);    
-                }w
+                }
                     return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 
