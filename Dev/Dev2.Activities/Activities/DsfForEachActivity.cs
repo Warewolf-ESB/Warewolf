@@ -43,11 +43,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string _forEachElementName;
         private string _displayName;
-        // ReSharper disable ConvertToConstant.Local
+// ReSharper disable ConvertToConstant.Local
         readonly int _previousInputsIndex = -1;
 
         readonly int _previousOutputsIndex = -1;
-        // ReSharper restore ConvertToConstant.Local
+// ReSharper restore ConvertToConstant.Local
         private string _inputsToken = "*";
         private string _outputsToken = "*";
 
@@ -61,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
-
+      
 
         [FindMissing]
         public string From { get; set; }
@@ -82,7 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         // ReSharper disable UnusedMember.Global
         public string FromDisplayName
-        // ReSharper restore UnusedMember.Global
+            // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -113,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // ReSharper disable UnusedMember.Global
         public int ExecutionCount
-        // ReSharper restore UnusedMember.Global
+            // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -126,11 +126,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
         // ReSharper restore MemberCanBePrivate.Global
-        // ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
         // ReSharper disable UnusedMember.Global
         public Variable test { get; set; }
         // ReSharper restore UnusedMember.Global
-        // ReSharper restore InconsistentNaming
+// ReSharper restore InconsistentNaming
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
         // ReSharper disable UnusedMember.Global
@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private Variable<string> _origOutput = new Variable<string>("origOutput");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         readonly object _forEachExecutionObject = new object();
-
+        
 
 
         #endregion Properties
@@ -188,24 +188,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Ctor
 
         #region CacheMetaData
-        //
-        //        public override IDev2ActivityIOMapping Clone()
-        //        {
-        //            var forEachActivity = new DsfForEachActivity();
-        //            forEachActivity.CsvIndexes = CsvIndexes;
-        //            forEachActivity.DataFunc = DataFunc;
-        //            forEachActivity.ElementName = ElementName;
-        //            forEachActivity.FailOnFirstError = FailOnFirstError;
-        //            forEachActivity.ForEachElementName = ForEachElementName;
-        //            forEachActivity.ForEachType = ForEachType;
-        //            forEachActivity.From = From;
-        //            forEachActivity.NumOfExections = NumOfExections;
-        //            forEachActivity.FromDisplayName = FromDisplayName;
-        //            forEachActivity.PreservedDataList = PreservedDataList;
-        //            forEachActivity.Recordset = Recordset;
-        //            forEachActivity.To = To;            
-        //            return forEachActivity;
-        //        }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -547,12 +529,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
                     AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment, update), debugItem);
-
+     
                 }
                 if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
                     AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
-
+ 
                 }
                 if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
@@ -562,7 +544,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if (ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-
+    
 
                     AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment, update), debugItem);
                 }
@@ -597,7 +579,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // this is wrong, we need the last index ;)
 
                     int idx = operationalData.IterationCount;
-
+                    
                     //Handle csv and range differently ;)
                     if (ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
                     {
@@ -693,7 +675,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 throw new Exception("DsfForEachActivity - RestoreHandlerFunction has encountered a null Function");
             }
             _inputsToken = "*";
-            _outputsToken = "*";
+            _outputsToken = "*";           
         }
 
         private ForEachInnerActivityTO GetInnerActivity(out string error)
@@ -731,7 +713,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject != null && operationalData != null)
             {
 
-
+              
 
                 if (operationalData.IndexIterator.HasMore())
                 {
@@ -847,27 +829,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var ind = itr.MaxIndex();
                     var count = 0;
                     while (itr.HasMore() && count < ind)
-                    {
+                        {
 
-                        operationalData = exePayload;
-                        int idx = exePayload.IndexIterator.FetchNextIndex();
+                            operationalData = exePayload;
+                            int idx = exePayload.IndexIterator.FetchNextIndex();
                         int innerupdate = 0;
                         if (exePayload.ForEachType != enForEachType.NumOfExecution)
-                        {
+                            {
                             //IterateIOMapping(idx);
                             innerupdate = idx;
-                        }
+                            }
 
                         exeAct.Execute(dataObject, innerupdate);
 
                         count++;
-                        operationalData.IncIterationCount();
-                    }
+                            operationalData.IncIterationCount();
+                        }
                     if (errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
-                    }
-
+                        {
+                            allErrors.MergeErrors(errors);
+                        }
+          
 
                     if (dataObject.IsDebugMode())
                     {
@@ -894,7 +876,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.IsDebugNested = false;
                     // Handle Errors
                     if (allErrors.HasErrors())
-                    {
+                        {
 
 
                         dataObject.ParentInstanceID = _previousParentId;

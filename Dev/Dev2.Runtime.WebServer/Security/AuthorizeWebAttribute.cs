@@ -43,7 +43,7 @@ namespace Dev2.Runtime.WebServer.Security
             VerifyArgument.IsNotNull("actionContext", actionContext);
             var user = actionContext.ControllerContext.RequestContext.Principal;
 
-            if (user == null && actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow")
+            if (user == null && (actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow" || actionContext.ActionDescriptor.ActionName == "ExecuteGetRootLevelApisJson"))
             {
                 user = GlobalConstants.GenericPrincipal;
                 actionContext.ControllerContext.RequestContext.Principal = user;
