@@ -10,8 +10,11 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
+using System.Net;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -30,6 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [ExcludeFromCodeCoverage]
     public class WebSourcesTests
     {
+        // ReSharper disable InconsistentNaming
         const string TestMethod = "GetCitiesByCountry";
         const string CountryName = "South%20Africa";
         const string TestAddress = "http://www.webservicex.net/globalweather.asmx";
@@ -115,7 +119,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
 #pragma warning disable 168
+            // ReSharper disable UnusedVariable
             var handler = new WebSources(null);
+            // ReSharper restore UnusedVariable
 #pragma warning restore 168
         }
 
@@ -139,6 +145,49 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new WebSources();
             var result = handler.Test(source, Guid.Empty, Guid.Empty);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void WebSourcesAssertUserAgentHeaderSet()
+        {
+            var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
+
+            WebSources.EnsureWebClient(source, new List<string>());
+
+            var client = source.Client;
+            var agent = client.Headers["user-agent"];
+            Assert.IsNotNull(agent);
+            Assert.AreEqual(agent,GlobalConstants.UserAgentString);
+        }
+        [TestMethod]
+        public void WebSourcesAssertUserAgentHeaderSet_SetsOtherHeaders()
+        {
+            var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
+
+            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+
+            var client = source.Client;
+            var agent = client.Headers["user-agent"];
+            Assert.IsNotNull(agent);
+            Assert.AreEqual(agent, GlobalConstants.UserAgentString);
+            Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
+        }
+        [TestMethod]
+
+        public void WebSourcesAssertUserAgentHeaderSet_SetsUserNameAndPassword()
+
+        {
+            var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User,UserName = "User",Password = "pwd"};
+
+            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+
+            var client = source.Client;
+            // ReSharper disable PossibleNullReferenceException
+            Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
+          
+            Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
+            // ReSharper restore PossibleNullReferenceException
         }
 
         #endregion
@@ -271,6 +320,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion
-
+        // ReSharper restore InconsistentNaming
     }
 }

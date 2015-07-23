@@ -246,7 +246,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region EnsureWebClient
 
-        static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
+        public static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
             if(source != null && source.Client != null)
             {
@@ -261,6 +261,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
                 }
+                source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString );
 
                 if(headers != null)
                 {

@@ -434,6 +434,7 @@ or type_desc LIKE '%Procedure%'";
         public static int AddPopupTimeDelay = 2000;
         static GenericPrincipal _user;
 
+
         public static IPrincipal GenericPrincipal
         {
             get
@@ -446,6 +447,14 @@ or type_desc LIKE '%Procedure%'";
                 }
                 return _user;
             }
+        }
+        public static string UserAgentString
+        {
+            get
+            {
+                return "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+            }
+     
         }
         // ReSharper restore InconsistentNaming
     }
