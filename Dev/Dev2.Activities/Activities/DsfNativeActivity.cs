@@ -547,7 +547,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          
             }
 
-            if(_debugState != null &&  (_debugState.StateType!=StateType.Duration) &&(!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
+            if (_debugState != null && (_debugState.StateType != StateType.Duration) && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
