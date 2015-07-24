@@ -1,0 +1,44 @@
+
+<Service ID="57ee2766-0b97-4460-942a-cbcf8b8a56c8" Version="1.0" Name="10638 - Service IO - DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <Actions>
+    <Action Name="dbo_Pr_MapLocationsGetTop10" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_MapLocationsGetTop10">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="MapLocationID" Name="MapLocationID" MapsTo="MapLocationID" Value="[[Locales().MapLocationID]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Locales" Recordset="Locales" />
+        <Output OriginalName="StreetAddress" Name="StreetAddress" MapsTo="StreetAddress" Value="[[Locales().StreetAddress]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Locales" Recordset="Locales" />
+        <Output OriginalName="Latitude" Name="Latitude" MapsTo="Latitude" Value="[[Locales().Latitude]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Locales" Recordset="Locales" />
+        <Output OriginalName="Longitude" Name="Longitude" MapsTo="Longitude" Value="[[Locales().Longitude]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Locales" Recordset="Locales" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">MapLocationID</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">MapLocationID</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Locales().MapLocationID]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1__COMMA__2__COMMA__3__COMMA__4__COMMA__5__COMMA__7__COMMA__8__COMMA__9__COMMA__10__COMMA__11</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">StreetAddress</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">StreetAddress</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Locales().StreetAddress]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">19 Pineside Road, New Germany__COMMA__1244 Old North Coast Rd, Redhill__COMMA__Westmead Road, Westmead__COMMA__Turquoise Road, Queensmead__COMMA__Old Main Road, Isipingo__COMMA__2 Brook Street North, Warwick Junction__COMMA__Bellair Road, Corner Bellair &amp; Edwin Swales/Sarnia Arterial__COMMA__Riverside Road, Durban North__COMMA__Malacca Road, Durban North__COMMA__Glanville Road, Woodlands</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Latitude</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Latitude</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Locales().Latitude]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">__COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA__</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Longitude</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Longitude</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Locales().Longitude]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">__COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA____COMMA__</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>10638 - Service IO - DB</DisplayName>
+  <Category>Acceptance Testing Resources\10638 - Service IO - DB</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>MkmxouksSx1hkBcOsZ8q1lN0/1E=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>GZDk7XoDNMhaDy1aoavtixOwMEkZ2NG5+u3/4BgNuW6Nw0eaixvYlgdGR2pQpTHVsRnaEkrhWOKrRK02zFD3n9SnRQQVBINnSKUSWpghA3ehqEn6TzjPU8q0QyWQg5cj0GyS5k4G/NyZiO+3Ks0SZF9X5IWee2JKUJlEcfNNlnE=</SignatureValue>
+  </Signature>
+</Service>
