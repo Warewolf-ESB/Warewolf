@@ -564,6 +564,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var dt = DateTime.Now;
                     DispatchDebugState(dataObject, StateType.After,  update,dt);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration,  update,dt);
                 }
 

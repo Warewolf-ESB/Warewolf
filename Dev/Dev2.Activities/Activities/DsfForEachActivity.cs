@@ -853,6 +853,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (dataObject.IsDebugMode())
                     {
+                        _debugOutputs = new List<DebugItem>();
+                        _debugOutputs = new List<DebugItem>();
                         DispatchDebugState(dataObject, StateType.Duration, 0);
                     }
                 }
