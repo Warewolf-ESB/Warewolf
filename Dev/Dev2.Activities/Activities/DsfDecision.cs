@@ -74,14 +74,12 @@ namespace Dev2.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                _debugOutputs.Clear();
-                _debugInputs.Clear();
-                if (dataObject.IsDebugMode())
-                    _debugInputs = CreateDebugInputs(dataObject.Environment);
+                InitializeDebug(dataObject);
+                    
 
                 if (dataObject.IsDebugMode())
                 {
-
+                    _debugInputs = CreateDebugInputs(dataObject.Environment);
                     DispatchDebugState(dataObject, StateType.Before,0);
                 }
 
@@ -117,12 +115,7 @@ namespace Dev2.Activities
                 var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
                 if (dataObject.IsDebugMode())
                     _debugOutputs = GetDebugOutputs(resultval.ToString());
-                if (dataObject.IsDebugMode())
-                {
-                    _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, update);
-                }
+
                 if (resultval)
                 {
                     if (TrueArm != null)
@@ -158,6 +151,12 @@ namespace Dev2.Activities
 
 
                 }
+            if (dataObject.IsDebugMode())
+            {
+                _debugOutputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+                DispatchDebugState(dataObject, StateType.Duration, update);
+            }
             return null;
             }
 
