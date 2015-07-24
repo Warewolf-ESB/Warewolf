@@ -587,7 +587,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
-                if(stateType == StateType.After || stateType == StateType.Duration)
+                if(stateType == StateType.After )
                 {
                     // Free up debug state
                     _debugState = null;

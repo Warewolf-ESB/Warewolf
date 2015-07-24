@@ -119,7 +119,8 @@ namespace Dev2.Activities
                     _debugOutputs = GetDebugOutputs(resultval.ToString());
                 if (dataObject.IsDebugMode())
                 {
-
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update);
                 }
                 if (resultval)
