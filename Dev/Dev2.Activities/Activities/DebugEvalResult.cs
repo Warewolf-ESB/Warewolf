@@ -60,6 +60,14 @@ namespace Dev2.Activities
                         _inputVariable = finalString;
                         _evalResult = environment.Eval(finalString, update);
                     }
+                    else
+                    {
+                        var evalToExpression = environment.EvalToExpression(_inputVariable, update);
+                        if (DataListUtil.IsEvaluated(evalToExpression))
+                        {
+                            _inputVariable = evalToExpression;
+                        }
+                    }
                 }
                 else
                 {
