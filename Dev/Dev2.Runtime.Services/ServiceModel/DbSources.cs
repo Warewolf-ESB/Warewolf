@@ -32,7 +32,6 @@ namespace Dev2.Runtime.ServiceModel
         public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
-            result.ConnectionString = string.IsNullOrEmpty(result.ConnectionString) ? result.ConnectionString : DpapiWrapper.Decrypt(result.ConnectionString);
 
             try
             {
