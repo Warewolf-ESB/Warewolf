@@ -517,7 +517,13 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if (servers != null)
                 {
-                    result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env));
+                    foreach(var connection in servers)
+                    {
+                        if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
+                        {
+                            result.Add(CreateEnvironmentModel(connection));
+                        }
+                    }
                 }
             }
 

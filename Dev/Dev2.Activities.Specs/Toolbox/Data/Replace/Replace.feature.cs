@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.Data.Replace
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Replace", "In order to search and replace\r\nAs a Warewolf user\r\nI want a tool I can use to se" +
-                    "arch and replace for words", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "arch and replace for worsd", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Replace")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Data.Replace.ReplaceFeature.FeatureSetup(null);
             }
         }
         

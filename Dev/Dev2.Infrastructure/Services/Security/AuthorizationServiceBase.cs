@@ -304,7 +304,10 @@ namespace Dev2.Services.Security
                                 isInRole = principal.IsInRole(sid.Value);
                             }
                         }
-
+                        if (!isInRole)
+                        {
+                            isInRole = DoFallBackCheck(principal);
+                        }
                         return isInRole;
                     }
                 }
@@ -317,8 +320,61 @@ namespace Dev2.Services.Security
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
             // ReSharper restore EmptyGeneralCatchClause
-
+            if (!isInRole)
+            {
+                isInRole = DoFallBackCheck(principal);
+            }
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        bool DoFallBackCheck(IPrincipal principal)
+        {
+            if(principal != null)
+            {
+                if(principal.Identity != null)
+                {
+                    var username = principal.Identity.Name;
+                    if(username != null)
+                    {
+                        var theUser = username;
+                        var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+                        if (domainChar >= 0)
+                        {
+                            theUser = username.Substring((domainChar + 1));
+                        }
+                        var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
+                        using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                        {
+                            ad.Children.SchemaFilter.Add("group");
+                            foreach (DirectoryEntry dChildEntry in ad.Children)
+                            {
+                    
+                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole)
+                                {
+                                    // Now check group membership ;)
+                                    var members = dChildEntry.Invoke("Members");
+
+                                    if (members != null)
+                                    {
+                                        foreach (var member in (IEnumerable)members)
+                                        {
+                                            using (var memberEntry = new DirectoryEntry(member))
+                                            {
+                                                if (memberEntry.Name == theUser)
+                                                {
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

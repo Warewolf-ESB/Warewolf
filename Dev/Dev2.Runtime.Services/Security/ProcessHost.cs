@@ -25,7 +25,8 @@ namespace Dev2.Runtime.Security
                 {
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = fileName
+                    FileName = fileName,
+                    Verb = "runas"
                 }
             };
 
