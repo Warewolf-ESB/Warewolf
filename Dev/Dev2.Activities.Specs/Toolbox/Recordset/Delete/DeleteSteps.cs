@@ -146,8 +146,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public void ThenTheRecordsetWillBeAsFollows(string recordset, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-         
-            var recordSets  = DataObject.Environment.Eval(recordset);
+
+            var recordSets = DataObject.Environment.Eval(recordset, 0);
             if (recordSets.IsWarewolfAtomListresult)
             {
                 // ReSharper disable PossibleNullReferenceException

@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                if(operationalData != null)
+                if (operationalData != null)
                 {
                     return operationalData.IterationCount;
                 }
@@ -188,24 +188,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Ctor
 
         #region CacheMetaData
-//
-//        public override IDev2ActivityIOMapping Clone()
-//        {
-//            var forEachActivity = new DsfForEachActivity();
-//            forEachActivity.CsvIndexes = CsvIndexes;
-//            forEachActivity.DataFunc = DataFunc;
-//            forEachActivity.ElementName = ElementName;
-//            forEachActivity.FailOnFirstError = FailOnFirstError;
-//            forEachActivity.ForEachElementName = ForEachElementName;
-//            forEachActivity.ForEachType = ForEachType;
-//            forEachActivity.From = From;
-//            forEachActivity.NumOfExections = NumOfExections;
-//            forEachActivity.FromDisplayName = FromDisplayName;
-//            forEachActivity.PreservedDataList = PreservedDataList;
-//            forEachActivity.Recordset = Recordset;
-//            forEachActivity.To = To;            
-//            return forEachActivity;
-//        }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -235,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            lock(_forEachExecutionObject)
+            lock (_forEachExecutionObject)
             {
                 IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -251,17 +233,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, 0);
 
-                    if(errors.HasErrors())
+                    if (errors.HasErrors())
                     {
                         allErrors.MergeErrors(errors);
                         return;
                     }
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.Before, 0);
                     }
 
                     dataObject.ParentInstanceID = UniqueID;
@@ -278,10 +260,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.IsDataListScoped = true;
                     dataObject.IsDebugNested = true;
 
-                    if(exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
+                    if (exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
                     {
                         int idx = exePayload.IndexIterator.FetchNextIndex();
-                        if(exePayload.ForEachType != enForEachType.NumOfExecution)
+                        if (exePayload.ForEachType != enForEachType.NumOfExecution)
                         {
                             IterateIOMapping(idx);
                         }
@@ -297,7 +279,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error("DSFForEach", e);
                     allErrors.AddError(e.Message);
@@ -305,19 +287,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 finally
                 {
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfForEachActivity", allErrors);
-                        foreach(var fetchError in allErrors.FetchErrors())
+                        foreach (var fetchError in allErrors.FetchErrors())
                         {
                             dataObject.Environment.AddError(fetchError);
                         }
 
                         dataObject.ParentInstanceID = _previousParentId;
                     }
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.After, 0);
                     }
                 }
             }
@@ -337,7 +319,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Now mutate the mappings ;)
             //Bug 8725 do not mutate mappings
-            if(!string.IsNullOrEmpty(operationalData.InnerActivity.OrigInnerInputMapping))
+            if (!string.IsNullOrEmpty(operationalData.InnerActivity.OrigInnerInputMapping))
             {
                 // (*) == ({idx}) ;)
                 newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
@@ -352,35 +334,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
 
-                if(_previousInputsIndex != -1)
+                if (_previousInputsIndex != -1)
                 {
-                    if(_inputsToken != "*")
+                    if (_inputsToken != "*")
                     {
                         _inputsToken = (_previousInputsIndex).ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
-                if(_previousOutputsIndex != -1)
+                if (_previousOutputsIndex != -1)
                 {
-                    if(_outputsToken != "*")
+                    if (_outputsToken != "*")
                     {
                         _outputsToken = (_previousOutputsIndex).ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
-                if(tmp != null)
+                if (tmp != null)
                 {
                     IList<DsfForEachItem> data = tmp.GetForEachInputs();
                     IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
-                    if(AmendInputs(idx, data, _inputsToken, updates))
+                    if (AmendInputs(idx, data, _inputsToken, updates))
                     {
                         updateInputToken = true;
                     }
 
                     // push updates for Inputs
                     tmp.UpdateForEachInputs(updates);
-                    if(idx == 1)
+                    if (idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedInputs = updates;
                     }
@@ -391,14 +373,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     data = tmp.GetForEachOutputs();
                     updates = new List<Tuple<string, string>>();
 
-                    if(AmendOutputs(idx, data, _outputsToken, updates))
+                    if (AmendOutputs(idx, data, _outputsToken, updates))
                     {
                         updateOutputToken = true;
                     }
 
                     // push updates 
                     tmp.UpdateForEachOutputs(updates);
-                    if(idx == 1)
+                    if (idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedOutputs = updates;
                     }
@@ -409,19 +391,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
 
-                    if(tmp2 != null && !(tmp2 is DsfForEachActivity))
+                    if (tmp2 != null && !(tmp2 is DsfForEachActivity))
                     {
                         IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
-                        if(AmendInputs(idx, data, _inputsToken, updates))
+                        if (AmendInputs(idx, data, _inputsToken, updates))
                         {
                             updateInputToken = true;
                         }
 
                         // push updates 
                         tmp2.UpdateForEachInputs(updates);
-                        if(idx == 1)
+                        if (idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedInputs = updates;
                         }
@@ -431,14 +413,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         data = tmp2.GetForEachOutputs();
                         updates = new List<Tuple<string, string>>();
 
-                        if(AmendOutputs(idx, data, _outputsToken, updates))
+                        if (AmendOutputs(idx, data, _outputsToken, updates))
                         {
                             updateOutputToken = true;
                         }
 
                         // push updates 
                         tmp2.UpdateForEachOutputs(updates);
-                        if(idx == 1)
+                        if (idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedOutputs = updates;
                         }
@@ -451,7 +433,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             //Bug 8725 do not mutate mappings
-            if(operationalData.InnerActivity.OrigInnerOutputMapping != null)
+            if (operationalData.InnerActivity.OrigInnerOutputMapping != null)
             {
                 // (*) == ({idx}) ;)
                 newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
@@ -459,21 +441,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if(dev2ActivityIoMapping != null)
+            if (dev2ActivityIoMapping != null)
             {
                 dev2ActivityIoMapping.InputMapping = newInputs;
             }
 
             var activityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
-            if(activityIoMapping != null)
+            if (activityIoMapping != null)
             {
                 activityIoMapping.OutputMapping = newOutputs;
             }
-            if(updateInputToken)
+            if (updateInputToken)
             {
                 _inputsToken = idx.ToString(CultureInfo.InvariantCulture);
             }
-            if(updateOutputToken)
+            if (updateOutputToken)
             {
                 _outputsToken = idx.ToString(CultureInfo.InvariantCulture);
             }
@@ -483,16 +465,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             bool result = false;
             // amend inputs ;)
-            foreach(DsfForEachItem d in data)
+            foreach (DsfForEachItem d in data)
             {
                 string input = d.Value;
-                if(input.Contains("(" + token + ")"))
+                if (input.Contains("(" + token + ")"))
                 {
                     input = input.Replace("(" + token + ")", "(" + idx + ")");
                     result = true;
                 }
 
-                if(!string.IsNullOrEmpty(d.Value))
+                if (!string.IsNullOrEmpty(d.Value))
                 {
                     updates.Add(new Tuple<string, string>(d.Value, input));
                 }
@@ -504,18 +486,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             bool result = false;
             // amend inputs ;)
-            foreach(DsfForEachItem d in data)
+            foreach (DsfForEachItem d in data)
             {
                 string input = d.Value;
-                if(!string.IsNullOrEmpty(input))
+                if (!string.IsNullOrEmpty(input))
                 {
-                    if(input.Contains("(" + token + ")"))
+                    if (input.Contains("(" + token + ")"))
                     {
                         input = input.Replace("(" + token + ")", "(" + idx + ")");
                         result = true;
                     }
 
-                    if(!string.IsNullOrEmpty(d.Value))
+                    if (!string.IsNullOrEmpty(d.Value))
                     {
                         updates.Add(new Tuple<string, string>(d.Value, input));
                     }
@@ -530,45 +512,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="dataObject">The data object.</param>
         /// <param name="environment"></param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
         {
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
-                if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
+                if (ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
 
 
-                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment, update), debugItem);
                 }
-                if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
+                if (ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment, update), debugItem);
      
                 }
-                if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
+                if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
  
                 }
-                if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
+                if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
 
-                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(To, "To", environment, update), debugItem);
 
                 }
-                if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
+                if (ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
     
 
-                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment, update), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors, update);
 
             return result;
 
@@ -582,10 +565,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
 
-            if(activity != null)
+            if (activity != null)
             {
 
-                if(operationalData.InnerActivity.OrigCodedInputs != null)
+                if (operationalData.InnerActivity.OrigCodedInputs != null)
                 {
 
                     //MO - CHANGE:This is to be reinstated for restoring actives back to state with star
@@ -598,19 +581,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = operationalData.IterationCount;
                     
                     //Handle csv and range differently ;)
-                    if(ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
+                    if (ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
                     {
                         Int32.TryParse(_inputsToken, out idx);
                     }
 
-                    if(tmp != null)
+                    if (tmp != null)
                     {
                         // Restore Inputs ;)
                         IList<DsfForEachItem> data = tmp.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string input = d.Value;
                             input = input.Replace("(" + idx + ")", "(*)");
@@ -627,7 +610,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
-                        foreach(DsfForEachItem d in data)
+                        foreach (DsfForEachItem d in data)
                         {
                             string input = d.Value;
                             input = input.Replace("(" + idx + ")", "(*)");
@@ -644,13 +627,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
 
                         // Restore Inputs ;)
-                        if(tmp2 != null)
+                        if (tmp2 != null)
                         {
                             IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                             IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
-                            foreach(DsfForEachItem d in data)
+                            foreach (DsfForEachItem d in data)
                             {
                                 string input = d.Value;
                                 input = input.Replace("(" + idx + ")", "(*)");
@@ -667,7 +650,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
-                            foreach(DsfForEachItem d in data)
+                            foreach (DsfForEachItem d in data)
                             {
                                 string input = d.Value;
                                 input = input.Replace("(" + idx + ")", "(*)");
@@ -715,7 +698,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     result = new ForEachInnerActivityTO(tmp);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 error = e.Message;
             }
@@ -727,16 +710,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            if(dataObject != null && operationalData != null)
+            if (dataObject != null && operationalData != null)
             {
 
               
 
-                if(operationalData.IndexIterator.HasMore())
+                if (operationalData.IndexIterator.HasMore())
                 {
                     var idx = operationalData.IndexIterator.FetchNextIndex();
                     // Re-jigger the mapping ;)
-                    if(operationalData.ForEachType != enForEachType.NumOfExecution)
+                    if (operationalData.ForEachType != enForEachType.NumOfExecution)
                     {
                         IterateIOMapping(idx);
                     }
@@ -750,7 +733,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // that is all she wrote ;)
                 dataObject.IsDataListScoped = false;
                 // return it all to normal
-                if(ForEachType != enForEachType.NumOfExecution)
+                if (ForEachType != enForEachType.NumOfExecution)
                 {
                     RestoreHandlerFn();
                 }
@@ -769,16 +752,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -800,9 +783,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.ForEach;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            lock(_forEachExecutionObject)
+
+            lock (_forEachExecutionObject)
             {
                 _previousParentId = dataObject.ParentInstanceID;
                 _debugInputs = new List<DebugItem>();
@@ -817,8 +801,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     ErrorResultTO errors;
-                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
-                    foreach(var err in errors.FetchErrors())
+                    ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
+
+                    foreach (var err in errors.FetchErrors())
                     {
                         dataObject.Environment.AddError(err);
                     }
@@ -829,55 +814,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ForEachInnerActivityTO innerA = GetInnerActivity(out error);
                     var exeAct = innerA.InnerActivity;
                     allErrors.AddError(error);
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.Before, update);
 
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     dataObject.IsDebugNested = true;
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.After, update);
                     }
                     exePayload.InnerActivity = innerA;
-                    if(itr != null)
-                    {
-                        while(itr.HasMore())
+                    var ind = itr.MaxIndex();
+                    var count = 0;
+                    while (itr.HasMore() && count < ind)
                         {
 
                             operationalData = exePayload;
                             int idx = exePayload.IndexIterator.FetchNextIndex();
-                            if(exePayload.ForEachType != enForEachType.NumOfExecution)
+                        int innerupdate = 0;
+                        if (exePayload.ForEachType != enForEachType.NumOfExecution)
                             {
-                                IterateIOMapping(idx);
+                            //IterateIOMapping(idx);
+                            innerupdate = idx;
                             }
 
-                            exeAct.Execute(dataObject);
+                        exeAct.Execute(dataObject, innerupdate);
 
+                        count++;
                             operationalData.IncIterationCount();
                         }
-                        if(errors.HasErrors())
+                    if (errors.HasErrors())
                         {
                             allErrors.MergeErrors(errors);
                         }
           
-                    }
+
                     if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Duration);
+                        DispatchDebugState(dataObject, StateType.Duration, 0);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error("DSFForEach", e);
                     allErrors.AddError(e.Message);
                 }
                 finally
                 {
-                    if(itr != null)
+                    if (itr != null)
                     {
-                        if(ForEachType != enForEachType.NumOfExecution)
+                        if (ForEachType != enForEachType.NumOfExecution)
                         {
                             RestoreHandlerFn();
                         }
@@ -887,21 +875,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ForEachNestingLevel--;
                     dataObject.IsDebugNested = false;
                     // Handle Errors
-                    if(allErrors.HasErrors())
-                    {
-                        if(ForEachType != enForEachType.NumOfExecution)
+                    if (allErrors.HasErrors())
                         {
-                            RestoreHandlerFn();
-                        }
+
 
                         dataObject.ParentInstanceID = _previousParentId;
                         dataObject.ForEachNestingLevel--;
                         dataObject.IsDebugNested = false;
                         // Handle Errors
-                        if(allErrors.HasErrors())
+                        if (allErrors.HasErrors())
                         {
                             DisplayAndWriteError("DsfForEachActivity", allErrors);
-                            foreach(var fetchError in allErrors.FetchErrors())
+                            foreach (var fetchError in allErrors.FetchErrors())
                             {
                                 dataObject.Environment.AddError(fetchError);
                             }

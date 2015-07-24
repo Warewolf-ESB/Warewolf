@@ -30,15 +30,15 @@ namespace Dev2.Tests.Activities.TOTests
         public void JsonMappingEvaluated_Constructor_SetsProperties()
         {
             //------------Setup for test--------------------------
-            var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[as]]", "hellow world");
-            dataObject.Environment.Assign("[[af]]", "9.9");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10",0);
+            dataObject.Environment.Assign("[[as]]", "hellow world", 0);
+            dataObject.Environment.Assign("[[af]]", "9.9", 0);
+            dataObject.Environment.Assign("[[b]]", "20", 0);
+            dataObject.Environment.Assign("[[rec(1).a]]", "50", 0);
+            dataObject.Environment.Assign("[[rec(1).b]]", "500", 0);
+            dataObject.Environment.Assign("[[rec(2).a]]", "60", 0);
+            dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             //------------Execute Test---------------------------
 
             // scalar evaluating to atom
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.TOTests
             jsonMappingEvaluated.Simple.SourceName.Should().Be(sn);
             jsonMappingEvaluated.Simple.DestinationName.Should().Be(dn);
             ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluated.EvalResult).Item.GetValue(0).Should().Be(
-                ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn)).Item.GetValue(0));
+                ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn,0)).Item.GetValue(0));
             jsonMappingEvaluated.Count.Should().Be(1);
 
             // recordset name

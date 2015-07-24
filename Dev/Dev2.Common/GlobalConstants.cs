@@ -13,6 +13,7 @@ using System.Activities.XamlIntegration;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Principal;
 using Microsoft.Win32;
 
 namespace Dev2.Common
@@ -431,6 +432,30 @@ or type_desc LIKE '%Procedure%'";
             }
         }
         public static int AddPopupTimeDelay = 2000;
+        static GenericPrincipal _user;
+
+
+        public static IPrincipal GenericPrincipal
+        {
+            get
+            {
+                if(_user == null)
+                {
+                    var genericIdentity = new GenericIdentity("GenericPublicUser");
+                    var user = new GenericPrincipal(genericIdentity, new string[0]);
+                    _user = user;
+                }
+                return _user;
+            }
+        }
+        public static string UserAgentString
+        {
+            get
+            {
+                return "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+            }
+     
+        }
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

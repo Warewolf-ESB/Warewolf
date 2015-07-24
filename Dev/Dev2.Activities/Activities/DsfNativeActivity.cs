@@ -27,6 +27,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
@@ -95,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _previousParentInstanceID;
         IDebugState _debugState;
         bool _isOnDemandSimulation;
-
+        IResourceCatalog _resourceCatalog;
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
 
@@ -120,10 +121,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected DsfNativeActivity(bool isExecuteAsync, string displayName)
             : this(isExecuteAsync, displayName, DebugDispatcher.Instance)
         {
+           
         }
 
         protected DsfNativeActivity(bool isExecuteAsync, string displayName, IDebugDispatcher debugDispatcher)
         {
+            _resourceCatalog = ResourceCatalog.Instance;
             if(debugDispatcher == null)
             {
                 throw new ArgumentNullException("debugDispatcher");
@@ -168,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // we need to register this child thread with the DataListRegistar so we can scope correctly ;)
 
-           
+
                 string errorString = dataObject.Environment.FetchErrors();
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
@@ -217,14 +220,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(dataObject.Environment != null)
                     {
-                        DoErrorHandling(dataObject);
+                        DoErrorHandling(dataObject, 0); // old wf code
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(IDSFDataObject dataObject)
+        protected void DoErrorHandling(IDSFDataObject dataObject,int update)
         {
             string errorString = dataObject.Environment.FetchErrors();
             _tmpErrors.AddError(errorString);
@@ -234,25 +237,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(dataObject, errorString);
+                        PerformCustomErrorHandling(dataObject, errorString, update);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError)
+        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError,int update)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
+                    dataObject.Environment.Assign(OnErrorVariable,currentError, update);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
-                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors, update);
                     if(tmpErrors != null)
                     {
                         dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
@@ -298,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Server = string.Empty,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.EnvironmentID,
+                    EnvironmentID = dataObject.DebugEnvironmentId,
                     Name = GetType().Name,
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
@@ -424,12 +427,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs/Outputs
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -437,14 +440,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        // ReSharper disable MemberCanBeProtected.Global
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? dt=null)
-            // ReSharper restore MemberCanBeProtected.Global
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? dt=null)
         {
             bool clearErrors = false;
             try
             {
-
+            
             
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -471,7 +472,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataObject.Environment), _debugState.Inputs);
+                        Copy(GetDebugInputs(dataObject.Environment, update), _debugState.Inputs);
                     }
                     catch (Exception err)
                     {
@@ -531,7 +532,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataObject.Environment), _debugState.Outputs);
+                            Copy(GetDebugOutputs(dataObject.Environment, update), _debugState.Outputs);
                         }
                     }
                     catch(Exception e)
@@ -546,7 +547,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          
             }
 
-            if(_debugState != null &&  (_debugState.StateType!=StateType.Duration) &&(!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
+            if (_debugState != null && (_debugState.StateType != StateType.Duration) && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
@@ -626,17 +627,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before)
+        {
+            if(_debugState!= null)
+            {
+                Guid remoteID;
+                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
+                _debugState.Server = name;
+            }
+            DispatchDebugState(dataObject,before,0);
+        }
+
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
             if (stateType != StateType.Duration)
             {
-                UpdateDebugParentID(dataObject);
+            UpdateDebugParentID(dataObject);
             }
             if(remoteID != Guid.Empty)
             {
                 UniqueID = Guid.NewGuid().ToString();
+            }
+
+            string name;
+            if(remoteID != Guid.Empty)
+            {
+                var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                if(resource != null)
+                {
+                    name = resource.ResourceName;
+                }
+                else
+                {
+                    name = remoteID.ToString();
+                }
+            }
+            else
+            {
+                name = "localhost";
             }
             _debugState = new DebugState
             {
@@ -653,17 +685,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ServerID = dataObject.ServerID,
                 OriginatingResourceID = dataObject.ResourceID,
                 OriginalInstanceID = dataObject.OriginalInstanceID,
-                Server = remoteID.ToString(),
+                Server = name,
                 Version = string.Empty,
                 Name = GetType().Name,
                 HasError = hasError,
                 ErrorMessage = errorMessage,
-                EnvironmentID = dataObject.EnvironmentID,
+                EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
             };
         }
 
-
+        public  void SetResourceCatalog(IResourceCatalog catalogue)
+        {
+            _resourceCatalog = catalogue;
+        }
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
@@ -734,7 +769,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public virtual IDev2Activity Execute(IDSFDataObject data)
+        public virtual IDev2Activity Execute(IDSFDataObject data,int update)
         {
             try
             {
@@ -742,8 +777,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
-                ExecuteTool(data);
-
+                ExecuteTool(data, update);
             }
             catch (Exception ex)
             {
@@ -755,9 +789,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!_isExecuteAsync || _isOnDemandSimulation)
                 {
-                    DoErrorHandling(data);
+                    DoErrorHandling(data, update);
                 }
-             
+
 
 
             }
@@ -773,7 +807,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        protected abstract void ExecuteTool(IDSFDataObject dataObject);
+        protected abstract void ExecuteTool(IDSFDataObject dataObject,int update);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }

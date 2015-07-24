@@ -94,6 +94,7 @@ namespace Dev2.DynamicServices
                     if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
                     {
                         EnvironmentID = environmentId;
+                        DebugEnvironmentId = environmentId;
                     }
 
                     bool isOnDemandSimulation = false;
@@ -159,11 +160,23 @@ namespace Dev2.DynamicServices
                     // finally set raw payload
                     RawPayload = new StringBuilder(xmldata);
                 }
-            }            
+            }
 
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {
                 RawPayload = new StringBuilder(rawPayload);
+                }
+        }
+
+        public Guid DebugEnvironmentId
+        {
+            get
+            {
+                return _debugEnvironmentId;
+            }
+            set
+            {
+                _debugEnvironmentId = value;
             }
         }
 
@@ -180,6 +193,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
+        Guid _debugEnvironmentId;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -221,6 +235,7 @@ namespace Dev2.DynamicServices
 
         public IEsbChannel EsbChannel { get; set; }
         public DateTime StartTime { get; set; }
+        public int ForEachUpdateValue { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 
@@ -240,11 +255,7 @@ namespace Dev2.DynamicServices
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
 
-        //public ErrorResultTO Errors
-        //{
-        //    get { return _errors ?? (_errors = new ErrorResultTO()); }
-        //    set { _errors = value; }
-        //}
+
 
         public int NumberOfSteps { get; set; }
         public IPrincipal ExecutingUser { get; set; }
@@ -328,7 +339,7 @@ namespace Dev2.DynamicServices
             result.DatalistInMergeID = DatalistInMergeID;
             result.DatalistInMergeType = DatalistInMergeType;
             result.EnvironmentID = EnvironmentID;
-       
+            result.DebugEnvironmentId = DebugEnvironmentId;
             result.ExecutionCallbackID = ExecutionCallbackID;
             result.ExecutionOrigin = ExecutionOrigin;
             result.ExecutionOriginDescription = ExecutionOriginDescription;
@@ -366,7 +377,7 @@ namespace Dev2.DynamicServices
             result.Environment = Environment;
             result.EsbChannel = EsbChannel;
             result.ExecutionToken = ExecutionToken;
-          
+            result.ForEachUpdateValue = ForEachUpdateValue;
             return result;
         }
 

@@ -53,7 +53,7 @@ namespace Dev2.Activities
             return null;
         }
 
-          public override IDev2Activity Execute(IDSFDataObject dataObject)
+          public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
           {
               _debugOutputs.Clear();
               _debugInputs.Clear();
@@ -63,7 +63,7 @@ namespace Dev2.Activities
 
 
                   Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
+                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
 
 
                   Debug(dataObject, firstOrDefault, ds);
@@ -74,10 +74,10 @@ namespace Dev2.Activities
                       {
                           return Switches[a];
                       }
-                      if (Default != null)
-                      {
-                          var activity = Default.FirstOrDefault();
-                          return activity;
+                          if (Default != null)
+                          {
+                              var activity = Default.FirstOrDefault();
+                            return activity;
                       }
                   }
               }
@@ -85,11 +85,11 @@ namespace Dev2.Activities
               {
                   dataObject.Environment.Errors.Add(err.Message);
               }
-
+              
               return null;
           }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
            
         }
@@ -108,9 +108,9 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before);
-                DispatchDebugState(dataObject, StateType.After);
-                if(Inner != null)
+                DispatchDebugState(dataObject, StateType.Before, 0);
+                DispatchDebugState(dataObject, StateType.After, 0);
+                if(_inner != null)
                 {
                     Inner.SetDebugInputs(_debugInputs);
                 }

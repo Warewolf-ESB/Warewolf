@@ -169,7 +169,7 @@ namespace Dev2.Diagnostics.Debug
                     // re-jigger it so it will dispatch and display
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
-                    item.Server = remoteInvokerId;
+                   // item.Server = remoteInvokerId;
                     Guid remoteEnvironmentId;
                     if(Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
                     {

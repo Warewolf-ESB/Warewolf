@@ -965,6 +965,30 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
         }
 
+        [Then(@"the '(.*)' in Workflow '(.*)' has a debug Server Name of """"(.*)""""")]
+        public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+
+            if (parentWorkflowName == workflowName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+
+            Assert.IsTrue(toolSpecificDebug.All(a=>a.Server==remoteName));
+            Assert.IsTrue(debugStates.Where(ds => ds.ParentID == workflowId && !ds.DisplayName.Equals(toolName)).All(a=>a.Server=="localhost"));
+        }
+
+
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {

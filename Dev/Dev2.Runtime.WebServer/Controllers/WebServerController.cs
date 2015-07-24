@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
@@ -162,6 +163,14 @@ namespace Dev2.Runtime.WebServer.Controllers
             if(__name__.EndsWith("apis.json"))
             {
                 var path = __name__.Split(new []{"/apis.json"},StringSplitOptions.RemoveEmptyEntries);
+                if(path.Any())
+                {
+                    if (path[0].Equals("services", StringComparison.OrdinalIgnoreCase) || path[0].Equals("public", StringComparison.OrdinalIgnoreCase) || path[0].Equals("secure", StringComparison.OrdinalIgnoreCase))
+                    {
+                        path[0] = null;
+                    }
+                    
+                }
                 var requestVar = new NameValueCollection
                 {
                     { "path", path[0] }

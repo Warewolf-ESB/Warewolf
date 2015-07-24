@@ -66,13 +66,16 @@ namespace Dev2.Tests.Runtime.WebServer
         public void ApisJsonBuilder_BuildForPath_NullPath_ShouldBuildForWholeCatalog()
         {
             //------------Setup for test--------------------------
-            EnvironmentVariables.WebServerUri = "http://localhost:3142/";
+            EnvironmentVariables.DnsName = "http://localhost/";
+            EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = ResourceType.WorkflowService};
+            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = ResourceType.WorkflowService };
+            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = ResourceType.WorkflowService };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -85,6 +88,8 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson,apisJson);
+            Assert.AreEqual(exceptedApisJson.Apis.Count,apisJson.Apis.Count);
+            Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl.Contains("secure"), apisJson.Apis[0].BaseUrl.Contains("secure"));
         }
 
         [TestMethod]
@@ -93,13 +98,16 @@ namespace Dev2.Tests.Runtime.WebServer
         public void ApisJsonBuilder_BuildForPath_WithPath_ShouldBuildForResourcesAtPath()
         {
             //------------Setup for test--------------------------
-            EnvironmentVariables.WebServerUri = "http://localhost:3142/";
+            EnvironmentVariables.DnsName = "http://localhost/";
+            EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = ResourceType.WorkflowService };
+            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = ResourceType.WorkflowService };
+            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = ResourceType.WorkflowService };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -123,13 +131,16 @@ namespace Dev2.Tests.Runtime.WebServer
         public void ApisJsonBuilder_BuildForPath_WithPathHasSubDirectories_ShouldBuildForAllResourcesAtPath()
         {
             //------------Setup for test--------------------------
-            EnvironmentVariables.WebServerUri = "http://localhost:3142/";
+            EnvironmentVariables.DnsName = "http://localhost/";
+            EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceName = "Execution Engine Test",ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
-            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World" };
-            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local" };
+            var resource1 = new Resource { ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = ResourceType.WorkflowService };
+            var resource2 = new Resource { ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = ResourceType.WorkflowService };
+            var resource3 = new Resource { ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = ResourceType.WorkflowService };
             
             resources.Add(resource1);
             resources.Add(resource2);
@@ -156,7 +167,8 @@ namespace Dev2.Tests.Runtime.WebServer
         public void ApisJsonBuilder_BuildForPath_OnlyAuthorized_ShouldBuildForWholeCatalog()
         {
             //------------Setup for test--------------------------
-            EnvironmentVariables.WebServerUri = "http://localhost:3142/";
+            EnvironmentVariables.DnsName = "http://localhost/";
+            EnvironmentVariables.Port = 3142;
             var unAuthortizedResourceID = Guid.NewGuid();
             var authorizedResource1 = Guid.NewGuid();
             var authorizedResource2 = Guid.NewGuid();
@@ -169,9 +181,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource2.ToString())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
-            var resource1 = new Resource { ResourceID = unAuthortizedResourceID,ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test" };
-            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", ResourcePath = "Hello World" };
-            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local" };
+            var resource1 = new Resource { ResourceID = unAuthortizedResourceID, ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = ResourceType.WorkflowService };
+            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = ResourceType.WorkflowService };
+            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = ResourceType.WorkflowService };
 
             resources.Add(resource1);
             resources.Add(resource2);
@@ -185,17 +197,63 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson, apisJson);
             Assert.AreEqual(exceptedApisJson.Apis.Count, apisJson.Apis.Count);
+            Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl, apisJson.Apis[0].BaseUrl);
         }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ApisJsonBuilder_BuildForPath")]
+        public void ApisJsonBuilder_BuildForPath_OnlyAuthorized_MixPublicWithSecure_ShouldBuildForWholeCatalog()
+        {
+            //------------Setup for test--------------------------
+            EnvironmentVariables.DnsName = "http://localhost/";
+            EnvironmentVariables.Port = 3142;
+            var publicAuthorizedResourceID = Guid.NewGuid();
+            var authorizedResource1 = Guid.NewGuid();
+            var authorizedResource2 = Guid.NewGuid();
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, publicAuthorizedResourceID.ToString())).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, publicAuthorizedResourceID.ToString())).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource1.ToString())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource1.ToString())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource2.ToString())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource2.ToString())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, publicAuthorizedResourceID.ToString())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, publicAuthorizedResourceID.ToString())).Returns(true);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var resources = new List<IResource>();
+            var resource1 = new Resource { ResourceID = publicAuthorizedResourceID, ResourceName = "Execution Engine Test", ResourcePath = "Acceptance Testing Resources\\Execution Engine\\Execution Engine Test", ResourceType = ResourceType.WorkflowService };
+            var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", ResourcePath = "Hello World", ResourceType = ResourceType.WorkflowService };
+            var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", ResourcePath = "Acceptance Testing Resources\\9139Local", ResourceType = ResourceType.WorkflowService };
+
+            resources.Add(resource1);
+            resources.Add(resource2);
+            resources.Add(resource3);
+            mockResourceCatalog.Setup(catalog => catalog.GetResourceList(It.IsAny<Guid>())).Returns(resources);
+            var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object, mockResourceCatalog.Object);
+            var exceptedApisJson = GetExceptedApisJsonForServerSecurityWithPublic();
+            //------------Execute Test---------------------------
+            var apisJson = apisJsonBuilder.BuildForPath(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(apisJson);
+            Assert.AreEqual(exceptedApisJson, apisJson);
+            Assert.AreEqual(exceptedApisJson.Apis.Count, apisJson.Apis.Count);
+            Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl, apisJson.Apis[0].BaseUrl);
+            Assert.AreEqual(exceptedApisJson.Apis[1].BaseUrl, apisJson.Apis[1].BaseUrl);
+            Assert.AreEqual(exceptedApisJson.Apis[2].BaseUrl, apisJson.Apis[2].BaseUrl);
+        }
+
 
         static ApisJson GetExceptedApisJsonForServerNoSecurity()
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
                 Description = "",
-                Url = EnvironmentVariables.WebServerUri + "apis.json",
+                Url = EnvironmentVariables.PublicWebServerUri + "apis.json",
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
@@ -203,13 +261,13 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "Hello World",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Hello World.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger1 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Hello World.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
             };
             singleApi1.Properties.Add(swagger1);
             
@@ -217,30 +275,88 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "Execution Engine Test",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger2 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
             singleApi2.Properties.Add(swagger2);
             var singleApi3 = new SingleApi
             {
                 Name = "9139Local",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger3 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
             singleApi3.Properties.Add(swagger3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
+            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
+            return exceptedApisJsonForServerNoSecurity;
+        }
+
+        static ApisJson GetExceptedApisJsonForServerSecurityWithPublic()
+        {
+            var exceptedApisJsonForServerNoSecurity = new ApisJson
+            {
+                Name = EnvironmentVariables.PublicWebServerUri,
+                Created = DateTime.Today.Date,
+                Modified = DateTime.Today.Date,
+                Description = "",
+                Url = EnvironmentVariables.PublicWebServerUri + "apis.json",
+                SpecificationVersion = "0.15",
+                Apis = new List<SingleApi>()
+            };
+            var singleApi1 = new SingleApi
+            {
+                Name = "Hello World",
+                Description = "",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
+                Properties = new List<PropertyApi>()
+            };
+            var swagger1 = new PropertyApi
+            {
+                Type = "Swagger",
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
+            };
+            singleApi1.Properties.Add(swagger1);
+            
+            var singleApi2 = new SingleApi
+            {
+                Name = "Execution Engine Test",
+                Description = "",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
+                Properties = new List<PropertyApi>()
+            };
+            var swagger2 = new PropertyApi
+            {
+                Type = "Swagger",
+                Value = EnvironmentVariables.PublicWebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
+            };
+            singleApi2.Properties.Add(swagger2);
+            var singleApi3 = new SingleApi
+            {
+                Name = "9139Local",
+                Description = "",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
+                Properties = new List<PropertyApi>()
+            };
+            var swagger3 = new PropertyApi
+            {
+                Type = "Swagger",
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
+            };
+            singleApi3.Properties.Add(swagger3);
+            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
+            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
             return exceptedApisJsonForServerNoSecurity;
         }
@@ -249,11 +365,11 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
                 Description = "",
-                Url = EnvironmentVariables.WebServerUri + "apis.json",
+                Url = EnvironmentVariables.PublicWebServerUri + "apis.json",
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
@@ -261,13 +377,13 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "Hello World",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Hello World.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger1 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Hello World.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
             };
             singleApi1.Properties.Add(swagger1);
             
@@ -275,13 +391,13 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "9139Local",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger3 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
             singleApi3.Properties.Add(swagger3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
@@ -293,11 +409,11 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
                 Description = "",
-                Url = EnvironmentVariables.WebServerUri + "Acceptance Testing Resources/apis.json",
+                Url = EnvironmentVariables.PublicWebServerUri + "Acceptance Testing Resources/apis.json",
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
@@ -306,26 +422,26 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "Execution Engine Test",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger2 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
             singleApi2.Properties.Add(swagger2);
             var singleApi3 = new SingleApi
             {
                 Name = "9139Local",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger3 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/9139Local.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
             singleApi3.Properties.Add(swagger3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
@@ -337,11 +453,11 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
                 Description = "",
-                Url = EnvironmentVariables.WebServerUri + "Acceptance Testing Resources/Execution Engine/apis.json",
+                Url = EnvironmentVariables.PublicWebServerUri + "Acceptance Testing Resources/Execution Engine/apis.json",
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
@@ -350,13 +466,13 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Name = "Execution Engine Test",
                 Description = "",
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
                 Properties = new List<PropertyApi>()
             };
             var swagger2 = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
             singleApi2.Properties.Add(swagger2);
             

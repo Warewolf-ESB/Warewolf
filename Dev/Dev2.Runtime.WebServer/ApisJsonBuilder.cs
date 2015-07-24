@@ -31,7 +31,7 @@ namespace Dev2.Runtime.WebServer
         {
             var apiJson = new ApisJson
             {
-                Name = Environment.MachineName,
+                Name = EnvironmentVariables.PublicWebServerUri,
                 Description = "",
                 Created = DateTime.Today.Date,
                 Modified = DateTime.Today.Date,
@@ -41,48 +41,50 @@ namespace Dev2.Runtime.WebServer
             IList<IResource> resourceList;
             if(string.IsNullOrEmpty(path))
             {
-                apiJson.Url = EnvironmentVariables.WebServerUri + "apis.json";
-                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID);
+                apiJson.Url = EnvironmentVariables.PublicWebServerUri + "apis.json";
+                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourceType==ResourceType.WorkflowService).ToList();
             }
             else
             {
                 var webPath = path.Replace("\\", "/");
                 var searchPath = path.Replace("/", "\\");
-                apiJson.Url = EnvironmentVariables.WebServerUri + webPath + "/apis.json";
-                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourcePath.Contains(searchPath)).ToList();
+                apiJson.Url = EnvironmentVariables.PublicWebServerUri + webPath + "/apis.json";
+                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourcePath.Contains(searchPath) && resource.ResourceType == ResourceType.WorkflowService).ToList();
             }
-            if(resourceList != null)
+            foreach(var resource in resourceList)
             {
-                foreach(var resource in resourceList)
+                var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
+                var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
+                if(canView&&canExecute)
                 {
-                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
-                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
-                    if(canView&&canExecute)
-                    {
-                        apiJson.Apis.Add(CreateSingleApiForResource(resource));
-                    }
+                    apiJson.Apis.Add(CreateSingleApiForResource(resource,false));
+                }
+
+                var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal,AuthorizationContext.Execute, resource.ResourceID.ToString());
+                var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal,AuthorizationContext.View, resource.ResourceID.ToString());
+                if (publicCanExecute && publicCanView)
+                {
+                    apiJson.Apis.Add(CreateSingleApiForResource(resource, true));
                 }
             }
             return apiJson;
         }
 
-        SingleApi CreateSingleApiForResource(IResource resource)
+        SingleApi CreateSingleApiForResource(IResource resource,bool isPublic)
         {
-            if(resource == null)
-            {
-                throw new ArgumentNullException("resource");
-            }
+
             var webPath = resource.ResourcePath.Replace("\\","/");
+            var accessPath = isPublic?"public/":"secure/";
             var singleApi = new SingleApi
             {
                 Name = resource.ResourceName,
-                BaseUrl = EnvironmentVariables.WebServerUri + "public/" + webPath + ".json",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + accessPath + webPath + ".json",
                 Properties = new List<PropertyApi>()
             };
             var propertyApi = new PropertyApi
             {
                 Type = "Swagger",
-                Value = EnvironmentVariables.WebServerUri + "public/" + webPath + ".api"
+                Value = EnvironmentVariables.PublicWebServerUri + accessPath + webPath + ".api"
             };
             singleApi.Properties.Add(propertyApi);
             return singleApi;

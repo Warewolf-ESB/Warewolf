@@ -58,10 +58,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
  
@@ -81,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors);
+                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors, update);
 
                     allErrors.MergeErrors(errors);
 
@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-                                            dataObject.Environment.Assign(region, value);
+                                            dataObject.Environment.Assign(region, value, update);
                                         }
                                     }
                                 }
@@ -113,15 +113,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            dataObject.Environment.Assign(region, "");
+                            dataObject.Environment.Assign(region, "",update);
                         }
                     }
                     if (dataObject.IsDebugMode())
-                    {
-                        if (!String.IsNullOrEmpty(Result))
                         {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
-                        }
+                        if (!String.IsNullOrEmpty(Result))
+                            {
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            }
                     }
                 }
                 catch (Exception ex)
@@ -141,8 +141,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.Before, update);
+                        DispatchDebugState(dataObject, StateType.After, update);
                     }
                 }
             }
@@ -171,8 +171,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="error">The error.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error);
+        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
         #region Properties
 
@@ -241,7 +242,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -250,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
 
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -264,27 +265,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Internal Methods
 
-        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
+        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment));
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
 
-        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment)
+        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment));
+            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
 
         #endregion
 
-        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment)
+        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment));
+            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment, update));
             AddDebugInputItemPassword("Password", Password);
         }
 
-        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName)
+        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment));
+            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment, update));
             AddDebugInputItemPassword("Destination Password", destinationPassword);
         }
 

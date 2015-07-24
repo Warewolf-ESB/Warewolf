@@ -3725,8 +3725,8 @@ namespace Dev2.Core.Tests.Workflows
             var workflowLink = viewModel.GetWorkflowLink();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>", displayWorkflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", displayWorkflowLink);
         }
 
         [TestMethod]
@@ -3780,8 +3780,8 @@ namespace Dev2.Core.Tests.Workflows
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>", displayWorkflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", displayWorkflowLink);
             mockPopController.Verify(controller => controller.ShowNoInputsSelectedWhenClickLink(), Times.Once());
         }
 
@@ -3844,8 +3844,8 @@ namespace Dev2.Core.Tests.Workflows
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=&scalar2=&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=&scalar2=", displayWorkflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=&scalar2=&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=&scalar2=", displayWorkflowLink);
             mockPopController.Verify(controller => controller.ShowNoInputsSelectedWhenClickLink(), Times.Never());
         }
 
@@ -3902,8 +3902,8 @@ namespace Dev2.Core.Tests.Workflows
             var workflowLink = viewModel.GetWorkflowLink();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
             workflowInputDataViewModel.WorkflowInputs[0].Value = "";
             workflowInputDataViewModel.WorkflowInputs[1].Value = "";
             workflowInputDataViewModel.DoSaveActions();

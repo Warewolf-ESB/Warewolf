@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
@@ -17,7 +19,7 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
+        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList,int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -35,16 +37,17 @@ namespace Dev2
                     var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
                     try
                     {
-                        warewolfEvalResult = environment.Eval(name);
+                        warewolfEvalResult = environment.Eval(name, update);
                     }
-                    catch
+                    // ReSharper disable once RESP510236
+                    // ReSharper disable once RESP510241
+                    catch(Exception e)
                     {
-                        //Possible that the output defs have variables that were never initialised (i.e. null)
+                        Dev2Logger.Log.Debug("Null Variable",e);
                     }
                     var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
-
                 }
                 while (warewolfListIterators.HasMoreData())
                 {
@@ -70,10 +73,9 @@ namespace Dev2
 
             }
 
-
             foreach (var output in scalarOutputs)
             {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -96,7 +98,7 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -113,7 +115,7 @@ namespace Dev2
                 Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name, update));
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
@@ -122,27 +124,23 @@ namespace Dev2
                 result.Append(groupedRecSet.Key);
                 result.Append("\" : [");
                 
-                
                 while (warewolfListIterators.HasMoreData())
                 {
                     int colIdx = 0;
                     result.Append("{");
                     foreach (var namedIterator in iterators)
                     {
-                        
                         var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
                         result.Append("\"");
                         result.Append(namedIterator.Key);
                         result.Append("\":\"");
                         result.Append(value);
                         result.Append("\"");
-
                         colIdx++;
                         if (colIdx < iterators.Count)
                         {
                             result.Append(",");
                         }
-
                     }
                     if (warewolfListIterators.HasMoreData())
                     {
@@ -157,13 +155,12 @@ namespace Dev2
                 {
                     result.Append(",");
                 }
-
             }
 
             var scalars = scalarOutputs as string[] ?? scalarOutputs.ToArray();
             foreach (var output in scalars)
             {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -188,7 +185,7 @@ namespace Dev2
             return jsonOutputFromEnvironment;
         }
 
-        public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
+        public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
 
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
@@ -202,14 +199,13 @@ namespace Dev2
                 {
                     XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                     var dataListTO = new DataListTO(dataList,true);
-                    TryConvert(dataObject, children, dataListTO.Inputs);
+                    TryConvert(dataObject, children, dataListTO.Inputs, update);
                 }
             }
         }
 
-        public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
+        public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList,int update)
         {
-
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
             if(toLoad.IsJSON())
             {
@@ -228,15 +224,14 @@ namespace Dev2
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                 var dataListTO = new DataListTO(dataList);
-                TryConvert(dataObject, children, dataListTO.Inputs);
+                TryConvert(dataObject, children, dataListTO.Inputs, update);
             }
         }
         
-        public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
+        public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
-
-            string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
-            XmlDocument xDoc = new XmlDocument();
+            var toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
+            var xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
@@ -244,66 +239,61 @@ namespace Dev2
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                 var dataListTO = new DataListTO(dataList);
-                TryConvert(dataObject, children, dataListTO.Outputs);
+                TryConvert(dataObject, children, dataListTO.Outputs, update);
             }
         }
 
-        static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int level = 0)
+        static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
         {
             try
             {
                 // spin through each element in the XML
             foreach (XmlNode c in children)
             {
-                if (c.Name != GlobalConstants.NaughtyTextNode)
+                    if(c.Name != GlobalConstants.NaughtyTextNode)
                 {
-                    // scalars and recordset fetch
-                   if (level>0)
+                        if(level > 0)
                     {
                         var c1 = c;
                         var scalars = inputDefs.Where(definition => definition == c1.Name);
                         var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
                         var scalarDefs = scalars as string[] ?? scalars.ToArray();
                         var recSetDefs = recSets as string[] ?? recSets.ToArray();
-                        if (recSetDefs.Count() != 0)
+                            if(recSetDefs.Count() != 0)
                         {
-                            // fetch recordset index
-                            // process recordset
                             var nl = c.ChildNodes;
-                            foreach (XmlNode subc in nl)
+                                foreach(XmlNode subc in nl)
                             {
-                                // Extract column being mapped to ;)
-                                foreach (var definition in recSetDefs)
+                                    foreach(var definition in recSetDefs)
                                 {
-                                    if (DataListUtil.IsValueRecordset(definition))
+                                        if(DataListUtil.IsValueRecordset(definition))
                                     {
-                                        if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
+                                            if(DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                                         {
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
                                             var a = subc.InnerXml;
                                             a = RemoveXMLPrefix(a);
-                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a));
+                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a),update);
                                      
                                         }
                                     }
                                 }
                             }
                         }
-                        if (scalarDefs.Count() != 0)
+                            if(scalarDefs.Count() != 0)
                         {
                             // fetch recordset index
                             // process recordset
                             var a = c.InnerXml;
                             a = RemoveXMLPrefix(a);
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a);
+                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a,update);
                         }
                     }
                     else
                     {
-                        if (level == 0)
+                            if(level == 0)
                         {
-                            // Only recurse if we're at the first level!!
-                            TryConvert(dataObject, c.ChildNodes, inputDefs, ++level);
+                                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
                         }
                     }
                 }
@@ -314,19 +304,16 @@ namespace Dev2
                 dataObject.Environment.CommitAssign();
             }
         }
-
-        // ReSharper disable once InconsistentNaming
         static string RemoveXMLPrefix(string a)
         {
-            if(a.StartsWith(GlobalConstants.XMLPrefix))
+            if (a.StartsWith(GlobalConstants.XMLPrefix))
             {
                 a = a.Replace(GlobalConstants.XMLPrefix, "");
                 a = Encoding.UTF8.GetString(Convert.FromBase64String(a));
             }
             return a;
         }
-
-        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList)
+        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList, int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -338,10 +325,10 @@ namespace Dev2
             {
                 var i = 1;
                 var warewolfListIterators = new WarewolfListIterator();
-                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
+                var iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name, update));
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
@@ -373,7 +360,7 @@ namespace Dev2
 
             foreach (var output in scalarOutputs)
             {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -396,62 +383,181 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetSwaggerOutputForService(IDSFDataObject dataObject, string dataList)
+        public static string GetSwaggerOutputForService(IResource resource, string dataList)
+        {
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            if(string.IsNullOrEmpty(dataList))
+            {
+                throw new ArgumentNullException("dataList");
+            }
+            List<JObject> parameters;
+            bool isScalarInputOnly;
+            var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
+            var definitionObject = GetParametersDefinition(out parameters, dataList, out isScalarInputOnly);
+            var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" } , {"in","query"},{"required",true},{"schema",new JObject{{"$ref","#/definitions/DataList"}}}});
+            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(resource, parametersForSwagger);
+            var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject);
+            var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
+            return resultString;
+        }
+
+        static JToken GetParametersDefinition(out List<JObject> parameters, string dataList, out bool isScalarInputOnly)
         {
             var dataListTO = new DataListTO(dataList);
-
             var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
-
+            var recSetInputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-
-            var parameters = new List<dynamic>();
-            foreach (var scalarInput in scalarInputs)
+            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
+            parameters = null;
+            isScalarInputOnly = true;
+            var dataListSchema = new Dictionary<string, Schema>
             {
-                parameters.Add(new
                 {
-                    name = scalarInput,
-                    @in = "query",
-                    required = true,
-                    type = "string"
-                });
-            }
-            dynamic swaggerObject = new
-            {
-                swagger = 2,
-                info = new
-                {
-                    title = "",
-                    description = "",
-                    version = ""
-                },
-                host = EnvironmentVariables.WebServerUri,
-                basePath = "/",
-                schemes = new[] { "http", "https" },
-                produces = "application/json",
-                paths = new
-                {
-                    dataObject.ServiceName,
-                    get = new
+                    "Output", new Schema
                     {
-                        summary = "",
-                        description = "",
-                        parameters=parameters
+                        Type = "object",
+                        Properties = BuildDefinition(scalarOutputs, recSetOutputs)
                     }
-                },
-                responses = new
-                {
-                    success=scalarOutputs
                 }
-
             };
-            
+
+            if(recSetInputs.Any())
+            {
+                dataListSchema.Add("DataList", new Schema
+                {
+                    Type = "object",
+                    Properties = BuildDefinition(scalarInputs, recSetInputs)
+                });
+                isScalarInputOnly = false;
+            }
+            else
+            {
+                parameters = scalarInputs.Select(scalarInput => new JObject
+                {
+                    { "name", scalarInput }, { "in", "query" }, { "required", true }, { "type", "string" }
+                }).ToList();
+    }
+            var serialized = JsonConvert.SerializeObject(dataListSchema);
+            JToken des = JsonConvert.DeserializeObject(serialized) as JToken;
+            var definitionObject = des;
+            return definitionObject;
+        }
+
+        static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
+        {
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Newtonsoft.Json.Formatting.Indented };
-            converter.Serialize(jsonTextWriter, swaggerObject);
+            converter.Serialize(jsonTextWriter, jsonSwaggerObject);
             jsonTextWriter.Flush();
-            return result.ToString();
+            var resultString = Regex.Replace(result.ToString(), @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+            return resultString;
         }
+
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject)
+        {
+            var jsonSwaggerObject = new JObject
+            {
+                { "swagger", new JValue(2) },
+                { "info", jsonSwaggerInfoObject },
+                { "host", new JValue(EnvironmentVariables.PublicWebServerUri) },
+                { "basePath", new JValue("/") },
+                { "schemes", new JArray("http", "https") },
+                { "produces", new JValue("application/json") },
+                { "paths", jsonSwaggerPathObject },
+                { "responses", jsonSwaggerResponsesObject },
+                { "definitions", definitionObject }
+            };
+            return jsonSwaggerObject;
+        }
+
+        static JObject BuildJsonSwaggerResponsesObject()
+        {
+            var jsonSwaggerResponsesObject = new JObject
+            {
+                {
+                    "200", new JObject
+                    {
+                        {
+                            "schema", new JObject
+                            {
+                                { "$ref", "#/definition/Output" }
+                            }
+                        }
+                    }
+                }
+            };
+            return jsonSwaggerResponsesObject;
+        }
+
+        static JObject BuildJsonSwaggerPathObject(IResource resource, JToken parametersForSwagger)
+        {
+            var jsonSwaggerPathObject = new JObject
+            {
+                { "serviceName", new JValue(resource.ResourceName) },
+                {
+                    "get", new JObject
+                    {
+                        { "summary", new JValue("") },
+                        { "description", new JValue("") },
+                        { "parameters", parametersForSwagger }
+                    }
+                }
+            };
+            return jsonSwaggerPathObject;
+        }
+
+        static JObject BuildJsonSwaggerInfoObject(IResource resource)
+        {
+            var jsonSwaggerInfoObject = new JObject
+            {
+                { "title", new JValue("") },
+                { "description", new JValue("") },
+                { "version", new JValue(resource.VersionInfo.VersionNumber) }
+            };
+            return jsonSwaggerInfoObject;
+        }
+
+        static Dictionary<string,Schema> BuildDefinition(IEnumerable<string> scalars, IEnumerable<string> recSets)
+        {
+            var groupedRecSets = recSets.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            var recSetItems = scalars.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema { Type = "string" });
+            foreach(var groupedRecSet in groupedRecSets)
+            {
+                var recSetName = groupedRecSet.Key;
+                var propObject = BuildPropertyDefinition(groupedRecSet);
+
+                var recObject = new Schema
+                {
+                    Type = "object",
+                    Properties = propObject
+                };
+                recSetItems.Add(recSetName,recObject);                
+            }
+            return recSetItems;
+        }
+
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        static Dictionary<string,Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet)
+        {
+            return groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
+        }
+    }
+
+    public class Schema
+    {
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("properties", NullValueHandling = NullValueHandling.Ignore)]
+        public IDictionary<string, Schema> Properties { get; set; }
+
     }
 
 

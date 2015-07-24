@@ -66,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var dbServiceExecution = new Mock<IServiceExecution>();
             dbServiceExecution.Setup(s => s.DataObj).Returns(dataObj.Object);
-            dbServiceExecution.Setup(s => s.Execute(out errors)).Verifiable();
+            dbServiceExecution.Setup(s => s.Execute(out errors, 0)).Verifiable();
 
             var databaseActivity = new MockDsfDatabaseActivity(dbServiceExecution.Object);
 
@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             databaseActivity.MockExecutionImpl(mockEsb.Object, dataObj.Object, string.Empty, string.Empty, out errors);
 
             //assert
-            dbServiceExecution.Verify(s => s.Execute(out errors));
+            dbServiceExecution.Verify(s => s.Execute(out errors, 0));
         }
 
         [TestMethod]
