@@ -804,9 +804,9 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     var messageBuilder = new StringBuilder();
                     messageBuilder.AppendLine("The destination server selected is not connected via https");
-                    messageBuilder.AppendLine("This means that all sensitive information such as passwords will be not be encrypted during deployment.");
+                    messageBuilder.AppendLine("This means that all sensitive information such as passwords will not be encrypted during deployment.");
                     messageBuilder.AppendLine("Are you sure you wish to continue deployment?");
-                    var messageBoxResult = popupController.Show(messageBuilder.ToString(), "Insecure Destionation Server", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, null);
+                    var messageBoxResult = popupController.Show(messageBuilder.ToString(), "Unsecure Destination Server", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, null);
                     if (messageBoxResult == MessageBoxResult.No || messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
                     {
                         return;
