@@ -67,7 +67,7 @@ namespace Dev2.Activities.PathOperations
             ColItr.AddVariableToIterateOn(unameItr);
 
             
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
             
@@ -75,7 +75,7 @@ namespace Dev2.Activities.PathOperations
             ColItr.AddVariableToIterateOn(desunameItr);
 
             
-            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedDestinationPassword));
+            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
 
             AddItemsToIterator(dataObject.Environment, update);
@@ -221,6 +221,7 @@ namespace Dev2.Activities.PathOperations
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
         protected string DecryptedDestinationPassword
         {
             get

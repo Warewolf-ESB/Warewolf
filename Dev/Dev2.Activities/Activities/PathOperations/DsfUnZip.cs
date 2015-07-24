@@ -71,6 +71,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
         protected string DecryptedArchivePassword
         {
             get
@@ -110,7 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void AddItemsToIterator(IExecutionEnvironment environment,int update)
         {
-            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword));
+            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword,update));
             ColItr.AddVariableToIterateOn(_archPassItr);
         }
 

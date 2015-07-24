@@ -95,6 +95,7 @@ namespace Dev2.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
         protected string DecryptedPassword
         {
             get
@@ -223,7 +224,7 @@ namespace Dev2.Activities
                 var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(fromAccountItr);
 
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword));
+                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
                 colItr.AddVariableToIterateOn(passwordItr);
 
                 var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));

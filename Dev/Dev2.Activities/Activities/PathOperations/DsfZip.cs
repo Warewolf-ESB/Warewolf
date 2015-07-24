@@ -85,6 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
         protected string DecryptedArchivePassword
         {
             get
@@ -126,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _archNameItr = new WarewolfIterator(environment.Eval(ArchiveName, update));
             ColItr.AddVariableToIterateOn(_archNameItr);
 
-            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword));
+            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword,update));
             ColItr.AddVariableToIterateOn(_archPassItr);
 
         }

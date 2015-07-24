@@ -110,7 +110,7 @@ namespace Dev2.Activities
                 _debugInputs = result;
                 DispatchDebugState(dataObject, StateType.Before, 0);
                 DispatchDebugState(dataObject, StateType.After, 0);
-                if(_inner != null)
+                if(Inner != null)
                 {
                     Inner.SetDebugInputs(_debugInputs);
                 }
