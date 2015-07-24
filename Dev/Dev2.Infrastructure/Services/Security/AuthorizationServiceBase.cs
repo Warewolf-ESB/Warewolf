@@ -329,34 +329,43 @@ namespace Dev2.Services.Security
 
         bool DoFallBackCheck(IPrincipal principal)
         {
-            var username = principal.Identity.Name;
-            var theUser = username;
-            var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
-            if (domainChar >= 0)
+            if(principal != null)
             {
-                theUser = username.Substring((domainChar + 1));
-            }
-            var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-            {
-                ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                if(principal.Identity != null)
                 {
-                    
-                    if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole)
+                    var username = principal.Identity.Name;
+                    if(username != null)
                     {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
-
-                        if (members != null)
+                        var theUser = username;
+                        var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+                        if (domainChar >= 0)
                         {
-                            foreach (var member in (IEnumerable)members)
+                            theUser = username.Substring((domainChar + 1));
+                        }
+                        var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
+                        using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                        {
+                            ad.Children.SchemaFilter.Add("group");
+                            foreach (DirectoryEntry dChildEntry in ad.Children)
                             {
-                                using (var memberEntry = new DirectoryEntry(member))
+                    
+                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole)
                                 {
-                                    if (memberEntry.Name == theUser)
+                                    // Now check group membership ;)
+                                    var members = dChildEntry.Invoke("Members");
+
+                                    if (members != null)
                                     {
-                                        return true;
+                                        foreach (var member in (IEnumerable)members)
+                                        {
+                                            using (var memberEntry = new DirectoryEntry(member))
+                                            {
+                                                if (memberEntry.Name == theUser)
+                                                {
+                                                    return true;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
