@@ -120,7 +120,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
 
-                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.Duration, update);
                 }
                 if (resultval)
                 {
