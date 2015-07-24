@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Common.DateAndTime
 {
@@ -19,11 +20,11 @@ namespace Dev2.Common.DateAndTime
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> _dateTimeFormatParts =
+        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
             new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
 
         //27.09.2012: massimo.guerrera - Added for the new way of doing time modification
-        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> _timeModifiers =
+        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
             new Dictionary<string, Func<DateTime, int, DateTime>>();
 
         private static IList<string> _listOfModifierTypes = new List<string>();
@@ -79,7 +80,7 @@ namespace Dev2.Common.DateAndTime
                 {
                     //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
                     Func<DateTime, int, DateTime> funcToExecute;
-                    if (_timeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                    if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
                         funcToExecute != null)
                     {
                         tmpDateTime = funcToExecute(tmpDateTime, dateTimeTO.TimeModifierAmount);
@@ -138,7 +139,7 @@ namespace Dev2.Common.DateAndTime
                             else
                             {
                                 Func<IDateTimeResultTO, DateTime, string> func;
-                                if (_dateTimeFormatParts.TryGetValue(formatPart.Value, out func))
+                                if (DateTimeFormatParts.TryGetValue(formatPart.Value, out func))
                                 {
                                     result += func(dateTimeResultTO, tmpDateTime);
                                 }
@@ -171,30 +172,30 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         private static void CreateDateTimeFormatParts()
         {
-            _dateTimeFormatParts.Add("yy", Format_yy);
-            _dateTimeFormatParts.Add("yyyy", Format_yyyy);
-            _dateTimeFormatParts.Add("mm", Format_mm);
-            _dateTimeFormatParts.Add("m", Format_m);
-            _dateTimeFormatParts.Add("M", Format_M);
-            _dateTimeFormatParts.Add("MM", Format_MM);
-            _dateTimeFormatParts.Add("d", Format_d);
-            _dateTimeFormatParts.Add("dd", Format_dd);
-            _dateTimeFormatParts.Add("DW", Format_DW);
-            _dateTimeFormatParts.Add("dW", Format_dW);
-            _dateTimeFormatParts.Add("dw", Format_dw);
-            _dateTimeFormatParts.Add("dy", Format_dy);
-            _dateTimeFormatParts.Add("w", Format_w);
-            _dateTimeFormatParts.Add("ww", Format_ww);
-            _dateTimeFormatParts.Add("24h", Format_24h);
-            _dateTimeFormatParts.Add("12h", Format_12h);
-            _dateTimeFormatParts.Add("min", Format_min);
-            _dateTimeFormatParts.Add("ss", Format_ss);
-            _dateTimeFormatParts.Add("sp", Format_sp);
-            _dateTimeFormatParts.Add("am/pm", Format_am_pm);
-            _dateTimeFormatParts.Add("Z", Format_Z);
-            _dateTimeFormatParts.Add("ZZ", Format_ZZ);
-            _dateTimeFormatParts.Add("ZZZ", Format_ZZZ);
-            _dateTimeFormatParts.Add("Era", Format_Era);
+            DateTimeFormatParts.Add("yy", Format_yy);
+            DateTimeFormatParts.Add("yyyy", Format_yyyy);
+            DateTimeFormatParts.Add("mm", Format_mm);
+            DateTimeFormatParts.Add("m", Format_m);
+            DateTimeFormatParts.Add("M", Format_M);
+            DateTimeFormatParts.Add("MM", Format_MM);
+            DateTimeFormatParts.Add("d", Format_d);
+            DateTimeFormatParts.Add("dd", Format_dd);
+            DateTimeFormatParts.Add("DW", Format_DW);
+            DateTimeFormatParts.Add("dW", Format_dW);
+            DateTimeFormatParts.Add("dw", Format_dw);
+            DateTimeFormatParts.Add("dy", Format_dy);
+            DateTimeFormatParts.Add("w", Format_w);
+            DateTimeFormatParts.Add("ww", Format_ww);
+            DateTimeFormatParts.Add("24h", Format_24h);
+            DateTimeFormatParts.Add("12h", Format_12h);
+            DateTimeFormatParts.Add("min", Format_min);
+            DateTimeFormatParts.Add("ss", Format_ss);
+            DateTimeFormatParts.Add("sp", Format_sp);
+            DateTimeFormatParts.Add("am/pm", Format_am_pm);
+            DateTimeFormatParts.Add("Z", Format_Z);
+            DateTimeFormatParts.Add("ZZ", Format_ZZ);
+            DateTimeFormatParts.Add("ZZZ", Format_ZZZ);
+            DateTimeFormatParts.Add("Era", Format_Era);
         }
 
         //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
@@ -203,16 +204,16 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         private static void CreateTimeModifierTypes()
         {
-            _timeModifiers.Add("", null);
-            _timeModifiers.Add("Years", AddYears);
-            _timeModifiers.Add("Months", AddMonths);
-            _timeModifiers.Add("Days", AddDays);
-            _timeModifiers.Add("Weeks", AddWeeks);
-            _timeModifiers.Add("Hours", AddHours);
-            _timeModifiers.Add("Minutes", AddMinutes);
-            _timeModifiers.Add("Seconds", AddSeconds);
-            _timeModifiers.Add("Split Secs", AddSplits);
-            TimeModifierTypes = new List<string>(_timeModifiers.Keys);
+            TimeModifiers.Add("", null);
+            TimeModifiers.Add("Years", AddYears);
+            TimeModifiers.Add("Months", AddMonths);
+            TimeModifiers.Add("Days", AddDays);
+            TimeModifiers.Add("Weeks", AddWeeks);
+            TimeModifiers.Add("Hours", AddHours);
+            TimeModifiers.Add("Minutes", AddMinutes);
+            TimeModifiers.Add("Seconds", AddSeconds);
+            TimeModifiers.Add("Split Secs", AddSplits);
+            TimeModifierTypes = new List<string>(TimeModifiers.Keys);
         }
 
         #region Format Methods

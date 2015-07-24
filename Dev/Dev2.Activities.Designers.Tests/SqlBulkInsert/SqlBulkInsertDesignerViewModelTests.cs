@@ -1174,7 +1174,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 {
                     var tables = sources[src];
 
-                    var table = tables.Items.First(t => t.TableName == tableName.Trim(new[] { '"' }));
+                    var table = tables.Items.First(t => t.TableName == tableName.Trim('"'));
                     var columnList = new DbColumnList();
                     columnList.Items.AddRange(table.Columns);
                     if (!string.IsNullOrEmpty(columnListErrors))

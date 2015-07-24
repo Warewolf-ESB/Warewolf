@@ -12,13 +12,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces;
-using Dev2.Data.MathOperations;
+using Dev2.MathOperations;
 
-namespace Dev2.MathOperations {
+namespace Dev2.Data.MathOperations {
     public static class MathOpsFactory {
 
         private static string _mathFnDataList = string.Empty;
-        private static IList<string> _rawMathFnList = new List<string>();
+        private static readonly IList<string> RawMathFnList = new List<string>();
 
         public static string FetchMathFnDataList() {
             // we need to init it ;)
@@ -30,11 +30,11 @@ namespace Dev2.MathOperations {
 
         public static IList<string> FetchMathFnStringList() {
             // we need to init it ;)
-            if (_rawMathFnList.Count == 0) {
+            if (RawMathFnList.Count == 0) {
                 InitMathFnRawData();
             }
 
-            return _rawMathFnList;
+            return RawMathFnList;
         }
 
         public static IFunctionEvaluator CreateFunctionEvaluator() {
@@ -66,7 +66,7 @@ namespace Dev2.MathOperations {
 
             // build list
             foreach (IFunction f in fns) {
-                _rawMathFnList.Add(f.FunctionName);
+                RawMathFnList.Add(f.FunctionName);
                 tmp.Append("<");
                 tmp.Append(f.FunctionName);
                 tmp.Append("/>");

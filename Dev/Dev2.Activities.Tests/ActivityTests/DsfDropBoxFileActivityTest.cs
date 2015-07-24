@@ -9,13 +9,13 @@ using DropNet;
 using DropNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     public class DsfDropBoxFileActivityTest
     {
-        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
@@ -67,7 +67,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
-        // ReSharper disable InconsistentNaming
         public void DsfDropBoxFileActivity_ExecuteRead_Sucess()
         {
             //------------Setup for test--------------------------
@@ -94,7 +93,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
-        // ReSharper disable InconsistentNaming
         public void DsfDropBoxFileActivity_ExecuteSourceNotFound_Failure()
         {
             //------------Setup for test--------------------------
@@ -118,7 +116,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
-        // ReSharper disable InconsistentNaming
         public void DsfDropBoxFileActivity_NoOperation_Nothing_Happens()
         {
             //------------Setup for test--------------------------

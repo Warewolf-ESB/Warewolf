@@ -14,6 +14,7 @@ using System.Data;
 using System.Linq;
 using Dev2.Converters.Graph.DataTable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 {
@@ -30,7 +31,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             //------------Setup for test--------------------------
             var dataTableMapper = new DataTableMapper();
             //------------Execute Test---------------------------
-            dataTableMapper.Map(null).ToList();
+            dataTableMapper.Map(null);
 
         }
 
@@ -45,9 +46,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 
-            obj.Rows.Add(new object[] { "a", "b" });
-            obj.Rows.Add(new object[] { "c", "d" });
-            obj.Rows.Add(new object[] { "e", "f" });
+            obj.Rows.Add("a", "b");
+            obj.Rows.Add("c", "d");
+            obj.Rows.Add("e", "f");
 
             //------------Execute Test---------------------------
             var result = dataTableMapper.Map(obj).ToList();
@@ -71,7 +72,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             //------------Setup for test--------------------------
 
 
-            var htmlFragment = @"<html xmlns=""http://www.w3.org/1999/xhtml"">
+            const string htmlFragment = @"<html xmlns=""http://www.w3.org/1999/xhtml"">
 <head><title>
             All Build Definitions - Microsoft Team Foundation Server
 </title>
@@ -82,8 +83,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 
-            obj.Rows.Add(new object[] { "a", "b" });
-            obj.Rows.Add(new object[] { "c", htmlFragment });
+            obj.Rows.Add("a", "b");
+            obj.Rows.Add("c", htmlFragment);
 
             //------------Execute Test---------------------------
             var result = dataTableMapper.Map(obj).ToList();

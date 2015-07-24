@@ -59,7 +59,7 @@ namespace Dev2.Activities
             return null;
         }
 
-        private  Dev2Decision parseDecision(IExecutionEnvironment env , Dev2Decision decision)
+        private  Dev2Decision ParseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
             var col1 =env.EvalAsList(decision.Col1);
             var col2 = env.EvalAsList(decision.Col2);
@@ -85,7 +85,7 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before);
                 }
 
-                var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
+                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a));
 
 
                 var factory = Dev2DecisionFactory.Instance();

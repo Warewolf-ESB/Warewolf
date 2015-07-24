@@ -13,8 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
+using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.MathOperationTest
 {
@@ -42,7 +44,7 @@ namespace Dev2.Tests.MathOperationTest
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
 
             functionRepo.Load();
-            IEnumerable<IFunction> functions = functionRepo.All();
+            functionRepo.All();
 
             Assert.IsTrue(functionRepo.All().Count > 0);
         }
@@ -92,7 +94,7 @@ namespace Dev2.Tests.MathOperationTest
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            ICollection<IFunction> functions = functionRepo.Find(null);
+            functionRepo.Find(null);
         }
 
         #endregion Find Tests
@@ -152,10 +154,10 @@ namespace Dev2.Tests.MathOperationTest
         public void FunctionRepository_Save_ValidFunction_Expected_RepoUpdatedWithNewFunction()
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
-            string functionName = "TestFunction";
+            const string functionName = "TestFunction";
             List<string> arguments = new List<string> { "args" };
             List<string> argumentDescriptions = new List<string> { "the first argument" };
-            string description = "Test Description";
+            const string description = "Test Description";
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
 
@@ -178,11 +180,9 @@ namespace Dev2.Tests.MathOperationTest
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
 
-
-            IFunction myFunction = null;
             try
             {
-                functionRepo.Save(myFunction);
+                functionRepo.Save((IFunction)null);
             }
             catch(ArgumentNullException)
             {
@@ -202,12 +202,12 @@ namespace Dev2.Tests.MathOperationTest
         public void FunctionRepository_SaveCollection_ValidFunction_Expected_RepoUpdatedWithNewFunction()
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
-            string functionName = "TestFunction";
+            const string functionName = "TestFunction";
             List<string> arguments = new List<string> { "args" };
             List<string> argumentDescriptions = new List<string> { "the first argument" };
-            string description = "Test Description";
+            const string description = "Test Description";
 
-            string function2Name = "TestFunction2";
+            const string function2Name = "TestFunction2";
 
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
@@ -255,9 +255,8 @@ namespace Dev2.Tests.MathOperationTest
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
             int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
-
-            ICollection<IFunction> functionList = null;
-            functionRepo.Save(functionList);
+            functionRepo.Save((ICollection<IFunction>)null);
+            Assert.IsNotNull(beforeEmptySave);
         }
 
         #endregion Save Collection Tests
@@ -271,10 +270,10 @@ namespace Dev2.Tests.MathOperationTest
         public void FunctionRepository_Remove_ValidFunction_Expected_FunctionRemovedFromRepo()
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
-            string functionName = "TestFunction";
+            const string functionName = "TestFunction";
             List<string> arguments = new List<string> { "args" };
             List<string> argumentDescriptions = new List<string> { "the first argument" };
-            string description = "Test Description";
+            const string description = "Test Description";
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
 
@@ -300,9 +299,7 @@ namespace Dev2.Tests.MathOperationTest
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
 
-
-            IFunction myFunction = null;
-            functionRepo.Remove(myFunction);
+            functionRepo.Remove((IFunction)null);
         }
 
         #endregion Remove Tests
@@ -355,8 +352,8 @@ namespace Dev2.Tests.MathOperationTest
             functionRepo.Load();
             int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
-            ICollection<IFunction> functionList = null;
-            functionRepo.Remove(functionList);
+            functionRepo.Remove((ICollection<IFunction>)null);
+            Assert.IsNotNull(beforeEmptySave);
         }
 
         #endregion Remove Collection Tests

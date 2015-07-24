@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
     [TestClass]
@@ -105,7 +106,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = JsonNavigator.SelectScalar(namePath).ToString();
-            string expected = "Dev2";
+            const string expected = "Dev2";
 
             Assert.AreEqual(expected, actual);
         }
@@ -123,7 +124,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = JsonNavigator.SelectScalar(namePath).ToString();
-            string expected = "Joe";
+            const string expected = "Joe";
 
             Assert.AreEqual(expected, actual);
         }
@@ -142,7 +143,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = JsonNavigator.SelectScalar(namePath).ToString().Trim();
-            string expected = "RandomData1";
+            const string expected = "RandomData1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -165,7 +166,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = string.Join("|", JsonNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "RandomData|RandomData1";
+            const string expected = "RandomData|RandomData1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -183,7 +184,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = string.Join("|", JsonNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Dev|Accounts";
+            const string expected = "Dev|Accounts";
 
             Assert.AreEqual(expected, actual);
         }
@@ -201,7 +202,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = string.Join("|", JsonNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Eat lots of cake";
+            const string expected = "Eat lots of cake";
 
             Assert.AreEqual(expected, actual);
         }
@@ -220,7 +221,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             JsonNavigator JsonNavigator = new JsonNavigator(testData);
 
             string actual = string.Join("|", JsonNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Brendon|Jayd|Bob|Joe";
+            const string expected = "Brendon|Jayd|Bob|Joe";
 
             Assert.AreEqual(expected, actual);
         }
@@ -242,7 +243,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2|Dev2^Dev|Accounts";
+            const string expected = "Dev2|Dev2^Dev|Accounts";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -266,7 +267,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev|Accounts||^Roofs Inc.|Glass Inc.|Doors Inc.|Cakes Inc.";
+            const string expected = "Dev|Accounts||^Roofs Inc.|Glass Inc.|Doors Inc.|Cakes Inc.";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -292,7 +293,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData\r\n    ,\r\n        RandomData1|||";
+            const string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData\r\n    ,\r\n        RandomData1|||";
             string actual = string.Join("|", data[path3].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path2].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -314,7 +315,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Brendon|Jayd|Bob|Joe";
+            const string expected = "Brendon|Jayd|Bob|Joe";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -336,7 +337,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2";
+            const string expected = "Dev2";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);

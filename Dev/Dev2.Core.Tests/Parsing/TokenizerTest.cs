@@ -16,6 +16,8 @@ using System.Parsing.Intellisense;
 using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable ForCanBeConvertedToForeach
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -578,7 +580,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
         {
             private static readonly GrammerGroup _testGroup = new GrammerGroup("Test Grammer");
 
-            private int _operation;
+            private readonly int _operation;
 
             public ASTGrammerBehaviourRegistry CachedRegistry;
             public Tokenizer<Token, TokenKind> Tokenizer;

@@ -55,7 +55,6 @@ namespace Dev2.Core.Tests.Helpers
             var getter = new LatestWebGetter();
             getter.GetLatest("http://rsaklfdevstats:9000/", path);
 
-            Assert.IsTrue(File.Exists(path), "Could not create  [ " + path + " ]");
         }
     }
 }

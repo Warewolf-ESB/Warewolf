@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var userParts = emailSource.UserName.Split(new[] { '@' });
+                var userParts = emailSource.UserName.Split('@');
 
                 var smtp = new SmtpClient(emailSource.Host, emailSource.Port)
                 {

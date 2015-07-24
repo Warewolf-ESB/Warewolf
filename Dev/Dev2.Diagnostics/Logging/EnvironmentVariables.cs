@@ -123,7 +123,7 @@ namespace Dev2.Common
             public static int LettersLength = 26;
         }
 
-        private static Guid _remoteID = Guid.NewGuid();
+        private static readonly Guid RemoteID = Guid.NewGuid();
         /// <summary>
         /// Gets the remote invoke ID.
         /// </summary>
@@ -132,7 +132,7 @@ namespace Dev2.Common
         /// </value>
         public static Guid RemoteInvokeID
         {
-            get { return _remoteID; }
+            get { return RemoteID; }
         }
 
         public static string WebServerUri { get; set; }

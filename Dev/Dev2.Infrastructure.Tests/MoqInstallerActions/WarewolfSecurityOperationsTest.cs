@@ -164,7 +164,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
             var myPc = Environment.MachineName;
-            var user = (inDomain?"Dev2\\":string.Empty)+"IntegrationTester";
+            var user = (inDomain?"Dev2\\":string.Empty)+Environment.UserName;
 
             var userStr = warewolfGroupOps.FormatUserForInsert(user, myPc);
 

@@ -17,6 +17,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+// ReSharper disable once CheckNamespace
 namespace System.Windows.Controls
 {
     /// <summary>
@@ -32,7 +33,7 @@ namespace System.Windows.Controls
         /// <summary>
         /// WeakReference to the instance listening for the event.
         /// </summary>
-        private WeakReference _weakInstance;
+        private readonly WeakReference _weakInstance;
 
         /// <summary>
         /// Gets or sets the method to call when the event fires.

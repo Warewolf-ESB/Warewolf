@@ -12,7 +12,7 @@
 using System;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     public class MockDsfPluginActivity : DsfPluginActivity
@@ -30,7 +30,7 @@ namespace Dev2.Activities
 
         public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
+            return ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
         }
     }
 

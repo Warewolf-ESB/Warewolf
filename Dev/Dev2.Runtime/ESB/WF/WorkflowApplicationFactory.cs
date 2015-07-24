@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.WF
     /// </summary>
     public class WorkflowApplicationFactory
     {
-        public static long Balance = 0;
+        public static long Balance;
         private DateTime _runTime;
 
         public ErrorResultTO AllErrors { get; private set; }
@@ -235,9 +235,9 @@ namespace Dev2.Runtime.ESB.WF
                     dataTransferObject = run.DataTransferObject.Clone();
                     var wfappUtils = new WfApplicationUtils();
 
-                    ErrorResultTO invokeErrors;
                     if (dataTransferObject.IsDebugMode())
                     {
+                        ErrorResultTO invokeErrors;
                         wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, _runTime, false, true);
                     }
                     //AllErrors.MergeErrors(invokeErrors);

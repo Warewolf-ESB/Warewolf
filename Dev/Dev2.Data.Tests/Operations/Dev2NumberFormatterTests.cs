@@ -11,10 +11,12 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -24,8 +26,6 @@ namespace Dev2.Data.Tests.Operations
     {
         #region Class Members
 
-        private TestContext testContextInstance;
-
         #endregion Class Members
 
         #region Properties
@@ -34,17 +34,7 @@ namespace Dev2.Data.Tests.Operations
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #endregion Properties
 
@@ -177,8 +167,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345", enRoundingType.Normal, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -189,8 +179,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Normal, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -201,8 +191,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12645", enRoundingType.Normal, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.13d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.13d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -213,8 +203,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12645", enRoundingType.Normal, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.13d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.13d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -225,8 +215,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345", enRoundingType.Normal, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -237,8 +227,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Normal, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -249,8 +239,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.92345", enRoundingType.Normal, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 124d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 124d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -261,8 +251,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.92345", enRoundingType.Normal, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 124;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 124;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -273,8 +263,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Normal, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -289,8 +279,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345", enRoundingType.Up, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.13d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.13d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -301,8 +291,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Up, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.13d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.13d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -313,8 +303,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.92345", enRoundingType.Up, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 124d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 124d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -325,8 +315,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.92345", enRoundingType.Up, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -124d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -124d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -337,8 +327,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Up, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -353,8 +343,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345", enRoundingType.Down, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -365,8 +355,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Down, 2, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -377,8 +367,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.92345", enRoundingType.Down, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -389,8 +379,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.92345", enRoundingType.Down, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -401,8 +391,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Down, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -417,8 +407,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345", enRoundingType.Normal, -1, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 120d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 120d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -429,8 +419,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345", enRoundingType.Normal, -1, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -120d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -120d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -441,8 +431,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Normal, -1, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -457,8 +447,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345678911235", enRoundingType.None, 0, true, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -469,8 +459,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345678911235", enRoundingType.None, 0, true, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -481,8 +471,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345678911235", enRoundingType.None, 0, true, 2);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -493,8 +483,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345678911235", enRoundingType.None, 0, true, 2);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -505,7 +495,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.123", enRoundingType.None, 0, true, 5);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.12300d;
+            const double expectedDouble = 123.12300d;
             string expected = expectedDouble.ToString("###.###00");
 
             Assert.AreEqual(expected, actual);
@@ -517,7 +507,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.123", enRoundingType.None, 0, true, 5);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.12300d;
+            const double expectedDouble = -123.12300d;
             string expected = expectedDouble.ToString("###.###00");
 
             Assert.AreEqual(expected, actual);
@@ -529,8 +519,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12345678911235", enRoundingType.None, 0, true, -1);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
             
 
             Assert.AreEqual(expected, actual);
@@ -542,8 +532,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12345678911235", enRoundingType.None, 0, true, -1);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -12d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -12d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -554,8 +544,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("1.12345678911235", enRoundingType.None, 0, true, -3);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -566,8 +556,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-1.12345678911235", enRoundingType.None, 0, true, -3);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 0d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -582,8 +572,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12395678911235", enRoundingType.Normal, 4, true, 3);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.124d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = 123.124d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -594,8 +584,8 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12395678911235", enRoundingType.Normal, 4, true, 3);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.124d;
-            string expected = expectedDouble.ToString();
+            const double expectedDouble = -123.124d;
+            string expected = expectedDouble.ToString(CultureInfo.InvariantCulture);
 
             Assert.AreEqual(expected, actual);
         }
@@ -606,7 +596,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Normal, 4, true, 3);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
+            const double expectedDouble = 0d;
             string expected = expectedDouble.ToString("0.000");
 
             Assert.AreEqual(expected, actual);
@@ -618,7 +608,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.12395678911235", enRoundingType.Normal, 3, true, 4);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 123.124d;
+            const double expectedDouble = 123.124d;
             string expected = expectedDouble.ToString("###.###0");
 
             Assert.AreEqual(expected, actual);
@@ -630,7 +620,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.12395678911235", enRoundingType.Normal, 3, true, 4);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = -123.124d;
+            const double expectedDouble = -123.124d;
             string expected = expectedDouble.ToString("###.###0");
 
             Assert.AreEqual(expected, actual);
@@ -642,7 +632,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("0", enRoundingType.Normal, 3, true, 4);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
-            double expectedDouble = 0d;
+            const double expectedDouble = 0d;
             string expected = expectedDouble.ToString("0.0000");
 
             Assert.AreEqual(expected, actual);

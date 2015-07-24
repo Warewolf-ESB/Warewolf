@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Text;
 using Dev2.Data.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests
 {
@@ -32,12 +33,12 @@ namespace Dev2.Data.Tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        const string XMLDocument = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
+        const string XmlDocument = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
                                    "<dotfuscator version=\"2.3\">\n" +
                                    "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>" +
                                    "</dotfuscator>";
 
-        const string XMLData = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
+        const string XmlData = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
 
         [TestMethod]
         public void ExecutePathWhereGivenXMLDocumentExpectXMLReturned()
@@ -45,7 +46,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XMLDocument, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6,data.Count());
@@ -61,7 +62,7 @@ namespace Dev2.Data.Tests
 
             #region data
 
-            var data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+            const string data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestRun id=""069cce00-4b2c-425e-a343-d784dd187adf"" name=""RSAKLFASHLEY$@RSAKLFASHLEY 2013-11-01 13:43:52"" runUser=""NT AUTHORITY\NETWORK SERVICE"">
   <TestSettings name=""Unit Test with Coverage"" id=""3264dd0f-6fc1-4cb9-b44f-c649fef29605"">
     <Description>These are default test settings for a local test run.</Description>
@@ -198,7 +199,7 @@ namespace Dev2.Data.Tests
 
             #region data
 
-            var data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+            const string data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestRun id=""069cce00-4b2c-425e-a343-d784dd187adf"" name=""RSAKLFASHLEY$@RSAKLFASHLEY 2013-11-01 13:43:52"" runUser=""NT AUTHORITY\NETWORK SERVICE"">
   <TestSettings name=""Unit Test with Coverage"" id=""3264dd0f-6fc1-4cb9-b44f-c649fef29605"">
     <Description>These are default test settings for a local test run.</Description>
@@ -319,7 +320,7 @@ namespace Dev2.Data.Tests
             //------------Execute Test---------------------------
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
-            var expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
+            const string expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
   <DeploymentItem filename=""ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe"" />
   <DeploymentItem filename=""Binaries\IronPython.Modules.dll"" />
   <DeploymentItem filename=""Binaries\Microsoft.Scripting.dll"" />
@@ -346,7 +347,7 @@ namespace Dev2.Data.Tests
 
             #region data
 
-            var data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+            const string data = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestRun id=""069cce00-4b2c-425e-a343-d784dd187adf"" name=""RSAKLFASHLEY$@RSAKLFASHLEY 2013-11-01 13:43:52"" runUser=""NT AUTHORITY\NETWORK SERVICE"">
   <TestSettings name=""Unit Test with Coverage"" id=""3264dd0f-6fc1-4cb9-b44f-c649fef29605"">
     <Description>These are default test settings for a local test run.</Description>
@@ -467,7 +468,7 @@ namespace Dev2.Data.Tests
             //------------Execute Test---------------------------
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
-            var expected = @"D:\Builds\ReleaseGate\TestResults";
+            const string expected = @"D:\Builds\ReleaseGate\TestResults";
 
             var dataList = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(1, dataList.Count());
@@ -540,7 +541,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XMLData, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6,data.Count());
@@ -553,7 +554,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "/excludelist/type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XMLData, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6,data.Count());
@@ -568,7 +569,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XMLData, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count());
@@ -583,7 +584,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name|//type/method/@signature";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XMLData, XPath);
+            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(12, data.Count());

@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             var result = string.Join(Environment.NewLine, PreviewViewModel.Inputs.Take(MaxCount).Select(input => string.Format("{0} {1}", count++, input.Key)));
             if(PreviewViewModel.Inputs.Count > MaxCount)
             {
-                result = string.Join(Environment.NewLine, new[] { result, "..." });
+                result = string.Join(Environment.NewLine, result, "...");
             }
 
             return result;

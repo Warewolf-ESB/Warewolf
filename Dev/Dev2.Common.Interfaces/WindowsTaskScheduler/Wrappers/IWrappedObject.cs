@@ -11,7 +11,7 @@
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
-    public interface IWrappedObject<T>
+    public interface IWrappedObject<out T>
     {
         T Instance { get; }
     }

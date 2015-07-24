@@ -278,7 +278,7 @@ public class SecurityWrapper : ISecurityWrapper
     private static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
-            userName = userName.Split(new[] { '\\' }).Last();
+            userName = userName.Split('\\').Last();
         return userName;
     }
 

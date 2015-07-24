@@ -133,6 +133,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             List<string> results = new List<string>();
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
+            
             if(resource != null)
             {
                 var dependencies = resource.Dependencies;
@@ -142,18 +143,22 @@ namespace Dev2.Runtime.ESB.Management.Services
 // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c =>
 // ReSharper restore ImplicitlyCapturedClosure
-                    {
-                       
-                        if(c.ResourceID != Guid.Empty)
-                        {
-                      
-                            results.Add(c.ResourceID.ToString());
-                        }
-                    });
-                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceId)));
+                    { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
+                    dependencies.ToList().ForEach(c =>
+                                                  { results.AddRange(c.ResourceID != Guid.Empty ? FetchRecursiveDependancies(c.ResourceID, workspaceId) : FetchRecursiveDependancies(workspaceId, c.ResourceName)); });
                 }
             }
             return results;
+        }
+
+        IEnumerable<string> FetchRecursiveDependancies(Guid workspaceId, string resourceName)
+        {
+            var resource = ResourceCatalog.Instance.GetResource(resourceName, workspaceId);
+            if (resource != null)
+            {
+                return FetchRecursiveDependancies(resource.ResourceID, workspaceId);
+            }
+            return new List<string>();
         }
 
         #endregion

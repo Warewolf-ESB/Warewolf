@@ -10,6 +10,7 @@
 */
 
 using System.Windows;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.Studio.AppResources.AttachedProperties
 {

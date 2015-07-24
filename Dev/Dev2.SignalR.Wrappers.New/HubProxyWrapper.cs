@@ -106,8 +106,6 @@ namespace Dev2.SignalR.Wrappers.New
 
     public class StateChangeWrapped : IStateChangeWrapped
     {
-        private StateChange change;
-
         /// <summary>
         /// Creates a new stance of <see cref="StateChange"/>.
         /// </summary>

@@ -10,6 +10,8 @@
 */
 
 using System.Collections.Generic;
+// ReSharper disable CheckNamespace
+
 
 namespace ActivityUnitTests.Utils {
     public class StringComparer : Comparer<string> {

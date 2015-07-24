@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers2.Sequence
         void DropPoint_OnDragOver(object sender, DragEventArgs e)
         {
             AllowDrag(e);
-            base.OnDragOver(e);
+            OnDragOver(e);
         }
     }
 }

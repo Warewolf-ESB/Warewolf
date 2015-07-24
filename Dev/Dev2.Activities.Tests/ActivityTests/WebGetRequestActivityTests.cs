@@ -20,6 +20,7 @@ using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTest
@@ -117,7 +118,7 @@ namespace ActivityUnitTests.ActivityTest
             };
             TestData = "<root><testVar /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
         }
@@ -140,7 +141,7 @@ namespace ActivityUnitTests.ActivityTest
             };
             TestData = "<root><testVar /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
             string errorString = DataObject.Environment.FetchErrors();
@@ -207,8 +208,6 @@ namespace ActivityUnitTests.ActivityTest
             GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
             Assert.AreEqual(ExpectedResult, actual);
         }
-
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

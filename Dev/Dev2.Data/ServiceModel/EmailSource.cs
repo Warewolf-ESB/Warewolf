@@ -110,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void Send(MailMessage mailMessage)
         {
-            var userParts = UserName.Split(new[] { '@' });
+            var userParts = UserName.Split('@');
             using(var smtp = new SmtpClient(Host, Port)
             {
                 Credentials = new NetworkCredential(userParts[0], Password),

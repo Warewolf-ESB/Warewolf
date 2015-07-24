@@ -10,6 +10,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.TOTests
 {
@@ -17,7 +18,7 @@ namespace Dev2.Tests.Activities.TOTests
     /// Summary description for BaseConvertDTOTests
     /// </summary>
     [TestClass]
-    public class BaseConvertDTOTests
+    public class BaseConvertDtoTests
     {
         [TestMethod]
         [Owner("Massimo Guerrera")]

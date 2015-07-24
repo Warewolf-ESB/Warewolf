@@ -13,8 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
+namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
     /// <summary>
     /// Summary description for DateTimeComparerTests
@@ -25,33 +26,20 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     {
         #region Fields
 
-        static IDateTimeComparer comparer;
-        string Input1 = "2011/06/05 08:20:30:123 AM";
-        string Input2 = "2012/06/05 08:20:30:123 AM";
-        string InputFormat = "yyyy/mm/dd 12h:min:ss:sp am/pm";
-        string OutputType = "";
+        const string Input1 = "2011/06/05 08:20:30:123 AM";
+        string _input2 = "2012/06/05 08:20:30:123 AM";
+        const string InputFormat = "yyyy/mm/dd 12h:min:ss:sp am/pm";
+        string _outputType = "";
 
         #endregion Fields
 
         #region TestContext
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #endregion TestContext
 
@@ -63,7 +51,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         // [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            comparer = DateTimeConverterFactory.CreateComparer();
+            DateTimeConverterFactory.CreateComparer();
         }
         //
         // Use ClassCleanup to run code after all tests in a class have run
@@ -89,10 +77,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2010/06/05 08:20:30:124 AM";    
-            OutputType = "Years";
+            _input2 = "2010/06/05 08:20:30:124 AM";    
+            _outputType = "Years";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -102,9 +90,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            OutputType = "Years";
+            _outputType = "Years";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -114,10 +102,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2012/06/05 08:20:30:122 AM";     
-            OutputType = "Years";
+            _input2 = "2012/06/05 08:20:30:122 AM";     
+            _outputType = "Years";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -127,10 +115,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2012/06/05 08:20:30:124 AM";
-            OutputType = "Years";
+            _input2 = "2012/06/05 08:20:30:124 AM";
+            _outputType = "Years";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -144,10 +132,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/05/05 08:20:30:123 AM";
-            OutputType = "Months";
+            _input2 = "2011/05/05 08:20:30:123 AM";
+            _outputType = "Months";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -157,10 +145,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;        
-            Input2 = "2011/07/05 08:20:30:123 AM";
-            OutputType = "Months";
+            _input2 = "2011/07/05 08:20:30:123 AM";
+            _outputType = "Months";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -170,10 +158,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;   
-            Input2 = "2011/07/05 08:20:30:122 AM";           
-            OutputType = "Months";
+            _input2 = "2011/07/05 08:20:30:122 AM";           
+            _outputType = "Months";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -184,10 +172,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/07/05 08:20:30:124 AM";           
-            OutputType = "Months";
+            _input2 = "2011/07/05 08:20:30:124 AM";           
+            _outputType = "Months";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -201,10 +189,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/04 08:20:30:123 AM";
-            OutputType = "Days";
+            _input2 = "2011/06/04 08:20:30:123 AM";
+            _outputType = "Days";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -214,10 +202,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/06 08:20:30:123 AM";
-            OutputType = "Days";
+            _input2 = "2011/06/06 08:20:30:123 AM";
+            _outputType = "Days";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -227,10 +215,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/06 08:20:30:122 AM";
-            OutputType = "Days";
+            _input2 = "2011/06/06 08:20:30:122 AM";
+            _outputType = "Days";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -241,10 +229,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/06 08:20:30:124 AM";
-            OutputType = "Days";
+            _input2 = "2011/06/06 08:20:30:124 AM";
+            _outputType = "Days";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -258,10 +246,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/05/28 08:20:30:123 AM";
-            OutputType = "Weeks";
+            _input2 = "2011/05/28 08:20:30:123 AM";
+            _outputType = "Weeks";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.AreEqual("-2",result);
         }
@@ -271,10 +259,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/12 08:20:30:123 AM";
-            OutputType = "Weeks";
+            _input2 = "2011/06/12 08:20:30:123 AM";
+            _outputType = "Weeks";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -284,10 +272,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/12 08:20:30:122 AM";
-            OutputType = "Weeks";
+            _input2 = "2011/06/12 08:20:30:122 AM";
+            _outputType = "Weeks";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -298,10 +286,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/12 08:20:30:124 AM";
-            OutputType = "Weeks";
+            _input2 = "2011/06/12 08:20:30:124 AM";
+            _outputType = "Weeks";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -315,10 +303,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 07:20:30:123 AM";
-            OutputType = "Hours";
+            _input2 = "2011/06/05 07:20:30:123 AM";
+            _outputType = "Hours";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -328,10 +316,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 09:20:30:123 AM";
-            OutputType = "Hours";
+            _input2 = "2011/06/05 09:20:30:123 AM";
+            _outputType = "Hours";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -341,10 +329,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 09:20:30:122 AM";
-            OutputType = "Hours";
+            _input2 = "2011/06/05 09:20:30:122 AM";
+            _outputType = "Hours";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -355,10 +343,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 09:20:30:124 AM";
-            OutputType = "Hours";
+            _input2 = "2011/06/05 09:20:30:124 AM";
+            _outputType = "Hours";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -372,10 +360,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:19:30:123 AM";
-            OutputType = "Minutes";
+            _input2 = "2011/06/05 08:19:30:123 AM";
+            _outputType = "Minutes";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -385,10 +373,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:21:30:123 AM";
-            OutputType = "Minutes";
+            _input2 = "2011/06/05 08:21:30:123 AM";
+            _outputType = "Minutes";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -398,10 +386,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:21:30:122 AM";
-            OutputType = "Minutes";
+            _input2 = "2011/06/05 08:21:30:122 AM";
+            _outputType = "Minutes";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -412,10 +400,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:21:30:124 AM";
-            OutputType = "Minutes";
+            _input2 = "2011/06/05 08:21:30:124 AM";
+            _outputType = "Minutes";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -429,10 +417,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:29:123 AM";
-            OutputType = "Seconds";
+            _input2 = "2011/06/05 08:20:29:123 AM";
+            _outputType = "Seconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -442,10 +430,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:31:123 AM";
-            OutputType = "Seconds";
+            _input2 = "2011/06/05 08:20:31:123 AM";
+            _outputType = "Seconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -455,10 +443,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:31:122 AM";
-            OutputType = "Seconds";
+            _input2 = "2011/06/05 08:20:31:122 AM";
+            _outputType = "Seconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -469,10 +457,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:31:124 AM";
-            OutputType = "Seconds";
+            _input2 = "2011/06/05 08:20:31:124 AM";
+            _outputType = "Seconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "1");
         }
@@ -486,10 +474,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:30:123 AM";
-            OutputType = "Split Secs";
+            _input2 = "2011/06/05 08:20:30:123 AM";
+            _outputType = "Split Secs";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "0");
         }
@@ -499,10 +487,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:30:122 AM";
-            OutputType = "Split Secs";
+            _input2 = "2011/06/05 08:20:30:122 AM";
+            _outputType = "Split Secs";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.IsTrue(result == "-1");
         }
@@ -513,10 +501,10 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         {
             string result;
             string error;
-            Input2 = "2011/06/05 08:20:30:124 AM";
-            OutputType = "Split Secs";
+            _input2 = "2011/06/05 08:20:30:124 AM";
+            _outputType = "Split Secs";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
+            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
             Assert.AreEqual("1", result);
         }

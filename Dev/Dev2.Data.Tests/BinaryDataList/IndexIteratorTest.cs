@@ -11,8 +11,8 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Data.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -39,7 +39,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void CanIteratorWithGapAt1()
         {
             HashSet<int> gaps = new HashSet<int>(new List<int>{1});
-            int maxValue = 100;
+            const int maxValue = 100;
             IndexIterator ii = new IndexIterator(gaps, 100);
             int cnt = 0;
             int firstIdx = -1;
@@ -61,7 +61,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void CanIteratorWithGapAt1_PlusGapsEvery10()
         {
             HashSet<int> gaps = new HashSet<int>(new List<int> { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91 });
-            int maxValue = 100;
+            const int maxValue = 100;
             IndexIterator ii = new IndexIterator(gaps, 100);
             int cnt = 0;
             int firstIdx = -1;

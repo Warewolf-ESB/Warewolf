@@ -1340,7 +1340,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1420,7 +1420,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1520,7 +1520,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1621,7 +1621,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1720,7 +1720,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b,bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -2308,6 +2308,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         #endregion
 
 
+        // ReSharper disable once UnusedParameter.Local
         static ModelItem CreateModelItem(DsfActivity activity)
         {
             return ModelItemUtils.CreateModelItem(activity);

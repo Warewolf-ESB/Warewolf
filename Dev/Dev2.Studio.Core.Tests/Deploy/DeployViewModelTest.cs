@@ -14,10 +14,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
@@ -290,11 +292,11 @@ namespace Dev2.Core.Tests
             resRepo2.Setup(c => c.All()).Returns(new List<IResourceModel>());
 
             server.Setup(svr => svr.IsConnected).Returns(true);
-            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
 
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
-            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             secondServer.Setup(svr => svr.ResourceRepository).Returns(resRepo2.Object);
 
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
@@ -362,6 +364,137 @@ namespace Dev2.Core.Tests
 
             Assert.IsTrue(isOverwriteMessageDisplayed);
             Assert.IsFalse(deployViewModel.DeploySuccessfull);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_HttpServer_DialogIsShown_ReturnsNo_DeployStopped()
+        {
+            DeployViewModel deployViewModel;
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.No);
+            CustomContainer.Register(popupController.Object);
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+            };
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsFalse(deployViewModel.DeploySuccessfull);
+            popupController.Verify();
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_HttpServer_DialogIsShown_ReturnsCancel_DeployStopped()
+        {
+            DeployViewModel deployViewModel;
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+            CustomContainer.Register(popupController.Object);
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+            };
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsFalse(deployViewModel.DeploySuccessfull);
+            popupController.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_HttpServer_DialogIsShown_ReturnsNone_DeployStopped()
+        {
+            DeployViewModel deployViewModel;
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.None);
+            CustomContainer.Register(popupController.Object);
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+            };
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsFalse(deployViewModel.DeploySuccessfull);
+            popupController.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_HttpServer_DialogIsShown_ReturnsYes_DeployContinues()
+        {
+            DeployViewModel deployViewModel;
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+            };
+            deployViewModel.HasNoResourcesToDeploy = (o, i) => false;
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsTrue(deployViewModel.DeploySuccessfull);
+            popupController.Verify();
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_HttpsServer_DialogIsNotShown_DeployContinues()
+        {
+            DeployViewModel deployViewModel;
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.No);
+            CustomContainer.Register(popupController.Object);
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+            var mockConnectionAsHttps = new Mock<IEnvironmentConnection>();
+            mockConnectionAsHttps.Setup(connection => connection.WebServerUri).Returns(new Uri("https://127.0.0.56"));
+            var mockHttpsEnvironment = new Mock<IEnvironmentModel>();
+            mockHttpsEnvironment.Setup(model => model.Connection).Returns(mockConnectionAsHttps.Object);
+            deployViewModel.SelectedDestinationServer = mockHttpsEnvironment.Object;
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+            };
+            deployViewModel.HasNoResourcesToDeploy = (o, i) => false;
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsTrue(deployViewModel.DeploySuccessfull);
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()),Times.Never());
         }
 
         [TestMethod]
@@ -476,12 +609,12 @@ namespace Dev2.Core.Tests
 
             //Setup Servers
             server.Setup(svr => svr.IsConnected).Returns(true);
-            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             server.Setup(a => a.AuthorizationService).Returns(_authService.Object);
 
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
             secondServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
-            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
             mockedServerRepo.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(server.Object);
             provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
@@ -552,12 +685,12 @@ namespace Dev2.Core.Tests
 
             //Setup Servers
             server.Setup(svr => svr.IsConnected).Returns(true);
-            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             server.Setup(a => a.AuthorizationService).Returns(_authService.Object);
 
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
             secondServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
-            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
             mockedServerRepo.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(server.Object);
             provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
@@ -1385,11 +1518,11 @@ namespace Dev2.Core.Tests
             resRepo2.Setup(c => c.All()).Returns(new List<IResourceModel>());
 
             server.Setup(svr => svr.IsConnected).Returns(true);
-            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
 
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
-            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random()).Object);
             secondServer.Setup(svr => svr.ResourceRepository).Returns(resRepo2.Object);
 
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);

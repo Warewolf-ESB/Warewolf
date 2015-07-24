@@ -15,7 +15,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Interfaces;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     public class DataGridFocusTextOnLoadBehavior : Behavior<DataGrid>

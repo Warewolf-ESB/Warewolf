@@ -109,7 +109,7 @@ namespace Dev2.Activities
                     Dev2Logger.Log.Error(ex);
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetDiskSpaceTotalInformation()
@@ -127,7 +127,7 @@ namespace Dev2.Activities
                     Dev2Logger.Log.Error(ex);
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetPhysicalMemoryAvailableInformation()
@@ -235,7 +235,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetUserNameInformation()

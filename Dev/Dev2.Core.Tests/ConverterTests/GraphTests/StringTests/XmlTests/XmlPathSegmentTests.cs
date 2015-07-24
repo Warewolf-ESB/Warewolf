@@ -13,8 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.XmlTests
+namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -28,7 +29,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Departments()");
 
-            string expected = "Departments()";
+            const string expected = "Departments()";
             string actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
@@ -40,7 +41,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
@@ -52,7 +53,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Departments()");
 
-            string expected = "Departments";
+            const string expected = "Departments";
             string actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
@@ -64,7 +65,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Departments()");
 
-            string expected = "Departments()";
+            const string expected = "Departments()";
             string actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
@@ -76,7 +77,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
@@ -88,7 +89,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Xml
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);

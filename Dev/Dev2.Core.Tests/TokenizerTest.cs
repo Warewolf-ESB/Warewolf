@@ -16,38 +16,30 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
+// ReSharper disable LocalizableElement
 
-namespace Unlimited.UnitTest.Framework {
+namespace Dev2.Tests {
     /// <summary>
     /// Summary description for TokenizerTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class TokenizerTest {
-        private static string search = "AB-CD-DE-FG-HI";
-        private static string search2 = "AB-CD-AB-CD";
-
-        private TestContext testContextInstance;
+        const string Search = "AB-CD-DE-FG-HI";
+        const string Search2 = "AB-CD-AB-CD";
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Fwd Test
         [TestMethod]
         public void Single_Token_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
 
             dtb.AddTokenOp("-", false);
 
@@ -64,9 +56,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Two_Token_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
 
-            dtb.ToTokenize = search2;
 
             dtb.AddTokenOp("AB", false);
 
@@ -83,9 +74,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Three_Token_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
 
-            dtb.ToTokenize = search2;
 
             dtb.AddTokenOp("AB-", false);
 
@@ -102,9 +92,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Token_Op_With_Token_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
 
             dtb.AddTokenOp("-", true);
 
@@ -121,9 +110,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Index_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
 
             dtb.AddIndexOp(2);
 
@@ -140,10 +128,9 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Eof_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
-      
+
             dtb.AddEoFOp();
 
             IDev2Tokenizer dt = dtb.Generate();
@@ -164,9 +151,8 @@ namespace Unlimited.UnitTest.Framework {
         [TestMethod]
         public void More_Then_One_Op_Fwd()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
 
             dtb.AddIndexOp(2);
             dtb.AddEoFOp();
@@ -189,9 +175,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Token_And_Index_Op_Fwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
-            dtb.ToTokenize = search;
 
             dtb.AddTokenOp("-", false);
             dtb.AddIndexOp(3);
@@ -213,10 +198,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Single_Token_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ReverseOrder = true,
+                                           ToTokenize = Search
+                                       };
 
-            dtb.ReverseOrder = true;
-            dtb.ToTokenize = search;
 
             dtb.AddTokenOp("-", false);
 
@@ -233,10 +220,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Two_Token_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search2,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search2;
-            dtb.ReverseOrder = true;
 
             dtb.AddTokenOp("B-", false);
 
@@ -253,10 +242,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Three_Token_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search2,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search2;
-            dtb.ReverseOrder = true;
 
             dtb.AddTokenOp("AB-", false);
 
@@ -273,10 +264,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Token_Op_With_Token_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search;
-            dtb.ReverseOrder = true;
 
             dtb.AddTokenOp("-", true);
 
@@ -293,10 +286,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Index_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search;
-            dtb.ReverseOrder = true;
 
             dtb.AddIndexOp(2);
 
@@ -313,10 +308,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Eof_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search;
-            dtb.ReverseOrder = true;
 
             dtb.AddEoFOp();
 
@@ -336,10 +333,12 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Token_And_Index_Op_Bwd() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder
+                                       {
+                                           ToTokenize = Search,
+                                           ReverseOrder = true
+                                       };
 
-            dtb.ToTokenize = search;
-            dtb.ReverseOrder = true;
 
             dtb.AddTokenOp("-", false);
             dtb.AddIndexOp(3);
@@ -360,19 +359,19 @@ namespace Unlimited.UnitTest.Framework {
         #region Negative Test
         [TestMethod]
         public void Empty_String_Error() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty };
 
-            dtb.ToTokenize = string.Empty;
 
             dtb.AddEoFOp();
 
-            try {
-                IDev2Tokenizer dt = dtb.Generate();
+            try
+            {
+                dtb.Generate();
 
                 Assert.Fail();
             }
             catch (Exception) {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -382,9 +381,8 @@ namespace Unlimited.UnitTest.Framework {
 
         [TestMethod]
         public void Single_Token_Perfomance_Op() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
 
-            dtb.ToTokenize = TestStrings.tokenizerBase;
 
             dtb.AddTokenOp("-", false);
 
@@ -403,15 +401,14 @@ namespace Unlimited.UnitTest.Framework {
 
             // can we do 100k ops in less then 100s? 
             // I sure hope so ;)
-            Console.WriteLine("Total Time : " + exeTime);
+            Console.WriteLine(@"Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 100000 && exeTime < 1000, "It took [ " + exeTime + " ]");
         }
 
         [TestMethod]
         public void Three_Token_Perfomance_Op() {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
 
-            dtb.ToTokenize = TestStrings.tokenizerBase;
 
             dtb.AddTokenOp("AB-", false);
 
@@ -420,8 +417,9 @@ namespace Unlimited.UnitTest.Framework {
             int opCnt = 0;
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            while (dt.HasMoreOps() && opCnt < 35000) {
-                string result = dt.NextToken();
+            while (dt.HasMoreOps() && opCnt < 35000)
+            {
+                dt.NextToken();
                 opCnt++;
             }
             sw.Stop();

@@ -703,6 +703,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 Guid.TryParse(uniqueIdAsString, out uniqueId);
                                 Guid resId;
                                 Guid.TryParse(resourceIdAsString, out resId);
+                                if (resId == Guid.Empty)
+                                {
+                                    resId = uniqueId;
+                                }
                                 if(resourceType == ResourceType.WebService)
                                 {
                                     resId = uniqueId;

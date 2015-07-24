@@ -72,7 +72,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
                     var tempResource = new Resource(result.ToXElement());
-                    //var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
                     var resource = tempResource;
 
                     if (resource.ResourceType == ResourceType.DbSource)
@@ -152,42 +151,45 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            Dictionary<string, StringTransform> _replacements = new Dictionary<string, StringTransform>();
-            _replacements.Add("Source", new StringTransform
-            {
-                SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
-                GroupNumbers = new[] { 1 },
-                TransformFunction = DpapiWrapper.DecryptIfEncrypted
-            }
-                );
-            _replacements.Add(
-            "DsfAbstractFileActivity", new StringTransform
-            {
-                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
-                GroupNumbers = new[] { 3 },
-                TransformFunction = DpapiWrapper.DecryptIfEncrypted
-            }
-            );
-            _replacements.Add(
-            "DsfAbstractMultipleFilesActivity", new StringTransform
-            {
-                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
-                GroupNumbers = new[] { 3 },
-                TransformFunction = DpapiWrapper.DecryptIfEncrypted
-            }
-            );
-            _replacements.Add(
-            "Zip", new StringTransform
-            {
-                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
-                GroupNumbers = new[] { 3 },
-                TransformFunction = DpapiWrapper.DecryptIfEncrypted
-            }
-            );
+            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
+                                                               {
+                                                                   {
+                                                                       "Source", new StringTransform
+                                                                                 {
+                                                                                     SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
+                                                                                     GroupNumbers = new[] { 1 },
+                                                                                     TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                 }
+                                                                   },
+                                                                   {
+                                                                       "DsfAbstractFileActivity", new StringTransform
+                                                                                                  {
+                                                                                                      SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
+                                                                                                      GroupNumbers = new[] { 3 },
+                                                                                                      TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                  }
+                                                                   },
+                                                                   {
+                                                                       "DsfAbstractMultipleFilesActivity", new StringTransform
+                                                                                                           {
+                                                                                                               SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
+                                                                                                               GroupNumbers = new[] { 3 },
+                                                                                                               TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                           }
+                                                                   },
+                                                                   {
+                                                                       "Zip", new StringTransform
+                                                                              {
+                                                                                  SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
+                                                                                  GroupNumbers = new[] { 3 },
+                                                                                  TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                              }
+                                                                   }
+                                                               };
             string xml = stringBuilder.ToString();
             StringBuilder output = new StringBuilder();
 
-            xml = StringTransform.TransformAllMatches(xml, _replacements.Values.ToList());
+            xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
             output.Append(xml);
             return output;
         }

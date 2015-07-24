@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -20,6 +21,7 @@ using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
@@ -795,6 +797,22 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             }
 
+            if (SelectedDestinationServer != null && (SelectedDestinationServer.Connection.WebServerUri != null && (SelectedDestinationServer.Connection != null && (SelectedDestinationServer != null && SelectedDestinationServer.Connection.WebServerUri.Scheme == "http"))))
+            {
+                var popupController = CustomContainer.Get<IPopupController>();
+                if (popupController != null)
+                {
+                    var messageBuilder = new StringBuilder();
+                    messageBuilder.AppendLine("The destination server selected is not connected via https");
+                    messageBuilder.AppendLine("This means that all sensitive information such as passwords will be not be encrypted during deployment.");
+                    messageBuilder.AppendLine("Are you sure you wish to continue deployment?");
+                    var messageBoxResult = popupController.Show(messageBuilder.ToString(), "Insecure Destionation Server", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, null);
+                    if (messageBoxResult == MessageBoxResult.No || messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
+                    {
+                        return;
+                    }
+                }
+            }
             //
             //Get the resources to deploy
             //
@@ -1097,7 +1115,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                             foreach (var dependant in dependancyNames)
                             {
                                 string dependant1 = dependant;
-                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID);
+                                var treeNode = StudioResourceRepository.FindItem(model => (model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID) || (model.DisplayName==dependant1 && model.EnvironmentId==SelectedSourceServer.ID));
                                 if (treeNode != null)
                                 {
                                     treeNode.IsChecked = true;

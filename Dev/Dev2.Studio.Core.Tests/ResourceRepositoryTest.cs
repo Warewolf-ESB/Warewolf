@@ -2761,7 +2761,7 @@ namespace BusinessDesignStudio.Unit.Tests
             WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
@@ -2807,7 +2807,7 @@ namespace BusinessDesignStudio.Unit.Tests
             WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
@@ -2866,7 +2866,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm, perm2 } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm, perm2 });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));

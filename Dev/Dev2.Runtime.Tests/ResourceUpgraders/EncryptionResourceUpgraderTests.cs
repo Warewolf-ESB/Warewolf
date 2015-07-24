@@ -9,31 +9,26 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System.Xml.Linq;
-using System;
-using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Runtime.ResourceUpgrades;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 using Dev2.Warewolf.Security.Encryption;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {
     [TestClass]
     public class EncryptionResourceUpgraderTests
     {
-
-        string connectionString,
-            beforeContainingSource,
- beforeWithoutSource;
+        readonly string _connectionString;
+        readonly string _beforeContainingSource;
+        readonly string _beforeWithoutSource;
 
         public EncryptionResourceUpgraderTests()
         {
-            connectionString = @"Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test007;";
-            beforeContainingSource = @"<first><second><third><Source ID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" Version=""1.0"" Name=""testingDBSrc"" ResourceType=""DbSource"" IsValid=""false"" ServerType=""SqlDatabase"" Type=""SqlDatabase"" ConnectionString=""" + connectionString + @""" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" ServerVersion=""0.4.2.2""></third></second></first>";
-            beforeWithoutSource = @"<first><second><third><xSource ID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" Version=""1.0"" Name=""testingDBSrc"" ResourceType=""DbSource"" IsValid=""false"" ServerType=""SqlDatabase"" Type=""SqlDatabase"" ConnectionString=""" + connectionString + @""" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" ServerVersion=""0.4.2.2""></third></second></first>";
+            _connectionString = @"Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test007;";
+            _beforeContainingSource = @"<first><second><third><Source ID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" Version=""1.0"" Name=""testingDBSrc"" ResourceType=""DbSource"" IsValid=""false"" ServerType=""SqlDatabase"" Type=""SqlDatabase"" ConnectionString=""" + _connectionString + @""" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" ServerVersion=""0.4.2.2""></third></second></first>";
+            _beforeWithoutSource = @"<first><second><third><xSource ID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" Version=""1.0"" Name=""testingDBSrc"" ResourceType=""DbSource"" IsValid=""false"" ServerType=""SqlDatabase"" Type=""SqlDatabase"" ConnectionString=""" + _connectionString + @""" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" ServerVersion=""0.4.2.2""></third></second></first>";
         }
 
 
@@ -43,7 +38,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         // ReSharper disable InconsistentNaming
         public void EncryptionResourceUpgrader_Upgrade_HasMatchin_ExpectReplace()
         {
-            _matchAndReplaceWhereAppropriate(beforeContainingSource, beforeWithoutSource, connectionString);
+            _matchAndReplaceWhereAppropriate(_beforeContainingSource, _beforeWithoutSource, _connectionString);
         }
 
         [TestMethod]
@@ -89,16 +84,16 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptSourceConnectionStrings(beforeContainingSource);
+            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
-            output.Should().NotBe(beforeContainingSource);
-            output.Should().NotContain(connectionString);
+            output.Should().NotBe(_beforeContainingSource);
+            output.Should().NotContain(_connectionString);
             Match m = cs.Match(output);
             m.Success.Should().BeTrue();
             m.Groups.Count.Should().BeGreaterOrEqualTo(1);
             m.Groups[1].Success.Should().BeTrue();
             string x = m.Groups[1].Value;
-            DpapiWrapper.Decrypt(x).Should().Be(connectionString);
+            DpapiWrapper.Decrypt(x).Should().Be(_connectionString);
         }
 
         /*

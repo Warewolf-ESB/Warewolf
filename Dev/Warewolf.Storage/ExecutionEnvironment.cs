@@ -74,7 +74,6 @@ namespace Warewolf.Storage
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         DataASTMutable.WarewolfEnvironment _env;
-        IList<string> _allErrors;
 
         public  ExecutionEnvironment()
         {

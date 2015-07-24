@@ -17,7 +17,6 @@ using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -300,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><Body>Body TextQWERXC@#$%</Body><FromAccount>from.someone@amail.account</FromAccount><mails><to>to.someone@amail.account</to></mails><mails><to>to1.someone@amail.account</to></mails><mails><to>to.someone1@amail.account</to></mails><mails><to>to.someone@amail1.account</to></mails></root>";
             CurrentDl = "<ADL><Body></Body><FromAccount></FromAccount><mails><to/></mails></ADL>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
+            ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
             // remove test datalist ;)
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Exactly(4));
@@ -367,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var esbChannelMock = CreateMockEsbChannel(testSource);
 
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
+            ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
 
             // remove test datalist ;)
 
@@ -496,12 +495,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         static EmailSource EmailSourceForTesting()
         {
-            var emailSourceForTesting = new EmailSource();
-            emailSourceForTesting.ResourceName = Guid.NewGuid().ToString();
-            emailSourceForTesting.ResourceID = Guid.NewGuid();
-            emailSourceForTesting.Host = "TestHost";
-            emailSourceForTesting.UserName = "from.someone@amail.account";
-            emailSourceForTesting.Password = "TestPassword";
+            var emailSourceForTesting = new EmailSource
+            {
+                ResourceName = Guid.NewGuid().ToString(),
+                ResourceID = Guid.NewGuid(),
+                Host = "TestHost",
+                UserName = "from.someone@amail.account",
+                Password = "TestPassword"
+            };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSourceForTesting);
             return emailSourceForTesting;
         }

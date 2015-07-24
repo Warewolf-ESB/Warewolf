@@ -12,11 +12,11 @@ namespace Dev2.Activities
 {
     public class DsfSwitch:DsfActivityAbstract<string>
     {
-              public DsfFlowSwitchActivity _inner;
+              public DsfFlowSwitchActivity Inner;
 
               public DsfSwitch(DsfFlowSwitchActivity inner)
               {
-                  _inner = inner;
+                  Inner = inner;
               }
 
               public DsfSwitch() { }
@@ -74,26 +74,18 @@ namespace Dev2.Activities
                       {
                           return Switches[a];
                       }
-                      else
+                      if (Default != null)
                       {
-                          if (Default != null)
-                          {
-                              var activity = Default.FirstOrDefault();
-                            return activity;
+                          var activity = Default.FirstOrDefault();
+                          return activity;
                       }
                   }
-              }
               }
               catch (Exception err)
               {
                   dataObject.Environment.Errors.Add(err.Message);
               }
-              finally
-              {
 
-              }
-              
-          
               return null;
           }
 
@@ -118,9 +110,9 @@ namespace Dev2.Activities
                 _debugInputs = result;
                 DispatchDebugState(dataObject, StateType.Before);
                 DispatchDebugState(dataObject, StateType.After);
-                if(_inner != null)
+                if(Inner != null)
                 {
-                    _inner.SetDebugInputs(_debugInputs);
+                    Inner.SetDebugInputs(_debugInputs);
                 }
             }
             }

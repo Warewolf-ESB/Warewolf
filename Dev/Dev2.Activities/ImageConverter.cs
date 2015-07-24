@@ -14,15 +14,15 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities 
 {
     public class ImagePathConverter : IValueConverter 
     {
-        private string imageDirectory = Directory.GetCurrentDirectory();
+        private string _imageDirectory = Directory.GetCurrentDirectory();
         public string ImageDirectory {
-            get { return imageDirectory; }
-            set { imageDirectory = value; }
+            get { return _imageDirectory; }
+            set { _imageDirectory = value; }
         }
 
         #region IValueConverter Members

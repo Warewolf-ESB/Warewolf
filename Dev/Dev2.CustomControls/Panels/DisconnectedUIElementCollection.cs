@@ -45,6 +45,8 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 
 namespace WPF.JoshSmith.Panels
 {
@@ -65,8 +67,7 @@ namespace WPF.JoshSmith.Panels
             : base(surrogateVisualParent, null)
         {
             _ownerPanel = owner as Panel;
-            _surrogateVisualParent = surrogateVisualParent;
-            _surrogateVisualParent.InitializeOwner(this);
+            surrogateVisualParent.InitializeOwner(this);
             _elements = new Collection<UIElement>();
         }
 
@@ -281,7 +282,7 @@ namespace WPF.JoshSmith.Panels
 
         private class DegenerateSibling : UIElement
         {
-            private UIElement _element;
+            private readonly UIElement _element;
 
             public DegenerateSibling(UIElement element)
             {
@@ -344,7 +345,7 @@ namespace WPF.JoshSmith.Panels
                         Debug.Assert(visualRemoved is DegenerateSibling,
                             "Unexpected removal of UIElement... All non degenerates should be removed during internal updates.");
 
-                        var sibling = visualRemoved as DegenerateSibling;
+                        var sibling = (DegenerateSibling)visualRemoved;
                         int index = _owner._elements.IndexOf(sibling.Element);
                         _owner._elements.RemoveAt(index);
                         _owner.RaiseCollectionChanged(NotifyCollectionChangedAction.Remove, sibling.Element, index);
@@ -367,9 +368,8 @@ namespace WPF.JoshSmith.Panels
         private readonly Dictionary<UIElement, DegenerateSibling> _degenerateSiblings =
             new Dictionary<UIElement, DegenerateSibling>();
 
-        private readonly Collection<UIElement> _elements = new Collection<UIElement>();
+        private readonly Collection<UIElement> _elements;
         private readonly Panel _ownerPanel;
-        private readonly SurrogateVisualParent _surrogateVisualParent;
 
         #endregion
     }

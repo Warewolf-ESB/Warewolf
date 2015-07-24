@@ -34,9 +34,8 @@ namespace Dev2.Tests.Runtime.Hosting
         // ReSharper disable InconsistentNaming
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
-#pragma warning disable 168
+            // ReSharper disable once UnusedVariable
             var strat = new Mock<IVersionStrategy>();
-#pragma warning restore 168
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
@@ -463,7 +462,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b)=>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
                     
             });
 
@@ -500,7 +499,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
 
             });
 
@@ -537,7 +536,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
 
             });
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);

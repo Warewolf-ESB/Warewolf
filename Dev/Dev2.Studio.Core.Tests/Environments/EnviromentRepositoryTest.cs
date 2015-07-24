@@ -1048,7 +1048,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object, studiorepo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object, studiorepo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------

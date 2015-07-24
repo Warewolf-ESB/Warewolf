@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-        List<string> _loadedAssemblies = new List<string>();
+        readonly List<string> _loadedAssemblies = new List<string>();
         string _assemblyLocation = "";
         /// <summary>
         /// Runs the specified setup information.
@@ -100,6 +100,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return result;
         }
 
+        // ReSharper disable once InconsistentNaming
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());

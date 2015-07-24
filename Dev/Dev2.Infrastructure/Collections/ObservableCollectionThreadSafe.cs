@@ -47,7 +47,7 @@ namespace Dev2.Collections
         {
             if(!_dispatcher.CheckAccess())
             {
-                _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(e)), DispatcherPriority.Normal, new object[] { });
+                _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(e)), DispatcherPriority.Normal);
             }
             else
             {

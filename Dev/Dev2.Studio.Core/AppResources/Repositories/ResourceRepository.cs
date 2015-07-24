@@ -498,7 +498,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new ArgumentNullException("resource");
             }
             Dev2Logger.Log.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
-            var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase), fetchPayload: true, prepairForDeployment: true);
+            var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase), true, true);
 
             if (theResource != null)
             {

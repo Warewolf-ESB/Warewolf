@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
@@ -182,7 +183,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingRootPathFromPrimitive_Expected_ScalarValue()
         {
-            PocoTestData testData = Given();
+            Given();
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
 
@@ -199,7 +200,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingRootPathFromPrimitive_Expected_SingleValueInEnumeration()
         {
-            PocoTestData testData = Given();
+            Given();
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
 
@@ -207,7 +208,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             IEnumerable<object> data = pocoNavigator.SelectEnumerable(path);
 
-            string expected = "1";
+            const string expected = "1";
             string actual = string.Join("", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
@@ -219,7 +220,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingRootPathFromPrimitive_Expected_SingleValueInEnumeration()
         {
-            PocoTestData testData = Given();
+            Given();
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
             List<IPath> paths = new List<IPath> { path };
@@ -228,7 +229,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "1";
+            const string expected = "1";
             string actual = string.Join("|", data[path]);
 
             Assert.AreEqual(expected, actual);
@@ -247,7 +248,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             PocoNavigator pocoNavigator = new PocoNavigator(testData);
 
-            string expected = "3";
+            const string expected = "3";
             string actual = pocoNavigator.SelectScalar(namePath).ToString();
 
             Assert.AreEqual(expected, actual);

@@ -13,13 +13,14 @@ using System;
 using System.Collections.Generic;
 using Dev2.Web;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
 {
     public sealed class DataListFormat
     {
         #region Static Members
-        private static readonly object _formatLock = new object();
-        private static readonly Dictionary<string, DataListFormat> _existingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
+        private static readonly object FormatLock = new object();
+        private static readonly Dictionary<string, DataListFormat> ExistingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
 
         /// <summary>
         /// Gets the DatalistFormat instance that represents the given <paramref name="formatName" />, or creates a new one if a DatalistFormat instance
@@ -37,12 +38,12 @@ namespace Dev2.DataList.Contract
             if(String.IsNullOrEmpty(formatName)) throw new ArgumentException("formatName cannot be null or empty string.");
             DataListFormat format;
 
-            lock(_formatLock)
+            lock(FormatLock)
             {
-                if(!_existingFormats.TryGetValue(formatName, out format))
+                if(!ExistingFormats.TryGetValue(formatName, out format))
                 {
                     format = new DataListFormat(formatName, publicFormatName, headerType);
-                    _existingFormats.Add(formatName, format);
+                    ExistingFormats.Add(formatName, format);
                 }
             }
 
@@ -51,7 +52,7 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Instance Fields
-        private string _formatName;
+        private readonly string _formatName;
         #endregion
 
         #region Public Properties

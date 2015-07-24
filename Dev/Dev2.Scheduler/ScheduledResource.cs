@@ -38,7 +38,7 @@ namespace Dev2.Scheduler
         public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName)
         {
 
-            var history = name.Split(new[] { '~' });
+            var history = name.Split('~');
 
             WorkflowName = workflowName;
             Trigger = trigger;

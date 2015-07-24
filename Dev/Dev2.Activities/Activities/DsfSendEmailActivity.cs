@@ -59,10 +59,12 @@ namespace Dev2.Activities
             set
             {
                 _selectedEmailSource = value;
-                var resourceID = _selectedEmailSource.ResourceID;
-                _selectedEmailSource = null;
-                _selectedEmailSource = new EmailSource();
-                _selectedEmailSource.ResourceID = resourceID;
+                if(_selectedEmailSource != null)
+                {
+                    var resourceID = _selectedEmailSource.ResourceID;
+                    _selectedEmailSource = null;
+                    _selectedEmailSource = new EmailSource { ResourceID = resourceID };
+                }
             }
         }
         // ReSharper restore MemberCanBePrivate.Global

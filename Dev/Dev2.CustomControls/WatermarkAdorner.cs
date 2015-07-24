@@ -10,7 +10,7 @@ namespace Dev2.CustomControls
     {
         #region Private Fields
 
-        private readonly ContentPresenter contentPresenter;
+        private readonly ContentPresenter _contentPresenter;
 
         #endregion
 
@@ -19,29 +19,33 @@ namespace Dev2.CustomControls
         public WatermarkAdorner(UIElement adornedElement, object watermark) :
             base(adornedElement)
         {
-            this.IsHitTestVisible = false;
+            IsHitTestVisible = false;
 
-            this.contentPresenter = new ContentPresenter();
-            TextBlock textBlock = new TextBlock();
-            textBlock.FontStyle = FontStyles.Italic;
-            textBlock.VerticalAlignment = VerticalAlignment.Top;
-            textBlock.Text = watermark.ToString();
-            textBlock.Padding = new Thickness(4);
-            this.contentPresenter.Content = textBlock;
-            this.contentPresenter.Opacity = 0.5;
-            this.contentPresenter.Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0);
+            _contentPresenter = new ContentPresenter();
+            TextBlock textBlock = new TextBlock
+                                  {
+                                      FontStyle = FontStyles.Italic,
+                                      VerticalAlignment = VerticalAlignment.Top,
+                                      Text = watermark.ToString(),
+                                      Padding = new Thickness(4)
+                                  };
+            _contentPresenter.Content = textBlock;
+            _contentPresenter.Opacity = 0.5;
+            _contentPresenter.Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0);
 
-            if (this.Control is ItemsControl && !(this.Control is ComboBox))
+            if (Control is ItemsControl && !(Control is ComboBox))
             {
-                this.contentPresenter.VerticalAlignment = VerticalAlignment.Center;
-                this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
+                _contentPresenter.VerticalAlignment = VerticalAlignment.Center;
+                _contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
             }
 
             // Hide the control adorner when the adorned element is hidden
-            Binding binding = new Binding("IsVisible");
-            binding.Source = adornedElement;
-            binding.Converter = new BooleanToVisibilityConverter();
-            this.SetBinding(VisibilityProperty, binding);
+            Binding binding = new Binding("IsVisible")
+                              {
+                                  Source = adornedElement,
+                                  Converter = new BooleanToVisibilityConverter()
+                              };
+            SetBinding(VisibilityProperty, binding);
         }
 
         #endregion
@@ -59,7 +63,7 @@ namespace Dev2.CustomControls
 
         private Control Control
         {
-            get { return (Control)this.AdornedElement; }
+            get { return (Control)AdornedElement; }
         }
 
         #endregion
@@ -68,19 +72,19 @@ namespace Dev2.CustomControls
 
         protected override Visual GetVisualChild(int index)
         {
-            return this.contentPresenter;
+            return _contentPresenter;
         }
 
         protected override Size MeasureOverride(Size constraint)
         {
             // Here's the secret to getting the adorner to cover the whole control
-            this.contentPresenter.Measure(Control.RenderSize);
+            _contentPresenter.Measure(Control.RenderSize);
             return Control.RenderSize;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.contentPresenter.Arrange(new Rect(finalSize));
+            _contentPresenter.Arrange(new Rect(finalSize));
             return finalSize;
         }
 

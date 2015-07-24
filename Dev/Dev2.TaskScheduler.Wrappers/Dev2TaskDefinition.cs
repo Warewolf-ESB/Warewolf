@@ -67,7 +67,7 @@ namespace Dev2.TaskScheduler.Wrappers
             if (action.Arguments != null)
             {
                 List<string> output =
-                    action.Arguments.Split(new[] {'"'}).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
+                    action.Arguments.Split('"').Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
                 if (output.Count() != 2 || !output.All(a => a.Contains(":")))
                     return false;
             }

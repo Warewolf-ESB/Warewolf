@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.Binary_Objects;
 
-namespace Dev2.Data.Binary_Objects
+namespace Dev2.Data
 {
     public class EnvironmentIndexIterator : IIndexIterator
     {
         readonly IList<int> _indexes;
-        IEnumerator<int> _enumerator;
+        readonly IEnumerator<int> _enumerator;
         bool _hasMore;
         #region Implementation of IIndexIterator
 

@@ -85,10 +85,7 @@ namespace System.Activities.Core.Presentation
                 return;
             if(!Context.Items.GetValue<ReadOnlyState>().IsReadOnly)
             {
-                if(DragDropHelper.AllowDrop(e.Data, Context, new[]
-        {
-          AllowedItemType
-        }))
+                if(DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
                 {
                     BeginStoryboard((Storyboard)Resources[storyboardResourceName]);
                     return;

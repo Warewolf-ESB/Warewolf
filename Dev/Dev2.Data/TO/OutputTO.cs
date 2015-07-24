@@ -11,11 +11,12 @@
 
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
 {
     public class OutputTO {
-        private string _outPutDescription;
-        private IList<string> _outputStrings;
+        private readonly string _outPutDescription;
+        private readonly IList<string> _outputStrings;
 
         internal OutputTO(string outputDescription) {
             _outPutDescription = outputDescription;

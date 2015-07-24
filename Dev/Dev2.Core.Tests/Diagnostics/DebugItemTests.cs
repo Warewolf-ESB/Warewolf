@@ -236,8 +236,8 @@ namespace Dev2.Tests.Diagnostics
 
             debugState.ClearFile("TestFile.txt");
             EnvironmentVariables.WebServerUri = "http://localhost:3142";
-            string expeced = "\r\nThis is\r\n the text\\n that we are writing";
-            string textToWrite = "\nThis is\r\n the text\\n that we are writing";
+            const string expeced = "\r\nThis is\r\n the text\\n that we are writing";
+            const string textToWrite = "\nThis is\r\n the text\\n that we are writing";
 
             var uri = debugState.SaveFile(textToWrite, "TestFile.txt");
             var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
