@@ -55,17 +55,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the execution has '(.*)' error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedNoError = anError.Equals("NO");
+            bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            string fetchErrors = string.Join(Environment.NewLine, result.Environment.Errors);
-            bool actuallyHasErrors = result.Environment.Errors.Count == 0 && result.Environment.AllErrors.Count ==0;
+            string fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
+            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            Assert.IsTrue(expectedNoError == actuallyHasErrors, message);
-            if (!expectedNoError && anError != "AN")
-                fetchErrors.Should().Contain(anError);
+            var hasAnError = expectedError == actuallyHasErrors;
+            var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
+            Assert.IsTrue(hasAnError || errorMessageMatches, message);
         }
 
         [Then(@"the debug inputs as")]

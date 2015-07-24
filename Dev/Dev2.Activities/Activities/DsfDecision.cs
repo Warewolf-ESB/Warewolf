@@ -91,11 +91,11 @@ namespace Dev2.Activities
                 {
                     if (a.EvaluationFn == enDecisionType.IsError)
                     {
-                        return new[] { dataObject.Environment.Errors.Count > 0 };
+                        return new[] { dataObject.Environment.AllErrors.Count > 0 };
                     }
                     if (a.EvaluationFn == enDecisionType.IsNotError)
                     {
-                        return new[] { dataObject.Environment.Errors.Count == 0 };
+                        return new[] { dataObject.Environment.AllErrors.Count == 0 };
                     }
                     IList<bool> ret = new List<bool>();
                     var iter = new WarewolfListIterator();

@@ -72,19 +72,6 @@ Scenario: Calculate using incorrect formula
 	|               |
 	| [[result]] = |
 
-	Scenario: Calculate using incorrect argument expression for formula 
-	Given I have the formula "sum([[b]]+[[c]])"
-	And I have a calculate variable "[[b]]" equal to "+1 +1"
-	And I have a calculate variable "[[c]]" equal to "+1"
-	When the calculate tool is executed
-	Then the calculate result should be ""
-		And the execution has "Incorrect type of argument or operand. Unable to calculate: " error 
-	And the debug inputs as  
-	| fx = |
-	| sum([[b]]+[[c]]) = sum(+1 +1++1) |	
-	And the debug output as 
-	|               |
-	| [[result]] =  |
 
 Scenario: Calculate using variable as full calculation
 	Given I have a calculate variable "[[var]]" equal to "SUM(1,2,3)-5"
