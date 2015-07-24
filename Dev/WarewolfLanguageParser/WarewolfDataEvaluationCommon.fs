@@ -256,8 +256,15 @@ and ParseLanguageExpression  (lang:string)  (update:int): LanguageExpression=
             | RecordSetExpression a -> match a.Index with
                                         | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
                                         | _-> a |> LanguageExpression.RecordSetExpression
+            | ComplexExpression p -> List.map (updateComplex update) p |> LanguageExpression.ComplexExpression
             | _->data
 
+and updateComplex   update data = 
+    match data with 
+                | RecordSetExpression a -> match a.Index with
+                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
+                                            | _-> a |> LanguageExpression.RecordSetExpression
+                | _->data
 
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
     let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ recset.Data.[a].[index] |> WarewolfAtomRecordtoString|> DataString ])) recset.Data
@@ -418,7 +425,7 @@ and  EvalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : 
         | ComplexExpression  a -> if (List.exists isNotAtom a) 
                                   then 
                                         let ev =List.map LanguageExpressionToString a|> List.map  (Eval env update)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env update a  )
-                                        if ev.Contains("[[") then ev else lang                                  
+                                        if ev.Contains("[[") then ev else LanguageExpressionToString buffer                                  
                                   else lang
         | RecordSetExpression a -> match a.Index with 
                                     | IndexExpression exp -> match exp with
