@@ -826,9 +826,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DispatchDebugState(dataObject, StateType.After, update);
                     }
                     exePayload.InnerActivity = innerA;
-                    var ind = itr.MaxIndex();
-                    var count = 0;
-                    while (itr.HasMore() && count < ind)
+ 
+           
+                    while (itr.HasMore() )
                         {
 
                             operationalData = exePayload;
@@ -836,13 +836,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         int innerupdate = 0;
                         if (exePayload.ForEachType != enForEachType.NumOfExecution)
                             {
-                            //IterateIOMapping(idx);
+            
                             innerupdate = idx;
                             }
 
-                        exeAct.Execute(dataObject, innerupdate);
+                            exeAct.Execute(dataObject, innerupdate);
 
-                        count++;
+            
                             operationalData.IncIterationCount();
                         }
                     if (errors.HasErrors())
