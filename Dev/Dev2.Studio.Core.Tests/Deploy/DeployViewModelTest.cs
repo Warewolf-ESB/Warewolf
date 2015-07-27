@@ -503,7 +503,7 @@ namespace Dev2.Core.Tests
         public void DeployViewModelTest_DeployCommand_AConflictWasFoundAndUserOptsToOverwrite_DeploysSuccessfully()
         {
             DeployViewModel deployViewModel;
-
+            CustomContainer.DeRegister<IPopupController>();
             var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
