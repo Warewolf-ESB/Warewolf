@@ -7,3 +7,7 @@ C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Dev2.Warewolf.Securit
 C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Dev2.Warewolf.Security.pdb
 C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Dev2.Warewolf.Security.dll
 C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Dev2.Warewolf.Security.pdb
+E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Dev2.Warewolf.Security.dll
+E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Dev2.Warewolf.Security.pdb
+E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Dev2.Warewolf.Security.dll
+E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Dev2.Warewolf.Security.pdb
