@@ -1,5 +1,5 @@
 
-<Service ID="8184beae-2ff0-48d6-8deb-f2ef88c1bcf4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="9139Local" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12024">
+<Service ID="8184beae-2ff0-48d6-8deb-f2ef88c1bcf4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="9139Local" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>9139Local</DisplayName>
   <Category>Acceptance Testing Resources\9139Local</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>RGd7NkKr1khIE7EMPcQqplSADEE=</DigestValue>
+        <DigestValue>P02JIM6BVen0u9L1nWymydOjoj0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>jorMcQi7PuUwx+pxR1hYV/kb2VVfCgLBBVWQXojsTw+qMLH10aqXCGUaTR0n0njbrqprX7J22kovtCSGKIFh97a8OfGAm6itTOJ+CBYWA39Pw42O5YF+J4x8Bwr55W+sSBHpsYOlKGEYSGT7y1h2mSTHuOvNROkOO0a3SMpPrTo=</SignatureValue>
+    <SignatureValue>AGX7s7e/bf6CqZ3fHhsRH/wdxfoVSaS/SbzAeVqAgzTduJzMWWwio0qetRSOLeBjStwRhbtUmTYgrlut8VUA/U8AhkawXjcaaK74WyNwIuEQlo5jDX3Ne6WuoJUismEIWZbwWOa2y91NI3PoIMhSIq2PokZGa+3hQCg/O0U+WQE=</SignatureValue>
   </Signature>
 </Service>

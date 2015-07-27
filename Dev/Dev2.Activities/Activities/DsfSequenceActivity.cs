@@ -184,6 +184,8 @@ namespace Dev2.Activities
             }
            if (dataObject.IsDebugMode())
            {
+               _debugOutputs = new List<DebugItem>();
+               _debugOutputs = new List<DebugItem>();
                DispatchDebugState(dataObject, StateType.Duration,update);
            }
             OnCompleted(dataObject);

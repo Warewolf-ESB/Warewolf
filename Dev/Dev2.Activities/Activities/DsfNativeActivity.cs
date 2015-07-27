@@ -456,6 +456,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     InitializeDebugState(stateType, dataObject, remoteID, false, "",dt);
                 }
+                else
+                {
+                    Dev2Logger.Log.Error("aaa");
+                }
 
                 if (_debugState != null)
                 {
@@ -511,6 +515,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(_debugState == null)
                 {
                     InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage,dt);
+                }
+                else
+                {
+                    Dev2Logger.Log.Error("aaa");
                 }
 
                 if(_debugState != null)
@@ -587,7 +595,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
-                if(stateType == StateType.After || stateType == StateType.Duration)
+                if(stateType == StateType.After )
                 {
                     // Free up debug state
                     _debugState = null;
@@ -646,7 +654,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
             if (stateType != StateType.Duration)
             {
-            UpdateDebugParentID(dataObject);
+                UpdateDebugParentID(dataObject);
             }
             if(remoteID != Guid.Empty)
             {

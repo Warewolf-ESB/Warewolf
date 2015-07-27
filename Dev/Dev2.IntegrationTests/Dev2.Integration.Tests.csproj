@@ -251,7 +251,6 @@
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
-    <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Activities\UtilTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\WebCommunicationTest.cs" />

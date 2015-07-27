@@ -1,0 +1,23 @@
+
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
+  <Category>Acceptance Testing Resources\Dev2 Testing Web Src Faulty</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>YZeLoKcIEDh+knl3d7/1tI6oUPw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>fdMvvnxL23HxqhQSKG9F7enUbpaIVwOVRWq+XBAme9CqQVtXc/sVRzL4XVJAexawt6JeET9wkOVXSY8cCSm0LhGtdbeMVVta9P/VnWDA1dhgif85psQ5dUlWkKgqi4nA2STSQs5wHpb97V2nLEmqWztFjTWr+USgtOC3S07ewps=</SignatureValue>
+  </Signature>
+</Source>

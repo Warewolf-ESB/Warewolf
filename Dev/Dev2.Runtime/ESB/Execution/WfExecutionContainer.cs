@@ -11,11 +11,15 @@
 
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
@@ -125,7 +129,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        void Eval(Guid resourceID, IDSFDataObject dataObject)
+        public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
@@ -138,7 +142,42 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject,int update)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
+        {
+            if(errors == null)
+            {
+                throw new ArgumentNullException("errors");
+            }
+
+            var results = new List<DebugItem>();
+            foreach(IDev2Definition dev2Definition in inputs)
+            {
+                var variableName = GetVariableName(dev2Definition);
+                DebugItem itemToAdd = new DebugItem();
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, 0), itemToAdd); //todo:confirm
+                results.Add(itemToAdd);
+            }
+
+            foreach(IDebugItem debugInput in results)
+            {
+                debugInput.FlushStringBuilder();
+            }
+
+            return results;
+        }
+        string GetVariableName(IDev2Definition value)
+        {
+            return String.IsNullOrEmpty(value.RecordSetName)
+                  ? String.Format("[[{0}]]", value.Name)
+                  : String.Format("[[{0}]]", value.RecordSetName);
+        }
+        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
+        {
+            var debugItemResults = parameters.GetDebugItemResult();
+            debugItem.AddRange(debugItemResults);
+        }
+
+        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject,int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 

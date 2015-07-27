@@ -124,7 +124,7 @@ namespace Dev2.Activities
                         {
                             var inputToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams("", item.Result, "", "="), inputToAdd);
+                            AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result,update), "", "="), inputToAdd);
                             AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
                             _debugInputs.Add(inputToAdd);
                         }

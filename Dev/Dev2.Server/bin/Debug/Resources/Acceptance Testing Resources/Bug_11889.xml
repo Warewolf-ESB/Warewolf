@@ -1,5 +1,5 @@
 
-<Service ID="b6f7d1c0-3bcb-4210-9929-ad411c6f2e34" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_11889" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.5.5655.12024">
+<Service ID="b6f7d1c0-3bcb-4210-9929-ad411c6f2e34" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_11889" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Bug_11889</DisplayName>
   <Category>Acceptance Testing Resources\Bug_11889</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -41,9 +41,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>lYmoCfIX1/Ns5IsrZMO/4EeWVgM=</DigestValue>
+        <DigestValue>oBXQ53S+UmOJ9DXpf4xmpgqCEsU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Mz4gq+7jj1WJZHwlgTKyUImPg/ZHJApa3+2mlTiIhQaVnFHfv8qhJbBsyC84lM0ofDguo030XOtrMtnw4onH8KGC3r0q8cdIzAjYv4T0XAqYPEEWNm87kLbK04HKDaWSk7LfoCOq5UhmXRF34tvX5V+bvOOclysFm7X73mNZ5TM=</SignatureValue>
+    <SignatureValue>oUKy3hXriZbjskNdUzTCl0mFRxlJDZHnYw/hebVIC6RgdJ+G9GXp9TTa2QapO1+Pt8dUE+E7Eb9EfOdugXxwFrrh+dcsvXsY0xmaHPU+beOrB7mZg7cQ+3+hS8XSRowDYjCo81w1HPcyDBe//UUfaEgjDJQc8H9vGdM1ni73so4=</SignatureValue>
   </Signature>
 </Service>
