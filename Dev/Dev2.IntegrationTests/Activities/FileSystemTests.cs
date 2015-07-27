@@ -164,19 +164,6 @@ namespace Dev2.Integration.Tests.Activities
         #region Get Tests
 
         [TestMethod]
-        public void GetWithNoUserName_ValidPath_Expected_Stream()
-        {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(_tmpfile1, "", "");
-            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path, new List<string>());
-
-            int len = (int)result.Length;
-            result.Close();
-
-            Assert.IsTrue(len > 0);
-        }
-
-        [TestMethod]
         public void GetWithNoUserName_InvalidPath_Expected_NoStream()
         {
             try
