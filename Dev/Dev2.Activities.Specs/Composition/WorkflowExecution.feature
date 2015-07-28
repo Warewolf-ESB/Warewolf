@@ -4178,3 +4178,15 @@ Scenario: Executing WF on a remote server
          | Input to Service | From Variable | Output from Service | To Variable      |
          When "TestRemoteTools" is executed
          Then the workflow execution has "NO" error     
+
+		 
+Scenario: ForEach with NestedStarTest and Inner WF
+	  Given I have a workflow "ForEach Output2"
+	  And "ForEach Output2" contains "TestInnerWFForEachOutputs" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "ForEach Output2" is executed
+	Then the workflow execution has "NO" error
+	And the 'TestInnerWFForEachOutputs' in Workflow 'ForEach Output2' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |

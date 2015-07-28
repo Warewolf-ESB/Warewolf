@@ -1269,9 +1269,9 @@ namespace Dev2.Data.Util
 
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
             HashSet<string> processedSetNames = new HashSet<string>();
+
             foreach(IRecordSetDefinition tmp in defs)
             {
-                IList<string> postProcessDefs = new List<string>();
                 // get DL recordset Name
                 if(tmp.Columns.Count > 0)
                 {
@@ -1314,12 +1314,7 @@ namespace Dev2.Data.Util
                     result.Append(string.Concat("</", setName, ">"));
                     result.Append(Environment.NewLine);
 
-                    //  Process post append data ;)
-                    foreach(var col in postProcessDefs)
-                    {
-                        result.Append(col);
-                        result.Append(Environment.NewLine);
-                    }
+
                 }
             }
 
@@ -1424,7 +1419,7 @@ namespace Dev2.Data.Util
                 return;
             }
 
-            var newTokens = new List<string>();
+     
             while(tokenizer.HasMoreOps())
             {
                 var token = tokenizer.NextToken();
@@ -1438,7 +1433,7 @@ namespace Dev2.Data.Util
                 else
                 {
                     token = AddBracketsToValueIfNotExist(string.Format("{0}{1}{2}", tokenPrefix, StripLeadingAndTrailingBracketsFromValue(token), tokenSuffix));
-                    newTokens.Add(token);
+
                     target.Add(new ObservablePair<string, string>(token, string.Empty));
                 }
             }
@@ -1464,7 +1459,7 @@ namespace Dev2.Data.Util
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
                             var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, update);
+                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -1483,7 +1478,7 @@ namespace Dev2.Data.Util
                                         if (recsetResult != null)
                                         {
 
-                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, update);
+                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
                                         }
                                     }
                                     if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
@@ -1491,7 +1486,7 @@ namespace Dev2.Data.Util
                                         if (recsetResult != null)
                                         {
 
-                                            environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, update);
+                                            environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
                                         }
                                     }
 
