@@ -39,7 +39,7 @@ namespace Dev2.Integration.Tests {
     [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [DebuggerNonUserCode()]
     [CompilerGenerated()]
-    internal class TestResource {
+    public class TestResource {
         
         private static ResourceManager resourceMan;
         
@@ -877,7 +877,7 @@ namespace Dev2.Integration.Tests {
         /// <summary>
         ///   Looks up a localized string similar to \\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\.
         /// </summary>
-        internal static string PathOperations_UNC_Path {
+        public static string PathOperations_UNC_Path {
             get {
                 return ResourceManager.GetString("PathOperations_UNC_Path", resourceCulture);
             }

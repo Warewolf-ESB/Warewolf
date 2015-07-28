@@ -20,7 +20,7 @@ namespace Dev2.Tests.Activities.Mocks
     {
         public IActivityIOOperationsEndPoint Source { get; set; }
         public IActivityIOOperationsEndPoint Destination { get; set; }
-        public Dev2CRUDOperationTO Dev2CRUDOperationTO { get; set; }
+        public Dev2CRUDOperationTO Dev2CrudOperationTO { get; set; }
         public Dev2PutRawOperationTO Dev2PutRawOperationTo { get; set; }
         public Dev2ZipOperationTO Dev2ZipOperationTO { get; set; }
         public Dev2UnZipOperationTO Dev2UnZipOperationTO   { get; set; }
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Activities.Mocks
         {
             CreateToFile = createToFile;
             Destination = dst;
-            Dev2CRUDOperationTO = args;
+            Dev2CrudOperationTO = args;
             return "Successful";
         }
 
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Activities.Mocks
         {
             Source = src;
             Destination = dst;
-            Dev2CRUDOperationTO = args;
+            Dev2CrudOperationTO = args;
             return "Successful";
         }
 
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.Mocks
         {
             Source = src;
             Destination = dst;
-            Dev2CRUDOperationTO = args;
+            Dev2CrudOperationTO = args;
             return "Successful";
         }
 
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Activities.Mocks
         {
             Source = src;
             Destination = dst;
-            Dev2CRUDOperationTO = args;
+            Dev2CrudOperationTO = args;
             return "Successful";
         }
 

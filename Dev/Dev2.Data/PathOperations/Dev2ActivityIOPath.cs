@@ -24,7 +24,7 @@ namespace Dev2.PathOperations
     public class Dev2ActivityIOPath : IActivityIOPath
     {
 
-        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass,bool isNotCertVerifiable)
+        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass, bool isNotCertVerifiable)
         {
             PathType = type;
             Path = path;
@@ -76,6 +76,7 @@ namespace Dev2.PathOperations
             set;
         }
 
+       
         public bool IsNotCertVerifiable
         {
             get;

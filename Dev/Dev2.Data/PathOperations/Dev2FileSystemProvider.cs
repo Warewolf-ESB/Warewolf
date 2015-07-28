@@ -77,9 +77,9 @@ namespace Dev2.PathOperations
         {
             Stream result;
 
-            if(!RequiresAuth(path))
+            if (!RequiresAuth(path))
             {
-                if(File.Exists(path.Path))
+                if (File.Exists(path.Path))
                 {
                     result = new MemoryStream(File.ReadAllBytes(path.Path));
                 }
@@ -100,13 +100,13 @@ namespace Dev2.PathOperations
                     bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
-                    if(loginOk)
+                    if (loginOk)
                     {
-                        using(safeTokenHandle)
+                        using (safeTokenHandle)
                         {
 
                             WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
 
@@ -122,7 +122,7 @@ namespace Dev2.PathOperations
                         throw new Exception("Failed to authenticate with user [ " + path.Username + " ] for resource [ " + path.Path + " ] ");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Log.Error(ex);
                     throw new Exception(ex.Message, ex);
@@ -152,7 +152,8 @@ namespace Dev2.PathOperations
                 if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
                 {
                     _fileLock.EnterWriteLock();
-                    try{
+                    try
+                    {
                         if (!RequiresAuth(dst))
                         {
                             using (src)
@@ -211,7 +212,7 @@ namespace Dev2.PathOperations
             try
             {
 
-                if(!RequiresAuth(src))
+                if (!RequiresAuth(src))
                 {
                     // We need sense check the value passed in ;)
                     result = DeleteHelper.Delete(src.Path);
@@ -222,13 +223,13 @@ namespace Dev2.PathOperations
                     SafeTokenHandle safeTokenHandle;
                     bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
-                    if(loginOk)
+                    if (loginOk)
                     {
-                        using(safeTokenHandle)
+                        using (safeTokenHandle)
                         {
 
                             WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
 
@@ -248,7 +249,7 @@ namespace Dev2.PathOperations
                 }
 
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //File is not found problem during delete
                 result = false;
@@ -272,7 +273,7 @@ namespace Dev2.PathOperations
         {
             bool result;
 
-            if(!RequiresAuth(dst))
+            if (!RequiresAuth(dst))
             {
                 result = PathIs(dst) == enPathType.Directory ? Directory.Exists(dst.Path) : File.Exists(dst.Path);
             }
@@ -286,13 +287,13 @@ namespace Dev2.PathOperations
                     bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
-                    if(loginOk)
+                    if (loginOk)
                     {
-                        using(safeTokenHandle)
+                        using (safeTokenHandle)
                         {
 
                             WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
 
@@ -310,7 +311,7 @@ namespace Dev2.PathOperations
                         throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Log.Error(ex);
                     throw;
@@ -328,11 +329,11 @@ namespace Dev2.PathOperations
         {
             bool result = false;
 
-            if(args.Overwrite)
+            if (args.Overwrite)
             {
-                if(!RequiresAuth(dst))
+                if (!RequiresAuth(dst))
                 {
-                    if(DirectoryExist(dst))
+                    if (DirectoryExist(dst))
                     {
                         Delete(dst);
                     }
@@ -348,17 +349,17 @@ namespace Dev2.PathOperations
                         bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
-                        if(loginOk)
+                        if (loginOk)
                         {
-                            using(safeTokenHandle)
+                            using (safeTokenHandle)
                             {
 
                                 WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                 {
                                     // Do the operation here
 
-                                    if(DirectoryExist(dst))
+                                    if (DirectoryExist(dst))
                                     {
                                         Delete(dst);
                                     }
@@ -376,16 +377,16 @@ namespace Dev2.PathOperations
                             throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Dev2Logger.Log.Error(ex);
                         throw;
                     }
                 }
             }
-            else if(!args.Overwrite && !DirectoryExist(dst))
+            else if (!args.Overwrite && !DirectoryExist(dst))
             {
-                if(!RequiresAuth(dst))
+                if (!RequiresAuth(dst))
                 {
                     Directory.CreateDirectory(dst.Path);
                     result = true;
@@ -399,13 +400,13 @@ namespace Dev2.PathOperations
                         SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
-                        if(loginOk)
+                        if (loginOk)
                         {
-                            using(safeTokenHandle)
+                            using (safeTokenHandle)
                             {
 
                                 WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                 {
                                     // Do the operation here
 
@@ -424,7 +425,7 @@ namespace Dev2.PathOperations
                             throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Dev2Logger.Log.Error(ex);
                         throw;
@@ -451,9 +452,9 @@ namespace Dev2.PathOperations
         {
             enPathType result = enPathType.File;
 
-            if(path.Path.StartsWith("\\\\"))
+            if (path.Path.StartsWith("\\\\"))
             {
-                if(Dev2ActivityIOPathUtils.IsDirectory(path.Path))
+                if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
                 {
                     result = enPathType.Directory;
                 }
@@ -461,13 +462,13 @@ namespace Dev2.PathOperations
             else
             {
                 //  && FileExist(path)
-                if(FileExist(path) || DirectoryExist(path))
+                if (FileExist(path) || DirectoryExist(path))
                 {
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
+                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
                     {
                         FileAttributes fa = File.GetAttributes(path.Path);
 
-                        if((fa & FileAttributes.Directory) == FileAttributes.Directory)
+                        if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
                         {
                             result = enPathType.Directory;
                         }
@@ -475,7 +476,7 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    if(Dev2ActivityIOPathUtils.IsDirectory(path.Path))
+                    if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
                     {
                         result = enPathType.Directory;
                     }
@@ -523,7 +524,7 @@ namespace Dev2.PathOperations
 
             int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
-            if(idx > 0)
+            if (idx > 0)
             {
                 result = path.Username.Substring((idx + 1));
             }
@@ -533,7 +534,7 @@ namespace Dev2.PathOperations
 
         private string ExtractDomain(IActivityIOPath path)
         {
-            if(path == null)
+            if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
@@ -541,7 +542,7 @@ namespace Dev2.PathOperations
 
             int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
-            if(idx > 0)
+            if (idx > 0)
             {
                 result = path.Username.Substring(0, idx);
             }
@@ -575,21 +576,21 @@ namespace Dev2.PathOperations
 
             string path = src.Path;
 
-            if(!path.EndsWith("\\") && PathIs(src) == enPathType.Directory)
+            if (!path.EndsWith("\\") && PathIs(src) == enPathType.Directory)
             {
                 path += "\\";
             }
 
-            if(!RequiresAuth(src))
+            if (!RequiresAuth(src))
             {
                 try
                 {
 
                     IEnumerable<string> dirs;
 
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
+                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(path))
                     {
-                        if(Directory.Exists(path))
+                        if (Directory.Exists(path))
                         {
                             dirs = GetDirectoriesForType(path, string.Empty, type);
                         }
@@ -607,15 +608,15 @@ namespace Dev2.PathOperations
                         dirs = GetDirectoriesForType(baseDir, pattern, type);
                     }
 
-                    if(dirs != null)
+                    if (dirs != null)
                     {
-                        foreach(string d in dirs)
+                        foreach (string d in dirs)
                         {
                             result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true));
                         }
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     throw new Exception("Directory not found [ " + src.Path + " ] ");
                 }
@@ -629,13 +630,13 @@ namespace Dev2.PathOperations
                     SafeTokenHandle safeTokenHandle;
                     bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
-                    if(loginOk)
+                    if (loginOk)
                     {
-                        using(safeTokenHandle)
+                        using (safeTokenHandle)
                         {
 
                             WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
 
@@ -644,7 +645,7 @@ namespace Dev2.PathOperations
 
                                     IEnumerable<string> dirs;
 
-                                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
+                                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(path))
                                     {
                                         dirs = GetDirectoriesForType(path, string.Empty, type);
                                     }
@@ -657,16 +658,16 @@ namespace Dev2.PathOperations
                                         dirs = GetDirectoriesForType(baseDir, pattern, type);
                                     }
 
-                                    if(dirs != null)
+                                    if (dirs != null)
                                     {
-                                        foreach(string d in dirs)
+                                        foreach (string d in dirs)
                                         {
                                             result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
                                         }
                                     }
 
                                 }
-                                catch(Exception)
+                                catch (Exception)
                                 {
                                     throw new Exception("Directory not found [ " + src.Path + " ] ");
                                 }
@@ -683,7 +684,7 @@ namespace Dev2.PathOperations
                         throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Log.Error(ex);
                     throw;
@@ -696,24 +697,24 @@ namespace Dev2.PathOperations
 
         private static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
         {
-            if(type == ReadTypes.Files)
+            if (type == ReadTypes.Files)
             {
-                if(string.IsNullOrEmpty(pattern))
+                if (string.IsNullOrEmpty(pattern))
                 {
                     return Directory.EnumerateFiles(path);
                 }
                 return Directory.EnumerateFiles(path, pattern);
             }
-            if(type == ReadTypes.Folders)
+            if (type == ReadTypes.Folders)
             {
-                if(string.IsNullOrEmpty(pattern))
+                if (string.IsNullOrEmpty(pattern))
                 {
                     return Directory.EnumerateDirectories(path);
                 }
                 return Directory.EnumerateDirectories(path, pattern);
             }
 
-            if(string.IsNullOrEmpty(pattern))
+            if (string.IsNullOrEmpty(pattern))
             {
                 return Directory.EnumerateFileSystemEntries(path);
             }

@@ -11,7 +11,7 @@
 
 
 
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities.Designers2.GetWebRequest
 {
     public partial class GetWebRequestDesigner

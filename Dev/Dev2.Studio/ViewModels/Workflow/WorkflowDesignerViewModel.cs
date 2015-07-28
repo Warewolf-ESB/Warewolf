@@ -1380,7 +1380,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Dev2Logger.Log.Info(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
-                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
+                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
                 if (msg != null)
                 {
                     xaml = msg.Message;

@@ -22,12 +22,12 @@ namespace Dev2.Scheduler
 {
     public class ServerSchedulerFactory : IServerSchedulerFactory
     {
-        private IDev2TaskService _service;
-        private ITaskServiceConvertorFactory _factory;
+        private readonly IDev2TaskService _service;
+        private readonly ITaskServiceConvertorFactory _factory;
         private readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
         private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
   
-        private IDirectoryHelper _dir;
+        private readonly IDirectoryHelper _dir;
 
         public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory)
         {

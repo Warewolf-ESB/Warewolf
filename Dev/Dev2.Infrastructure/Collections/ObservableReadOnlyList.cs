@@ -130,7 +130,7 @@ namespace Dev2.Collections
             {
                 if(!_dispatcher.CheckAccess())
                 {
-                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal, new object[] { });
+                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal);
                 }
                 else
                 {

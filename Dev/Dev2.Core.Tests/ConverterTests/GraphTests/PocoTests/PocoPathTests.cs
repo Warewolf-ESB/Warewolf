@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
@@ -33,7 +34,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         {
             PocoPath path = new PocoPath("EnumerableData().NestedData.Name", "EnumerableData.NestedData.Name");
 
-            int expected = 3;
+            const int expected = 3;
             int actual = path.GetSegements().Count();
 
             Assert.AreEqual(expected, actual);
@@ -47,7 +48,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         {
             PocoPath path = new PocoPath("EnumerableData().NestedData.NestedData.Name", "EnumerableData.NestedData.NestedData.Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = path.GetSegements().Last().ToString();
 
             Assert.AreEqual(expected, actual);
@@ -67,7 +68,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment(propertyInfo);
 
-            bool expected = true;
+            const bool expected = true;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -83,7 +84,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment(propertyInfo);
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -98,7 +99,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("EnumerableData()");
 
-            bool expected = true;
+            const bool expected = true;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -113,7 +114,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);

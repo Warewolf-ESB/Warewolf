@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -26,13 +26,13 @@ namespace Dev2.DataList
 
 
             if (all)
-                return (a) => !values.All(x =>
+                return a => !values.All(x =>
                 {
                     Regex exp = new Regex(x.ToString());
                     return exp.IsMatch(a.ToString());
 
                 });
-            return (a) => !values.Any(x =>
+            return a => !values.Any(x =>
             {
                 Regex exp = new Regex(x.ToString());
                 return exp.IsMatch(a.ToString());

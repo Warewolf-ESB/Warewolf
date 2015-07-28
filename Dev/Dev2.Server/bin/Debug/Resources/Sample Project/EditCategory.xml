@@ -1,5 +1,5 @@
 
-<Service ID="3fc87ca1-4572-4c1b-aa3d-04b28c75f98c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EditCategory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="3fc87ca1-4572-4c1b-aa3d-04b28c75f98c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EditCategory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>EditCategory</DisplayName>
   <Category>SAMPLE PROJECT\EditCategory</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>deIfM/DhWmd7R8eF93QCHheEzeU=</DigestValue>
+        <DigestValue>JIfRDyi9g3O4NHrd8A3O0arqnHs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>fv5x0P76xoYM1FsecA+ks1oJAeguZloG6RyW2fmTjgX/G0YIReY9qB5s6uPJlidJ8AvLSFNeE1M9Z4v9rTiglRgaOqKPdo2NGrdUV9T4jQkdqx9Qf5xmGqOq4wXSn7a/DopJy/wpH6ZD1uHXHV5V3wPYkwhMBZ5rsrSI+jj3WJo=</SignatureValue>
+    <SignatureValue>FvUPKcsLIR3wYqZLwOX6ZwfEkv3s5VKQIO4MRr/kTRYENiTwyOoQpuQDscOHhuYk9j6/YbKjsRuX2qwPP3l3JD2qs9lfpTPea7SpcTBpZ9h0r+ev5OrY0w18Sm69RLS3SteluxWGvld8KVl+rywHjrIfU/9MK5UZRq9Hn3MclqA=</SignatureValue>
   </Signature>
 </Service>

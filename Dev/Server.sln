@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40121.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -111,6 +111,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New", "Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj", "{335E9126-30E1-4D23-B642-5D6BF82E2C09}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Interfaces", "Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj", "{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Warewolf.Security", "Dev2.Warewolf.Security\Dev2.Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -715,6 +717,18 @@ Global
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|x64.ActiveCfg = Release|Any CPU
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

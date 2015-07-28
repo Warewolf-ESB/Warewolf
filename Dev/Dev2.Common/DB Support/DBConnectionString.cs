@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces.DB;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Common.DB
 {
 // ReSharper disable InconsistentNaming

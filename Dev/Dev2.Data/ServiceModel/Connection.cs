@@ -16,6 +16,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Warewolf.Security.Encryption;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -57,7 +58,8 @@ namespace Dev2.Data.ServiceModel
          {
             ResourceType = ResourceType.Server;
 
-            var connectionString = xml.AttributeSafe("ConnectionString");
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString):conString;
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {
@@ -132,7 +134,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", enSourceType.Dev2Server),
                 new XElement("TypeOf", enSourceType.Dev2Server)
                 );

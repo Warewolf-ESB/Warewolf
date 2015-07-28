@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
-            dsfPluginActivity.MockExecutionImpl(null, null, null, null, out invokeErrors);
+            dsfPluginActivity.MockExecutionImpl(out invokeErrors);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, invokeErrors.FetchErrors().Count);

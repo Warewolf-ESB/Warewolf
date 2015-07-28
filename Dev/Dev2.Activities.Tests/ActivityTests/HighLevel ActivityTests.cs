@@ -17,6 +17,7 @@ using System.Reflection;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable ReturnTypeCanBeEnumerable.Local
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
-        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId);
+        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         Settings ReadSettings(IEnvironmentModel currentEnv);
@@ -61,7 +61,7 @@ namespace Dev2.Studio.Core.Interfaces
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);
-        List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list,bool onlyEditable);
+        List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list, bool onlyEditable);
         ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel, bool getDependsOnMe);
         List<string> GetDependanciesOnList(List<IContextualResourceModel> resourceModels, IEnvironmentModel environmentModel, bool getDependsOnMe = false);
         List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel);
@@ -73,7 +73,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
-        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
         IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
         ExecuteMessage Save(IResourceModel instanceObj);
         ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);

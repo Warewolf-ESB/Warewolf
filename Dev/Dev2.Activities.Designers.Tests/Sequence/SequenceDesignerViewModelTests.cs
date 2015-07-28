@@ -482,7 +482,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(environmentId);
             Mock<IResourceRepository> mockResRepo = new Mock<IResourceRepository>();
-            mockResRepo.Setup(d => d.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new TestDataWithContexResourceModel().DataContext);
+            mockResRepo.Setup(d => d.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new TestDataWithContexResourceModel().DataContext);
             mockEnvironment.Setup(c => c.ResourceRepository).Returns(mockResRepo.Object);
             GetEnvironmentRepository(mockEnvironment);
         }

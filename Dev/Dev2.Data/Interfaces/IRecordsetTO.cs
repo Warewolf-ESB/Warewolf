@@ -10,24 +10,25 @@
 */
 
 using System.Collections.Generic;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.DataList.Contract
 {
     public interface IRecordsetTO {
         int CurrentIndex { get; set; }
-        void InsertBodyAtIndex(int IndexNumber, string PayLoad);
-        void InsertFieldAtIndex(int IndexNumber, string FieldName, string PayLoad);
-        string GetRecordAtIndex(int IndexNumber);
+        void InsertBodyAtIndex(int indexNumber, string payLoad);
+        void InsertFieldAtIndex(int indexNumber, string fieldName, string payLoad);
+        string GetRecordAtIndex(int indexNumber);
         string GetRecordAtCurrentIndex();
-        void InsertFieldAtCurrentIndex(string FieldName, string PayLoad);
-        void InsertBodyAtCurrentIndex(string PayLoad);
+        void InsertFieldAtCurrentIndex(string fieldName, string payLoad);
+        void InsertBodyAtCurrentIndex(string payLoad);
         bool IsEmpty { get; }
         string RecordsetAsString { get; }
         int RecordCount { get; }
         string RecordsetName { get; }
         bool InitailEmpty { get; set; }        
-        void InsertWholeRecordset(string PayLoad);
-        string FetchFieldAtIndex(int IndexNumber, string FieldName);
+        void InsertWholeRecordset(string payLoad);
+        string FetchFieldAtIndex(int indexNumber, string fieldName);
 
         IList<IRecordSetDefinition> Def { get; }
     }

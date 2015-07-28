@@ -18,8 +18,10 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
+using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
+namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -101,17 +103,6 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
                 NestedData = new PocoTestData
                 {
                     Name = "AnotherWarren",
-                    Age = 31,
-                },
-            };
-
-            PocoTestData nestedTestData7 = new PocoTestData
-            {
-                Name = "Wallis",
-                Age = 30,
-                NestedData = new PocoTestData
-                {
-                    Name = "AnotherWallis",
                     Age = 31,
                 },
             };
@@ -295,10 +286,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Name>Dev2</Name>
 </ADL>";
 
@@ -321,10 +311,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <CakeName></CakeName>
 </ADL>";
 
@@ -347,10 +336,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Name>Dev2</Name>
 </ADL>";
 
@@ -373,10 +361,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <CakeName></CakeName>
 </ADL>";
 
@@ -399,10 +386,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Name>Brendon</Name>
 </ADL>";
 
@@ -425,10 +411,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <CakeName />
 </ADL>";
 
@@ -453,10 +438,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Departments>
     <Name>Dev</Name>
   </Departments>
@@ -484,10 +468,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Departments>
     <CakeName></CakeName>
   </Departments>
@@ -514,10 +497,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -561,10 +543,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -608,10 +589,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <EmployeeName>Brendon</EmployeeName>
@@ -660,10 +640,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -713,10 +692,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Departments>
     <Name>Dev</Name>
   </Departments>
@@ -744,10 +722,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Departments>
     <CakeName></CakeName>
   </Departments>
@@ -774,10 +751,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -821,10 +797,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -858,10 +833,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <EmployeeName>Brendon</EmployeeName>
@@ -910,10 +884,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -963,10 +936,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <Name>Mo</Name>
   </Names>
@@ -994,10 +966,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <CakeName />
   </Names>
@@ -1027,10 +998,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1>Mo</NameAtLevel1>
@@ -1074,10 +1044,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1>Mo</NameAtLevel1>
@@ -1121,10 +1090,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1a>Mo</NameAtLevel1a>
@@ -1174,10 +1142,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1a>Mo</NameAtLevel1a>
@@ -1234,10 +1201,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <ScalarName>Dev2</ScalarName>
   <Names>
     <DepartmentName>Dev</DepartmentName>
@@ -1289,10 +1255,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <ScalarNames>Dev2</ScalarNames>
   <Names>
     <DepartmentName>Dev</DepartmentName>
@@ -1344,10 +1309,9 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             IOutputDescription outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             outputDescription.DataSourceShapes.Add(dataSourceShape);
 
-            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            outputFormatter.RootNodeName = "ADL";
+            ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            string expected = @"<ADL>
+            const string expected = @"<ADL>
   <ScalarName>Brendon</ScalarName>
   <Names>
     <NameAtLevel1a>Mo</NameAtLevel1a>

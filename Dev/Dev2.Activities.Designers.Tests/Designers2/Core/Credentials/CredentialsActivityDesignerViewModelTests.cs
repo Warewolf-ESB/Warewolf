@@ -81,13 +81,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
             Verify_ValidateUserNameAndPassword("a]]", "", false, "Username - Invalid expression: opening and closing brackets don't match.");
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
-        public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_PasswordIsInvalidExpression_HasErrors()
-        {
-            Verify_ValidateUserNameAndPassword("afaf", "a]]", true, "Password - Invalid expression: opening and closing brackets don't match.");
-        }
 
         // ReSharper disable UnusedParameter.Local
         static void Verify_ValidateUserNameAndPassword(string userName, string password, bool isPasswordError, string expectedMessageFormat)

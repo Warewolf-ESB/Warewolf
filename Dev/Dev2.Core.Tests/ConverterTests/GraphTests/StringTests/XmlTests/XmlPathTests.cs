@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -29,7 +30,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         {
             XmlPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
 
-            int expected = 4;
+            const int expected = 4;
             int actual = path.GetSegements().Count();
 
             Assert.AreEqual(expected, actual);
@@ -40,7 +41,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         {
             XmlPath path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = path.GetSegements().Last().ToString();
 
             Assert.AreEqual(expected, actual);
@@ -61,7 +62,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment(element);
 
-            bool expected = true;
+            const bool expected = true;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -74,7 +75,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment(element);
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -86,7 +87,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Departments()");
 
-            bool expected = true;
+            const bool expected = true;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
@@ -98,7 +99,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlPath path = new XmlPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);

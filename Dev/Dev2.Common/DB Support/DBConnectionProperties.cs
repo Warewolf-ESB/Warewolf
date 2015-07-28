@@ -9,6 +9,8 @@
 */
 
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Common.DB
 {
     public class DBConnectionProperties

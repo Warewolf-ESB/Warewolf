@@ -26,7 +26,6 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
@@ -44,13 +43,9 @@ namespace ActivityUnitTests
     [ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
-
-        public IEsbWorkspaceChannel DsfChannel;
-        public Mock<IEsbWorkspaceChannel> MockChannel;
         public BaseActivityUnitTest()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CallBackData = "Default Data";
             TestStartNode = new FlowStep
             {
                 Action = new DsfCommentActivity()
@@ -58,19 +53,18 @@ namespace ActivityUnitTests
            DataObject = new DsfDataObject("",Guid.NewGuid());
         }
 
-        public Guid ExecutionId { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        Guid ExecutionId { get; set; }
 
-        public string TestData { get; set; }
+        protected string TestData { private get; set; }
 
-        public string CurrentDl { get; set; }
+        protected string CurrentDl { get; set; }
 
-        public FlowStep TestStartNode { get; set; }
+        protected FlowStep TestStartNode { get; set; }
 
-        public IDSFDataObject DataObject { get; set; }
+        protected IDSFDataObject DataObject { get; private set; }
 
-        public string CallBackData { get; set; }
-
-        public DynamicActivity FlowchartProcess
+        DynamicActivity FlowchartProcess
         {
             get
             {
@@ -84,7 +78,7 @@ namespace ActivityUnitTests
             }
         }
 
-        public ActivityBuilder FlowchartActivityBuilder
+        protected ActivityBuilder FlowchartActivityBuilder
         {
             get
             {
@@ -138,7 +132,7 @@ namespace ActivityUnitTests
 
         }
 
-        public IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
+        protected IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
             
@@ -216,7 +210,7 @@ namespace ActivityUnitTests
                 dataObject.ResourceID = Guid.NewGuid();
             }
             dataObject.Environment = DataObject.Environment;
-            wfec.Eval(FlowchartProcess,dataObject.ResourceID,dataObject, 0);
+            wfec.Eval(FlowchartProcess,dataObject, 0);
             DataObject = dataObject;
             return dataObject;
         }
@@ -228,7 +222,7 @@ namespace ActivityUnitTests
         /// We will mock the DSF channel to return something that we expect is shaped.
         /// </summary>
         /// <returns></returns>
-        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject, bool isDebug = false, int nestingLevel = 0)
+        protected Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject, bool isDebug = false, int nestingLevel = 0)
         {
             var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
             var mockChannel = new Mock<IEsbChannel>();
@@ -267,58 +261,16 @@ namespace ActivityUnitTests
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
-            wfec.Eval(FlowchartProcess,Guid.NewGuid(),dataObject, 0);
+            wfec.Eval(FlowchartProcess,dataObject, 0);
 
             return mockChannel;
-        }
-
-        /// <summary>
-        /// The ForEach Activity requires the data returned from an activity
-        /// We will mock the DSF channel to return something that we expect is shaped.
-        /// </summary>
-        /// <returns></returns>
-        public void ExecuteForEachProcessForReal(out IDSFDataObject dataObject)
-        {
-            var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
-            IEsbChannel channel = new EsbServicesEndpoint();
-
-            svc.SetActivity(FlowchartProcess);
-
-            if(CurrentDl == null)
-            {
-                CurrentDl = TestData;
-            }
-
-            ErrorResultTO errors = new ErrorResultTO();
-            if(errors.HasErrors())
-            {
-                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
-
-                throw new Exception(errorString);
-            }
-
-            dataObject = new DsfDataObject(CurrentDl, new Guid())
-            {
-                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                //       if this is NOT provided which will cause the tests to fail!
-                ServerID = Guid.NewGuid(),
-                ParentThreadID = 1
-            };
-
-
-            // we need to set this now ;)
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, channel);
-
-            errors.ClearErrors();
-            dataObject.DataListID = wfec.Execute(out errors, 0);
-
         }
 
         #endregion ForEach Execution
 
         #region Activity Debug Input/Output Test Methods
 
-        public dynamic CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape, string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults, bool isRemoteInvoke = false)
+        protected dynamic CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape, string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults, bool isRemoteInvoke = false)
         {
 
             TestStartNode = new FlowStep
@@ -346,7 +298,7 @@ namespace ActivityUnitTests
             return result;
         }
 
-        public dynamic CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
+        protected dynamic CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults, IPrincipal user = null)
         {
             TestStartNode = new FlowStep
@@ -374,12 +326,10 @@ namespace ActivityUnitTests
             return result;
         }
 
-        public IPrincipal User { get; set; }
+        protected IPrincipal User { private get; set; }
 
-        public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData, string recsetName, string fieldName, out string dataListShape, out string dataListWithData)
+        protected void CreateDataListWithRecsetAndCreateShape(IEnumerable<string> recsetData, string recsetName, string fieldName, out string dataListShape, out string dataListWithData)
         {
-            const bool Result = false;
-
             dataListShape = "<ADL>";
             dataListWithData = recsetData.Aggregate("<ADL>", (current, rowData) => string.Concat(current, "<", recsetName, ">", "<", fieldName, ">", rowData, "</", fieldName, ">", "</", recsetName, ">"));
             #region Create DataList With Data
@@ -393,39 +343,13 @@ namespace ActivityUnitTests
             dataListShape = string.Concat(dataListShape, "<", recsetName, ">", "<", fieldName, ">", "</", fieldName, ">", "</", recsetName, ">", "<res></res></ADL>");
 
             #endregion
-
-            return Result;
         }
 
-        public bool CreateDataListWithMultipleRecsetAndCreateShape(List<List<string>> recsetData, List<string> recsetName, List<string> fieldName, out string dataListShape, out string dataListWithData)
-        {
-            dataListShape = "<ADL>";
-            dataListWithData = "<ADL>";
-            #region Create DataList With Data
-
-            for(int i = 0; i < recsetData.Count; i++)
-            {
-                dataListWithData = recsetData[i].Aggregate(dataListWithData, (current, rowData) => string.Concat(current, "<", recsetName[i], ">", "<", fieldName[i], ">", rowData, "</", fieldName[i], ">", "</", recsetName[i], ">"));
-                dataListShape = string.Concat(dataListShape, "<", recsetName[i], ">", "<", fieldName[i], ">", "</", fieldName[i], ">", "</", recsetName[i], ">");
-            }
-
-            dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
-
-            #endregion
-
-            #region Create Shape
-
-            dataListShape = string.Concat(dataListShape, "<res></res></ADL>");
-
-            #endregion
-
-            return false;
-        }
         #endregion
 
         #region Retrieve DataList Values
 
-        public bool GetScalarValueFromEnvironment(IExecutionEnvironment env, string fieldToRetrieve, out string result, out string error)
+        protected void GetScalarValueFromEnvironment(IExecutionEnvironment env, string fieldToRetrieve, out string result, out string error)
         {
 
             error = "";
@@ -433,7 +357,7 @@ namespace ActivityUnitTests
             if (fieldToRetrieve == GlobalConstants.ErrorPayload)
             {
                 result = env.FetchErrors();
-                return true;
+                return;
             }
             try
             {
@@ -443,12 +367,10 @@ namespace ActivityUnitTests
             {
                 error = err.Message;
             }
-            return true;
         }
 
-        public bool GetRecordSetFieldValueFromDataList(IExecutionEnvironment environment, string recordSet, string fieldNameToRetrieve, out IList<string> result, out string error)
+        protected void GetRecordSetFieldValueFromDataList(IExecutionEnvironment environment, string recordSet, string fieldNameToRetrieve, out IList<string> result, out string error)
         {
-            bool isCool = true;
             var variableName = recordSet;
             result = new List<string>();
             error = "";
@@ -462,7 +384,7 @@ namespace ActivityUnitTests
 
                 if (warewolfEvalResult == null)
                 {
-                    return false;
+                    return;
                 }
                 var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
@@ -480,10 +402,7 @@ namespace ActivityUnitTests
             
             if(!string.IsNullOrEmpty(error))
             {
-                isCool = false;
             }
-
-            return isCool;
         }
 
         protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)

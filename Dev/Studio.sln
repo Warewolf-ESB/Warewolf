@@ -124,6 +124,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Old",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Sharepoint", "Warewolf.Sharepoint\Warewolf.Sharepoint.csproj", "{D7A04A3F-DDBD-497C-A311-EFD2016830DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Warewolf.Security", "Dev2.Warewolf.Security\Dev2.Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -696,6 +698,18 @@ Global
 		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|x64.ActiveCfg = Release|Any CPU
 		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -164,19 +164,6 @@ namespace Dev2.Integration.Tests.Activities
         #region Get Tests
 
         [TestMethod]
-        public void GetWithNoUserName_ValidPath_Expected_Stream()
-        {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(_tmpfile1, "", "");
-            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path, new List<string>());
-
-            int len = (int)result.Length;
-            result.Close();
-
-            Assert.IsTrue(len > 0);
-        }
-
-        [TestMethod]
         public void GetWithNoUserName_InvalidPath_Expected_NoStream()
         {
             try
@@ -339,33 +326,6 @@ namespace Dev2.Integration.Tests.Activities
 
         [TestMethod]
         public void PutWithOverwriteTrue_FileNot_Present_Expect_FileReadAndDataInputToStream()
-        {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = Path.GetTempFileName();
-            File.Delete(tmp);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(_tmpfile2, "", "");
-            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src, new List<string>());
-            var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
-            {
-                int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
-                stream.Close();
-
-                File.Delete(tmp);
-
-                Assert.IsTrue(len > 0);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-
-        [TestMethod]
-        public void PutWithOverwriteTrue_File_Present_Expect_FileDataReadIntoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = Path.GetTempFileName();

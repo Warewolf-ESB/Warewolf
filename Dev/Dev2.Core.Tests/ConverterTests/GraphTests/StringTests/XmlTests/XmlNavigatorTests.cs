@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -78,7 +79,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = xmlNavigator.SelectScalar(namePath).ToString();
-            string expected = "Dev2";
+            const string expected = "Dev2";
 
             Assert.AreEqual(expected, actual);
         }
@@ -96,7 +97,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = xmlNavigator.SelectScalar(namePath).ToString();
-            string expected = "Eat lots of cake";
+            const string expected = "Eat lots of cake";
 
             Assert.AreEqual(expected, actual);
         }
@@ -115,7 +116,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = xmlNavigator.SelectScalar(namePath).ToString();
-            string expected = "Dummy Data";
+            const string expected = "Dummy Data";
 
             Assert.AreEqual(expected, actual);
         }
@@ -133,7 +134,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = xmlNavigator.SelectScalar(namePath).ToString();
-            string expected = "Joe";
+            const string expected = "Joe";
 
             Assert.AreEqual(expected, actual);
         }
@@ -151,7 +152,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = xmlNavigator.SelectScalar(namePath).ToString().Trim();
-            string expected = "RandomData1";
+            const string expected = "RandomData1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -176,7 +177,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             IEnumerable<object> actual = xmlNavigator.SelectEnumerable(namePath);
-            string expected = "Dummy Data";
+            const string expected = "Dummy Data";
 
             Assert.IsTrue(actual.Contains(expected));
         }
@@ -195,7 +196,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "RandomData|RandomData1";
+            const string expected = "RandomData|RandomData1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -214,7 +215,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Dev|Accounts";
+            const string expected = "Dev|Accounts";
 
             Assert.AreEqual(expected, actual);
         }
@@ -233,7 +234,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Eat lots of cake";
+            const string expected = "Eat lots of cake";
 
             Assert.AreEqual(expected, actual);
         }
@@ -252,7 +253,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Dev2";
+            const string expected = "Dev2";
 
             Assert.AreEqual(expected, actual);
         }
@@ -271,7 +272,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "Brendon|Jayd|Bob|Joe";
+            const string expected = "Brendon|Jayd|Bob|Joe";
 
             Assert.AreEqual(expected, actual);
         }
@@ -290,7 +291,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
 
             string actual = string.Join("|", xmlNavigator.SelectEnumerable(path).Select(o => o.ToString().Trim()));
-            string expected = "val1|val2|val3|val4";
+            const string expected = "val1|val2|val3|val4";
 
             Assert.AreEqual(expected, actual);
         }
@@ -311,7 +312,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             XmlNavigator xmlNavigator = new XmlNavigator(testData);
             var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
-            string expected = "Dummy Data";
+            const string expected = "Dummy Data";
 
             Assert.IsTrue(actual[namePath].Contains(expected));
         }
@@ -333,7 +334,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Dictionary<IPath, IList<object>> data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2|Dev2^RandomData|RandomData1";
+            const string expected = "Dev2|Dev2^RandomData|RandomData1";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -356,7 +357,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Dictionary<IPath, IList<object>> data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "val1|val2|val3|val4^RandomData|RandomData1||";
+            const string expected = "val1|val2|val3|val4^RandomData|RandomData1||";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -380,7 +381,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Dictionary<IPath, IList<object>> data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
+            const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -402,7 +403,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Dictionary<IPath, IList<object>> data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Brendon|Jayd|Bob|Joe";
+            const string expected = "Brendon|Jayd|Bob|Joe";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
@@ -424,7 +425,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Dictionary<IPath, IList<object>> data = xmlNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2";
+            const string expected = "Dev2";
             string actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);

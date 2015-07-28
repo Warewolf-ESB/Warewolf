@@ -89,6 +89,7 @@ namespace Dev2.Common
         {
             uint places = 0;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
+            // ReSharper disable once EmptyEmbeddedStatement
             for (; ((x * Math.Pow(10, places)) % 1) != 0; places++) ;
             return places;
         }

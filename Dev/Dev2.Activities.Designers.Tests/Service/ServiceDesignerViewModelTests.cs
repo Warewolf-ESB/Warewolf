@@ -508,8 +508,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IContextualResourceModel> resourceModel;
             Guid sourceID;
             var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID, true);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
@@ -536,8 +536,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Guid sourceID;
             var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
 
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
 
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
@@ -560,8 +560,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IContextualResourceModel> resourceModel;
             Guid sourceID;
             var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
@@ -586,8 +586,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IContextualResourceModel> resourceModel;
             Guid sourceID;
             var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
 
@@ -1219,7 +1219,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.ResourceName).Returns("bob");
-            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
@@ -1291,7 +1291,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
-            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
@@ -1339,8 +1339,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1419,8 +1419,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1519,8 +1519,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1620,8 +1620,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1719,8 +1719,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resources = new Mock<IResourceRepository>();
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
-                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b,bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
@@ -1837,7 +1837,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
                 .Callback((System.Action a, System.Action b) =>
-                    // ReSharper restore MaximumChainedReferences
+                // ReSharper restore MaximumChainedReferences
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1867,7 +1867,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             // ReSharper disable MaximumChainedReferences
             // ReSharper disable MaximumChainedReferences
-            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                 .Returns(resourceModel.Object)
                 .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ResourceName == ")))
 
@@ -2145,7 +2145,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             Mock<IResourceRepository> resourceRepository;
             Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             return resourceModel;
         }
 
@@ -2308,6 +2308,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         #endregion
 
 
+        // ReSharper disable once UnusedParameter.Local
         static ModelItem CreateModelItem(DsfActivity activity)
         {
             return ModelItemUtils.CreateModelItem(activity);
@@ -2344,7 +2345,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceRepository = new Mock<IResourceRepository>();
 
             resourceRepository.Setup(r => r.IsLoaded).Returns(true);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(rootModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(rootModel.Object);
 
             // setup active environment
             var activeEnvironment = new Mock<IEnvironmentModel>();

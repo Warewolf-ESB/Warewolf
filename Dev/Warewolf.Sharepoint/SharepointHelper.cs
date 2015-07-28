@@ -11,9 +11,9 @@ namespace Warewolf.Sharepoint
 {
     public class SharepointHelper
     {
-        public string Server { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        string Server { get; set; }
+        string UserName { get; set; }
+        string Password { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -38,8 +38,8 @@ namespace Warewolf.Sharepoint
             }
             return ctx;
         }
-        
-        public ClientContext GetContextWithOnlineCredentials()
+
+        ClientContext GetContextWithOnlineCredentials()
         {
             var ctx = new ClientContext(Server);
             if(string.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))

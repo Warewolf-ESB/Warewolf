@@ -182,7 +182,7 @@ namespace Dev2.Utilities
 
         #region CompileExpressionsImpl
 
-        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = GlobalConstants.Resultscache;
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = GlobalConstants.Resultscache;
        
  
 
@@ -214,15 +214,15 @@ namespace Dev2.Utilities
                 ForImplementation = true
             };
             TextExpressionCompilerResults results;
-            if (resultscache.ContainsKey(resourceID))
+            if (Resultscache.ContainsKey(resourceID))
             {
-                results = resultscache[resourceID];
+                results = Resultscache[resourceID];
             }
             //// Compile the C# expression.
             else{
             var compiler = new TextExpressionCompiler(settings);
              results = compiler.Compile(); // Nasty MS memory leak ;(
-             resultscache.TryAdd(resourceID,results);
+             Resultscache.TryAdd(resourceID,results);
             }
 
             if(results.HasErrors)
@@ -235,7 +235,7 @@ namespace Dev2.Utilities
                 throw new Exception(err.ToString());
             }
 
-            var compiledExpressionRoot = Activator.CreateInstance(results.ResultType, new object[] { dynamicActivity }) as ICompiledExpressionRoot;
+            var compiledExpressionRoot = Activator.CreateInstance(results.ResultType, dynamicActivity) as ICompiledExpressionRoot;
             CompiledExpressionInvoker.SetCompiledExpressionRootForImplementation(dynamicActivity, compiledExpressionRoot);
         }
 

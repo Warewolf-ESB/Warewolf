@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+// ReSharper disable once CheckNamespace
 namespace System.Windows.Controls
 {
     /// <summary>
@@ -31,5 +32,5 @@ namespace System.Windows.Controls
     /// <see cref="T:System.Windows.Controls.AutoCompleteBox" />. This type can
     /// be either a string or an object.</typeparam>
     /// <QualityBand>Stable</QualityBand>
-    public delegate bool AutoCompleteFilterPredicate<T>(string search, T item);
+    public delegate bool AutoCompleteFilterPredicate<in T>(string search, T item);
 }

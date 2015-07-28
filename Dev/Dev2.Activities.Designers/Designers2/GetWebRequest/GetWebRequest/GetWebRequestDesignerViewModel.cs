@@ -21,7 +21,7 @@ using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities.Designers2.GetWebRequest
 {
     public class GetWebRequestDesignerViewModel : ActivityDesignerViewModel

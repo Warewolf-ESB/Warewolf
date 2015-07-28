@@ -73,12 +73,12 @@ namespace Dev2
         {
             if (Padding == PaddingDirection.Left && PaddingCharacter != '\0')
             {
-                value = value.TrimStart(new[] {PaddingCharacter});
+                value = value.TrimStart(PaddingCharacter);
             }
 
             if (Padding == PaddingDirection.Right && PaddingCharacter != '\0')
             {
-                value = value.TrimEnd(new[] {PaddingCharacter});
+                value = value.TrimEnd(PaddingCharacter);
             }
 
             if (Length > 0 && Length < value.Length)

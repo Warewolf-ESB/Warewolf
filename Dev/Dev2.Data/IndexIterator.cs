@@ -12,8 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.Binary_Objects;
 
-namespace Dev2.Data.Binary_Objects
+namespace Dev2.Data
 {
     /// <summary>
     /// Used to drive recordset lanaguage use
@@ -180,16 +181,12 @@ namespace Dev2.Data.Binary_Objects
     public class IndexListIndexIterator:IIndexIterator
     {
 
-        private IList<int> _values;
-        IEnumerator<int> _enumerator;
-        int _max;
+        private readonly IList<int> _values;
         int _current;
 
         public IndexListIndexIterator(IList<int> values)
         {
             _values = values;
-            _enumerator = _values.GetEnumerator();
-            _max = _values.Count;
             _current = 0;
         }
 

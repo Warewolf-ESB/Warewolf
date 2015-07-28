@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
+using Dev2.Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -908,8 +909,30 @@ namespace Dev2.Data.Util
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
-        }      
-        
+        }
+
+        public static bool ShouldEncrypt(string value)
+        {
+            if(string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            if(IsFullyEvaluated(value))
+            {
+                return false;
+            }
+            if(value.CanBeDecrypted())
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool NotEncrypted(string value)
+        {
+            return string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
+        }
+
         /// <summary>
         /// Is the expression evaluated
         /// </summary>  

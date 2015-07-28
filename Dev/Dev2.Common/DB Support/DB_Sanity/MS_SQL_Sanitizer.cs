@@ -11,7 +11,8 @@
 using System.Text;
 using System.Xml;
 using Dev2.Common.Interfaces.DB;
-
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Common.DB
 {
     internal class MS_SQL_Sanitizer : AbstractSanitizer, IDataProviderSanitizer

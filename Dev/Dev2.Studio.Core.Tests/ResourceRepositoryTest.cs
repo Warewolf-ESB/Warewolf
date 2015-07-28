@@ -302,7 +302,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt == 0)
+                    if (callCnt == 0)
                     {
                         callCnt = 1;
                         return new StringBuilder(payload);
@@ -349,7 +349,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                     {
-                        if(callCnt == 0)
+                        if (callCnt == 0)
                         {
                             callCnt = 1;
                             return new StringBuilder(payload);
@@ -388,7 +388,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt == 0)
+                    if (callCnt == 0)
                     {
                         callCnt = 1;
                         return new StringBuilder(payload);
@@ -434,7 +434,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt == 0)
+                    if (callCnt == 0)
                     {
                         callCnt = 1;
                         return new StringBuilder(payload);
@@ -496,7 +496,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt == 0)
+                    if (callCnt == 0)
                     {
                         callCnt = 1;
                         return new StringBuilder(payload);
@@ -542,7 +542,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt <= 1)
+                    if (callCnt <= 1)
                     {
                         callCnt++;
                         return new StringBuilder(payload);
@@ -592,7 +592,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt <= 1)
+                    if (callCnt <= 1)
                     {
                         callCnt++;
                         return new StringBuilder(payload);
@@ -644,7 +644,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt <= 1)
+                    if (callCnt <= 1)
                     {
                         callCnt++;
                         return new StringBuilder(payload);
@@ -1195,7 +1195,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 _repo.Load();
             }
             //Assert
-            catch(Exception iex)
+            catch (Exception iex)
             {
                 Assert.AreEqual("No connected environment found to perform operation on.", iex.Message);
             }
@@ -1326,7 +1326,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -1369,7 +1369,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -1397,7 +1397,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -1434,7 +1434,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -1465,7 +1465,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var testExpectedResources = CreateResourceList(environmentModel.Object);
             var resources = new List<IResourceModel>(testExpectedResources);
-            foreach(var resourceModel in resources)
+            foreach (var resourceModel in resources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -1527,7 +1527,7 @@ namespace BusinessDesignStudio.Unit.Tests
             int cnt = 0;
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(() =>
             {
-                if(cnt == 0)
+                if (cnt == 0)
                 {
                     cnt = 1;
                     return new StringBuilder(JsonConvert.SerializeObject(msg));
@@ -1649,7 +1649,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid },cat:"bob\\dave\\dora");
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, cat: "bob\\dave\\dora");
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };
 
@@ -1706,7 +1706,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
                 () =>
                 {
-                    if(cnt == 0)
+                    if (cnt == 0)
                     {
                         cnt = 1;
                         return new StringBuilder(JsonConvert.SerializeObject(msg));
@@ -1842,7 +1842,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
             //------------Execute Test---------------------------
-            var result = new ResourceRepository(env.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID);
+            var result = new ResourceRepository(env.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID, false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual("model definition", result.Message.ToString());
@@ -1867,7 +1867,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
             //------------Execute Test---------------------------
-            var result = new ResourceRepository(env.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID);
+            var result = new ResourceRepository(env.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID, false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(string.Empty, result.Message.ToString());
@@ -2072,7 +2072,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
         {
-            if(callCnt == 0)
+            if (callCnt == 0)
             {
                 callCnt = 1;
                 return new StringBuilder(payload);
@@ -2133,7 +2133,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
-                    if(callCnt == 0)
+                    if (callCnt == 0)
                     {
                         callCnt = 1;
                         return new StringBuilder(payload);
@@ -2303,7 +2303,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             // config the repos
             srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
@@ -2343,7 +2343,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             // config the repos
             srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
@@ -2377,7 +2377,7 @@ namespace BusinessDesignStudio.Unit.Tests
             // config the repos
             IResourceModel findModel = new ResourceModel(targetEnvModel.Object);
             findModel.ID = theID;
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                   .Returns(findModel);
 
             srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
@@ -2611,7 +2611,7 @@ namespace BusinessDesignStudio.Unit.Tests
             List<SerializableResource> theResources = new List<SerializableResource>();
 
             int cnt = names.Length;
-            for(int i = 0; i < cnt; i++)
+            for (int i = 0; i < cnt; i++)
             {
                 SerializableResource sr = new SerializableResource
                 {
@@ -2643,7 +2643,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <returns></returns>
         private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, ResourceType theType = ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
         {
-            if(errors == null)
+            if (errors == null)
             {
                 errors = new List<ErrorInfo>();
             }
@@ -2711,7 +2711,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -2750,7 +2750,7 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resourceModel.ID = Guid.NewGuid();
                 resRepo.Add(resourceModel);
@@ -2761,7 +2761,7 @@ namespace BusinessDesignStudio.Unit.Tests
             WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
@@ -2797,7 +2797,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var res = new Mock<IResourceModel>();
             res.Setup(a => a.ID).Returns(Guid.NewGuid());
             var testResources = new List<IResourceModel> { res.Object };
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -2807,7 +2807,7 @@ namespace BusinessDesignStudio.Unit.Tests
             WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
@@ -2841,7 +2841,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var res = new Mock<IResourceModel>();
             res.Setup(a => a.ID).Returns(Guid.NewGuid());
             var testResources = new List<IResourceModel> { res.Object };
-            foreach(var resourceModel in testResources)
+            foreach (var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -2866,7 +2866,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
-            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm, perm2 } });
+            p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm, perm2 });
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));

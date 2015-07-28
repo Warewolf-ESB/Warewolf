@@ -60,7 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
             if(dataObject.IsDebugMode())
@@ -138,11 +138,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>
         [Inputs("Files")]
         [FindMissing]
+        
         public bool IsFilesSelected
         {
             get;
@@ -160,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
-
+        // ReSharper disable once UnusedMember.Global
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>

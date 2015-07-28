@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.DataList
 {

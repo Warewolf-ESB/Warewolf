@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
@@ -29,7 +30,10 @@ namespace Dev2.Services.Sql
         public IDbConnection CreateConnection(string connectionString)
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
-
+            if(connectionString.CanBeDecrypted())
+            {
+                connectionString = DpapiWrapper.Decrypt(connectionString);
+            }
             _sqlConnection = new SqlConnection(connectionString);
             _sqlConnection.FireInfoMessageEventOnUserErrors = true;
             _sqlConnection.StatisticsEnabled = true;
@@ -57,7 +61,7 @@ namespace Dev2.Services.Sql
             return new SqlCommand(commandText, connection as SqlConnection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int) GlobalConstants.TransactionTimeout.TotalSeconds,
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
             };
         }
 
@@ -69,7 +73,7 @@ namespace Dev2.Services.Sql
         static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
         {
             var sqlConnection = connection as SqlConnection;
-            if(sqlConnection != null)
+            if (sqlConnection != null)
             {
                 return sqlConnection.GetSchema(collectionName);
             }

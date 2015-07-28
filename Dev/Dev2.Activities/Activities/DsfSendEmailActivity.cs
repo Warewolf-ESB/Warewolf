@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
@@ -27,6 +28,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
+using Dev2.Warewolf.Security.Encryption;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
@@ -38,6 +40,8 @@ namespace Dev2.Activities
 
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
+        string _password;
+        EmailSource _selectedEmailSource;
 
         #endregion
 
@@ -46,12 +50,60 @@ namespace Dev2.Activities
         /// </summary>
 
         // ReSharper disable MemberCanBePrivate.Global
-        public EmailSource SelectedEmailSource { get; set; }
+        public EmailSource SelectedEmailSource
+        {
+            get
+            {
+                return _selectedEmailSource;
+            }
+            set
+            {
+                _selectedEmailSource = value;
+                if(_selectedEmailSource != null)
+                {
+                    var resourceID = _selectedEmailSource.ResourceID;
+                    _selectedEmailSource = null;
+                    _selectedEmailSource = new EmailSource { ResourceID = resourceID };
+                }
+            }
+        }
         // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string FromAccount { get; set; }
         [FindMissing]
-        public string Password { get; set; }
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _password = DpapiWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected string DecryptedPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+            }
+        }
+
         [FindMissing]
         public string To { get; set; }
         [FindMissing]
@@ -172,7 +224,7 @@ namespace Dev2.Activities
                 var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(fromAccountItr);
 
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update));
+                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
                 colItr.AddVariableToIterateOn(passwordItr);
 
                 var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));

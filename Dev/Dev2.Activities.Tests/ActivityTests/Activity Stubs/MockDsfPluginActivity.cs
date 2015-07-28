@@ -9,10 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     public class MockDsfPluginActivity : DsfPluginActivity
@@ -23,36 +22,19 @@ namespace Dev2.Activities
             return GetNewPluginServiceExecution(context);
         }
 
-        public Guid MockExecutePluginService(PluginServiceExecution container)
+        public void MockExecutePluginService(PluginServiceExecution container)
         {
-            return ExecutePluginService(container, 0);
-        }
-
-        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
-        {
-            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, 0);
+            ExecutePluginService(container, 0);
         }
     }
 
     public class FaultyMockDsfPluginActivity : DsfPluginActivity
     {
-
-        public PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
-        {
-            return GetNewPluginServiceExecution(context);
-        }
-
-        public Guid MockExecutePluginService(PluginServiceExecution container)
-        {
-            return ExecutePluginService(container, 0);
-        }
-
-        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
+        public void MockExecutionImpl(out ErrorResultTO tmpErrors)
         {
             
             tmpErrors = new ErrorResultTO();
             tmpErrors.AddError("Something bad happened");
-            return Guid.Empty;
         }
     }
 }

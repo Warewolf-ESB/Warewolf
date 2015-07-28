@@ -1,5 +1,5 @@
 
-<Service ID="16fb3a82-5ff2-42fe-9aa5-4604c5f370ba" Version="1.0" Name="GetCategoryTableFromWarewolfShoppingCartDb" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="16fb3a82-5ff2-42fe-9aa5-4604c5f370ba" Version="1.0" Name="GetCategoryTableFromWarewolfShoppingCartDb" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5655.12591">
   <Actions>
     <Action Name="dbo_spGetAllCategories" Type="InvokeStoredProc" SourceID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" SourceName="WarewolfShoppingCartDB" SourceMethod="dbo.spGetAllCategories">
       <Inputs />
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>95+fBFVEcjIklOKjJxD34fPuFyk=</DigestValue>
+        <DigestValue>LT/dYa5/M1VSTjHNTmsrbT0+PXE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lbaQVLcYpvpkHd4qBUJgTyaxfOHxaXAmoEnrso01CayseOapdRF6E58b4UsNaxivt68vwOu0wNVOGYBAEy4rHsJl2TPzJEtKpbsrBisd3W4Opj7/nE4M+BBYyZwU7ujs3qjtNIU4M8icza3uVG0sbd/yaOb+XRtz2FDE2QHDk0E=</SignatureValue>
+    <SignatureValue>CyP/xVHSHhWcakK8rgehZ6dHH846cVxqPOhPQUVxUDSOmKmACy+Amlpct0GVkDDq+8zIWtyN4NhiDiKazPN6aRcPkPnTSvLH3pgT0+3o3w8Ty/6DcFJn97bhheUWVnX8S6g9HflOrLvKUceienSQ9WKOnnqD5p7eprbGyhksUhk=</SignatureValue>
   </Signature>
 </Service>

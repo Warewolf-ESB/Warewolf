@@ -13,6 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests
 {
@@ -36,14 +37,14 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             const string ResultVariable = "[[Output]]";
-            var toGather = enTypeOfSystemInformationToGather.OperatingSystem;
+            const enTypeOfSystemInformationToGather TOGather = enTypeOfSystemInformationToGather.OperatingSystem;
             const int IndexNumber = 0;
             //------------Execute Test---------------------------
-            var gatherSystemInformationTO = new GatherSystemInformationTO(toGather,ResultVariable,IndexNumber);
+            var gatherSystemInformationTO = new GatherSystemInformationTO(TOGather,ResultVariable,IndexNumber);
             //------------Assert Results-------------------------
             Assert.IsNotNull(gatherSystemInformationTO);
             Assert.AreEqual(ResultVariable,gatherSystemInformationTO.Result);
-            Assert.AreEqual(toGather,gatherSystemInformationTO.EnTypeOfSystemInformation);
+            Assert.AreEqual(TOGather,gatherSystemInformationTO.EnTypeOfSystemInformation);
             Assert.AreEqual(IndexNumber,gatherSystemInformationTO.IndexNumber);
 
         }

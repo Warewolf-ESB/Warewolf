@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests
 {
@@ -37,7 +38,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenString_ExpectString()
         {
             //------------Setup for test--------------------------
-            var myType = "string";
+            const string myType = "string";
 
             //------------Execute Test---------------------------
 
@@ -54,7 +55,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenBoolean_ExpectBoolean()
         {
             //------------Setup for test--------------------------
-            var myType = "boolean";
+            const string myType = "boolean";
 
             //------------Execute Test---------------------------
 
@@ -71,7 +72,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenBool_ExpectBool()
         {
             //------------Setup for test--------------------------
-            var myType = "bool";
+            const string myType = "bool";
 
             //------------Execute Test---------------------------
 
@@ -88,7 +89,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenByte_ExpectByte()
         {
             //------------Setup for test--------------------------
-            var myType = "byte";
+            const string myType = "byte";
 
             //------------Execute Test---------------------------
 
@@ -105,7 +106,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenChar_ExpectChar()
         {
             //------------Setup for test--------------------------
-            var myType = "char";
+            const string myType = "char";
 
             //------------Execute Test---------------------------
 
@@ -122,7 +123,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenDateTime_ExpectDateTime()
         {
             //------------Setup for test--------------------------
-            var myType = "DateTime";
+            const string myType = "DateTime";
 
             //------------Execute Test---------------------------
 
@@ -139,7 +140,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenDateTimeOffset_ExpectDateTimeOffset()
         {
             //------------Setup for test--------------------------
-            var myType = "DateTimeOffset";
+            const string myType = "DateTimeOffset";
 
             //------------Execute Test---------------------------
 
@@ -156,7 +157,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenDecimal_ExpectDecimal()
         {
             //------------Setup for test--------------------------
-            var myType = "Decimal";
+            const string myType = "Decimal";
 
             //------------Execute Test---------------------------
 
@@ -174,7 +175,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenDouble_ExpectDouble()
         {
             //------------Setup for test--------------------------
-            var myType = "Double";
+            const string myType = "Double";
 
             //------------Execute Test---------------------------
 
@@ -191,7 +192,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenFloat_ExpectFloat()
         {
             //------------Setup for test--------------------------
-            var myType = "Float";
+            const string myType = "Float";
 
             //------------Execute Test---------------------------
 
@@ -208,7 +209,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenShort_ExpectShort()
         {
             //------------Setup for test--------------------------
-            var myType = "Short";
+            const string myType = "Short";
 
             //------------Execute Test---------------------------
 
@@ -225,7 +226,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenInt16_ExpectInt16()
         {
             //------------Setup for test--------------------------
-            var myType = "Int16";
+            const string myType = "Int16";
 
             //------------Execute Test---------------------------
 
@@ -242,7 +243,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenInt32_ExpectInt32()
         {
             //------------Setup for test--------------------------
-            var myType = "Int32";
+            const string myType = "Int32";
 
             //------------Execute Test---------------------------
 
@@ -259,7 +260,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenInt_ExpectInt()
         {
             //------------Setup for test--------------------------
-            var myType = "Int";
+            const string myType = "Int";
 
             //------------Execute Test---------------------------
 
@@ -276,7 +277,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenInt64_ExpectInt64()
         {
             //------------Setup for test--------------------------
-            var myType = "Int64";
+            const string myType = "Int64";
 
             //------------Execute Test---------------------------
 
@@ -293,7 +294,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenObject_ExpectObject()
         {
             //------------Setup for test--------------------------
-            var myType = "Object";
+            const string myType = "Object";
 
             //------------Execute Test---------------------------
 
@@ -310,7 +311,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenSByte_ExpectSByte()
         {
             //------------Setup for test--------------------------
-            var myType = "SByte";
+            const string myType = "SByte";
 
             //------------Execute Test---------------------------
 
@@ -328,7 +329,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenTimeSpan_ExpectTimeSpan()
         {
             //------------Setup for test--------------------------
-            var myType = "TimeSpan";
+            const string myType = "TimeSpan";
 
             //------------Execute Test---------------------------
 
@@ -345,7 +346,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenUInt16_ExpectUInt16()
         {
             //------------Setup for test--------------------------
-            var myType = "UInt16";
+            const string myType = "UInt16";
 
             //------------Execute Test---------------------------
 
@@ -362,7 +363,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenUShort_ExpectUShort()
         {
             //------------Setup for test--------------------------
-            var myType = "UShort";
+            const string myType = "UShort";
 
             //------------Execute Test---------------------------
 
@@ -379,7 +380,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenUInt32_ExpectUInt32()
         {
             //------------Setup for test--------------------------
-            var myType = "UInt32";
+            const string myType = "UInt32";
 
             //------------Execute Test---------------------------
 
@@ -396,7 +397,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenUInt64_ExpectUInt64()
         {
             //------------Setup for test--------------------------
-            var myType = "UInt64";
+            const string myType = "UInt64";
 
             //------------Execute Test---------------------------
 
@@ -413,7 +414,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenULong_ExpectULong()
         {
             //------------Setup for test--------------------------
-            var myType = "ULong";
+            const string myType = "ULong";
 
             //------------Execute Test---------------------------
 
@@ -430,7 +431,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenGuid_ExpectGuid()
         {
             //------------Setup for test--------------------------
-            var myType = "Guid";
+            const string myType = "Guid";
 
             //------------Execute Test---------------------------
 
@@ -451,7 +452,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenStringArray_ExpectStringArray()
         {
             //------------Setup for test--------------------------
-            var myType = "string[]";
+            const string myType = "string[]";
 
             //------------Execute Test---------------------------
 
@@ -473,7 +474,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenStringWithQuestionMark_ExpectString()
         {
             //------------Setup for test--------------------------
-            var myType = "int?";
+            const string myType = "int?";
 
             //------------Execute Test---------------------------
 
@@ -495,7 +496,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenStringAllUpperCase_ExpectString()
         {
             //------------Setup for test--------------------------
-            var myType = "STRING";
+            const string myType = "STRING";
 
             //------------Execute Test---------------------------
 
@@ -513,7 +514,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenStringAllLowerCase_ExpectString()
         {
             //------------Setup for test--------------------------
-            var myType = "string";
+            const string myType = "string";
 
             //------------Execute Test---------------------------
 
@@ -535,7 +536,7 @@ namespace Dev2.Tests
         public void TypeExtentions_GetTypeFromSimpleName_WhenSystemDotString_ExpectString()
         {
             //------------Setup for test--------------------------
-            var myType = "System.String";
+            const string myType = "System.String";
 
             //------------Execute Test---------------------------
 

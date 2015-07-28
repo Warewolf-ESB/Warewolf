@@ -163,7 +163,7 @@ namespace Dev2.Core.Tests
             EnvironmentModel = CreateMockEnvironment();
             ResourceRepo = new Mock<IResourceRepository>();
 
-            ResourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            ResourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             ResourceRepo.Setup(r => r.GetDependenciesXml(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(msg);
             FirstResource = CreateResource(ResourceType.WorkflowService);
             var coll = new Collection<IResourceModel> { FirstResource.Object };
@@ -187,7 +187,7 @@ namespace Dev2.Core.Tests
                 .Returns(
                     () =>
                     {
-                        if(cnt == 0)
+                        if (cnt == 0)
                         {
                             cnt++;
                             return new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));

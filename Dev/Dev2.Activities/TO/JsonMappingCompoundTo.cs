@@ -144,9 +144,7 @@ namespace Dev2.TO
                         ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName,0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomAtomExpression)
-                            .Select(x =>
-
-                                WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
+                            .Select(WarewolfDataEvaluationCommon.LanguageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
                             .ToList();

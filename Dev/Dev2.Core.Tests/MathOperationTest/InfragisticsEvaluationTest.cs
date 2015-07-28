@@ -11,8 +11,10 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Infragistics.Calculations.CalcManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.MathOperationTest
 {
@@ -103,7 +105,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             foreach (var function in  functions)
             {
-                Assert.AreEqual( function.Item1, _manager.CalculateFormula(function.Item2).ToString().ToLower());
+                Assert.AreEqual( function.Item1, _manager.CalculateFormula(function.Item2).ToString(CultureInfo.InvariantCulture).ToLower());
             }
         }
     }

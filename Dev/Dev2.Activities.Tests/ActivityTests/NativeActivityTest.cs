@@ -394,7 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dsfNativeActivity = new TestNativeActivity(false, "Test");
 
             //------------Execute Test---------------------------
-            var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(new string[0]);
+            var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest();
             //------------Assert Results-------------------------
             Assert.IsFalse(forEachItemsForTest.Any());
         }

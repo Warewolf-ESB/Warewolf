@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             // Connect to the database then retrieve the schema information.
                             connection.Open();
-                            var sql = @"select  * from  " + tableName.Trim(new[] { '"' }).Replace("[","").Replace("]","") + " Limit 1 ";
+                            var sql = @"select  * from  " + tableName.Trim('"').Replace("[","").Replace("]","") + " Limit 1 ";
 
                                                      using (var sqlcmd = new MySqlCommand(sql, connection))
                             {
@@ -127,7 +127,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 {
                                     schema = string.Empty;
                                 }
-                                var sql = @"select top 1 * from " + schema.Trim(new[] { '"' }) + "." + tableName.Trim(new[] { '"' });
+                                var sql = @"select top 1 * from " + schema.Trim('"') + "." + tableName.Trim('"');
 
                                 using (var sqlcmd = new SqlCommand(sql, connection))
                                 {

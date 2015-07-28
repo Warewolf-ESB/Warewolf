@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Warewolf.Security.Encryption;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Sharepoint;
@@ -42,8 +43,9 @@ namespace Dev2.Data.ServiceModel
                 { "Password", string.Empty }
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
-
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
             Server = properties["Server"];
             UserName = properties["UserName"];
             Password = properties["Password"];
@@ -76,7 +78,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

@@ -4165,30 +4165,6 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-
-Scenario: ForEach using * in CSV executed as a sub execution should maintain data integrity
-	  Given I have a workflow "Spec - Test For Each Shared Memory"
-	  And "Spec - Test For Each Shared Memory" contains "Test For Each Shared Memory" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "Spec - Test For Each Shared Memory" is executed
-	  Then the workflow execution has "NO" error	  
-	  And the 'Test For Each Shared Memory' in Workflow 'Spec - Test For Each Shared Memory' debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
-
-Scenario: Sharepoint Acceptance Tests
-	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
-	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "Sharepoint Acceptance Tests Outer" is executed
-	Then the workflow execution has "NO" error
-	  And the 'Sharepoint Connectors Testing' in Workflow 'Sharepoint Acceptance Tests Outer' debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
-
-
 Scenario: workflow without StackOverflow exception check
          Given I have a workflow "Testing - LoopTest"
          And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as

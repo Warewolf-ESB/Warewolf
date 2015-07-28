@@ -114,7 +114,6 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_Clone")]
         // ReSharper disable MethodTooLong
         public void ExplorerItemModel_Clone_ReturnsNewObjectWithAllPropertiesSet()
-        
         {
             //------------Setup for test--------------------------
             var connectControlSingleton = new Mock<IConnectControlSingleton>().Object;
@@ -129,7 +128,7 @@ namespace Dev2.Core.Tests.ModelTests
             explorerItemModel.ResourceId = Guid.NewGuid();
             explorerItemModel.ResourcePath = "TestResourcePath";
             explorerItemModel.ResourceType = ResourceType.PluginService;
-            explorerItemModel.VersionInfo = new VersionInfo { VersionNumber = "2" , Reason = "Save", ResourceId =  Guid.NewGuid()};
+            explorerItemModel.VersionInfo = new VersionInfo { VersionNumber = "2", Reason = "Save", ResourceId = Guid.NewGuid() };
 
             var properties = typeof(ExplorerItemModel).GetProperties();
 
@@ -660,7 +659,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -681,7 +680,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_ShowServerVersion")]
         public void ExplorerItemModel_ShowServerVersion_ShowVersionCallsStudioRepo()
         {
-         
+
             var mockResourceRepository = new Mock<IResourceRepository>();
             var resourceId = Guid.NewGuid();
             var envID = Guid.Empty;
@@ -693,8 +692,8 @@ namespace Dev2.Core.Tests.ModelTests
             const string displayName = "localhost";
             ExplorerItemModel resourceItem;
             var studioRepo = new Mock<IStudioResourceRepository>();
-            
-            var serverItem = SetupExplorerItemModelWithFolderAndOneChild(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem,studioRepo);
+
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChild(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, studioRepo);
             studioRepo.Setup(a => a.GetServerVersion(serverItem.EnvironmentId)).Returns("1.2.3.4");
             serverItem.WindowManager = manager.Object;
             var dialogFactory = new Mock<IDialogViewModelFactory>();
@@ -702,7 +701,7 @@ namespace Dev2.Core.Tests.ModelTests
             dialogFactory.Setup(a => a.CreateServerAboutDialog("1.2.3.4")).Returns(dialog.Object);
             CustomContainer.Register(dialogFactory.Object);
             serverItem.ServerVersionCommand.Execute(null);
-            manager.Verify(a=>a.ShowDialog(dialog.Object,null,null));
+            manager.Verify(a => a.ShowDialog(dialog.Object, null, null));
             dialogFactory.Verify(a => a.CreateServerAboutDialog("1.2.3.4"));
 
         }
@@ -730,7 +729,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -768,7 +767,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -805,7 +804,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -815,7 +814,7 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
                 .Returns((StringBuilder)null)
-               
+
                 .Verifiable();
             // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
@@ -850,7 +849,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -901,7 +900,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -940,7 +939,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -970,7 +969,7 @@ namespace Dev2.Core.Tests.ModelTests
                 DeleteResourcesMessage deleteResourcesMessage = (msg as DeleteResourcesMessage);
                 var workSurfaceObject = (msg is DeleteResourcesMessage) ? deleteResourcesMessage.ResourceModels : null;
                 actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
-                if(deleteResourcesMessage != null)
+                if (deleteResourcesMessage != null)
                 {
                     folderName = deleteResourcesMessage.FolderName;
                 }
@@ -984,7 +983,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1031,7 +1030,7 @@ namespace Dev2.Core.Tests.ModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
 
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IContextualResourceModel)null);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IContextualResourceModel)null);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1072,7 +1071,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1110,7 +1109,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1148,7 +1147,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1175,7 +1174,7 @@ namespace Dev2.Core.Tests.ModelTests
             var dependsOnMe = false;
             aggregator.Setup(a => a.Publish(It.IsAny<ShowDependenciesMessage>())).Callback<object>(msg =>
             {
-                if(msg is ShowDependenciesMessage)
+                if (msg is ShowDependenciesMessage)
                 {
                     var showDependenciesMessage = msg as ShowDependenciesMessage;
                     var workSurfaceObject = showDependenciesMessage.ResourceModel;
@@ -1192,7 +1191,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1231,7 +1230,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1269,7 +1268,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1313,7 +1312,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1360,7 +1359,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1406,7 +1405,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1435,7 +1434,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1450,7 +1449,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1478,7 +1477,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1493,7 +1492,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1521,7 +1520,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1536,7 +1535,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1565,7 +1564,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1580,7 +1579,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1608,7 +1607,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1623,7 +1622,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1651,7 +1650,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1666,7 +1665,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1694,7 +1693,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1709,7 +1708,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1737,7 +1736,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1752,7 +1751,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1780,7 +1779,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1795,7 +1794,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1823,7 +1822,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1838,7 +1837,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1871,7 +1870,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceFlowNodeDisplayName>())).Callback<object>(msg =>
                 {
                     var workSurfaceObject = (msg as UpdateWorksurfaceFlowNodeDisplayName);
-                    if(workSurfaceObject != null)
+                    if (workSurfaceObject != null)
                     {
                         resourceGuid = workSurfaceObject.WorkflowDesignerResourceID;
                         oldName = workSurfaceObject.OldName;
@@ -1888,7 +1887,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1919,7 +1918,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
                     actualResourceType = workSurfaceObject.ResourceType;
@@ -1934,7 +1933,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -1964,7 +1963,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as RemoveResourceAndCloseTabMessage);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.ResourceToRemove.ID;
                     wasResourceRemoved = true;
@@ -1975,12 +1974,12 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as AddWorkSurfaceMessage);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     wasResourceReAdded = true;
                 }
             });
-            
+
             EventPublishers.Aggregator = aggregator.Object;
 
             var mockStudioRepository = new Mock<IStudioResourceRepository>();
@@ -1992,7 +1991,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2035,7 +2034,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2078,7 +2077,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2122,7 +2121,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2147,8 +2146,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             folderItem.DisplayName = "bob";
             //------------Assert Results-------------------------
-            mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()),Times.Never());
-            Assert.AreEqual(previousName,folderItem.DisplayName);
+            mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()), Times.Never());
+            Assert.AreEqual(previousName, folderItem.DisplayName);
 
         }
 
@@ -2170,7 +2169,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2188,7 +2187,7 @@ namespace Dev2.Core.Tests.ModelTests
 
 
             //------------Assert Results-------------------------
-            mockResourceModel.VerifySet(a=>a.Category = "bobthebuilder");
+            mockResourceModel.VerifySet(a => a.Category = "bobthebuilder");
             mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>());
         }
 
@@ -2210,7 +2209,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2222,14 +2221,14 @@ namespace Dev2.Core.Tests.ModelTests
 #pragma warning restore 168
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-          
+
 
             resourceItem.UpdateCategoryIfOpened("bobthebuilder");
 
 
             //------------Assert Results-------------------------
             mockResourceModel.VerifySet(a => a.Category = "bobthebuilder");
-            mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>(),Times.Never());
+            mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>(), Times.Never());
         }
 
         [TestMethod]
@@ -2241,12 +2240,12 @@ namespace Dev2.Core.Tests.ModelTests
             var aggregator = new Mock<EventAggregator>();
 
             Guid resourceGuid = Guid.Empty;
-            
+
             bool wasResourceRemoved = false;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as RemoveResourceAndCloseTabMessage);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.ResourceToRemove.ID;
                     wasResourceRemoved = true;
@@ -2257,7 +2256,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as AddWorkSurfaceMessage);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     wasResourceReAdded = true;
                 }
@@ -2275,7 +2274,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2297,8 +2296,8 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             mockStudioRepository.Verify(a => a.RenameItem(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
             Assert.AreEqual(resourceGuid, resourceId);
-           Assert.IsTrue(wasResourceReAdded);
-           Assert.IsTrue(wasResourceRemoved);
+            Assert.IsTrue(wasResourceReAdded);
+            Assert.IsTrue(wasResourceRemoved);
         }
 
         [TestMethod]
@@ -2314,7 +2313,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceDisplayName>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as UpdateWorksurfaceDisplayName);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.WorksurfaceResourceID;
                 }
@@ -2329,7 +2328,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2371,7 +2370,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2415,7 +2414,7 @@ namespace Dev2.Core.Tests.ModelTests
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceDisplayName>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg as UpdateWorksurfaceDisplayName);
-                if(workSurfaceObject != null)
+                if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.WorksurfaceResourceID;
                     oldName = workSurfaceObject.OldName;
@@ -2432,7 +2431,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
             mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -2459,7 +2458,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("", oldName);
             Assert.AreEqual("", newName);
             Assert.AreEqual(Guid.Empty, resourceGuid);
-            mockResourceRepository.Verify(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false), Times.Never());
+            mockResourceRepository.Verify(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false), Times.Never());
         }
 
         [TestMethod]
@@ -2477,7 +2476,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -3398,7 +3397,7 @@ namespace Dev2.Core.Tests.ModelTests
             var item = SetupExplorerItemModelWithFolderAndOneChild("bob\\dave", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
             ExplorerItemModel.OnCheckedStateChangedAction = a =>
             {
-                updateStats =  a.UpdateStats;
+                updateStats = a.UpdateStats;
             };
             item.Children[0].ResourceType = ResourceType.WebService;
             item.Children[0].ResourcePath = "bob";
@@ -3845,7 +3844,7 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper disable MaximumChainedReferences
             studioResourceRepository.Setup(s => s.ShowVersionHistory(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Verifiable();
-            
+
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository.Object)
             {
                 ResourceType = ResourceType.Message,
@@ -3903,7 +3902,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
@@ -3952,7 +3951,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(Guid.NewGuid);
             GetEnvironmentRepository(mockEnvironment);
@@ -4081,7 +4080,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual("IsExplorerExpanded", actualName);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ExplorerItemModel_IsDeploySourceExpanded")]
@@ -4109,7 +4108,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual("IsDeploySourceExpanded", actualName);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ExplorerItemModel_IsDeployTargetExpanded")]
@@ -4221,7 +4220,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual("IsDeploySourceSelected", actualName);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ExplorerItemModel_IsDeployTargetSelected")]
@@ -4249,7 +4248,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual("IsDeployTargetSelected", actualName);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ExplorerItemModel_IsRenaming")]
@@ -4277,7 +4276,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual("IsRenaming", actualName);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ExplorerItemModel_IsRefreshing")]
@@ -4353,11 +4352,11 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
-            var checkStateChangedArgs = new CheckStateChangedArgs(true,false,guid,ResourceType.Message,false);
+            var checkStateChangedArgs = new CheckStateChangedArgs(true, false, guid, ResourceType.Message, false);
             Assert.IsTrue(checkStateChangedArgs.PreviousState);
             Assert.IsFalse(checkStateChangedArgs.NewState);
-            Assert.AreEqual(checkStateChangedArgs.ResourceId,guid);
-            Assert.AreEqual(ResourceType.Message,checkStateChangedArgs.ResourceType);
+            Assert.AreEqual(checkStateChangedArgs.ResourceId, guid);
+            Assert.AreEqual(ResourceType.Message, checkStateChangedArgs.ResourceType);
             Assert.IsFalse(checkStateChangedArgs.UpdateStats);
 
         }
@@ -4367,8 +4366,8 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("NameWithoutPath_Ctor")]
         public void ResourcePathWithoutName_ExpectEpmtyForRoot()
         {
-            ExplorerItemModel model = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,new Mock<IStudioResourceRepository>().Object){ResourcePath = "bob"};
-            Assert.AreEqual(model.ResourcePathWithoutName,"");
+            ExplorerItemModel model = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourcePath = "bob" };
+            Assert.AreEqual(model.ResourcePathWithoutName, "");
 
         }
 
@@ -4432,9 +4431,9 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(result, serverItem.CanCreateNewFolder);
         }
 
-        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, IConnectControlSingleton connectControlSingleton, out ExplorerItemModel resourceItem,Mock<IStudioResourceRepository> studioRepo =null)
+        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, IConnectControlSingleton connectControlSingleton, out ExplorerItemModel resourceItem, Mock<IStudioResourceRepository> studioRepo = null)
         {
-            if(studioRepo == null)
+            if (studioRepo == null)
                 studioRepo = new Mock<IStudioResourceRepository>();
             var serverItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {

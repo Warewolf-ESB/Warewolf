@@ -1048,7 +1048,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object, studiorepo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object, studiorepo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -1104,11 +1104,11 @@ namespace Dev2.Core.Tests.Environments
             // ReSharper disable AssignNullToNotNullAttribute
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
             // ReSharper restore AssignNullToNotNullAttribute
-            if(File.Exists(bakPath))
+            if (File.Exists(bakPath))
             {
                 File.Delete(bakPath);
             }
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Move(path, bakPath);
             }
@@ -1117,11 +1117,11 @@ namespace Dev2.Core.Tests.Environments
 
         static void RestoreFile(string path, string bakPath)
         {
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Delete(path);
             }
-            if(File.Exists(bakPath))
+            if (File.Exists(bakPath))
             {
                 File.Move(bakPath, path);
             }
@@ -1157,7 +1157,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1168,9 +1168,9 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
-                if(overrideExecuteCommand)
+                if (overrideExecuteCommand)
                 {
                     con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                        .Returns(new StringBuilder(sources[0]));
@@ -1205,7 +1205,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1216,7 +1216,7 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
                 con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
@@ -1246,7 +1246,7 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
 
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 con.Setup(c => c.IsConnected).Returns(true);
                 con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -1286,7 +1286,7 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
-            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
             env.Setup(r => r.ResourceRepository).Returns(repo.Object);
 
             return env;
@@ -1312,7 +1312,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             connection.SetupProperty(c => c.DisplayName);
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder(sources[0]));

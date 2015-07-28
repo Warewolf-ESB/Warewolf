@@ -24,9 +24,9 @@ namespace Dev2.Tests
     [ExcludeFromCodeCoverage]
     public class Dev2RandomTests
     {
-        Dev2Random _dev2Random = new Dev2Random();
-        readonly Regex lettersRegex = new Regex(@"[a-z]*");
-        readonly Regex mixedRegex = new Regex(@"[a-z\d]*");
+        readonly Dev2Random _dev2Random = new Dev2Random();
+        readonly Regex _lettersRegex = new Regex(@"[a-z]*");
+        readonly Regex _mixedRegex = new Regex(@"[a-z\d]*");
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -96,7 +96,7 @@ namespace Dev2.Tests
         {
             var result = _dev2Random.GetRandom(enRandomType.Letters, 5000, -1, -1);
             Assert.AreEqual(result.Length, 5000, "Dev2Random generated letters to the incorrect length");
-            Assert.AreEqual(2, lettersRegex.Matches(result).Count, "_dev2Random generated letters outside the specified range");
+            Assert.AreEqual(2, _lettersRegex.Matches(result).Count, "_dev2Random generated letters outside the specified range");
             Assert.IsTrue(result.Contains('a'), "Dev2Random did not generate an 'a' in 5000 letters");
             Assert.IsTrue(result.Contains('z'), "Dev2Random did not generate a 'z' in 5000 letters");
         }
@@ -104,25 +104,28 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForPositiveCase()
         {
-            double moreThanMaxInt = (double)int.MaxValue + 1, lessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, moreThanMaxInt, lessThanMaxDouble));
-            Assert.IsTrue(result <= lessThanMaxDouble, "Dev2Random generated a number above the specified range");
-            Assert.IsTrue(result >= moreThanMaxInt, "Dev2Random generated a number below the specified range");
+            const double MoreThanMaxInt = (double)int.MaxValue + 1;
+            const double LessThanMaxDouble = double.MaxValue - 1;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
+            Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= MoreThanMaxInt, "Dev2Random generated a number below the specified range");
         }
 
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForNegativeCase()
         {
-            double lessThanMinInt = (double)int.MinValue - 1, lessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, lessThanMinInt, lessThanMaxDouble));
-            Assert.IsTrue(result <= lessThanMaxDouble, "Dev2Random generated a number above the specified range");
-            Assert.IsTrue(result >= lessThanMinInt, "Dev2Random generated a number below the specified range");
+            const double LessThanMinInt = (double)int.MinValue - 1;
+            const double LessThanMaxDouble = double.MaxValue - 1;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
+            Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= LessThanMinInt, "Dev2Random generated a number below the specified range");
         }
 
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersMaximumDoubleRange()
         {
-            double MinDouble = double.MinValue, MaxDouble = double.MaxValue;
+            const double MinDouble = double.MinValue;
+            const double MaxDouble = double.MaxValue;
             double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
@@ -132,7 +135,8 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersMaximumDoubleRangeNoDecimals()
         {
-            double MinDouble = 0d, MaxDouble = double.MaxValue;
+            const double MinDouble = 0d;
+            const double MaxDouble = double.MaxValue;
             double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
@@ -152,7 +156,7 @@ namespace Dev2.Tests
         {
             var result = _dev2Random.GetRandom(enRandomType.LetterAndNumbers, 5000, 0, 26);
             Assert.AreEqual(5000, result.Length, "Dev2Random generated letters and numbers of an incorrect length");
-            Assert.AreEqual(2, mixedRegex.Matches(result).Count, "Dev2Random generated letters and numbers outside the specified range");
+            Assert.AreEqual(2, _mixedRegex.Matches(result).Count, "Dev2Random generated letters and numbers outside the specified range");
         }
 
         #endregion

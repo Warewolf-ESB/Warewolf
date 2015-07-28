@@ -9,24 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-// -----------------------------------------------------------------------
-// <copyright file="ProfilingUtil.cs" company="Microsoft">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
 using System.Collections.Generic;
 using System.Diagnostics;
+// ReSharper disable ObjectCreationAsStatement
 
-namespace Dev2
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     /// Provides useful mechanisms for performance testing.
     /// </summary>
     public static class ProfilingUtil
     {
-        private static Stopwatch _watch = new Stopwatch();
+        private static readonly Stopwatch Watch = new Stopwatch();
         private static ProfileRegion _currentRegion;
 
         /// <summary>
@@ -56,16 +50,16 @@ namespace Dev2
 
         private sealed class ProfileRegion
         {
-            private ProfileRegion _parent;
+            private readonly ProfileRegion _parent;
             private List<ProfileRegion> _children;
-            private long _start;
+            private readonly long _start;
             private long _end;
 
             public ProfileRegion()
             {
                 _currentRegion = this;
-                _watch.Reset();
-                _watch.Start();
+                Watch.Reset();
+                Watch.Start();
             }
 
             public ProfileRegion(ProfileRegion parent)
@@ -73,13 +67,13 @@ namespace Dev2
                 _parent = parent;
                 (_parent._children ?? (_parent._children = new List<ProfileRegion>())).Add(this);
                 _currentRegion = this;
-                _start = _watch.ElapsedMilliseconds;
+                _start = Watch.ElapsedMilliseconds;
             }
 
             public long Pop()
             {
-                _end = _watch.ElapsedMilliseconds;
-                if ((_currentRegion = _parent) == null) _watch.Stop();
+                _end = Watch.ElapsedMilliseconds;
+                if ((_currentRegion = _parent) == null) Watch.Stop();
                 return _end - _start;
             }
         }

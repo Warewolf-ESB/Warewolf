@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.DirectoryServices;
 using System.Linq;
+using Dev2.Common;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -32,7 +33,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 DirectoryEntry newGroup = ad.Children.Add(WarewolfGroup, "Group");
-                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
+                newGroup.Invoke("Put", "Description", WarewolfGroupDesc);
                 newGroup.CommitChanges();
             }
         }
@@ -113,7 +114,14 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 {
                     if(dChildEntry.Name == WarewolfGroup)
                     {
-                        dChildEntry.Invoke("Add", new object[] { currentUser });
+                        try
+                        {
+                            dChildEntry.Invoke("Add", currentUser);
+                        }
+                        catch(Exception)
+                        {
+                            Dev2Logger.Log.Error(string.Format("User {0} does not exist on the machine.", currentUser));
+                        }
                     }
                 }
             }
@@ -129,7 +137,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     if(dChildEntry.Name == WarewolfGroup)
                     {
                         const string Entry = "WinNT://./" + AdministratorsGroup;
-                        dChildEntry.Invoke("Add", new object[] { Entry });
+                        dChildEntry.Invoke("Add", Entry);
                     }
                 }
             }

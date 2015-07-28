@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
+// ReSharper disable once CheckNamespace
 namespace Unlimited.Framework.Converters.Graph
 {
     [Serializable]
@@ -20,6 +21,7 @@ namespace Unlimited.Framework.Converters.Graph
     {
         #region Constructor
 
+        // ReSharper disable once PublicConstructorInAbstractClass
         public BasePath()
         {
             ActualPath = "";

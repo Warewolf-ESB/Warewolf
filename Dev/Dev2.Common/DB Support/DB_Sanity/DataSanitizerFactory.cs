@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Common.DB
 {
     /*
@@ -21,7 +21,7 @@ namespace Dev2.Common.DB
 
     public class DataSanitizerFactory
     {
-        private static readonly Dictionary<enSupportedDBTypes, Type> _options
+        private static readonly Dictionary<enSupportedDBTypes, Type> Options
             = new Dictionary<enSupportedDBTypes, Type>();
 
 
@@ -39,7 +39,7 @@ namespace Dev2.Common.DB
                     var item = Activator.CreateInstance(t, true) as IDataProviderSanitizer;
                     if (item != null)
                     {
-                        _options.Add(item.HandlesType(), t);
+                        Options.Add(item.HandlesType(), t);
                     }
                 }
             }
@@ -55,7 +55,7 @@ namespace Dev2.Common.DB
             IDataProviderSanitizer result;
             Type outType;
 
-            if (!_options.TryGetValue(typeOf, out outType))
+            if (!Options.TryGetValue(typeOf, out outType))
             {
                 result = null;
             }

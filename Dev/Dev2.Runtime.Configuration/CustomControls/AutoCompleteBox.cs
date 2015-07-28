@@ -749,16 +749,7 @@ SelectionChangedEvent,
         /// <param name="newItem">The new item.</param>
         private void OnSelectedItemChanged(object newItem)
         {
-            string text;
-
-            if(newItem == null)
-            {
-                text = SearchText;
-            }
-            else
-            {
-                text = FormatValue(newItem, true);
-            }
+            var text = newItem == null ? SearchText : FormatValue(newItem, true);
 
             // Update the Text property and the TextBox values
             UpdateTextValue(text);
@@ -1806,19 +1797,10 @@ SelectionChangedEvent,
             {
                 // Check if it is already an IItemsSelector
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                adapter = selector as ISelectionAdapter;
-                if(adapter == null)
-                {
-                    // Built in support for wrapping a Selector control
-                    adapter = new SelectorSelectionAdapter(selector);
-                }
+                adapter = selector as ISelectionAdapter ?? new SelectorSelectionAdapter(selector);
             }
-            if(adapter == null)
-            {
-                // ReSharper disable once SuspiciousTypeConversion.Global
-                adapter = GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
-            }
-            return adapter;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            return adapter ?? (GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter);
         }
 
         /// <summary>
@@ -2100,6 +2082,7 @@ SelectionChangedEvent,
         /// <param name="value">The new string value.</param>
         private void UpdateTextValue(string value)
         {
+            // ReSharper disable once IntroduceOptionalParameters.Local
             UpdateTextValue(value, null);
         }
 
@@ -2181,7 +2164,7 @@ SelectionChangedEvent,
             // 1. Minimum prefix length
             // 2. If a delay timer is in use, use it
             bool populateReady = newText.Length >= MinimumPrefixLength && MinimumPrefixLength >= 0;
-            _userCalledPopulate = populateReady ? userInitiated : false;
+            _userCalledPopulate = populateReady && userInitiated;
 
             // Update the interface and values only as necessary
             UpdateTextValue(newText, userInitiated);

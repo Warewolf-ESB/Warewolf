@@ -10,7 +10,7 @@
 */
 
 using Dev2.DataList.Contract;
-
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     public interface IOutputTOConvert {
         OutputTO ConvertToOutputTO();

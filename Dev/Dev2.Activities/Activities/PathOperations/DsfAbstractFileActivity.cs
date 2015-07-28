@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -19,12 +20,14 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
 using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using Dev2.Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -60,7 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-         
+
  
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -68,12 +71,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Process if no errors
 
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 InitializeDebug(dataObject);
             }
 
-            if(!errors.HasErrors())
+            if (!errors.HasErrors())
             {
                 try
                 {
@@ -82,21 +85,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     allErrors.MergeErrors(errors);
 
-                    if(outputs.Count > 0)
+                    if (outputs.Count > 0)
                     {
-                        foreach(OutputTO output in outputs)
+                        foreach (OutputTO output in outputs)
                         {
-                            if(output.OutputStrings.Count > 0)
+                            if (output.OutputStrings.Count > 0)
                             {
-                                foreach(string value in output.OutputStrings)
+                                foreach (string value in output.OutputStrings)
                                 {
-                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
                                             dataObject.Environment.Assign(region, value, update);
                                         }
@@ -121,22 +124,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
                 finally
                 {
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
-                        foreach(var err in allErrors.FetchErrors())
+                        foreach (var err in allErrors.FetchErrors())
                         {
                             dataObject.Environment.Errors.Add(err);
                         }
                     }
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         DispatchDebugState(dataObject, StateType.Before, update);
                         DispatchDebugState(dataObject, StateType.After, update);
@@ -151,6 +154,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void MakeDeferredAction(string deferredLoc)
         {
             // Do nothing ;)
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        protected string DecryptedPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+            }
         }
 
         /// <summary>
@@ -173,7 +185,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string Password
         {
             get { return _password; }
-            set { _password = value; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _password = DpapiWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
         }
 
         /// <summary>
@@ -215,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
@@ -225,7 +254,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
 
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

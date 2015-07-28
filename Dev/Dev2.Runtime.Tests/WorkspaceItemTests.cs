@@ -18,8 +18,9 @@ using Dev2.Runtime.Hosting;
 using Dev2.Tests.Runtime.Hosting;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
-namespace Dev2.DynamicServices.Test
+namespace Dev2.Tests.Runtime
 {
     /// <summary>
     /// Summary description for DynamicServicesInvokerTest
@@ -36,11 +37,11 @@ namespace Dev2.DynamicServices.Test
 
         const string SourceName = "CitiesDatabase";
 
-        Guid SourceID = Guid.NewGuid();
+        readonly Guid _sourceID = Guid.NewGuid();
 
-        Guid ServiceID = Guid.NewGuid();
+        readonly Guid _serviceID = Guid.NewGuid();
 
-        Guid UnsignedServiceID = Guid.NewGuid();
+        readonly Guid _unsignedServiceID = Guid.NewGuid();
 
         public const string ServerConnection1Name = "ServerConnection1";
 
@@ -64,8 +65,8 @@ namespace Dev2.DynamicServices.Test
                 new[] { SourceName, ServerConnection1Name, ServerConnection2Name },
                 new[] { ServiceName, ServiceNameUnsigned },
                 out resources,
-                new[] { SourceID, Guid.Parse(ServerConnection1ID), Guid.Parse(ServerConnection2ID) },
-                new[] { ServiceID, UnsignedServiceID });
+                new[] { _sourceID, Guid.Parse(ServerConnection1ID), Guid.Parse(ServerConnection2ID) },
+                new[] { _serviceID, _unsignedServiceID });
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
         }
@@ -100,8 +101,7 @@ namespace Dev2.DynamicServices.Test
             Guid resourceID = Guid.NewGuid();
             Guid environmentID = Guid.NewGuid();
             Guid serverID = Guid.NewGuid();
-            WorkspaceItem workspaceItem = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID);
-            workspaceItem.IsWorkflowSaved = true;
+            WorkspaceItem workspaceItem = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID) { IsWorkflowSaved = true };
             XElement xElement = workspaceItem.ToXml();
             //------------Execute Test---------------------------
             WorkspaceItem newWorkspaceItem = new WorkspaceItem(xElement);
@@ -122,8 +122,7 @@ namespace Dev2.DynamicServices.Test
             Guid resourceID = Guid.NewGuid();
             Guid environmentID = Guid.NewGuid();
             Guid serverID = Guid.NewGuid();
-            WorkspaceItem workspaceItem = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID);
-            workspaceItem.IsWorkflowSaved = true;
+            WorkspaceItem workspaceItem = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID) { IsWorkflowSaved = true };
             //------------Execute Test---------------------------
             XElement xElement = workspaceItem.ToXml();
             //------------Assert Results-------------------------

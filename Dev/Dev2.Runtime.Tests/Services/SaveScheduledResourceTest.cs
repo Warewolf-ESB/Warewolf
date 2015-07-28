@@ -22,6 +22,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -83,8 +84,8 @@ namespace Dev2.Tests.Runtime.Services
 
         private ExecuteMessage RunOutput(bool expectCorrectInput, bool hasUserNameAndPassword, bool delete)
         {
-            string username = "user";
-            string password = "pass";
+            const string username = "user";
+            const string password = "pass";
             var esbMethod = new SaveScheduledResource();
             var security = new Mock<ISecurityWrapper>();
             esbMethod.SecurityWrapper = security.Object;

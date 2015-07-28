@@ -151,6 +151,7 @@ namespace Dev2.Services.Execution
             }
         }
 
+        // ReSharper disable once OptionalParameterHierarchyMismatch
         protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
@@ -362,10 +363,8 @@ namespace Dev2.Services.Execution
                             using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName)))
                             // ReSharper restore CoVariantArrayConversion
                             {
-    ;
                                 ApplyColumnMappings(dataSet);
                                 TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
-
                                 return true;
                             }
                         }

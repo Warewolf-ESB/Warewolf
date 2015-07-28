@@ -16,7 +16,7 @@ namespace Dev2.Utilities
 {
     public static class FindRecordsDisplayUtil
     {
-        private static Dictionary<string, string> changedOptions;
+        private static Dictionary<string, string> _changedOptions;
 
         public static string ConvertForDisplay(string key)
         {
@@ -24,7 +24,7 @@ namespace Dev2.Utilities
 
             string value;
 
-            if(!changedOptions.TryGetValue(key, out value))
+            if(!_changedOptions.TryGetValue(key, out value))
             {
                 value = key;
             }
@@ -36,7 +36,7 @@ namespace Dev2.Utilities
         {
             InitDictionary();            
 
-            KeyValuePair<string, string> firstOrDefault = changedOptions.FirstOrDefault(c => c.Value == key);
+            KeyValuePair<string, string> firstOrDefault = _changedOptions.FirstOrDefault(c => c.Value == key);
             if(firstOrDefault.Key != null && firstOrDefault.Value!= null)
             {
                 return firstOrDefault.Key;
@@ -47,13 +47,10 @@ namespace Dev2.Utilities
 
         private static void InitDictionary()
         {
-            if(changedOptions == null)
+            if(_changedOptions == null)
             {
-                changedOptions = new Dictionary<string, string>();
-                changedOptions.Add("Equals", "=");
-                changedOptions.Add("Not Equals", "<> (Not Equal)");               
-                changedOptions.Add("Not Contains", "Doesn't Contain");
-                changedOptions.Add("Regex", "Is Regex");
+                _changedOptions = new Dictionary<string, string> { { "Equals", "=" }, { "Not Equals", "<> (Not Equal)" }, { "Not Contains", "Doesn't Contain" }, { "Regex", "Is Regex" } };
+
             }
         }
 

@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Warewolf.Security.Encryption;
 using Dev2.Common.Interfaces.Data;
 
 // ReSharper disable CheckNamespace
@@ -89,7 +90,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Timeout", string.Empty },
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
 
             Host = properties["Host"];
             UserName = properties["UserName"];
@@ -107,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void Send(MailMessage mailMessage)
         {
-            var userParts = UserName.Split(new[] { '@' });
+            var userParts = UserName.Split('@');
             using(var smtp = new SmtpClient(Host, Port)
             {
                 Credentials = new NetworkCredential(userParts[0], Password),
@@ -136,7 +139,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

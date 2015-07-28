@@ -11,75 +11,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using Dev2.Common;
 using Dev2.DataList;
-using Dev2.DataList.Contract;
 using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
 {
     public class RsOpIsBetween : AbstractRecsetSearchValidation
     {
-        private IEnumerable<string> FindRecordIndexForDateTime(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, DateTime fromDateTime, DateTime toDateTime)
-        {
-            IList<string> fnResult = new List<string>();
-            foreach(RecordSetSearchPayload p in operationRange)
-            {
-                DateTime recDateTime;
-                if(DateTime.TryParse(p.Payload, out recDateTime))
-                {
-                    if(recDateTime > fromDateTime && recDateTime < toDateTime)
-                    {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
-                        {
-                            return new List<string>();
-                        }
-                    }
-                }
-            }
-            return fnResult;
-        }
-
-        private IEnumerable<string> FindRecordIndexForNumeric(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, double fromNum, double toNum)
-        {
-            IList<string> fnResult = new List<string>();
-            foreach(RecordSetSearchPayload p in operationRange)
-            {
-                double recNum;
-                if(!double.TryParse(p.Payload, out recNum))
-                {
-                    continue;
-                }
-                if(recNum > fromNum && recNum < toNum)
-                {
-                    fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    if(to.RequireAllFieldsToMatch)
-                    {
-                        return new List<string>();
-                    }
-                }
-            }
-            return fnResult;
-        }
-
         #region Overrides of AbstractRecsetSearchValidation
 
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> tovals, bool all)
         {
 
-            return (a) =>
-            {
-                return RunBetween(warewolfAtoms, tovals, a);
-            };
+            return a => RunBetween(warewolfAtoms, tovals, a);
          
         }
 

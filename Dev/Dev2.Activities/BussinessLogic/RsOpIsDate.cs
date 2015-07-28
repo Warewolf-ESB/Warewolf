@@ -12,7 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -23,7 +23,7 @@ namespace Dev2.DataList
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
 
-            return (a) => values.All(x => a.ToString().IsDate());
+            return a => values.All(x => a.ToString().IsDate());
 
         }
         public override string HandlesType()

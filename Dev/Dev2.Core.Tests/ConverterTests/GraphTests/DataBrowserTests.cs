@@ -19,8 +19,10 @@ using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
+using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
+namespace Dev2.Tests.ConverterTests.GraphTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -435,7 +437,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
             IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
             Dictionary<IPath, IList<object>> data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
 
-            string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
+            const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
             string actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
@@ -489,7 +491,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
             IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
             Dictionary<IPath, IList<object>> data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
 
-            string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
+            const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
             string actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 

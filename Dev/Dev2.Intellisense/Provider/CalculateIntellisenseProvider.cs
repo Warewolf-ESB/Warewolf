@@ -18,6 +18,7 @@ using System.Windows.Data;
 using Dev2.Calculate;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Data.MathOperations;
 using Dev2.Intellisense.Provider;
 using Dev2.MathOperations;
 using Dev2.Studio.Core.Interfaces;

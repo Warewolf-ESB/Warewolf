@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string Expected = string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
+            string expected = string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -241,7 +241,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(expected, actual);
             }
             else
             {
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string Expected = string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
+            string expected = string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(expected, actual);
             }
             else
             {

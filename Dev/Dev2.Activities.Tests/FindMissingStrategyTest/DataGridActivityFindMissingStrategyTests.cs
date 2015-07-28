@@ -26,31 +26,18 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     [ExcludeFromCodeCoverage]
     public class DataGridActivityFindMissingStrategyTests
     {
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region BaseConvert Activity Tests
 
         [TestMethod]
         public void GetActivityFieldsOffBaseConvertActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfBaseConvertActivity baseConvertActivity = new DsfBaseConvertActivity();
-            baseConvertActivity.ConvertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[FromExpression]]", "Text", "Binary", "[[ToExpression]]", 1), new BaseConvertTO("[[FromExpression2]]", "Text", "Binary", "[[ToExpression2]]", 2) };
+            DsfBaseConvertActivity baseConvertActivity = new DsfBaseConvertActivity { ConvertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[FromExpression]]", "Text", "Binary", "[[ToExpression]]", 1), new BaseConvertTO("[[FromExpression2]]", "Text", "Binary", "[[ToExpression2]]", 2) } };
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             List<string> actual = strategy.GetActivityFields(baseConvertActivity);
@@ -65,8 +52,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffCaseConvertActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfCaseConvertActivity caseConvertActivity = new DsfCaseConvertActivity();
-            caseConvertActivity.ConvertCollection = new List<ICaseConvertTO> { new CaseConvertTO("[[StringToConvert]]", "UPPER", "[[Result]]", 1), new CaseConvertTO("[[StringToConvert2]]", "UPPER", "[[Result2]]", 2) };
+            DsfCaseConvertActivity caseConvertActivity = new DsfCaseConvertActivity { ConvertCollection = new List<ICaseConvertTO> { new CaseConvertTO("[[StringToConvert]]", "UPPER", "[[Result]]", 1), new CaseConvertTO("[[StringToConvert2]]", "UPPER", "[[Result2]]", 2) } };
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             List<string> actual = strategy.GetActivityFields(caseConvertActivity);
@@ -81,8 +67,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffMultiAssignActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity();
-            multiAssignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             List<string> actual = strategy.GetActivityFields(multiAssignActivity);

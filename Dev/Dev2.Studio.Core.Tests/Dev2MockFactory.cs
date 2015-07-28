@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests
     {
         private static Mock<MainViewModel> _mockMainViewModel;
         private static Mock<IContextualResourceModel> _mockResourceModel;
-        
+
         static Dev2MockFactory()
         {
             AppSettings.LocalHost = "https://localhost:3143";
@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if(_mockMainViewModel == null)
+                if (_mockMainViewModel == null)
                 {
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
@@ -83,7 +83,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if(_mockResourceModel != null)
+                if (_mockResourceModel != null)
                 {
                     return _mockResourceModel;
                 }
@@ -155,8 +155,8 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
-            if(resourceRepositoryFakeBacker != null)
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(returnResource.Object);
+            if (resourceRepositoryFakeBacker != null)
             {
                 mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
             }
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(returnResource.Object);
             mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
             mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(returnResources);
@@ -223,7 +223,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
 
-            if(returnSelf)
+            if (returnSelf)
             {
                 mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
             }

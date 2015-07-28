@@ -1,5 +1,5 @@
 
-<Service ID="20453553-7bb8-4c5c-b0a3-663612bc52b3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EditProduct" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="20453553-7bb8-4c5c-b0a3-663612bc52b3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EditProduct" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>EditProduct</DisplayName>
   <Category>Sample Project\EditProduct</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>rb/pBQCrab0/PK0HfHlBF9OZUAw=</DigestValue>
+        <DigestValue>k/MJJgo5gK9gp9AWwNXmvO0+YHM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>cqzhqy9RR6C7eQ1kf+J/PwZxrxrg/VSwAFepe3tkrCZ4Y5wwkBN+zPundN7Q/Nxqx5FDi4LWpkZI8QKT8gYr3R8wniIXL8J0eFS1zXRZ0MwfX9WDR0gvccoU33iYtctS/MkCJZY4qJx9YwQS6ZzzBi4dJ37dsU+HDSOxW55haW4=</SignatureValue>
+    <SignatureValue>lf30/2NjG6nnby/jyNBHbBBKbCNlzqjX+ICVRllJdn37H9YRFOT2vgMyLEX4M60sFGlsZo+Kef6dNpejsJDR9OxpL25vyyLdfkcq7LnhRMgV7UbgtnCcrjjT5yR2DKN0IDoYAWFnfcEmnzNZqrT0bWe626Co6gBHQHtck5mqg9g=</SignatureValue>
   </Signature>
 </Service>

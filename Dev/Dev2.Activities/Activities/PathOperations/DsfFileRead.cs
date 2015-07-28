@@ -20,6 +20,7 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+// ReSharper disable CheckNamespace
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -52,7 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password, update)); 
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update)); 
             colItr.AddVariableToIterateOn(passItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));

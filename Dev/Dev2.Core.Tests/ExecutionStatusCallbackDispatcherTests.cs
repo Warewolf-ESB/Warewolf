@@ -13,8 +13,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Network.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework
+namespace Dev2.Tests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -27,9 +28,8 @@ namespace Unlimited.UnitTest.Framework
             ExecutionStatusCallbackDispatcher _executionStatusCallbackDispatcher = new ExecutionStatusCallbackDispatcher();
 
             Guid guid = Guid.NewGuid();
-            Action<ExecutionStatusCallbackMessage> callback = null;
 
-            _executionStatusCallbackDispatcher.Add(guid, callback);
+            _executionStatusCallbackDispatcher.Add(guid, null);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Unlimited.UnitTest.Framework
             Guid guid = Guid.NewGuid();
             Action<ExecutionStatusCallbackMessage> callback = m => { };
             
-            bool expected = true;
+            const bool expected = true;
             bool actual = _executionStatusCallbackDispatcher.Add(guid, callback);
 
             Assert.AreEqual(expected, actual);
@@ -55,7 +55,7 @@ namespace Unlimited.UnitTest.Framework
             Action<ExecutionStatusCallbackMessage> callback = m => { };
             _executionStatusCallbackDispatcher.Add(guid, callback);
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = _executionStatusCallbackDispatcher.Add(guid, callback);
 
             Assert.AreEqual(expected, actual);
@@ -68,7 +68,7 @@ namespace Unlimited.UnitTest.Framework
 
             Guid guid = Guid.NewGuid();
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = _executionStatusCallbackDispatcher.Remove(guid);
 
             Assert.AreEqual(expected, actual);
@@ -83,7 +83,7 @@ namespace Unlimited.UnitTest.Framework
             Action<ExecutionStatusCallbackMessage> callback = m => { };
             _executionStatusCallbackDispatcher.Add(guid, callback);
 
-            bool expected = true;
+            const bool expected = true;
             bool actual = _executionStatusCallbackDispatcher.Remove(guid);
 
             Assert.AreEqual(expected, actual);
@@ -94,7 +94,7 @@ namespace Unlimited.UnitTest.Framework
         {
             ExecutionStatusCallbackDispatcher _executionStatusCallbackDispatcher = new ExecutionStatusCallbackDispatcher();
 
-            bool expected = false;
+            const bool expected = false;
             bool actual = false;
 
             Guid guid = Guid.NewGuid();

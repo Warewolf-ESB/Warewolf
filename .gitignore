@@ -105,6 +105,8 @@
 /Dev/Dev2.Diagnostics/obj
 /Dev/Dev2.Explorer.Specs/bin
 /Dev/Dev2.Explorer.Specs/obj
+/Dev/Dev2.Flickering.Specs/bin
+/Dev/Dev2.Flickering.Specs/obj
 /Dev/Dev2.Infrastructure/bin
 /Dev/Dev2.Infrastructure/obj
 /Dev/Dev2.Infrastructure.Tests/bin
@@ -183,6 +185,8 @@
 /Dev/Dev2.Sql.Tests/obj
 /Dev/Dev2.TaskScheduler.Wrappers.Test/bin
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
+/Dev/Dev2.Warewolf.Security/bin
+/Dev/Dev2.Warewolf.Security/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
 /Dev/ExecutionEngine/bin
