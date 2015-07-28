@@ -4165,18 +4165,6 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-Scenario: Sharepoint Acceptance Tests
-	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
-	  And "Sharepoint Acceptance Tests Outer" contains "Sharepoint Connectors Testing" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "Sharepoint Acceptance Tests Outer" is executed
-	Then the workflow execution has "NO" error
-	  And the 'Sharepoint Connectors Testing' in Workflow 'Sharepoint Acceptance Tests Outer' debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
-
-
 Scenario: workflow without StackOverflow exception check
          Given I have a workflow "Testing - LoopTest"
          And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as

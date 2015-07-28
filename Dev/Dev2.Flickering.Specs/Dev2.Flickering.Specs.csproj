@@ -60,6 +60,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Dev2.Activities.Specs\Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
+      <DependentUpon>BaseConversion.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Dev2.Integration.Tests\Activities\FileSystemTests.cs" />
     <Compile Include="Dev2.Integration.Tests\AppTests.cs" />
     <Compile Include="Dev2.Activities.Specs\Composition\WorkflowExecution2.feature.cs">
@@ -79,6 +84,10 @@
     <None Include="Dev2.Activities.Specs\Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Dev2.Activities.Specs\Toolbox\Data\BaseConversion\BaseConversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Dev2.Activities.Specs\Toolbox\ControlFlow\Sequence\Sequence.feature">
