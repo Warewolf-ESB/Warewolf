@@ -25,7 +25,7 @@ IF %errorlevel% EQU 1060 goto UsingCommandlineInterface
 IF %errorlevel% EQU 1062 exit 0
 
 :UsingService
-SC START "Warewolf Server Under Test"
+SC STOP "Warewolf Server Under Test"
 
 :UsingCommandlineInterface
 REM Stop Server:
