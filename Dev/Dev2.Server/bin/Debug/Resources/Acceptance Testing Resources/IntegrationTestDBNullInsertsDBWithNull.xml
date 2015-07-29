@@ -1,5 +1,5 @@
 
-<Service ID="424d193e-bce0-48a8-850d-cf16655d4cd1" Version="1.0" Name="IntegrationTestDBNullInsertsDBWithNull" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5688.18363">
+<Service ID="424d193e-bce0-48a8-850d-cf16655d4cd1" Version="1.0" Name="IntegrationTestDBNullInsertsDBWithNull" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_InsertDummyUser" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.InsertDummyUser">
       <Inputs>
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>1Wa2+NvLN2sU2ZCUUc1IqA/4rJE=</DigestValue>
+        <DigestValue>GYo9aywv+r1iSoqcy93ip9OYo7o=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>csouN9S3BuFcyvtfsKLhiFMXZMWmT0O1Ds2E+oLmrh1iDe8B58JK0Jts4emCfkZsl/M2LJtF1S9BygY8m0ts6Y2QfEPa7AI7C7WuGyiN8iMDqopMjAYY5Yl2vc6XH32r/udktNH40qR7ZrNV6nCBsqyE1Xd7hSCilcvlQZWlDDA=</SignatureValue>
+    <SignatureValue>JQX2KrPD+NlN8UOoYcz1IJ4+r3v20fsdmODquJScYr+WBHY8aJi04nj5f0bUPflKG1ESP72pxZ7QPh5pikY0IyjsWG+TdC8QxJtHV9Pll928a6MaeEsOwwe6EKy2+GpipXZ2gJ96D2NuAwvr3C0gtSk83UQuetW7z7MKCdZSto4=</SignatureValue>
   </Signature>
 </Service>
