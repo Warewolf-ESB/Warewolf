@@ -10,7 +10,6 @@
 */
 
 using System.Threading;
-using System.Timers;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,19 +51,18 @@ namespace Dev2.Infrastructure.Tests.Logs
             Assert.AreEqual(pulseLogger.Interval, 2000);
             PrivateObject pvt = new PrivateObject(pulseLogger);
             System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
-            timer.Elapsed += TimerElapsed;
+            timer.Elapsed += (sender, e) =>
+                {
+                    _elapsed = true;
+
+                };
             Assert.AreEqual(false, timer.Enabled);
-            pulseLogger.Start();
-            Thread.Sleep(4000);
             //------------Execute Test---------------------------
-            Assert.IsTrue(_elapsed);
+            pulseLogger.Start();
+            Thread.Sleep(6000);
             //------------Assert Results-------------------------
+            Assert.IsTrue(_elapsed);
         }
 
-        void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            _elapsed = true;
-
-        }
     }
 }
