@@ -1251,7 +1251,7 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index r
 	 | 6 | [[index(2).a]] = 3      |  	
     And the 'Merge' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
 	 | # |                                      | With  | Using | Pad | Align |
-	 | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
+	 | 1 | [[rec(1).a]] = warewolf | Index | "8"   | ""  | Left  |
 	 | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
 	 And the 'Merge' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
 	 |                        |
@@ -3710,7 +3710,6 @@ Scenario: Gather System tool throws error when debug with 2 variables in one row
 	  | 1 | [[a]] = b       |
 	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
 	  | # |              |             |
-	  | 1 | [[a]][[b]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
 	  | # |              |
 	  | 1 | [[a]][[b]] = |
@@ -3736,7 +3735,6 @@ Scenario: Gather System tool throws error when debug with invalid variableb
 	  | 1 | [[a]] = b       |
 	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
 	  | # |                      |             |
-	  | 1 | [[a]][[rec().a]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
 	  | # |                      |
 	  | 1 | [[a]][[rec().a]] = |
@@ -4110,10 +4108,10 @@ Examples:
 	  | [[Result]] = Pass |
 
 Scenario: Executing Asynchrounous testing workflow error
-	  Given I have a workflow "Testing - Async Test Master Testc"
+	  Given I have a workflow "Testing - Async Test Master Teste"
 	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Async Test Master Testc" is executed
+	  When "Testing - Async Test Master Teste" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
 	  |                      |

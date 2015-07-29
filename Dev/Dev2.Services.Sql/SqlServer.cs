@@ -325,6 +325,10 @@ namespace Dev2.Services.Sql
                                 sb.Append(value);
                             }
                         }
+                        if (sb.Length == 0)
+                        {
+                            throw new WarewolfDbException(string.Format("There is no text for object '{0}'.", objectName));
+                        }
                         return sb.ToString();
                     });
             }
@@ -498,5 +502,12 @@ namespace Dev2.Services.Sql
         }
 
         #endregion
+    }
+
+    public class WarewolfDbException : DbException
+    {
+        public WarewolfDbException(string message):base(message)
+        {
+        }
     }
 }

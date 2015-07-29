@@ -1,5 +1,5 @@
 
-<Source ID="a00626a4-ec09-46ad-8c97-ea6c44bbc582" Version="1.0" Name="Google Address Lookup" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://maps.googleapis.com;DefaultQuery=/maps/api/geocode/json?sensor=true&amp;address=[[address]];AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="a00626a4-ec09-46ad-8c97-ea6c44bbc582" Version="1.0" Name="Google Address Lookup" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANvRXqk+VCEir/iOzuG6VegQAAAACAAAAAAADZgAAwAAAABAAAAAH+ok5yMqujfgO1uXtxNIMAAAAAASAAACgAAAAEAAAAFwu8ZmVKZwtNOzulHQAvDMQAQAA+bKJtVQg8ZZZMty/aSozv7oNZFauyAn69AQWTVYijfrfN2xebtAPq9Z/AzFzCrEThYED1OOnYA9r6Yby/iX2HTyPiblDG+iPqwRsFicRmMh/XA1J+heaECQBgOofNFVINCdanTyRbhct2E/ZBF6czjCjg6AhI+i2fCOvEGi/iDfY3F40d16O43pMQcQSBE+epWjwoicOXKCzYeW7P/o2MPKKFKVwxw/3Ub6fxEdazFarlaDJdve/WUQaUsVhmQZugWEQ9l+HAgp+xSKflLfmElcJkJ03OqSfLfQG7y3T7adWYi0oQDU4L9UbB8CMfEX0r2O3EDofXyiMUQzHokrxKqP3FVYnRTBKCymNbnG/sLcUAAAAK3Zo20sNQPG5fNtuiSVT9+kjKUI=" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5688.18363">
   <DisplayName>Google Address Lookup</DisplayName>
   <Category>Acceptance Testing Resources\Google Address Lookup</Category>
   <AuthorRoles>
@@ -16,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>npuZDIc2TeQrhCbDP5rpNDRn3h4=</DigestValue>
+        <DigestValue>Kx4Qk/Buk+Jqvr/C/obnCViXXys=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>codbUUQF5/GvYKef9Pvbq7N6ojngOhxa5d0H4txAiSBOTYtvDmwEl9QGhaHLij8CNljqcr6c1gssELer1D/x9SUSNEW00s1iI3YeRGCYpfcvbLsik9hMI2cN7MTtDo0hXmWrEowmSglBipggA/jIXfsSGLifMU3OW+73QZ2aVY8=</SignatureValue>
+    <SignatureValue>N42LabXhjqzvoL7GkUTxkqzEN0e495Aqt96DLBzoQstJqYyF86IA3bVKjcR4fBrJWfV2cmi/xYaKB+LyvPJa1bHWyFQkIOPfsCj/2uvH0Cg3WL2yt+g4o7k5xELldFYNtzEWbgy5EnPkjdcFK6LnC0iCdJ01VKvhR94luU9K8BI=</SignatureValue>
   </Signature>
 </Source>

@@ -1,5 +1,5 @@
 
-<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.5.5688.18363">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CaseConversion_Recset_With_NoIndex"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -184,9 +184,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>9BtpXWx5zeT+P0r+c/cJQW1Uchw=</DigestValue>
+        <DigestValue>YNrHHqaYVJNnFFPO6P2M48SSlLQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>tRjMk9xT0zLOWYczUDu0KSr6hd9ls4d+qldEGtbHnOCeJDyresFhQ0q60MUiOQPUT6/1ZKdXIrCboXfzas1bP5K68LhpJW22SGH/jxXvEDYt/NOXQW5T+cvNGpPEOiY9rfZrKgDRK8rKJsQgbmw3hN+sMamEImMAply0Y+QKKK0=</SignatureValue>
+    <SignatureValue>gaaQ/HIi9h3hcw1gNXTcQKKScGRHlr/gTKIveXH08GfxOTat+FZaIG9ynMXnJ5Re0J4Y3Q7MBu3/i5W0w6/W+VmBim9R/DrbLP9CLfItZHMLNyIbAMP41MaMBY5g/18h1un7f+eI7WmtYfXzaB4TwglNNcvzc1sku7kB6BMXAIM=</SignatureValue>
   </Signature>
 </Service>

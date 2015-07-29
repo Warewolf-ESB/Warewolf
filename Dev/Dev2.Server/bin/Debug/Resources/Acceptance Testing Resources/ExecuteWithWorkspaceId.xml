@@ -1,5 +1,5 @@
 
-<Service ID="ae5399f9-7fd4-4897-8ff2-f771244b75b6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ExecuteWithWorkspaceId" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
+<Service ID="ae5399f9-7fd4-4897-8ff2-f771244b75b6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ExecuteWithWorkspaceId" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.5.5688.18363">
   <DisplayName>ExecuteWithWorkspaceId</DisplayName>
   <Category>Acceptance Testing Resources\ExecuteWithWorkspaceId</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>GZIIRDd+FP9wnTDJA6b+o6D2iJo=</DigestValue>
+        <DigestValue>C8sadg6LPTdryPEtN8/o2fiwoSk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Y4XzaSGz/vp7wIdpURlx1J3ykm3w5BtAR51tT6ityDuVL+laik/jKR7ZUxDst4ftuG8OU2h6mq7QzEHv9Z9Mc/t4SLJbW4eVNcsVL7jSj7hhdefm6ICDagIzwGQVhw4y8FwMQylu5+zaa9pbCtWMFZhcBC/F72CxAXq6aL+ZpSY=</SignatureValue>
+    <SignatureValue>IUe1seXPpRoFASKOcjaF/X+ED5968FD3TQ3HG2ieCEvbWuKA7n5E93jaj2h7QpuQD6Bsb9MGofgRuEQtVR0BM7RmoOnQig55RHj9m15ViL4ekmrf4vZzptOfS8CSx0cQS8GccriKBpu5Et7hQMInTQTyFa1THs5LL3DLNI56RWs=</SignatureValue>
   </Signature>
 </Service>
