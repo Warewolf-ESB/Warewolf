@@ -11,6 +11,7 @@
 
 using System;
 using System.Network;
+using System.Threading.Tasks;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Security;
@@ -217,6 +218,17 @@ namespace Dev2.Studio.Core.Models
                 ResourceRepository.ForceLoad();
                 HasLoadedResources = true;
             }
+        }
+
+        public async Task<bool> ForceLoadResourcesAsync()
+        {
+            if(Connection.IsConnected && CanStudioExecute)
+            {
+                await ResourceRepository.ForceLoadAsync();
+                HasLoadedResources = true;
+                return true;
+            }
+            return false;
         }
 
         #endregion

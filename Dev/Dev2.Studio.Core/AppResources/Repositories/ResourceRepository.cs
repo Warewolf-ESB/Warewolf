@@ -178,6 +178,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 IsLoaded = false;
             }
         }
+        
+        async Task<bool> LoadAsync()
+        {
+            try
+            {
+                ResourceModels.Clear();
+                _reservedServices.Clear();
+                await LoadResourcesAsync();
+                IsLoaded = true;
+            }
+            catch
+            {
+                IsLoaded = false;
+                return false;
+            }
+            return true;
+        }
 
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
@@ -652,6 +669,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             IsLoaded = false;
             Load();
         }
+        
+        public async Task<bool> ForceLoadAsync()
+        {
+            IsLoaded = false;
+            return await LoadAsync();
+        }
 
         #endregion Methods
 
@@ -748,6 +771,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
             Dev2Logger.Log.Warn("Loading Resources - End");
+        }
+        
+        protected virtual async Task<bool> LoadResourcesAsync()
+        {
+            Dev2Logger.Log.Warn("Loading Resources - Start");
+            var comsController = new CommunicationController { ServiceName = "FindResourceService" };
+            comsController.AddPayloadArgument("ResourceName", "*");
+            comsController.AddPayloadArgument("ResourceId", "*");
+            comsController.AddPayloadArgument("ResourceType", string.Empty);
+
+            var con = _environmentModel.Connection;
+            var resourceList = await comsController.ExecuteCommandAsync<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+
+            if (resourceList == null)
+            {
+                throw new Exception("Failed to fetch resoure list as JSON model");
+            }
+
+            HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
+            return true;
         }
 
         public void RemoveFromCache(Guid id)

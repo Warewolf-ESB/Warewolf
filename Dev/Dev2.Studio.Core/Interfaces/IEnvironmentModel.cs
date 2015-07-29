@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using Dev2.Services.Security;
 
 // ReSharper disable CheckNamespace
@@ -47,6 +48,8 @@ namespace Dev2.Studio.Core.Interfaces
         void RaiseResourcesLoaded();
 
         event EventHandler AuthorizationServiceSet;
+
+        Task<bool> ForceLoadResourcesAsync();
     }
 
     public class ConnectedEventArgs : EventArgs

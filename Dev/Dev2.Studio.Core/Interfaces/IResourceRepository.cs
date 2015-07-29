@@ -42,6 +42,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsWorkflow(string resourceName);
         void Add(IResourceModel resource);
         void ForceLoad();
+        Task<bool> ForceLoadAsync();
 
         bool IsLoaded { get; set; }
         void RefreshResource(Guid resourceId);
