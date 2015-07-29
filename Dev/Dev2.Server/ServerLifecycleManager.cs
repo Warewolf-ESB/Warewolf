@@ -1607,6 +1607,7 @@ namespace Dev2
         bool LoadResourceCatalog()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            ValidatResourceFolder();
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
@@ -1638,6 +1639,13 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
+        }
+
+        static void ValidatResourceFolder()
+        {
+            var folder = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
         }
 
         static void MigrateResources(string oldResourceFolder)
