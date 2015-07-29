@@ -4149,22 +4149,6 @@ Scenario: Executing Asynchrounous testing workflow error
 #     | 4 | 9999  | Pass   |
 #     | 5 | 10000 | Pass   |
 
-Scenario: Workflow with AsyncLogging and ForEach
-     Given I have a workflow "WFWithAsyncLoggingForEach"
-     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
-	 And "ForEachTest" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[Warewolf]] | bob   |
-	 When "WFWithAsyncLoggingForEach" is executed
-	 Then the workflow execution has "NO" error
-	 And I set logging to "Debug"
-	 When "WFWithAsyncLoggingForEach" is executed "first time"
-	 Then the workflow execution has "NO" error
-	 And I set logging to "OFF"
-	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
-	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "1200" milliseconds
-
 Scenario: workflow without StackOverflow exception check
          Given I have a workflow "Testing - LoopTest"
          And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as

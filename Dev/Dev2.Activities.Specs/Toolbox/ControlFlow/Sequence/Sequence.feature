@@ -3,23 +3,6 @@
 	As a Warewolf user
 	I want to a tool that will allow me to construct and execute tools and services in sequence
 
-Scenario: Execute Sequence with Assign
-          Given I have a Sequence "Test"
-          And "Test" contains an Assign "TestAssign" as
-          | variable | value |
-          | [[var1]] | 1     |
-          | [[var2]] | 2     |
-          When the Sequence tool is executed
-          Then the execution has "NO" error
-          And the "TestAssign" debug inputs as
-          | # | Variable   | New Value |
-          | 1 | [[var1]] = | 1         |
-          | 2 | [[var2]] = | 2         |
-          And the "TestAssign" debug outputs as
-          | # |              |
-          | 1 | [[var1]] = 1 |
-          | 2 | [[var2]] = 2 |           
-		  And the Sequence Has a Duration
 Scenario: Execute a Sequence with Assign and Calculate
        Given I have a Sequence "Test"
 	   And "Test" contains an Assign "SetVariables" as

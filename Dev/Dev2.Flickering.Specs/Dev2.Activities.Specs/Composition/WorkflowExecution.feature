@@ -29,3 +29,19 @@ Scenario: Sharepoint Acceptance Tests
 	  And the 'Sharepoint Connectors Testing' in Workflow 'Sharepoint Acceptance Tests Outer' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+Scenario: Workflow with AsyncLogging and ForEach
+     Given I have a workflow "WFWithAsyncLoggingForEach"
+     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
+	 And "ForEachTest" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[Warewolf]] | bob   |
+	 When "WFWithAsyncLoggingForEach" is executed
+	 Then the workflow execution has "NO" error
+	 And I set logging to "Debug"
+	 When "WFWithAsyncLoggingForEach" is executed "first time"
+	 Then the workflow execution has "NO" error
+	 And I set logging to "OFF"
+	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
+	 Then the workflow execution has "NO" error
+	 And the delta between "first time" and "second time" is less than "1200" milliseconds
