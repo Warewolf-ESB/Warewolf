@@ -60,6 +60,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Dev2.Activities.Specs\Permissions\Settings Permissions1.feature.cs">
+      <DependentUpon>Settings Permissions.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Dev2.Activities.Specs\Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
       <DependentUpon>BaseConversion.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -84,6 +89,10 @@
     <None Include="Dev2.Activities.Specs\Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Dev2.Activities.Specs\Permissions\Settings Permissions.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
     <None Include="Dev2.Activities.Specs\Toolbox\Data\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
