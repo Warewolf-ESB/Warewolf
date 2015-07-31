@@ -514,11 +514,12 @@ namespace Dev2
 
         static JObject BuildJsonSwaggerInfoObject(IResource resource)
         {
+            var versionValue = resource.VersionInfo!=null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
             var jsonSwaggerInfoObject = new JObject
             {
-                { "title", new JValue("") },
+                { "title", new JValue(resource.ResourceName) },
                 { "description", new JValue("") },
-                { "version", new JValue(resource.VersionInfo.VersionNumber) }
+                { "version", versionValue }
             };
             return jsonSwaggerInfoObject;
         }
