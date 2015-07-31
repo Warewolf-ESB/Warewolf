@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
@@ -65,6 +66,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Dev2.Activities.Specs\Permissions\SettingsPermissionsSteps.cs" />
     <Compile Include="Dev2.Activities.Specs\Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
       <DependentUpon>BaseConversion.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -109,13 +111,33 @@
       <Project>{a03004be-79b5-47af-88ef-112197619a5f}</Project>
       <Name>Dev2.Activities.Specs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.IntegrationTests\Dev2.Integration.Tests.csproj">
       <Project>{2c7f0e32-c4c4-422d-a767-92f3b3510392}</Project>
       <Name>Dev2.Integration.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

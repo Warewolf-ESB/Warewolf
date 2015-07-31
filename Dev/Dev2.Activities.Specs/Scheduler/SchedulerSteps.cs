@@ -11,12 +11,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Activities.Specs.Permissions;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.CustomControls.Connections;
 using Dev2.Services.Events;
@@ -53,9 +54,9 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
-            if(!SettingsPermissionsSteps.AccountExists("LocalSchedulerAdmin"))
+            if(!AccountExists("LocalSchedulerAdmin"))
             {
-                SettingsPermissionsSteps.CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrtators");
+                CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrtators");
             }
             ScenarioContext.Current.Add("UserName", userName);
             ScenarioContext.Current.Add("Password", password);
@@ -263,5 +264,61 @@ namespace Dev2.Activities.Specs.Scheduler
 
         }
 
+        public static bool AccountExists(string name)
+        {
+            bool accountExists = false;
+            try
+            {
+                var id = GetUserSecurityIdentifier(name);
+                accountExists = id.IsAccountSid();
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
+            {
+                /* Invalid user account */
+            }
+            return accountExists;
+        }
+
+        public static SecurityIdentifier GetUserSecurityIdentifier(string name)
+        {
+            NTAccount acct = new NTAccount(Environment.MachineName, name);
+            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+            return id;
+        }
+
+        public static bool CreateLocalWindowsAccount(string username, string password, string groupName)
+        {
+            try
+            {
+                PrincipalContext context = new PrincipalContext(ContextType.Machine);
+                UserPrincipal user = new UserPrincipal(context);
+                user.SetPassword(password);
+                user.DisplayName = username;
+                user.Name = username;
+                user.UserCannotChangePassword = true;
+                user.PasswordNeverExpires = true;
+
+                user.Save();
+                AddUserToGroup(groupName, context, user);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(@"error creating user" + ex.Message);
+                return false;
+            }
+        }
+
+        public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
+        {
+            GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, groupName);
+            if(usersGroup != null)
+            {
+                usersGroup.Members.Add(user);
+                usersGroup.Save();
+            }
+        }
     }
 }
