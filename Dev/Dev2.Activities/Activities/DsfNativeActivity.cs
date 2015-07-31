@@ -458,7 +458,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    Dev2Logger.Log.Error("aaa");
+                    Dev2Logger.Log.Info("debug state not null");
                 }
 
                 if (_debugState != null)
@@ -518,7 +518,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    Dev2Logger.Log.Error("aaa");
+                    Dev2Logger.Log.Info("debug state not null");
                 }
 
                 if(_debugState != null)
