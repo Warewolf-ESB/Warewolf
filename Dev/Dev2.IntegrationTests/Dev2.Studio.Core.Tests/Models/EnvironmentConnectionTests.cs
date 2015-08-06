@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             if(conn.IsConnected)
             {
 
-                var returnData = conn.ExecuteCommand(request, Guid.Empty, Guid.Empty);
+                var returnData = conn.ExecuteCommand(request, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -92,7 +92,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             conn.Connect(Guid.Empty);
             if(conn.IsConnected)
             {
-                var returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                var returnData = conn.ExecuteCommand(xmlString, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
