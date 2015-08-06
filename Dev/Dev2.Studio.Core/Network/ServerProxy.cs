@@ -45,6 +45,7 @@ namespace Dev2.Network
 
         void SetupPassthroughEvents()
         {
+            
             _wrappedConnection.PermissionsChanged += (sender, args) => RaisePermissionsChanged();
             _wrappedConnection.PermissionsModified += (sender, list) => RaisePermissionsModified(list);
             _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);           

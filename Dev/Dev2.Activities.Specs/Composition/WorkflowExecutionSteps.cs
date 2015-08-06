@@ -741,7 +741,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [When(@"""(.*)"" is executed")]
-        public void WhenIsExecuted(string workflowName)
+        public async void WhenIsExecuted(string workflowName)
         {
 
             BuildDataList();
@@ -780,8 +780,8 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
-            repository.Save(resourceModel, false);
-            repository.SaveToServer(resourceModel);
+            await repository.Save(resourceModel, false);
+            await repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
         }
@@ -1192,8 +1192,8 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
-                WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
-                _resetEvt.WaitOne(120000);
+                WebServer.Send(resourceModel, dataList.ToString(), new TestAsyncWorker());
+                _resetEvt.WaitOne(1000);
             }
         }
         [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]

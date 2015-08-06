@@ -140,12 +140,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return request.ExecuteResult;
                 }
 
-                // return the datalist ;)
-                if(dataObject.IsDebugMode())
-                {
-                    return new StringBuilder("Completed Debug");
-                }
-
                 return new StringBuilder();
             }
 

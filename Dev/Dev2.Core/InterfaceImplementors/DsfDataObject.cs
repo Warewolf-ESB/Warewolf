@@ -62,7 +62,10 @@ namespace Dev2.DynamicServices
                 XElement xe = null;
                 try
                 {
-                    xe = XElement.Parse(xmldata);
+                    if (!string.IsNullOrEmpty(xmldata))
+                    {
+                        xe = XElement.Parse(xmldata);
+                    }
                 }
                     // ReSharper disable EmptyGeneralCatchClause
                 catch (Exception)

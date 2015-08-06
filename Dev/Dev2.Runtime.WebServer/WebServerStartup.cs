@@ -43,6 +43,7 @@ namespace Dev2.Runtime.WebServer
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
 
             GlobalHost.Configuration.DefaultMessageBufferSize = 2000;
+            GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = null;
             var startOptions = new StartOptions();
             foreach(var endpoint in endpoints)
             {
