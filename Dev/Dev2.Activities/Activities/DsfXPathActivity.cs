@@ -189,11 +189,14 @@ namespace Dev2.Activities
                         var innerCount = 1;
                         foreach(var debugOutputTo in ResultsCollection)
                         {
-                            var itemToAdd = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
-                            _debugOutputs.Add(itemToAdd);
-                            innerCount++;
+                            if (!string.IsNullOrEmpty(debugOutputTo.OutputVariable))
+                            {
+                                var itemToAdd = new DebugItem();
+                                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                                AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
+                                _debugOutputs.Add(itemToAdd);
+                                innerCount++;
+                            }
                         }
                     }
                 }

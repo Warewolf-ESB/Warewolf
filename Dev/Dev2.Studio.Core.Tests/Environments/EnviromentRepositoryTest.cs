@@ -808,7 +808,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -846,7 +846,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -883,7 +883,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -966,7 +966,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1005,7 +1005,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1041,7 +1041,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1080,7 +1080,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1172,7 +1172,7 @@ namespace Dev2.Core.Tests.Environments
                 con.Setup(c => c.IsConnected).Returns(true);
                 if (overrideExecuteCommand)
                 {
-                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                        .Returns(new StringBuilder(sources[0]));
                 }
 
@@ -1218,7 +1218,7 @@ namespace Dev2.Core.Tests.Environments
 
                 repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
 
                 env.Setup(e => e.IsConnected).Returns(true);
@@ -1249,7 +1249,7 @@ namespace Dev2.Core.Tests.Environments
             if (sources != null && sources.Length > 0)
             {
                 con.Setup(c => c.IsConnected).Returns(true);
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
 
                 env.Setup(e => e.IsConnected).Returns(true);
@@ -1314,12 +1314,12 @@ namespace Dev2.Core.Tests.Environments
             connection.SetupProperty(c => c.DisplayName);
             if (sources != null && sources.Length > 0)
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder(sources[0]));
             }
             else
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder());
             }
 

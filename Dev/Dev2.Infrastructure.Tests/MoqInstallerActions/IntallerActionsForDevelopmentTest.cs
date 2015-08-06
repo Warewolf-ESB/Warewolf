@@ -37,8 +37,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
             Assert.IsTrue(isGroupCreated);
-            var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
-            Assert.IsTrue(result);
             var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
             Assert.IsTrue(isAdminAMember);
         }
@@ -62,8 +60,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
             Assert.IsTrue(isGroupCreated);
-            var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
-            Assert.IsTrue(result);
             var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
             Assert.IsTrue(isAdminAMember);
         }

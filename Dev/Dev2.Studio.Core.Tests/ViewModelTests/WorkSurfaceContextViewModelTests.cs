@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -460,7 +461,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -492,7 +493,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -542,7 +543,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -724,7 +725,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -759,7 +760,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -797,7 +798,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -837,7 +838,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -879,7 +880,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockRepository = new Mock<IResourceRepository>();
             mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
-            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(Task.FromResult(new ExecuteMessage()));
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
@@ -1123,10 +1124,10 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         public int SaveHitCount { get; private set; }
 
-        protected override bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
+        protected override Task<bool> Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
         {
             SaveHitCount++;
-            return true;
+            return Task.FromResult(true);
         }
 
     }

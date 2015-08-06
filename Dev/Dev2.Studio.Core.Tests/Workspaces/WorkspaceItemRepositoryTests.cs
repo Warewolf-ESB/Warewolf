@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests.Workspaces
             msg.SetMessage("Workspace item updated");
 
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -176,7 +176,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -200,7 +200,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -224,7 +224,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -247,7 +247,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -270,7 +270,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Source, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -294,7 +294,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -319,7 +319,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model1 = CreateModel(ResourceType.Service, mockConn, workspaceID, serverID, envID);
             workspaceID = Guid.NewGuid();
@@ -361,7 +361,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -384,7 +384,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -397,7 +397,7 @@ namespace Dev2.Core.Tests.Workspaces
             repository.AddWorkspaceItem(model.Object);
 
             var result = repository.UpdateWorkspaceItem(model.Object, true);
-            mockConn.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConn.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.AreEqual(ExpectedResult, result.Message.ToString());
         }
 
@@ -417,7 +417,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
 
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID);
 
@@ -443,7 +443,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()));
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);
@@ -469,7 +469,7 @@ namespace Dev2.Core.Tests.Workspaces
             ExecuteMessage msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
-            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
+            mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(resourceRepository => resourceRepository.DeleteResourceFromWorkspace(It.IsAny<IContextualResourceModel>()));
             var model = CreateModel(ResourceType.Service, mockConn, out resourceName, out workspaceID, out serverID, mockResourceRepo);

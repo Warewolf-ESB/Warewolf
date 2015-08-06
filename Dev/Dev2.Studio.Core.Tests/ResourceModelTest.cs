@@ -724,7 +724,7 @@ namespace Dev2.Core.Tests
         public static Mock<IEnvironmentModel> CreateMockEnvironment(IEventPublisher eventPublisher)
         {
             var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(model => model.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            connection.Setup(model => model.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
 
             var environmentModel = new Mock<IEnvironmentModel>();

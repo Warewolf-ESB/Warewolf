@@ -534,7 +534,7 @@ namespace Dev2.Network
             }
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
             {
@@ -571,7 +571,7 @@ namespace Dev2.Network
             for (int i = 0; i < mailToSend.Count; i++)
             {
                 bool isEnd = (i + 1 == mailToSend.Count);
-                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, dataListId, messageId);
+                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, Guid.Empty, messageId);
                 Wait(invoke, result);
                 if (invoke.IsFaulted)
                 {
@@ -614,7 +614,7 @@ namespace Dev2.Network
 
         }
 
-        public Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        public Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
             {
@@ -651,7 +651,7 @@ namespace Dev2.Network
             for (int i = 0; i < mailToSend.Count; i++)
             {
                 bool isEnd = (i + 1 == mailToSend.Count);
-                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, dataListId, messageId);
+                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, Guid.Empty, messageId);
                 Wait(invoke, result);
                 if (invoke.IsFaulted)
                 {
