@@ -424,12 +424,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-        public async Task<ExecuteMessage> Save(IResourceModel instanceObj)
+        public  ExecuteMessage Save(IResourceModel instanceObj)
         {
-            return await Save(instanceObj, true);
+            return Save(instanceObj, true);
         }
 
-        public async Task<ExecuteMessage> Save(IResourceModel instanceObj, bool addToStudioRespotory)
+        public ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory)
         {
             Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
@@ -439,7 +439,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 ResourceModels.Add(instanceObj);
             }
 
-            var executeMessage = await SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID);
+            var executeMessage = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID);
 
             if (addToStudioRespotory)
             {
@@ -465,7 +465,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         }
 
-        public async Task<ExecuteMessage> SaveToServer(IResourceModel instanceObj)
+        public ExecuteMessage SaveToServer(IResourceModel instanceObj)
         {
             Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
@@ -474,7 +474,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 ResourceModels.Add(instanceObj);
             }
-            return await SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
         }
 
         public void Rename(string resourceId, string newName)
@@ -929,14 +929,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
 
-        public async Task<ExecuteMessage> SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
+        public ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
         {
             var comsController = GetCommunicationController("SaveResourceService");
             comsController.AddPayloadArgument("ResourceXml", resourceDefinition);
             comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
 
             var con = targetEnvironment.Connection;
-            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            var result = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
             return result;
         }

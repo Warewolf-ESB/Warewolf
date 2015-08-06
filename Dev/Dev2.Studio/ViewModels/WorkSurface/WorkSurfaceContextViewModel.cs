@@ -14,7 +14,6 @@ using System.Activities.Presentation.View;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -285,21 +284,21 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             Debug(message.Resource, false);
         }
 
-        public async void Handle(SaveResourceMessage message)
+        public void Handle(SaveResourceMessage message)
         {
             Dev2Logger.Log.Info(message.GetType().Name);
             if(ContextualResourceModel != null)
             {
                 if(ContextualResourceModel.ID == message.Resource.ID)
                 {
-                    await Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
+                    Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
                 }
             }
             else
             {
                 if(!(WorkSurfaceViewModel is HelpViewModel))
                 {
-                    await Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
+                    Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
                 }
 
             }
@@ -463,7 +462,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DebugOutputViewModel.DebugStatus = debugStatus;
         }
 
-        public async void Debug(IContextualResourceModel resourceModel, bool isDebug)
+        public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -474,7 +473,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resourceModel.UserPermissions.IsContributor())
             {
 
-                var succesfulSave = await Save(resourceModel, true);
+                var succesfulSave = Save(resourceModel, true);
                 if(!succesfulSave)
                 {
                     return;
@@ -542,9 +541,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             Debug();
         }
 
-        public async void QuickViewInBrowser()
+        public void QuickViewInBrowser()
         {
-            var successfuleSave = await Save(ContextualResourceModel, true);
+            var successfuleSave = Save(ContextualResourceModel, true);
             if(!successfuleSave)
             {
                 return;
@@ -559,7 +558,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             workflowInputDataViewModel.ViewInBrowser();
         }
 
-        public async void QuickDebug()
+        public void QuickDebug()
         {
             if(DebugOutputViewModel.IsProcessing)
             {
@@ -568,7 +567,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             if(WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
-                var successfuleSave = await Save(ContextualResourceModel, true);
+                var successfuleSave = Save(ContextualResourceModel, true);
                 if(!successfuleSave)
                 {
                     return;
@@ -613,9 +612,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
-        public async void Save(bool isLocalSave = false, bool isStudioShutdown = false)
+        public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            await Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
+            Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
@@ -641,7 +640,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        protected virtual async Task<bool> Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
         {
             if(resource == null || !resource.UserPermissions.IsContributor())
             {
@@ -676,11 +675,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return true;
             }
 
-            await resource.Environment.ResourceRepository.Save(resource);
+            resource.Environment.ResourceRepository.Save(resource);
             DisplaySaveResult(result, resource);
             if(!isLocalSave)
             {
-                ExecuteMessage saveResult = await resource.Environment.ResourceRepository.SaveToServer(resource);
+                ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
                 StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);

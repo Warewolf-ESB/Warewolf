@@ -56,7 +56,7 @@ namespace Dev2.Studio.Core.Network
                 var controller = new CommunicationController { ServiceName = resourceModel.Category };
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);            
-            });
+            },() => {});
             
         }
 
