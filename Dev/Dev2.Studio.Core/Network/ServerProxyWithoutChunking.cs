@@ -643,10 +643,10 @@ namespace Dev2.Network
             return default(T);
         }
 
-        public void AddDebugWriter(Guid workspaceId)
+        public async void AddDebugWriter(Guid workspaceId)
         {
             var t = EsbProxy.Invoke("AddDebugWriter", workspaceId);
-            Wait(t);
+            await t;
         }
 
         protected virtual void Wait(Task task)

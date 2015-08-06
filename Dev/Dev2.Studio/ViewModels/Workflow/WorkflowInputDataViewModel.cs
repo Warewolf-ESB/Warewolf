@@ -307,7 +307,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
-            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString(), new AsyncWorker());
+            WebServer.Send(_resourceModel, payload.ToString(), new AsyncWorker());
         }
 
         public void ViewInBrowser()
@@ -332,7 +332,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendViewInBrowserRequest(string payload)
         {
-            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload);
+            WebServer.OpenInBrowser(_resourceModel, payload);
         }
 
         private void SendFinishedMessage()
