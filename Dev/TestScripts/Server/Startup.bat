@@ -26,7 +26,7 @@ IF %errorlevel% EQU 1062 goto UsingService
 
 :UsingService
 SC START "Warewolf Server Under Test"
-IF EXIST "%ProgramFiles(x86)%\Warewolf\Server" (SET DeploymentDirectory=%ProgramFiles(x86)%\Warewolf\Server) ELSE (SET DeploymentDirectory=%ProgramFiles%\Warewolf\Server)
+IF EXIST "%ProgramFiles(x86)%\Warewolf\Server" (SET DeploymentDirectory="%ProgramFiles(x86)%\Warewolf\Server") ELSE (SET DeploymentDirectory="%ProgramFiles%\Warewolf\Server")
 GOTO WaitForServerStart
 
 :UsingCommandlineInterface

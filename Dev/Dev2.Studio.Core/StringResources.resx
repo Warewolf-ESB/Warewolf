@@ -477,7 +477,7 @@ Version History will also be deleted.</value>
     <value>pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png</value>
   </data>
   <data name="EULA_Link" xml:space="preserve">
-    <value>http://warewolf.io/eula/</value>
+    <value>http://warewolf.io/eula.php</value>
   </data>
   <data name="EULA_Text" xml:space="preserve">
     <value>Warewolf EULA</value>
