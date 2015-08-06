@@ -1193,7 +1193,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(resourceModel, dataList.ToString(), new TestAsyncWorker());
-                _resetEvt.WaitOne(1000);
+                _resetEvt.WaitOne(120000);
             }
         }
         [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]
