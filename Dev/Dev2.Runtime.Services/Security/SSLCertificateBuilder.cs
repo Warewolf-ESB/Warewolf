@@ -75,7 +75,7 @@ namespace Dev2.Runtime.Security
             return Guid.NewGuid().ToString();
         }
 
-        static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
+        public static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
         {
             //
             // To verify run this at the command prompt:

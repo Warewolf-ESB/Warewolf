@@ -276,6 +276,7 @@ namespace Dev2.Runtime.Security
                     result = certificateBuilder.EnsureSslCertificate(certPath, endPoint);
 
                     result = File.Exists(certPath);
+
                 }
                 catch (Exception e)
                 {
@@ -284,7 +285,7 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                result = File.Exists(certPath);
+                result = SslCertificateBuilder.BindSslCertToPorts(endPoint, certPath);
             }
 
             return result;

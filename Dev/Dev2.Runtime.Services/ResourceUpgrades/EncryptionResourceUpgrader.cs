@@ -11,7 +11,6 @@
 
 using System;
 using System.Xml.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Utils;

@@ -33,7 +33,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 wso.AddWarewolfGroup();
             }
 
-            CreateWarewolfGroupAndAddCurrentUser();
+            //AddCurrentUserToWarewolfGroup();
             AddAdministratorsToWarewolfGroup();
         }
 
@@ -50,7 +50,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         /// <summary>
         /// Creates the warewolf group and adds the current user.
         /// </summary>
-        private void CreateWarewolfGroupAndAddCurrentUser()
+        private void AddCurrentUserToWarewolfGroup()
         {
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
