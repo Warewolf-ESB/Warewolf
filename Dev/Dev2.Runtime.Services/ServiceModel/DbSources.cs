@@ -60,7 +60,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
-                databaseSourceDetails.ConnectionString = string.IsNullOrEmpty(databaseSourceDetails.ConnectionString) ? databaseSourceDetails.ConnectionString : DpapiWrapper.Encrypt(databaseSourceDetails.ConnectionString);
 
                 // Setup ports using default
                 switch (databaseSourceDetails.ServerType)
