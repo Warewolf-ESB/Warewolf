@@ -26,8 +26,8 @@ using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
-using Dev2.Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities

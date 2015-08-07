@@ -52,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Warewolf.Security\Dev2.Warewolf.Security.csproj">
+    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
-      <Name>Dev2.Warewolf.Security</Name>
+      <Name>Warewolf.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

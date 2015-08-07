@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
-using Dev2.Warewolf.Security.Encryption;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
