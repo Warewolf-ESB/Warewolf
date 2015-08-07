@@ -25,8 +25,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
-using Dev2.Warewolf.Security.Encryption;
 using System.Text.RegularExpressions;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

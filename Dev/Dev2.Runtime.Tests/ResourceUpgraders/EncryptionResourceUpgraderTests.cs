@@ -11,9 +11,9 @@
 
 using System.Text.RegularExpressions;
 using Dev2.Runtime.ResourceUpgrades;
-using Dev2.Warewolf.Security.Encryption;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {

@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
-using Dev2.Warewolf.Security.Encryption;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {

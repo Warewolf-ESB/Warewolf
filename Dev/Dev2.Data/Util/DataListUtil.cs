@@ -24,7 +24,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
-using Dev2.Warewolf.Security.Encryption;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
