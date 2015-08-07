@@ -290,7 +290,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Test case for creating a resource and saving the resource model in resource factory
         /// </summary>
         [TestMethod]
-        public async Task Load_CreateAndLoadResource_SingleResource_Expected_ResourceReturned()
+        public void Load_CreateAndLoadResource_SingleResource_Expected_ResourceReturned()
         {
             //Arrange
             Setup();
@@ -333,7 +333,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.Load();
             int resources = _repo.All().Count;
             //Assert
@@ -347,7 +347,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Test case for creating a resource and saving the resource model in resource factory
         /// </summary>
         [TestMethod]
-        public async Task ForceLoadSuccessfullLoadExpectIsLoadedTrue()
+        public void ForceLoadSuccessfullLoadExpectIsLoadedTrue()
         {
             //Arrange
             Setup();
@@ -390,7 +390,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
             Assert.IsTrue(_repo.IsLoaded);
@@ -400,7 +400,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Test case for creating a resource and saving the resource model in resource factory
         /// </summary>
         [TestMethod]
-        public async Task ForceLoadWithExceptionOnLoadExpectsIsLoadedFalse()
+        public void ForceLoadWithExceptionOnLoadExpectsIsLoadedFalse()
         {
             //Arrange
             Setup();
@@ -429,7 +429,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
             //Assert
@@ -441,7 +441,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Test case for creating a resource and saving the resource model in resource factory
         /// </summary>
         [TestMethod]
-        public async Task ForceLoadWith2WorkflowsExpectResourcesLoaded()
+        public void ForceLoadWith2WorkflowsExpectResourcesLoaded()
         {
             //Arrange
             Setup();
@@ -486,7 +486,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             int resources = _repo.All().Count;
             //Assert
@@ -514,7 +514,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Test case for creating a resource and saving the resource model in resource factory
         /// </summary>
         [TestMethod]
-        public async Task ForceLoadWith2ReservedResourcesExpectsServicesAdded()
+        public void ForceLoadWith2ReservedResourcesExpectsServicesAdded()
         {
             //Arrange
             Setup();
@@ -560,7 +560,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
             Assert.IsTrue(_repo.IsReservedService(Reserved1));
@@ -571,7 +571,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Create resource with source type
         /// </summary>
         [TestMethod]
-        public async Task Load_MultipleResourceLoad_SourceServiceType_Expected_AllResourcesReturned()
+        public void Load_MultipleResourceLoad_SourceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
             Setup();
@@ -617,8 +617,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
-            await _repo.Save(model.Object);
+            _repo.Save(resourceModel.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -632,7 +632,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Create resource with human Interface service type
         /// </summary>
         [TestMethod]
-        public async Task LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
+        public void LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
             Setup();
@@ -681,8 +681,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
-            await _repo.Save(model.Object);
+            _repo.Save(resourceModel.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -695,7 +695,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Create resource with workflow service type
         /// </summary>
         [TestMethod]
-        public async Task Load_MultipleResourceLoad_WorkflowServiceType_Expected_AllResourcesReturned()
+        public void Load_MultipleResourceLoad_WorkflowServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
             Setup();
@@ -742,8 +742,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
-            await _repo.Save(model.Object);
+            _repo.Save(resourceModel.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -774,7 +774,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Save Tests
 
         [TestMethod]
-        public async Task UpdateResource()
+        public void UpdateResource()
         {
             //Arrange
             Setup();
@@ -793,11 +793,11 @@ namespace BusinessDesignStudio.Unit.Tests
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
-            await _repo.Save(model.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             model.Setup(c => c.ResourceName).Returns("NewName");
             model.Setup(c => c.Category).Returns("NewCar");
-            await _repo.Save(model.Object);
+            _repo.Save(model.Object);
             //Assert
             ICollection<IResourceModel> set = _repo.All();
             int cnt = set.Count;
@@ -808,7 +808,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         //Create a resource with the same resource name
         [TestMethod]
-        public async Task SameResourceName()
+        public void SameResourceName()
         {
             Setup();
             Mock<IResourceModel> model2 = new Mock<IResourceModel>();
@@ -824,8 +824,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() => Task.FromResult(new StringBuilder(payload)));
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                .Returns(() => new StringBuilder(payload));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -835,8 +835,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
             //Act
-            await _repo.Save(model.Object);
-            await _repo.Save(model2.Object);
+            _repo.Save(model.Object);
+            _repo.Save(model2.Object);
             _repo.Load();
 
             Assert.IsTrue(_repo.All().Count.Equals(1));
@@ -846,7 +846,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_Save")]
-        public async Task ResourceRepository_Save_ExecuteMessageIsSuccessful_CallsUpdatesOnTheStudioResourceRepository()
+        public void ResourceRepository_Save_ExecuteMessageIsSuccessful_CallsUpdatesOnTheStudioResourceRepository()
         {
             //------------Setup for test--------------------------
             var repo = new ResourceRepository(_environmentModel.Object)
@@ -860,18 +860,18 @@ namespace BusinessDesignStudio.Unit.Tests
             repo.GetStudioResourceRepository = () => studioRepository.Object;
 
             var commController = new Mock<ICommunicationController>();
-            commController.Setup(m => m.ExecuteCommandAsync<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
-                          .Returns(Task.FromResult(new ExecuteMessage
+            commController.Setup(m => m.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
+                          .Returns(new ExecuteMessage
                               {
                                   HasError = false
-                              }));
+                              });
             repo.GetCommunicationController = someName => commController.Object;
 
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             //------------Execute Test---------------------------
-            await repo.Save(resourceModel.Object);
+            repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
             studioRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Once());
         }
@@ -879,7 +879,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_Save")]
-        public async Task ResourceRepository_Save_ExecuteMessageIsNotSuccessful_DoesNotCallUpdatesOnTheStudioResourceRepository()
+        public void ResourceRepository_Save_ExecuteMessageIsNotSuccessful_DoesNotCallUpdatesOnTheStudioResourceRepository()
         {
             //------------Setup for test--------------------------
             var repo = new ResourceRepository(_environmentModel.Object)
@@ -904,7 +904,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             //------------Execute Test---------------------------
-            await repo.Save(resourceModel.Object);
+            repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
             studioRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Never());
         }
@@ -912,7 +912,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_Save")]
-        public async Task ResourceRepository_Save_CategoryIsUnassignedAndResourceNameContainsUnsaved_DoesNotCallUpdatesOnTheStudioResourceRepository()
+        public void ResourceRepository_Save_CategoryIsUnassignedAndResourceNameContainsUnsaved_DoesNotCallUpdatesOnTheStudioResourceRepository()
         {
             //------------Setup for test--------------------------
             var repo = new ResourceRepository(_environmentModel.Object)
@@ -937,7 +937,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.ResourceName).Returns("Unsaved");
             resourceModel.SetupGet(p => p.Category).Returns("Unassigned");
             //------------Execute Test---------------------------
-            await repo.Save(resourceModel.Object);
+            repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
             studioRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Never());
         }
@@ -1252,7 +1252,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         //Create resource repository without connected to any environment
         [TestMethod]
-        public async Task CreateResourceEnvironmentConnectionNotConnected()
+        public void CreateResourceEnvironmentConnectionNotConnected()
         {
             //Arrange
             Setup();
@@ -1271,7 +1271,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             try
             {
-                await _repo.Save(_resourceModel.Object);
+                _repo.Save(_resourceModel.Object);
                 _repo.Load();
             }
             //Assert
@@ -1282,7 +1282,7 @@ namespace BusinessDesignStudio.Unit.Tests
         }
         //Create resource with no address to connet to any environment
         [TestMethod]
-        public async Task CreateResourceNoAddressEnvironmentConnection()
+        public void CreateResourceNoAddressEnvironmentConnection()
         {
             //Arrange
             Setup();
@@ -1297,14 +1297,14 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.IsConnected).Returns(true);
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(Task.FromResult(new StringBuilder(exePayload)));
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
-            await _repo.Save(_resourceModel.Object);
+            _repo.Save(_resourceModel.Object);
             _repo.Load();
             int resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
@@ -1316,7 +1316,7 @@ namespace BusinessDesignStudio.Unit.Tests
         }
         //Create resource with no data channel connected to
         [TestMethod]
-        public async Task CreateResourceNoDataChannelEnvironmentConnection()
+        public void CreateResourceNoDataChannelEnvironmentConnection()
         {
             //Arrange
             Setup();
@@ -1331,12 +1331,12 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.IsConnected).Returns(true);
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(Task.FromResult(new StringBuilder(exePayload)));
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
-            await _repo.Save(_resourceModel.Object);
+            _repo.Save(_resourceModel.Object);
             _repo.Load();
             int resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
@@ -2136,7 +2136,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #region HydrateResourceTest
 
         [TestMethod]
-        public async Task HydrateResourceHydratesResourceType()
+        public void HydrateResourceHydratesResourceType()
         {
             //------------Setup for test--------------------------
             Setup();
@@ -2180,7 +2180,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All().Cast<IContextualResourceModel>();
             var servers = resources.Where(r => r.ServerResourceType == "Server");
@@ -2195,7 +2195,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("HydrateResourceModel must hydrate the resource's errors.")]
         [Owner("Trevor Williams-Ros")]
-        public async Task ResourceRepository_HydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
+        public void ResourceRepository_HydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
         {
             //------------Setup for test--------------------------
             Setup();
@@ -2252,7 +2252,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
-            await _repo.Save(resourceModel.Object);
+            _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All();
 
@@ -2980,7 +2980,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceRepository_SaveToServer")]
-        public async Task ResourceRepository_SaveToServer_ExpectThatModelAdded()
+        public void ResourceRepository_SaveToServer_ExpectThatModelAdded()
         {
             //Arrange
             Setup();
@@ -2997,7 +2997,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            await _repo.SaveToServer(_resourceModel.Object);
+            _repo.SaveToServer(_resourceModel.Object);
             PrivateObject p = new PrivateObject(_repo);
             Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);
 

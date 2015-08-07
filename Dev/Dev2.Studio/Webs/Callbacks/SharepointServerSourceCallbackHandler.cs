@@ -41,7 +41,7 @@ namespace Dev2.Webs.Callbacks
                 return _server;
             }
         }
-        protected override async void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
+        protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             // ReSharper disable once MaximumChainedReferences
             string resName = jsonObj.resourceName;
@@ -49,7 +49,7 @@ namespace Dev2.Webs.Callbacks
             var sharepointSource = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
             var source = sharepointSource.ToStringBuilder();
 
-            var messaage = await environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
+            var messaage = environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
             if(!messaage.HasError)
             {
                 environmentModel.ResourceRepository.ReloadResource(sharepointSource.ResourceID, ResourceType.Source, ResourceModelEqualityComparer.Current, true);

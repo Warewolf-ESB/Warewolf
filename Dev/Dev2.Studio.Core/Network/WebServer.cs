@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.Network
     public static class WebServer
     {
 
-        public static async void Send(IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
+        public static void Send(IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -51,10 +51,13 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-
-            var controller = new CommunicationController { ServiceName = resourceModel.Category };
-            controller.AddPayloadArgument("DebugPayload", payload);
-            await controller.ExecuteCommandAsync<string>(clientContext, clientContext.WorkspaceID);            
+            asyncWorker.Start(() =>
+            {
+                var controller = new CommunicationController { ServiceName = resourceModel.Category };
+                controller.AddPayloadArgument("DebugPayload", payload);
+                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);            
+            },() => {});
+            
         }
 
         public static bool IsServerUp(IContextualResourceModel resourceModel)

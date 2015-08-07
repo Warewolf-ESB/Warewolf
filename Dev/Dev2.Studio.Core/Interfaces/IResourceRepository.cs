@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool DoesResourceExistInRepo(IResourceModel resource);
         void RemoveFromCache(Guid resourceID);
         void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType);
-        Task<ExecuteMessage> SaveToServer(IResourceModel instanceObj);
+        ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
@@ -69,15 +69,15 @@ namespace Dev2.Studio.Core.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
 
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
-        Task<ExecuteMessage> SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId);
+        ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId);
         void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
 
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
         IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
-        Task<ExecuteMessage> Save(IResourceModel instanceObj);
-        Task<ExecuteMessage> Save(IResourceModel instanceObj, bool addToStudioRespotory);
+        ExecuteMessage Save(IResourceModel instanceObj);
+        ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);
 
         event EventHandler ItemAdded;
         void Load();
