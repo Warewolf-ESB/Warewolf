@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using Dev2.Common;
 
@@ -138,6 +139,20 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     {
                         const string Entry = "WinNT://./" + AdministratorsGroup;
                         dChildEntry.Invoke("Add", Entry);
+                    }
+                }
+            }
+            var systemContext = new PrincipalContext(ContextType.Machine, null);
+            var warewolfGroupPrincipal = GroupPrincipal.FindByIdentity(systemContext, WarewolfGroup);
+            if (warewolfGroupPrincipal != null)
+            {
+                var adminGroupPrincipal = GroupPrincipal.FindByIdentity(systemContext, "Administrators");
+                if(adminGroupPrincipal != null)
+                {
+                    if (!warewolfGroupPrincipal.Members.Contains(systemContext, IdentityType.SamAccountName, adminGroupPrincipal.SamAccountName))
+                    {
+                        warewolfGroupPrincipal.Members.Add(adminGroupPrincipal);
+                        warewolfGroupPrincipal.Save();
                     }
                 }
             }

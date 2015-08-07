@@ -105,6 +105,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
     </Reference>

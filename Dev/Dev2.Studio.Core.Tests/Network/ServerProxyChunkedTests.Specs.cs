@@ -27,7 +27,7 @@ namespace Dev2.Core.Tests.Network
             var serverProxy = new TestServerProxyWithChunking();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------
-            var resultOfExecution = serverProxy.ExecuteCommand(new StringBuilder("some payload"), Guid.NewGuid(), Guid.NewGuid());
+            var resultOfExecution = serverProxy.ExecuteCommand(new StringBuilder("some payload"), Guid.NewGuid());
             //------------Assert Results-------------------------
             mockHubProxy.VerifyAll();
             Assert.AreEqual(ServerMsg, resultOfExecution.ToString());

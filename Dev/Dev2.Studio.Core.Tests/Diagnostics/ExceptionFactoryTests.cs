@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.Diagnostics
             _con = new Mock<IEnvironmentConnection>();
 
             _con.Setup(c => c.IsConnected).Returns(true);
-            _con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
+            _con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
 
             _contextModel.Setup(c => c.Connection).Returns(_con.Object);
 

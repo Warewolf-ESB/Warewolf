@@ -266,7 +266,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var debugSerializated = _serializer.Serialize(debugState);
 
             var hubCallerConnectionContext = Clients;
-           // var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            //var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }
@@ -325,6 +325,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// </returns>
         public override Task OnConnected()
         {
+            
             ConnectionActions();
             return base.OnConnected();
         }
@@ -365,6 +366,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ConnectionActions()
         {
+            
             SetupEvents();
 
             var workspaceId = Server.GetWorkspaceID(Context.User.Identity);

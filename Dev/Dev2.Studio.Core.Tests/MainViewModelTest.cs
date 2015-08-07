@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
             envConn.Setup(conn => conn.ServerID).Returns(serverID);
-            envConn.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            envConn.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -2289,7 +2289,8 @@ namespace Dev2.Core.Tests
 
             MockStudioResourceRepository.Verify(a => a.Filter(It.IsAny<Func<IExplorerItemModel, bool>>()), Times.Once());
         }
-        public static ExecuteMessage MakeMsg(string msg)
+
+        static ExecuteMessage MakeMsg(string msg)
         {
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);

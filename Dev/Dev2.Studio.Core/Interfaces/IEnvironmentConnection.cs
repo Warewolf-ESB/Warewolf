@@ -45,8 +45,8 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler PermissionsChanged;
         bool IsAuthorized { get; set; }
 
-        Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
-        StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
+        Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId);
+        StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId);
 
         IHubProxyWrapper EsbProxy { get; }
 

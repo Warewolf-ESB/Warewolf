@@ -527,7 +527,7 @@ namespace Dev2.Network
             }
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId)
         {
             if(payload == null || payload.Length == 0)
             {
@@ -546,13 +546,9 @@ namespace Dev2.Network
             };
 
             var result = new StringBuilder();
-            var invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
+            var invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
 
             Wait(invoke, result);
-            if(invoke.IsFaulted)
-            {
-                throw new Exception("Task execution in faulted state. Error:" + result);
-            }
             result = new StringBuilder(invoke.Result);
             if(result.Length > 0)
             {
@@ -573,7 +569,7 @@ namespace Dev2.Network
             return result;
         }
 
-        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId, Guid dataListId)
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
             {
@@ -591,50 +587,8 @@ namespace Dev2.Network
                 Content = payload.ToString()
             };
 
-            //var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId).ConfigureAwait(false);
-            var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
-//            var continuation = invoke.ContinueWith(task =>
-//            {
-//                if(task.IsFaulted)
-//                {
-//                    throw new Exception("Task execution in faulted state. Error:" + result);
-//                }
-//                result = new StringBuilder(invoke.Result);
-//                if(result.Length > 0)
-//                {
-//                    // Only return Dev2System.ManagmentServicePayload if present ;)
-//                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-//                    if(start > 0)
-//                    {
-//                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-//                        if(start < end && (end - start) > 1)
-//                        {
-//                            // we can return the trimmed payload instead
-//                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
-//                            return new StringBuilder(result.Substring(start, (end - start)));
-//                        }
-//                    }
-//                }
-//
-//                return result;
-//            });
-//            invoke.Start();
+            var invoke = await EsbProxy.Invoke<string>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
             return new StringBuilder(invoke);
-//            Wait(invoke, result);
-//            if (invoke.IsFaulted)
-//            {
-//                
-//            }
-            
-//            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-//            Wait(fragmentInvoke, result);
-//            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-//            {
-//                result.Append(fragmentInvoke.Result);
-//            }
-
-            // prune any result for old datalist junk ;)
-            
         }
 
         protected virtual T Wait<T>(Task<T> task, StringBuilder result)
@@ -689,10 +643,10 @@ namespace Dev2.Network
             return default(T);
         }
 
-        public void AddDebugWriter(Guid workspaceId)
+        public async void AddDebugWriter(Guid workspaceId)
         {
             var t = EsbProxy.Invoke("AddDebugWriter", workspaceId);
-            Wait(t);
+            await t;
         }
 
         protected virtual void Wait(Task task)

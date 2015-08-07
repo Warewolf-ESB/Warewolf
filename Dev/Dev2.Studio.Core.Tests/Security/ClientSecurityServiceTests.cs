@@ -76,12 +76,12 @@ namespace Dev2.Core.Tests.Security
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             connection.Setup(c => c.WorkspaceID).Returns(workspaceID);
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID))
-                .Callback((StringBuilder xmlRequest, Guid wsID, Guid dlID) => { actualRequest = xmlRequest; })
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID))
+                .Callback((StringBuilder xmlRequest, Guid wsID) => { actualRequest = xmlRequest; })
                 .Returns(requestResult)
                 .Verifiable();
 
-            var clientSecurityService = new ClientSecurityService(connection.Object);
+            new ClientSecurityService(connection.Object);
 
             //------------Execute Test---------------------------
             connection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(fromState, toState));
@@ -92,12 +92,12 @@ namespace Dev2.Core.Tests.Security
             //------------Assert Results-------------------------
             if(toState == NetworkState.Online)
             {
-                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID), Times.Never());
+                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID), Times.Never());
                 Assert.IsNull(actualRequest);
             }
             else
             {
-                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID), Times.Never());
+                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID), Times.Never());
                 Assert.IsNull(actualRequest);
             }
         }
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests.Security
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             connection.Setup(c => c.WorkspaceID).Returns(workspaceID);
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID))
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID))
                 .Returns(requestResult);
 
             var clientSecurityService = new TestClientSecurityService(connection.Object);
@@ -148,8 +148,8 @@ namespace Dev2.Core.Tests.Security
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             connection.Setup(c => c.WorkspaceID).Returns(workspaceID);
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID))
-                .Callback((StringBuilder xmlRequest, Guid wsID, Guid dlID) => { actualRequest = xmlRequest; })
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID))
+                .Callback((StringBuilder xmlRequest, Guid wsID) => { actualRequest = xmlRequest; })
                 .Returns(requestResult)
                 .Verifiable();
 
@@ -160,7 +160,7 @@ namespace Dev2.Core.Tests.Security
             readTask.Wait();
 
             //------------Assert Results-------------------------
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID),Times.Never());
+            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID),Times.Never());
             Assert.IsNull(actualRequest);
         }
 
@@ -173,7 +173,7 @@ namespace Dev2.Core.Tests.Security
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
 
             var clientSecurityService = new TestClientSecurityService(connection.Object);
 
@@ -181,7 +181,7 @@ namespace Dev2.Core.Tests.Security
             clientSecurityService.TestWritePermissions();
 
             //------------Assert Results-------------------------
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]

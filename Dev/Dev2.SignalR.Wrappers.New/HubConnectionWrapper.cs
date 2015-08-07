@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Transports;
 
 namespace Dev2.SignalR.Wrappers.New
 {
@@ -70,13 +71,15 @@ namespace Dev2.SignalR.Wrappers.New
 
         public Task Start()
         {
-            return _wrapped.Start();
+            return _wrapped.Start(new LongPollingTransport());
         }
 
         public void Stop(TimeSpan timeSpan)
         {
             _wrapped.Stop(timeSpan);
         }
+
+
         public ICredentials Credentials
         {
             get

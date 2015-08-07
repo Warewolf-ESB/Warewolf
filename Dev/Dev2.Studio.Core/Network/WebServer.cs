@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.Network
     public static class WebServer
     {
 
-        public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
+        public static void Send(IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -55,9 +55,9 @@ namespace Dev2.Studio.Core.Network
             {
                 var controller = new CommunicationController { ServiceName = resourceModel.Category };
                 controller.AddPayloadArgument("DebugPayload", payload);
-                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
-            }, () => { });
-
+                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);            
+            },() => {});
+            
         }
 
         public static bool IsServerUp(IContextualResourceModel resourceModel)
@@ -80,7 +80,7 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData)
+        public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
         {
             Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.XML);
             if(url != null)

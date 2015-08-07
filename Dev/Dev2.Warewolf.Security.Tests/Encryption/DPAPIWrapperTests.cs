@@ -17,6 +17,7 @@ using System.Threading;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Warewolf.Security.Encryption
 {

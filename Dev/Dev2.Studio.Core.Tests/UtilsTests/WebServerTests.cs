@@ -33,15 +33,15 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironment.Setup(model => model.IsConnected).Returns(true);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
             //------------Execute Test---------------------------
-            WebServer.Send(WebServerMethod.POST, mockResourceModel.Object, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            WebServer.Send(mockResourceModel.Object, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -54,15 +54,15 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironment.Setup(model => model.IsConnected).Returns(true);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
             //------------Execute Test---------------------------
-            WebServer.Send(WebServerMethod.POST, null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            WebServer.Send(null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -74,14 +74,14 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironment.Setup(model => model.IsConnected).Returns(true);
             //------------Execute Test---------------------------
-            WebServer.Send(WebServerMethod.POST, null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            WebServer.Send(null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -94,15 +94,15 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironment.Setup(model => model.IsConnected).Returns(false);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
             //------------Execute Test---------------------------
-            WebServer.Send(WebServerMethod.POST, null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            WebServer.Send(null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -115,14 +115,14 @@ namespace Dev2.Core.Tests.UtilsTests
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockEnvironment.Setup(model => model.IsConnected).Returns(false);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironment.Object);
             //------------Execute Test---------------------------
-            WebServer.Send(WebServerMethod.POST, null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            WebServer.Send(null, "DataPayLoad", AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Never());
         }
     }
 }

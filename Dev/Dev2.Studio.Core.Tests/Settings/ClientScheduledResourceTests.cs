@@ -43,7 +43,7 @@ namespace Dev2.Core.Tests.Settings
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
@@ -67,14 +67,14 @@ namespace Dev2.Core.Tests.Settings
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
             clientScheduledResourceModel.DeleteSchedule(scheduledResourceForTest);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.Settings
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests.Settings
             string errorMessage;
             var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.IsTrue(saved);
         }
 
@@ -119,8 +119,8 @@ namespace Dev2.Core.Tests.Settings
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializedReturnMessage);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializedReturnMessage);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests.Settings
             string errorMessage;
             var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.IsFalse(saved);
             Assert.AreEqual("Error occurred", errorMessage);
         }
@@ -147,14 +147,14 @@ namespace Dev2.Core.Tests.Settings
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
             var resourceHistories = clientScheduledResourceModel.CreateHistory(scheduledResourceForTest);
             //------------Assert Results-------------------------
-            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.AreEqual(1, resourceHistories.Count);
 
         }

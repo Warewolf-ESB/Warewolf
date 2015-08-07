@@ -244,12 +244,6 @@
       <DependentUpon>Language Parser.feature</DependentUpon>
     </Compile>
     <Compile Include="Language Parser\LanguageParserSteps.cs" />
-    <Compile Include="Permissions\Settings Permissions1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Settings Permissions.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Permissions\SettingsPermissionsSteps.cs" />
     <Compile Include="Scheduler\SchedulerSteps.cs" />
     <Compile Include="Scheduler\Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -508,10 +502,6 @@
     <None Include="Explorer\Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Permissions\Settings Permissions.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

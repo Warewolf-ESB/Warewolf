@@ -262,7 +262,7 @@ namespace Dev2.Services.Security
                             var windowsIdentity = principal.Identity as WindowsIdentity;
                             if(windowsPrincipal != null)
                             {
-                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole(sid);
+                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
                                 if(windowsIdentity != null && !isInRole)
                                 {
                                     if(windowsIdentity.Groups != null)
@@ -329,12 +329,12 @@ namespace Dev2.Services.Security
 
         bool DoFallBackCheck(IPrincipal principal)
         {
-            if(principal != null)
+            if (principal != null)
             {
-                if(principal.Identity != null)
+                if (principal.Identity != null)
                 {
                     var username = principal.Identity.Name;
-                    if(username != null)
+                    if (username != null)
                     {
                         var theUser = username;
                         var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
@@ -348,8 +348,8 @@ namespace Dev2.Services.Security
                             ad.Children.SchemaFilter.Add("group");
                             foreach (DirectoryEntry dChildEntry in ad.Children)
                             {
-                    
-                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole)
+
+                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
                                 {
                                     // Now check group membership ;)
                                     var members = dChildEntry.Invoke("Members");
@@ -373,7 +373,6 @@ namespace Dev2.Services.Security
                     }
                 }
             }
-
             return false;
         }
 

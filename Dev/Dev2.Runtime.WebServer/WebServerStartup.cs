@@ -43,7 +43,10 @@ namespace Dev2.Runtime.WebServer
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
 
             GlobalHost.Configuration.DefaultMessageBufferSize = 2000;
+            GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = null;
+            
             var startOptions = new StartOptions();
+            
             foreach(var endpoint in endpoints)
             {
                 startOptions.Urls.Add(endpoint.Url);
@@ -70,6 +73,7 @@ namespace Dev2.Runtime.WebServer
 
             // Add web server routing...
             var config = new HttpConfiguration();
+            
             config.MapHttpAttributeRoutes();
             config.EnsureInitialized();
             app.UseWebApi(config);

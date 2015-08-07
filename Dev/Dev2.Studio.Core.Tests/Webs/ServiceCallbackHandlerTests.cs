@@ -130,7 +130,7 @@ namespace Dev2.Core.Tests.Webs
             var envConnection = new Mock<IEnvironmentConnection>();
             envConnection.Setup(e => e.IsConnected).Returns(true);
             envConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            envConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(serializeObject));
+            envConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(serializeObject));
             return envConnection;
         }
 

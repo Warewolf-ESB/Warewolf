@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new TestServerProxyWithFallback();
             //------------Execute Test---------------------------
-            serverProxy.ExecuteCommand(null, Guid.NewGuid(), Guid.NewGuid());
+            serverProxy.ExecuteCommand(null, Guid.NewGuid());
             //------------Assert Results-------------------------
         }
 

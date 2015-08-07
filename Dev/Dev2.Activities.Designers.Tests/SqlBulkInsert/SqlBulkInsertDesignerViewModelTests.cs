@@ -1137,7 +1137,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var resourceRepo = new Mock<IResourceRepository>();
 
-            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<StringBuilder>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>(), It.IsAny<Guid>()))
+            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<StringBuilder>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>()))
                 .Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", sourceDefs == null ? "" : string.Join("\n", sourceDefs))));
 
             // return the resource repository now ;)
