@@ -71,7 +71,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         public Task Start()
         {
-            return _wrapped.Start(new LongPollingTransport());
+            return _wrapped.Start();
         }
 
         public void Stop(TimeSpan timeSpan)
