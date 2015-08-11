@@ -41,7 +41,7 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var studioPath = GetProcessPath(ServerProcessName).Replace(@"\Warewolf Server.exe", @"\Warewolf Studio.exe").Replace(@"\Server\", @"\Studio\");
+                var studioPath = GetProcessPath(ServerProcessName).Replace(@"\Warewolf Server.exe", @"\Warewolf Studio.exe").Replace(@"Server\", @"Studio\").Replace(@"server\", @"studio\");
 
                 //Pre-assert
                 Assert.IsTrue(File.Exists(studioPath), "Studio not found at " + studioPath);

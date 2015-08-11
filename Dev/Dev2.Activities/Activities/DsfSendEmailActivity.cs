@@ -28,8 +28,8 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
-using Dev2.Warewolf.Security.Encryption;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Activities

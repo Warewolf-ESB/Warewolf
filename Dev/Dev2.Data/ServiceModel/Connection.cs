@@ -16,9 +16,9 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Warewolf.Security.Encryption;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {

@@ -14,8 +14,8 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Utils;
-using Dev2.Warewolf.Security.Encryption;
 using System.Collections.Generic;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ResourceUpgrades
 {
