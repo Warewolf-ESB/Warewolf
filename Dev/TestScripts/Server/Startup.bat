@@ -19,18 +19,6 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-SC interrogate "Warewolf Server Under Test"
-IF %errorlevel% EQU 0 goto exit
-IF %errorlevel% EQU 1060 goto UsingCommandlineInterface
-IF %errorlevel% EQU 1062 goto UsingService
-
-:UsingService
-IF EXIST "%ProgramFiles(x86)%\Warewolf\Server" (SET DeploymentDirectory=%ProgramFiles(x86)%\Warewolf\Server) ELSE (SET DeploymentDirectory=%ProgramFiles%\Warewolf\Server)
-IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
-SC START "Warewolf Server Under Test"
-GOTO WaitForServerStart
-
-:UsingCommandlineInterface
 REM ** Kill The Server **
 taskkill /im "Warewolf Server.exe" /T /F
 
