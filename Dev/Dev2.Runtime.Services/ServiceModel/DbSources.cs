@@ -20,7 +20,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -60,7 +59,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
-                databaseSourceDetails.ConnectionString = string.IsNullOrEmpty(databaseSourceDetails.ConnectionString) ? databaseSourceDetails.ConnectionString : DpapiWrapper.Encrypt(databaseSourceDetails.ConnectionString);
 
                 // Setup ports using default
                 switch (databaseSourceDetails.ServerType)
