@@ -112,7 +112,6 @@ namespace Dev2.Activities
                 var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers,update));
                 colItr.AddVariableToIterateOn(urlitr);
                 colItr.AddVariableToIterateOn(headerItr);
-                const int IndexToUpsertTo = 1;
                 while (colItr.HasMoreData())
                 {
                     var c = colItr.FetchNextValue(urlitr);
@@ -171,8 +170,7 @@ namespace Dev2.Activities
                             );
 
                         allErrors.MergeErrors(errorsTo);
-                        var expression = GetExpression(IndexToUpsertTo);
-                        PushResultsToDataList(expression, result, dataObject,update);
+                        PushResultsToDataList(Result, result, dataObject,update);
                     }
                     else
                         throw new ApplicationException("Execution aborted - see error messages.");
