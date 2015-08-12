@@ -21,5 +21,4 @@ REM ****************************************************************************
 
 REM Stop Server:
 taskkill /im "Warewolf Server.exe" /T /F
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe" /T /F
 exit 0
