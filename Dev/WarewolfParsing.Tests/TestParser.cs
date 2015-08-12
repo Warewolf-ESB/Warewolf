@@ -1345,6 +1345,33 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Star_WithUpdate_ShouldDeleteUpdateIndex()
+        {
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), 0);
+
+
+            env.EvalDelete("[[rec(*)]]", 2);
+
+           
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "24");
+            Assert.AreEqual(items[2], "1");
+
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.LastIndex, 4);
+            Assert.AreEqual(recset.Count, 3);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Delete_Star()

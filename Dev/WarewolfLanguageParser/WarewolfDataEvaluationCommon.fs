@@ -256,6 +256,9 @@ and ParseLanguageExpression  (lang:string)  (update:int): LanguageExpression=
             | RecordSetExpression a -> match a.Index with
                                         | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
                                         | _-> a |> LanguageExpression.RecordSetExpression
+            | RecordSetNameExpression a -> match a.Index with
+                                        | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
+                                        | _-> a |> LanguageExpression.RecordSetNameExpression
             | ComplexExpression p -> List.map (updateComplex update) p |> LanguageExpression.ComplexExpression
             | _->data
 
@@ -264,6 +267,9 @@ and updateComplex   update data =
                 | RecordSetExpression a -> match a.Index with
                                             | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
                                             | _-> a |> LanguageExpression.RecordSetExpression
+                | RecordSetNameExpression a -> match a.Index with
+                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
+                                            | _-> a |> LanguageExpression.RecordSetNameExpression
                 | _->data
 
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
