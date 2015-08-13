@@ -196,9 +196,7 @@ namespace Dev2
                     }
 
                     _singleton = null;
-#endif
-
-#if !DEBUG
+#else
                     if (Environment.UserInteractive || options.IntegrationTestMode)
                     {
                         Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
