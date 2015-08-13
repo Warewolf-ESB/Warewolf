@@ -186,6 +186,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)
         {
+            if(resource == null)
+            {
+                return;
+            }
             var next = resource.Execute(dsfDataObject, update);
             while(next != null)
             {
