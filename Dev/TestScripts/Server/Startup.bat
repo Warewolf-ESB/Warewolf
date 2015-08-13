@@ -38,12 +38,10 @@ REM using the "ping" command as make-shift wait (or sleep) command, so now we wa
 :WaitForServerStart
 set /a LoopCounter=0
 :MainLoopBody
-IF EXIST "%DeploymentDirectory%\ServerStarted" goto exit
+IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 goto exit
+IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo Attempt number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
 ping -n 5 127.0.0.1 > nul
 goto MainLoopBody
-:exit
-exit 0
