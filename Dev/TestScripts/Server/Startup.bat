@@ -32,7 +32,7 @@ IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\Server
 
 REM ** Start Warewolf server from deployed binaries **
 START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
-@echo Started "%DeploymentDirectory%\Warewolf Server.exe"...
+@echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
 :WaitForServerStart
