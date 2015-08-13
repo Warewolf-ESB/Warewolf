@@ -188,6 +188,7 @@ namespace Dev2
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) => { Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception); };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
+#if DEBUG
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
                     using(_singleton = new ServerLifecycleManager(arguments))
                     {
@@ -195,16 +196,30 @@ namespace Dev2
                     }
 
                     _singleton = null;
-                }
-                else
-                {
-                    Dev2Logger.Log.Info("** Starting In Service Mode **");
-                    // running as service
-                    using(var service = new ServerLifecycleManagerService())
+#endif
+
+#if !DEBUG
+                    if (Environment.UserInteractive || options.IntegrationTestMode)
                     {
-                        ServiceBase.Run(service);
+                        Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                        using (_singleton = new ServerLifecycleManager(arguments))
+                        {
+                            result = _singleton.Run(true);
+                        }
+
+                        _singleton = null;
                     }
-                }
+                    else
+                    {
+                        Dev2Logger.Log.Info("** Starting In Service Mode **");
+                        // running as service
+                        using (var service = new ServerLifecycleManagerService())
+                        {
+                            ServiceBase.Run(service);
+                        }
+                    }
+#endif
+                } 
             }
             catch(Exception err)
             {
