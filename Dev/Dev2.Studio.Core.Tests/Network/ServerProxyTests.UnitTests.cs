@@ -25,6 +25,7 @@ using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
+using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -306,7 +307,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxy()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new TestAsyncWorker())
         {
 
         }

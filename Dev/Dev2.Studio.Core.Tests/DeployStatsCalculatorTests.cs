@@ -386,7 +386,7 @@ namespace Dev2.Core.Tests
 
         static DeployNavigationViewModel CreateDeployNavigationViewModel(IEnvironmentModel environmentModel, StudioResourceRepository studioResourceRepository)
         {
-            return CreateDeployNavigationViewModel(environmentModel, new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IEnvironmentRepository>().Object, studioResourceRepository);
+            return CreateDeployNavigationViewModel(environmentModel, new Mock<IEventAggregator>().Object, new TestAsyncWorker(), new Mock<IEnvironmentRepository>().Object, studioResourceRepository);
         }
 
         static DeployNavigationViewModel CreateDeployNavigationViewModel(IEnvironmentModel environmentModel, IEventAggregator eventAggregator, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, StudioResourceRepository studioResourceRepository)

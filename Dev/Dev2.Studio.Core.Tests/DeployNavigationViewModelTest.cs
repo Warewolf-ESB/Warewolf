@@ -436,7 +436,7 @@ namespace Dev2.Core.Tests
         DeployNavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository)
         {
             StudioResourceRepository studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
+            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, new TestAsyncWorker(), environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
             return navigationViewModel;
         }
 
