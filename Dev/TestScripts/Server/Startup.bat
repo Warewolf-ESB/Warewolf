@@ -42,6 +42,6 @@ IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
-@echo Attempt number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
+@echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
 ping -n 5 127.0.0.1 > nul
 goto MainLoopBody
