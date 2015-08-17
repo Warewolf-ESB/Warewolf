@@ -42,6 +42,7 @@
 /Dev/Dev2.Server/bin/Debug/CefSharp
 /Dev/Dev2.Server/bin/Debug/SSL Generation
 /Dev/Dev2.Server/bin/Debug/ServerStarted
+/Dev/Dev2.Server/bin/Debug/ServerLog.txt
 /Dev/Dev2.Server/bin/Debug/*.dll
 /Dev/Dev2.Server/bin/Debug/*.pdb
 /Dev/Dev2.Server/bin/Debug/*.exe
