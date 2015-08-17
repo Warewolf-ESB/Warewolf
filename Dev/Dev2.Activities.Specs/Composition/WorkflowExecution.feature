@@ -4173,3 +4173,15 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	And the 'TestInnerWFForEachOutputs' in Workflow 'ForEach Output2' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+	  
+Scenario: Time Zone Changes
+	  Given I have a workflow "TimeZoneChangeTest"
+	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "TimeZoneChangeTest" is executed
+	Then the workflow execution has "NO" error
+	And the 'TimeZoneChange' in Workflow 'TimeZoneChangeTest' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
