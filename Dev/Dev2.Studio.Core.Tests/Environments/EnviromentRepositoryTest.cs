@@ -30,6 +30,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -1310,7 +1311,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(new TestAsyncWorker());
             connection.SetupProperty(c => c.DisplayName);
             if (sources != null && sources.Length > 0)
             {

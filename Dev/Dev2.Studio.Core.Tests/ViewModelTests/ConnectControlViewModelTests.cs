@@ -20,6 +20,7 @@ using Dev2.Core.Tests.Environments;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -31,6 +32,14 @@ namespace Dev2.Core.Tests.ViewModelTests
     // ReSharper disable ObjectCreationAsStatement
     public class ConnectControlViewModelTests
     {
+
+         [TestInitialize]
+         public void TestInitialize()
+         {
+             AppSettings.LocalHost = "http://localhost:3142";
+
+         }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ConnectControlViewModel_Constructor")]

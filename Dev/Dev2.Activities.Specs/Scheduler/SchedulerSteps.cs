@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Scheduler
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 
             environmentModel.Connect();

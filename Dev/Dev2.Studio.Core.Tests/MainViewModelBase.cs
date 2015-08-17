@@ -109,6 +109,7 @@ namespace Dev2.Core.Tests
             WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
             CustomContainer.Register(WindowManager.Object);
+            CustomContainer.Register(PopupController.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();

@@ -37,10 +37,8 @@ E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewol
 E:\Projects\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.pdb
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.dll
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.pdb
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.dll
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.dll
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.dll
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.pdb
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.pdb
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.xml
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.pdb
@@ -50,3 +48,5 @@ D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.War
 D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.pdb
 C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Warewolf.Security.dll
 C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Warewolf.Security.pdb
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Warewolf.Security.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Warewolf.Security.pdb

@@ -26,6 +26,7 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Threading;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -742,7 +743,7 @@ namespace Dev2.Core.Tests.Environments
     public class TestEqualityConnection : ServerProxy
     {
         public TestEqualityConnection(Guid serverID, string serverUri)
-            : base(serverUri, CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            : base(serverUri, CredentialCache.DefaultCredentials, new TestAsyncWorker())
         {
             ServerID = serverID;
         }

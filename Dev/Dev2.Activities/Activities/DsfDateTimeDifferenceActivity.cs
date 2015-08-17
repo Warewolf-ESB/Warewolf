@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -21,6 +22,7 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -155,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
-
+                int indexToUpsertTo = 1;
                 while(colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
@@ -168,8 +170,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result;
                     string error;
                     string expression = Result;
+
                     if(comparer.TryCompare(transObj, out result, out error))
                     {
+                        if (DataListUtil.IsValueRecordset(Result) &&
+                           DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                        {
+                            if (update == 0)
+                            {
+                                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                            }
+                        }
+                        else
+                        {
+                            expression = Result;
+                        }
+
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
                         if(single != null)
@@ -186,6 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DoDebugOutput(dataObject, expression, update);
                         allErrors.AddError(error);
                     }
+                    indexToUpsertTo++;
                 }
 
                 allErrors.MergeErrors(errors);

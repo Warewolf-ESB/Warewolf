@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Core.Tests.Utils;
 using Dev2.Network;
+using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -166,7 +167,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxyWithFallback()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new TestAsyncWorker())
         {
 
         }

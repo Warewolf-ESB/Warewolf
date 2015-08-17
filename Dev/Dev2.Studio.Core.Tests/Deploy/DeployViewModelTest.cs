@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
             studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object);
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object);
 
 
 
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object));
             // ReSharper disable ObjectCreationAsStatement
-            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object, null, null, new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            new DeployViewModel(new TestAsyncWorker(), serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object, null, null, new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
             // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -188,7 +188,7 @@ namespace Dev2.Core.Tests
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object));
             // ReSharper disable ObjectCreationAsStatement
-            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object, null, null, new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            new DeployViewModel(new TestAsyncWorker(), serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object, null, null, new Mock<IConnectControlSingleton>().Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
             // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -234,7 +234,7 @@ namespace Dev2.Core.Tests
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
             var statsCalc = new Mock<IDeployStatsCalculator>();
-            IAsyncWorker asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker().Object;
+            IAsyncWorker asyncWorker = new TestAsyncWorker();
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ExplorerItemModel>())).Returns(true);
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, asyncWorker, new Mock<IConnectControlSingleton>().Object));
@@ -318,9 +318,9 @@ namespace Dev2.Core.Tests
             var mockStudioResourceRepository = GetMockStudioResourceRepository();
             var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, mockStudioResourceRepository.Object);
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, new TestAsyncWorker(), mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
             {
                 Source = sourceDeployNavigationViewModel,
                 Target = sourceDeployNavigationViewModel,
@@ -494,7 +494,7 @@ namespace Dev2.Core.Tests
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsTrue(deployViewModel.DeploySuccessfull);
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()),Times.Never());
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), "Unsecure Destination Server", It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Never());
         }
 
         [TestMethod]
@@ -647,11 +647,11 @@ namespace Dev2.Core.Tests
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
 
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, new TestAsyncWorker(), mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
             server.Setup(svr => svr.LoadResources()).Callback(() => sourceDeployNavigationViewModel.ExplorerItemModels.Add(treeParent));
             sourceDeployNavigationViewModel.Environment = server.Object;
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
             {
                 Source = sourceDeployNavigationViewModel
             };
@@ -723,11 +723,11 @@ namespace Dev2.Core.Tests
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
 
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, new TestAsyncWorker(), mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
             server.Setup(svr => svr.LoadResources()).Callback(() => sourceDeployNavigationViewModel.ExplorerItemModels.Add(treeParent));
             sourceDeployNavigationViewModel.Environment = server.Object;
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
             {
                 Source = sourceDeployNavigationViewModel
             };
@@ -1230,7 +1230,7 @@ namespace Dev2.Core.Tests
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
             studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, agg.Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), serverProvider.Object, repo, agg.Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
 
 
 
@@ -1543,9 +1543,9 @@ namespace Dev2.Core.Tests
 
             var mockStudioResourceRepository = GetMockStudioResourceRepository();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, new TestAsyncWorker(), mockedServerRepo.Object, mockStudioResourceRepository.Object, true, new Mock<IConnectControlSingleton>().Object) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
+            var deployViewModel = new DeployViewModel(new TestAsyncWorker(), provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, null, null, null, new Mock<IConnectControlSingleton>().Object)
             {
                 Source = sourceDeployNavigationViewModel,
                 Target = sourceDeployNavigationViewModel,
