@@ -494,7 +494,7 @@ namespace Dev2.Core.Tests
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsTrue(deployViewModel.DeploySuccessfull);
-            popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()),Times.Never());
+            popupController.Verify(controller => controller.Show(It.IsAny<string>(), "Unsecure Destination Server", It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Never());
         }
 
         [TestMethod]
