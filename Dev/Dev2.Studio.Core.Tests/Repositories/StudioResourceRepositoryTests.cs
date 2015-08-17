@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
             repository.Load(Guid.Empty, new TestAsyncWorker());
             //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Never());
+            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.AtLeastOnce());
         }
 
         [TestMethod]
