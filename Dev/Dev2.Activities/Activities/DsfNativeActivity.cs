@@ -518,7 +518,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    Dev2Logger.Log.Error("aaa");
+                    Dev2Logger.Log.Debug("Debug already initialised");
                 }
 
                 if(_debugState != null)
