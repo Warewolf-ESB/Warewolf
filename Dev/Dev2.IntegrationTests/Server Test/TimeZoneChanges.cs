@@ -16,6 +16,7 @@ namespace Dev2.Integration.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GlobalConstants_TimezoneChanges")]
+        [Ignore]
         // ReSharper disable once InconsistentNaming
         public void GlobalConstants_TimezoneChanges_Change_ExpectDatetime_Now_Change()
         {
