@@ -266,9 +266,17 @@ namespace Dev2.Runtime.WebServer.Hubs
             var debugSerializated = _serializer.Serialize(debugState);
 
             var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-           // var user = hubCallerConnectionContext.All;
-            user.SendDebugState(debugSerializated);
+            try
+            {
+                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                user.SendDebugState(debugSerializated);
+            }
+            catch
+            {
+                var user = hubCallerConnectionContext.All;
+                user.SendDebugState(debugSerializated);
+            }
+           
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
