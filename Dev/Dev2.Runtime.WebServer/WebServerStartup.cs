@@ -11,11 +11,9 @@
 
 using System;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Http;
 using Dev2.Common;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
@@ -83,47 +81,12 @@ namespace Dev2.Runtime.WebServer
         {
             EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
             EnvironmentVariables.Port = httpRequest.Url.Port;
-            if (httpRequest.RawUrl.StartsWith("/public/"))
+            if (httpRequest.RawUrl.StartsWith("/public/",StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }
             //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
             return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
-    }
-
-
-    public class AuthenticationMiddleware : OwinMiddleware
-    {
-        public AuthenticationMiddleware(OwinMiddleware next) :
-            base(next)
-        {           
-        }
-
-        #region Overrides of OwinMiddleware
-
-        /// <summary>
-        /// Process an individual request.
-        /// </summary>
-        /// <param name="context"/>
-        /// <returns/>
-        public override Task Invoke(IOwinContext context)
-        {
-            if (context.Request.User != null)
-            {
-                return Next.Invoke(context);
-            }
-            context.Response.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
-//            context.Response.OnSendingHeaders(state =>
-//            {
-//                var resp = (OwinResponse)state;
-//
-//                if (resp.StatusCode == 401)
-//                    resp.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
-//            }, context.Request);
-            return Task.FromResult(0);
-        }
-
-        #endregion
     }
 }
