@@ -13,9 +13,12 @@ namespace Dev2.Integration.Tests
     public class TimeZoneChanges
     {
         private readonly string _webServerUri = ServerSettings.WebserverURI;
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GlobalConstants_TimezoneChanges")]
+        [Ignore]
         // ReSharper disable once InconsistentNaming
         public void GlobalConstants_TimezoneChanges_Change_ExpectDatetime_Now_Change()
         {

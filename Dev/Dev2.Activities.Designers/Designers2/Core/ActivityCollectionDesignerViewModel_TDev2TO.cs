@@ -387,12 +387,12 @@ namespace Dev2.Activities.Designers2.Core
           
           ProcessModelItemCollection(0, mi =>
             {
-               var dto = mi.GetCurrentValue() as TDev2TOFn;
-                if(dto != null)
-                {
-                    CEventHelper.RemoveAllEventHandlers(dto);
-                }
-                CEventHelper.RemoveAllEventHandlers(mi);
+//               var dto = mi.GetCurrentValue() as TDev2TOFn;
+//                if(dto != null)
+//                {
+//                    CEventHelper.RemoveAllEventHandlers(dto);
+//                }
+//                CEventHelper.RemoveAllEventHandlers(mi);
 
             });
             base.OnDispose();
