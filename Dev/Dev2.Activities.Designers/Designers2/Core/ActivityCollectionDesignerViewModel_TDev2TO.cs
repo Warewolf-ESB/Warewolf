@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
@@ -36,6 +37,8 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -47,7 +50,7 @@ namespace Dev2.Activities.Designers2.Core
         protected void InitializeItems(ModelItemCollection modelItemCollection)
         {
             ModelItemCollection = modelItemCollection;
-
+            BindingOperations.EnableCollectionSynchronization(ModelItemCollection, _syncLock);
             // Do this before, because AddDTO() also attaches events
             AttachEvents(0);
 
@@ -69,6 +72,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 ModelItemCollection.CollectionChanged+=ModelItemCollectionOnCollectionChanged;
             }
+            
         }
 
         void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -395,6 +399,11 @@ namespace Dev2.Activities.Designers2.Core
                 CEventHelper.RemoveAllEventHandlers(mi);
 
             });
+            if(ModelItemCollection != null)
+            {
+                BindingOperations.DisableCollectionSynchronization(ModelItemCollection); 
+            }
+            ModelItemCollection = null;
             base.OnDispose();
         }
 
