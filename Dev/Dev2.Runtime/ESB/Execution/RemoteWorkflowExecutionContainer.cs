@@ -91,14 +91,16 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Log.Info(String.Format("Starting Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
 
             // get data in a format we can send ;)
+            Dev2Logger.Log.Debug("Creating DataList fragment for remote execute");
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString(), update);
+
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
@@ -112,8 +114,11 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Invoke Remote WF Here ;)
                 result = ExecuteGetRequest(connection, serviceName, dataListFragment);
-                IList<IDebugState> msg = FetchRemoteDebugItems(connection);
-                DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
+                if (DataObject.IsDebugMode())
+                {
+                    IList<IDebugState> msg = FetchRemoteDebugItems(connection);
+                    DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
+                }
             }
             catch (Exception e)
             {
@@ -179,7 +184,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
-
+            Dev2Logger.Log.Debug("Executing the remote request.");
             using (var response = req.GetResponse() as HttpWebResponse)
             {
                 if (response != null)

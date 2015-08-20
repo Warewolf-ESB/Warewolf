@@ -15,12 +15,17 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
+//            _wrapped.TraceLevel = TraceLevels.All;
+//            _wrapped.DeadlockErrorTimeout = new TimeSpan(0, 0, 5, 0);
+//            _wrapped.TraceWriter = new ConsoleTraceListener().Writer;
         }
 
         public HubConnectionWrapper(string uriString)
             : this(new HubConnection(uriString))
         {
-
+//            _wrapped.TraceLevel = TraceLevels.Events;
+//            _wrapped.DeadlockErrorTimeout = new TimeSpan(0,0,5,0);
+//            _wrapped.TraceWriter = new ConsoleTraceListener().Writer;
         }
 
         public IHubProxyWrapper CreateHubProxy(string hubName)
@@ -71,7 +76,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         public Task Start()
         {
-            return _wrapped.Start();
+            return _wrapped.Start(new ServerSentEventsTransport());
         }
 
         public void Stop(TimeSpan timeSpan)

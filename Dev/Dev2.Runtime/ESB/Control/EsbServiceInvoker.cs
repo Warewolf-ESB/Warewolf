@@ -143,6 +143,7 @@ namespace Dev2.Runtime.ESB
                     try
                     {
                         var sl = new ServiceLocator();
+                        Dev2Logger.Log.Debug("Finding service");
                         var theService = serviceId == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceId, _workspace.ID);
 
                         if(theService == null)
@@ -159,13 +160,14 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
-
+                            Dev2Logger.Log.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, sl);
 
                             // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
+                                Dev2Logger.Log.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, update);
@@ -301,6 +303,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
+                Dev2Logger.Log.Debug(string.Format("Getting DynamicService: {0}", serviceName));
                 if(resourceId == Guid.Empty)
                 {
                     return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version

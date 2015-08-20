@@ -904,7 +904,9 @@ namespace Dev2.Runtime.Hosting
             if (_parsers != null && _parsers.TryGetValue(workspaceID,out parser))
             {
                 parser.RemoveFromCache(resource.ResourceID);
-            }            
+            }
+            List<DynamicServiceObjectBase> objects;
+            _frequentlyUsedServices.TryRemove(resource.ResourceName, out objects);
         }
 
         #endregion
@@ -1111,8 +1113,8 @@ namespace Dev2.Runtime.Hosting
             catch(Exception e)
             {
                 Dev2Logger.Log.Error("Error getting resources",e);
+                throw;
             }
-            return null;
         }
 
         public virtual IResource GetResource(Guid workspaceID, Guid serviceID)
@@ -1671,6 +1673,7 @@ namespace Dev2.Runtime.Hosting
                 if(!_frequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
                     objects = GenerateObjectGraph(resource);
+                    _frequentlyUsedServices.TryAdd(resource.ResourceName, objects);
                 }
                 else
                 {
@@ -1930,8 +1933,24 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory)
         {
             VerifyArguments(oldCategory, newCategory);
-            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
-            return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
+            try
+            {
+                var resourcesToUpdate = Instance.GetResources(workspaceID, resource =>
+                {
+                    return resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase);
+                }).ToList();
+
+                return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error("Rename Category error", err);
+                return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Fail,
+                    Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Failed to Category", oldCategory, newCategory)
+                };
+            }
         }
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate)

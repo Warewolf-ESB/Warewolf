@@ -517,19 +517,19 @@ namespace Dev2.AppResources.Repositories
             {
                 if(item.ResourceType == ResourceType.ServerSource)
                 {
-                   resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                   resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType >= ResourceType.DbSource)
                 {
-                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
                 {
-                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType == ResourceType.WorkflowService)
                 {
-                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
                 }
             }
 

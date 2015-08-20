@@ -230,6 +230,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if(resource.DataList != null)
                     {
+                        Dev2Logger.Log.Debug("Mapping Inputs from Environment");
                         ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), 0);
                     }
                 }
@@ -243,6 +244,7 @@ namespace Dev2.Runtime.ESB.Control
             try
             {
                 // Setup the invoker endpoint ;)
+                Dev2Logger.Log.Debug("Creating Invoker");
                 using(var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
                 {
                     // Should return the top level DLID

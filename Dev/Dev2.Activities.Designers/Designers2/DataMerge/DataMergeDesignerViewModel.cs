@@ -116,10 +116,13 @@ namespace Dev2.Activities.Designers2.DataMerge
 
         protected override void OnDispose()
         {
-            foreach(var mi in  ModelItemCollection)
+            if(ModelItemCollection != null)
             {
-                var dto = mi.GetCurrentValue() as DataMergeDTO;
-                CEventHelper.RemoveAllEventHandlers(dto);
+                foreach(var mi in  ModelItemCollection)
+                {
+                    var dto = mi.GetCurrentValue() as DataMergeDTO;
+                    CEventHelper.RemoveAllEventHandlers(dto);
+                }
             }
             base.OnDispose();
         }

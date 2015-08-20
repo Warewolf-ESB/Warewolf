@@ -253,7 +253,10 @@ namespace Dev2.Services.Security
 
                         // Examine group for this member ;)  
                         isInRole = principal.IsInRole(windowsGroup);
-
+                        if (!isInRole)
+                        {
+                            isInRole = DoFallBackCheck(principal);
+                        }
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
@@ -320,10 +323,7 @@ namespace Dev2.Services.Security
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
             // ReSharper restore EmptyGeneralCatchClause
-            if (!isInRole)
-            {
-                isInRole = DoFallBackCheck(principal);
-            }
+            
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
 
