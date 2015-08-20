@@ -1146,7 +1146,10 @@ namespace Dev2.Data.Util
                     trimedData = trimedData.Substring(3);
                 }
             }
-
+            var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (trimedData.StartsWith(bomMarkUtf8))
+                trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
+            trimedData= trimedData.Replace("\0", "");
             return trimedData;
         }
 
