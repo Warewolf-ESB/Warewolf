@@ -1,5 +1,5 @@
 
-<Service ID="b035222d-a307-4c13-aaad-e6232eb22ec8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithNumericIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="b035222d-a307-4c13-aaad-e6232eb22ec8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithNumericIndex" ResourceType="WorkflowService" ServerVersion="0.0.5710.23757">
   <DisplayName>DeleteRecordUsingRecordsetWithNumericIndex</DisplayName>
   <Category>Acceptance Testing Resources\DeleteRecordUsingRecordsetWithNumericIndex</Category>
   <AuthorRoles>
@@ -255,9 +255,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>vReYkUYOE+gPjsuiIcv5FyYIl7Y=</DigestValue>
+        <DigestValue>yxUXVY1WZxw41vKabU9uBpT5sP0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YgpraG3j1448kMgBNM9QwweTiUk/9FhKdePAO7JBPbOyo06xHU0hOxs+/O8bETmDgEEdFVO8lti+zhUegSVMQ6Cy4vj7ZnwKhknb0KK4B7RX8/T1R9oqHTMkQfx+vh+hcVznYvxQ3FCHQbeyilEFw9mfzzRx9gMb9cZqgW/VpI0=</SignatureValue>
+    <SignatureValue>afm/9r/vl3cF2gyQBD7QXbJBm0M4Bl8bvTKGflcJ7O75Pms4NjmFZ8hL5c3G272a9n1jnukCSjigFJT1O81HGp7883XhKvBKVS+hoUqyH3tBfkJeEpo+Wu+3E1PtcApFioXHvPWvfNkW63ICckl/GPQYQg+SmlAJwAiRvae39Hk=</SignatureValue>
   </Signature>
 </Service>

@@ -1,0 +1,37 @@
+
+<Source ID="7bbcfe6e-480e-4480-8a87-119846d09011" Name="barneyconsole" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANvRXqk+VCEir/iOzuG6VegQAAAACAAAAAAADZgAAwAAAABAAAACH2QkNGXmeMMa02dUPa3JiAAAAAASAAACgAAAAEAAAAMJUrt3H3R6JStoLspg5pAqwAAAAy9k0D620tlg2jCVxoHJOF6Ghgiezp5gZWPVcnHWlfh1oqDb740h1t00/7iqw8qkJZY+vbASWb3gkJiTeBTEBlz1nfmKA/WHr929b9z7/yFxNH3bbzVXsc+dcDtWQRAuljPul2C+QdnVqW+DL1QZwZYwiW0QIvvs4zQc4RiojIdqAuw6W6mFjlH1ZNj70GhaUL1zIONFu8GN88L7wEueQ9O7tzYeFBFEQFqhcfMrDq1wUAAAAYjt9Ft8CytTk8BNti+yeJkudPtE=" ServerVersion="0.5.5708.25311" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>barneyconsole</DisplayName>
+  <Category>barneyconsole</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2015-08-18T14:33:06.8465417+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="7bbcfe6e-480e-4480-8a87-119846d09011" VersionId="1b805382-5c51-438a-9065-6c8eb00f06e6" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>G35Ua6OogfDSS+C5HgA54aap08Y=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>mtsRkJQysPospfZTnu8/r8kE29C+7AOhih4ux7hxFFV6rWtR5Zjgqk5YXSlxcZp+2xcjYkGbcm3FhNbdX3BoPuJDge3s6nGeDwXLqV5Q8+nkrANT06889ejS9Mgh1qqo3uN93vs80QprbhhZJTPedw15ifvNbSAstU1Df8Imftk=</SignatureValue>
+  </Signature>
+</Source>

@@ -159,6 +159,37 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
             }
         }
+
+        public void LoadResourceFromWorkspace(Guid resourceId, Enums.ResourceType resourceType, Guid? serverWorkspaceID)
+        {
+            var con = _environmentModel.Connection;
+            var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
+            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
+            var name = Enum.GetName(typeof(ResourceType), resourceType);
+            comsController.AddPayloadArgument("ResourceType", name);
+            var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
+            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, workspaceIdToUse);
+            foreach (var serializableResource in toReloadResources)
+            {
+                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
+
+                if (resourceToUpdate != null)
+                {
+                    resourceToUpdate.Update(resource);
+                }
+                else
+                {
+                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
+                    ResourceModels.Add(resource);
+                    if (ItemAdded != null)
+                    {
+                        ItemAdded(resource, null);
+                    }
+                }
+            }
+        }
+
         public void Load()
         {
             if (IsLoaded)

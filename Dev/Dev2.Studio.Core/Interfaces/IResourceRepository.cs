@@ -92,5 +92,6 @@ namespace Dev2.Studio.Core.Interfaces
         Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
 
         void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
+        void LoadResourceFromWorkspace(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
     }
 }

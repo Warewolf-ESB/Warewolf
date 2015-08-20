@@ -1,5 +1,5 @@
 
-<Service ID="e409ce08-9ff1-4946-a461-a8cfe21d39e8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameFolderOnFileSystemTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="e409ce08-9ff1-4946-a461-a8cfe21d39e8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameFolderOnFileSystemTest" ResourceType="WorkflowService" ServerVersion="0.0.5710.23757">
   <DisplayName>RenameFolderOnFileSystemTest</DisplayName>
   <Category>Acceptance Testing Resources\RenameFolderOnFileSystemTest</Category>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
@@ -131,9 +131,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>mSIH7yA+KSTfZWm0X6ZDOyrUwzQ=</DigestValue>
+        <DigestValue>IJkeAWguuiIM/m5RciPAs+DPmCI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ha59oC/ksTlndhrGD74IEv2mQ7Y137ZiJq/vcDPbAfsI5tUu1WIrczx8LtFODFRMXTtTxMba5UOGcqOLY6wG6kF22zbS/4DbBkT+1bbI4r5AiLbcAshR7bQTqqtLSvVBO9hLBYAxecpORChpJ2zcTLWb1y15rcf6gM/n4P+LqHU=</SignatureValue>
+    <SignatureValue>cli3hG/wzCZLfIAOVZ+UtkcHR2V3o+orZY4UE2wz1rNLvN3P9WjceR6MOsprX/Uy2PycIEQYhWCW//Uv+DiYcJW4/as9gW53y9+1LQ/uT9n6YvZDBt4Ig6O2SfT6HKQaNYxiaPdGYDbzSEI3949Hdjj1gwYZ0g7d14NcdzoRRcs=</SignatureValue>
   </Signature>
 </Service>

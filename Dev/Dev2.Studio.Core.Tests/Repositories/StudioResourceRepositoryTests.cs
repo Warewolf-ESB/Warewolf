@@ -1885,7 +1885,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -1968,7 +1968,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -2008,7 +2008,7 @@ namespace Dev2.Core.Tests.Repositories
                 });
 
             //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspaceAsync(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
+            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
