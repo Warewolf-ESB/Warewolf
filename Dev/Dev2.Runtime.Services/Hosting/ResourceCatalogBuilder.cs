@@ -155,7 +155,14 @@ namespace Dev2.Runtime.Hosting
                                 }
                                 catch 
                                 {
-                                    Transaction.Current.Rollback();
+                                    try
+                                    {
+                                        Transaction.Current.Rollback();
+                                    }
+                                    catch (Exception err)
+                                    {
+                                        Dev2Logger.Log.Error(err);
+                                    }
                                     throw;
                                 }
                             }
