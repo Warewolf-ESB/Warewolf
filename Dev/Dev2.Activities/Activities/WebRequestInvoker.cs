@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 
 namespace Dev2.Activities
 {
@@ -37,7 +38,7 @@ namespace Dev2.Activities
             using (var webClient = new WebClient())
             {
                 webClient.Credentials = CredentialCache.DefaultCredentials;
-
+                webClient.Encoding = Encoding.UTF8;
                 if (headers != null)
                 {
                     foreach (var header in headers)

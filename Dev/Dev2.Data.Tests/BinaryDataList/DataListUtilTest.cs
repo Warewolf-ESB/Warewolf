@@ -78,6 +78,20 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(startingData, result, "The data has changed when there was no encoding issues.");
         }
 
+        [TestMethod]
+        [Owner("eon Rajindrapersadh")]
+        [TestCategory("DataListUtil_AdjustForEncodingIssues")]
+        public void DataListUtil_AdjustForEncodingIssues_BOMRemoved()
+        {
+            //------------Setup for test--------------------------
+             string startingData =  ((char)65279) + "<A></A>";
+             Assert.IsFalse(startingData.StartsWith("<"));
+            //------------Execute Test---------------------------
+            string result = DataListUtil.AdjustForEncodingIssues(startingData);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.StartsWith("<"));
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
