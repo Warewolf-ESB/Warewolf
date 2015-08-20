@@ -71,44 +71,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-                    var tempResource = new Resource(result.ToXElement());
-                    var resource = tempResource;
-
-                    if (resource.ResourceType == ResourceType.DbSource)
+                    if (!result.IsNullOrEmpty())
                     {
-                        res.Message.Append(result);
-                    }
-                    else
-                    {
-                        var startIdx = result.IndexOf(PayloadStart, 0, false);
+                        var tempResource = new Resource(result.ToXElement());
+                        var resource = tempResource;
 
-                        if (startIdx >= 0)
+                        if (resource.ResourceType == ResourceType.DbSource)
                         {
-                            // remove beginning junk
-                            startIdx += PayloadStart.Length;
-                            result = result.Remove(0, startIdx);
-
-                            startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                            if (startIdx > 0)
-                            {
-                                var len = result.Length - startIdx;
-                                result = result.Remove(startIdx, len);
-
-                                res.Message.Append(result.Unescape());
-                            }
+                            res.Message.Append(result);
                         }
                         else
                         {
-                            // handle services ;)
-                            startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                            var startIdx = result.IndexOf(PayloadStart, 0, false);
+
                             if (startIdx >= 0)
                             {
-                                // remove begging junk
-                                startIdx += AltPayloadStart.Length;
+                                // remove beginning junk
+                                startIdx += PayloadStart.Length;
                                 result = result.Remove(0, startIdx);
 
-                                startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+                                startIdx = result.IndexOf(PayloadEnd, 0, false);
 
                                 if (startIdx > 0)
                                 {
@@ -120,8 +102,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             else
                             {
-                                // send the entire thing ;)
-                                res.Message.Append(result);
+                                // handle services ;)
+                                startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                                if (startIdx >= 0)
+                                {
+                                    // remove begging junk
+                                    startIdx += AltPayloadStart.Length;
+                                    result = result.Remove(0, startIdx);
+
+                                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                                    if (startIdx > 0)
+                                    {
+                                        var len = result.Length - startIdx;
+                                        result = result.Remove(startIdx, len);
+
+                                        res.Message.Append(result.Unescape());
+                                    }
+                                }
+                                else
+                                {
+                                    // send the entire thing ;)
+                                    res.Message.Append(result);
+                                }
                             }
                         }
                     }
@@ -130,12 +133,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Dev2Logger.Log.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
                 }
-
+            
 
                 // Finally, clean the definition as per execution hydration rules ;)
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
-                res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
-
+                if (!res.Message.IsNullOrEmpty())
+                {
+                    Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                    res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+                }
                 if (prepairForDeployment)
                     res.Message = DecryptAllPasswords(res.Message);
 
