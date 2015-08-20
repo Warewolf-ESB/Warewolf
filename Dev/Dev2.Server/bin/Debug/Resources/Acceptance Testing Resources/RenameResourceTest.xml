@@ -1,5 +1,4 @@
-
-<Service ID="b88337db-36f5-4089-98b6-9cfd1925fc13" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5710.23757">
+<Service ID="b88337db-36f5-4089-98b6-9cfd1925fc13" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>RenameResourceTest</DisplayName>
   <Category>Acceptance Testing Resources\RenameResourceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>1zMU5PF68pzD6dQCB9h5Ka5R2do=</DigestValue>
+        <DigestValue>YTId6hks/kjcLJZT02qfBD468YQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mzOnQ9wfIpHguSevQPJfG/qe7qN0VEj8QYnlm4G7yCycwtf9oXFHRkyMc4oib7HcBOjuQWUn6X7xp0h4f7GpmwzvUSxPQ/K2afoofIjTAmwER1YY/upJbl+tKFEhLdxGdFm+7DgXqZj9uA0Q/Hm+ee1lLduoGsUweQwD2PtAZoE=</SignatureValue>
+    <SignatureValue>q+2FXupMYZJExLG48Chh6lMCtyO9LhnyIcIOAvkST8eg4kdRHWc60FfEUfA6FWKo7AJ9vEYBcY1P0X1z9GU/d2dW8CU2av+gy57nzeFIdp6ja2OgbREzV3tHXCcJHLgEBZlnUsnNtUeapkXMEU+8kA2/qNEkMFpdnrYBLJ/imAo=</SignatureValue>
   </Signature>
 </Service>

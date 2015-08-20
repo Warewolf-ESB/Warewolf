@@ -1,5 +1,5 @@
 
-<Service ID="c6c7000f-3902-4e45-a12e-48fbfee749e8" Version="1.0" Name="PBI9153PluginService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5710.23757">
+<Service ID="c6c7000f-3902-4e45-a12e-48fbfee749e8" Version="1.0" Name="PBI9153PluginService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PBI9153PluginService" Type="Plugin" SourceID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" SourceName="Anything To Xml Hook Plugin" SourceMethod="EmitComplex" Namespace="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin">
       <Inputs />
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>qyjr7wue43wIwrqNTxWlVbC7AQs=</DigestValue>
+        <DigestValue>T/PVx3eHBzgg2YLctQzNfpvQ75w=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>W+DLCgKQuUNBzqmTXd+zyusAwUEZaVNohe1JNNdWPE3QrQ04/6erHK1VxIM7wcE03YORo/rwpECS5k/bV70lZctvfKu4KqIfQI2jYk1XP/i9jjL0iHvOWlH/knQtUGrOxxXpUc9P24gP6E7v/gELeWb8A2Eo3jsCc9IEIO9eLqs=</SignatureValue>
+    <SignatureValue>QnTtKYhkNnMvGSM+HuMq+T0SB/QeFF2ff7HAPAGGPTszJQCDT2mk1SadvFq7m8SMFLsVDJdecgQfZ966m1Wqui1O7h71HaI0U0GJvmHdQUSsHrQiq6KAIRjfPXucCx0iVb4DlmGLvMp8/Sapq0pS8Oc9qcTum028JCTuJwSGkkE=</SignatureValue>
   </Signature>
 </Service>

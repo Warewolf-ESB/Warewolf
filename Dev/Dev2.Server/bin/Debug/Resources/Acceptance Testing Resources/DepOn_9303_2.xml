@@ -1,5 +1,5 @@
 
-<Service ID="0fd33cd5-2f5f-4ce3-95bc-3c44f95f1dd6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DepOn_9303_2" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5710.23757">
+<Service ID="0fd33cd5-2f5f-4ce3-95bc-3c44f95f1dd6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DepOn_9303_2" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>DepOn_9303_2</DisplayName>
   <Category>Acceptance Testing Resources\DepOn_9303_2</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -29,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>fXzqOsPB8AnbCTT4C/pCfd22IXY=</DigestValue>
+        <DigestValue>5aEwxkMe681FnghrOOFDpjkekyM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>DthN2YRiyy23EBuT+z2+Dd/0l3A3+FZKTTVRgL34aYK0DaaleDs0GpuRRY3ueUC+2wxGQ2MegJZFTRD2TvQm5EX2ZjTUcDKGZH8bLz4/Q4+zXeKmQQDEij0VSrKC3tIGYFdvTIifeF0W0jXmbkWSar4QTFJHxLGQTlVou+PfkDs=</SignatureValue>
+    <SignatureValue>rZiKqLy4kNQvqlFSQtd0nBuYxPeVnsPUF93DCcY4+B0Dtzm4LtiMB5onUtKeiJSAIxZ0CchWA7pl2kajPLgulvZdJxTQyAh5moqSiFWtzmaQmciSz69fNagVR/sbEgz9gE0NQiqz07845oULdgHilorXpJ8LUQRrAG8cIhYkXTM=</SignatureValue>
   </Signature>
 </Service>

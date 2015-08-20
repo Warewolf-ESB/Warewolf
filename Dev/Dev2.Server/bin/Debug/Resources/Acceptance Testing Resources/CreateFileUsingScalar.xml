@@ -1,5 +1,5 @@
 
-<Service ID="4f8afc45-6f32-4449-8e2a-1581b06fd920" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingScalar" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5710.23757">
+<Service ID="4f8afc45-6f32-4449-8e2a-1581b06fd920" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingScalar" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileUsingScalar</DisplayName>
   <Category>Acceptance Testing Resources\CreateFileUsingScalar</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>wapWE/gp5GGTpDqfwoBAsO71bk0=</DigestValue>
+        <DigestValue>8gNIXELX+tcipGxaHlp3pwWCmIA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>KHMrdyiDnVU1S2/P38kSaqEZeBe/j5S6sF/BascPBhn7rxAmkeCLTe/MAh57/V7gHJCzVeZbZWYJ7gfEQ3Zj2xkY8NOZvs/NhZ+RolH/luxeYGRo+q8EVyQ1MRyVr7f7xQhG5Jjbg4yvMWY2+bjqP7pafuzgxMXvEDGIPtTKYLw=</SignatureValue>
+    <SignatureValue>Ey+4Bxf4tspswDfcy/S09n6mM7aRBbU79GLBsO/sTjWnKcX758XFU6dj3gbrS910k7rK+2+VTFpMNFoby2d9wHtatTawKqlvZ57Bz6DOsoM1YMi775/BxM2yCd8cFiYh2WJ9qOq2x1SLl5/Z0p5frh4MeGCJvBNRrOKws2IZe7E=</SignatureValue>
   </Signature>
 </Service>

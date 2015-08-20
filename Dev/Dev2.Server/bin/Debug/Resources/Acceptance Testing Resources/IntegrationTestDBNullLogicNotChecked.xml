@@ -1,5 +1,5 @@
 
-<Service ID="53b8656d-feda-43bb-8f50-1f78e270b615" Version="1.0" Name="IntegrationTestDBNullLogicNotChecked" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5710.23757">
+<Service ID="53b8656d-feda-43bb-8f50-1f78e270b615" Version="1.0" Name="IntegrationTestDBNullLogicNotChecked" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_NullReturnsZZZ_NotNullReturnsAAA" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.NullReturnsZZZ_NotNullReturnsAAA">
       <Inputs>
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>EVYXy3gJ+agbQYN+8fggf2Bry5U=</DigestValue>
+        <DigestValue>n7VQ2Z5scOZa/1Buw1x7QkGIY0c=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Yd0nhO0td+rqqVeV7ejJNamoBQAeoa1nITKAiJDNuAgA2tIoDCo22aK7TFDGHYcYzbffF7qYYeQfaffJnbryanGNPba+yGFfNfL5NefSkIRyhM+gTvSI8P5C/VIQSB/yXnKCo+pPjCVI5oLXFtwYgcCfNdlw+P8Fuei0+HlQkwU=</SignatureValue>
+    <SignatureValue>pN/NdFeolqiGc/ZOy7XEXgTc/zjx7GcVMZjePgqxFw2eoGIQYO1laCItmW3KFF/7zSckf5oS996R8L2TJXL3E4uo0ztgpFtpDEIpy2xU/3SnNuIHIs0Ub9X235vqxp49+Qi0QGDLPsiiu1rnr5Vq6ZfrkH1DnSmOoqnfNbTvxI4=</SignatureValue>
   </Signature>
 </Service>

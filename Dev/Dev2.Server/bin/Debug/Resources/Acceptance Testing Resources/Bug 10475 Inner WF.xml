@@ -1,5 +1,5 @@
 
-<Service ID="981c1463-f9e2-48db-899d-310bb9327792" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Inner WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5710.23757">
+<Service ID="981c1463-f9e2-48db-899d-310bb9327792" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Inner WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Bug 10475 Inner WF</DisplayName>
   <Category>Acceptance Testing Resources\Bug 10475 Inner WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -136,9 +136,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>sDqje1UfLpMwkQwc6AaDofKU+aY=</DigestValue>
+        <DigestValue>MKJY/ZO4PSfOaicyTSY1sfVqmdU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>pF6fElX965UzWbihOe0ms0c3IytfFaltly+Vr23uD7nLu8rOat/lm9Dcq9vGjNJ4sEeblgavCJi8sy4iiCOC+2fn3b7MiRPRnrus5oCkZE3LI6JnldGJrLrN1XDt454boleo9bTgwmM3opxcbtIKiBdQfr/cHCQ5aDeDA7QDE6I=</SignatureValue>
+    <SignatureValue>E0qI7wQ91ky5vnY0iAEsgL08sX33pDW+WuEyQHqowrfeXsxjqTdMHNbpj/Y6IGpnAsUTDtzTEz6Af7G5LC3KDFxTEBpsY9xWApWMVBpvhFQXazCDZwTrpnIKXrJdGVzLgHSwu4m6KTgNc7XqxmRy/LiUUzgJdUqzD/0AGMmPnaQ=</SignatureValue>
   </Signature>
 </Service>
