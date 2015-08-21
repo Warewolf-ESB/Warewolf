@@ -138,7 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
-            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
+            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID,true);
 
             if (data != null)
             {
@@ -159,7 +159,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>");
+                var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>",false);
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     if (returnData.Contains("Pong"))
@@ -175,12 +175,12 @@ namespace Dev2.Runtime.ESB.Execution
             return false;
         }
 
-        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload)
+        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode=true)
         {
             var result = string.Empty;
 
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
-            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
+            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode);
             Dev2Logger.Log.Debug("Executing the remote request.");
             using (var response = req.GetResponse() as HttpWebResponse)
             {
@@ -198,7 +198,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password)
+        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password,bool isdebug)
         {
             try
             {
@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ESB.Execution
                     throw new Exception("Remote Server ID Empty");
                 }
                 req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
-                req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+                req.Headers.Add(HttpRequestHeader.Cookie, isdebug?GlobalConstants.RemoteServerInvoke: GlobalConstants.RemoteDebugServerInvoke);
                 return req;
             }
             catch (Exception)
@@ -275,7 +275,7 @@ namespace Dev2.Runtime.ESB.Execution
             return new Connection(xe);
         }
 
-        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName)
+        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode)
         {
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)
@@ -284,7 +284,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId));
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId), isDebugMode);
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();

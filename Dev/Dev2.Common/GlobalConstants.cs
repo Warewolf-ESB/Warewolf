@@ -332,6 +332,9 @@ or type_desc LIKE '%Procedure%'";
         // Remote workflow custom header attribute ;)
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
 
+        // Remote workflow custom header attribute ;)
+        public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
+
         // Date Time
         // ReSharper disable MemberCanBePrivate.Global
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
