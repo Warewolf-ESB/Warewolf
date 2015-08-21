@@ -1,5 +1,5 @@
 
-<Service ID="1dc0460b-28a1-43c0-96ab-f3ec25ffd6c6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithStar" ResourceType="WorkflowService" ServerVersion="0.0.5711.17296">
+<Service ID="1dc0460b-28a1-43c0-96ab-f3ec25ffd6c6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithStar" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>BaseConvertRecsetWithStar</DisplayName>
   <Category>Acceptance Testing Resources\BaseConvertRecsetWithStar</Category>
   <AuthorRoles>
@@ -181,9 +181,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>eECOYOt5kv/WtPfO/mQqLI7Eu/E=</DigestValue>
+        <DigestValue>N5QXWXr5H1a8acN/3kjhas1njEU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Z3YyEiWHGNenqhan6NLF3EghRBCLOnXQLyG89X+YMhGBKzefu09IPh5CVjKTd42eHAnnL7MjjIl7v47Ne1W1Wuwm7xD7NvkZ6hTF62KFRzUWgVLAZt2CFfrh01gr+X7MmuFZOHW3JP5R751zv8OHeXePz4Vxe3JhoVFqIJcfDNE=</SignatureValue>
+    <SignatureValue>bZqxvl5qQPpnEe4h0WFhECbDG4spl0A5dUBjx+7mbSnd3a+qn4TK45pHWP3MkCte3KHcu4gJzinIETKZqT/fEag1KvJjcd+ixePSa9MAZS3GhWm9zKySxmi8LaJiRGZPh9IHideJ5AT0PoPm3PKBdW8ofxS8mawZwFCWlxxw3ic=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="0441ec13-480c-4c72-82da-2a71e63dad00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner CSV WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5711.17296">
+<Service ID="0441ec13-480c-4c72-82da-2a71e63dad00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner CSV WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Inner CSV WF</DisplayName>
   <Category>Acceptance Testing Resources\Inner CSV WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -136,9 +136,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>DbF9H+HDDKJApyRBvGqUMjN6evg=</DigestValue>
+        <DigestValue>hN4VNdjpybWxdg5MyNzVqC5Gtnc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mw4Tae6d15ynKDkdfkbDAyT/HcRzNHzKu56725c4eUgqMz/MhjtsxHwWZkq1l3BMXs6ZFb5Kaj06IBJ/ccYUCJgrqpQmF2QbpkMa9Piy38vK23HrnKiBz12Liy0+tFg75tS5r3+sX+sK5PC7Zpi2M814W7d5ztyKXMVkoh6Cu38=</SignatureValue>
+    <SignatureValue>Tsh6MQYbcRCeKReDhJRJ9cCthZoodEElknTOMMJMa0GrVIo9lFIw1LBJK9khTmkoSm4BUU9RsgPFFJmHJ9wDQBY05qAUJ0+0aPCZ4yNTOr7PaUN0hMTIXkeF2Bt0m52/oqzfcuizc7LVOg6rDFXcQth1BIqKJnLvjqBmKtZulyw=</SignatureValue>
   </Signature>
 </Service>

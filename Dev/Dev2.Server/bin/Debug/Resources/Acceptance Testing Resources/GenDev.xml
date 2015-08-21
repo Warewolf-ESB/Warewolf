@@ -1,5 +1,5 @@
 
-<Source ID="62505a00-b304-4ac0-a55c-50ce85111f16" Version="1.0" Name="GenDev" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5711.17296">
+<Source ID="62505a00-b304-4ac0-a55c-50ce85111f16" Version="1.0" Name="GenDev" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>GenDev</DisplayName>
   <Category>Acceptance Testing Resources\GenDev</Category>
   <AuthorRoles>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>MExjjdIlmZk23HklYWGiPGJ3a8w=</DigestValue>
+        <DigestValue>imdw6VSE9yOGNEH3FsiqjeKCqXo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>hF03r+NydMHSddFUlPtZa/AKebzGpLUB7GGPn5YlOfbUcgLuuzJk1Rebx4/95MS5xeK4RMcfBZGYnLioJg/SUlnq7Jliz+gXdmEYFj7ZZYAl/PpdyD5BQeeKH91UJTWFQ8Yi5FGFtHOhL72MNfhEI9CGmBAvnwfUlzunfICtOpk=</SignatureValue>
+    <SignatureValue>bWFhvpQ2IsUJ/GH9wv440g3v6nUg7Ubz32CW4icDNJDHlCJplNW5Xjr/vWwKtPQBBRGN8n6zLDmyjvA8kFSUJuugfQYTgxHO06s2WueZ2FAeaue6xJfGH7270XGMcL98a9DRiAjlbjSTRUWeFZV4qJJVHUNNOgYaXY3XBXBQ4vE=</SignatureValue>
   </Signature>
 </Source>

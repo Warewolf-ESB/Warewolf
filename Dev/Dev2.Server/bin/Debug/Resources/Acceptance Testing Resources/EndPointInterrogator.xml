@@ -1,5 +1,5 @@
 
-<Service Name="EndPointInterrogator" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="77fa689a-8a80-448c-b53d-cf9d7e0852a4" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5711.17296">
+<Service Name="EndPointInterrogator" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="77fa689a-8a80-448c-b53d-cf9d7e0852a4" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="EndPointInterrogator"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -133,9 +133,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>wSX65e02Xm/BIRcLwCu+2qlWLTw=</DigestValue>
+        <DigestValue>8KaN4NV5iIrp1UPVM4pKX28NEco=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>TYMCto7eSvsfIDT6FEkKBKocNYoMCWlpqTrm/bLeNkoqPt2jNXsaUhoO6pXWzi4jLsa6v3t7SxTqX+0ikL1AFhT8HOLRF9/oejR9+USXP2H6gv2m23gOlptx+DPSZ3y2rTlVSqNZoC0HeYM/B8zZgB34jm2oDWJg7LPDrzPt5xA=</SignatureValue>
+    <SignatureValue>ao5+Z2ImOnadzSUyXpGj6GyLRRFnecTCxeDccjE/CcdJZ9AUbn5ZZ/orpVGIFqFjr5qUH675fenHViPSomOGsC42iTwnay4+vWJql6qPj1prlowlKfOYa2lXwcFaxrkltsKT4Gya18fwjXxq5F2eS/zUXn1vH/Avd3BFF8HAIWs=</SignatureValue>
   </Signature>
 </Service>

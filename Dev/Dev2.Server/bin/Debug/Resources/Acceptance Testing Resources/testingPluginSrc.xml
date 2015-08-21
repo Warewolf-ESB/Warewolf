@@ -1,5 +1,5 @@
 
-<Source Name="testingPluginSrc" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="bf69bfdf-6978-4f24-bd39-be6f38690c85" Version="1.0" ResourceType="PluginSource" ServerVersion="0.0.5711.17296">
+<Source Name="testingPluginSrc" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="bf69bfdf-6978-4f24-bd39-be6f38690c85" Version="1.0" ResourceType="PluginSource" ServerVersion="0.4.2.2">
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Plugin</Comment>
   <Category>Acceptance Testing Resources\testingPluginSrc</Category>
@@ -23,9 +23,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>A09lVwsfbxcK2M92oyw/nGKGrbA=</DigestValue>
+        <DigestValue>FRTRF5dBhlOcuqBS/zXz2Qma6Qc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>gFLvEgg+uFNkbXd0KAOBVc5ovl/23G/etCtfInhLefkI8YbjJ5VHFBMibazuCdgAIGriUB2m8qCxowonLcN2zeBXhNIvprJ1CQF6lS4yrXY5YludNvCAeWpqVlyEBhSlKHEAA04guCcr5ILIytwJjSaqWGsqkxL06y1cFysAFvM=</SignatureValue>
+    <SignatureValue>jjVHSYIubRFHKsg2eGozBOIfVbYcxf5X7LgyesN46epIENlPwep0lnsf67aUD3T05iuWwlKmlXqPAdmX58Yy4IB45Z1YTX4Vv3Hzf6mJbxiF2OVgwEDVa3Beibj4FvMugkUBkCdlcuaQ3Rl2wG+IPAdUeDxqvVp9IIDm32t9WIs=</SignatureValue>
   </Signature>
 </Source>
