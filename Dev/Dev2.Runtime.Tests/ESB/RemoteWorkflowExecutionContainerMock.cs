@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB
         public string LogExecutionUrl { get; private set; }
         public WebRequest LogExecutionWebRequest { get; private set; }
 
-        protected override string ExecuteGetRequest(Connection connection, string serviceName, string payload)
+        protected override string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode)
         {
             GetRequestUri = connection.Address;
             return GetRequestRespsonse;

@@ -316,6 +316,7 @@ namespace Dev2.DynamicServices
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
+        public bool RemoteNonDebugInvoke { get; set; }
 
         #endregion Properties
 
@@ -360,6 +361,7 @@ namespace Dev2.DynamicServices
             result.RawPayload = RawPayload;
             result.RemoteDebugItems = RemoteDebugItems;
             result.RemoteInvoke = RemoteInvoke;
+            result.RemoteNonDebugInvoke = RemoteNonDebugInvoke;
             result.IsRemoteInvokeOverridden = result.IsRemoteInvokeOverridden;
             result.RemoteInvokeResultShape = RemoteInvokeResultShape;
             result.RemoteInvokerID = RemoteInvokerID;
@@ -386,7 +388,7 @@ namespace Dev2.DynamicServices
 
         public bool IsDebugMode()
         {
-            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
+            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke ) && !RunWorkflowAsync;
         }
 
         #endregion

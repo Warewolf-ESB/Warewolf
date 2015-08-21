@@ -79,10 +79,15 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     if(isRemote != null && remoteId != null)
                     {
-                        if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                        if (isRemote.Equals(GlobalConstants.RemoteServerInvoke) )
                         {
                             // we have a remote invoke ;)
                             dataObject.RemoteInvoke = true;
+                        }
+                        if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
+                        {
+                            // we have a remote invoke ;)
+                            dataObject.RemoteNonDebugInvoke = true;
                         }
 
                         dataObject.RemoteInvokerID = remoteId;
@@ -150,7 +155,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var authorizationService = ServerAuthorizationService.Instance;
                     var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                     var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                    canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
+                    canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
                 }
                 // Build EsbExecutionRequest - Internal Services Require This ;)
                 EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
@@ -189,7 +194,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.WorkspaceID = workspaceGuid;
                         dataObject.ServiceName = serviceName;
                         
-                        if(!dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(!dataObject.IsDebug || dataObject.RemoteInvoke ||  dataObject.RemoteNonDebugInvoke)
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
