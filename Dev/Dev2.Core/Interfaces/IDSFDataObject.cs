@@ -99,5 +99,6 @@ namespace Dev2
         int ForEachUpdateValue { get; set; }
         DateTime StartTime { get; set; }
         Guid DebugEnvironmentId { get; set; }
+        bool RemoteNonDebugInvoke { get; set; }
     }
 }

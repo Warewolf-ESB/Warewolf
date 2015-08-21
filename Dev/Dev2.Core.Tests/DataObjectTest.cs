@@ -206,7 +206,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(55, properties.Length);
+            Assert.AreEqual(56, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -243,6 +243,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.RawPayload, clonedObject.RawPayload);
             Assert.AreEqual(dataObject.RemoteDebugItems, clonedObject.RemoteDebugItems);
             Assert.AreEqual(dataObject.RemoteInvoke, clonedObject.RemoteInvoke);
+            Assert.AreEqual(dataObject.RemoteNonDebugInvoke, clonedObject.RemoteNonDebugInvoke);
             Assert.AreEqual(dataObject.RemoteInvokeResultShape, clonedObject.RemoteInvokeResultShape);
             Assert.AreEqual(dataObject.RemoteInvokerID, clonedObject.RemoteInvokerID);
             Assert.AreEqual(dataObject.RemoteServiceType, clonedObject.RemoteServiceType);
@@ -277,6 +278,39 @@ namespace Dev2.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(isDebug);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_IsDebugIsTrueAndRunWorkflowAsyncIsTrue_RemoteInvokeNotDebug()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = true;
+            dataObject.IsDebug = true;
+            dataObject.RemoteNonDebugInvoke = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isDebug);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_IsDebugIsTrueAndRunWorkflowAsyncIsTrue_RemoteInvokeNotDebugRemote()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = false;
+            dataObject.IsDebug = false;
+            dataObject.RemoteNonDebugInvoke = true;
+            dataObject.RemoteInvoke = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isDebug);
+        }
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
