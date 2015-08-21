@@ -25,6 +25,10 @@ taskkill /im "Warewolf Server.exe" /T /F
 REM  Wait 5 seconds ;)
 ping -n 5 127.0.0.1 > nul
 
+REM ** Copy in Debug resources **
+IF EXIST "%~dp0..\..\BPM Resources - Debug" robocopy "%~dp0..\..\BPM Resources - Debug" "%~dp0..\..\Dev2.Server\bin\Debug\Resources" *.* /s
+IF EXIST "%DeploymentDirectory%\Resources" robocopy "%DeploymentDirectory%\Resources" "%DeploymentDirectory%\Server\Resources" *.* /s
+
 REM Init paths to Warewolf server under test
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
