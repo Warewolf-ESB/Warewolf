@@ -76,7 +76,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
-                hubCallerConnectionContext.Others.ItemAddedMessage(item);
+                hubCallerConnectionContext.All.ItemAddedMessage(item);
             }
         }
 
