@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
@@ -438,9 +439,10 @@ namespace Dev2.Studio.Core
                 defaultEnvironment.Connect();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
+            catch (Exception err)
             // ReSharper restore EmptyGeneralCatchClause
             {
+                Dev2Logger.Log.Info((err));
                 //Swallow exception for localhost connection
             }
             if (!defaultEnvironment.IsConnected)
