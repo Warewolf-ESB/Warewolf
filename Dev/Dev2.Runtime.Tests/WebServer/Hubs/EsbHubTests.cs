@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             {
                 messagePublished = true;
             });
-            mockClients.Setup(m => m.Others).Returns((ExpandoObject)all);
+            mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
             //------------Execute Test---------------------------
             hub.AddItemMessage(new ServerExplorerItem
                 {

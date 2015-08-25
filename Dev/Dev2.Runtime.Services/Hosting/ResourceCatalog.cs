@@ -905,8 +905,7 @@ namespace Dev2.Runtime.Hosting
             {
                 parser.RemoveFromCache(resource.ResourceID);
             }
-            //List<DynamicServiceObjectBase> objects;
-            //_frequentlyUsedServices.TryRemove(resource.ResourceName, out objects);
+
         }
 
         #endregion
