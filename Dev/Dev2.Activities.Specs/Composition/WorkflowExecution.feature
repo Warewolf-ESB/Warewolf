@@ -4167,3 +4167,17 @@ Scenario: Time Zone Changes
 	And the 'TimeZoneChange' in Workflow 'TimeZoneChangeTest' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+
+#FOREACH
+@ignore
+Scenario: ForEach Acceptance Tests
+	  Given I have a workflow "Master Test"
+	  And "Master Test" contains "Testing/For Each" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Master Test" is executed
+	Then the workflow execution has "NO" error
+	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |
