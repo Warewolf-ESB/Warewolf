@@ -95,5 +95,26 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             string x = m.Groups[1].Value;
             DpapiWrapper.Decrypt(x).Should().Be(_connectionString);
         }
+
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("EncryptionResourceUpgrader_Upgrade")]
+        // ReSharper disable InconsistentNaming
+        public void EncryptionResourceUpgrader_TwiceUpgrade_DoesNotEncrypt()
+        {
+            //------------Setup for test--------------------------
+            var upgrader = new EncryptionResourceUpgrader();
+            Regex cs = new Regex(@"ConnectionString=""([^""]+)""");
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
+            output.Should().NotBeNullOrEmpty();
+            output.Should().NotBe(_beforeContainingSource);
+            output.Should().NotContain(_connectionString);
+            string output2 = upgrader.EncryptSourceConnectionStrings(output);
+            output.Should().NotBeNullOrEmpty();
+            output2.Should().Be(output);
+        }
     }
 }

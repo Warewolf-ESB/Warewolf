@@ -76,7 +76,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
-                hubCallerConnectionContext.Others.ItemAddedMessage(item);
+                hubCallerConnectionContext.All.ItemAddedMessage(item);
             }
         }
 
@@ -377,13 +377,17 @@ namespace Dev2.Runtime.WebServer.Hubs
             
             SetupEvents();
 
-            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
-            ResourceCatalog.Instance.LoadResourceActivityCache(workspaceId);
-            var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-            user.SendWorkspaceID(workspaceId);
-            user.SendServerID(HostSecurityProvider.Instance.ServerID);
-            PermissionsHaveBeenModified(null, null);
+            Task t = new Task(() =>
+            {
+                var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+                ResourceCatalog.Instance.LoadResourceActivityCache(workspaceId);
+                var hubCallerConnectionContext = Clients;
+                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                user.SendWorkspaceID(workspaceId);
+                user.SendServerID(HostSecurityProvider.Instance.ServerID);
+                PermissionsHaveBeenModified(null, null);
+            });
+            t.Start();
         }
 
         protected void SetupEvents()
