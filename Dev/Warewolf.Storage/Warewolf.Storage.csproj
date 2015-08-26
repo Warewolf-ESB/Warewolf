@@ -72,12 +72,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="WarewolfAtomIterator.cs" />
     <Compile Include="WarewolfListIterator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
