@@ -440,6 +440,10 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
+            if (serverExplorerItem.ServerId == ServerID)
+            {
+                return;
+            }
             serverExplorerItem.ServerId = ID;
             if (ItemAddedMessageAction != null)
             {
@@ -597,8 +601,15 @@ namespace Dev2.Network
             };
 
             var result = new StringBuilder();
-            await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
-            string fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            try
+            {
+                await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+            }
+            var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
             result.Append(fragmentInvoke);
 
             // prune any result for old datalist junk ;)

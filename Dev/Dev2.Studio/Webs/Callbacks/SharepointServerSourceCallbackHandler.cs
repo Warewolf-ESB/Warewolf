@@ -49,11 +49,9 @@ namespace Dev2.Webs.Callbacks
             var sharepointSource = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
             var source = sharepointSource.ToStringBuilder();
 
-            var messaage = environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
-            if(!messaage.HasError)
-            {
-                environmentModel.ResourceRepository.ReloadResource(sharepointSource.ResourceID, ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-            }
+            environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);
+            environmentModel.ResourceRepository.ReloadResource(sharepointSource.ResourceID, ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+            
         }
 
         protected virtual void StartUriProcess(string uri)
