@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
+using Dev2.Providers.Logs;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
 
@@ -15,17 +17,15 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-//            _wrapped.TraceLevel = TraceLevels.All;
-//            _wrapped.DeadlockErrorTimeout = new TimeSpan(0, 0, 5, 0);
-//            _wrapped.TraceWriter = new ConsoleTraceListener().Writer;
+            _wrapped.TraceLevel = TraceLevels.All;
+            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public HubConnectionWrapper(string uriString)
             : this(new HubConnection(uriString))
         {
-//            _wrapped.TraceLevel = TraceLevels.Events;
-//            _wrapped.DeadlockErrorTimeout = new TimeSpan(0,0,5,0);
-//            _wrapped.TraceWriter = new ConsoleTraceListener().Writer;
+            _wrapped.TraceLevel = TraceLevels.Events;
+            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public IHubProxyWrapper CreateHubProxy(string hubName)
