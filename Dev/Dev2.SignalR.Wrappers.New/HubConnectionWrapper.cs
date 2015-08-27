@@ -17,15 +17,15 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-            _wrapped.TraceLevel = TraceLevels.All;
-            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
+//            _wrapped.TraceLevel = TraceLevels.All;
+//            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public HubConnectionWrapper(string uriString)
             : this(new HubConnection(uriString))
         {
-            _wrapped.TraceLevel = TraceLevels.Events;
-            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
+//            _wrapped.TraceLevel = TraceLevels.Events;
+//            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public IHubProxyWrapper CreateHubProxy(string hubName)
