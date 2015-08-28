@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Activities.XamlIntegration;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Principal;
 using Microsoft.Win32;
 
 namespace Dev2.Common
@@ -144,7 +145,7 @@ namespace Dev2.Common
 
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
-
+        public const string XMLPrefix = "~XML~";
         //Windows Service constants
         public const string ServiceName = "Warewolf Server";
 
@@ -331,6 +332,9 @@ or type_desc LIKE '%Procedure%'";
         // Remote workflow custom header attribute ;)
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
 
+        // Remote workflow custom header attribute ;)
+        public static readonly string RemoteDebugServerInvoke = "RemoteWarewolfServerDebug";
+
         // Date Time
         // ReSharper disable MemberCanBePrivate.Global
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
@@ -338,7 +342,7 @@ or type_desc LIKE '%Procedure%'";
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
-
+        public const string GlobalDefaultNowFormat = "yyyy/MM/dd hh:mm:ss.fff tt";
         // Query Network Computer Names
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 
@@ -431,6 +435,30 @@ or type_desc LIKE '%Procedure%'";
             }
         }
         public static int AddPopupTimeDelay = 2000;
+        static GenericPrincipal _user;
+
+
+        public static IPrincipal GenericPrincipal
+        {
+            get
+            {
+                if(_user == null)
+                {
+                    var genericIdentity = new GenericIdentity("GenericPublicUser");
+                    var user = new GenericPrincipal(genericIdentity, new string[0]);
+                    _user = user;
+                }
+                return _user;
+            }
+        }
+        public static string UserAgentString
+        {
+            get
+            {
+                return "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+            }
+     
+        }
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

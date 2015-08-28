@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Properties;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -157,6 +158,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
             viewModel.OnSelectedDatabaseChanged();
+            viewModel.EditDatabaseCommand.RaiseCanExecuteChanged();
         }
 
 
@@ -184,6 +186,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
             viewModel.OnSelectedTableChanged();
+            viewModel.RefreshTablesCommand.RaiseCanExecuteChanged();
         }
 
 
@@ -354,6 +357,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             LoadDatabaseTables(() =>
             {
                 SetSelectedTable(TableName);
+
                 LoadTableColumns(() =>
                 {
                     IsRefreshing = false;
@@ -463,7 +467,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                             inputcolumn = inputcolumn.Replace("[", "");
                             inputcolumn = inputcolumn.Replace("]", "");
                             inputcolumn = inputcolumn.Replace(" ", "");
-                            mapping.InputColumn = inputcolumn;
+                            mapping.InputColumn = string.Format("[[{0}]]", inputcolumn);
                         }
                     }
                     if (string.IsNullOrEmpty(mapping.InputColumn))
@@ -738,7 +742,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 QuickVariableInputViewModel.Overwrite = true;
                 QuickVariableInputViewModel.IsOverwriteEnabled = false;
                 QuickVariableInputViewModel.RemoveEmptyEntries = false;
-                QuickVariableInputViewModel.SplitType = Core.QuickVariableInput.QuickVariableInputViewModel.SplitTypeNewLine;
+                QuickVariableInputViewModel.SplitType = QuickVariableInputViewModel.SplitTypeNewLine;
                 QuickVariableInputViewModel.VariableListString = string.Join(Environment.NewLine, mappings.Select(GetFieldName));
                 QuickVariableInputViewModel.Prefix = GetRecordsetName(mappings) + "(*).";
             }

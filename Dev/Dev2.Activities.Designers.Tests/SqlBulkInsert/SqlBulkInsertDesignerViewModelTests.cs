@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             // ReSharper disable ObjectCreationAsStatement
             var x = CreateModelItem();
             var vm = new SqlBulkInsertDesignerViewModel(x);
-            Assert.AreEqual(x,vm.ModelItem);
+            Assert.AreEqual(x, vm.ModelItem);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         {
             //------------Setup for test--------------------------
             var modelItem = CreateModelItem();
- 
+
             const int DatabaseCount = 2;
             var databases = CreateDatabases(DatabaseCount);
 
@@ -171,15 +171,15 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(modelItem, databases);
             viewModel.IsTimeoutFocused = true;
             Assert.IsTrue(viewModel.IsTimeoutFocused);
-            
+
             viewModel.IsSelectedDatabaseFocused = true;
             Assert.IsTrue(viewModel.IsSelectedDatabaseFocused);
-            
+
             viewModel.IsResultFocused = true;
             Assert.IsTrue(viewModel.IsResultFocused);
 
             Assert.IsFalse(viewModel.IsTableSelected);
-            
+
             viewModel.IsTimeoutFocused = true;
             Assert.IsTrue(viewModel.IsTimeoutFocused);
             viewModel.IsBatchSizeFocused = true;
@@ -257,7 +257,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.IsFalse(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);
             Assert.AreEqual(0, viewModel.OnSelectedTableChangedHitCount);
-
+            Assert.IsTrue(viewModel.EditDatabaseCommand.CanExecute(null));
             // Skip "Select a table" 
             VerifyTables(databases[expectedDatabase], viewModel.Tables.Skip(1).ToList());
         }
@@ -273,7 +273,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
             var selectedTable = selectedTables.Items[1];
-            selectedTable.Columns.Add(new DbColumn {ColumnName = "monkey see"});
+            selectedTable.Columns.Add(new DbColumn { ColumnName = "monkey see" });
             var initialDatabase = databases.Keys.Skip(1).First();
             var initialTable = databases[initialDatabase].Items[3];
             initialTable.TableName = selectedTable.TableName;
@@ -400,7 +400,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dbTable.FullName, viewModel.TableName);
-
+            Assert.IsTrue(viewModel.RefreshTablesCommand.CanExecute(null));
             Assert.IsTrue(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedTableChangedHitCount);
 
@@ -464,7 +464,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var expectedInputColumns = selectedTable.Columns.Select(c => string.Format("[[{0}(*).{1}]]", selectedTable.TableName, c.ColumnName)).ToList();
 
-            for(var i = 0; i < expectedInputColumns.Count; i++)
+            for (var i = 0; i < expectedInputColumns.Count; i++)
             {
                 Assert.AreEqual(expectedInputColumns[i], actualInputColumns[i]);
             }
@@ -485,13 +485,12 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
             modelItem.SetProperty("TableName", selectedTable.FullName);
-            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c ,InputColumn = "bob the"}).ToList());
+            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = "bob the" }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
 
             //------------Execute Test---------------------------
             viewModel.RefreshTablesCommand.Execute(null);
-
 
             //------------Assert Results-------------------------
             Assert.AreEqual(selectedTable.TableName, viewModel.SelectedTable.TableName);
@@ -503,6 +502,38 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             VerifyColumns(selectedTable.Columns, actual);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_RefreshTablesCommand")]
+        public void SqlBulkInsertDesignerViewModel_RefreshTablesCommand_SecondTime_ReloadsTableAndColumns()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[3];
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.FullName);
+            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = "bob the" }).ToList());
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            //------------Execute Test---------------------------
+            viewModel.RefreshTablesCommand.Execute(null);
+            viewModel.RefreshTablesCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(selectedTable.TableName, viewModel.SelectedTable.TableName);
+
+            VerifyTables(selectedTables, viewModel.Tables.ToList());
+
+            var actual = viewModel.InputMappings.Select(m => m.OutputColumn).ToList();
+
+            VerifyColumns(selectedTable.Columns, actual);
+        }
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_EditDbSource")]
@@ -627,7 +658,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             var errors = viewModel.Errors;
-            Assert.AreEqual(1,errors.Count);
+            Assert.AreEqual(1, errors.Count);
             StringAssert.Contains(errors[0].Message, "'Input Data or [[Variable]]' - Recordset Field [ db0_column_1_1 ] does not exist for [ Db0_Table_1(*) ]");
         }
 
@@ -977,7 +1008,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
 
-            foreach(var mapping in viewModel.InputMappings)
+            foreach (var mapping in viewModel.InputMappings)
             {
                 var expectedInputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName, mapping.OutputColumn.ColumnName);
                 Assert.AreEqual(expectedInputColumn, mapping.InputColumn);
@@ -991,7 +1022,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             var actualInputColumns = viewModel.InputMappings.Select(m => m.InputColumn).ToList();
-            for(var i = 0; i < expectedInputColumns.Count; i++)
+            for (var i = 0; i < expectedInputColumns.Count; i++)
             {
                 Assert.AreEqual(expectedInputColumns[i], actualInputColumns[i]);
             }
@@ -1066,7 +1097,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         static void VerifyTables(DbTableList expectedTables, List<DbTable> actualTables)
         {
-            for(var i = 0; i < expectedTables.Items.Count; i++)
+            for (var i = 0; i < expectedTables.Items.Count; i++)
             {
                 var expected = expectedTables.Items[i];
                 var actual = actualTables[i];
@@ -1077,7 +1108,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         static void VerifyColumns(List<IDbColumn> expected, List<IDbColumn> actual)
         {
-            for(var j = 0; j < expected.Count; j++)
+            for (var j = 0; j < expected.Count; j++)
             {
                 Assert.AreEqual(expected[j].ColumnName, actual[j].ColumnName);
                 Assert.AreEqual(expected[j].SqlDataType, actual[j].SqlDataType);
@@ -1106,14 +1137,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var resourceRepo = new Mock<IResourceRepository>();
 
-            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<StringBuilder>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>(), It.IsAny<Guid>()))
+            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<StringBuilder>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>()))
                 .Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", sourceDefs == null ? "" : string.Join("\n", sourceDefs))));
 
             // return the resource repository now ;)
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
 
             // setup the FindSourcesByType command
-            if(sources != null)
+            if (sources != null)
             {
                 var dbs = sources.Keys.ToList();
                 resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SqlDatabase)).Returns(dbs);
@@ -1124,7 +1155,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
             // ReSharper restore ImplicitlyCapturedClosure
             {
-                if(sources != null)
+                if (sources != null)
                 {
                     var tableList = sources[src];
                     tableJson = tableList;
@@ -1139,14 +1170,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             // ReSharper restore ImplicitlyCapturedClosure
             {
                 var tableName = tbl.TableName;
-                if(sources != null)
+                if (sources != null)
                 {
                     var tables = sources[src];
 
-                    var table = tables.Items.First(t => t.TableName == tableName.Trim(new[] { '"' }));
+                    var table = tables.Items.First(t => t.TableName == tableName.Trim('"'));
                     var columnList = new DbColumnList();
                     columnList.Items.AddRange(table.Columns);
-                    if(!string.IsNullOrEmpty(columnListErrors))
+                    if (!string.IsNullOrEmpty(columnListErrors))
                     {
                         columnList.HasErrors = true;
                         columnList.Errors = columnListErrors;
@@ -1156,10 +1187,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 // ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => columnsJson);
             // ReSharper restore ImplicitlyCapturedClosure
-            
-            if(configureFindSingle)
+
+            if (configureFindSingle)
             {
-                envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel);
+                envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceModel);
             }
 
             return new TestSqlBulkInsertDesignerViewModel(modelItem, envModel.Object, eventAggregator);
@@ -1175,19 +1206,19 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         {
             var result = new Dictionary<DbSource, DbTableList>();
 
-            for(var i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var dbName = "Db" + i;
 
                 var tables = new List<DbTable>();
-                for(var j = 0; j < 10; j++)
+                for (var j = 0; j < 10; j++)
                 {
                     var columns = new List<IDbColumn>();
                     var colCount = ((j % 4) + 1) * (i + 1);
-                    for(var k = 0; k < colCount; k++)
+                    for (var k = 0; k < colCount; k++)
                     {
                         var t = k % 4;
-                        switch(t)
+                        switch (t)
                         {
                             case 0:
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.VarChar, MaxLength = 50, IsNullable = varcharNullable });

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -116,10 +116,13 @@ namespace Dev2.Activities.Designers2.DataMerge
 
         protected override void OnDispose()
         {
-            foreach(var mi in  ModelItemCollection)
+            if(ModelItemCollection != null)
             {
-                var dto = mi.GetCurrentValue() as DataMergeDTO;
-                CEventHelper.RemoveAllEventHandlers(dto);
+                foreach(var mi in  ModelItemCollection)
+                {
+                    var dto = mi.GetCurrentValue() as DataMergeDTO;
+                    CEventHelper.RemoveAllEventHandlers(dto);
+                }
             }
             base.OnDispose();
         }

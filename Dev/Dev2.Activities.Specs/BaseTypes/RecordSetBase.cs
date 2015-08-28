@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,11 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -21,6 +16,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -61,7 +60,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                         {
-                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2=="blank"?"":variable.Item2);
+                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2=="blank"?"":variable.Item2,0);
                         }
                         //Build(variable, shape, data, row);
                         row++;
@@ -81,7 +80,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
-                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
+                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2, 0);
                     //var recSetElement = shape
                     //                  .Descendants(emptyRecord.Item1)
                     //                  .FirstOrDefault();

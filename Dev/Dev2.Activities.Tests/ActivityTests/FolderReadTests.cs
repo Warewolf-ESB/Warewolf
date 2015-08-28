@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -35,40 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-
-// ReSharper disable InconsistentNaming
-        public void FolderReadActivity_GetInputs_Expected_Four_Input()
-// ReSharper restore InconsistentNaming
-        {
-            DsfFolderRead testAct = new DsfFolderRead();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var res = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(7, res);
-        }
-
-        [TestMethod]
-        public void FolderReadActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfFolderRead testAct = new DsfFolderRead();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var res = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, res);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         // ReSharper disable InconsistentNaming
 

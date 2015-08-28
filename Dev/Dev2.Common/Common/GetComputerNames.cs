@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Linq;
 using System.Management;
 using System.Security.Principal;
 
@@ -20,24 +21,24 @@ namespace Dev2.Common.Common
     /// </summary>
     public class GetComputerNames
     {
-        private static List<string> CurrentComputerNames;
+        private static List<string> _currentComputerNames;
 
         public static List<string> ComputerNames
         {
             get
             {
-                if (CurrentComputerNames == null)
+                if (_currentComputerNames == null)
                 {
                     GetComputerNamesList();
                 }
 
-                return CurrentComputerNames;
+                return _currentComputerNames;
             }
         }
 
         public static void GetComputerNamesList()
         {
-            CurrentComputerNames = StandardComputerNameQuery();
+            _currentComputerNames = StandardComputerNameQuery();
         }
 
         /// <summary>
@@ -91,16 +92,7 @@ namespace Dev2.Common.Common
 
                 DirectoryEntries kids = root.Children;
 
-                var result = new List<string>();
-                foreach (DirectoryEntry node in kids)
-                {
-                    if (node.SchemaClassName == "Computer")
-                    {
-                        result.Add(node.Name);
-                    }
-                }
-
-                return result;
+                return (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
             }
 
             // big problems, add this computer and return

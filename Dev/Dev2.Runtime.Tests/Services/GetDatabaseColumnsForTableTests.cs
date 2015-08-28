@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,11 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
@@ -138,7 +138,7 @@ namespace Dev2.Tests.Runtime.Services
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             Assert.AreEqual(4, result.Items.Count);
 
@@ -184,11 +184,12 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
+            ResourceCatalog.Instance.ResourceSaved = resource => { };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             string someJsonData = JsonConvert.SerializeObject(dbSource,new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -201,7 +202,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             Assert.AreEqual(3, result.Items.Count);
 
@@ -233,7 +234,7 @@ namespace Dev2.Tests.Runtime.Services
             string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
@@ -246,7 +247,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             });
             Assert.AreEqual(3, result.Items.Count);
 

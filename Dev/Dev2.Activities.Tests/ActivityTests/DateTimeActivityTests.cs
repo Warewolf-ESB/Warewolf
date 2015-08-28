@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -237,33 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         #endregion DateTime Tests
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void DateTimeActivity_GetInputs_Expected_Five_Input()
-        {
-            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(5, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void DateTimeActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         #region Private Test Methods
 

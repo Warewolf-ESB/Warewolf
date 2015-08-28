@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,8 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
+// ReSharper disable InconsistentNaming
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
+namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -29,7 +30,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Collection()");
 
-            string expected = "Collection()";
+            const string expected = "Collection()";
             string actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
@@ -44,7 +45,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
@@ -59,7 +60,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Collection()");
 
-            string expected = "Collection";
+            const string expected = "Collection";
             string actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
@@ -74,7 +75,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Collection()");
 
-            string expected = "Collection()";
+            const string expected = "Collection()";
             string actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
@@ -89,7 +90,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
@@ -104,7 +105,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
             PocoPath path = new PocoPath();
             IPathSegment segment = path.CreatePathSegment("Name");
 
-            string expected = "Name";
+            const string expected = "Name";
             string actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);

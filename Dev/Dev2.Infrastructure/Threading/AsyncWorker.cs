@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dev2.Threading
@@ -88,7 +89,7 @@ namespace Dev2.Threading
         {
             // Get the UI thread's context
             // NOTE: System.Threading.SynchronizationContext.Current is null when testing so use default instead
-            var context = System.Threading.SynchronizationContext.Current != null
+            var context = SynchronizationContext.Current != null
                 ? TaskScheduler.FromCurrentSynchronizationContext()
                 : TaskScheduler.Default;
             return context;

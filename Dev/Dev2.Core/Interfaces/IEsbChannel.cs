@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,9 +9,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Warewolf.Storage;
@@ -41,8 +39,9 @@ namespace Dev2
         /// <param name="dataObject">The data object.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors);
+        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, int update);
 
         /// <summary>
         ///     Executes the sub request.
@@ -52,9 +51,9 @@ namespace Dev2
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs,
-            out ErrorResultTO errors);
+        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update);
 
         /// <summary>
         ///     Finds the service shape.
@@ -64,34 +63,12 @@ namespace Dev2
         /// <returns></returns>
         StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId);
 
-        /// <summary>
-        ///     Shapes for sub request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject,
-            string inputDefs, string outputDefs, out ErrorResultTO errors);
-
-        /// <summary>
-        ///     Gets the correct data list.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="compiler">The compiler.</param>
-        /// <returns></returns>
-        Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors,
-            IDataListCompiler compiler);
-
-        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors);
+        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update);
 
 
-        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs);
+        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update);
 
-        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs);
+        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel

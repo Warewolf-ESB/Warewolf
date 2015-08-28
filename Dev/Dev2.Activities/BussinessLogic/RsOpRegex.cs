@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,8 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Dev2.DataList.Contract.Binary_Objects;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -25,13 +24,13 @@ namespace Dev2.DataList
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
             if (all)
-                return (a) => values.All(x =>
+                return a => values.All(x =>
                 {
                     Regex exp = new Regex(x.ToString());
                     return exp.IsMatch(a.ToString());
 
                 });
-            return (a) => values.Any(x =>
+            return a => values.Any(x =>
             {
                 Regex exp = new Regex(x.ToString());
                 return exp.IsMatch(a.ToString());

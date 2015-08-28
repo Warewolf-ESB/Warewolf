@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,14 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2
 {
-    public class CaseConverter : ICaseConverter
+    public class CaseConverter
     {
         #region Class Members
 
@@ -44,31 +40,6 @@ namespace Dev2
         #endregion Ctor
 
         #region Methods
-
-        public IBinaryDataListItem TryConvert(string conversionType, IBinaryDataListItem item)
-        {
-            Func<string, string> returnedFunc;
-            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type",
-                GlobalConstants.EvalautionScalar);
-            if (_convertFunctions.TryGetValue(conversionType, out returnedFunc))
-            {
-                if (returnedFunc != null)
-                {
-                    string tmp = returnedFunc.Invoke(item.TheValue);
-                    if (item.Namespace != string.Empty)
-                    {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName,
-                            item.ItemCollectionIndex);
-                    }
-                    else
-                    {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.FieldName);
-                    }
-                }
-            }
-
-            return result;
-        }
 
         #endregion Methods
 
@@ -134,9 +105,10 @@ namespace Dev2
             string str = txInfo.ToTitleCase(stringToConvert);
 
             //Juries Bug 8725
-            var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
+            //var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
 
-            return reg.Replace(str, s => s.Value.ToLower());
+            //return reg.Replace(str, s => s.Value.ToLower());
+            return str;
         }
 
         #endregion Convert Methods

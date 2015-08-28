@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Threading;
@@ -27,7 +26,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceID = GetWorkspaceID(ctx);
 
             var requestTO = new WebRequestTO();
-            var xml = GetPostData(ctx, postDataListID);
+            var xml = GetPostData(ctx);
 
             if(!String.IsNullOrEmpty(xml))
             {
@@ -40,11 +39,18 @@ namespace Dev2.Runtime.WebServer.Handlers
             requestTO.WebServerUrl = ctx.Request.Uri.ToString();
             requestTO.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-
+            var variables = ctx.Request.BoundVariables;
+            if (variables != null)
+            {
+                foreach (string key in variables)
+                {
+                    requestTO.Variables.Add(key, variables[key]);
+                }
+            }
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
-
-            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
+           // requestTO.Variables.Add(ctx.Request.BoundVariables);
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
 
         }

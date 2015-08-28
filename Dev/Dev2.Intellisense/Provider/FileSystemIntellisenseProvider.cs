@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,7 +51,7 @@ namespace Dev2.Intellisense.Provider
             if (caretPosition < 0 || caretPosition>inputText.Length)
                 return string.Empty;
 
-            var regions = inputText.Split(new[] { ' ' }); // we can safely do this because the default provider handles the language features
+            var regions = inputText.Split(' '); // we can safely do this because the default provider handles the language features
 
             var sum = 0;
             int items = 0;
@@ -63,7 +63,7 @@ namespace Dev2.Intellisense.Provider
             }).Select(a => a.a).ToList();
             regionsText[regionsText.Count - 1] = input;// set caret region to replacement text
 
-            var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(new[] { ' ' }); // fold back together
+            var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(' '); // fold back together
             context.CaretPositionOnPopup = prefix.Length;
             context.CaretPosition = prefix.Length;
             int i = 0;
@@ -95,7 +95,7 @@ namespace Dev2.Intellisense.Provider
                 if(!InLiteralRegion(context.InputText, context.CaretPosition))
                 {
                     IntellisenseResults.Clear();
-                    var regions = context.InputText.Split(new[] { ' ' });
+                    var regions = context.InputText.Split(' ');
                     var sum = 0;
                     string searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
                         {

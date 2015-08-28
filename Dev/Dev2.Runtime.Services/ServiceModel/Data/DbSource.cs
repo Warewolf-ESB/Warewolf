@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -48,8 +49,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                     ServerType = enSourceType.Unknown;
                     break;
             }
-
-            ConnectionString = xml.AttributeSafe("ConnectionString");
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ConnectionString = connectionString;
         }
 
         #endregion
@@ -131,8 +133,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
 
                 AuthenticationType = AuthenticationType.Windows;
-
-                foreach(var prm in value.Split(';').Select(p => p.Split('=')))
+                
+                foreach (var prm in value.Split(';').Select(p => p.Split('=')))
                 {
                     int port;
                     switch(prm[0].ToLowerInvariant())
@@ -185,7 +187,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
             result.Add(new XAttribute("Type", ServerType));
-            result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));
+            result.Add(new XAttribute("ConnectionString", DpapiWrapper.Encrypt(ConnectionString) ?? string.Empty));
 
             result.Add(new XElement("AuthorRoles", string.Empty));
             result.Add(new XElement("Comment", string.Empty));

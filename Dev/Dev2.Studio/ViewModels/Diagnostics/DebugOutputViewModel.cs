@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,12 +17,12 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Messages;
@@ -57,7 +57,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly IDebugOutputFilterStrategy _debugOutputFilterStrategy;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
-
+        readonly IPopupController _popup;
         readonly object _syncContext = new object();
 
         int _depthMin;
@@ -72,13 +72,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ICommand _openItemCommand;
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
         string _searchText = string.Empty;
-        bool _showDuratrion;
+        bool _showDuration = true;
         bool _showInputs = true;
         bool _showOptions;
         ICommand _showOptionsCommand;
         bool _showOutputs = true;
         bool _showServer = true;
-        bool _showTime;
+        bool _showTime = true;
         bool _showType = true;
         bool _showVersion;
         bool _skipOptionsCommandExecute;
@@ -109,6 +109,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
 
             SessionID = Guid.NewGuid();
+            _popup = CustomContainer.Get<IPopupController>();
         }
 
         #endregion
@@ -344,13 +345,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///     <c>true</c> if [show duratrion]; otherwise, <c>false</c>.
         /// </value>
-        public bool ShowDuratrion
+        public bool ShowDuration
         {
-            get { return _showDuratrion; }
+            get { return _showDuration; }
             set
             {
-                _showDuratrion = value;
-                NotifyOfPropertyChange(() => ShowDuratrion);
+                _showDuration = value;
+                NotifyOfPropertyChange(() => ShowDuration);
             }
         }
 
@@ -532,7 +533,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 catch(Exception ex)
                 {
                     Dev2Logger.Log.Error(ex);
-                    throw;
+                    if (ex.Message.Contains("The remote name could not be resolved"))
+                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please insure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "");
+                    else
+                        throw;
                 }
             }
         }
@@ -725,57 +729,72 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         // BUG 9735 - 2013.06.22 - TWR : refactored
         void AddItemToTree(IDebugState content)
         {
-            var environmentId = content.EnvironmentID;
-            var isRemote = environmentId != Guid.Empty;
-            if(isRemote)
+            if (content.StateType == StateType.Duration)
             {
-               Thread.Sleep(500);
-            }
-            if(isRemote)
-            {
-                var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
-                if(remoteEnvironmentModel != null)
+                var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
+           
+                if (item != null)
                 {
-                    if(!remoteEnvironmentModel.IsConnected)
-                    {
-                        remoteEnvironmentModel.Connect();
-                    }
-                    if(content.ParentID != Guid.Empty)
-                    {
-                        if(remoteEnvironmentModel.AuthorizationService != null)
-                        {
-                            var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
-                            if(!remoteResourcePermissions.HasFlag(Permissions.View))
-                            {
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            _contentItems.Add(content);
-
-            lock(_syncContext)
-            {
-                if(_isRebuildingTree)
-                {
-                    return;
-                }
-            }
-
-            var application = Application.Current;
-            if(application != null)
-            {
-                var dispatcher = application.Dispatcher;
-                var contentToDispatch = content;
-                if(dispatcher != null && dispatcher.CheckAccess())
-                {
-                    dispatcher.Invoke(() => AddItemToTreeImpl(contentToDispatch));
+                    item.EndTime = content.EndTime;
+                    //RebuildTree();
                 }
             }
             else
             {
-                AddItemToTreeImpl(content);
+                var environmentId = content.EnvironmentID;
+                var isRemote = environmentId != Guid.Empty;
+                if (isRemote)
+                {
+                    Thread.Sleep(500);
+                }
+                if (isRemote)
+                {
+                    var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
+                    if (remoteEnvironmentModel != null)
+                    {
+                        if (content.Server == "localhost")
+                            content.Server = remoteEnvironmentModel.Name;
+                        if (!remoteEnvironmentModel.IsConnected)
+                        {
+                            remoteEnvironmentModel.Connect();
+                        }
+                        if (content.ParentID != Guid.Empty)
+                        {
+                            if (remoteEnvironmentModel.AuthorizationService != null)
+                            {
+                                var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
+                                if (!remoteResourcePermissions.HasFlag(Permissions.View))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                _contentItems.Add(content);
+
+                lock (_syncContext)
+                {
+                    if (_isRebuildingTree)
+                    {
+                        return;
+                    }
+                }
+
+                var application = Application.Current;
+                if (application != null)
+                {
+                    var dispatcher = application.Dispatcher;
+                    var contentToDispatch = content;
+                    if (dispatcher != null && dispatcher.CheckAccess())
+                    {
+                        dispatcher.Invoke(() => AddItemToTreeImpl(contentToDispatch));
+                    }
+                }
+                else
+                {
+                    AddItemToTreeImpl(content);
+                }
             }
         }
 
@@ -846,6 +865,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             return;
                         }
+                     
                         theParent.AppendError(content.ErrorMessage);
                         theParent.HasError = true;
                     }
@@ -857,8 +877,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
 
         }
-
-        readonly object _debugDispatch = new object();
 
         #endregion
 

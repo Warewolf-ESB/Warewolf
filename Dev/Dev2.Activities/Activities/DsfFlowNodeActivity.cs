@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,14 +17,11 @@ using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decision;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Microsoft.CSharp.Activities;
@@ -99,13 +96,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             _dataObject = context.GetExtension<IDSFDataObject>();
-            DataListFactory.CreateDataListCompiler();
             _dataListId = _dataObject.DataListID;
             InitializeDebug(_dataObject);
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(_dataObject, StateType.Before);
+                DispatchDebugState(_dataObject, StateType.Before, 0);
             }
 
        
@@ -130,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject != null && dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After, 0);
                 }
 
                 OnExecutedCompleted(context, false, false);
@@ -150,9 +146,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
             dataObject.Environment.AddError(propagatedException.Message);
-            if(dataObject != null && dataObject.IsDebugMode())
+            if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.After, 0);
             }
             OnExecutedCompleted(faultContext, true, false);
         }
@@ -162,21 +158,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (_debugInputs != null && _debugInputs.Count > 0)
             {
                 return _debugInputs;
             }
             List<IDebugItem> result = new List<IDebugItem>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
 
             var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
 
             try
             {
-                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+                Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
                 ErrorResultTO error;
                 string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
@@ -212,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
 
-                var a = env.Eval(ds.SwitchVariable);
+                var a = env.Eval(ds.SwitchVariable, 0);
                 var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -245,7 +240,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }
@@ -278,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             if (_debugOutputs != null && _debugOutputs.Count > 0)
             {
@@ -287,12 +282,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
 
             try
             {
-                Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+                Dev2DecisionStack dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(val);
 
                 if(_theResult.ToString() == "True")
                 {
@@ -322,73 +316,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Debug Methods
-
-        private string EvaluateExpressiomToStringValue(string expression, Dev2DecisionMode mode, IBinaryDataList dataList)
-        {
-            string result = string.Empty;
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-            if(dlEntry != null && dlEntry.IsRecordset)
-            {
-                if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
-                {
-                    int index;
-                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(expression), out index))
-                    {
-                        string error;
-                        IList<IBinaryDataListItem> listOfCols = dlEntry.FetchRecordAt(index, out error);
-                        if(listOfCols != null)
-                        {
-                            foreach(IBinaryDataListItem binaryDataListItem in listOfCols)
-                            {
-                                result = binaryDataListItem.TheValue;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
-                    {
-                        IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                        IBinaryDataListEntry entry = c.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-                        IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(entry);
-                        colItr.AddIterator(col1Iterator);
-
-                        bool firstTime = true;
-                        while(colItr.HasMoreData())
-                        {
-                            if(firstTime)
-                            {
-                                result = colItr.FetchNextRow(col1Iterator).TheValue;
-                                firstTime = false;
-                            }
-                            else
-                            {
-                                result += " " + mode + " " + colItr.FetchNextRow(col1Iterator).TheValue;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        result = string.Empty;
-                    }
-                }
-            }
-            else
-            {
-                if(dlEntry != null)
-                {
-                    var scalarItem = dlEntry.FetchScalar();
-                    result = scalarItem.TheValue;
-                }
-            }
-
-
-            return result;
-        }
 
         #endregion
 
@@ -452,7 +379,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+   
+
+
+                return UniqueID.GetHashCode();
+
+
+
         }
 
         #endregion

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.ESB.WF
     /// </summary>
     public class WorkflowApplicationFactory
     {
-        public static long Balance = 0;
+        public static long Balance;
         private DateTime _runTime;
 
         public ErrorResultTO AllErrors { get; private set; }
@@ -124,12 +125,10 @@ namespace Dev2.Runtime.ESB.WF
                 }
 
                 // Force a save to the server ;)
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
 
                 wfApp.Extensions.Add(dataTransferObject);
-                wfApp.Extensions.Add(compiler);
                 wfApp.Extensions.Add(parser);
 
             }
@@ -236,9 +235,9 @@ namespace Dev2.Runtime.ESB.WF
                     dataTransferObject = run.DataTransferObject.Clone();
                     var wfappUtils = new WfApplicationUtils();
 
-                    ErrorResultTO invokeErrors;
                     if (dataTransferObject.IsDebugMode())
                     {
+                        ErrorResultTO invokeErrors;
                         wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, _runTime, false, true);
                     }
                     //AllErrors.MergeErrors(invokeErrors);

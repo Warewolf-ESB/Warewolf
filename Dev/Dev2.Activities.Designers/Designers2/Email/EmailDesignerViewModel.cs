@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Communication;
 using Dev2.Data.Enums;
+using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -105,7 +106,13 @@ namespace Dev2.Activities.Designers2.Email
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
-        public bool IsEmailSourceSelected { get { return SelectedEmailSource != SelectEmailSource; } }
+        public bool IsEmailSourceSelected
+        {
+            get
+            {
+                return SelectedEmailSource != SelectEmailSource;
+            }
+        }
 
         public bool CanEditSource { get; set; }
 
@@ -208,6 +215,7 @@ namespace Dev2.Activities.Designers2.Email
             var testEmailAccount = GetTestEmailAccount();
             if(string.IsNullOrEmpty(testEmailAccount))
             {
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
                 return;
             }
             CanTestEmailAccount = false;
@@ -220,12 +228,48 @@ namespace Dev2.Activities.Designers2.Email
             }
             testSource.TestFromAddress = testSource.UserName;
             testSource.TestToAddress = testEmailAccount;
-
+            if (EmailAddresssIsAVariable(testEmailAccount))
+            {
+                return;
+            }
             Uri uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
             var jsonData = testSource.ToString();
 
             var requestInvoker = CreateWebRequestInvoker();
             requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
+        }
+
+        bool EmailAddresssIsAVariable(string testEmailAccount)
+        {
+            var postResult = "";
+            var hasVariable = false;
+            if(DataListUtil.IsFullyEvaluated(testEmailAccount))
+            {
+                postResult += "Variable " + testEmailAccount + " cannot be used while testing.";
+                hasVariable = true;
+            }
+            if(DataListUtil.IsFullyEvaluated(FromAccount))
+            {
+                var errorMessage = "Variable " + FromAccount + " cannot be used while testing.";
+                if(string.IsNullOrEmpty(postResult))
+                {
+                    postResult += errorMessage;
+                }
+                else
+                {
+                    postResult += Environment.NewLine + errorMessage;
+                }
+                hasVariable = true;
+            }
+            if(hasVariable)
+            {
+                var validationResult = new ValidationResult();
+                validationResult.ErrorMessage = postResult;
+                validationResult.IsValid = false;
+                OnTestCompleted(new Dev2JsonSerializer().Serialize(validationResult));
+                return true;
+            }
+            return false;
         }
 
         void OnTestCompleted(string postResult)
@@ -263,18 +307,20 @@ namespace Dev2.Activities.Designers2.Email
                 EmailSources.Remove(SelectEmailSource);
             }
             EmailSource = SelectedEmailSource;
+            EditEmailSourceCommand.RaiseCanExecuteChanged();
         }
 
         void RefreshSources(bool isInitializing = false)
         {
             IsRefreshing = true;
+            var selectedEmailSource = EmailSource;
             if(isInitializing)
             {
                 _isInitializing = true;
             }
             LoadSources(() =>
             {
-                SetSelectedEmailSource(EmailSource);
+                SetSelectedEmailSource(selectedEmailSource);
                 IsRefreshing = false;
                 if(isInitializing)
                 {

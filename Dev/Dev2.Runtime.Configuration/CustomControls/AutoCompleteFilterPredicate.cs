@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+// ReSharper disable once CheckNamespace
 namespace System.Windows.Controls
 {
     /// <summary>
@@ -31,5 +32,5 @@ namespace System.Windows.Controls
     /// <see cref="T:System.Windows.Controls.AutoCompleteBox" />. This type can
     /// be either a string or an object.</typeparam>
     /// <QualityBand>Stable</QualityBand>
-    public delegate bool AutoCompleteFilterPredicate<T>(string search, T item);
+    public delegate bool AutoCompleteFilterPredicate<in T>(string search, T item);
 }

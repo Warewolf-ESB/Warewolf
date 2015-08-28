@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Specialized;
 
 namespace Dev2.Runtime.WebServer.TransferObjects
 {
@@ -20,5 +21,14 @@ namespace Dev2.Runtime.WebServer.TransferObjects
         public string WebServerUrl { get; set; }
         public string Dev2WebServer { get; set; }
         public string RawRequestPayload { get; set; }
+        public NameValueCollection Variables { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public WebRequestTO()
+        {
+            Variables = new NameValueCollection();
+        }
     }
 }

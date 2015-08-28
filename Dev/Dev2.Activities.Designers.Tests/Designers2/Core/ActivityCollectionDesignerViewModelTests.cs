@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -387,6 +387,34 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                     Assert.AreEqual("NewField" + i, dto.FieldName);
                 }
             }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_ChangeDtoProperty")]
+        public void ActivityCollectionDesignerViewModel_ChangeDtoProperty_CausesCustomActionsToFire()
+        {
+            //------------Setup for test--------------------------
+            const int ItemCount = 3;
+
+            var modelItem = CreateModelItem(ItemCount);
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            const int ExpectedItemCount = 5;
+            var source = new List<string>();
+            for(var i = 0; i < ExpectedItemCount; i++)
+            {
+                source.Add("NewField" + i);
+            }
+            viewModel.TestAddToCollection(source, true);
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+            var dto = (ActivityDTO)mic[0].GetCurrentValue();
+            // ReSharper restore PossibleNullReferenceException
+            //------------Execute Test---------------------------
+            dto.FieldName = "Test";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.CustomActionCalled);
         }
 
         [TestMethod]

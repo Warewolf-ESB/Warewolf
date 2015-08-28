@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Text;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.DirectoryServices.ActiveDirectory;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Activities
@@ -163,19 +162,6 @@ namespace Dev2.Integration.Tests.Activities
         #endregion Path Type Tests
 
         #region Get Tests
-
-        [TestMethod]
-        public void GetWithNoUserName_ValidPath_Expected_Stream()
-        {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(_tmpfile1, "", "");
-            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path, new List<string>());
-
-            int len = (int)result.Length;
-            result.Close();
-
-            Assert.IsTrue(len > 0);
-        }
 
         [TestMethod]
         public void GetWithNoUserName_InvalidPath_Expected_NoStream()
@@ -340,33 +326,6 @@ namespace Dev2.Integration.Tests.Activities
 
         [TestMethod]
         public void PutWithOverwriteTrue_FileNot_Present_Expect_FileReadAndDataInputToStream()
-        {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = Path.GetTempFileName();
-            File.Delete(tmp);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(_tmpfile2, "", "");
-            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src, new List<string>());
-            var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
-            {
-                int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
-                stream.Close();
-
-                File.Delete(tmp);
-
-                Assert.IsTrue(len > 0);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-
-        [TestMethod]
-        public void PutWithOverwriteTrue_File_Present_Expect_FileDataReadIntoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = Path.GetTempFileName();

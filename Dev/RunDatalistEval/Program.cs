@@ -26,7 +26,7 @@ namespace RunDatalistEval
                         new AssignValue("[[rec().a]]","25"),
                         new AssignValue("[[rec().b]]","the quick brown fox"),
 
-                    });
+                    }, 0);
                 }
                 var x = st.ElapsedMilliseconds; 
                 Console.WriteLine("finished");

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests.Workflows
             return enFindMissingType.StaticActivity;
         }
 
-        public IDev2Activity Execute(IDSFDataObject data)
+        public IDev2Activity Execute(IDSFDataObject data,int update)
         {
             return null;
         }
@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.Workflows
             return enFindMissingType.StaticActivity;
         }
 
-        public IDev2Activity Execute(IDSFDataObject data)
+        public IDev2Activity Execute(IDSFDataObject data, int update)
         {
             return null;
         }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,6 +18,7 @@ using System.Threading;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Communication;
@@ -26,7 +27,6 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
@@ -140,7 +140,7 @@ namespace Dev2.Core.Tests
             //------------Preconditions---------------------------
             Assert.AreEqual(4, _vm.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
-            _vm.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
+            _vm.Filter(model => model.ResourceType == ResourceType.WorkflowService);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, _vm.ExplorerItemModels[0].ChildrenCount);
         }
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests
             Init(false, true);
             //------------Preconditions---------------------------
             Assert.AreEqual(4, _vm.ExplorerItemModels[0].ChildrenCount);
-            _vm.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
+            _vm.Filter(model => model.ResourceType == ResourceType.WorkflowService);
             Assert.AreEqual(2, _vm.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
             _vm.Filter(null);
@@ -246,7 +246,7 @@ namespace Dev2.Core.Tests
             Init(false, true);
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(r => r.ResourceType)
-                .Returns(ResourceType.WorkflowService);
+                .Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             newResource.Setup(r => r.Category).Returns("Testing");
             newResource.Setup(r => r.ResourceName).Returns("Cake");
             newResource.Setup(r => r.Environment)
@@ -266,7 +266,7 @@ namespace Dev2.Core.Tests
             Init(false, true);
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(r => r.ResourceType)
-                .Returns(ResourceType.WorkflowService);
+                .Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             newResource.Setup(r => r.Category).Returns("Testing");
             newResource.Setup(r => r.ResourceName).Returns("Mock");
             newResource.Setup(model => model.ID).Returns(_mockResourceModel.Object.ID);
@@ -295,24 +295,24 @@ namespace Dev2.Core.Tests
         StudioResourceRepository BuildExplorerItems(IResourceRepository resourceRepository)
         {
             var resourceModels = resourceRepository.All();
-            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Server };
+            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = ResourceType.Server };
 
             if(resourceModels != null)
             {
                 foreach(var resourceModel in resourceModels)
                 {
                     var resourceItemModel = new ExplorerItemModel { ResourceId = resourceModel.ID, ResourcePath = resourceModel.Category, EnvironmentId = Guid.Empty, DisplayName = resourceModel.ResourceName };
-                    Common.Interfaces.Data.ResourceType correctTyping = Common.Interfaces.Data.ResourceType.WorkflowService;
+                    ResourceType correctTyping = ResourceType.WorkflowService;
                     switch(resourceModel.ResourceType)
                     {
-                        case ResourceType.WorkflowService:
-                            correctTyping = Common.Interfaces.Data.ResourceType.WorkflowService;
+                        case Studio.Core.AppResources.Enums.ResourceType.WorkflowService:
+                            correctTyping = ResourceType.WorkflowService;
                             break;
-                        case ResourceType.Service:
-                            correctTyping = Common.Interfaces.Data.ResourceType.DbService;
+                        case Studio.Core.AppResources.Enums.ResourceType.Service:
+                            correctTyping = ResourceType.DbService;
                             break;
-                        case ResourceType.Source:
-                            correctTyping = Common.Interfaces.Data.ResourceType.WebSource;
+                        case Studio.Core.AppResources.Enums.ResourceType.Source:
+                            correctTyping = ResourceType.WebSource;
                             break;
                     }
                     resourceItemModel.ResourceType = correctTyping;
@@ -320,7 +320,7 @@ namespace Dev2.Core.Tests
                     var categoryItem = localhostItemModel.Children.FirstOrDefault(model => model.DisplayName == resourceModel.Category);
                     if(categoryItem == null)
                     {
-                        categoryItem = new ExplorerItemModel { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Folder, ResourcePath = "" };
+                        categoryItem = new ExplorerItemModel { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = ResourceType.Folder, ResourcePath = "" };
                         localhostItemModel.Children.Add(categoryItem);
                     }
                     resourceItemModel.Parent = categoryItem;
@@ -371,14 +371,14 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> mockResourceModel11 = null;
 
             _mockResourceModel = new Mock<IContextualResourceModel>();
-            _mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            _mockResourceModel.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             _mockResourceModel.Setup(r => r.Category).Returns("Testing");
             _mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
             _mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
             _mockResourceModel.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             _mockResourceModel1 = new Mock<IContextualResourceModel>();
-            _mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            _mockResourceModel1.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             _mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             _mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             _mockResourceModel1.Setup(model => model.ID).Returns(Guid.NewGuid());
@@ -386,21 +386,21 @@ namespace Dev2.Core.Tests
             if(addWizardChildToResource)
             {
                 mockResourceModel11 = new Mock<IContextualResourceModel>();
-                mockResourceModel11.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+                mockResourceModel11.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
                 mockResourceModel11.Setup(r => r.Category).Returns("Testing");
                 mockResourceModel11.Setup(r => r.ResourceName).Returns("Mock1.wiz");
                 mockResourceModel11.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
             }
 
             _mockResourceModel2 = new Mock<IContextualResourceModel>();
-            _mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            _mockResourceModel2.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             _mockResourceModel2.Setup(r => r.Category).Returns("Testing2");
             _mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
             _mockResourceModel2.Setup(model => model.ID).Returns(Guid.NewGuid());
             _mockResourceModel2.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             _mockResourceSourceModel = new Mock<IContextualResourceModel>();
-            _mockResourceSourceModel.Setup(r => r.ResourceType).Returns(ResourceType.Source);
+            _mockResourceSourceModel.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Source);
             _mockResourceSourceModel.Setup(r => r.Category).Returns("Testing2");
             _mockResourceSourceModel.Setup(r => r.ResourceName).Returns("MockSource");
             _mockResourceSourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
@@ -436,7 +436,7 @@ namespace Dev2.Core.Tests
         DeployNavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository)
         {
             StudioResourceRepository studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
+            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, new TestAsyncWorker(), environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
             return navigationViewModel;
         }
 

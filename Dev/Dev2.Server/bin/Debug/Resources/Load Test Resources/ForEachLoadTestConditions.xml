@@ -1,5 +1,5 @@
 
-<Service ID="0c423554-04e0-4b2f-8083-887e3bb2a9ae" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachLoadTestConditions" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="0c423554-04e0-4b2f-8083-887e3bb2a9ae" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachLoadTestConditions" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>ForEachLoadTestConditions</DisplayName>
   <Category>Load Test Resources\ForEachLoadTestConditions</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>PzCgNsi7jIaxW0vKSdNoXl7h8l0=</DigestValue>
+        <DigestValue>fb26ePaWqVYIhdJ7XfXFGVco9/E=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>EuMmOuhw3R22e98LhlrVK871FCuuCmvAu+BJqBlBViG91oCIRDEZ8FBnvITbvb8Et2oVlQFN7/Rr7m97/SwaQgb/Y4RyUZyqIl65HfZLYLu5IiYfGEsodJ3EKeddwh2S6N78fIE5tSOl3J6+X+Vaw5oke7s1yHpGrehPkqkv41A=</SignatureValue>
+    <SignatureValue>O6QPpGJWJW0my6bwmblZP9uqOCOswopWwn1wyC/o6aQnwpVuBaik4G4/R+b0sOmv8Uv4etE4dCUmgCQiGLhQZhaVUDNZ79WjNrZxXM8MmsO/2iaJah84rqHDlfA1KugDIMg74hCfMN83wyqAuvcbuS9XEovtpXpwGkR2EN+rl6o=</SignatureValue>
   </Signature>
 </Service>

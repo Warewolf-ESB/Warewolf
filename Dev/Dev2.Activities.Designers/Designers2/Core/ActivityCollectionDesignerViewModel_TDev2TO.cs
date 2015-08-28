@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,8 +12,10 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
@@ -35,6 +37,8 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -46,7 +50,7 @@ namespace Dev2.Activities.Designers2.Core
         protected void InitializeItems(ModelItemCollection modelItemCollection)
         {
             ModelItemCollection = modelItemCollection;
-
+            BindingOperations.EnableCollectionSynchronization(ModelItemCollection, _syncLock);
             // Do this before, because AddDTO() also attaches events
             AttachEvents(0);
 
@@ -63,6 +67,17 @@ namespace Dev2.Activities.Designers2.Core
 
             AddBlankRow();
             UpdateDisplayName();
+
+            if(ModelItemCollection != null)
+            {
+                ModelItemCollection.CollectionChanged+=ModelItemCollectionOnCollectionChanged;
+            }
+            
+        }
+
+        void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            //
         }
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
@@ -73,11 +88,20 @@ namespace Dev2.Activities.Designers2.Core
                 if(dto != null && dto.CanRemove())
                 {
                     // old row is blank so remove
-                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
-                    RemoveDto(dto, index);
+                    if(ModelItemCollection != null)
+                    {
+                        var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                        RemoveDto(dto, index);
+                    }
                 }
             }
+            if(newItem != null)
+            {
+                CurrentModelItem = newItem;
+            }
         }
+
+        public ModelItem CurrentModelItem { get; set; }
 
         public override void UpdateDisplayName()
         {
@@ -151,10 +175,13 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
         {
-            var firstModelItem = ModelItemCollection.FirstOrDefault();
-            if(firstModelItem != null)
+            if(ModelItemCollection != null)
             {
-                _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
+                var firstModelItem = ModelItemCollection.FirstOrDefault();
+                if(firstModelItem != null)
+                {
+                    _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
+                }
             }
 
             var indexNumber = GetIndexForAdd(overwrite);
@@ -184,7 +211,10 @@ namespace Dev2.Activities.Designers2.Core
             var indexNumber = 1;
             if(overwrite)
             {
-                ModelItemCollection.Clear();
+                if(ModelItemCollection != null)
+                {
+                    ModelItemCollection.Clear();
+                }
 
                 // Add blank row
                 AddDto(indexNumber);
@@ -192,16 +222,19 @@ namespace Dev2.Activities.Designers2.Core
             else
             {
                 var lastDto = GetLastDto();
-                indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
-
-                if(ModelItemCollection.Count == 2)
+                if(ModelItemCollection != null)
                 {
-                    // Check whether we have 2 blank rows
-                    var firstDto = GetDto(1);
-                    if(firstDto.CanRemove() && lastDto.CanRemove())
+                    indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+
+                    if(ModelItemCollection.Count == 2)
                     {
-                        RemoveAt(indexNumber, lastDto);
-                        indexNumber = indexNumber - 1;
+                        // Check whether we have 2 blank rows
+                        var firstDto = GetDto(1);
+                        if(firstDto.CanRemove() && lastDto.CanRemove())
+                        {
+                            RemoveAt(indexNumber, lastDto);
+                            indexNumber = indexNumber - 1;
+                        }
                     }
                 }
             }
@@ -245,14 +278,17 @@ namespace Dev2.Activities.Designers2.Core
             AttachEvents(dto);
 
             var idx = indexNumber - 1;
-            if(idx >= ModelItemCollection.Count)
+            if(ModelItemCollection != null && idx >= ModelItemCollection.Count)
             {
                 ModelItem modelItem = ModelItemUtils.CreateModelItem(dto);
                 ModelItemCollection.Add(modelItem);
             }
             else
             {
-                ModelItemCollection.Insert(idx, dto);
+                if(ModelItemCollection != null)
+                {
+                    ModelItemCollection.Insert(idx, dto);
+                }
             }
         }
 
@@ -280,6 +316,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnDtoPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
+            DoCustomAction(args.PropertyName);
             if(args.PropertyName != "CanRemove")
             {
                 return;
@@ -302,6 +339,10 @@ namespace Dev2.Activities.Designers2.Core
                     AddBlankRow();
                 }
             }
+        }
+
+        protected virtual void DoCustomAction(string propertyName)
+        {            
         }
 
         /// <summary>
@@ -330,10 +371,13 @@ namespace Dev2.Activities.Designers2.Core
         /// </summary>
         void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
-            startIndex = Math.Max(startIndex, 0);
-            for(var i = startIndex; i < ModelItemCollection.Count; i++)
+            if(ModelItemCollection != null)
             {
-                processModelItem(ModelItemCollection[i]);
+                startIndex = Math.Max(startIndex, 0);
+                for(var i = startIndex; i < ModelItemCollection.Count; i++)
+                {
+                    processModelItem(ModelItemCollection[i]);
+                }
             }
         }
 
@@ -355,6 +399,11 @@ namespace Dev2.Activities.Designers2.Core
                 CEventHelper.RemoveAllEventHandlers(mi);
 
             });
+            if(ModelItemCollection != null)
+            {
+                BindingOperations.DisableCollectionSynchronization(ModelItemCollection); 
+            }
+            ModelItemCollection = null;
             base.OnDispose();
         }
 

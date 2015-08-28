@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,9 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
+        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             var execErrors = new ErrorResultTO();
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var oldID = dataObject.DataListID;
 
             errors = new ErrorResultTO();
             errors.MergeErrors(execErrors);
@@ -38,7 +36,7 @@ namespace Dev2.Activities
                 databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
             }
             //ServiceExecution.DataObj = dataObject;
-            var result = ServiceExecution.Execute(out execErrors);
+            var result = ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
             foreach(var error in fetchErrors)
             {
@@ -48,7 +46,6 @@ namespace Dev2.Activities
             errors.MergeErrors(execErrors);
 
             // Adjust the remaining output mappings ;)
-            compiler.SetParentID(dataObject.DataListID, oldID);
             return result;
         }
 

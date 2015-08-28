@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,9 @@
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
+using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +31,7 @@ namespace Dev2.Core.Tests.Activities
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
         }
 
         [TestMethod]

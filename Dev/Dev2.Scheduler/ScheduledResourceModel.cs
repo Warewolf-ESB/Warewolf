@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -206,12 +206,12 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             {
                 trigger = arg.Trigger;
                 nextDate = trigger.StartBoundary;
-                output = action.Arguments.Split(new[] { ArgWrapper }).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
+                output = action.Arguments.Split(ArgWrapper).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
             if(output.Count() == 2 && output.All(a => a.Contains(NameSeperator)))
             {
 
-                var split = output.SelectMany(a => a.Split(new[] { NameSeperator })).ToList();
+                var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
                 try
                 {
 
@@ -302,7 +302,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
         private string GetUserName(string debugHistoryPath, string correlationId)
         {
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
-            if(file != null) return file.Split(new[] { '_' }).Last();
+            if(file != null) return file.Split('_').Last();
             return "";
         }
 

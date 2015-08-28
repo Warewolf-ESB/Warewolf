@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,23 +10,24 @@
 */
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities 
 {
     public class ImagePathConverter : IValueConverter 
     {
-        private string imageDirectory = Directory.GetCurrentDirectory();
+        private string _imageDirectory = Directory.GetCurrentDirectory();
         public string ImageDirectory {
-            get { return imageDirectory; }
-            set { imageDirectory = value; }
+            get { return _imageDirectory; }
+            set { _imageDirectory = value; }
         }
 
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
                 BitmapImage image = new BitmapImage();
                 if (value != null && value.ToString() != string.Empty) {
@@ -47,7 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
             throw new NotImplementedException();
         }
 

@@ -93,10 +93,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="INetworkChannel.cs" />
-    <Compile Include="Messaging\Messages\NetworkMessageAction.cs" />
-    <Compile Include="Messaging\Messages\NetworkMessageResult.cs" />
-    <Compile Include="Messaging\DispatcherFrameToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

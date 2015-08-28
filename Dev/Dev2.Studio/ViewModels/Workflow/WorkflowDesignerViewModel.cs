@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,9 +25,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -82,6 +84,7 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -177,7 +180,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
         /// <param name="setupUnknownVariableTimer"></param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer = true)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
@@ -204,15 +207,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
-            
-            if(setupUnknownVariableTimer)
-            SetupTimer();
+
+            if (setupUnknownVariableTimer)
+                SetupTimer();
             _firstWorkflowChange = true;
         }
 
         private void SetupTimer()
         {
-           
+
             _changeIsPossible = true;
             _timer = new System.Timers.Timer();
             _timer.Elapsed += t_Elapsed;
@@ -220,14 +223,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             _timer.Start();
         }
 
-        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void t_Elapsed(object sender, ElapsedEventArgs e)
         {
 
-                if (_changeIsPossible)
-                {
-                    _changeIsPossible = false;
-                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
-                }
+            if (_changeIsPossible)
+            {
+                _changeIsPossible = false;
+                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            }
 
         }
 
@@ -565,7 +568,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected void InitializeFlowStep(ModelItem mi)
         {
             ModelProperty modelProperty = mi.Properties["Action"];
-            
+
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
@@ -656,7 +659,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentRepository.ActiveEnvironment);
             modelProperty1.SetValue(droppedActivity);
 
-                               
+
         }
 
         protected void InitializeFlowSwitch(ModelItem mi)
@@ -874,10 +877,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
-                IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"').ToStringBuilder());
+                    var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
                     {
                         var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
@@ -1136,7 +1138,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (designerConfigService != null)
                 {
                     // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                    designerConfigService.TargetFrameworkName = new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5));
+                    designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
                     designerConfigService.AutoConnectEnabled = true;
                     designerConfigService.AutoSplitEnabled = true;
                     designerConfigService.PanModeEnabled = true;
@@ -1378,7 +1380,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Dev2Logger.Log.Info(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
-                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
+                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
                 if (msg != null)
                 {
                     xaml = msg.Message;
@@ -1415,25 +1417,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-            // we got the correct model and clean it ;)
-            var theText = _workflowHelper.SanitizeXaml(xaml);
-
-            var length = theText.Length;
-            var startIdx = 0;
-            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
-            // now load the designer in chunks ;)
-            for (int i = 0; i < rounds; i++)
-            {
-                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                if (len > (theText.Length - startIdx))
-                {
-                    len = (theText.Length - startIdx);
-                }
-
-                _wd.Text += theText.Substring(startIdx, len);
-                startIdx += len;
-            }
+            var designerText = _workflowHelper.SanitizeXaml(xaml);
+            _wd.Text = designerText.ToString();
         }
 
         void SelectedItemChanged(Selection item)
@@ -1528,7 +1513,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _changeIsPossible = true;
             if (_firstWorkflowChange)
             {
-                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
+                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false, false);
                 _firstWorkflowChange = false;
             }
         }
@@ -1555,7 +1540,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void ProcessDataListOnLoad()
         {
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true,false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true, false);
         }
 
         public void DoWorkspaceSave()
@@ -1570,7 +1555,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false, false);
         }
 
         public static bool ValidatResourceModel(string dataList)
@@ -1603,7 +1588,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
             }
 
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false, false);
         }
 
         /// <summary>
@@ -1611,7 +1596,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
         /// <param name="updateOnDispatcher"></param>
-        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent,bool updateOnDispatcher=true)
+        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent, bool updateOnDispatcher = true)
         {
             if (DataListSingleton.ActiveDataList != null)
             {
@@ -1624,22 +1609,22 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
                 if (updateOnDispatcher)
-                DispatcherUpdateAction(workflowFields);
+                    DispatcherUpdateAction(workflowFields);
                 else
                 {
-                      DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                    DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
                 }
             }
         }
 
         public Action<IList<IDataListVerifyPart>> DispatcherUpdateAction
         {
-            get{return _dispatcherAction??RunUpdateOnDispatcher; }
-            set{_dispatcherAction=value;}
+            get { return _dispatcherAction ?? RunUpdateOnDispatcher; }
+            set { _dispatcherAction = value; }
         }
         private void RunUpdateOnDispatcher(IList<IDataListVerifyPart> workflowFields)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send,new System.Action(() =>
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new System.Action(() =>
             DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields)));
         }
 
@@ -1740,7 +1725,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        
+
         /// <summary>
         /// Views the preview drop.
         /// </summary>
@@ -2038,12 +2023,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region OnDispose
         protected override void OnDispose()
         {
-            if(_timer != null)
+            if (_timer != null)
                 _timer.Stop();
             if (_wd != null)
             {
-               
-                _wd.Context.Items.Unsubscribe<Selection>(OnItemSelected);
+
                 _wd.ModelChanged -= WdOnModelChanged;
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
                 _wd.Context.Services.Unsubscribe<ViewStateService>(ViewStateServiceSubscribe);
@@ -2053,10 +2037,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
 
-                Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
-                CommandManager.RemovePreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
-                CommandManager.RemovePreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
-                Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
+               
             }
 
             if (_debugSelectionChangedService != null)
@@ -2101,7 +2082,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             try
             {
-                CEventHelper.RemoveAllEventHandlers(_wd);
+               // CEventHelper.RemoveAllEventHandlers(_wd);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
@@ -2110,7 +2091,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _wd = null;
             base.OnDispose();
-            GC.SuppressFinalize(this);
         }
 
 

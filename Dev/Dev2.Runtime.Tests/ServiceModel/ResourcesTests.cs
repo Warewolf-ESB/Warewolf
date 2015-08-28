@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,17 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 xml = XmlResource.Fetch("HostSecurityProviderServerSigned");
                 xml.Save(Path.Combine(sourcesPath, "HostSecurityProviderServerSigned.xml"));
 
-                var testResources = new Dev2.Runtime.ServiceModel.Resources();
+                var testResources = new Resources();
                 var actual = testResources.Paths("", workspaceID, Guid.Empty);
                 Assert.AreEqual("[\"Integration Test Services\\\\Calculate_RecordSet_Subtract\"]", actual);
             }
@@ -77,7 +78,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void SourcesWithNullArgsExpectedReturnsEmptyList()
         {
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             var result = resources.Sources(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void SourcesWithInvalidArgsExpectedReturnsEmptyList()
         {
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             var result = resources.Sources("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
@@ -110,7 +111,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
@@ -164,7 +165,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void ServicesWithNullArgsExpectedReturnsEmptyList()
         {
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             var result = resources.Services(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
@@ -172,7 +173,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void ServicesWithInvalidArgsExpectedReturnsEmptyList()
         {
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             var result = resources.Services("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
@@ -184,7 +185,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void DataListInputVariablesWhereNullArgsExpectEmptyString()
         {
             //------------Setup for test--------------------------
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             //------------Execute Test---------------------------
             var result = resources.DataListInputVariables(null, Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -195,7 +196,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void DataListInputVariablesWhereInvalidArgsExpectEmptyString()
         {
             //------------Setup for test--------------------------
-            var resources = new Dev2.Runtime.ServiceModel.Resources();
+            var resources = new Resources();
             //------------Execute Test---------------------------
             var result = resources.DataListInputVariables("xxxx", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -220,7 +221,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Directory.CreateDirectory(completePath);
                 Assert.IsNotNull(resourcePath);
                 xml.Save(Path.Combine(workspacePath, resourcePath.Value + ".xml"));
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 //---------------Assert Preconditions------------------------------
                 Assert.IsNotNull(resourcePath);
                 var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
@@ -244,6 +245,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void DataListInputWhereValidArgsDataListHasNoInputsExpectEmptyString()
         {
             //------------Setup for test--------------------------
+            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
 
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -259,7 +261,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Directory.CreateDirectory(completePath);
                 Assert.IsNotNull(resourcePath);
                 xml.Save(Path.Combine(workspacePath, resourcePath.Value + ".xml"));
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 //-----------------Assert Preconditions-----------------------------
                 Assert.IsNotNull(resourcePath);
                 var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
@@ -322,7 +324,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     }
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 const string ExpectedJson = "{\"Names\":[\"My Name 1\",\"My Name 4\",\"My Name 7\"],\"Paths\":[\"DbService\"]}";
 
                 //Run PathsAndNames
@@ -337,6 +339,20 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 {
                     DirectoryHelper.CleanUp(workspacePath);
                 }
+            }
+        }
+
+
+        static void LoadActivitiesPresentationDll()
+        {
+            try
+            {
+                Assembly.Load("System.Activities.Presentation");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //This is for when it is run on the server. Because the server has some other way of getting DLL's
             }
         }
 
@@ -385,7 +401,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     }
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
+                var resources = new Resources();
                 const string ExpectedJson = "{\"Names\":[\"My Name 3\",\"My Name 7\"],\"Paths\":[\"ServerSource\"]}";
 
                 //Run PathsAndNames

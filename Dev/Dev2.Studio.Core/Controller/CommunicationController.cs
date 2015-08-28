@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -43,16 +44,16 @@ namespace Dev2.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);       
 
         /// <summary>
         /// Executes the command.
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId">The data list unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId);
+        Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId);
+       
     }
 
     public class CommunicationController : ICommunicationController
@@ -94,18 +95,6 @@ namespace Dev2.Controller
         /// <returns></returns>
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
-            return ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
-        }
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId">The data list unique identifier.</param>
-        /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId)
-        {
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
@@ -132,12 +121,52 @@ namespace Dev2.Controller
 
                 ServicePayload.ServiceName = ServiceName;
                 StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = connection.ExecuteCommand(toSend, workspaceId, dataListId);
+                var payload = connection.ExecuteCommand(toSend, workspaceId);
 
                 return serializer.Deserialize<T>(payload);
             }
             return default(T);
         }
 
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <returns></returns>
+        public async Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
+        {
+            // build the service request payload ;)
+            var serializer = new Dev2JsonSerializer();
+
+            if (connection == null || !connection.IsConnected)
+            {
+                if (connection != null)
+                {
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    if (popupController != null)
+                    {
+                        popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                                                                     "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");
+                    }
+                }
+            }
+            else
+            {
+
+                // now bundle it up into a nice string builder ;)
+                if (ServicePayload == null)
+                {
+                    ServicePayload = new EsbExecuteRequest();
+                }
+
+                ServicePayload.ServiceName = ServiceName;
+                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+
+                return serializer.Deserialize<T>(payload);
+            }
+            return default(T);
+        }
     }
 }

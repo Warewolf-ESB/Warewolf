@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections;
 using System.ComponentModel;
 
@@ -81,9 +82,9 @@ namespace Dev2.Services.Security
             switch(_sortMemberPath)
             {
                 case "ResourceName":
-                    return System.String.Compare(px.ResourceName, py.ResourceName, System.StringComparison.InvariantCulture);
+                    return String.Compare(px.ResourceName, py.ResourceName, StringComparison.InvariantCulture);
                 case "WindowsGroup":
-                    return System.String.Compare(px.WindowsGroup, py.WindowsGroup, System.StringComparison.InvariantCulture);
+                    return String.Compare(px.WindowsGroup, py.WindowsGroup, StringComparison.InvariantCulture);
                 case "View":
                     return px.View.CompareTo(py.View);
                 case "Execute":

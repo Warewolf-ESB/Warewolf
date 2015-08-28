@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using Dev2.Core.Tests.Environments;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -31,6 +32,14 @@ namespace Dev2.Core.Tests.ViewModelTests
     // ReSharper disable ObjectCreationAsStatement
     public class ConnectControlViewModelTests
     {
+
+         [TestInitialize]
+         public void TestInitialize()
+         {
+             AppSettings.LocalHost = "http://localhost:3142";
+
+         }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ConnectControlViewModel_Constructor")]

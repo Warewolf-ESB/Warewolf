@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
+// ReSharper disable once CheckNamespace
 namespace Unlimited.Framework.Converters.Graph
 {
     [Serializable]
@@ -20,6 +21,7 @@ namespace Unlimited.Framework.Converters.Graph
     {
         #region Constructor
 
+        // ReSharper disable once PublicConstructorInAbstractClass
         public BasePath()
         {
             ActualPath = "";

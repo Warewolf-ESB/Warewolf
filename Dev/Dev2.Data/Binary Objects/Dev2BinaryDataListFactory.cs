@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -41,25 +41,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public static IIndexIterator CreateLoopedIndexIterator(int val, int cnt)
         {
             return new LoopedIndexIterator(val, cnt);
-        }
-
-        /// <summary>
-        /// Creates the data list.
-        /// </summary>
-        /// <returns></returns>
-        public static IBinaryDataList CreateDataList()
-        {
-            return new BinaryDataList();
-        }
-
-        /// <summary>
-        /// Creates the data list
-        /// </summary>
-        /// <param name="parentID">The parent ID.</param>
-        /// <returns></returns>
-        public static IBinaryDataList CreateDataList(Guid parentID)
-        {
-            return new BinaryDataList(parentID);
         }
 
         /// <summary>

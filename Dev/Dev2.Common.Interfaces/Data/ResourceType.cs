@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,11 +26,12 @@ namespace Dev2.Common.Interfaces.Data
         WebSource = 64,
         EmailSource = 128,
         OauthSource = 256,
-        ServerSource = 512,
-        Folder = 1024,
-        Server = 2048,
-        ReservedService = 4096,
-        Message = 3069,
+        SharepointServerSource = 512,
+        ServerSource = 1024,
+        Folder = 2048,
+        Server = 4096,
+        ReservedService = 8192,
+        Message = 3069
         
     }
 }

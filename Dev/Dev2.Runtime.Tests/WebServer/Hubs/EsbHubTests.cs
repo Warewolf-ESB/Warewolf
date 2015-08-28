@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
             //asserts
             Assert.AreEqual(2, server.WriteEventProviderMemos.Count);
-            foreach(var memo1 in server.WriteEventProviderMemos)
+            foreach (var memo1 in server.WriteEventProviderMemos)
             {
                 var memo = (DesignValidationMemo)memo1;
                 Assert.AreEqual(message.ServiceID, memo.ServiceID, "Memo service name not updated with compiler message service name");
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext>();
+            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             bool messagePublished = false;
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext>();
+            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             bool messagePublished = false;
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         public List<IMemo> WriteEventProviderMemos { get; private set; }
         protected override void WriteEventProviderClientMessage(IMemo memo)
         {
-            if(WriteEventProviderMemos == null)
+            if (WriteEventProviderMemos == null)
             {
                 WriteEventProviderMemos = new List<IMemo>();
             }

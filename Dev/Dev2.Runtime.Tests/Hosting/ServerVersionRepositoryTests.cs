@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Data;
@@ -35,9 +34,8 @@ namespace Dev2.Tests.Runtime.Hosting
         // ReSharper disable InconsistentNaming
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
-#pragma warning disable 168
+            // ReSharper disable once UnusedVariable
             var strat = new Mock<IVersionStrategy>();
-#pragma warning restore 168
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
@@ -464,7 +462,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b)=>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
                     
             });
 
@@ -501,7 +499,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
 
             });
 
@@ -538,7 +536,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
             file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
             {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
 
             });
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);

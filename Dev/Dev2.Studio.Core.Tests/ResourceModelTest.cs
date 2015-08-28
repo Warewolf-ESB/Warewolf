@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -250,7 +250,7 @@ namespace Dev2.Core.Tests
             var dlElms = xe.Elements("DataList");
 
             var firstOrDefault = dlElms.FirstOrDefault();
-            if(firstOrDefault != null)
+            if (firstOrDefault != null)
             {
                 var wfResult = firstOrDefault.ToString(SaveOptions.None);
                 StringAssert.Contains(result, wfResult);
@@ -305,7 +305,7 @@ namespace Dev2.Core.Tests
             {
                 Assert.AreEqual(memo.Errors.Count, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
 
-                foreach(var error in memo.Errors)
+                foreach (var error in memo.Errors)
                 {
                     var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
                     Assert.AreSame(error, modelError, "OnDesignValidationReceived did not set the error.");
@@ -363,7 +363,7 @@ namespace Dev2.Core.Tests
             var hitCount = 0;
             model.OnDesignValidationReceived += (sender, memo) =>
             {
-                switch(hitCount++)
+                switch (hitCount++)
                 {
                     case 0:
                         Assert.AreEqual(2, model.Errors.Count);
@@ -413,7 +413,7 @@ namespace Dev2.Core.Tests
             var hitCount = 0;
             model.OnDesignValidationReceived += (sender, memo) =>
             {
-                switch(hitCount++)
+                switch (hitCount++)
                 {
                     case 0:
                         Assert.AreEqual(2, model.Errors.Count);
@@ -489,7 +489,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage("test")).Verifiable();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(MakeMessage("test")).Verifiable();
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -505,7 +505,7 @@ namespace Dev2.Core.Tests
             model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            repo.Verify(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
+            repo.Verify(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()));
         }
 
 
@@ -551,7 +551,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage(workflowXaml));
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(MakeMessage(workflowXaml));
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -603,7 +603,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage(resourceDefintion));
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(MakeMessage(resourceDefintion));
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -724,7 +724,7 @@ namespace Dev2.Core.Tests
         public static Mock<IEnvironmentModel> CreateMockEnvironment(IEventPublisher eventPublisher)
         {
             var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(model => model.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            connection.Setup(model => model.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
 
             var environmentModel = new Mock<IEnvironmentModel>();
@@ -899,7 +899,7 @@ namespace Dev2.Core.Tests
             var _propertyChangedFired = false;
             model.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "Errors")
+                if (args.PropertyName == "Errors")
                 {
                     _propertyChangedFired = true;
                 }
@@ -928,7 +928,7 @@ namespace Dev2.Core.Tests
             var _propertyChangedFired = false;
             model.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "IsValid")
+                if (args.PropertyName == "IsValid")
                 {
                     _propertyChangedFired = true;
                 }
@@ -1118,7 +1118,7 @@ namespace Dev2.Core.Tests
             var requiredPermissions = authorizationContext.ToPermissions();
             var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
 
-            foreach(Permissions permission in Enum.GetValues(typeof(Permissions)))
+            foreach (Permissions permission in Enum.GetValues(typeof(Permissions)))
             {
                 model.UserPermissions = permission;
                 var expected = (permission & requiredPermissions) != 0;

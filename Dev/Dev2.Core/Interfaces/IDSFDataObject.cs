@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,13 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-
 using Dev2.Web;
 using Warewolf.Storage;
-using Dev2.Runtime.Execution;
+
 namespace Dev2
 {
     public interface IDSFDataObject
@@ -39,7 +39,7 @@ namespace Dev2
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
-        ErrorResultTO Errors { get; set; }
+      //  ErrorResultTO Errors { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }
@@ -96,5 +96,9 @@ namespace Dev2
         void PushEnvironment(IExecutionEnvironment env);
 
         IEsbChannel EsbChannel { get; set; }
+        int ForEachUpdateValue { get; set; }
+        DateTime StartTime { get; set; }
+        Guid DebugEnvironmentId { get; set; }
+        bool RemoteNonDebugInvoke { get; set; }
     }
 }

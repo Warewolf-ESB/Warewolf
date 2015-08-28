@@ -8,10 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace Dev2.Activities.Designers2.Core.Help {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,27 +24,27 @@ namespace Dev2.Activities.Designers2.Core.Help {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     public class HelpTextResources {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
         
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal HelpTextResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Activities.Designers2.Core.Help.HelpTextResources", typeof(HelpTextResources).Assembly);
+                if (ReferenceEquals(resourceMan, null)) {
+                    ResourceManager temp = new ResourceManager("Dev2.Activities.Designers2.Core.Help.HelpTextResources", typeof(HelpTextResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,8 +55,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -940,7 +945,19 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can use [[Scalar]] as well as [[Recordset().Fields]]..
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
+        ///[[rec(*).name]] 
+        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
+        ///or simply 
+        ///[[rec(*)]]
+        ///
+        ///Allowed:
+        ///Data
+        ///[[Scalar]]
+        ///[[Recordset(n).Field]]
+        ///[[Recordset(*)]].
         /// </summary>
         public static string CreateJSONHelpInput {
             get {
@@ -949,7 +966,12 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset.
+        ///
+        ///Allowed:
+        ///Data.
         /// </summary>
         public static string CreateJSONHelpName {
             get {
@@ -976,19 +998,13 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
-        ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
-        ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string CreateJSONHelpType {
-            get {
-                return ResourceManager.GetString("CreateJSONHelpType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This field will be converted to JSON data. You can add multiple fields by using a comma. This allows you to create Arrays and Objects from multiple fields in a recordset. To use an entire recordset simply leave off the field name e.g. Recordset(*).
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
+        ///[[rec(*).name]] 
+        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
+        ///or simply 
+        ///[[rec(*)]].
         /// </summary>
         public static string CreateJSONToolTipInput {
             get {
@@ -997,7 +1013,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This field will be converted to JSON data. To name a key pair, object or array, put the name you want to use in here..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset..
         /// </summary>
         public static string CreateJSONToolTipName {
             get {
@@ -1014,18 +1032,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string CreateJSONToolTipResult {
             get {
                 return ResourceManager.GetString("CreateJSONToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
-        ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
-        ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string CreateJSONToolTipType {
-            get {
-                return ResourceManager.GetString("CreateJSONToolTipType", resourceCulture);
             }
         }
         
@@ -4487,6 +4493,139 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of records deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SharepointDeleteHelpResult {
+            get {
+                return ResourceManager.GetString("SharepointDeleteHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of items deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string SharepointDelteToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointDelteToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the field you want to match on.
+        ///
+        ///Allowed:
+        ///na.
+        /// </summary>
+        public static string SharepointHelpFieldToMatchOn {
+            get {
+                return ResourceManager.GetString("SharepointHelpFieldToMatchOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a list to read data from.
+        ///If the list changed, click the refresh button.
+        ///
+        ///Allowed:
+        ///Select a list to read data from..
+        /// </summary>
+        public static string SharepointHelpList {
+            get {
+                return ResourceManager.GetString("SharepointHelpList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint Server Source...&quot; to add a new one.
+        ///.
+        /// </summary>
+        public static string SharepointHelpServer {
+            get {
+                return ResourceManager.GetString("SharepointHelpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SharepointInsertHelpResult {
+            get {
+                return ResourceManager.GetString("SharepointInsertHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string SharepointInsertToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the field you want to match on..
+        /// </summary>
+        public static string SharepointToolTipFieldToFilterOn {
+            get {
+                return ResourceManager.GetString("SharepointToolTipFieldToFilterOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a list to read from.
+        ///If the list has changed or recently added to the source, click the refresh button..
+        /// </summary>
+        public static string SharepointToolTipList {
+            get {
+                return ResourceManager.GetString("SharepointToolTipList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint Server Source...&quot; to add a new one..
+        /// </summary>
+        public static string SharepointToolTipServer {
+            get {
+                return ResourceManager.GetString("SharepointToolTipServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To read list item data into a variable, put the variable here.
+        ///    .
+        /// </summary>
+        public static string SharepointToolTipToVariable {
+            get {
+                return ResourceManager.GetString("SharepointToolTipToVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
         ///To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.
         ///
@@ -5348,6 +5487,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string WebRequestToolTipResult {
             get {
                 return ResourceManager.GetString("WebRequestToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The length of time to wait for a web request to complete before failing.
+        /// </summary>
+        public static string WebRequestToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipTimeOut", resourceCulture);
             }
         }
         

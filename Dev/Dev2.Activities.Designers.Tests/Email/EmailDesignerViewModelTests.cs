@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -292,7 +292,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var resourceModel = new Mock<IResourceModel>();
 
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
-            var hitCount= 0;
+            var hitCount = 0;
             viewModel.EditEmailSourceCommand.CanExecuteChanged += (sender, args) =>
             {
                 hitCount++;
@@ -304,7 +304,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,hitCount);
+            Assert.AreEqual(3, hitCount);
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             var expectedFiles = new List<string>();
             expectedFiles.AddRange(existingFiles);
-            if(selectedFiles != null)
+            if (selectedFiles != null)
             {
                 expectedFiles.AddRange(selectedFiles);
             }
@@ -404,7 +404,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             const string TestFromPassword = "FromPassword";
 
             var result = new ValidationResult { IsValid = isTestResultValid };
-            if(!isTestResultValid)
+            if (!isTestResultValid)
             {
                 result.ErrorMessage = "Unable to connect to SMTP server";
             }
@@ -423,7 +423,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
 
             var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
-            if(hasFromAccount)
+            if (hasFromAccount)
             {
                 modelItem.SetProperty("FromAccount", TestFromAccount);
                 modelItem.SetProperty("Password", TestFromPassword);
@@ -461,7 +461,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsNotNull(postData);
             Assert.AreEqual(expectedPostData, postData);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
-            if(isTestResultValid)
+            if (isTestResultValid)
             {
                 Assert.IsNull(viewModel.Errors);
             }
@@ -473,6 +473,162 @@ namespace Dev2.Activities.Designers.Tests.Email
                 viewModel.Errors[0].Do();
                 Assert.IsTrue(viewModel.IsFromAccountFocused);
             }
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EmailDesignerViewModel_TestEmailCommand")]
+        public void EmailDesignerViewModel_TestEmailCommand_WhenFromAddressIsVariable_ShouldBeError()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
+            const string TestToAddress = "test@mydomain.com";
+            const string TestFromAccount = "[[var1]]";
+            const string TestFromPassword = "FromPassword";
+
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "EmailTest",
+                UserName = "user@mydomain.com",
+                Password = "SourcePassword",
+            };
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", emailSource);
+            modelItem.SetProperty("To", TestToAddress);
+
+
+            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
+            modelItem.SetProperty("FromAccount", TestFromAccount);
+            modelItem.SetProperty("Password", TestFromPassword);
+            expectedSource.UserName = TestFromAccount;
+            expectedSource.Password = TestFromPassword;
+            expectedSource.TestFromAddress = TestFromAccount;
+
+
+            var webRequestInvoker = new Mock<IWebRequestInvoker>();
+            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
+                .Returns(string.Empty)
+                .Verifiable();
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+            viewModel.WebRequestInvoker = webRequestInvoker.Object;
+
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            //------------Execute Test---------------------------
+            viewModel.TestEmailAccountCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual("Variable [[var1]] cannot be used while testing.", viewModel.Errors[0].Message);
+            Assert.IsFalse(viewModel.IsFromAccountFocused);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsFromAccountFocused);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EmailDesignerViewModel_TestEmailCommand")]
+        public void EmailDesignerViewModel_TestEmailCommand_WhenToAddressIsBlank_ShouldBeError()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
+            const string TestToAddress = "";
+            const string TestFromAccount = "[[var1]]";
+            const string TestFromPassword = "FromPassword";
+
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "EmailTest",
+                UserName = "user@mydomain.com",
+                Password = "SourcePassword",
+            };
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", emailSource);
+            modelItem.SetProperty("To", TestToAddress);
+
+
+            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
+            modelItem.SetProperty("FromAccount", TestFromAccount);
+            modelItem.SetProperty("Password", TestFromPassword);
+            expectedSource.UserName = TestFromAccount;
+            expectedSource.Password = TestFromPassword;
+            expectedSource.TestFromAddress = TestFromAccount;
+
+
+            var webRequestInvoker = new Mock<IWebRequestInvoker>();
+            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
+                .Returns(string.Empty)
+                .Verifiable();
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+            viewModel.WebRequestInvoker = webRequestInvoker.Object;
+
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            //------------Execute Test---------------------------
+            viewModel.TestEmailAccountCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual("Please supply a To address in order to Test.", viewModel.Errors[0].Message);
+            Assert.IsFalse(viewModel.IsToFocused);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsToFocused);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EmailDesignerViewModel_TestEmailCommand")]
+        public void EmailDesignerViewModel_TestEmailCommand_WhenToAddressIsVariable_ShouldBeError()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
+            const string TestToAddress = "[[var1]]";
+            const string TestFromAccount = "test@mydomain.com";
+            const string TestFromPassword = "FromPassword";
+
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "EmailTest",
+                UserName = "user@mydomain.com",
+                Password = "SourcePassword",
+            };
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", emailSource);
+            modelItem.SetProperty("To", TestToAddress);
+
+
+            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
+            modelItem.SetProperty("FromAccount", TestFromAccount);
+            modelItem.SetProperty("Password", TestFromPassword);
+            expectedSource.UserName = TestFromAccount;
+            expectedSource.Password = TestFromPassword;
+            expectedSource.TestFromAddress = TestFromAccount;
+
+
+            var webRequestInvoker = new Mock<IWebRequestInvoker>();
+            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
+                .Returns(string.Empty)
+                .Verifiable();
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+            viewModel.WebRequestInvoker = webRequestInvoker.Object;
+
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            //------------Execute Test---------------------------
+            viewModel.TestEmailAccountCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual("Variable [[var1]] cannot be used while testing.", viewModel.Errors[0].Message);
+            Assert.IsFalse(viewModel.IsFromAccountFocused);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsFromAccountFocused);
         }
 
         [TestMethod]
@@ -934,7 +1090,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         void Verify_ValidateThis(DsfSendEmailActivity activity, string expectedErrorMessage = null, DependencyProperty isFocusedProperty = null, bool setSelectedEmailSource = true)
         {
             var sources = CreateEmailSources(1);
-            if(setSelectedEmailSource)
+            if (setSelectedEmailSource)
             {
                 activity.SelectedEmailSource = sources[0];
             }
@@ -947,7 +1103,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            if(string.IsNullOrEmpty(expectedErrorMessage))
+            if (string.IsNullOrEmpty(expectedErrorMessage))
             {
                 Assert.IsNull(viewModel.Errors);
             }
@@ -1062,7 +1218,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         {
             var result = new List<EmailSource>();
 
-            for(var i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 result.Add(new EmailSource
                 {
@@ -1086,7 +1242,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
                 .Returns(sources);
-            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                 .Returns(resourceModel);
 
             var testEmailDesignerViewModel = new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher)

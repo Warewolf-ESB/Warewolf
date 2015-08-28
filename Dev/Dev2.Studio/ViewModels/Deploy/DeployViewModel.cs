@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -20,6 +21,7 @@ using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
@@ -75,7 +77,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private Guid? _destinationContext;
         private Guid? _sourceContext;
         private readonly Action<IEnvironmentModel> _setActive = SetActiveEnvironment;
-        private readonly Func<IEnvironmentModel> _getActive = GetActiveEnvironment; 
+        private readonly Func<IEnvironmentModel> _getActive = GetActiveEnvironment;
         #endregion Class Members
 
         #region Constructor
@@ -103,14 +105,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="resourceID"> resource id</param>
         /// <param name="environmentID">environment id</param>
         /// <param name="connectControlSingleton">connect control</param>
-        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null, IConnectControlSingleton connectControlSingleton = null)
             // ReSharper restore TooManyDependencies
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            if(connectControlSingleton == null)
+            if (connectControlSingleton == null)
                 connectControlSingleton = ConnectControlSingleton.Instance;
-            if(environmentID.HasValue)
+            if (environmentID.HasValue)
             {
                 _initialItemEnvironmentID = environmentID.Value;
             }
@@ -176,7 +178,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(Equals(value, _sourceconnectControlViewModel))
+                if (Equals(value, _sourceconnectControlViewModel))
                 {
                     return;
                 }
@@ -196,7 +198,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(Equals(value, _targetConnectControlViewModel))
+                if (Equals(value, _targetConnectControlViewModel))
                 {
                     return;
                 }
@@ -273,12 +275,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <returns></returns>
         bool SelectedDestinationServerIsValid()
         {
-            if(SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
+            if (SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
             {
-                
-               return SelectedDestinationServer.IsAuthorizedDeployTo;
+
+                return SelectedDestinationServer.IsAuthorizedDeployTo;
             }
-           
+
             return false;
         }
 
@@ -288,12 +290,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <returns></returns>
         bool SelectedSourceServerIsValid()
         {
-            if(SelectedSourceServer != null && SelectedSourceServer.IsConnected)
+            if (SelectedSourceServer != null && SelectedSourceServer.IsConnected)
             {
 
                 return SelectedSourceServer.IsAuthorizedDeployFrom;
             }
-    
+
             return false;
         }
 
@@ -315,7 +317,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="e"></param>
         public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
         {
-            if(null != SelectedDestinationServer && null != Target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
+            if (null != SelectedDestinationServer && null != Target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
             {
                 Target.ClearConflictingNodesNodes();
             }
@@ -324,9 +326,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         void RaiseDeployCommandCanExecuteChanged()
         {
-            if(Application.Current != null)
+            if (Application.Current != null)
             {
-                if(Application.Current.Dispatcher != null)
+                if (Application.Current.Dispatcher != null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -413,10 +415,10 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value == _source) return;
+                if (value == _source) return;
 
                 _source = value;
-                if(_selectedDestinationServer != null && _target != null && _sourceStatPredicates != null && _targetStatPredicates != null)
+                if (_selectedDestinationServer != null && _target != null && _sourceStatPredicates != null && _targetStatPredicates != null)
                 {
                     CalculateStats();
                 }
@@ -435,7 +437,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value == _target) return;
+                if (value == _target) return;
                 _target = value;
                 NotifyOfPropertyChange(() => Target);
             }
@@ -452,21 +454,21 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value == null) return;
+                if (value == null) return;
 
-                if(null != _selectedSourceServer)
+                if (null != _selectedSourceServer)
                 {
                     _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
                 }
                 // ReSharper disable PossibleUnintendedReferenceComparison
-                if(value != _selectedSourceServer)
+                if (value != _selectedSourceServer)
                 // ReSharper restore PossibleUnintendedReferenceComparison
                 {
                     Target.ClearConflictingNodesNodes();
                 }
                 _selectedSourceServer = value;
                 SourceServerHasDropped = false;
-                if(_selectedSourceServer != null)
+                if (_selectedSourceServer != null)
                 {
                     _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
                     _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
@@ -491,15 +493,15 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                if(SourceServerHasDropped && !DestinationServerHasDropped)
+                if (SourceServerHasDropped && !DestinationServerHasDropped)
                 {
                     return "Source server has disconnected.";
                 }
-                if(!SourceServerHasDropped && DestinationServerHasDropped)
+                if (!SourceServerHasDropped && DestinationServerHasDropped)
                 {
                     return "Destination server has disconnected.";
                 }
-                if(SourceServerHasDropped && DestinationServerHasDropped)
+                if (SourceServerHasDropped && DestinationServerHasDropped)
                 {
                     return "Source and Destination servers have disconnected.";
                 }
@@ -531,12 +533,12 @@ namespace Dev2.Studio.ViewModels.Deploy
             set
             {
                 // ReSharper disable PossibleUnintendedReferenceComparison
-                if(value != _selectedDestinationServer)
+                if (value != _selectedDestinationServer)
                 // ReSharper restore PossibleUnintendedReferenceComparison
                 {
                     _selectedDestinationServer = value;
                     DestinationServerHasDropped = false;
-                    if(_selectedDestinationServer != null)
+                    if (_selectedDestinationServer != null)
                     {
                         _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
                         _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
@@ -602,18 +604,18 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="checkStateChangedArgs"></param>
         void OnCheckedStateChangedAction(CheckStateChangedArgs checkStateChangedArgs)
         {
-            if(checkStateChangedArgs != null && checkStateChangedArgs.PreviousState && checkStateChangedArgs.NewState == false)
+            if (checkStateChangedArgs != null && checkStateChangedArgs.PreviousState && checkStateChangedArgs.NewState == false)
             {
-                if(Target != null)
+                if (Target != null)
                 {
-                    if(checkStateChangedArgs.ResourceId != Guid.Empty)
+                    if (checkStateChangedArgs.ResourceId != Guid.Empty)
                     {
-                        if(SelectedDestinationServer != null)
+                        if (SelectedDestinationServer != null)
                         {
-                            if(SelectedDestinationServer.ResourceRepository != null)
+                            if (SelectedDestinationServer.ResourceRepository != null)
                             {
                                 var resourceModel = SelectedDestinationServer.ResourceRepository.FindSingle(model => model.ID == checkStateChangedArgs.ResourceId) as IContextualResourceModel;
-                                if(resourceModel != null)
+                                if (resourceModel != null)
                                 {
                                     Target.SetNodeOverwrite(resourceModel, false);
                                 }
@@ -623,7 +625,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 }
             }
             if (checkStateChangedArgs != null && checkStateChangedArgs.UpdateStats)
-            CalculateStats();
+                CalculateStats();
         }
 
         /// <summary>
@@ -632,17 +634,17 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void CalculateStats(bool updateSuccess = true)
         {
             if (updateSuccess)
-            DeploySuccessfull = false;
+                DeploySuccessfull = false;
 
-            if(Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
+            if (Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
             {
                 Source.ClearConflictingNodesNodes();
                 IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
-                if(explorerItemModel != null)
+                if (explorerItemModel != null)
                 {
                     var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
                     _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
-                    
+
                     _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
                     _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
                     RaiseDeployCommandCanExecuteChanged();
@@ -713,17 +715,17 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="obj"></param>
         void SelectAllDependancies(object obj)
         {
-            if(Source != null)
+            if (Source != null)
             {
-                if(Source.ExplorerItemModels != null)
+                if (Source.ExplorerItemModels != null)
                 {
                     List<IExplorerItemModel> resourceTreeViewModels = Source.ExplorerItemModels.ToList();
                     List<IExplorerItemModel> selectedResourcesTreeViewModels = new List<IExplorerItemModel>();
-                    foreach(var resourceTreeViewModel in resourceTreeViewModels)
+                    foreach (var resourceTreeViewModel in resourceTreeViewModels)
                     {
-                        if(resourceTreeViewModel != null)
+                        if (resourceTreeViewModel != null)
                         {
-                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)&& model.ResourceType != ResourceType.Folder);
+                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false) && model.ResourceType != ResourceType.Folder);
                             selectedResourcesTreeViewModels.AddRange(checkedITems);
                         }
                     }
@@ -741,19 +743,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<IEnvironmentModel> servers = _serverProvider.Load();
             Servers.Clear();
 
-            foreach(var server in servers)
+            foreach (var server in servers)
             {
                 Servers.Add(server);
             }
 
-            if(servers.Count > 0)
+            if (servers.Count > 0)
             {
                 //
                 // Find a source server to select
                 //
                 SelectedSourceServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedSourceServer));
 
-                if(SelectedSourceServer == null)
+                if (SelectedSourceServer == null)
                 {
                     SelectSourceServerFromInitialValue();
                 }
@@ -782,29 +784,45 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void Deploy()
         {
             Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.DeployClicked);
-            if(_deployStatsCalculator != null
+            if (_deployStatsCalculator != null
                 && _deployStatsCalculator.ConflictingResources != null
                 && _deployStatsCalculator.ConflictingResources.Count > 0)
             {
                 var deployDialogViewModel = new DeployDialogViewModel(_deployStatsCalculator.ConflictingResources);
                 ShowDialog(deployDialogViewModel);
-                if(deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
+                if (deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
                 {
                     return;
                 }
 
             }
 
+            if (SelectedDestinationServer != null && (SelectedDestinationServer.Connection.WebServerUri != null && (SelectedDestinationServer.Connection != null && (SelectedDestinationServer != null && SelectedDestinationServer.Connection.WebServerUri.Scheme == "http"))))
+            {
+                var popupController = CustomContainer.Get<IPopupController>();
+                if (popupController != null)
+                {
+                    var messageBuilder = new StringBuilder();
+                    messageBuilder.AppendLine("The destination server selected is not connected via https");
+                    messageBuilder.AppendLine("This means that all sensitive information such as passwords will not be encrypted during deployment.");
+                    messageBuilder.AppendLine("Are you sure you wish to continue deployment?");
+                    var messageBoxResult = popupController.Show(messageBuilder.ToString(), "Unsecure Destination Server", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, null);
+                    if (messageBoxResult == MessageBoxResult.No || messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
+                    {
+                        return;
+                    }
+                }
+            }
             //
             //Get the resources to deploy
             //
-            if(_deployStatsCalculator != null)
+            if (_deployStatsCalculator != null)
             {
                 var deployResourceRepo = SelectedSourceServer.ResourceRepository;
 
                 var resourcesToDeploy = Source.ExplorerItemModels.SelectMany(model => model.Descendants()).Where(_deployStatsCalculator.SelectForDeployPredicate).Select(model => deployResourceRepo.FindSingle(resourceModel => resourceModel.ID == model.ResourceId)).ToList();
 
-                if(HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
+                if (HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
                 {
                     return;
                 }
@@ -818,11 +836,12 @@ namespace Dev2.Studio.ViewModels.Deploy
                     IsDeploying = true;
                     var env = _getActive();
                     _setActive(SelectedDestinationServer);
+                    // bobcar
                     deployResourceRepo.DeployResources(SelectedSourceServer, SelectedDestinationServer, deployDto, EventPublisher);
                     _setActive(env);
                     DeploySuccessfull = true;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     DeploySuccessfull = false;
                     IsDeploying = false;
@@ -904,7 +923,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public Func<List<IResourceModel>, IResourceRepository, bool> HasNoResourcesToDeploy = (resourcesToDeploy, deployResourceRepo) =>
         {
-            if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+            if (resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
             {
                 return true;
             }
@@ -927,7 +946,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void LoadSourceEnvironment()
         {
             //Source.RemoveAllEnvironments();
-            if(SelectedSourceServer != null)
+            if (SelectedSourceServer != null)
             {
                 Source.Environment = SelectedSourceServer;
 
@@ -942,7 +961,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void LoadDestinationEnvironment()
         {
-            if(SelectedDestinationServer != null)
+            if (SelectedDestinationServer != null)
             {
                 Target.Environment = SelectedDestinationServer;
 
@@ -957,20 +976,20 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void SelectSourceServerFromInitialValue()
         {
             IEnvironmentModel environment = null;
-            if(_initialItemResourceID != Guid.Empty)
+            if (_initialItemResourceID != Guid.Empty)
             {
                 environment = EnvironmentRepository.FindSingle(model => model.ID == _initialItemEnvironmentID);
             }
-            if(environment != null)
+            if (environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
                 //
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
-                if(SourceConnectControlViewModel != null)
+                if (SourceConnectControlViewModel != null)
                 {
-                    SourceConnectControlViewModel.UpdateActiveEnvironment(environment,false);
+                    SourceConnectControlViewModel.UpdateActiveEnvironment(environment, false);
                     SourceConnectControlViewModel.SetTargetEnvironment();
                 }
                 SelectedSourceServer = server;
@@ -990,12 +1009,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             IExplorerItemModel navigationItemViewModel = null;
 
-            if(_initialItemResourceID != Guid.Empty)
+            if (_initialItemResourceID != Guid.Empty)
             {
                 navigationItemViewModel = StudioResourceRepository.FindItem(model => model.EnvironmentId == _initialItemEnvironmentID && model.ResourceId == _initialItemResourceID);
             }
 
-            if(navigationItemViewModel == null) return;
+            if (navigationItemViewModel == null) return;
 
             //
             // Select and expand the initial node
@@ -1003,7 +1022,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             navigationItemViewModel.IsChecked = true;
 
             var parent = navigationItemViewModel.Parent;
-            if(parent != null)
+            if (parent != null)
             {
                 parent.IsDeploySourceExpanded = true;
             }
@@ -1017,7 +1036,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             EventPublishers.Aggregator.Unsubscribe(this);
             // unsubscibe from previous source environemt
-            if(null != _selectedSourceServer)
+            if (null != _selectedSourceServer)
                 _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
             base.OnDispose();
         }
@@ -1056,17 +1075,17 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             IEnvironmentModel sourceEnvironmentModel = Source.Environment;
             IEnvironmentModel targetEnvironmentModel = Target.Environment;
-            if(Source != null && sourceEnvironmentModel != null)
+            if (Source != null && sourceEnvironmentModel != null)
             {
-                if(sourceEnvironmentModel.ID == message.EnvironmentModel.ID)
+                if (sourceEnvironmentModel.ID == message.EnvironmentModel.ID)
                 {
                     Source.Environment = null;
                 }
             }
 
-            if(Target != null && targetEnvironmentModel != null)
+            if (Target != null && targetEnvironmentModel != null)
             {
-                if(targetEnvironmentModel.ID == message.EnvironmentModel.ID)
+                if (targetEnvironmentModel.ID == message.EnvironmentModel.ID)
                 {
                     Target.Environment = null;
                 }
@@ -1082,22 +1101,22 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="explorerItemModels"></param>
         public void SelectDependencies(List<IExplorerItemModel> explorerItemModels)
         {
-            if(explorerItemModels != null)
+            if (explorerItemModels != null)
             {
-                if(SelectedSourceServer != null)
+                if (SelectedSourceServer != null)
                 {
                     IResourceRepository resourceRepository = SelectedSourceServer.ResourceRepository;
-                    if(resourceRepository != null)
+                    if (resourceRepository != null)
                     {
                         List<IContextualResourceModel> selectedResourceModels = explorerItemModels.Select(resourceTreeViewModel => SelectedSourceServer.ResourceRepository.FindSingle(model => model.ID == resourceTreeViewModel.ResourceId) as IContextualResourceModel).ToList();
-                        if(selectedResourceModels.All(model => model != null))
+                        if (selectedResourceModels.All(model => model != null))
                         {
                             List<string> dependancyNames = resourceRepository.GetDependanciesOnList(selectedResourceModels, SelectedSourceServer);
-                            foreach(var dependant in dependancyNames)
+                            foreach (var dependant in dependancyNames)
                             {
                                 string dependant1 = dependant;
-                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID);
-                                if(treeNode != null)
+                                var treeNode = StudioResourceRepository.FindItem(model => (model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID) || (model.DisplayName==dependant1 && model.EnvironmentId==SelectedSourceServer.ID));
+                                if (treeNode != null)
                                 {
                                     treeNode.IsChecked = true;
                                 }

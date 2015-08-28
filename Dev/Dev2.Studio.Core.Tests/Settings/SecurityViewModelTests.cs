@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -880,7 +880,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceID,
                 ResourceName = ResourceName
             };
-            const ResourceType ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
+            const ResourceType ResourceType = ResourceType.WorkflowService;
             var newResourceID = Guid.NewGuid();
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ID).Returns(newResourceID);
@@ -908,7 +908,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_PickResourceCommand_PermissionHasResource_PickerShouldHavePermissionResourceAsSelectedResource()
         {
             //------------Setup for test--------------------------
-            const ResourceType ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
+            const ResourceType ResourceType = ResourceType.WorkflowService;
             const string ResourceName = "Resource2";
             var resourceID = Guid.NewGuid();
             var resourceModel = new Mock<IResourceModel>();
@@ -937,7 +937,7 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(resourceModel.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
@@ -1075,7 +1075,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
             Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
-            foreach(var permission in target.WindowsGroupPermissions)
+            foreach (var permission in target.WindowsGroupPermissions)
             {
                 Assert.IsTrue(permission.IsValid);
                 Assert.IsFalse(permission.IsNew);
@@ -1108,7 +1108,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
             Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
-            foreach(var permission in target.WindowsGroupPermissions)
+            foreach (var permission in target.WindowsGroupPermissions)
             {
                 Assert.IsTrue(permission.IsValid);
                 Assert.IsFalse(permission.IsNew);

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 */
 
 using System.Threading;
-using System.Timers;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -47,24 +46,23 @@ namespace Dev2.Infrastructure.Tests.Logs
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(2500);
+            var pulseLogger = new PulseLogger(2000);
             
-            Assert.AreEqual(pulseLogger.Interval, 2500);
+            Assert.AreEqual(pulseLogger.Interval, 2000);
             PrivateObject pvt = new PrivateObject(pulseLogger);
             System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
-            timer.Elapsed += TimerElapsed;
+            timer.Elapsed += (sender, e) =>
+                {
+                    _elapsed = true;
+
+                };
             Assert.AreEqual(false, timer.Enabled);
-            pulseLogger.Start();
-            Thread.Sleep(4000);
             //------------Execute Test---------------------------
-            Assert.IsTrue(_elapsed);
+            pulseLogger.Start();
+            Thread.Sleep(6000);
             //------------Assert Results-------------------------
+            Assert.IsTrue(_elapsed);
         }
 
-        void TimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            _elapsed = true;
-
-        }
     }
 }

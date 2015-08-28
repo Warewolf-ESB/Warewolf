@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,13 +73,11 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
 
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
@@ -89,7 +87,7 @@ namespace Dev2.Activities
 
             try
             {
-                PreExecution(dataObject, fromFields);
+                PreExecution(dataObject, fromFields, update);
                 if(String.IsNullOrEmpty(InFields))
                 {
                     throw new Exception("Invalid In fields");
@@ -111,7 +109,7 @@ namespace Dev2.Activities
                     throw new Exception("invalid selected fields");
                 }
 
-                dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields);
+                dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields, update);
             }
             catch(Exception e)
             {
@@ -120,7 +118,7 @@ namespace Dev2.Activities
             }
             finally
             {
-                PostExecute(dataObject, toresultfields, allErrors.HasErrors());
+                PostExecute(dataObject, toresultfields, allErrors.HasErrors(),update);
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -134,13 +132,13 @@ namespace Dev2.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
 
-        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, bool hasErrors)
+        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, bool hasErrors, int update)
         {
             if(dataObject.IsDebugMode())
             {
@@ -152,7 +150,7 @@ namespace Dev2.Activities
                     {
                         try
                         {
-                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment);
+                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment, update);
 
                             if (!hasErrors)
                             AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
@@ -169,7 +167,7 @@ namespace Dev2.Activities
             }
         }
 
-        void PreExecution(IDSFDataObject dataObject, IEnumerable<string> fromFields)
+        void PreExecution(IDSFDataObject dataObject, IEnumerable<string> fromFields, int update)
         {
             if(dataObject.IsDebugMode())
             {
@@ -181,7 +179,7 @@ namespace Dev2.Activities
                     {
                         try
                         {
-                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment));
+                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment, update));
                         }
                         catch(Exception)
                         {
@@ -250,7 +248,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfNativeActivity<string>
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -259,7 +257,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

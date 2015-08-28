@@ -2,6 +2,7 @@ using System;
 using System.Activities;
 using System.Collections.Concurrent;
 using Dev2;
+using Dev2.Common;
 
 namespace Warewolf.ResourceManagement
 {
@@ -16,7 +17,7 @@ namespace Warewolf.ResourceManagement
             _cache = cache;
         }        
 
-        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid)
+        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid,bool failOnException=false)
         {
             if(HasActivityInCache(resourceIdGuid))
             {
@@ -25,11 +26,23 @@ namespace Warewolf.ResourceManagement
             var dynamicActivity = activity;
             if (dynamicActivity != null)
             {
-                IDev2Activity act = _activityParser.Parse(dynamicActivity);
-                if (_cache.TryAdd(resourceIdGuid, act))
+                try
                 {
-                    return act;
+                    IDev2Activity act = _activityParser.Parse(dynamicActivity);
+                    if (_cache.TryAdd(resourceIdGuid, act))
+                    {
+                        return act;
+                    }
                 }
+                    // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception err) //errors caught inside
+                    // ReSharper restore EmptyGeneralCatchClause
+                {
+                    Dev2Logger.Log.Error(err);
+                    if(failOnException)
+                    throw;
+                }
+   
             }
             return null;
         }

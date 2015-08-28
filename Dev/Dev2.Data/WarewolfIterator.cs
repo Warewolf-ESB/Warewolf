@@ -22,25 +22,25 @@ namespace Dev2.Data
             SetupListResult(warewolfEvalResult);
             SetupScalarResult(warewolfEvalResult);
             SetupForWarewolfRecordSetResult(warewolfEvalResult);
-            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom!=null) : 1;
+            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom != null) : 1;
             _currentValue = 0;
         }
 
         void SetupForWarewolfRecordSetResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
         {
-            if(warewolfEvalResult.IsWarewolfRecordSetResult)
+            if (warewolfEvalResult.IsWarewolfRecordSetResult)
             {
                 var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                if(listResult != null)
+                if (listResult != null)
                 {
                     var stringValue = "";
-                    foreach(var item in listResult.Item.Data)
+                    foreach (var item in listResult.Item.Data)
                     {
-                        if(item.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
                         {
                             var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                             var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
-                            if(string.IsNullOrEmpty(stringValue))
+                            if (string.IsNullOrEmpty(stringValue))
                             {
                                 stringValue = warewolfEvalResultToString;
                             }
@@ -57,7 +57,7 @@ namespace Dev2.Data
 
         void SetupScalarResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
         {
-            if(warewolfEvalResult.IsWarewolfAtomResult)
+            if (warewolfEvalResult.IsWarewolfAtomResult)
             {
                 _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
             }
@@ -65,10 +65,10 @@ namespace Dev2.Data
 
         void SetupListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
         {
-            if(warewolfEvalResult.IsWarewolfAtomListresult)
+            if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
                 var warewolfAtomListresult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                if(warewolfAtomListresult != null)
+                if (warewolfAtomListresult != null)
                 {
                     warewolfAtomListresult.Item.ResetCurrentEnumerator();
                     _listResult = warewolfAtomListresult;
@@ -88,19 +88,19 @@ namespace Dev2.Data
             _currentValue++;
             if (_listResult != null)
             {
-                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());                     
-               warewolfAtomToString = DoCalcution(warewolfAtomToString);
+                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());
+                warewolfAtomToString = DoCalcution(warewolfAtomToString);
                 return warewolfAtomToString;
             }
-            return _scalarResult!=null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item)) : null;
+            return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item)) : null;
         }
 
         static string DoCalcution(string warewolfAtomToString)
         {
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
-            
-            if(isCalcEvaluation)
+
+            if (isCalcEvaluation)
             {
                 var functionEvaluator = new FunctionEvaluator();
                 string eval;
@@ -127,6 +127,8 @@ namespace Dev2.Data
                 }
                 if (!tryEvaluateFunction)
                 {
+                    if (error == "Incorrect type of argument or operand.")
+                        error += string.Format(" Unable to calculate: '{0}'. Try rewriting the expression.", cleanExpression);
                     throw new Exception(error);
                 }
             }
@@ -135,7 +137,7 @@ namespace Dev2.Data
 
         public bool HasMoreData()
         {
-            return _currentValue<=_maxValue-1;
+            return _currentValue <= _maxValue - 1;
         }
         #endregion
     }

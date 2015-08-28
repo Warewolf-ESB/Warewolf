@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,10 +18,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
+using Ionic.Zlib;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
@@ -49,13 +49,9 @@ namespace Dev2.PathOperations
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
-            string result;
             try
             {
 
-                // TODO : we need to chunk this in
-                if(!deferredRead)
-                {
                     byte[] bytes;
                     using(var s = path.Get(path.IOPath, _filesToDelete))
                     {
@@ -66,18 +62,12 @@ namespace Dev2.PathOperations
 
                     // TODO : Remove the need for this ;(
                     return Encoding.UTF8.GetString(bytes);
-                }
 
-                // If we want to defer the read of data, just return the file name ;)
-                // Serialize to binary and return 
-                BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
-                result = bdlUtil.SerializeDeferredItem(path);
             }
             finally
             {
                 _filesToDelete.ForEach(RemoveTmpFile);
             }
-            return result;
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)
@@ -591,12 +581,12 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        Ionic.Zlib.CompressionLevel ExtractZipCompressionLevel(string lvl)
+        CompressionLevel ExtractZipCompressionLevel(string lvl)
         {
-            var lvls = Enum.GetValues(typeof(Ionic.Zlib.CompressionLevel));
+            var lvls = Enum.GetValues(typeof(CompressionLevel));
             var pos = 0;
             //19.09.2012: massimo.guerrera - Changed to default instead of none
-            Ionic.Zlib.CompressionLevel clvl = Ionic.Zlib.CompressionLevel.Default;
+            CompressionLevel clvl = CompressionLevel.Default;
 
             while(pos < lvls.Length && lvls.GetValue(pos).ToString() != lvl)
             {
@@ -605,7 +595,7 @@ namespace Dev2.PathOperations
 
             if(pos < lvls.Length)
             {
-                clvl = (Ionic.Zlib.CompressionLevel)lvls.GetValue(pos);
+                clvl = (CompressionLevel)lvls.GetValue(pos);
             }
 
             return clvl;

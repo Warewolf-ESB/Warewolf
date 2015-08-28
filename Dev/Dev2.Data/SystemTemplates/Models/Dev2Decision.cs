@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,11 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Storage;
-using DataListUtil = Dev2.Data.Util.DataListUtil;
+
 namespace Dev2.Data.SystemTemplates.Models
 {
     public class Dev2Decision : IDev2DataModel
@@ -96,7 +97,7 @@ namespace Dev2.Data.SystemTemplates.Models
             {
                 if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star)
                 {
-                    var allValues = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
+                    var allValues = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
                     allErrors.MergeErrors(errors);
                     StringBuilder expandStarredIndex = new StringBuilder();
 
@@ -118,7 +119,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 StringBuilder expandStarredIndices = new StringBuilder();
                 if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
-                    var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
+                    var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
                     allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0]);
                     allCol2Values.RemoveAt(0);
@@ -131,7 +132,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star)
                 {
-                    var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
+                    var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
                     allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2);
                     allCol1Values.RemoveAt(0);
@@ -145,9 +146,9 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 if((DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star) || (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star))
                 {
-                    var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
+                    var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
                     allErrors.MergeErrors(errors);
-                    var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
+                    var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
                     allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0]);
                     allCol1Values.RemoveAt(0);
@@ -204,7 +205,7 @@ namespace Dev2.Data.SystemTemplates.Models
             StringBuilder expandStarredIndices = new StringBuilder();
             if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
-                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors);
+                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors, 0);
 
                 expandStarredIndices.Append(Col1 + " " + fn + " " + Col2 + " AND " + allCol3Values[0]);
                 allCol3Values.RemoveAt(0);
@@ -216,7 +217,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
-                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
+                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
 
                 expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0] + " AND " + Col3);
                 allCol2Values.RemoveAt(0);
@@ -228,8 +229,8 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
-                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
-                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors);
+                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
+                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors, 0);
 
                 expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0] + " AND " + allCol3Values[0]);
                 allCol2Values.RemoveAt(0);
@@ -250,7 +251,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
-                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
+                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2 + " AND " + Col3);
                 allCol1Values.RemoveAt(0);
@@ -262,8 +263,8 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
-                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
-                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors);
+                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors, 0);
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2 + " AND " + allCol3Values[0]);
                 allCol1Values.RemoveAt(0);
@@ -284,8 +285,8 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
-                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
-                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
+                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0] + " AND " + Col3);
                 allCol1Values.RemoveAt(0);
@@ -306,9 +307,9 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
-                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors);
-                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors);
-                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors);
+                var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
+                var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
+                var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors, 0);
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0] + " AND " + allCol3Values[0]);
                 allCol1Values.RemoveAt(0);

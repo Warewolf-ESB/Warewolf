@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,8 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Management;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
@@ -19,11 +23,6 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.IO;
-using System.Management;
-using System.Linq;
-using System.Linq.Expressions;
 using TechTalk.SpecFlow;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 namespace Dev2.Activities.Specs.Explorer
@@ -125,7 +124,7 @@ namespace Dev2.Activities.Specs.Explorer
                             DisplayName = folderName,
                             EnvironmentId = localhost,
                             ResourcePath = resourcePath + "\\" + folderName,
-                            Permissions = Common.Interfaces.Security.Permissions.Contribute,
+                            Permissions = SecPermissions.Contribute,
                             ResourceType = ResourceType.Folder,
                             Parent = parent
                         });

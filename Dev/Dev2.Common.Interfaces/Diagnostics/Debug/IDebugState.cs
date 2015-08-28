@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -79,7 +79,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the server.
         /// </summary>
-        string Server { get; set; }
+        string Server { get;  set; }
 
         /// <summary>
         ///     Gets or sets the server ID.
@@ -155,5 +155,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool IsFinalStep();
 
         bool IsFirstStep();
+
+        bool IsDurationVisible { get; set; }
     }
 }

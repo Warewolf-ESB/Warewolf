@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,10 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -36,8 +33,7 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        new List<DebugItem> _debugInputs;
-        new List<DebugItem> _debugOutputs;
+
 
         #endregion
 
@@ -73,26 +69,21 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
 
-            Guid dlId = dataObject.DataListID;
+
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
-            Guid executionId = dlId;
             allErrors.MergeErrors(errorResultTo);
 
             try
             {
                 if(!errorResultTo.HasErrors())
                 {
-                    IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     if(allErrors.HasErrors())
                     {
@@ -106,31 +97,10 @@ namespace Dev2.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(Script, dataObject.Environment);
+                        AddDebugInputItem(Script, dataObject.Environment, update);
                     }
 
-                    int iterationCounter = 0;
-
-                    while(colItr.HasMoreData())
-                    {
-                        dynamic value = null;
-
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-                            toUpsert.Add(region, null);
-                            toUpsert.FlushIterationFrame();
-
-                            if(dataObject.IsDebugMode())
-                            {
-                                // ReSharper disable ExpressionIsAlwaysNull
-                                AddDebugOutputItem(new DebugOutputParams(region, value, executionId, iterationCounter));
-                                // ReSharper restore ExpressionIsAlwaysNull
-                            }
-                        }
-
-                        iterationCounter++;
-                    }
+                   
 
                     allErrors.MergeErrors(errorResultTo);
                 }
@@ -147,7 +117,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     dataObject.Environment.AddError(allErrors.MakeDataListReady());
-                    dataObject.Environment.Assign(Result, null);
+                    dataObject.Environment.Assign(Result, null, update);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -157,8 +127,8 @@ namespace Dev2.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
 
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
@@ -192,16 +162,16 @@ namespace Dev2.Activities
         #region Private Methods
 
 
-        private void AddDebugInputItem(string scriptExpression, IExecutionEnvironment executionEnvironment)
+        private void AddDebugInputItem(string scriptExpression, IExecutionEnvironment executionEnvironment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(scriptExpression, "Script", executionEnvironment));
+            AddDebugInputItem(new DebugEvalResult(scriptExpression, "Script", executionEnvironment, update));
         }
 
         #endregion
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -210,7 +180,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

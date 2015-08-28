@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.ConverterTests
             //------------Execute Test---------------------------
             var convertedValue = dateTimeToStringConverter.Convert(dateTimeToConvert, null, null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("01/02/2014 10:15:52.0520", convertedValue);
+            Assert.AreEqual("2014/01/02 10:15:52.0520 AM", convertedValue);
         }
 
         [TestMethod]

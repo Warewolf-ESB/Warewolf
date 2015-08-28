@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Network;
+using System.Threading.Tasks;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Security;
@@ -123,7 +124,11 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public string Name { get { return Connection.DisplayName; } set { Connection.DisplayName = value; } }
+        public string Name { get { return Connection.DisplayName; } 
+            set
+            {
+                Connection.DisplayName = value;
+            } }
 
         public bool IsConnected { get { return Connection.IsConnected; } }
 
@@ -213,6 +218,17 @@ namespace Dev2.Studio.Core.Models
                 ResourceRepository.ForceLoad();
                 HasLoadedResources = true;
             }
+        }
+
+        public async Task<bool> ForceLoadResourcesAsync()
+        {
+            if(Connection.IsConnected && CanStudioExecute)
+            {
+                await ResourceRepository.ForceLoadAsync();
+                HasLoadedResources = true;
+                return true;
+            }
+            return false;
         }
 
         #endregion

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,19 +9,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Diagnostics.Debug;
+using Dev2.Controller;
 using Dev2.Integration.Tests.MEF.WebTester;
+using Dev2.Network;
+using Dev2.Threading;
+using Moq;
 
 namespace Dev2.Integration.Tests.Helpers
 {
@@ -58,6 +61,34 @@ namespace Dev2.Integration.Tests.Helpers
             }
 
             return _responseData;
+        }
+
+        public static string ExecuteServiceOnLocalhostUsingProxy(string serviceName, Dictionary<string,string> payloadArguments)
+        {
+            CommunicationControllerFactory fact = new CommunicationControllerFactory();
+            var comm = fact.CreateController(serviceName);
+            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, new TestAsyncWorker());
+            prx.Connect(Guid.NewGuid());
+            foreach (var payloadArgument in payloadArguments)
+            {
+                comm.AddPayloadArgument(payloadArgument.Key, payloadArgument.Value);
+            }
+            if(comm != null)
+            {
+                var messageToExecute = comm.ExecuteCommand<ExecuteMessage>(prx, Guid.Empty);
+                if(messageToExecute != null)
+                {
+                    var responseMessage = messageToExecute.Message;
+                    if(responseMessage != null)
+                    {
+                        var actual = responseMessage.ToString();
+                        return actual;
+                    }
+                    return "Error: response message empty!";
+                }
+                return "Error: message to send to localhost server could not be generated.";
+            }
+            return "Error: localhost server controller could not be created.";
         }
 
         public static string PostDataToWebserver(string postandUrl, out bool wasHttps)

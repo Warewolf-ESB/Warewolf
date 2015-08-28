@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
@@ -47,16 +49,17 @@ namespace Dev2.Data.ServiceModel
 
         public Connection()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.Server;
+            ResourceType = ResourceType.Server;
             VersionInfo = new VersionInfo();
         }
 
         public Connection(XElement xml)
             : base(xml)
          {
-            ResourceType = Common.Interfaces.Data.ResourceType.Server;
+            ResourceType = ResourceType.Server;
 
-            var connectionString = xml.AttributeSafe("ConnectionString");
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString):conString;
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {
@@ -131,7 +134,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", enSourceType.Dev2Server),
                 new XElement("TypeOf", enSourceType.Dev2Server)
                 );

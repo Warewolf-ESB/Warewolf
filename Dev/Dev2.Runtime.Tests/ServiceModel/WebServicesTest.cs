@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -383,6 +382,20 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Assert Results-------------------------
             Assert.IsNotNull(outputDescription);
             Assert.AreEqual(22, outputDescription.DataSourceShapes[0].Paths.Count);
+
+        }
+
+        [TestMethod]
+        public void OuputDescriptionWhereRequestResponseHasXMLWithElementValuesAndAttributeValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.RequestResponse = "<API><auth><code note=\"Authenticated\">10001</code><session note=\"Session Token\">62123409</session></auth></API>";
+            //------------Execute Test---------------------------
+            var outputDescription = service.GetOutputDescription();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputDescription);
+            Assert.AreEqual(4, outputDescription.DataSourceShapes[0].Paths.Count);
 
         }
 

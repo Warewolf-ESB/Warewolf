@@ -8,22 +8,6 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And All environments disconnected
 			And Debug states are cleared
-Scenario: Simple workflow executing against the server
-	 Given I have a workflow "WorkflowWithAssign"
-	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | yes   |
-	  | [[rec().a]] | no    |	 
-	  When "WorkflowWithAssign" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssign' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |
-	  | 2 | [[rec().a]] = | no        |
-	  And the 'Rec To Convert' in Workflow 'WorkflowWithAssign' debug outputs as    
-	  | # |                    |
-	  | 1 | [[rec(1).a]] = yes |
-	  | 2 | [[rec(2).a]] = no  |
 
 Scenario: Workflow with multiple tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndCount"
@@ -138,26 +122,26 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | [[Name]] = Azerbaijan |
 
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignWithRemote"
-	 And "TestAssignWithRemote" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignWithRemoteNoError1"
+	 And "TestAssignWithRemoteNoError1" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignWithRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignWithRemoteNoError1" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
-	| input            | [[inputData]] | output              | [[output]]       |
-	|                  |               | values(*).upper     | [[values().up]]  |
-	|                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignWithRemote" is executed
+	| inputData            | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).up     | [[values().up]]  |
+	|                  |               | values(*).low     | [[values().low]] |
+	  When "TestAssignWithRemoteNoError1" is executed
 	  Then the workflow execution has "NO" error
-	   And the 'AssignData' in WorkFlow 'TestAssignWithRemote' debug inputs as
+	   And the 'AssignData' in WorkFlow 'TestAssignWithRemoteNoError1' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignWithRemote' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemoteNoError1' debug inputs as
 	  |                       |
-	  | [[input]] = hello |
+	  | [[inputData]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -167,13 +151,14 @@ Scenario: Workflow with an assign and remote workflow
 	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                             |
 	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).upper]] = HELLO |
-	  | 3 | [[values(1).lower]] = hello |	  	 
-	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemote' debug outputs as
+	  | 2 | [[values(1).up]] = HELLO |
+	  | 3 | [[values(1).low]] = hello |	  	 
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as
 	  |                           |
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' has a debug Server Name of ""Remote Connection Integration""
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
@@ -299,10 +284,10 @@ Scenario: Workflow with Assign and Date and Time Difference tools executing agai
 	  And the 'InputDates' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as  
 	  | # |              |
 	  | 1 | [[a]] = 2014 |
-	  | 2 | [[b]] = 10.  |
+	  | 2 | [[b]] = 10.0  |
 	  And the 'DateAndTime' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
 	  | Input 1       | Input 2    | Input Format | Output In |
-	  | 2020/[[b]]/01 = 2020/10./01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+	  | 2020/[[b]]/01 = 2020/10.0/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
 	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as 
 	  |               |
 	  | [[result]] = |
@@ -319,7 +304,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | [[a]]    | Index | 4     |         | Left      |
 	  | [[b]]    | Index | 8     |         | Left      |
 	  And "WorkflowWithAssignDataMergeAndDataSplittools" contains Data Split "Data Split" as
-	  | String                  | Variable     | Type  | At | Include    | Escape |
+	  | String                  | Variable    | Type  | At | Include    | Escape |
 	  | [[result]][[split().a]] | [[rec().b]] | Index | 4  | Unselected |        |
 	  |                         | [[rec().b]] | Index | 8  | Unselected |        |
 	  When "WorkflowWithAssignDataMergeAndDataSplittools" is executed
@@ -342,9 +327,9 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |                           |
 	  | [[result]] = TestWarewolf |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
-	  | String to Split            | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | String to Split                                | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
 	  | [[result]][[split().a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
-	  |                            |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
+	  |                                                |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).b]] = Test     |
@@ -384,7 +369,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | # |                      |
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
+	  | String to Split     | Process Direction | Skip blank rows | # |                | With  | Using     | Include | Escape |
 	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[b]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
@@ -849,8 +834,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 3 | [[rs(1).a]] = rec(1).a |
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
-	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | # |                     | With  | Using | Pad | Align |
+	  | 1 | [[b]] = warewolf    | Index | "8"   | ""  | Left  |
 	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
@@ -1055,7 +1040,7 @@ Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset var
 	  | [[rec().a]] | new().a    |
 	  | [[new().a]] | dd/mm/yyyy |	 	  
 	  And "WorkflowWithAssignandDateTimetool" contains Date and Time "AddDate" as
-      | Input     | Input Format    | Add Time | Output Format | Result  |
+      | Input     | Input Format     | Add Time | Output Format | Result  |
       | [[[[a]]]] | [[[[rec(1).a]]]] | 1        | dd/mm/yyyy    | [[res]] |
 	  When "WorkflowWithAssignandDateTimetool" is executed
 	  Then the workflow execution has "NO" error
@@ -1104,7 +1089,7 @@ Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset vari
 	   | 3 | [[rec(1).a]] = new().a    |
 	   | 4 | [[new(1).a]] = 01/02/2014 |
 	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
-	   | Input 1                       | Input 2                | Input Format | Output In |
+	   | Input 1                   | Input 2            | Input Format | Output In |
 	   | [[new(1).a]] = 01/02/2014 | [[b]] = 01/02/2016 | dd/mm/yyyy   | Years     |
 	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
 	   |                |
@@ -1249,7 +1234,7 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index r
 	 | 6 | [[index(2).a]] = 3      |  	
     And the 'Merge' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
 	 | # |                                      | With  | Using | Pad | Align |
-	 | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
+	 | 1 | [[rec(1).a]] = warewolf | Index | "8"   | ""  | Left  |
 	 | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
 	 And the 'Merge' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
 	 |                        |
@@ -1422,7 +1407,7 @@ Scenario: Workflow with Assign and ForEach
      And "WFWithAssignForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"
 	 And "ForEachTest" contains workflow "11714Nested" with mapping as
 	 | Input to Service | From Variable | Output from Service | To Variable |
-	 | a                | [[Warewolf]]      |                     |             |
+	 | a                | [[Warewolf]]  |                     |             |
 	 When "WFWithAssignForEach" is executed
 	 Then the workflow execution has "NO" error
 	 And the 'ForEachTest' in WorkFlow 'WFWithAssignForEach' debug inputs as 
@@ -2664,14 +2649,14 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | # |                 |
 	  | 1 | [[res]] =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-	  | # |                      | With  | Using | Pad | Align |
-	  | 1 | [[Value]]Test =  | Index | "4"   | ""  | Left  |
+	  | # |                 | With  | Using | Pad | Align |
+	  | 1 | [[Value]]Test = | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
 	  |              |
 	  | [[result]] = |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-	  | String to Split         | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	  | [[Value12]]Test =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  | String to Split   | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | [[Value12]]Test = | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
 	  | # |                |
 
@@ -3266,7 +3251,7 @@ Scenario: Example Executing Data - Case Conversion example workflow
 	  | 1 | [[sometext]] = 1mixed up 5om3 | Title Case | 
 	  And the 'Case Conversion8 (1)' in Workflow 'Data - Case Conversion' debug outputs as    
 	   | # |                               |
-	   | 1 | [[sometext]] = 1mixed Up 5om3 |
+	  | 1 | [[sometext]] = 1Mixed Up 5Om3 |
 
 
 Scenario: Example Executing Data - Data Merge example workflow
@@ -3708,7 +3693,6 @@ Scenario: Gather System tool throws error when debug with 2 variables in one row
 	  | 1 | [[a]] = b       |
 	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
 	  | # |              |             |
-	  | 1 | [[a]][[b]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
 	  | # |              |
 	  | 1 | [[a]][[b]] = |
@@ -3734,7 +3718,6 @@ Scenario: Gather System tool throws error when debug with invalid variableb
 	  | 1 | [[a]] = b       |
 	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
 	  | # |                      |             |
-	  | 1 | [[a]][[rec().a]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
 	  | # |                      |
 	  | 1 | [[a]][[rec().a]] = |
@@ -3835,26 +3818,26 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemote123"
-	  And "TestAssignWithRemote123" contains an Assign "AssignData" as
+	  Given I have a workflow "TestAssignWithRemoteOutputsError"
+	  And "TestAssignWithRemoteOutputsError" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemote123" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  And "TestAssignWithRemoteOutputsError" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  | input            | [[inputData]] | output              | [[output]]       |
-	  |                  |               | values(*).upper     | [[values().&up]] |
-	  |                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignWithRemote123" is executed
-	  Then the "TestAssignWithRemote123" workflow execution has "AN" error
-	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	  | inputData        | [[inputData]] | output              | [[output]]       |
+	  |                  |               | values(*).up     | [[values().&up]] |
+	  |                  |               | values(*).low     | [[values().low]] |
+	  When "TestAssignWithRemoteOutputsError" is executed
+	  Then the "TestAssignWithRemoteOutputsError" workflow execution has "AN" error
+	  And the 'AssignData' in WorkFlow 'TestAssignWithRemoteOutputsError' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignWithRemote123' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemoteOutputsError' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemoteOutputsError' debug inputs as
 	  |                       |
-	  | [[input]] = hello |
+	  | [[inputData]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -3864,8 +3847,8 @@ Scenario: Error from workflow service is expected to buble out
 	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                             |
 	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).upper]] = HELLO |
-	  | 3 | [[values(1).lower]] = hello |	  	 
+	  | 2 | [[values(1).up]] = HELLO |
+	  | 3 | [[values(1).low]] = hello |	  	 
 
 Scenario Outline: Workflow to Workflow Mappings 
 Given I have a workflow "<Name>"
@@ -4091,7 +4074,7 @@ Examples:
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |
 	  | Volume           | 1000          |                     |             |
-	  When "Testing - Async Test Master Testv" is executed
+	  When "Testing - Async Test Master Testc" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
 	  |                      |
@@ -4147,19 +4130,54 @@ Scenario: Executing Asynchrounous testing workflow error
 #     | 4 | 9999  | Pass   |
 #     | 5 | 10000 | Pass   |
 
-Scenario: Workflow with AsyncLogging and ForEach
-     Given I have a workflow "WFWithAsyncLoggingForEach"
-     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
-	 And "ForEachTest" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[Warewolf]] | bob   |
-	 When "WFWithAsyncLoggingForEach" is executed
-	 Then the workflow execution has "NO" error
-	 And I set logging to "Debug"
-	 When "WFWithAsyncLoggingForEach" is executed "first time"
-	 Then the workflow execution has "NO" error
-	 And I set logging to "OFF"
-	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
-	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "1200" milliseconds
-	 And I set logging to "Debug"
+Scenario: workflow without StackOverflow exception check
+         Given I have a workflow "Testing - LoopTest"
+         And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "Testing - LoopTest" is executed
+         Then the workflow execution has "NO" error      
+
+Scenario: Executing WF on a remote server 
+         Given I have a workflow "TestRemoteTools"
+         And "Testing - LoopTest" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable      |
+         When "TestRemoteTools" is executed
+         Then the workflow execution has "NO" error     
+
+		 
+Scenario: ForEach with NestedStarTest and Inner WF
+	  Given I have a workflow "ForEach Output2"
+	  And "ForEach Output2" contains "TestInnerWFForEachOutputs" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "ForEach Output2" is executed
+	Then the workflow execution has "NO" error
+	And the 'TestInnerWFForEachOutputs' in Workflow 'ForEach Output2' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+	  
+Scenario: Time Zone Changes
+	  Given I have a workflow "TimeZoneChangeTest"
+	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "TimeZoneChangeTest" is executed
+	Then the workflow execution has "NO" error
+	And the 'TimeZoneChange' in Workflow 'TimeZoneChangeTest' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+
+#FOREACH
+@ignore
+Scenario: ForEach Acceptance Tests
+	  Given I have a workflow "Master Test"
+	  And "Master Test" contains "Testing/For Each" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Master Test" is executed
+	Then the workflow execution has "NO" error
+	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,9 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel;
+using Dev2.Data.Settings;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
@@ -27,6 +32,7 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceRepository : IDisposable
     {
         List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        Task<List<IResourceModel>> ReloadResourceAsync(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         void Rename(string resourceId, string newName);
         void DeployResource(IResourceModel resource);
@@ -36,6 +42,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsWorkflow(string resourceName);
         void Add(IResourceModel resource);
         void ForceLoad();
+        Task<bool> ForceLoadAsync();
 
         bool IsLoaded { get; set; }
         void RefreshResource(Guid resourceId);
@@ -46,14 +53,16 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
-        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId);
+        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
-        Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv);
-        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Data.Settings.Settings settings);
+        Settings ReadSettings(IEnvironmentModel currentEnv);
+        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Settings settings);
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
         DbTableList GetDatabaseTables(DbSource dbSource);
+        List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);
+        List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list, bool onlyEditable);
         ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel, bool getDependsOnMe);
         List<string> GetDependanciesOnList(List<IContextualResourceModel> resourceModels, IEnvironmentModel environmentModel, bool getDependsOnMe = false);
         List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel);
@@ -65,7 +74,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
-        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
         IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
         ExecuteMessage Save(IResourceModel instanceObj);
         ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);
@@ -78,7 +87,11 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
 
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
-        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, AppResources.Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
+        Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
+
+        void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
+        void LoadResourceFromWorkspace(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
     }
 }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
         {
 
             IList<OutputTO> outputs = new List<OutputTO>();
@@ -52,13 +52,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             //get all the possible paths for all the string variables
 
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath));
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
 
@@ -66,8 +66,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(InputPath, "Input Path", dataObject.Environment);
-                AddDebugInputItemUserNamePassword(dataObject.Environment);
+                AddDebugInputItem(InputPath, "Input Path", dataObject.Environment, update);
+                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
             }
 
             while(colItr.HasMoreData())

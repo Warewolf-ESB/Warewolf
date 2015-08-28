@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,49 +9,32 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.DataList.Contract;
-
+using Dev2.Services.Execution;
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     public class MockDsfPluginActivity : DsfPluginActivity
     {
 
-        public Services.Execution.PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
+        public PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
         {
             return GetNewPluginServiceExecution(context);
         }
 
-        public System.Guid MockExecutePluginService(Services.Execution.PluginServiceExecution container)
+        public void MockExecutePluginService(PluginServiceExecution container)
         {
-            return ExecutePluginService(container);
-        }
-
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
-        {
-            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
+            ExecutePluginService(container, 0);
         }
     }
 
     public class FaultyMockDsfPluginActivity : DsfPluginActivity
     {
-
-        public Services.Execution.PluginServiceExecution MockGetNewPluginServiceExecution(IDSFDataObject context)
-        {
-            return GetNewPluginServiceExecution(context);
-        }
-
-        public System.Guid MockExecutePluginService(Services.Execution.PluginServiceExecution container)
-        {
-            return ExecutePluginService(container);
-        }
-
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
+        public void MockExecutionImpl(out ErrorResultTO tmpErrors)
         {
             
             tmpErrors = new ErrorResultTO();
             tmpErrors.AddError("Something bad happened");
-            return Guid.Empty;
         }
     }
 }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ namespace Dev2.Data.Tests.PathOperations
         public void Dev2PutRawOperation_Constructor_TakesContentsAndWriteTypeEnum()
         {
             //------------Setup for test--------------------------
-            const WriteType WriteType = Dev2.PathOperations.WriteType.AppendBottom;
+            const WriteType WriteType = WriteType.AppendBottom;
             const string Contents = "Some test";
             //------------Execute Test---------------------------
             var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType,Contents);
@@ -40,7 +40,7 @@ namespace Dev2.Data.Tests.PathOperations
         public void Dev2PutRawOperationTO_Constructor_GivenParameter_ShouldSetProperties()
         {
             //------------Setup for test--------------------------
-            const WriteType WriteType = Dev2.PathOperations.WriteType.AppendBottom;
+            const WriteType WriteType = WriteType.AppendBottom;
             const string Contents = "Some test";
             //------------Execute Test---------------------------
             var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType, Contents);

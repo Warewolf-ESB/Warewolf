@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Explorer;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -34,7 +35,7 @@ namespace Dev2.Core.Tests
         public void ThrowsNullExceptionForEnvironmentRepo()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IMainViewModel>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object);
+            new ExplorerViewModel(EventPublishers.Aggregator, new TestAsyncWorker(), null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IMainViewModel>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 

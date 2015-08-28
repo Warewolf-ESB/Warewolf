@@ -34,10 +34,10 @@ let AddRecsetToEnv (name:string) (env:WarewolfEnvironment) =
        let b = CreateDataSet ""
        let a = {env with RecordSets= (Map.add name b env.RecordSets);}
        a
-let EvalEnvExpression (exp:string) (env:WarewolfEnvironment) =
-     WarewolfDataEvaluationCommon.Eval env exp
+let EvalEnvExpression (exp:string) (update:int) (env:WarewolfEnvironment) =
+     WarewolfDataEvaluationCommon.Eval env update exp
 
-let EvalWithPositions (exp:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalWithPositions env exp
+let EvalWithPositions (exp:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalWithPositions env update exp
 
 let innerConvert  (i:int) (a: WarewolfAtom) =
         match a with
@@ -54,34 +54,34 @@ let RecordsetToSearchTo (recordset:WarewolfRecordset) =
     let dataToWorkWith  = (Map.filter (fun a b-> a= PositionColumn) cols)|>Map.toSeq 
     Seq.map snd dataToWorkWith  |> Seq.map (Seq.zip data)  |> Seq.collect (fun a -> a) |> Seq.map (fun (a,b) -> innerConvert a b )
 
-let EvalEnvExpressionWithPositions (exp:string) (env:WarewolfEnvironment) =
-     let data = WarewolfDataEvaluationCommon.EvalWithPositions env exp
+let EvalEnvExpressionWithPositions (exp:string) (update:int) (env:WarewolfEnvironment) =
+     let data = WarewolfDataEvaluationCommon.EvalWithPositions env update exp
      match data with
      | WarewolfAtomListresult  a -> AtomListToSearchTo a
      | WarewolfRecordSetResult b -> RecordsetToSearchTo b
      | WarewolfAtomResult a -> Seq.ofList [new Dev2.Common.RecordSetSearchPayload( 1,AtomtoString a)]
 
-let EvalRecordSetIndexes (exp:string) (env:WarewolfEnvironment) =
-     WarewolfDataEvaluationCommon.Eval env exp
+let EvalRecordSetIndexes (exp:string) (update:int) (env:WarewolfEnvironment) =
+     WarewolfDataEvaluationCommon.Eval env update exp
 
 
     
-let EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssign exp value env
+let EvalAssign (exp:string) (value:string) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssign exp value  update env
    
 
 
 
 
-let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) = AssignEvaluation.EvalMultiAssignOp env value
+let EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) = AssignEvaluation.EvalMultiAssignOp env update value
    
 
 
-let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) = AssignEvaluation.EvalMultiAssign values env
+let EvalMultiAssign (values :IAssignValue seq) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalMultiAssign values update env
 
 
-let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssignWithFrame value env
+let EvalAssignWithFrame (value :IAssignValue ) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssignWithFrame value update env
 
-let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (shouldUseLast:bool) = AssignEvaluation.EvalMultiAssignList env data value shouldUseLast
+let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (update:int) (shouldUseLast:bool) = AssignEvaluation.EvalMultiAssignList env data value update shouldUseLast
 
 let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
@@ -90,24 +90,24 @@ let RemoveFraming  (env:WarewolfEnvironment) =
 let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;
 
 
-let getIndexes (name:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalIndexes  env name
+let getIndexes (name:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalIndexes  env update name
 
-let EvalDelete (exp:string)  (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalDelete exp env
-
-
-let SortRecset (exp:string) (desc:bool) (env:WarewolfEnvironment)  = WarewolfDataEvaluationCommon.SortRecset exp desc env 
+let EvalDelete (exp:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalDelete exp update env
 
 
-let EvalWhere (exp:string) (env:WarewolfEnvironment)  (func:System.Func<WarewolfAtom,bool>) = Where.EvalWhere env exp (fun a-> func.Invoke( a))
+let SortRecset (exp:string) (desc:bool) (update:int) (env:WarewolfEnvironment)  = WarewolfDataEvaluationCommon.SortRecset exp desc update env 
 
 
-let EvalUpdate (exp:string) (env:WarewolfEnvironment)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.EvalUpdate  env exp (fun a-> func.Invoke( a))
+let EvalWhere (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,bool>) = Where.EvalWhere env exp update (fun a-> func.Invoke( a))
+
+
+let EvalUpdate (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.EvalUpdate  env exp update (fun a-> func.Invoke( a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
 
-let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalDataShape exp env
+let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalDataShape exp 0 env
 
 let IsValidRecsetExpression (exp:string) = 
-    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
+    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp 0
     match parsed with 
         | LanguageExpression.WarewolfAtomAtomExpression a -> true
         | LanguageExpression.ComplexExpression b -> true
@@ -126,7 +126,7 @@ let IsValidRecsetExpression (exp:string) =
   
   
 let RecordsetExpressionExists (exp:string) (env:WarewolfEnvironment) =
-    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
+    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp 0
     match parsed with 
         | LanguageExpression.WarewolfAtomAtomExpression a -> false
         | LanguageExpression.ComplexExpression b -> false

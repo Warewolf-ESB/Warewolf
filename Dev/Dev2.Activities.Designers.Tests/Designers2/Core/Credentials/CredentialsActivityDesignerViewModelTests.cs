@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -81,13 +81,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
             Verify_ValidateUserNameAndPassword("a]]", "", false, "Username - Invalid expression: opening and closing brackets don't match.");
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
-        public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_PasswordIsInvalidExpression_HasErrors()
-        {
-            Verify_ValidateUserNameAndPassword("afaf", "a]]", true, "Password - Invalid expression: opening and closing brackets don't match.");
-        }
 
         // ReSharper disable UnusedParameter.Local
         static void Verify_ValidateUserNameAndPassword(string userName, string password, bool isPasswordError, string expectedMessageFormat)

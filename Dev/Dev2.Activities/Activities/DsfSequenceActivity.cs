@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,7 +52,7 @@ namespace Dev2.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -142,7 +142,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before, 0);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
@@ -154,42 +154,48 @@ namespace Dev2.Activities
 
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.After, 0);
             }
-            context.ScheduleActivity(_innerSequence, OnCompleted);
+           // context.ScheduleActivity(_innerSequence, a=>OnCompleted(a,0));
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _previousParentID = dataObject.ParentInstanceID;
             dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before, update);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
             if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(dataObject, StateType.After);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
            foreach(var dsfActivity in Activities)
             {
                 var act = dsfActivity as IDev2Activity;
                 if (act != null)
                 {
-                    act.Execute(dataObject);
+                    act.Execute(dataObject, update);
                 }
             }
-            
+           if (dataObject.IsDebugMode())
+           {
+               _debugOutputs = new List<DebugItem>();
+               _debugOutputs = new List<DebugItem>();
+               DispatchDebugState(dataObject, StateType.Duration,update);
+           }
             OnCompleted(dataObject);
         }
 
-        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
+        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, int update)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             OnCompleted(dataObject);
+            DoErrorHandling(dataObject,update);
         }
 
         void OnCompleted(IDSFDataObject dataObject)
@@ -197,6 +203,7 @@ namespace Dev2.Activities
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
             dataObject.ForEachNestingLevel--;
+            //DoErrorHandling(dataObject);
         }
 
         public override enFindMissingType GetFindMissingType()

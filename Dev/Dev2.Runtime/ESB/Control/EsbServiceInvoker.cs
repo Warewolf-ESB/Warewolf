@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,8 +21,10 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -113,10 +115,10 @@ namespace Dev2.Runtime.ESB
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             var result = GlobalConstants.NullDataListID;
-            var time = new System.Diagnostics.Stopwatch();
+            var time = new Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
-
+            int update = 0;
             // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
             if(dataObject.Environment.HasErrors())
             {
@@ -141,6 +143,7 @@ namespace Dev2.Runtime.ESB
                     try
                     {
                         var sl = new ServiceLocator();
+                        Dev2Logger.Log.Debug("Finding service");
                         var theService = serviceId == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceId, _workspace.ID);
 
                         if(theService == null)
@@ -157,16 +160,17 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
-
+                            Dev2Logger.Log.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, sl);
 
                             // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
+                                Dev2Logger.Log.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
-                                result = container.Execute(out invokeErrors);
+                                result = container.Execute(out invokeErrors, update);
                                 errors.MergeErrors(invokeErrors);
                             }
                             #endregion
@@ -201,8 +205,8 @@ namespace Dev2.Runtime.ESB
             finally
             {
                 time.Stop();
-                Common.Interfaces.ServerStats.IncrementTotalRequests();
-                Common.Interfaces.ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
+                ServerStats.IncrementTotalRequests();
+                ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
                 // BUG 9706 - 2013.06.22 - TWR : added
                 DispatchDebugErrors(errors, dataObject, StateType.End);
             }
@@ -299,6 +303,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
+                Dev2Logger.Log.Debug(string.Format("Getting DynamicService: {0}", serviceName));
                 if(resourceId == Guid.Empty)
                 {
                     return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version

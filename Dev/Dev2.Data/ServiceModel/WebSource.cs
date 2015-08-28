@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,8 +14,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -54,14 +56,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
+            ResourceType = ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
         }
 
         public WebSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
+            ResourceType = ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -73,8 +75,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Password", string.Empty }
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
-
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
             Address = properties["Address"];
             DefaultQuery = properties["DefaultQuery"];
             UserName = properties["UserName"];
@@ -107,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

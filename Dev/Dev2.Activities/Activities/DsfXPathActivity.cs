@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -93,10 +93,10 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _debugOutputs.Clear();
 
@@ -113,14 +113,14 @@ namespace Dev2.Activities
                 {
                     if(_isDebugMode)
                     {
-                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment);
+                        AddSourceStringDebugInputItem(SourceString, dataObject.Environment, update);
                         AddResultDebugInputs(ResultsCollection, out errors);
                         allErrors.MergeErrors(errors);
                     }
                     if(!allErrors.HasErrors())
                     {
                         var itr = new WarewolfListIterator();
-                        var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString));
+                        var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
                         itr.AddVariableToIterateOn(sourceIterator);
                         while(itr.HasMoreData())
                         {
@@ -131,7 +131,7 @@ namespace Dev2.Activities
                                 {
                                     if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                                     {
-                                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath);
+                                        var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
                                         var xpathIterator = new WarewolfIterator(xpathEntry);
                                         while(xpathIterator.HasMoreData())
                                         {
@@ -160,20 +160,20 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval);
+                                                                AssignResult(cleanFieldName, dataObject, eval, update);
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval);
+                                                        AssignResult(variable, dataObject, eval, update);
                                                     }
                                                 }
                                                 catch(Exception e)
                                                 {
                                                     allErrors.AddError(e.Message);
-                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null);
+                                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
                                                 }
                                             }
                                         }
@@ -189,11 +189,14 @@ namespace Dev2.Activities
                         var innerCount = 1;
                         foreach(var debugOutputTo in ResultsCollection)
                         {
-                            var itemToAdd = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment), itemToAdd);
-                            _debugOutputs.Add(itemToAdd);
-                            innerCount++;
+                            if (!string.IsNullOrEmpty(debugOutputTo.OutputVariable))
+                            {
+                                var itemToAdd = new DebugItem();
+                                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                                AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment, update), itemToAdd);
+                                _debugOutputs.Add(itemToAdd);
+                                innerCount++;
+                            }
                         }
                     }
                 }
@@ -215,7 +218,7 @@ namespace Dev2.Activities
                     dataObject.Environment.AddError(errorString);
                     if (actualIndex > -1)
                     {
-                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null);
+                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
                     }
                 }
                 if(_isDebugMode)
@@ -231,22 +234,22 @@ namespace Dev2.Activities
                             }
                             AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
 
-                            AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment, update), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                         }
                     }
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
 
-        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval)
+        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
         {
             var index = 1;
             if(DataListUtil.IsValueScalar(variable))
             {
-                dataObject.Environment.Assign(variable, string.Join(",", eval));
+                dataObject.Environment.Assign(variable, string.Join(",", eval), update);
             }
             else
             {
@@ -258,7 +261,7 @@ namespace Dev2.Activities
                     {
                         correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variable, index);
                     }
-                    dataObject.Environment.Assign(correctedVariable, val);
+                    dataObject.Environment.Assign(correctedVariable, val, update);
                     index++;
                 }
             }
@@ -284,9 +287,9 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddSourceStringDebugInputItem(string expression, IExecutionEnvironment environment)
+        private void AddSourceStringDebugInputItem(string expression, IExecutionEnvironment environment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(expression, "XML", environment));
+            AddDebugInputItem(new DebugEvalResult(expression, "XML", environment, update));
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -388,7 +391,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -401,7 +404,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

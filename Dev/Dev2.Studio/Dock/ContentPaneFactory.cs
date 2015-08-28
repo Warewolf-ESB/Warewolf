@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Infragistics;
@@ -165,7 +166,7 @@ namespace Dev2.Studio.Dock
         }
 
         //Juries TODO improve (remove typing tied to contentfactory)
-        private void ViewModelDeactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
+        private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
             if(e.WasClosed)
             {

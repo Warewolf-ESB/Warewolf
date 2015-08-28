@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -113,7 +113,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ///             </item>
         ///             <item>
         ///                 <description>
-        ///                     YYYY-MM-DDTHH:MM:SS±HH:MM format uses DateTimeKind.Local and the time specified in that
+        ///                     YYYY-MM-DDTHH:MM:SS+/-HH:MM format uses DateTimeKind.Local and the time specified in that
         ///                     time zone.
         ///                 </description>
         ///             </item>

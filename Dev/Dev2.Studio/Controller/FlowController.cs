@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,6 +22,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Utilities;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
@@ -124,10 +125,10 @@ namespace Dev2.Studio.Controller
                     return;
                 }
 
-                Utilities.ActivityHelper.SetArmTextDefaults(dds);
-                Utilities.ActivityHelper.InjectExpression(dds, expression);
-                Utilities.ActivityHelper.SetArmText(args.ModelItem, dds);
-                Utilities.ActivityHelper.SetDisplayName(args.ModelItem, dds); // PBI 9220 - 2013.04.29 - TWR
+                ActivityHelper.SetArmTextDefaults(dds);
+                ActivityHelper.InjectExpression(dds, expression);
+                ActivityHelper.SetArmText(args.ModelItem, dds);
+                ActivityHelper.SetDisplayName(args.ModelItem, dds); // PBI 9220 - 2013.04.29 - TWR
             }
             catch
             {
@@ -151,7 +152,7 @@ namespace Dev2.Studio.Controller
             if(expressionText != null && expressionText.Value != null)
             {
                 ds = new Dev2Switch();
-                var val = Utilities.ActivityHelper.ExtractData(expressionText.Value.ToString());
+                var val = ActivityHelper.ExtractData(expressionText.Value.ToString());
                 if(!string.IsNullOrEmpty(val))
                 {
                     ds.SwitchVariable = val;
@@ -178,10 +179,10 @@ namespace Dev2.Studio.Controller
             try
             {
                 var resultSwitch = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                Utilities.ActivityHelper.InjectExpression(resultSwitch, expressionText);
+                ActivityHelper.InjectExpression(resultSwitch, expressionText);
 
                 // PBI 9220 - 2013.04.29 - TWR
-                Utilities.ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
+                ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
             }
             catch
             {
@@ -211,7 +212,7 @@ namespace Dev2.Studio.Controller
             try
             {
                 var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                Utilities.ActivityHelper.SetSwitchKeyProperty(ds, switchCase);
+                ActivityHelper.SetSwitchKeyProperty(ds, switchCase);
             }
             catch
             {

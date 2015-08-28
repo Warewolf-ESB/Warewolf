@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Activities;
@@ -29,6 +28,8 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Communication;
+using Dev2.Controller;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
@@ -40,6 +41,7 @@ using Dev2.Services;
 using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -49,12 +51,10 @@ using Dev2.Threading;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Controller;
-using Dev2.Communication;
-using FluentAssertions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -200,7 +200,7 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             EnsureEnvironmentConnected(environmentModel);
-            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = Studio.Core.AppResources.Enums.ResourceType.WorkflowService };
+            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
@@ -236,14 +236,24 @@ namespace Dev2.Activities.Specs.Composition
         void Append(IDebugState debugState)
         {
             List<IDebugState> debugStates;
+            List<IDebugState> debugStatesDuration;
             string workflowName;
             IEnvironmentModel environmentModel;
             TryGetValue("debugStates", out debugStates);
+            TryGetValue("debugStatesDuration", out debugStatesDuration);
             TryGetValue("parentWorkflowName", out workflowName);
             TryGetValue("environment", out environmentModel);
+            if(debugStatesDuration == null)
+            {
+                debugStatesDuration = new List<IDebugState>();
+                Add("debugStatesDuration",debugStatesDuration);
+            }
             if(debugState.WorkspaceID == environmentModel.Connection.WorkspaceID)
             {
+                if(debugState.StateType!=StateType.Duration)
                 debugStates.Add(debugState);
+                else
+                debugStatesDuration.Add(debugState);
             }
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
@@ -805,6 +815,20 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
+        [Then(@"the ""(.*)"" has a start and end duration")]
+        public void ThenTheHasAStartAndEndDuration(string workflowName)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            //var start = debugStates.First(wf => wf.Name.Equals("Start"));
+            //Assert.IsTrue(start.Duration.Ticks>0);
+            var end = debugStates.First(wf => wf.Name.Equals("End"));
+            Assert.IsTrue(end.Duration.Ticks > 0);
+        }
 
         [Then(@"the nested '(.*)' in WorkFlow '(.*)' debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
@@ -940,6 +964,30 @@ namespace Dev2.Activities.Specs.Composition
 
             Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
         }
+
+        [Then(@"the '(.*)' in Workflow '(.*)' has a debug Server Name of """"(.*)""""")]
+        public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+
+            if (parentWorkflowName == workflowName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+
+            Assert.IsTrue(toolSpecificDebug.All(a=>a.Server==remoteName));
+            Assert.IsTrue(debugStates.Where(ds => ds.ParentID == workflowId && !ds.DisplayName.Equals(toolName)).All(a=>a.Server=="localhost"));
+        }
+
 
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
@@ -1144,7 +1192,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
-                WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
+                WebServer.Send(resourceModel, dataList.ToString(), new TestAsyncWorker());
                 _resetEvt.WaitOne(120000);
             }
         }

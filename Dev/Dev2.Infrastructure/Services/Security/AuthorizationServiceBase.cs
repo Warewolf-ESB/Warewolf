@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -253,7 +253,10 @@ namespace Dev2.Services.Security
 
                         // Examine group for this member ;)  
                         isInRole = principal.IsInRole(windowsGroup);
-
+                        if (!isInRole)
+                        {
+                            isInRole = DoFallBackCheck(principal);
+                        }
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
@@ -262,7 +265,7 @@ namespace Dev2.Services.Security
                             var windowsIdentity = principal.Identity as WindowsIdentity;
                             if(windowsPrincipal != null)
                             {
-                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole(sid);
+                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
                                 if(windowsIdentity != null && !isInRole)
                                 {
                                     if(windowsIdentity.Groups != null)
@@ -304,7 +307,10 @@ namespace Dev2.Services.Security
                                 isInRole = principal.IsInRole(sid.Value);
                             }
                         }
-
+                        if (!isInRole)
+                        {
+                            isInRole = DoFallBackCheck(principal);
+                        }
                         return isInRole;
                     }
                 }
@@ -317,8 +323,57 @@ namespace Dev2.Services.Security
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
             // ReSharper restore EmptyGeneralCatchClause
-
+            
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        bool DoFallBackCheck(IPrincipal principal)
+        {
+            if (principal != null)
+            {
+                if (principal.Identity != null)
+                {
+                    var username = principal.Identity.Name;
+                    if (username != null)
+                    {
+                        var theUser = username;
+                        var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+                        if (domainChar >= 0)
+                        {
+                            theUser = username.Substring((domainChar + 1));
+                        }
+                        var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
+                        using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                        {
+                            ad.Children.SchemaFilter.Add("group");
+                            foreach (DirectoryEntry dChildEntry in ad.Children)
+                            {
+
+                                if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
+                                {
+                                    // Now check group membership ;)
+                                    var members = dChildEntry.Invoke("Members");
+
+                                    if (members != null)
+                                    {
+                                        foreach (var member in (IEnumerable)members)
+                                        {
+                                            using (var memberEntry = new DirectoryEntry(member))
+                                            {
+                                                if (memberEntry.Name == theUser)
+                                                {
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

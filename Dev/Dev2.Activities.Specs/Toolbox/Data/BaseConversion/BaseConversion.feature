@@ -571,6 +571,7 @@ Examples:
 Scenario Outline: Validation messages when Convert Invalid Variables  
 	Given I have a convert variable '<Variable>' with a value of '<Value>'
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
+
 	When the base conversion tool is executed
 	Then the execution has "AN" error
 #	And the debug inputs as  
@@ -691,3 +692,9 @@ Examples:
 	| 109 | [[rec(23).[[var*]]]]                      | 0x4141           | Hex     | Binary  | Variable name [[var*]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 110 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1   | 0x4141           | Hex     | Binary  | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |
 
+Scenario: Convert a Variable That Does Not Exist
+	Given I have a convert variable "[[var]]" with a value of "[[a]]"
+	And I convert a variable "[[var]]" from type "Text" to type "Binary" 
+	When the base conversion tool is executed
+	Then the execution has "AN" error
+ 

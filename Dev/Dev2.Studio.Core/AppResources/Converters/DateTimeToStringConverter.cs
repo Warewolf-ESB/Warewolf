@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             if(string.IsNullOrWhiteSpace(Format))
             {
-                var dateTimeFormatInfo = CultureInfo.InvariantCulture.DateTimeFormat;
+                var dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
                 var customFormat = dateTimeFormatInfo.ShortDatePattern+" "+dateTimeFormatInfo.LongTimePattern.Replace("ss", "ss.ffff");
                 return dateTime.ToString(customFormat);
             }

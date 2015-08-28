@@ -14,6 +14,10 @@
 *.cache
 *.fsi
 *.tmp
+*.dll
+*.pdb
+*.swp
+*.exe
 
 ####################################################################################
 # Build working directories
@@ -38,6 +42,7 @@
 /Dev/Dev2.Server/bin/Debug/CefSharp
 /Dev/Dev2.Server/bin/Debug/SSL Generation
 /Dev/Dev2.Server/bin/Debug/ServerStarted
+/Dev/Dev2.Server/bin/Debug/ServerLog.txt
 /Dev/Dev2.Server/bin/Debug/*.dll
 /Dev/Dev2.Server/bin/Debug/*.pdb
 /Dev/Dev2.Server/bin/Debug/*.exe
@@ -61,6 +66,8 @@
 ####################################################################################
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/bin
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/obj
+/Dev/ConsoleApplicationToTestNetwork/bin
+/Dev/ConsoleApplicationToTestNetwork/obj
 /Dev/Dev2.Activities/bin
 /Dev/Dev2.Activities/obj
 /Dev/Dev2.Activities.Designers/bin
@@ -99,6 +106,8 @@
 /Dev/Dev2.Diagnostics/obj
 /Dev/Dev2.Explorer.Specs/bin
 /Dev/Dev2.Explorer.Specs/obj
+/Dev/Dev2.Flickering.Specs/bin
+/Dev/Dev2.Flickering.Specs/obj
 /Dev/Dev2.Infrastructure/bin
 /Dev/Dev2.Infrastructure/obj
 /Dev/Dev2.Infrastructure.Tests/bin
@@ -167,14 +176,26 @@
 /Dev/Dev2.Scheduler.Test/obj
 /Dev/Dev2.Server.Tests/bin
 /Dev/Dev2.Server.Tests/obj
+/Dev/Dev2.SignalR.Wrappers/bin
+/Dev/Dev2.SignalR.Wrappers/obj
+/Dev/Dev2.SignalR.Wrappers.New/bin
+/Dev/Dev2.SignalR.Wrappers.New/obj
+/Dev/Dev2.SignalR.Wrappers.Old/bin
+/Dev/Dev2.SignalR.Wrappers.Old/obj
 /Dev/Dev2.Sql.Tests/bin
 /Dev/Dev2.Sql.Tests/obj
 /Dev/Dev2.TaskScheduler.Wrappers.Test/bin
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
+/Dev/Dev2.Warewolf.Security/bin
+/Dev/Dev2.Warewolf.Security/obj
+/Dev/Dev2.Warewolf.Security.Tests/bin
+/Dev/Dev2.Warewolf.Security.Tests/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
 /Dev/ExecutionEngine/bin
 /Dev/ExecutionEngine/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
 /Dev/ServerProxyLayer/bin
 /Dev/ServerProxyLayer/obj
 /Dev/ServerProxyLayerTests/bin
@@ -185,14 +206,60 @@
 /Dev/Studio.UI.Load.Specs/obj
 /Dev/Test.Localisation/bin
 /Dev/Test.Localisation/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
+/Dev/WarewolfParserInterop/bin
+/Dev/WarewolfParserInterop/obj
+/Dev/WarewolfParsing.Tests/bin
+/Dev/WarewolfParsing.Tests/obj
+/Dev/WarewolfLanguageParser/bin
+/Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.AcceptanceTesting.Core/bin
 /Dev/Warewolf.AcceptanceTesting.Core/obj
+/Dev/Warewolf.AcceptanceTesting.Deploy/bin
+/Dev/Warewolf.AcceptanceTesting.Deploy/obj
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/bin
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/obj
+/Dev/Warewolf.AcceptanceTesting.DatabaseSource/bin
+/Dev/Warewolf.AcceptanceTesting.DatabaseSource/obj
+/Dev/Warewolf.AcceptanceTesting.DesignSurface/bin
+/Dev/Warewolf.AcceptanceTesting.DesignSurface/obj
+/Dev/Warewolf.AcceptanceTesting.DropboxSource/bin
+/Dev/Warewolf.AcceptanceTesting.DropboxSource/obj
+/Dev/Warewolf.AcceptanceTesting.EmailDialog/bin
+/Dev/Warewolf.AcceptanceTesting.EmailDialog/obj
+/Dev/Warewolf.AcceptanceTesting.EmailSource/bin
+/Dev/Warewolf.AcceptanceTesting.EmailSource/obj
 /Dev/Warewolf.AcceptanceTesting.Help/bin
 /Dev/Warewolf.AcceptanceTesting.Help/obj
 /Dev/Warewolf.AcceptanceTesting.Explorer/bin
 /Dev/Warewolf.AcceptanceTesting.Explorer/obj
+/Dev/Warewolf.AcceptanceTesting.PluginService/bin
+/Dev/Warewolf.AcceptanceTesting.PluginService/obj
+/Dev/Warewolf.AcceptanceTesting.PluginSource/bin
+/Dev/Warewolf.AcceptanceTesting.PluginSource/obj
+/Dev/Warewolf.AcceptanceTesting.Settings/bin
+/Dev/Warewolf.AcceptanceTesting.Settings/obj
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/bin
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/obj
+/Dev/Warewolf.AcceptanceTesting.Scheduler/bin
+/Dev/Warewolf.AcceptanceTesting.Scheduler/obj
+/Dev/Warewolf.AcceptanceTesting.Interactions/bin
+/Dev/Warewolf.AcceptanceTesting.Interactions/obj
+/Dev/Warewolf.AcceptanceTesting.ServerSource/bin
+/Dev/Warewolf.AcceptanceTesting.ServerSource/obj
+/Dev/Warewolf.AcceptanceTesting.TabControl/bin
+/Dev/Warewolf.AcceptanceTesting.TabControl/obj
+/Dev/Warewolf.AcceptanceTesting.Toolbox/bin
+/Dev/Warewolf.AcceptanceTesting.Toolbox/obj
+/Dev/Warewolf.AcceptanceTesting.Variables/bin
+/Dev/Warewolf.AcceptanceTesting.Variables/obj
+/Dev/Warewolf.AcceptanceTesting.WebService/bin
+/Dev/Warewolf.AcceptanceTesting.WebService/obj
+/Dev/Warewolf.Sharepoint/bin
+/Dev/Warewolf.Sharepoint/obj
+/Dev/Warewolf.AcceptanceTesting.WebSource/bin
+/Dev/Warewolf.AcceptanceTesting.WebSource/obj
 /Dev/Warewolf.Studio/bin
 /Dev/Warewolf.Studio/obj
 /Dev/Warewolf.Studio.Core/bin
@@ -211,6 +278,8 @@
 /Dev/Warewolf.Core/obj
 /Dev/Warewolf.Core.Test/bin
 /Dev/Warewolf.Core.Test/obj
+/Dev/Warewolf.Sharepoint/bin
+/Dev/Warewolf.Sharepoint/obj
 /Dev/Warewolf.Studio.Core.Test/bin
 /Dev/Warewolf.Studio.Core.Test/obj
 /Dev/Warewolf.Studio.Models/bin
@@ -219,8 +288,6 @@
 /Dev/Warewolf.Studio.Models.Tests/obj
 /Dev/Warewolf.Studio.Themes.Luna/bin
 /Dev/Warewolf.Studio.Themes.Luna/obj
-/Dev/Warewolf.UnittestingUtils/bin
-/Dev/Warewolf.UnittestingUtils/obj
 /Dev/Warewolf.Studio.AntiCorruptionLayer/bin
 /Dev/Warewolf.Studio.AntiCorruptionLayer/obj
 /Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/bin
@@ -229,10 +296,12 @@
 /Dev/Warewolf.Studio.CustomControls/obj
 /Dev/Warewolf.Studio.CustomControls.Tests/bin
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
-/Dev/RunDatalistEval/bin
-/Dev/RunDatalistEval/obj
 /Dev/Warewolf.Storage/bin
 /Dev/Warewolf.Storage/obj
+/Dev/Warewolf.UnittestingUtils/bin
+/Dev/Warewolf.UnittestingUtils/obj
+/Dev/Warewolf.ResourceManagement/bin
+/Dev/Warewolf.ResourceManagement/obj
 /Dev/WarewolfParserInterop/bin
 /Dev/WarewolfParserInterop/obj
 /Dev/WarewolfParsing.Tests/bin
@@ -241,11 +310,41 @@
 /Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.ResourceManagement/bin
 /Dev/Warewolf.ResourceManagement/obj
+/Dev/Warewol.Studio.Themes.Luna/bin
+/Dev/Warewol.Studio.Themes.Luna/obj
+/Dev/Warewolf.Studio.ServerProxyLayer/bin
+/Dev/Warewolf.Studio.ServerProxyLayer/obj
+
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
 ####################################################################################
-/Dev/Dev2.Server/bin/Debug/Resources/DB Services/FetchPlayers.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Backup Stratgey Implimentation.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Delete Expired Files.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Get Backup Items List.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Get FileName From Folder or File.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/RunBackup.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/DB Services/FetchPlayers.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/SqlServers/DemoDB.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Tests/Dice Roll_test.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Tests/Double Roll and Check_test.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Dice Roll.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Double Roll and Check.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Roll Dice for Players.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/GetPaymentsFromPaypal.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/MakePaypalPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/RetrievePaypalAuthToken.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/GetAuthToken.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PaypalAuth.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PaypalPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PostPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/RetrievePayments.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/ShoppingCart Database Services/GetProducts.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/ShoppingCart Database Services/WarewolfShoppingCart.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/GetProductsTable.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/getTests.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/Main.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/runTest.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Decision.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Sequence.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Switch.xml
@@ -286,34 +385,4 @@
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - System Information.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - Web Request.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - XPath.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Dice Roll.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Double Roll and Check.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Roll Dice for Players.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddCategoryToWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddProductToWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteCategoryInWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteProductFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditCategoryOnWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditProductInWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetCategoryTable.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetCategoryTableFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetProductsTable.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetProductsTableFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypalpayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_GetPaymentService.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_gettoken.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_PerformPayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_postpayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_RetrieveAuthToken.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_retrievepayments.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/SampleEmployeesWorkflow.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/WarewolfShoppingCartDB.xml
-/Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml

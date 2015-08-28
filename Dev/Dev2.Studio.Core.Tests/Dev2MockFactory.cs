@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,6 +23,7 @@ using Dev2.CustomControls.Connections;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -37,7 +38,7 @@ namespace Dev2.Core.Tests
     {
         private static Mock<MainViewModel> _mockMainViewModel;
         private static Mock<IContextualResourceModel> _mockResourceModel;
-        
+
         static Dev2MockFactory()
         {
             AppSettings.LocalHost = "https://localhost:3143";
@@ -59,7 +60,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if(_mockMainViewModel == null)
+                if (_mockMainViewModel == null)
                 {
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
@@ -82,7 +83,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if(_mockResourceModel != null)
+                if (_mockResourceModel != null)
                 {
                     return _mockResourceModel;
                 }
@@ -154,12 +155,12 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
-            if(resourceRepositoryFakeBacker != null)
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(returnResource.Object);
+            if (resourceRepositoryFakeBacker != null)
             {
                 mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
             }
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel> { returnResource.Object });
 
             return mockResourceModel;
@@ -168,9 +169,9 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(returnResource.Object);
             mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(returnResources);
 
             return mockResourceModel;
@@ -185,14 +186,14 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
             mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
 
             return mockResourceModel;
         }
 
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, Guid resourceID = new Guid())
+        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, Guid resourceID = new Guid())
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
@@ -210,7 +211,7 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
         }
 
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, string resourceName, bool returnSelf = true)
+        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, string resourceName, bool returnSelf = true)
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
@@ -222,7 +223,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
 
-            if(returnSelf)
+            if (returnSelf)
             {
                 mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
             }

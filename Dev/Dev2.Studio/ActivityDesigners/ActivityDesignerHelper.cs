@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
+using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
@@ -34,6 +35,7 @@ using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Random;
@@ -45,6 +47,10 @@ using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
+using Dev2.Activities.Designers2.SharepointListCreate;
+using Dev2.Activities.Designers2.SharepointListDelete;
+using Dev2.Activities.Designers2.SharepointListRead;
+using Dev2.Activities.Designers2.SharepointListUpdate;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.UniqueRecords;
@@ -52,6 +58,7 @@ using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -66,6 +73,7 @@ namespace Dev2.Studio.ActivityDesigners
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
+                { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
@@ -109,7 +117,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
-                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
+                { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
+                { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
+                { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
+                { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
+                { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) }
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);

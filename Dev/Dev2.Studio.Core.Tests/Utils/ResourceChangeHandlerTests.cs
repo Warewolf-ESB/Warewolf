@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests.Utils
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
-            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(mockResourceModelDependant.Object);
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.Utils
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
-            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(mockResourceModelDependant.Object);
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using Dev2.Activities;
+using Dev2.Activities.Sharepoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -116,6 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCreateJsonActivity), "/images/ToolCreateJSON-32.png", "Create JSON"));
             }
 
 
@@ -131,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfXPathActivity), "/images/ToolUtilityXpath-32.png", "XPath"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfWebGetRequestActivity), "/images/ToolGetWebRequest-32.png", "Web Request"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfWebGetRequestWithTimeoutActivity), "/images/ToolGetWebRequest-32.png", "Web Request"));
             }
 
 
@@ -168,7 +170,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if (category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxFileActivity), "/Images/dropbox-windows.png", "Dropbox-File"));
-               
+            }
+            category = GetToolboxCategoryByName("SharePoint");
+            if (category != null)
+            {
+                category.Add(new ToolboxItemWrapper(typeof(SharepointReadListActivity), "/images/SharepointLogo.png", "Read List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointCreateListItemActivity), "/images/SharepointLogo.png", "Create List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/SharepointLogo.png", "Delete List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/SharepointLogo.png", "Update List Item(s)"));
             }
         }
 

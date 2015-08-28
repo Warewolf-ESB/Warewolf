@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Activities.Statements;
@@ -28,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -41,12 +40,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             ScenarioContext.Current.TryGetValue("header", out header);
             string url;
             ScenarioContext.Current.TryGetValue("url", out url);
-
-            var webGet = new DsfWebGetRequestActivity
+            string timeout;
+            ScenarioContext.Current.TryGetValue("timeoutSeconds", out timeout);
+            var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = ResultVariable,
                     Url = url ?? "",
-                    Headers = header ?? ""
+                    Headers = header ?? "",
+                    TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
+                    TimeOutText = String.IsNullOrEmpty(timeout) ? "" : timeout
                 };
 
             TestStartNode = new FlowStep
@@ -76,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -99,7 +101,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(expectedResult))
+            if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
@@ -108,5 +110,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 Assert.IsTrue(actualValue.Contains(expectedResult));
             }
         }
+
+
+        [Given(@"I have the url '(.*)' with timeoutSeconds '(.*)'")]
+        public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
+        {
+            ScenarioContext.Current.Add("url", url);
+            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds);
+        }
+
+
+
     }
 }

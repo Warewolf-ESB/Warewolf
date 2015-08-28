@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             Assert.IsNotNull(sut.PreviewViewModel);
         }
 
@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             url.Object.ComputedValue = "";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             url.Object.ComputedValue = "http://www.google.com";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             url.Object.ComputedValue = "http://www.[[mysite]].com?[[queryString]]";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             headers.Object.ComputedValue = "";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
 
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
             headers.Object.ComputedValue = "ContentType=text/xml";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
 
@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
 
             headers.Object.ComputedValue = "ContentType=[[contenttype]]";
             modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
 
             sut.WebInvoke = (m, u, h) => { return "Was Called"; };
 
@@ -234,7 +234,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItemMock.Object);
 
             sut.WebInvoke = (m, u, h) => { return "Was Called"; };
 
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
         {
             var modelItem = GenerateMockModelItem(string.Empty);
 
-            var sut = new GetWebRequestDesignerViewModel(modelItem.Object);
+            var sut = new GetWebRequestWithTimeoutDesignerViewModel(modelItem.Object);
 
             var isInvoked = false;
             sut.WebInvoke = (m, u, h) =>
@@ -276,7 +276,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             //------------Setup for test--------------------------
             var modelItem = GenerateMockModelItem("[[asdf]asdf]]asdf]]");
 
-            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+            var viewModel = new GetWebRequestWithTimeoutDesignerViewModel(modelItem.Object);
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -295,7 +295,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             //------------Setup for test--------------------------
             var modelItem = GenerateMockModelItem("http://[[asdf]]?[[asdf]]");
 
-            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+            var viewModel = new GetWebRequestWithTimeoutDesignerViewModel(modelItem.Object);
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -313,7 +313,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             //------------Setup for test--------------------------
             var modelItem = GenerateMockModelItem("http://www.search.com?p=5");
 
-            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+            var viewModel = new GetWebRequestWithTimeoutDesignerViewModel(modelItem.Object);
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -349,8 +349,15 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             properties.Add("DisplayName", displayName);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayName.Object);
 
+
+            var timeOutText = new Mock<ModelProperty>();
+            timeOutText.Setup(p => p.ComputedValue).Returns("100");
+            properties.Add("TimeOutText", timeOutText);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "TimeOutText", true).Returns(timeOutText.Object);
+
+
             var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestActivity));
+            mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestWithTimeoutActivity));
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             return mockModelItem;

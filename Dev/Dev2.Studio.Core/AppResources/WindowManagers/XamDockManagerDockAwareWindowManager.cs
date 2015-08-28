@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
@@ -300,7 +301,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             /// </summary>
             /// <param name = "sender">The sender.</param>
             /// <param name = "e">The <see cref = "System.ComponentModel.CancelEventArgs" /> instance containing the event data.</param>
-            private void OnClosing(object sender, Infragistics.Windows.DockManager.Events.PaneClosingEventArgs e)
+            private void OnClosing(object sender, PaneClosingEventArgs e)
             {
                 var guard = (IGuardClose)_viewModel;
 

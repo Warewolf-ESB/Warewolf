@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Webs.Callbacks
@@ -55,21 +55,21 @@ namespace Dev2.Webs.Callbacks
                     if(getDynamicResourceType != null)
                     {
                         //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
-                        if(getDynamicResourceType == Common.Interfaces.Data.ResourceType.DbSource.ToString() ||
-                            getDynamicResourceType == Common.Interfaces.Data.ResourceType.PluginSource.ToString() ||
-                            getDynamicResourceType == Common.Interfaces.Data.ResourceType.WebSource.ToString())
+                        if(getDynamicResourceType == ResourceType.DbSource.ToString() ||
+                            getDynamicResourceType == ResourceType.PluginSource.ToString() ||
+                            getDynamicResourceType == ResourceType.WebSource.ToString())
                         {
                             //2013.03.12: Ashley Lewis - BUG 9208
-                            ReloadResource(environmentModel, resourceID, ResourceType.Source);
+                            ReloadResource(environmentModel, resourceID, Studio.Core.AppResources.Enums.ResourceType.Source);
                         }
                         else
                         {
-                            ReloadResource(environmentModel, resourceID, ResourceType.Service);
+                            ReloadResource(environmentModel, resourceID, Studio.Core.AppResources.Enums.ResourceType.Service);
                         }
                     }
                     else
                     {
-                        ReloadResource(environmentModel, resourceID, ResourceType.Service);
+                        ReloadResource(environmentModel, resourceID, Studio.Core.AppResources.Enums.ResourceType.Service);
                     }
                 }
             }
@@ -139,7 +139,7 @@ namespace Dev2.Webs.Callbacks
             }
 
             Navigate(uri);
-            ReloadResource(_environmentModel, sourceID, ResourceType.Source);
+            ReloadResource(_environmentModel, sourceID, Studio.Core.AppResources.Enums.ResourceType.Source);
         }
 
         #endregion

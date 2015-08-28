@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             // Connect to the database then retrieve the schema information.
                             connection.Open();
-                            var sql = @"select  * from  " + tableName.Trim(new[] { '"' }).Replace("[","").Replace("]","") + " Limit 1 ";
+                            var sql = @"select  * from  " + tableName.Trim('"').Replace("[","").Replace("]","") + " Limit 1 ";
 
                                                      using (var sqlcmd = new MySqlCommand(sql, connection))
                             {
@@ -127,7 +127,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 {
                                     schema = string.Empty;
                                 }
-                                var sql = @"select top 1 * from " + schema.Trim(new[] { '"' }) + "." + tableName.Trim(new[] { '"' });
+                                var sql = @"select top 1 * from " + schema.Trim('"') + "." + tableName.Trim('"');
 
                                 using (var sqlcmd = new SqlCommand(sql, connection))
                                 {
@@ -154,7 +154,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
 
                         SqlDbType sqlDataType;
-                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:(row["DataType"] as Type).Name;
+                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:((Type)row["DataType"]).Name;
                         if(Enum.TryParse(typeValue, true, out sqlDataType))
                         {
                             dbColumn.SqlDataType = sqlDataType;

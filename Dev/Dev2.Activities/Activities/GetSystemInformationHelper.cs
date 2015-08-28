@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Security.Principal;
@@ -81,13 +82,7 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            string fullPattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
-            if(fullPattern.Contains("ss"))
-            {
-                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-            }
-            var dateTimeString = DateTime.Now.ToString(fullPattern);
-            return dateTimeString;
+            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
         }
 
         public string GetDateTimeFormatInformation()
@@ -101,7 +96,7 @@ namespace Dev2.Activities
         public string GetDiskSpaceAvailableInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(DriveInfo driveInfo1 in DriveInfo.GetDrives())
             {
                 try
                 {
@@ -114,13 +109,13 @@ namespace Dev2.Activities
                     Dev2Logger.Log.Error(ex);
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetDiskSpaceTotalInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(DriveInfo driveInfo1 in DriveInfo.GetDrives())
             {
                 try
                 {
@@ -132,7 +127,7 @@ namespace Dev2.Activities
                     Dev2Logger.Log.Error(ex);
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetPhysicalMemoryAvailableInformation()
@@ -240,7 +235,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new[] { ',' });
+            return stringBuilder.ToString().TrimEnd(',');
         }
 
         public string GetUserNameInformation()

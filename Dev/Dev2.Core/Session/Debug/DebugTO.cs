@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,8 +9,7 @@
 */
 
 using System;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Data;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -50,7 +49,7 @@ namespace Dev2.Session
             set { _xmlData = value; }
         }
 
-        public IBinaryDataList BinaryDataList { get; set; }
+        public IDataListModel BinaryDataList { get; set; }
 
         public string WorkflowID { get; set; }
 
@@ -96,13 +95,7 @@ namespace Dev2.Session
 
         public virtual void CleanUp()
         {
-            CleanUpCalled = true;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            if (BinaryDataList != null)
-            {
-                compiler.ForceDeleteDataListByID(BinaryDataList.UID);
-                BinaryDataList.Dispose();
-            }
+            CleanUpCalled = true;         
         }
 
         public bool CleanUpCalled    { get; set; }

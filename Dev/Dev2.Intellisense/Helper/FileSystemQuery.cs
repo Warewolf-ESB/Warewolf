@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -65,7 +66,7 @@ namespace Dev2.Intellisense.Helper
 
         public void QueryList(string searchPath)
         {
-            var directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
+            var directorySeparatorChar = Path.DirectorySeparatorChar;
 
             var queryCollection = new List<string>();
             queryCollection = (searchPath ?? string.Empty).Length <= 1 

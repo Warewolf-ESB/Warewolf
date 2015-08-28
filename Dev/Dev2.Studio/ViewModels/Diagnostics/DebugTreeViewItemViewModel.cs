@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -61,8 +62,10 @@ namespace Dev2.ViewModels.Diagnostics
                 if(Content.HasError)
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
-                    currentError.Append(errorMessage);
-                    Content.ErrorMessage = currentError.ToString();
+                    if(!currentError.Contains(errorMessage))
+                    {  currentError.Append(errorMessage);
+                        Content.ErrorMessage = currentError.ToString();
+                    }
                 }
                 else Content.ErrorMessage = errorMessage;
                 Content.HasError = true;
@@ -90,41 +93,38 @@ namespace Dev2.ViewModels.Diagnostics
             // check for remote server ID ;)
             Guid serverID;
             var isRemote = Guid.TryParse(content.Server, out serverID);
-
-            // avoid flagging empty guid as valid ;)
-            if(isRemote && serverID == Guid.Empty)
+            if (isRemote|| String.IsNullOrEmpty( content.Server)) //todo:Technical debt. this must be removed on a major upgrade
             {
-                isRemote = false;
-            }
 
-            var envID = content.EnvironmentID;
 
-            var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
-            if (env == null)
-            {
-                var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
-                if(environmentModels != null)
+                var envID = content.EnvironmentID;
+
+                var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
+                if (env == null)
                 {
-                    env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                    var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
+                    if (environmentModels != null)
+                    {
+                        env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                    }
+                    else
+                    {
+                        env = _environmentRepository.Source;
+                    }
+                }
+                if (Equals(env, _environmentRepository.Source) )
+                {
+                    // We have an unknown remote server ;)
+                    content.Server = "Unknown Remote Server";
                 }
                 else
                 {
-                    env = _environmentRepository.Source;
+                    if (env != null)
+                    {
+                        content.Server = env.Name;
+                    }
                 }
             }
-            if(Equals(env, _environmentRepository.Source) && isRemote)
-            {
-                // We have an unknown remote server ;)
-                content.Server = "Unknown Remote Server";
-            }
-            else
-            {
-                if(env != null)
-                {
-                    content.Server = env.Name;
-                }
-            }
-
             BuildBindableListFromDebugItems(content.Inputs, _inputs);
             BuildBindableListFromDebugItems(content.Outputs, _outputs);
 

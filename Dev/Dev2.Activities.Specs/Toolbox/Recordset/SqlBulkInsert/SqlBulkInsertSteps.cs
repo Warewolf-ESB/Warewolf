@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Activities.Statements;
@@ -18,7 +17,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -35,7 +33,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SetupScenerio()
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
+            var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             ScenarioContext.Current.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
@@ -108,8 +106,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
         private void AddTableToDataList(Table table)
         {
-            var compiler = DataListFactory.CreateDataListCompiler();
-            ScenarioContext.Current.Add("compiler", compiler);
             // build up DataTable
             foreach (TableRow row in table.Rows)
             {
@@ -118,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 {
                     var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
                     var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
-                    DataObject.Environment.AssignWithFrame(assignValue);
+                    DataObject.Environment.AssignWithFrame(assignValue, 0);
                     i++;
                 }
                 DataObject.Environment.CommitAssign();

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.Comparers
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace Dev2.Studio.AppResources.Comparers
     /// <date>2/27/2013</date>
     public class WorkSurfaceKeyEqualityComparer : IEqualityComparer<WorkSurfaceKey>
     {
+        // ReSharper disable once InconsistentNaming
         private static readonly Lazy<WorkSurfaceKeyEqualityComparer> _current
             = new Lazy<WorkSurfaceKeyEqualityComparer>(() => new WorkSurfaceKeyEqualityComparer());
 
@@ -65,7 +67,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public int GetHashCode(WorkSurfaceKey obj)
         {
-            return base.GetHashCode();
+            return obj.GetHashCode();
         }
     }
 }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.CustomControls
@@ -18,7 +19,7 @@ namespace Dev2.Studio.CustomControls
     /// <summary>
     /// A Button-derived control that adds an IsSplitterExpanded property for custom template triggering.
     /// </summary>
-    public class SplitterExpansionButton : System.Windows.Controls.Button
+    public class SplitterExpansionButton : Button
     {
         static SplitterExpansionButton()
         {

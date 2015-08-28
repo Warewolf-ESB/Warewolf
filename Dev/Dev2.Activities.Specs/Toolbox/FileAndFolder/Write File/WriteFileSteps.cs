@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,10 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.PathOperations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
             var fileContents = broker.Get(sourceEndPoint);
 
             bool does = fileContents.Contains(expectedContents);
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(does);
+            Assert.IsTrue(does);
         }
 
 

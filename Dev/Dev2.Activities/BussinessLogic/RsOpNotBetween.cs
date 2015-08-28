@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,74 +11,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using Dev2.Common;
 using Dev2.DataList;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
 {
     public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
-        private static IEnumerable<string> FindRecordIndexForDateTime(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, DateTime fromDateTime, DateTime toDateTime)
-        {
-            IList<string> fnResult = new List<string>();
-            foreach(RecordSetSearchPayload p in operationRange)
-            {
-                DateTime recDateTime;
-                if(DateTime.TryParse(p.Payload, out recDateTime))
-                {
-                    if(!(recDateTime > fromDateTime && recDateTime < toDateTime))
-                    {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
-                        {
-                            return new List<string>();
-                        }
-                    }
-                }
-            }
-            return fnResult;
-        }
-
-        private static IEnumerable<string> FindRecordIndexForNumeric(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, double fromNum, double toNum)
-        {
-            IList<string> fnResult = new List<string>();
-            foreach(RecordSetSearchPayload p in operationRange)
-            {
-                double recNum;
-                if(double.TryParse(p.Payload, out recNum))
-                {
-                    if(!(recNum > fromNum && recNum < toNum))
-                    {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
-                        {
-                            return new List<string>();
-                        }
-                    }
-                }
-            }
-            return fnResult;
-        }
-
-
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> tovals, bool all)
         {
 
-            return (a) =>
-            {
-                return !RunBetween(warewolfAtoms, tovals, a);
-            };
+            return a => !RunBetween(warewolfAtoms, tovals, a);
 
         }
 

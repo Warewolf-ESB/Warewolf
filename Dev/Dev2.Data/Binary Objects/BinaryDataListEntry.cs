@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -206,8 +206,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="errors">The errors.</param>
         public void AdjustForIOMapping(Guid parentDlid, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
+            errors = null;
             // Need to adjust the storage layer to retain the parent DLID storage location ;)
-            _internalObj.AddAlias(parentDlid, parentColumn, parentNamespace, childColumn, out errors);
         }
 
         /// <summary>

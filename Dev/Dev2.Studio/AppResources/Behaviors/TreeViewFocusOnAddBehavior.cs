@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using System.Windows.Media.Animation;
 using Dev2.Models;
 
 // ReSharper disable CheckNamespace
@@ -33,15 +34,15 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Dependency Properties
 
-        public System.Windows.Media.Animation.Storyboard InsertAnimation
+        public Storyboard InsertAnimation
         {
-            get { return (System.Windows.Media.Animation.Storyboard)GetValue(InsertAnimationProperty); }
+            get { return (Storyboard)GetValue(InsertAnimationProperty); }
             set { SetValue(InsertAnimationProperty, value); }
         }
 
         public static readonly DependencyProperty InsertAnimationProperty =
             DependencyProperty.Register("InsertAnimation",
-            typeof(System.Windows.Media.Animation.Storyboard),
+            typeof(Storyboard),
             typeof(TreeViewFocusOnAddBehavior), new PropertyMetadata(null));
 
         #endregion Dependency Properties

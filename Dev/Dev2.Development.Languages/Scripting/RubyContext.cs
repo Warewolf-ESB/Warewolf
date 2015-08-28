@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
 using IronRuby;
+using IronRuby.Builtins;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 
@@ -130,7 +131,7 @@ namespace Dev2.Development.Languages.Scripting
 
                     if (name == "IronRuby.Libraries, Version=1.1.4.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1")
                     {
-                        return IntrospectionExtensions.GetTypeInfo(typeof(IronRuby.Builtins.Integer)).Assembly;
+                        return IntrospectionExtensions.GetTypeInfo(typeof(Integer)).Assembly;
                     }
 
                     return base.LoadAssembly(name);

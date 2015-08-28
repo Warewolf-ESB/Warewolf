@@ -2,7 +2,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
@@ -34,7 +35,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Reflection;
 using Dev2.Data;
-using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
@@ -82,7 +82,7 @@ namespace Dev2
         {
             try
             {
-                using (new System.Runtime.MemoryFailPoint(1000)) // 20 megabytes
+                using (new MemoryFailPoint(1000)) // 20 megabytes
                 {
                    return RunMain(arguments);
                 }
@@ -388,13 +388,6 @@ namespace Dev2
             if(!didBreak && !InitializeServer())
             {
                 result = 3;
-                didBreak = true;
-            }
-
-            // Start DataList Server
-            if(!didBreak && !StartDataListServer())
-            {
-                result = 99;
                 didBreak = true;
             }
 
@@ -1384,7 +1377,6 @@ namespace Dev2
             try
             {
                 DebugDispatcher.Instance.Shutdown();
-                BackgroundDispatcher.Instance.Shutdown();
             }
             catch(Exception ex)
             {
@@ -1395,7 +1387,7 @@ namespace Dev2
             // shutdown the storage layer ;)
             try
             {
-                BinaryDataListStorageLayer.Teardown();
+   
             }
             catch(Exception e)
             {
@@ -1615,6 +1607,7 @@ namespace Dev2
         bool LoadResourceCatalog()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
+            ValidatResourceFolder();
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
@@ -1646,6 +1639,13 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
+        }
+
+        static void ValidatResourceFolder()
+        {
+            var folder = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
         }
 
         static void MigrateResources(string oldResourceFolder)
@@ -1738,14 +1738,6 @@ namespace Dev2
             var instance = HostSecurityProvider.Instance;
 
             // ReSharper restore UnusedVariable
-            return true;
-        }
-
-        bool StartDataListServer()
-        {
-            // PBI : 5376 - Create instance of the Server compiler
-            DataListFactory.CreateServerDataListCompiler();
-            BinaryDataListStorageLayer.Setup();
             return true;
         }
 

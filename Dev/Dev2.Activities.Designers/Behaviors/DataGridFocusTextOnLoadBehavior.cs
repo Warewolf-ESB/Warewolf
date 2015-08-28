@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,10 +11,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Interfaces;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     public class DataGridFocusTextOnLoadBehavior : Behavior<DataGrid>
@@ -62,7 +63,7 @@ namespace Dev2.Activities
             _textBox.LostKeyboardFocus += _textBox_LostKeyboardFocus;
         }
 
-        void _textBox_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        void _textBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             _textBox.Focus();
             _stealCount++;

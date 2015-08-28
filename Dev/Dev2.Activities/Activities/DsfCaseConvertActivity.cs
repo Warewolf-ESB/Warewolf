@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -66,13 +66,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -94,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env, update), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
                         _debugInputs.Add(debugItem);
                         inputIndex++;
@@ -103,7 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         try
                         {
-                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env));
+                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env, update), update);
                         }
                         catch(Exception e)
                         {
@@ -114,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             var debugItem = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env), debugItem);
+                            AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env, update), debugItem);
                             _debugOutputs.Add(debugItem);
                             outputIndex++;
                         }
@@ -137,13 +136,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
 
-        public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(string conversionType,IExecutionEnvironment env)
+        public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(string conversionType,IExecutionEnvironment env,int update)
         {
             var convertFunct = CaseConverter.GetFuncs();
             Func<string, string> returnedFunc;
@@ -155,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return (a=>
                     {
                         var upper = returnedFunc.Invoke(a.ToString());
-                        var evalled = env.Eval(upper);
+                        var evalled = env.Eval(upper, update);
                         if(evalled.IsWarewolfAtomResult)
                         {
                             var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -325,7 +324,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment environment)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment environment, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -334,7 +333,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment environment)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment environment, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

@@ -228,4 +228,7 @@
   <data name="DsfRecordsetLengthActivity" xml:space="preserve">
     <value>c5e46491-0355-45de-9dd8-c813a00f5245</value>
   </data>
+  <data name="DsfCreateJsonActivity" xml:space="preserve">
+    <value>b79b2b22-368a-437b-b639-953f7237bbca</value>
+  </data>
 </root>

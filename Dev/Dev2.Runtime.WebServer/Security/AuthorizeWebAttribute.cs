@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -44,11 +43,10 @@ namespace Dev2.Runtime.WebServer.Security
             VerifyArgument.IsNotNull("actionContext", actionContext);
             var user = actionContext.ControllerContext.RequestContext.Principal;
 
-            if (user == null && actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow")
+            if (user == null && (actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow" || actionContext.ActionDescriptor.ActionName == "ExecuteGetRootLevelApisJson"))
             {
-                var genericIdentity = new GenericIdentity("GenericPublicUser");
-                user = new GenericPrincipal(genericIdentity, new string[0]);
-                actionContext.ControllerContext.RequestContext.Principal = user; 
+                user = GlobalConstants.GenericPrincipal;
+                actionContext.ControllerContext.RequestContext.Principal = user;
             }
 
             if(!user.IsAuthenticated())

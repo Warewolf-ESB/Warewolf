@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -31,7 +30,6 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -48,7 +46,6 @@ namespace Dev2.Runtime.ESB.Control
         #region IFrameworkDuplexDataChannel Members
 
         readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
-        bool _doNotWipeDataList;
 
         public void Register(string userName)
         {
@@ -204,23 +201,21 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
+
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
-            var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
             var name = principle.Identity.Name;
-            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
+
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                StringBuilder theShape;
                 IResource resource;
                 try
                 {
-                    theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceId, dataObject.ServiceName) : FindServiceShape(workspaceId, dataObject.ResourceID);
                     resource = dataObject.ResourceID == Guid.Empty ? GetResource(workspaceId, dataObject.ServiceName) : GetResource(workspaceId, dataObject.ResourceID);
                 }
                 catch(Exception ex)
@@ -231,23 +226,14 @@ namespace Dev2.Runtime.ESB.Control
                 }
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
-                ErrorResultTO invokeErrors;
                 if(resource != null)
                 {
                     if(resource.DataList != null)
                     {
-                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
+                        Dev2Logger.Log.Debug("Mapping Inputs from Environment");
+                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), 0);
                     }
                 }
-                dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
-                // The act of doing this moves the index data correctly ;)
-                // We need to remove this in the future.
-#pragma warning disable 168
-                // ReSharper disable UnusedVariable
-                var convertFrom = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                // ReSharper restore UnusedVariable
-#pragma warning restore 168
-                errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = new StringBuilder();
 
                 // We need to create the parentID around the system ;)
@@ -258,6 +244,7 @@ namespace Dev2.Runtime.ESB.Control
             try
             {
                 // Setup the invoker endpoint ;)
+                Dev2Logger.Log.Debug("Creating Invoker");
                 using(var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
                 {
                     // Should return the top level DLID
@@ -270,24 +257,8 @@ namespace Dev2.Runtime.ESB.Control
             {
                 errors.AddError(ex.Message);
             }
-            finally
-            {
-                // clean up after the request has executed ;)
-                if (dataObject.IsDebug && !_doNotWipeDataList && !dataObject.IsRemoteInvoke)
-                {
-                    DataListRegistar.ClearDataList();
-                }
-                else
-                {
-                    foreach (var thread in dataObject.ThreadsToDispose)
-                    {
-                        DataListRegistar.DisposeScope(thread.Key, resultID);
-                    }
 
-                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
-                }
 
-            }
 
             return resultID;
         }
@@ -307,12 +278,12 @@ namespace Dev2.Runtime.ESB.Control
 
        
 
-        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
             errors = null;
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
-            executionContainer.PerformLogExecution(uri);
+            executionContainer.PerformLogExecution(uri, update);
         }
 
         /// <summary>
@@ -323,8 +294,9 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
@@ -338,11 +310,10 @@ namespace Dev2.Runtime.ESB.Control
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Log.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
-            _doNotWipeDataList = false;
             if(dataObject.RunWorkflowAsync)
             {
-                _doNotWipeDataList = true;
-                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors);
+        
+                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
                 errors.MergeErrors(invokeErrors);
             }
             else
@@ -359,18 +330,17 @@ namespace Dev2.Runtime.ESB.Control
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
-                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs,update);
                     if (!isLocal)
                     {
-                        _doNotWipeDataList = true;
                         SetRemoteExecutionDataList(dataObject, executionContainer, errors);
                     }
                     if (!errors.HasErrors())
                     {
                         executionContainer.InstanceInputDefinition = inputDefs;
                         executionContainer.InstanceOutputDefinition = outputDefs;
-                        executionContainer.Execute(out invokeErrors);
-                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
+                        executionContainer.Execute(out invokeErrors, update);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update);
                         errors.MergeErrors(invokeErrors);
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -383,18 +353,18 @@ namespace Dev2.Runtime.ESB.Control
             return new ExecutionEnvironment();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
-            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
-            innerEnvironment.Errors.ForEach(s => dataObject.Environment.AddError(s));
+            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
+           
             return innerEnvironment;
         }
 
-        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
         {
-            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs,update);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
@@ -403,7 +373,7 @@ namespace Dev2.Runtime.ESB.Control
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
             if(remoteContainer != null)
             {
-                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID,dataObject.ServiceName);
+                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID,dataObject.ServiceName,dataObject.IsDebugMode());
                 if(fetchRemoteResource != null)
                 {
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
@@ -419,7 +389,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
         {
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();
@@ -440,13 +410,13 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if(!invokeErrors.HasErrors())
                 {
-                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        executionContainer.Execute(out error);
+                        executionContainer.Execute(out error, update);
                         return clonedDataObject;
                     }).ContinueWith(task =>
                     {
@@ -465,81 +435,16 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        /// <summary>
-        /// Shapes for sub request. Returns a key valid pair with remaining output mappings to be processed later!
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
-        {
-            // We need to make it based upon the request ;)
-            var oldID = dataObject.DataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO invokeErrors;
-            errors = new ErrorResultTO();
-
-            StringBuilder theShape;
-
-            if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ResourceID))
-            {
-                theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
-            }
-            else
-            {
-                var isDbService = dataObject.RemoteServiceType == "DbService" || dataObject.RemoteServiceType == "InvokeStoredProc";
-                theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors, isDbService);
-                errors.MergeErrors(invokeErrors);
-            }
-
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(), theShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            dataObject.RawPayload = new StringBuilder();
-
-
-            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = null;
-
-            if(!dataObject.IsDataListScoped)
-            {
-                // Now ID flow through mappings ;)
-                remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-            }
-            else
-            {
-                // we have a scoped datalist ;)
-                
-                compiler.SetParentID(shapeID, oldID);                
-                var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors,oldID);
-                errors.MergeErrors(invokeErrors);
-                var outputID = compiler.Merge(oldID, shapeID, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out invokeErrors);             
-                errors.MergeErrors(invokeErrors);
-
-                shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
-                errors.MergeErrors(invokeErrors);
- 
-            }
-
-            // set execution ID ;)
-            dataObject.DataListID = shapeID;
-
-            return remainingMappings;
-
-        }
-
-        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors)
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, int update)
         {
             var serviceID = dataObject.ResourceID;
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
-            var curDlid = generateInvokeContainer.Execute(out errors);
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            generateInvokeContainer.Execute(out errors,update);
+            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,Guid.Empty, "", update);
             var jsonSerializerSettings = new JsonSerializerSettings();
-            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom.ToString(), jsonSerializerSettings);
+            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;
         }
 
@@ -624,77 +529,6 @@ namespace Dev2.Runtime.ESB.Control
         }
 
         /// <summary>
-        /// Fetches the execution payload.
-        /// </summary>
-        /// <param name="dataObj">The data obj.</param>
-        /// <param name="targetFormat">The target format.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ResourceID).ToString();
-            var result = new StringBuilder();
-
-            if(!string.IsNullOrEmpty(targetShape))
-            {
-                string translatorShape = ManipulateDataListShapeForOutput(targetShape);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO invokeErrors;
-                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat, new StringBuilder(translatorShape), out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-            }
-            else
-            {
-                errors.AddError("Could not locate service shape for " + dataObj.ServiceName);
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Gets the correct data list.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="compiler">The compiler.</param>
-        /// <returns></returns>
-        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, IDataListCompiler compiler)
-        {
-            StringBuilder theShape;
-            ErrorResultTO invokeErrors;
-            errors = new ErrorResultTO();
-
-            // If no DLID, we need to make it based upon the request ;)
-            if(dataObject.DataListID == GlobalConstants.NullDataListID)
-            {
-                theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-                dataObject.RawPayload = new StringBuilder();
-            }
-
-            // force all items to exist in the DL ;)
-            theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), new StringBuilder(), theShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            // Add left to right
-            var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            DataListUtil.MergeDataList(left, right, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            return innerDatalistID;
-        }
-
-        /// <summary>
         /// Manipulates the data list shape for output.
         /// </summary>
         /// <param name="preShape">The pre shape.</param>
@@ -731,40 +565,6 @@ namespace Dev2.Runtime.ESB.Control
                 enumerable.Where(element => !element.HasElements).Remove();
                 return xDoc.ToString();
             }
-        }
-
-        static bool IsServiceWorkflow(Guid workspaceID, Guid resourceID)
-        {
-            IResource resource = GetResource(workspaceID, resourceID);
-            if (resource == null)
-            {
-                return false;
-            }
-
-            return resource.ResourceType == ResourceType.WorkflowService;
-        }
-
-
-        /// <summary>
-        /// Shapes the mappings automatic target data list.
-        /// </summary>
-        /// <param name="inputs">The inputs.</param>
-        /// <param name="outputs">The outputs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="isDbService"></param>
-        /// <returns></returns>
-        StringBuilder ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors, bool isDbService)
-        {
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors, isDbService: isDbService);
-            errors.MergeErrors(invokeErrors);
-            var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors, isDbService: isDbService);
-            errors.MergeErrors(invokeErrors);
-
-            var result = GlueInputAndOutputMappingSegments(iDL.ToString(), oDL.ToString(), out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            return result;
         }
 
         /// <summary>

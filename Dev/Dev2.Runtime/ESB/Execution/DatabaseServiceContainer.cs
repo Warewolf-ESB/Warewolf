@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,6 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Services.Execution;
 using Dev2.Workspaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -42,7 +41,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         #region Execute
 
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
             _databaseServiceExecution.BeforeExecution(errors);
@@ -54,7 +53,7 @@ namespace Dev2.Runtime.ESB.Execution
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
-            var result = _databaseServiceExecution.Execute(out errors);
+            var result = _databaseServiceExecution.Execute(out errors, update);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
         }

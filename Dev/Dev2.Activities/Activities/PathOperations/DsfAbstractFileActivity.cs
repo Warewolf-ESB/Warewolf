@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -19,11 +20,13 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
 using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -55,85 +58,91 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-         
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
+ 
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
 
             // Process if no errors
 
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 InitializeDebug(dataObject);
             }
 
-            if(!errors.HasErrors())
+            if (!errors.HasErrors())
             {
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors);
+                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors, update);
 
                     allErrors.MergeErrors(errors);
 
-                    if(outputs.Count > 0)
+                    if (outputs.Count > 0)
                     {
-                        foreach(OutputTO output in outputs)
+                        foreach (OutputTO output in outputs)
                         {
-                            if(output.OutputStrings.Count > 0)
+                            if (output.OutputStrings.Count > 0)
                             {
-                                foreach(string value in output.OutputStrings)
+                                foreach (string value in output.OutputStrings)
                                 {
-                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-                                            dataObject.Environment.Assign(region, value);
+                                            dataObject.Environment.Assign(region, value, update);
                                         }
                                     }
                                 }
                             }
                         }
-                        if(dataObject.IsDebugMode())
-                        {
-                            if(!String.IsNullOrEmpty(Result))
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
-                            }
-                        }
                         allErrors.MergeErrors(errors);
                     }
+                    else
+                    {
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        {
+                            dataObject.Environment.Assign(region, "",update);
+                        }
+                    }
+                    if (dataObject.IsDebugMode())
+                        {
+                        if (!String.IsNullOrEmpty(Result))
+                            {
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            }
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
                 finally
                 {
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
-                        foreach(var err in allErrors.FetchErrors())
+                        foreach (var err in allErrors.FetchErrors())
                         {
                             dataObject.Environment.Errors.Add(err);
                         }
                     }
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(dataObject, StateType.Before);
-                        DispatchDebugState(dataObject, StateType.After);
+                        DispatchDebugState(dataObject, StateType.Before, update);
+                        DispatchDebugState(dataObject, StateType.After, update);
                     }
                 }
             }
@@ -147,14 +156,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Do nothing ;)
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        protected string DecryptedPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+            }
+        }
+
         /// <summary>
         /// Status : New
         /// Purpose : To provide an overidable concrete method to execute an activity's logic through
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="error">The error.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error);
+        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
         #region Properties
 
@@ -166,7 +185,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string Password
         {
             get { return _password; }
-            set { _password = value; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _password = DpapiWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
         }
 
         /// <summary>
@@ -206,19 +242,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
 
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -229,27 +265,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Internal Methods
 
-        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
+        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment));
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
 
-        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment)
+        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment));
+            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
 
         #endregion
 
-        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment)
+        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment));
+            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment, update));
             AddDebugInputItemPassword("Password", Password);
         }
 
-        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName)
+        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName, int update)
         {
-            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment));
+            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment, update));
             AddDebugInputItemPassword("Destination Password", destinationPassword);
         }
 

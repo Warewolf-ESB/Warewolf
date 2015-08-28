@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,6 +18,7 @@ using System.Windows.Data;
 using Dev2.Calculate;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Data.MathOperations;
 using Dev2.Intellisense.Provider;
 using Dev2.MathOperations;
 using Dev2.Studio.Core.Interfaces;

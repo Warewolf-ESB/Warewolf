@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------            
-            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount); 
+            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
             Assert.AreEqual(1, viewModel.ValidateDestinationUsernameAndPasswordHitCount);
         }
@@ -98,7 +98,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
             var zipDesignerViewModel_Constructor = ZipViewModel();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(CompressionRatios.NoCompression.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[0]);
+            Assert.AreEqual(CompressionRatios.None.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[0]);
             Assert.AreEqual(CompressionRatios.BestSpeed.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[1]);
             Assert.AreEqual(CompressionRatios.Default.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[2]);
             Assert.AreEqual(CompressionRatios.BestCompression.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[3]);

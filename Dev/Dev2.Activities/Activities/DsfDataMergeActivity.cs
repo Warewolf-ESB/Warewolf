@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -102,13 +102,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            ExecuteTool(dataObject, 0);
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+
 
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -138,10 +137,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, true), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, update, true), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment, update), debugItem);
 
                         //Old workflows don't have this set. 
                         if(row.Alignment == null)
@@ -153,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         _debugInputs.Add(debugItem);
                     }
-                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable);
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable, update);
                     var innerIterator = new WarewolfListIterator();
                     var innerListOfIters = new List<WarewolfIterator>();
 
@@ -177,12 +176,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if(DataListUtil.IsFullyEvaluated(finalString))
                     {
-                        inputListResult = dataObject.Environment.Eval(finalString);
+                        inputListResult = dataObject.Environment.Eval(finalString, update);
                     }
 
                     var inputIterator = new WarewolfIterator(inputListResult);
-                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
-                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
+                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At, update));
+                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding, update));
                     warewolfListIterator.AddVariableToIterateOn(inputIterator);
                     warewolfListIterator.AddVariableToIterateOn(atIterator);
                     warewolfListIterator.AddVariableToIterateOn(paddingIterator);
@@ -251,12 +250,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());
+                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
                             allErrors.MergeErrors(errorResultTo);
 
                             if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                             }
                         }
                     }
@@ -286,8 +285,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
 
                 #endregion
@@ -410,14 +409,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
         }
 
 
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

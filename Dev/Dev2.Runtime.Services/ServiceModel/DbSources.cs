@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -32,16 +31,17 @@ namespace Dev2.Runtime.ServiceModel
         public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
+
             try
             {
                 var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if(!string.IsNullOrEmpty(xmlStr))
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
                     result = new DbSource(xml);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -59,8 +59,9 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
+
                 // Setup ports using default
-                switch(databaseSourceDetails.ServerType)
+                switch (databaseSourceDetails.ServerType)
                 {
                     case enSourceType.SqlDatabase:
                         {
@@ -70,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
                 ResourceCatalog.Instance.SaveResource(workspaceId, databaseSourceDetails);
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     //2012.03.12: Ashley Lewis - BUG 9208
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, databaseSourceDetails);
@@ -78,7 +79,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 return databaseSourceDetails.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return new DatabaseValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
@@ -113,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var dbSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
-                switch(dbSourceDetails.ResourceType)
+                switch (dbSourceDetails.ResourceType)
                 {
                     case ResourceType.DbSource:
                         result.ErrorMessage = null;
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel
                         break;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 result.ErrorMessage = ex.Message;
@@ -136,8 +137,8 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
         {
             var result = new DatabaseValidationResult();
-           
-            switch(dbSourceDetails.ServerType)
+
+            switch (dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
                     var broker = CreateDatabaseBroker(dbSourceDetails.ServerType);

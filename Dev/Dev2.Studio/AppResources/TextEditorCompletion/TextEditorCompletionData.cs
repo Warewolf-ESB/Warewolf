@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,10 @@
 */
 
 using System;
+using System.Windows.Media;
 using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 
 // ReSharper disable once CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio
@@ -24,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
             Description = description;
         }
 
-        public void Complete(ICSharpCode.AvalonEdit.Editing.TextArea textArea, ICSharpCode.AvalonEdit.Document.ISegment completionSegment, EventArgs insertionRequestEventArgs)
+        public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
         {
             textArea.Document.Replace(completionSegment, Text);
         }
@@ -40,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
             private set;
         }
 
-        public System.Windows.Media.ImageSource Image
+        public ImageSource Image
         {
             get { return null; }
         }

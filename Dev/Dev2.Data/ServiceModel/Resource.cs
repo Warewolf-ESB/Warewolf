@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WorkflowService, "Service" },
             { ResourceType.ServerSource, "Source" },
             { ResourceType.OauthSource, "Source" },
+            { ResourceType.SharepointServerSource, "Source" },
         };
         IVersionInfo _versionInfo;
 
@@ -702,6 +703,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 Guid.TryParse(uniqueIdAsString, out uniqueId);
                                 Guid resId;
                                 Guid.TryParse(resourceIdAsString, out resId);
+                                if (resId == Guid.Empty)
+                                {
+                                    resId = uniqueId;
+                                }
                                 if(resourceType == ResourceType.WebService)
                                 {
                                     resId = uniqueId;

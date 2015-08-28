@@ -12,11 +12,11 @@ namespace Dev2.Activities
 {
     public class DsfSwitch:DsfActivityAbstract<string>
     {
-              public DsfFlowSwitchActivity _inner;
+              public DsfFlowSwitchActivity Inner;
 
               public DsfSwitch(DsfFlowSwitchActivity inner)
               {
-                  _inner = inner;
+                  Inner = inner;
               }
 
               public DsfSwitch() { }
@@ -53,49 +53,45 @@ namespace Dev2.Activities
             return null;
         }
 
+          public override IDev2Activity Execute(IDSFDataObject dataObject, int update)
+          {
+              _debugOutputs.Clear();
+              _debugInputs.Clear();
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+              try
+              {
+
+
+                  Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                  var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
+
+
+                  Debug(dataObject, firstOrDefault, ds);
+                  if (firstOrDefault != null)
+                  {
+                      var a = firstOrDefault;
+                      if (Switches.ContainsKey(a))
+                      {
+                          return Switches[a];
+                      }
+                          if (Default != null)
+                          {
+                              var activity = Default.FirstOrDefault();
+                            return activity;
+                      }
+                  }
+              }
+              catch (Exception err)
+              {
+                  dataObject.Environment.Errors.Add(err.Message);
+              }
+              
+              return null;
+          }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _debugOutputs.Clear();
-            _debugInputs.Clear();
-
-            try
-            {
-
-
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
-                var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
-
-
-                Debug(dataObject, firstOrDefault, ds);
-                if (firstOrDefault != null)
-                {
-                    var a = firstOrDefault;
-                    if (Switches.ContainsKey(a))
-                    {
-                        Switches[a].Execute(dataObject);
-                    }
-                    else
-                    {
-                        if(Default != null)
-                        {
-                            var activity = Default.FirstOrDefault();
-                            if (activity != null)
-                            {
-                                activity.Execute(dataObject);
-                            }
-                        }
-                    }
-                }
-            }
-            catch(Exception err)
-            {
-                dataObject.Environment.Errors.Add(err.Message);
-            }
-            finally
-            {
-                
-            }
+           
         }
 
         void Debug(IDSFDataObject dataObject, string firstOrDefault, Dev2Switch ds)
@@ -112,11 +108,11 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
                 _debugInputs = result;
-                DispatchDebugState(dataObject, StateType.Before);
-                DispatchDebugState(dataObject, StateType.After);
-                if(_inner != null)
+                DispatchDebugState(dataObject, StateType.Before, 0);
+                DispatchDebugState(dataObject, StateType.After, 0);
+                if(Inner != null)
                 {
-                    _inner.SetDebugInputs(_debugInputs);
+                    Inner.SetDebugInputs(_debugInputs);
                 }
             }
             }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,6 +26,7 @@ using Dev2.Core.Tests;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -135,7 +136,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             IObservableReadOnlyList<IErrorInfo> testErrors = new ObservableReadOnlyList<IErrorInfo> { errorInfo };
             setupResourceModelMock.Setup(c => c.Errors).Returns(testErrors);
             setupResourceModelMock.Setup(c => c.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo> { errorInfo });
-            var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object, envRepo.Object, new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object, envRepo.Object, new Mock<IEventAggregator>().Object, new TestAsyncWorker());
 
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,12 +73,12 @@ namespace Dev2
         {
             if (Padding == PaddingDirection.Left && PaddingCharacter != '\0')
             {
-                value = value.TrimStart(new[] {PaddingCharacter});
+                value = value.TrimStart(PaddingCharacter);
             }
 
             if (Padding == PaddingDirection.Right && PaddingCharacter != '\0')
             {
-                value = value.TrimEnd(new[] {PaddingCharacter});
+                value = value.TrimEnd(PaddingCharacter);
             }
 
             if (Length > 0 && Length < value.Length)

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Dev2.AppResources.Converters;
 using Dev2.Common.Interfaces.Data;
@@ -25,7 +26,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         {
             if(!UriParser.IsKnownScheme("pack"))
                 // ReSharper disable ObjectCreationAsStatement
-                new System.Windows.Application();
+                new Application();
             // ReSharper restore ObjectCreationAsStatement
         }
 

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -67,12 +67,12 @@ internal sealed class Win32Sec
         out LSA_HANDLE PolicyHandle
         );
 
-    [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
+    [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true,PreserveSig = true), SuppressUnmanagedCodeSecurity]
     internal static extern uint LsaEnumerateAccountsWithUserRight(
         LSA_HANDLE PolicyHandle,
         LSA_UNICODE_STRING[] UserRights,
-        out LSA_HANDLE EnumerationBuffer,
-        out int CountReturned
+        out IntPtr EnumerationBuffer,
+        out ulong CountReturned
         );
 
     [DllImport("advapi32")]
@@ -162,19 +162,20 @@ public class SecurityWrapper : ISecurityWrapper
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
         IntPtr buffer;
-        int count;
+        ulong count;
         uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
         var Accounts = new List<String>();
 
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            for (int i = 0, elemOffs = (int)buffer; i < count; i++)
+            LSA_ENUMERATION_INFORMATION myLsaus = new LSA_ENUMERATION_INFORMATION();
+            for (ulong i = 0; i < count; i++)
             {
+                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+
                 LsaInfo[i] =
-                    (LSA_ENUMERATION_INFORMATION)
-                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
-                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
+                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 Accounts.Add(ResolveAccountName(SID));
             }
@@ -213,19 +214,20 @@ public class SecurityWrapper : ISecurityWrapper
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString("SeBatchLogonRight");
         IntPtr buffer;
-        int count;
+        ulong count;
         uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
         var accounts = new List<String>();
 
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            for (int i = 0, elemOffs = (int)buffer; i < count; i++)
+            LSA_ENUMERATION_INFORMATION myLsaus = new LSA_ENUMERATION_INFORMATION();
+            for (ulong i = 0; i < count; i++)
             {
+                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+
                 LsaInfo[i] =
-                    (LSA_ENUMERATION_INFORMATION)
-                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
-                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
+                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());                
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 accounts.Add(ResolveAccountName(SID));
             }
@@ -278,7 +280,7 @@ public class SecurityWrapper : ISecurityWrapper
     private static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
-            userName = userName.Split(new[] { '\\' }).Last();
+            userName = userName.Split('\\').Last();
         return userName;
     }
 

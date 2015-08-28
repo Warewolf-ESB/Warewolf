@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,11 +14,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -62,7 +65,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CanGenerateRemoteDebugItems()
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
-
+            var cat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns("bob");
+            cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
+            act.SetResourceCatalog(cat.Object);
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
@@ -82,6 +89,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CanSerializeRemoteDebugItems()
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            var cat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns("bob");
+            cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
+            act.SetResourceCatalog(cat.Object);
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -102,13 +114,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             Assert.AreEqual(1, tmp2.Count);
+            Assert.AreEqual("bob",tmp2[0].Server);
         }
 
         [TestMethod]
         public void CanFetchRemoteDebugItemsViaSystemService()
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
-
+            var cat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns("bob");
+            cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
+            act.SetResourceCatalog(cat.Object);
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 

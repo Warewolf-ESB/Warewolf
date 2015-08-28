@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             var result = string.Join(Environment.NewLine, PreviewViewModel.Inputs.Take(MaxCount).Select(input => string.Format("{0} {1}", count++, input.Key)));
             if(PreviewViewModel.Inputs.Count > MaxCount)
             {
-                result = string.Join(Environment.NewLine, new[] { result, "..." });
+                result = string.Join(Environment.NewLine, result, "...");
             }
 
             return result;

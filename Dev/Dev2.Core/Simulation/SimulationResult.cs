@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Simulation
 {
@@ -35,7 +34,7 @@ namespace Dev2.Simulation
         /// <summary>
         ///     Gets or sets the value.
         /// </summary>
-        public IBinaryDataList Value { get; set; }
+        public object Value { get; set; }
 
         #endregion
 
@@ -48,7 +47,7 @@ namespace Dev2.Simulation
                 throw new ArgumentNullException("info");
             }
             Key = (ISimulationKey) info.GetValue("Key", typeof (ISimulationKey));
-            Value = (IBinaryDataList) info.GetValue("Value", typeof (IBinaryDataList));
+            Value = info.GetValue("Value", typeof (object));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -65,30 +64,74 @@ namespace Dev2.Simulation
 
         #region IEquatable
 
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(ISimulationResult other)
         {
-            if (other == null)
+            if(ReferenceEquals(null, other))
             {
                 return false;
             }
-            return Key.Equals(other.Key);
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Equals(Key, other.Key);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-
-            var item = obj as ISimulationResult;
-            return item != null && Equals(item);
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((SimulationResult)obj);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override int GetHashCode()
         {
-            return Key.GetHashCode();
+            return (Key != null ? Key.GetHashCode() : 0);
         }
+
+        public static bool operator ==(SimulationResult left, SimulationResult right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(SimulationResult left, SimulationResult right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion
 
         #endregion
     }

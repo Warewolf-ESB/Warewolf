@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
-            dsfPluginActivity.MockExecutionImpl(null, null, null, null, out invokeErrors);
+            dsfPluginActivity.MockExecutionImpl(out invokeErrors);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, invokeErrors.FetchErrors().Count);
@@ -84,14 +84,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var pluginActivity = new MockDsfPluginActivity();
             var errors = new ErrorResultTO();
             var mockContainer = new Mock<PluginServiceExecution>(new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>()), It.IsAny<bool>());
-            mockContainer.Setup(c => c.Execute(out errors)).Verifiable();
+            mockContainer.Setup(c => c.Execute(out errors, 0)).Verifiable();
 
             //exe
             pluginActivity.MockExecutePluginService(mockContainer.Object);
 
             //assert
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin service");
-            mockContainer.Verify(c => c.Execute(out errors), Times.Once());
+            mockContainer.Verify(c => c.Execute(out errors, 0), Times.Once());
         }
 
         #endregion

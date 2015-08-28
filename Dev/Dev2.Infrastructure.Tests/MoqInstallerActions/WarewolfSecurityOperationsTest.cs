@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -164,7 +164,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
             var myPc = Environment.MachineName;
-            var user = (inDomain?"Dev2\\":string.Empty)+"IntegrationTester";
+            var user = (inDomain?"Dev2\\":string.Empty)+Environment.UserName;
 
             var userStr = warewolfGroupOps.FormatUserForInsert(user, myPc);
 

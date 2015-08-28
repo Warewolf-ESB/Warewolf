@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
@@ -23,6 +24,9 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Dev2.Workspaces;
+using Dev2.Common.Utils;
+using System.Text.RegularExpressions;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -45,6 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new ExecuteMessage { HasError = false };
 
                 string serviceId = null;
+                bool prepairForDeployment = false;
                 StringBuilder tmp;
                 values.TryGetValue("ResourceID", out tmp);
 
@@ -53,51 +58,39 @@ namespace Dev2.Runtime.ESB.Management.Services
                     serviceId = tmp.ToString();
                 }
 
+                values.TryGetValue("PrepairForDeployment", out tmp);
+
+                if (tmp != null)
+                {
+                    prepairForDeployment = bool.Parse(tmp.ToString());
+                }
+
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
                 Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:" + resourceId);
                 try
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-                    var tempResource = new Resource(result.ToXElement());
-                    //var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
-                    var resource = tempResource;
-
-                    if (resource.ResourceType == ResourceType.DbSource)
+                    if (!result.IsNullOrEmpty())
                     {
-                        res.Message.Append(result);
-                    }
-                    else
-                    {
-                        var startIdx = result.IndexOf(PayloadStart, 0, false);
+                        var tempResource = new Resource(result.ToXElement());
+                        var resource = tempResource;
 
-                        if (startIdx >= 0)
+                        if (resource.ResourceType == ResourceType.DbSource)
                         {
-                            // remove beginning junk
-                            startIdx += PayloadStart.Length;
-                            result = result.Remove(0, startIdx);
-
-                            startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                            if (startIdx > 0)
-                            {
-                                var len = result.Length - startIdx;
-                                result = result.Remove(startIdx, len);
-
-                                res.Message.Append(result.Unescape());
-                            }
+                            res.Message.Append(result);
                         }
                         else
                         {
-                            // handle services ;)
-                            startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                            var startIdx = result.IndexOf(PayloadStart, 0, false);
+
                             if (startIdx >= 0)
                             {
-                                // remove begging junk
-                                startIdx += AltPayloadStart.Length;
+                                // remove beginning junk
+                                startIdx += PayloadStart.Length;
                                 result = result.Remove(0, startIdx);
 
-                                startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+                                startIdx = result.IndexOf(PayloadEnd, 0, false);
 
                                 if (startIdx > 0)
                                 {
@@ -109,8 +102,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             else
                             {
-                                // send the entire thing ;)
-                                res.Message.Append(result);
+                                // handle services ;)
+                                startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                                if (startIdx >= 0)
+                                {
+                                    // remove begging junk
+                                    startIdx += AltPayloadStart.Length;
+                                    result = result.Remove(0, startIdx);
+
+                                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                                    if (startIdx > 0)
+                                    {
+                                        var len = result.Length - startIdx;
+                                        result = result.Remove(startIdx, len);
+
+                                        res.Message.Append(result.Unescape());
+                                    }
+                                }
+                                else
+                                {
+                                    // send the entire thing ;)
+                                    res.Message.Append(result);
+                                }
                             }
                         }
                     }
@@ -119,11 +133,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Dev2Logger.Log.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
                 }
-
+            
 
                 // Finally, clean the definition as per execution hydration rules ;)
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
-                res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+                if (!res.Message.IsNullOrEmpty())
+                {
+                    Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                    res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+                }
+                if (prepairForDeployment)
+                    res.Message = DecryptAllPasswords(res.Message);
 
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(res);
@@ -133,6 +152,51 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Error(err);
                 throw;
             }
+        }
+
+        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
+        {
+            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
+                                                               {
+                                                                   {
+                                                                       "Source", new StringTransform
+                                                                                 {
+                                                                                     SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
+                                                                                     GroupNumbers = new[] { 1 },
+                                                                                     TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                 }
+                                                                   },
+                                                                   {
+                                                                       "DsfAbstractFileActivity", new StringTransform
+                                                                                                  {
+                                                                                                      SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
+                                                                                                      GroupNumbers = new[] { 3 },
+                                                                                                      TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                  }
+                                                                   },
+                                                                   {
+                                                                       "DsfAbstractMultipleFilesActivity", new StringTransform
+                                                                                                           {
+                                                                                                               SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
+                                                                                                               GroupNumbers = new[] { 3 },
+                                                                                                               TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                           }
+                                                                   },
+                                                                   {
+                                                                       "Zip", new StringTransform
+                                                                              {
+                                                                                  SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
+                                                                                  GroupNumbers = new[] { 3 },
+                                                                                  TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                              }
+                                                                   }
+                                                               };
+            string xml = stringBuilder.ToString();
+            StringBuilder output = new StringBuilder();
+
+            xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
+            output.Append(xml);
+            return output;
         }
 
         public DynamicService CreateServiceEntry()

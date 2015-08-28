@@ -276,6 +276,49 @@ Scenario: Execute a foreach over an activity for range 9 to 10
 	|           | From | To |
 	| * in Range | 9    | 10 |
 
+Scenario: Execute a foreach over an activity for range 2 to 0
+	Given There is a recordset in the datalist with this shape
+	| rs               | value |
+	| [[rs(2).field]]  | 1     |
+	| [[rs(1).field]] | 3     |
+	And I have selected the foreach type as "InRange" from 2 to 1
+	And the underlying dropped activity is a(n) "Activity"
+	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
+	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
+	When the foreach tool is executed
+	Then The mapping uses the following indexes
+	| index |
+	| 2     |
+	| 1    |
+	And the execution has "NO" error
+	And the debug inputs as
+	|           | From | To |
+	| * in Range | 2    | 1 |
+
+	Scenario: Execute a foreach over an activity for invalid range 0
+	Given There is a recordset in the datalist with this shape
+	| rs               | value |
+	| [[rs(9).field]]  | 1     |
+	| [[rs(10).field]] | 3     |
+	And I have selected the foreach type as "InRange" from 1 to 0
+	And the underlying dropped activity is a(n) "Activity"
+	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
+	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
+	When the foreach tool is executed
+	Then the execution has "AN" error
+
+	Scenario: Execute a foreach over an activity for invalid range negative
+	Given There is a recordset in the datalist with this shape
+	| rs               | value |
+	| [[rs(9).field]]  | 1     |
+	| [[rs(10).field]] | 3     |
+	And I have selected the foreach type as "InRange" from -1 to -10
+	And the underlying dropped activity is a(n) "Activity"
+	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
+	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
+	When the foreach tool is executed
+	Then the execution has "AN" error
+
 Scenario: Execute a foreach over an activity with Csv Indexes 1,2,3
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
@@ -290,8 +333,6 @@ Scenario: Execute a foreach over an activity with Csv Indexes 1,2,3
 	| 1     |
 	| 2     |
 	| 3     |
-	| 4     |
-	| 5     |
 	And the execution has "NO" error
 	And the debug inputs as
 	|         | Csv Indexes |
@@ -359,7 +400,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 1
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "NO" error
 	And the debug inputs as
 	|                 | Number |
@@ -377,14 +418,14 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	Then the execution has "NO" error
 	And The mapping uses the following indexes
 	| index |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |
-	| *     |			
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |
+	| 0     |			
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 8      |

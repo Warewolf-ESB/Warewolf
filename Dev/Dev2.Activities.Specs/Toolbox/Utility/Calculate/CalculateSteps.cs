@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,13 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -30,7 +30,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -75,7 +75,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -88,12 +88,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void GivenIHaveACalculateVariableEqualTo(string recordset, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            for(int i = 0; i < tableRows.Count; i++)
+            for (int i = 0; i < tableRows.Count; i++)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -111,14 +111,54 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(expectedResult))
+
+            if (expectedResult == "[Now]")
             {
-                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+
+                DateTime.Parse(actualValue).Subtract(DateTime.Now).TotalMilliseconds.Should().BeLessThan(1000, "we expect DateTime.Now but give a 1 second grace period for the formula to complete");
+                return;
+            }
+            if (expectedResult == "[Today]")
+            {
+
+                DateTime.Parse(actualValue).Day.Should().Be(DateTime.Now.Day, "we expect today's date");
+                return;
+            }
+            if (expectedResult == "[Int]")
+            {
+                int outval;
+                Assert.IsTrue(int.TryParse(actualValue, out outval));
+                return;
+            }
+            if (string.IsNullOrEmpty(expectedResult))
+            {
+                actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
             }
             else
             {
-                Assert.AreEqual(expectedResult, actualValue);
+                actualValue.Should().Be(expectedResult);
             }
         }
+
+        [Then(@"the calculate result should be null")]
+        public void ThenTheCalculateResultShouldBeNull()
+        {
+        }
+
+        [Given(@"I have the Example formula '(.*)'")]
+        public void GivenIHaveTheExampleFormula(string formula)
+        {
+            ScenarioContext.Current.Add("formula", formula);
+
+        }
+
+
+        [Then(@"the example output = '(.*)'")]
+        public void ThenTheExampleOutput(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
     }
 }

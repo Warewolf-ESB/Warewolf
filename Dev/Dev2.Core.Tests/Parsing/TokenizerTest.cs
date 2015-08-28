@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,8 +13,11 @@ using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Parsing.Intellisense;
+using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable ForCanBeConvertedToForeach
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -573,16 +576,16 @@ namespace Unlimited.UnitTest.Framework.Parsing
         #endregion
 
         #region TestGrammer
-        private sealed class TestGrammer : System.Parsing.SyntaxAnalysis.AbstractSyntaxTreeGrammer<Token, TokenKind, Node>
+        private sealed class TestGrammer : AbstractSyntaxTreeGrammer<Token, TokenKind, Node>
         {
-            private static readonly System.Parsing.SyntaxAnalysis.GrammerGroup _testGroup = new System.Parsing.SyntaxAnalysis.GrammerGroup("Test Grammer");
+            private static readonly GrammerGroup _testGroup = new GrammerGroup("Test Grammer");
 
-            private int _operation;
+            private readonly int _operation;
 
-            public System.Parsing.SyntaxAnalysis.ASTGrammerBehaviourRegistry CachedRegistry;
+            public ASTGrammerBehaviourRegistry CachedRegistry;
             public Tokenizer<Token, TokenKind> Tokenizer;
 
-            public override System.Parsing.SyntaxAnalysis.GrammerGroup GrammerGroup { get { return _testGroup; } }
+            public override GrammerGroup GrammerGroup { get { return _testGroup; } }
 
             public TestGrammer(int operation)
             {
@@ -602,12 +605,12 @@ namespace Unlimited.UnitTest.Framework.Parsing
                 }
             }
 
-            protected override Node BuildNode(System.Parsing.SyntaxAnalysis.AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
+            protected override Node BuildNode(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
             {
                 throw new NotImplementedException();
             }
 
-            protected override void OnRegisterTriggers(System.Parsing.SyntaxAnalysis.ASTGrammerBehaviourRegistry triggerRegistry)
+            protected override void OnRegisterTriggers(ASTGrammerBehaviourRegistry triggerRegistry)
             {
                 if(_operation == 1)
                 {

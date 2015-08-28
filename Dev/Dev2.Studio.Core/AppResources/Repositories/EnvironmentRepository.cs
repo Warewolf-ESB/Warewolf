@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
@@ -438,9 +439,10 @@ namespace Dev2.Studio.Core
                 defaultEnvironment.Connect();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
+            catch (Exception err)
             // ReSharper restore EmptyGeneralCatchClause
             {
+                Dev2Logger.Log.Info((err));
                 //Swallow exception for localhost connection
             }
             if (!defaultEnvironment.IsConnected)
@@ -517,7 +519,13 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if (servers != null)
                 {
-                    result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env));
+                    foreach(var connection in servers)
+                    {
+                        if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
+                        {
+                            result.Add(CreateEnvironmentModel(connection));
+                        }
+                    }
                 }
             }
 

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,6 +30,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -808,7 +809,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -846,7 +847,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -883,7 +884,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -966,7 +967,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1005,7 +1006,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1041,14 +1042,14 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object, studiorepo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object, studiorepo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -1080,7 +1081,7 @@ namespace Dev2.Core.Tests.Environments
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
@@ -1104,11 +1105,11 @@ namespace Dev2.Core.Tests.Environments
             // ReSharper disable AssignNullToNotNullAttribute
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
             // ReSharper restore AssignNullToNotNullAttribute
-            if(File.Exists(bakPath))
+            if (File.Exists(bakPath))
             {
                 File.Delete(bakPath);
             }
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Move(path, bakPath);
             }
@@ -1117,11 +1118,11 @@ namespace Dev2.Core.Tests.Environments
 
         static void RestoreFile(string path, string bakPath)
         {
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Delete(path);
             }
-            if(File.Exists(bakPath))
+            if (File.Exists(bakPath))
             {
                 File.Move(bakPath, path);
             }
@@ -1157,7 +1158,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1168,11 +1169,11 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
-                if(overrideExecuteCommand)
+                if (overrideExecuteCommand)
                 {
-                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                        .Returns(new StringBuilder(sources[0]));
                 }
 
@@ -1205,7 +1206,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1216,9 +1217,9 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
 
                 env.Setup(e => e.IsConnected).Returns(true);
@@ -1246,10 +1247,10 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
 
 
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
                 con.Setup(c => c.IsConnected).Returns(true);
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
 
                 env.Setup(e => e.IsConnected).Returns(true);
@@ -1286,7 +1287,7 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
-            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
+            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
             env.Setup(r => r.ResourceRepository).Returns(repo.Object);
 
             return env;
@@ -1310,16 +1311,16 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(new TestAsyncWorker());
             connection.SetupProperty(c => c.DisplayName);
-            if(sources != null && sources.Length > 0)
+            if (sources != null && sources.Length > 0)
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder(sources[0]));
             }
             else
             {
-                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder());
             }
 

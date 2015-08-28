@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -28,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-        List<string> _loadedAssemblies = new List<string>();
+        readonly List<string> _loadedAssemblies = new List<string>();
         string _assemblyLocation = "";
         /// <summary>
         /// Runs the specified setup information.
@@ -99,10 +100,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return result;
         }
 
+        // ReSharper disable once InconsistentNaming
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string[] tokens = args.Name.Split(",".ToCharArray());
-            System.Diagnostics.Debug.WriteLine("Resolving : " + args.Name);
+            Debug.WriteLine("Resolving : " + args.Name);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
             return Assembly.LoadFile(Path.Combine(new[] { directoryName, tokens[0] + ".dll" }));
         }

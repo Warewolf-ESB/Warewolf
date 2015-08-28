@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,14 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Xml.Linq;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
                 {
                     if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                     {
-                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2));
+                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2), 0);
                     }
                     row++;
                 }
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         public void ThenTheLengthResultShouldBe(string expectedResult)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]"));
+            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]",0));
             expectedResult = expectedResult.Replace('"', ' ').Trim();
            
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;

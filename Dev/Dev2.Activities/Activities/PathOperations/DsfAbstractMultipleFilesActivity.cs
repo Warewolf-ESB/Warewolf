@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,16 +11,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Activities.PathOperations
@@ -44,8 +47,7 @@ namespace Dev2.Activities.PathOperations
 
         protected IWarewolfListIterator ColItr;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject,
-                                                                 out ErrorResultTO allErrors)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
   
@@ -53,41 +55,41 @@ namespace Dev2.Activities.PathOperations
             ColItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables          
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath));
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath, update));
             ColItr.AddVariableToIterateOn(inputItr);
 
            
-            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
+            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
             ColItr.AddVariableToIterateOn(outputItr);
 
            
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
             ColItr.AddVariableToIterateOn(unameItr);
 
             
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
             
-            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername));
+            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername, update));
             ColItr.AddVariableToIterateOn(desunameItr);
 
             
-            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPassword));
+            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
 
-            AddItemsToIterator(dataObject.Environment);
+            AddItemsToIterator(dataObject.Environment, update);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment));
-                AddDebugInputItemUserNamePassword(dataObject.Environment);
-                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment));
-                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername);
+                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment, update));
+                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment, update));
+                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername, update);
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItems(dataObject.Environment);
+                AddDebugInputItems(dataObject.Environment, update);
             }
 
             while(ColItr.HasMoreData())
@@ -150,11 +152,11 @@ namespace Dev2.Activities.PathOperations
 
         }
 
-        protected virtual void AddItemsToIterator(IExecutionEnvironment environment)
+        protected virtual void AddItemsToIterator(IExecutionEnvironment environment, int update)
         {
         }
 
-        protected virtual void AddDebugInputItems(IExecutionEnvironment environment)
+        protected virtual void AddDebugInputItems(IExecutionEnvironment environment, int update)
         {
         }
 
@@ -162,6 +164,7 @@ namespace Dev2.Activities.PathOperations
         protected abstract void MoveRemainingIterators();
 
         public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
+        string _destPassword;
 
         #region Properties
 
@@ -195,7 +198,37 @@ namespace Dev2.Activities.PathOperations
         /// Gets or sets the destination file/folder password
         /// </summary>
         [Inputs("Destination Password"), FindMissing]
-        public string DestinationPassword { get; set; }
+        public string DestinationPassword {
+            get { return _destPassword; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _destPassword = DpapiWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _destPassword = value;
+                    }
+                }
+                else
+                {
+                    _destPassword = value;
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected string DecryptedDestinationPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
+            }
+        }
 
         #endregion Properties
 

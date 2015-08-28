@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,8 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.DataList.Contract.Binary_Objects;
-
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -25,8 +24,8 @@ namespace Dev2.DataList
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
             if (all)
-                return (a) => values.All(x => DataASTMutable.CompareAtoms(a, x) <= 0);
-            return (a) => values.Any(x => DataASTMutable.CompareAtoms(a, x) <= 0);
+                return a => values.All(x => DataASTMutable.CompareAtoms(a, x) <= 0);
+            return a => values.Any(x => DataASTMutable.CompareAtoms(a, x) <= 0);
         }
         public override string HandlesType()
         {

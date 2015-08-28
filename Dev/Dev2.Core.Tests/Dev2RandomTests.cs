@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,9 +24,9 @@ namespace Dev2.Tests
     [ExcludeFromCodeCoverage]
     public class Dev2RandomTests
     {
-        Dev2Random _dev2Random = new Dev2Random();
-        readonly Regex lettersRegex = new Regex(@"[a-z]*");
-        readonly Regex mixedRegex = new Regex(@"[a-z\d]*");
+        readonly Dev2Random _dev2Random = new Dev2Random();
+        readonly Regex _lettersRegex = new Regex(@"[a-z]*");
+        readonly Regex _mixedRegex = new Regex(@"[a-z\d]*");
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -67,6 +67,14 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
+        public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumberForZeroFrom()
+        {
+            int res;
+            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 5), out res);
+            Assert.IsTrue(res >= 0 && res <= 5, "Did not generate the right random number.");
+        }
+
+        [TestMethod]
         public void GenerateWithGuidExpectedValidGuid()
         {
             var result = _dev2Random.GetRandom(enRandomType.Guid, -1, -1, -1);
@@ -76,14 +84,64 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
+        public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumbersWithDecimalRange()
+        {
+            double res;
+            double.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0.01, 0.1), out res);
+            Assert.IsTrue(res >= 0.01 && res <= 0.1, "Did not generate the right random number.");
+        }
+
+        [TestMethod]
         public void GenerateWithLettersExpectedLettersGenerated()
         {
             var result = _dev2Random.GetRandom(enRandomType.Letters, 5000, -1, -1);
             Assert.AreEqual(result.Length, 5000, "Dev2Random generated letters to the incorrect length");
-            Assert.AreEqual(2, lettersRegex.Matches(result).Count, "_dev2Random generated letters outside the specified range");
+            Assert.AreEqual(2, _lettersRegex.Matches(result).Count, "_dev2Random generated letters outside the specified range");
             Assert.IsTrue(result.Contains('a'), "Dev2Random did not generate an 'a' in 5000 letters");
             Assert.IsTrue(result.Contains('z'), "Dev2Random did not generate a 'z' in 5000 letters");
         }
+
+        [TestMethod]
+        public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForPositiveCase()
+        {
+            const double MoreThanMaxInt = (double)int.MaxValue + 1;
+            const double LessThanMaxDouble = double.MaxValue - 1;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
+            Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= MoreThanMaxInt, "Dev2Random generated a number below the specified range");
+        }
+
+        [TestMethod]
+        public void GenerateWithNumbersExpectedNumbersGeneratedForRangeLargerThanIntegerForNegativeCase()
+        {
+            const double LessThanMinInt = (double)int.MinValue - 1;
+            const double LessThanMaxDouble = double.MaxValue - 1;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
+            Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= LessThanMinInt, "Dev2Random generated a number below the specified range");
+        }
+
+        [TestMethod]
+        public void GenerateWithNumbersExpectedNumbersMaximumDoubleRange()
+        {
+            const double MinDouble = double.MinValue;
+            const double MaxDouble = double.MaxValue;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
+            Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
+        }
+
+
+        [TestMethod]
+        public void GenerateWithNumbersExpectedNumbersMaximumDoubleRangeNoDecimals()
+        {
+            const double MinDouble = 0d;
+            const double MaxDouble = double.MaxValue;
+            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
+            Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
+            Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
+        }
+
 
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersGenerated()
@@ -98,7 +156,7 @@ namespace Dev2.Tests
         {
             var result = _dev2Random.GetRandom(enRandomType.LetterAndNumbers, 5000, 0, 26);
             Assert.AreEqual(5000, result.Length, "Dev2Random generated letters and numbers of an incorrect length");
-            Assert.AreEqual(2, mixedRegex.Matches(result).Count, "Dev2Random generated letters and numbers outside the specified range");
+            Assert.AreEqual(2, _mixedRegex.Matches(result).Count, "Dev2Random generated letters and numbers outside the specified range");
         }
 
         #endregion
@@ -130,7 +188,7 @@ namespace Dev2.Tests
             var results = new List<string>();
 
             //Get 10 random letters
-            for(var i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 results.Add(_dev2Random.GetRandom(enRandomType.Letters, 1, -1, -1));
             }
@@ -140,7 +198,7 @@ namespace Dev2.Tests
                                          .Select(item => new { Value = item.Key, Count = item.Count() });
 
             //Assert no item is duplicated more than twice
-            foreach(var elem in countDuplicates)
+            foreach (var elem in countDuplicates)
             {
                 Assert.IsTrue(elem.Count < 5, elem.Count + " duplicate letters where generated by Dev2Random class (out of 10)");
             }
@@ -153,7 +211,7 @@ namespace Dev2.Tests
             var results = new List<string>();
 
             //Get 10 random letters
-            for(var i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 results.Add(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 10));
             }
@@ -163,7 +221,7 @@ namespace Dev2.Tests
                                          .Select(item => new { Value = item.Key, Count = item.Count() });
 
             //Assert no item is duplicated more than twice
-            foreach(var elem in countDuplicates)
+            foreach (var elem in countDuplicates)
             {
                 Assert.IsTrue(elem.Count < 7, elem.Count + " duplicate numbers where generated by Dev2Random class (out of 10)");
             }
@@ -176,7 +234,7 @@ namespace Dev2.Tests
             var results = new List<string>();
 
             //Get 10 random letters
-            for(var i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 results.Add(_dev2Random.GetRandom(enRandomType.LetterAndNumbers, 1, -1, -1));
             }
@@ -186,7 +244,7 @@ namespace Dev2.Tests
                                          .Select(item => new { Value = item.Key, Count = item.Count() });
 
             //Assert no item is duplicated more than twice
-            foreach(var elem in countDuplicates)
+            foreach (var elem in countDuplicates)
             {
                 Assert.IsTrue(elem.Count <= 5, elem.Count + " duplicate letters and numbers where generated by Dev2Random class (out of 10)");
             }

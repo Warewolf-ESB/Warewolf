@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,9 @@
 using System;
 using System.Collections;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using Dev2.Common;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -32,7 +34,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 DirectoryEntry newGroup = ad.Children.Add(WarewolfGroup, "Group");
-                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
+                newGroup.Invoke("Put", "Description", WarewolfGroupDesc);
                 newGroup.CommitChanges();
             }
         }
@@ -113,7 +115,14 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 {
                     if(dChildEntry.Name == WarewolfGroup)
                     {
-                        dChildEntry.Invoke("Add", new object[] { currentUser });
+                        try
+                        {
+                            dChildEntry.Invoke("Add", currentUser);
+                        }
+                        catch(Exception)
+                        {
+                            Dev2Logger.Log.Error(string.Format("User {0} does not exist on the machine.", currentUser));
+                        }
                     }
                 }
             }
@@ -129,7 +138,21 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     if(dChildEntry.Name == WarewolfGroup)
                     {
                         const string Entry = "WinNT://./" + AdministratorsGroup;
-                        dChildEntry.Invoke("Add", new object[] { Entry });
+                        dChildEntry.Invoke("Add", Entry);
+                    }
+                }
+            }
+            var systemContext = new PrincipalContext(ContextType.Machine, null);
+            var warewolfGroupPrincipal = GroupPrincipal.FindByIdentity(systemContext, WarewolfGroup);
+            if (warewolfGroupPrincipal != null)
+            {
+                var adminGroupPrincipal = GroupPrincipal.FindByIdentity(systemContext, "Administrators");
+                if(adminGroupPrincipal != null)
+                {
+                    if (!warewolfGroupPrincipal.Members.Contains(systemContext, IdentityType.SamAccountName, adminGroupPrincipal.SamAccountName))
+                    {
+                        warewolfGroupPrincipal.Members.Add(adminGroupPrincipal);
+                        warewolfGroupPrincipal.Save();
                     }
                 }
             }

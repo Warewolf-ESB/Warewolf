@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,12 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Execution;
 using Dev2.Web;
 using Warewolf.Storage;
 
@@ -38,7 +38,6 @@ namespace Dev2.DynamicServices
         #region Class Members
 
         private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
-        private ErrorResultTO _errors;
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
         private readonly Stack<IExecutionEnvironment> _environments; 
@@ -63,7 +62,10 @@ namespace Dev2.DynamicServices
                 XElement xe = null;
                 try
                 {
-                    xe = XElement.Parse(xmldata);
+                    if (!string.IsNullOrEmpty(xmldata))
+                    {
+                        xe = XElement.Parse(xmldata);
+                    }
                 }
                     // ReSharper disable EmptyGeneralCatchClause
                 catch (Exception)
@@ -95,6 +97,7 @@ namespace Dev2.DynamicServices
                     if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
                     {
                         EnvironmentID = environmentId;
+                        DebugEnvironmentId = environmentId;
                     }
 
                     bool isOnDemandSimulation = false;
@@ -161,21 +164,22 @@ namespace Dev2.DynamicServices
                     RawPayload = new StringBuilder(xmldata);
                 }
             }
-            else
-            {
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (xmldata == null)
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                {
-                    xmldata = "NULL";
-                }
-
-                Errors.AddError("Failed to parse XML INPUT [ " + xmldata + " ]");
-            }
 
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {
                 RawPayload = new StringBuilder(rawPayload);
+                }
+        }
+
+        public Guid DebugEnvironmentId
+        {
+            get
+            {
+                return _debugEnvironmentId;
+            }
+            set
+            {
+                _debugEnvironmentId = value;
             }
         }
 
@@ -192,6 +196,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
+        Guid _debugEnvironmentId;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -232,6 +237,8 @@ namespace Dev2.DynamicServices
         }
 
         public IEsbChannel EsbChannel { get; set; }
+        public DateTime StartTime { get; set; }
+        public int ForEachUpdateValue { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 
@@ -251,11 +258,7 @@ namespace Dev2.DynamicServices
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
 
-        public ErrorResultTO Errors
-        {
-            get { return _errors ?? (_errors = new ErrorResultTO()); }
-            set { _errors = value; }
-        }
+
 
         public int NumberOfSteps { get; set; }
         public IPrincipal ExecutingUser { get; set; }
@@ -313,6 +316,7 @@ namespace Dev2.DynamicServices
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
+        public bool RemoteNonDebugInvoke { get; set; }
 
         #endregion Properties
 
@@ -339,7 +343,7 @@ namespace Dev2.DynamicServices
             result.DatalistInMergeID = DatalistInMergeID;
             result.DatalistInMergeType = DatalistInMergeType;
             result.EnvironmentID = EnvironmentID;
-            result.Errors = Errors;
+            result.DebugEnvironmentId = DebugEnvironmentId;
             result.ExecutionCallbackID = ExecutionCallbackID;
             result.ExecutionOrigin = ExecutionOrigin;
             result.ExecutionOriginDescription = ExecutionOriginDescription;
@@ -357,6 +361,7 @@ namespace Dev2.DynamicServices
             result.RawPayload = RawPayload;
             result.RemoteDebugItems = RemoteDebugItems;
             result.RemoteInvoke = RemoteInvoke;
+            result.RemoteNonDebugInvoke = RemoteNonDebugInvoke;
             result.IsRemoteInvokeOverridden = result.IsRemoteInvokeOverridden;
             result.RemoteInvokeResultShape = RemoteInvokeResultShape;
             result.RemoteInvokerID = RemoteInvokerID;
@@ -377,12 +382,13 @@ namespace Dev2.DynamicServices
             result.Environment = Environment;
             result.EsbChannel = EsbChannel;
             result.ExecutionToken = ExecutionToken;
+            result.ForEachUpdateValue = ForEachUpdateValue;
             return result;
         }
 
         public bool IsDebugMode()
         {
-            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
+            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke ) && !RunWorkflowAsync;
         }
 
         #endregion

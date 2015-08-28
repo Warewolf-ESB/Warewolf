@@ -1,14 +1,13 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.IO;
@@ -21,7 +20,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
 {
     public abstract class HttpPushContentStream
     {
-        public const int DefaultChunkSize = 65536;
+        public const int DefaultChunkSize = 65536;  // largest 16 bit unsigned value: 2^16 - 1
 
         readonly HttpResponseMessage _response;
         readonly MediaTypeHeaderValue _contentType;
@@ -48,12 +47,12 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
             try
             {
                 var buffer = new byte[_chunkSize];
-                using(var inputStream = OpenInputStream())
+                using (var inputStream = OpenInputStream())
                 {
                     var length = (int)inputStream.Length;
                     var bytesRead = 1;
 
-                    while(length > 0 && bytesRead > 0)
+                    while (length > 0 && bytesRead > 0)
                     {
                         bytesRead = inputStream.Read(buffer, 0, Math.Min(length, buffer.Length));
                         await outputStream.WriteAsync(buffer, 0, bytesRead);
@@ -61,7 +60,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                     }
                 }
             }
-            catch(HttpException)
+            catch (HttpException)
             {
             }
             finally

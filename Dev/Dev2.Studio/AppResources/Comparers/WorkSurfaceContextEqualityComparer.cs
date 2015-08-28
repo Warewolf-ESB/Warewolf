@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,10 +13,12 @@ using System;
 using System.Collections.Generic;
 using Dev2.Studio.ViewModels.WorkSurface;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.Comparers
 {
     public class WorkSurfaceContextEqualityComparer : IEqualityComparer<WorkSurfaceContextViewModel>
     {
+        // ReSharper disable once InconsistentNaming
         private static readonly Lazy<WorkSurfaceContextEqualityComparer> _current
             = new Lazy<WorkSurfaceContextEqualityComparer>(() => new WorkSurfaceContextEqualityComparer());
 
@@ -36,7 +38,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public int GetHashCode(WorkSurfaceContextViewModel obj)
         {
-            return base.GetHashCode();
+            return obj.WorkSurfaceKey.GetHashCode();
         }
     }
 }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
@@ -78,6 +79,21 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(startingData, result, "The data has changed when there was no encoding issues.");
         }
 
+        [TestMethod]
+        [Owner("eon Rajindrapersadh")]
+        [TestCategory("DataListUtil_AdjustForEncodingIssues")]
+        public void DataListUtil_AdjustForEncodingIssues_BOMRemoved()
+        {
+            //------------Setup for test--------------------------
+            const char c = ((char)65279);
+            string startingData = c + "<A></A>";
+            Assert.IsFalse(startingData.StartsWith("<",StringComparison.OrdinalIgnoreCase));
+            //------------Execute Test---------------------------
+            string result = DataListUtil.AdjustForEncodingIssues(startingData);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.StartsWith("<"));
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -135,209 +151,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
 
         
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_EnsureNameValueDoesNotFlipFlot_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""TableCountry"" MapsTo=""TableCountry"" Value=""[[string_NewDataSet().TableCountry]]"" Recordset=""string_NewDataSet"" /><Output Name=""TableCity"" MapsTo=""[[City]]"" Value=""[[City]]"" Recordset=""string_NewDataSet"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<string_NewDataSet>
-	<TableCountry></TableCountry>
-	<TableCity></TableCity>
-</string_NewDataSet>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputsContainsRecordsetsBothSides_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""CountryID"" MapsTo=""CountryID"" Value=""[[dbo_spGetCountries().CountryID]]"" Recordset=""dbo_spGetCountries"" /><Output Name=""Description"" MapsTo=""Description"" Value=""[[dbo_spGetCountries().Description]]"" Recordset=""dbo_spGetCountries"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<dbo_spGetCountries>
-	<CountryID></CountryID>
-	<Description></Description>
-</dbo_spGetCountries>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenInputContainsStaticData_ExpectValidXML1()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Inputs><Input Name=""r1"" Source=""[[InjectValue]]"" DefaultValue=""5""><Validator Type=""Required"" /></Input></Inputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Input, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<r1></r1>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenInputContainsStaticData_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Inputs><Input Name=""isUpper"" Source=""0""><Validator Type=""Required"" /></Input></Inputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Input, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<isUpper></isUpper>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputContainsRecordset_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""result"" MapsTo=""result"" Value=""[[result]]"" Recordset=""dbo_NullReturnsZZZ_NotNullReturnsAAA"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<dbo_NullReturnsZZZ_NotNullReturnsAAA>
-	<result></result>
-</dbo_NullReturnsZZZ_NotNullReturnsAAA>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenInputContainsScalar_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Inputs><Input Name=""Prefix"" Source=""[[foobar]]"" /></Inputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Input, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<Prefix></Prefix>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenInputContainsRecordsetWithStar_ExpectValidXML()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Inputs><Input Name=""Prefix"" Source=""[[prefix(*).val]]"" /></Inputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Input, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<Prefix></Prefix>
-<prefix>
-	<val></val>
-</prefix>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputContainsDifferentRecordset_ExpectTwoRecordsets()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors, isDbService:true);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<dbo_proc_GetAllMapLocations>
-	<MapLocationID></MapLocationID>
-	<Latitude></Latitude>
-	<Longitude></Longitude>
-</dbo_proc_GetAllMapLocations>
-<dbo_proc_GetAllMapLocations2>
-	<StreetAddress></StreetAddress>
-</dbo_proc_GetAllMapLocations2>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_ShapeDefsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputContainsOneRecordset_ExpectOneRecordset()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<dbo_proc_GetAllMapLocations>
-	<MapLocationID></MapLocationID>
-	<StreetAddress></StreetAddress>
-	<Latitude></Latitude>
-	<Longitude></Longitude>
-</dbo_proc_GetAllMapLocations>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
-
         [TestMethod]
         [Owner("Travis")]
         [Description("Ensure star is replaced with an index")]
@@ -769,42 +582,5 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsTrue(isOpeningBrace);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_ShapeDefinitionsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_ArgumentTypeIsNeitherInputOrOutput_Error()
-        {
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, false, true);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(invokeErrors);
-            var errors = invokeErrors.FetchErrors();
-            Assert.AreEqual(1, errors.Count);
-            Assert.AreEqual("could not locate any data of type [ DB_ForEach ]", errors[0]);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_ShapeDefinitionsToDataList")]
-        public void DataListUtil_ShapeDefinitionsToDataList_FlipGenerationIsTrue_DefinitionIsTreatedAsInput()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""TableCountry"" MapsTo=""TableCountry"" Value=""[[string_NewDataSet().TableCountry]]"" Recordset=""string_NewDataSet"" /><Output Name=""TableCity"" MapsTo=""[[City]]"" Value=""[[City]]"" Recordset=""string_NewDataSet"" /></Outputs>";
-
-            //------------Execute Test---------------------------
-            ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-
-            //------------Assert Results-------------------------
-            const string expected = @"<ADL>
-<string_NewDataSet>
-	<TableCountry></TableCountry>
-	<TableCity></TableCity>
-</string_NewDataSet>
-
-</ADL>";
-            Assert.AreEqual(expected, result.ToString());
-        }
     }
 }

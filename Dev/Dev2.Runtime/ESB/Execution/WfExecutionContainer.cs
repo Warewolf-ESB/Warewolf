@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Utilities;
 using Dev2.Workspaces;
 using Warewolf.Storage;
 
@@ -33,34 +32,28 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        readonly IWorkflowHelper _workflowHelper;
-
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
-        {
           
-        }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IWorkflowHelper workflowHelper)
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _workflowHelper = workflowHelper;
         }
 
         /// <summary>
         /// Executes the specified errors.
         /// </summary>
         /// <param name="errors">The errors.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public override Guid Execute(out ErrorResultTO errors)
+        public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
 
-
+            Dev2Logger.Log.Debug("Entered Wf Container");
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
@@ -108,12 +101,12 @@ namespace Dev2.Runtime.ESB.Execution
                 ErrorResultTO invokeErrors;
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, null, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true,false,false);
                 }
                 Eval(DataObject.ResourceID, DataObject);
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, false, true);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
                 result = DataObject.DataListID;
             }
@@ -132,19 +125,17 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2Logger.Log.Error(ex);
                 errors.AddError(ex.Message);
             }
-            finally
-            {
-                //ServiceAction.PushActivity(activity);
-            }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
+            Dev2Logger.Log.Debug("Getting Resource to Execute");
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            Dev2Logger.Log.Debug("Got Resource to Execute");
+            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
-            resource.Execute(dataObject);
         }
         
 
@@ -153,7 +144,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
         {
             if(errors == null)
             {
@@ -165,7 +156,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment, 0), itemToAdd); //todo:confirm
                 results.Add(itemToAdd);
             }
 
@@ -188,11 +179,24 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
-        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject)
+        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject,int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            resource.Execute(dsfDataObject);
+            EvalInner(dsfDataObject, resource, update);
+        }
+
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)
+        {
+            if(resource == null)
+            {
+                return;
+            }
+            var next = resource.Execute(dsfDataObject, update);
+            while(next != null)
+            {
+                next = next.Execute(dsfDataObject, update);
+            }
         }
     }
 }

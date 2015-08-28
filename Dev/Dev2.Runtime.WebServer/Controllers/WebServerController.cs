@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,8 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
@@ -158,10 +159,29 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Services/{*__name__}")]
         public HttpResponseMessage ExecuteWorkflow(string __name__)
         {
+
+            if(__name__.EndsWith("apis.json"))
+            {
+                var path = __name__.Split(new []{"/apis.json"},StringSplitOptions.RemoveEmptyEntries);
+                if(path.Any())
+                {
+                    if (path[0].Equals("services", StringComparison.OrdinalIgnoreCase) || path[0].Equals("public", StringComparison.OrdinalIgnoreCase) || path[0].Equals("secure", StringComparison.OrdinalIgnoreCase))
+                    {
+                        path[0] = null;
+                    }
+                    
+                }
+                var requestVar = new NameValueCollection
+                {
+                    { "path", path[0] }
+                };
+                return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
+            }
             var requestVariables = new NameValueCollection
             {
                 { "servicename", __name__ }
             };
+            
 
             return Request.Method == HttpMethod.Post
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
@@ -193,5 +213,15 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             return ProcessRequest<GetLogFileServiceHandler>();
         }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("apis.json")]
+        public HttpResponseMessage ExecuteGetRootLevelApisJson()
+        {
+            var requestVariables = new NameValueCollection();
+            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
+        } 
+
     }
 }

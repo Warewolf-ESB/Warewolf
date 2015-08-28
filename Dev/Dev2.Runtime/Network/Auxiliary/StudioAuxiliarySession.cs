@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,12 +10,13 @@
 */
 
 using System;
+using System.Network;
 
 namespace Dev2.Runtime.Network.Auxiliary
 {
     public class StudioAuxiliarySession : NetworkContext
     {
-        protected override void OnAttached(System.Network.InboundAuthenticationBroker broker, System.Network.NetworkAccount account)
+        protected override void OnAttached(InboundAuthenticationBroker broker, NetworkAccount account)
         {
         }
 

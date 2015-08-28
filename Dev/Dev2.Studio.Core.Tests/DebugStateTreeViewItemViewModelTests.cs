@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -87,7 +87,30 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             Assert.AreEqual(ServerName, content.Server);
         }
+        [TestMethod]
+        [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
+        [Owner("Leon Rajindrapersadh")]
+        public void DebugStateTreeViewItemViewModel_Constructor_EnvironmentRepository_SetsDebugStateServer_IfNameSet()
+        {
+            var environmentID = Guid.NewGuid();
+            const string ServerName = "Myserver";
 
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.Name).Returns(ServerName);
+
+            var env2 = new Mock<IEnvironmentModel>();
+            env2.Setup(e => e.ID).Returns(Guid.NewGuid());
+
+            var envRep = new Mock<IEnvironmentRepository>();
+            envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
+
+            var content = new DebugState { EnvironmentID = environmentID ,Server = "BobsServer"};
+            // ReSharper disable ObjectCreationAsStatement
+            new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            // ReSharper restore ObjectCreationAsStatement
+            Assert.AreEqual("BobsServer", content.Server);
+        }
         // BUG 8373: TWR
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]

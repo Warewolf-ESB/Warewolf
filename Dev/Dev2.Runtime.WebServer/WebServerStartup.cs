@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,10 +11,9 @@
 
 using System;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Http;
+using Dev2.Common;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
@@ -42,7 +41,10 @@ namespace Dev2.Runtime.WebServer
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
 
             GlobalHost.Configuration.DefaultMessageBufferSize = 2000;
+            GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = null;
+            
             var startOptions = new StartOptions();
+            
             foreach(var endpoint in endpoints)
             {
                 startOptions.Urls.Add(endpoint.Url);
@@ -69,6 +71,7 @@ namespace Dev2.Runtime.WebServer
 
             // Add web server routing...
             var config = new HttpConfiguration();
+            
             config.MapHttpAttributeRoutes();
             config.EnsureInitialized();
             app.UseWebApi(config);
@@ -76,47 +79,14 @@ namespace Dev2.Runtime.WebServer
 
         AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
         {
-            if (httpRequest.RawUrl.StartsWith("/public/"))
+            EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
+            EnvironmentVariables.Port = httpRequest.Url.Port;
+            if (httpRequest.RawUrl.StartsWith("/public/",StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }
             //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
             return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
-    }
-
-
-    public class AuthenticationMiddleware : OwinMiddleware
-    {
-        public AuthenticationMiddleware(OwinMiddleware next) :
-            base(next)
-        {           
-        }
-
-        #region Overrides of OwinMiddleware
-
-        /// <summary>
-        /// Process an individual request.
-        /// </summary>
-        /// <param name="context"/>
-        /// <returns/>
-        public override Task Invoke(IOwinContext context)
-        {
-            if (context.Request.User != null)
-            {
-                return Next.Invoke(context);
-            }
-            context.Response.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
-//            context.Response.OnSendingHeaders(state =>
-//            {
-//                var resp = (OwinResponse)state;
-//
-//                if (resp.StatusCode == 401)
-//                    resp.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
-//            }, context.Request);
-            return Task.FromResult(0);
-        }
-
-        #endregion
     }
 }

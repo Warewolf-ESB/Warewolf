@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,16 +18,16 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Warewolf.Storage;
-using DataListUtil = Dev2.Data.Util.DataListUtil;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
     {
-        private static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();
         private static Dev2DataListDecisionHandler _inst;
         private static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
         public static Dev2DataListDecisionHandler Instance
@@ -59,7 +59,7 @@ namespace Dev2.Data.Decision
        
             Guid dlId = FetchDataListID(oldAmbientData);
             var env = _environments[dlId];
-            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName));
+            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName, 0));
         
             return output;
 
@@ -71,15 +71,16 @@ namespace Dev2.Data.Decision
         /// </summary>
         /// <param name="decisionDataPayload">The decision data payload.</param>
         /// <param name="oldAmbientData">The old ambient data.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
-        public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
+        public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData,int update)
         {
 
             Guid dlId = FetchDataListID(oldAmbientData);
 //            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
-            var dds = EvaluateRegion(newDecisionData, dlId);
+            var dds = EvaluateRegion(newDecisionData, dlId, update);
 
 
               var env =  _environments[dlId];
@@ -166,8 +167,9 @@ namespace Dev2.Data.Decision
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="dlId">The dl ID.</param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId)
+        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId,int update)
         {
 
             var env =  _environments[dlId];
@@ -175,7 +177,7 @@ namespace Dev2.Data.Decision
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle record-sets with stars in their index by resolving them
-                var dds = Compiler.ConvertFromJsonToModel<Dev2DecisionStack>(new StringBuilder(payload));
+                var dds = DataListUtil.ConvertFromJsonToModel<Dev2DecisionStack>(new StringBuilder(payload));
 
                 if(dds.TheStack != null)
                 {
@@ -193,7 +195,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col1);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col1, update);
                             dd.Col1 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
@@ -207,7 +209,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col2);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col2, update);
                             dd.Col2 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
@@ -221,7 +223,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col3);
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col3, update);
                             dd.Col3 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
                     }
@@ -229,7 +231,7 @@ namespace Dev2.Data.Decision
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
                         ErrorResultTO errors;
-                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors);
+                        dds = ResolveAllRecords(env, dds, decision, effectedCols, out errors, update);
                     }
                 }
 
@@ -238,12 +240,12 @@ namespace Dev2.Data.Decision
             return null;
         }
 
-        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col)
+        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col,int update)
         {
             var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             try
             {
-                warewolfEvalResult = env.Eval(col);
+                warewolfEvalResult = env.Eval(col, update);
             }
             catch(NullValueInVariableException)
             {
@@ -279,7 +281,7 @@ namespace Dev2.Data.Decision
             return string.Empty;
         }
 
-        Dev2DecisionStack ResolveAllRecords(IExecutionEnvironment env, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors)
+        Dev2DecisionStack ResolveAllRecords(IExecutionEnvironment env, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors,int update)
         {
             if(effectedCols == null)
             {
@@ -290,7 +292,7 @@ namespace Dev2.Data.Decision
             errors = new ErrorResultTO();
             if(effectedCols[0])
             {
-                var data = env.EvalAsListOfStrings(decision.Col1);
+                var data = env.EvalAsListOfStrings(decision.Col1, update);
                
                 int reStackIndex = stackIndex;
 
@@ -304,7 +306,7 @@ namespace Dev2.Data.Decision
             }
             if(effectedCols[1])
             {
-                var data = env.EvalAsListOfStrings(decision.Col2);
+                var data = env.EvalAsListOfStrings(decision.Col2, update);
                 int reStackIndex = stackIndex;
 
                  foreach(var item in data)
@@ -330,7 +332,7 @@ namespace Dev2.Data.Decision
             }
             if(effectedCols[2])
             {
-                var data = env.EvalAsListOfStrings(decision.Col3);
+                var data = env.EvalAsListOfStrings(decision.Col3, update);
                 int reStackIndex = stackIndex;
 
                 foreach (var item in data)

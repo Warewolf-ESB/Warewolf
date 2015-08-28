@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.PathOperations
     public class Dev2ActivityIOPath : IActivityIOPath
     {
 
-        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass,bool isNotCertVerifiable)
+        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass, bool isNotCertVerifiable)
         {
             PathType = type;
             Path = path;
@@ -76,6 +76,7 @@ namespace Dev2.PathOperations
             set;
         }
 
+       
         public bool IsNotCertVerifiable
         {
             get;

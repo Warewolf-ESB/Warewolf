@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,13 +35,18 @@ namespace Dev2.Activities.Designers2.Core
         {
             base.OnLoaded();
             InitializeContextMenu();
-            _dataContext.ModelItemCollection.CollectionChanged += ModelItemCollectionCollectionChanged;
+            if(_dataContext.ModelItemCollection != null)
+            {
+                _dataContext.ModelItemCollection.CollectionChanged += ModelItemCollectionCollectionChanged;
+            }
         }
         protected override void OnUnloaded()
         {
             base.OnUnloaded();
-            _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
-
+            if(_dataContext.ModelItemCollection != null)
+            {
+                _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+            }
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
@@ -117,7 +122,10 @@ namespace Dev2.Activities.Designers2.Core
            CEventHelper.RemoveAllEventHandlers(TheGrid);
            CEventHelper.RemoveAllEventHandlers(this);
            CEventHelper.RemoveAllEventHandlers(ModelItem);
-            _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+            if(_dataContext.ModelItemCollection != null)
+            {
+                _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+            }
         }
       
     }

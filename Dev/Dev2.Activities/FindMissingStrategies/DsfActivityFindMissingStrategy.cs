@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -50,31 +50,17 @@ namespace Dev2.FindMissingStrategies
                 if (!string.IsNullOrEmpty(act.InputMapping))
                 {
                     XElement inputMappingElement = XElement.Parse(act.InputMapping);
-                    string inputElement = "Input";
-                    IEnumerable<XElement> inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(inputElement, StringComparison.InvariantCultureIgnoreCase));
-                    foreach (XElement element in inputs)
-                    {
-                        string val = element.Attribute("Source").Value;
-                        if (!string.IsNullOrEmpty(val))
-                        {
-                            results.Add(val);
-                        }                        
-                    }
+                    const string InputElement = "Input";
+                    IEnumerable<XElement> inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
+                    results.AddRange(inputs.Select(element => element.Attribute("Source").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
                 if (!string.IsNullOrEmpty(act.OutputMapping))
                 {
                     XElement outputMappingElement = XElement.Parse(act.OutputMapping);
-                    string outputElement = "Output";
-                    IEnumerable<XElement> inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(outputElement, StringComparison.InvariantCultureIgnoreCase));
-                    foreach (XElement element in inputs)
-                    {
-                        string val = element.Attribute("Value").Value;
-                        if (!string.IsNullOrEmpty(val))
-                        {
-                            results.Add(val);
-                        }                        
-                    }
+                    const string OutputElement = "Output";
+                    IEnumerable<XElement> inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
+                    results.AddRange(inputs.Select(element => element.Attribute("Value").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
                 if(!string.IsNullOrEmpty(act.OnErrorVariable))

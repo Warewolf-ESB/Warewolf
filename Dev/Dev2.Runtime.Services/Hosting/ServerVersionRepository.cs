@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -139,7 +139,7 @@ namespace Dev2.Runtime.Hosting
         IVersionInfo CreateVersionInfoFromFilePath(string path, Guid resourceId)
         {
             var name = new FileInfo(path).Name;
-            var parts = name.Split(new[] { '_' });
+            var parts = name.Split('_');
             if(parts.Length != 4)
                 throw new Exception("Invalid Version found");
             return new VersionInfo(new DateTime(long.Parse(parts[2])), parts[3], "", parts[1], resourceId, Guid.Parse(parts[0]));
@@ -148,7 +148,7 @@ namespace Dev2.Runtime.Hosting
         string CreateNameFromPath(string path)
         {
             var name = new FileInfo(path).Name;
-            var parts = name.Split(new[] { '_' });
+            var parts = name.Split('_');
             if(parts.Length != 4)
                 throw new Exception("Invalid Version found");
             return String.Format("v.{0}  {1}  {2}", parts[1], new DateTime(long.Parse(parts[2])), parts[3].Replace(".xml", ""));

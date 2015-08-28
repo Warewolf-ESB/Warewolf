@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -22,14 +23,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Workflow()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
+            ResourceType = ResourceType.WorkflowService;
             DataList = new XElement("DataList");
         }
 
         public Workflow(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
+            ResourceType = ResourceType.WorkflowService;
             DataList = xml.Element("DataList") ?? new XElement("DataList");
             Comment = xml.ElementSafe("Comment");
             IconPath = xml.ElementSafe("IconPath");

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Dev2.Common.Interfaces.Data;
@@ -76,6 +77,8 @@ namespace Dev2.AppResources.Converters
                 case ResourceType.OauthSource :
                      uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/dropbox-windows.png");
                     return new BitmapImage(uri);
+                case ResourceType.SharepointServerSource:
+                    return Application.Current.Resources["AddSharepointLogo"];
                 default:
                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png");
                     return new BitmapImage(uri);

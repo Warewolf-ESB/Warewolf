@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,14 +22,12 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
@@ -40,18 +38,25 @@ using Warewolf.Storage;
 // ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity
+    // ReSharper disable once RedundantExtendsListEntry
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
     {
         protected ErrorResultTO errorsTo;
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         [GeneralSettings("IsSimulationEnabled")]
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public bool IsSimulationEnabled { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         // ReSharper disable RedundantAssignment
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        // ReSharper disable MemberCanBeProtected.Global
         public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        // ReSharper restore MemberCanBeProtected.Global
         // ReSharper restore RedundantAssignment
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        // ReSharper disable UnusedMember.Global
         public IDataListCompiler Compiler { get; set; }
+        // ReSharper restore UnusedMember.Global
         // END TODO: Remove legacy properties 
 
         public InOutArgument<List<string>> AmbientDataList { get; set; }
@@ -63,7 +68,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsWorkflow { get; set; }
         public string ParentServiceName { get; set; }
+        // ReSharper disable UnusedMember.Global
         public string ParentServiceID { get; set; }
+        // ReSharper restore UnusedMember.Global
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
@@ -81,16 +88,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsEndedOnError { get; set; }
 
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
-        protected List<DebugItem> _debugInputs = new List<DebugItem>();
-        protected List<DebugItem> _debugOutputs = new List<DebugItem>();
+        protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
+        protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
-
-        internal readonly IDebugDispatcher _debugDispatcher;
+        readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
         string _previousParentInstanceID;
         IDebugState _debugState;
         bool _isOnDemandSimulation;
-
+        IResourceCatalog _resourceCatalog;
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
 
@@ -115,10 +121,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected DsfNativeActivity(bool isExecuteAsync, string displayName)
             : this(isExecuteAsync, displayName, DebugDispatcher.Instance)
         {
+           
         }
 
         protected DsfNativeActivity(bool isExecuteAsync, string displayName, IDebugDispatcher debugDispatcher)
         {
+            _resourceCatalog = ResourceCatalog.Instance;
             if(debugDispatcher == null)
             {
                 throw new ArgumentNullException("debugDispatcher");
@@ -159,14 +167,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
 
             // we need to register this child thread with the DataListRegistar so we can scope correctly ;)
-            DataListRegistar.RegisterActivityThreadToParentId(dataObject.ParentThreadID, Thread.CurrentThread.ManagedThreadId);
 
-            if(compiler != null)
-            {
+
                 string errorString = dataObject.Environment.FetchErrors();
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
@@ -174,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
-            }
+            
 
             _previousParentInstanceID = dataObject.ParentInstanceID;
             _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
@@ -199,10 +204,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 Dev2Logger.Log.Error("OnExecute", ex);
-                var errorString = ex.Message;
+                errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
-                if(compiler != null)
+                if(dataObject.Environment != null)
                 {
                     dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
                 }
@@ -213,16 +218,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var resumable = dataObject.WorkflowResumeable;
                     OnExecutedCompleted(context, false, resumable);
-                    if(compiler != null)
+                    if(dataObject.Environment != null)
                     {
-                        DoErrorHandling(dataObject);
+                        DoErrorHandling(dataObject, 0); // old wf code
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(IDSFDataObject dataObject)
+        protected void DoErrorHandling(IDSFDataObject dataObject,int update)
         {
             string errorString = dataObject.Environment.FetchErrors();
             _tmpErrors.AddError(errorString);
@@ -232,25 +237,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(dataObject, errorString);
+                        PerformCustomErrorHandling(dataObject, errorString, update);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError)
+        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError,int update)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
+                    dataObject.Environment.Assign(OnErrorVariable,currentError, update);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
-                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors, update);
                     if(tmpErrors != null)
                     {
                         dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
@@ -296,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Server = string.Empty,
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.EnvironmentID,
+                    EnvironmentID = dataObject.DebugEnvironmentId,
                     Name = GetType().Name,
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
@@ -331,7 +336,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// When overridden runs the activity's simulation logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
+        // ReSharper disable VirtualMemberNeverOverriden.Global
         protected virtual void OnExecuteSimulation(NativeActivityContext context)
+            // ReSharper restore VirtualMemberNeverOverriden.Global
         {
             var rootInfo = context.GetExtension<WorkflowInstanceInfo>();
 
@@ -344,21 +351,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = SimulationRepository.Instance.Get(key);
             if(result != null && result.Value != null)
             {
-                var dataListExecutionID = context.GetValue(DataListExecutionID);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 var dataObject = context.GetExtension<IDSFDataObject>();
 
-                if(compiler != null && dataObject != null)
+                if(dataObject != null)
                 {
                     var allErrors = new ErrorResultTO();
-                    var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
-                    compiler.Merge(dataList, result.Value, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
-                    compiler.Shape(dataListExecutionID, enDev2ArgumentType.Output, OutputMapping, out errorsTo);
                     allErrors.MergeErrors(errorsTo);
 
                     if(allErrors.HasErrors())
@@ -376,15 +378,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
-            var dataListExecutionID = DataListExecutionID.Get(context);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var dataObject = context.GetExtension<IDSFDataObject>();
 
             if(dataObject.ForceDeleteAtNextNativeActivityCleanup)
             {
                 // Used for web-pages to signal a force delete after checks of what would become a zombie datalist ;)
                 dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                compiler.ForceDeleteDataListByID(dataListExecutionID);
             }
 
             if(!dataObject.IsDebugNested)
@@ -426,27 +425,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region GetDataList
-
-        protected static IBinaryDataList GetDataList(NativeActivityContext context)
-        {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            return compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-        }
-
-        #endregion
-
         #region GetDebugInputs/Outputs
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return DebugItem.EmptyList;
         }
@@ -454,8 +440,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? dt=null)
         {
+            bool clearErrors = false;
+            try
+            {
             
             
             Guid remoteID;
@@ -465,7 +454,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, false, "");
+                    InitializeDebugState(stateType, dataObject, remoteID, false, "",dt);
+                }
+                else
+                {
+                    Dev2Logger.Log.Info("Debug Already Started");
                 }
 
                 if (_debugState != null)
@@ -483,7 +476,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataObject.Environment), _debugState.Inputs);
+                        Copy(GetDebugInputs(dataObject.Environment, update), _debugState.Inputs);
                     }
                     catch (Exception err)
                     {
@@ -507,27 +500,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.Inputs.Add(debugItem);
                     }
                 }
+                       
             }
             else
             {
-                bool hasError = dataObject.Environment.HasErrors();
-
+                bool hasError = dataObject.Environment.Errors.Any();
+                clearErrors = hasError;
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors);
+                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors.Distinct());
                 }
 
                 if(_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage);
+                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage,dt);
+                }
+                else
+                {
+                    Dev2Logger.Log.Debug("Debug already initialised");
                 }
 
                 if(_debugState != null)
                 {
                     _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
                     _debugState.StateType = stateType;
-                    _debugState.EndTime = DateTime.Now;
+                    _debugState.EndTime = dt?? DateTime.Now;
                     _debugState.HasError = hasError;
                     _debugState.ErrorMessage = errorMessage;
                     try
@@ -542,7 +540,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataObject.Environment), _debugState.Outputs);
+                            Copy(GetDebugOutputs(dataObject.Environment, update), _debugState.Outputs);
                         }
                     }
                     catch(Exception e)
@@ -554,9 +552,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugState.HasError = true;
                     }
                 }
+         
             }
 
-            if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
+            if (_debugState != null && (_debugState.StateType != StateType.Duration) && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
@@ -596,10 +595,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
-                if(stateType == StateType.After)
+                if(stateType == StateType.After )
                 {
                     // Free up debug state
                     _debugState = null;
+                }
+            }
+         
+
+            }
+            finally
+            {
+                if (clearErrors)
+                {
+                    foreach (var error in dataObject.Environment.Errors)
+                    {
+                        dataObject.Environment.AllErrors.Add(error);
+
+                    }
+                    dataObject.Environment.Errors.Clear();
                 }
             }
         }
@@ -621,14 +635,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
+        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before)
+        {
+            if(_debugState!= null)
+            {
+                Guid remoteID;
+                Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+                var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
+                _debugState.Server = name;
+            }
+            DispatchDebugState(dataObject,before,0);
+        }
+
+        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-            UpdateDebugParentID(dataObject);
+            if (stateType != StateType.Duration)
+            {
+                UpdateDebugParentID(dataObject);
+            }
             if(remoteID != Guid.Empty)
             {
                 UniqueID = Guid.NewGuid().ToString();
+            }
+
+            string name;
+            if(remoteID != Guid.Empty)
+            {
+                var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                if(resource != null)
+                {
+                    name = resource.ResourceName;
+                }
+                else
+                {
+                    name = remoteID.ToString();
+                }
+            }
+            else
+            {
+                name = "localhost";
             }
             _debugState = new DebugState
             {
@@ -637,25 +685,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now,
+                StartTime = dt ?? DateTime.Now,
+                EndTime = dt ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = ShouldExecuteSimulation,
                 ServerID = dataObject.ServerID,
                 OriginatingResourceID = dataObject.ResourceID,
                 OriginalInstanceID = dataObject.OriginalInstanceID,
-                Server = remoteID.ToString(),
+                Server = name,
                 Version = string.Empty,
                 Name = GetType().Name,
                 HasError = hasError,
                 ErrorMessage = errorMessage,
-                EnvironmentID = dataObject.EnvironmentID,
+                EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
             };
         }
 
-
+        public  void SetResourceCatalog(IResourceCatalog catalogue)
+        {
+            _resourceCatalog = catalogue;
+        }
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
@@ -726,36 +777,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public virtual IDev2Activity Execute(IDSFDataObject data)
+        public virtual IDev2Activity Execute(IDSFDataObject data,int update)
         {
             try
             {
                 var className = GetType().Name;
                 Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
-
-                ExecuteTool(data);
+                _debugInputs = new List<DebugItem>();
+                _debugOutputs = new List<DebugItem>();
+                ExecuteTool(data, update);
             }
             catch (Exception ex)
             {
-
+                data.Environment.AddError(ex.Message);
                 Dev2Logger.Log.Error("OnExecute", ex);
-                var errorString = ex.Message;
-                var errorResultTO = new ErrorResultTO();
-                errorResultTO.AddError(errorString);                
+            
             }
             finally
             {
                 if (!_isExecuteAsync || _isOnDemandSimulation)
                 {
-                    DoErrorHandling(data);
+                    DoErrorHandling(data, update);
                 }
+
+
 
             }
 
             
-            if(NextNodes != null && NextNodes.Count()>0)
+            if(NextNodes != null && NextNodes.Any())
             {
-                    NextNodes.First().Execute(data);
+              
                     return NextNodes.First();
              }
             return null;
@@ -763,7 +815,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        protected abstract void ExecuteTool(IDSFDataObject dataObject);
+        protected abstract void ExecuteTool(IDSFDataObject dataObject,int update);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
@@ -824,7 +876,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return new List<IActionableErrorInfo>();
         }
 
-        #region Overrides of Object
+        #region Equality members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(DsfNativeActivity<T> other)
+        {
+            if(ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(UniqueID, other.UniqueID);
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -835,15 +907,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            var act = obj as IDev2Activity;
-            if (act == null)
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-            return act.UniqueID == UniqueID;
+            if(ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if(obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((DsfNativeActivity<T>)obj);
         }
-
-        #region Overrides of Object
 
         /// <summary>
         /// Serves as a hash function for a particular type. 
@@ -853,10 +930,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return (UniqueID != null ? UniqueID.GetHashCode() : 0);
         }
 
-        #endregion
+        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
+        {
+            return !Equals(left, right);
+        }
 
         #endregion
     }

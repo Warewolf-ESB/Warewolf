@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Security.Principal;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +27,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         {
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
-            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var currentUser = WindowsIdentity.GetCurrent(false);
 
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 
@@ -36,8 +37,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
             Assert.IsTrue(isGroupCreated);
-            var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
-            Assert.IsTrue(result);
             var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
             Assert.IsTrue(isAdminAMember);
         }
@@ -51,7 +50,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
-            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var currentUser = WindowsIdentity.GetCurrent(false);
 
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 
@@ -61,8 +60,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
             Assert.IsTrue(isGroupCreated);
-            var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
-            Assert.IsTrue(result);
             var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
             Assert.IsTrue(isAdminAMember);
         }

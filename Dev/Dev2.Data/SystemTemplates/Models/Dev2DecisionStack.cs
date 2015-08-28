@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -151,7 +151,6 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveDummyOptionsFromModel(StringBuilder val)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
 
@@ -159,7 +158,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             try
             {
-                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(tmp);
+                Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp.ToString());
 
                 if(dds.TheStack != null)
                 {
@@ -168,7 +167,7 @@ namespace Dev2.Data.SystemTemplates.Models
                     dds.TheStack = toKeep;
                 }
 
-                tmp = compiler.ConvertModelToJson(dds);
+                tmp = new StringBuilder(JsonConvert.SerializeObject(dds));
             }
             catch(Exception ex)
             {

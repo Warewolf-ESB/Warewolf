@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Decision;
-using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -284,7 +281,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before, 0);
                 }
 
                 
@@ -328,7 +325,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
                             
                             // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, 0); // careful of zero if wf comes back
                             
                             allErrors.MergeErrors(tmpErrors);
 
@@ -359,13 +356,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), 0);
                         }
                     }
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After, 0);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;
@@ -419,16 +416,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(DataObject != null)
             {
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
             }
         }
 
-        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
+        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
-            Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update);
+
             return Guid.NewGuid();
         }
 
@@ -447,7 +442,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DsfActivity;
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -490,7 +485,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before);
+
                 }
 
                 Guid resourceId = dataObject.ResourceID;
@@ -522,8 +518,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception("FATAL ERROR : Null ESB channel!!");
                     }
-                    else
-                    {
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913
          
@@ -533,7 +527,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
                             // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                    ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
 
                             allErrors.MergeErrors(tmpErrors);
 
@@ -542,7 +536,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceName = ServiceName;
                     }
                 }
-            }
                 catch(Exception err)
                 {
                     dataObject.Environment.Errors.Add(err.Message);
@@ -562,14 +555,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
                         }
                     }
                 }
 
                 if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(dataObject, StateType.After);
+                    var dt = DateTime.Now;
+                    DispatchDebugState(dataObject, StateType.After,  update,dt);
+                    _debugOutputs = new List<DebugItem>();
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration,  update,dt);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;
@@ -584,6 +581,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+
+
         #endregion
 
         #region Private Methods
@@ -592,76 +591,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden ActivityAbstact Methods
 
-        public override IBinaryDataList GetInputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
-            var inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
-        public override IBinaryDataList GetOutputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-            var outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-            return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
+            return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser)
+        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser, int update)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
@@ -672,7 +611,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     continue;
                 }
-                var tmpEntry = env.Eval( dev2Definition.RawValue);
+                var tmpEntry = env.Eval( dev2Definition.RawValue, update);
 
                 DebugItem itemToAdd = new DebugItem();
                 if (tmpEntry.IsWarewolfAtomResult)
@@ -723,15 +662,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overrides of DsfNativeActivity<bool>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
-            GetDebugOutputsFromEnv(env);
+            GetDebugOutputsFromEnv(env, update);
             return _debugOutputs;
         }
 
         #endregion
 
-        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
+        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment, int update)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
@@ -741,7 +680,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
                     results.Add(itemToAdd);
                 }
                 catch (Exception e)

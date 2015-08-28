@@ -262,7 +262,7 @@ Scenario: Merge a negative recordset index Input
 	When the data merge tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # |      | With  | Using | Pad | Align |
+	| # |                | With  | Using | Pad | Align |
 	| 1 | [[my(-1).a]] = | Index | 10    | " " | Left  |  
 	And the debug output as 
 	|              |
@@ -324,9 +324,9 @@ Scenario: Merge a variable inside a variable
 	Then the merged result is "Warewolftest"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| # |                              | With  | Using | Pad | Align |
+	| # |                          | With  | Using | Pad | Align |
 	| 1 | [[[[[[b]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
-	| 2 | [[c]]             = test     | Index | "4"   | ""  | Left  |
+	| 2 | [[c]]             = test | Index | "4"   | ""  | Left  |
 	And the debug output as 
 	|                           |
 	| [[result]] = Warewolftest |
@@ -339,12 +339,66 @@ Scenario: Merge a variable inside the invalid varaible
 	Then the merged result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # |             | With  | Using | Pad | Align |
+	| # |              | With  | Using | Pad | Align |
 	| 1 | [[test%$]] = | Index | ""    | ""  | Left  |
 	And the debug output as 
 	|              |
 	| [[result]] = |
 
-
+#----------------->
+#Scenario: Merge a scalar to a scalar using merge type none 2
+#	Given a merge variable "[[a]]" equal to "Warewolf " 
+#	And a merge variable "[[b]]" equal to "Rocks"		
+#	And a merge variable "[[c]]" equal to "10"		
+#	And an Input "[[a]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"	
+#	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"
+#	When the data merge tool is executed
+#	Then the merged result is "Warewolf  Rocks"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| # |                  | With | Using | Pad       | Align |
+#	| 1 | [[a]] = Warewolf | None | ""    | [[c]]= 10 | Left  |
+#	| 2 | [[b]] = Rocks    | None | ""    | [[c]]= 10 | Left  |
+#	
+#	And the debug output as 
+#	|                              |
+#	| [[result]] = Warewolf Rocks  |
+#
+#Scenario Outline: Merge a variable that does not exist
+#	Given an Input "[[a]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
+#	When the data merge tool is executed
+#	Then the merged result is ""
+#	And the execution has "AN" error
+#	And the execution has "Variable { a } is NULL." error
+#Examples: 
+#	| No | Type     |
+#	| 1  | None     |
+#	| 2  | Index    |
+#	| 3  | Chars    |
+#	| 4  | New Line |
+#	| 5  | Tab      | 
+#
+# This is a bug that needs to be resolved
+#Scenario: Merge a recordset table and free text using Tab 2
+#	Given a merge recordset
+#	| rs     | val |
+#	| rs().r | 10  |
+#	| rs().r | 20  |
+#	| rs().r | 30  |	
+#	And an Input "[[var]]" and merge type "Tab" and string at as "[[rs(1).r]]" and Padding "[[rs(2).r]]" and Alignment "Left"	
+#	And an Input "<-" and merge type "None" and string at as "[[rs(1).r]]" and Padding "[[rs(3).r]]" and Alignment "Left"
+#	When the data merge tool is executed
+#	Then the merged result is "1tab->	<-2tab->	<-3tab->	<-"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| # |                    | With | Using        | Pad        | Align |
+#	| 1 | [[rs(1).row]] = 10 |      | [[rs().r]] = | [[rs().r]] |       |
+#	|   | [[rs(2).row]] = 20 |      |              |            |       |
+#	|   | [[rs(3).row]] = 30 |      |              |            |       |
+#	|   |                    | Tab  | ""           | ""         | Left  |
+#	| 2 | <-                 | None | ""           | ""         | Left  |
+#	And the debug output as 
+#	|                                           |
+#	| [[result]] = 1tab->	<-2tab->	<-3tab->	<- |
 
 
