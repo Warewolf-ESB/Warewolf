@@ -165,7 +165,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            var name = Enum.GetName(typeof(ResourceType), resourceType);
+            var name = Enum.GetName(typeof(Enums.ResourceType), resourceType);
             comsController.AddPayloadArgument("ResourceType", name);
             var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
             var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, workspaceIdToUse);
