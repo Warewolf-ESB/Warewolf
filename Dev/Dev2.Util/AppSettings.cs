@@ -14,6 +14,7 @@ namespace Dev2.Util
     public class AppSettings
     {
         public static string LocalHost { get; set; }
+        public static string ServiceName { get; set; }
 
         public static string ServicesAddress
         {
