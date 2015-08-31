@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Configuration.Install;
 using System.Diagnostics;
 using System.ServiceProcess;
@@ -67,7 +68,7 @@ namespace Dev2
             {
                 using (var inst = new AssemblyInstaller(typeof (ServerLifecycleManager).Assembly, null))
                 {
-                    context = inst.Context;
+                    context = inst.Context; 
                     LogMessage("Installing service " + AppSettings.ServiceName, inst.Context);
                     IDictionary state = new Hashtable();
                     inst.UseNewContext = true;

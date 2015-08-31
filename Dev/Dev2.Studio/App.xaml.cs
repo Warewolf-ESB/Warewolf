@@ -65,7 +65,6 @@ namespace Dev2.Studio
             ShouldRestart = false;
             InitializeComponent();
             AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
-            AppSettings.ServiceName = ConfigurationManager.AppSettings["ServiceName"];
         }
 
         public static bool IsAutomationMode

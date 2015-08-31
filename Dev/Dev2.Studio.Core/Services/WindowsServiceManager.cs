@@ -12,7 +12,6 @@
 using System;
 using System.ServiceProcess;
 using System.Threading;
-using Dev2.Common;
 using Dev2.Util;
 
 // ReSharper disable CheckNamespace
