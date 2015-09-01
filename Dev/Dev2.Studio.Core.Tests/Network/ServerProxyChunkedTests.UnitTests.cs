@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests.Network
             var output = dev.SerializeToBuilder(item);
             PrivateObject p = new PrivateObject(serverProxy);
             p.Invoke("OnItemAddedMessageReceived", output.ToString());
-            Assert.AreEqual(ItemGuid,serverGuid);
+            Assert.AreNotEqual(ItemGuid,serverGuid);
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
