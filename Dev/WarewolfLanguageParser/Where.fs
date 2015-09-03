@@ -29,10 +29,10 @@ let rec  EvalWhere  (env: WarewolfEnvironment) (lang:string) (update:int) (func:
                         temp
     match buffer with
         | RecordSetExpression a ->   (evalRecordsSetExpressionWhere a env update func) 
-        | ScalarExpression a -> failwith "bob"
-        | WarewolfAtomAtomExpression a -> failwith "bob"
+        | ScalarExpression a -> failwith "unexpected expression"
+        | WarewolfAtomAtomExpression a -> failwith "unexpected expression"
         | RecordSetNameExpression x ->EvalRecordsetWhere  x env func
-        | ComplexExpression  a -> failwith "bob"
+        | ComplexExpression  a -> failwith "unexpected expression"
 
 and evalRecordsSetExpressionWhere (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  (update:int)  (func: WarewolfAtom->bool)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 

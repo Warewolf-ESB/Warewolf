@@ -235,8 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
                 case "SearchCriteria":
-                    if (SearchCriteria.Length == 0)
-                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+     
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
             }

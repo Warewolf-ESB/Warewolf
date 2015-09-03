@@ -33,7 +33,9 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             const string serverMsg = "server result";
             var mockHubProxy = new Mock<IHubProxyWrapper>();
-            mockHubProxy.Setup(proxy => proxy.Invoke<string>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<string>(() => serverMsg));
+            var receipt = new Receipt();
+            mockHubProxy.Setup(proxy => proxy.Invoke<Receipt>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<Receipt>(() => receipt));
+            mockHubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(new Task<string>(() => serverMsg));
             var serverProxy = new TestServerProxy();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------

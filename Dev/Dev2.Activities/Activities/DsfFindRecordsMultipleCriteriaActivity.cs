@@ -109,7 +109,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var allErrors = new ErrorResultTO();
             try
             {
-                IList<string> toSearch = FieldsToSearch.Split(',');
+                IList<string> toSearch = FieldsToSearch.Split(',').Select(a => a.Trim()).ToList();
+
                 List<int> results = new List<int>();
                 if(dataObject.IsDebugMode())
                 {
