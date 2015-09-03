@@ -2390,7 +2390,16 @@ Scenario: Search using a negative index recordset criteria
 	|             | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
 
 #--
-
-
-
-
+@ignore
+Scenario: Find Record with blank value
+	Given I have the following recordset to search for multiple criteria
+	| rs       | value  |
+	| rs().row |        |
+	| rs().set | QWERTY |
+	And field to search is "[[rs().row]],[[rs().set]]"
+	And search the recordset with type "Equals" and criteria is ""	
+	And search the recordset with type "Equals" and criteria is "QWERTY"	
+	And when match all search criteria is "true"
+	And when requires all fields to match is "false"
+	When the find records index multiple tool is executed
+	Then the execution has "No" error
