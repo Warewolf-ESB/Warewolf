@@ -1,5 +1,5 @@
 
-<Service ID="ec91b02a-91ef-4ed0-9dd7-3b87a8564386" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Replace" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5716.14858">
+<Service ID="ec91b02a-91ef-4ed0-9dd7-3b87a8564386" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Replace" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
   <DisplayName>Replace</DisplayName>
   <Category>Testing\For Each\Replace</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>uci0Z/RskfTyl5Ry02zFwkZtnQA=</DigestValue>
+        <DigestValue>rVxlpQnipWWyQfl6BktBY14dj0M=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BantGlxSOrAqelcBBeUHaQRT4XD2Ug92zyvkXYP5zGuur35izQGwaACysp5nUjQT2EvA1mC6jJvsnR8harET/CwWTr6mdT2exgLNh5uBkVvn63VJQySlgdOq7GoiQ/8R+Tmm2MaMHgqoNkt93tM6/MzatPIWhvJVxl3SvaAV7p0=</SignatureValue>
+    <SignatureValue>K8iaPugDxXxEdC62BmAtRzCKSs5v22DMBjV/99JaZ8WU7NyEy0Wdh0DsSGgoxAJoGis2LN4V/06SpSS28h8rUAvpobbdBASzvEHj0V8Y/T2p1ChWCxHPLjz/U1HxrzdjSLAT0Rt2EhZa7xe/kRK51atGMzkHVoSO7eNUrJXpxzc=</SignatureValue>
   </Signature>
 </Service>

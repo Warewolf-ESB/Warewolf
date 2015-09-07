@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
-using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Models;
 using Dev2.Services.Security;
@@ -54,6 +53,7 @@ namespace Dev2.Core.Tests
         public void Init()
         {
             _authService = new Mock<IAuthorizationService>();
+            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
         }
 
         #region Connect
@@ -148,6 +148,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<IExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<IExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(6));
+            mockDeployStatsCalculator.Verify(a=>a.CheckForNamingConflicts(It.IsAny<List<IExplorerItemModel>>(),It.IsAny<DeployNavigationViewModel>()));
         }
 
 

@@ -551,6 +551,28 @@ namespace Dev2.Studio.ViewModels.Deploy
                 }
                 Target.Environment = _selectedDestinationServer;
                 CalculateStats();
+                if (_selectedDestinationServer != null && _selectedDestinationServer.IsConnected)
+                {
+                    if (Source.ExplorerItemModels.Count > 0)
+                    {
+                        IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
+
+                        var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
+                        var namingConflicts = _deployStatsCalculator.CheckForNamingConflicts(items, Target).ToList();
+                        if (namingConflicts.Any())
+                        {
+                            StringBuilder message = new StringBuilder("The following items exist on the Destination Server but with a different ID. Please rename, move or delete on the destination server:" + Environment.NewLine);
+                            foreach (var namingConflict in namingConflicts)
+                            {
+                                message.AppendLine(namingConflict.ResourcePath);
+                                namingConflict.IsChecked = false;
+                            }
+
+                            PopupController.Show(message.ToString(), "Resource Conflicts", MessageBoxButton.OK, MessageBoxImage.Error, null);
+                        }
+                    }
+                }
+
                 RaiseDeployCommandCanExecuteChanged();
             }
         }
@@ -626,8 +648,35 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             if (checkStateChangedArgs != null && checkStateChangedArgs.UpdateStats)
                 CalculateStats();
+            if(checkStateChangedArgs != null && checkStateChangedArgs.NewState && checkStateChangedArgs.PreviousState == false)
+            {
+                IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
+
+                var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)&&model.ResourceId==checkStateChangedArgs.ResourceId).ToList();
+                var namingConflicts = _deployStatsCalculator.CheckForNamingConflicts(items, Target).ToList();
+                if (namingConflicts.Any())
+                {
+                    StringBuilder message = new StringBuilder("The following items exist on the Destination Server with the same path and a different ID. Please rename, move or delete on the destination server before deploying:"+Environment.NewLine);
+                    foreach (var namingConflict in namingConflicts)
+                    {
+                        message.AppendLine(namingConflict.ResourcePath);
+                        namingConflict.IsChecked = false;
+                    }
+
+                    PopupController.Show(message.ToString(), "Resource Conflicts", MessageBoxButton.OK, MessageBoxImage.Error, null);
+                }
+            }
         }
 
+        IPopupController PopupController
+        {
+            get
+            {
+                return _popup ?? CustomContainer.Get<IPopupController>();
+            }
+            // ReSharper disable once UnusedMember.Local
+            set { _popup = value; }
+        }
         /// <summary>
         /// Recalculates
         /// </summary>
@@ -647,6 +696,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                     _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
                     _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+
                     RaiseDeployCommandCanExecuteChanged();
                 }
             }
@@ -688,6 +738,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStatPredicates.Add("Override",
                                       n => _deployStatsCalculator
                                                .DeploySummaryPredicateExisting(n, Target));
+       
+
+
             // ReSharper restore ImplicitlyCapturedClosure
         }
 
@@ -939,6 +992,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         bool _sourceServerHasDropped;
         IConnectControlViewModel _sourceconnectControlViewModel;
         IConnectControlViewModel _targetConnectControlViewModel;
+        IPopupController _popup;
 
         /// <summary>
         /// Loads an environment for the source navigation manager

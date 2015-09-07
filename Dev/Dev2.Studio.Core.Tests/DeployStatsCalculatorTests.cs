@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -60,7 +61,7 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
 
         }
-
+        static Guid resourceIdConflict = Guid.NewGuid();
         protected StudioResourceRepository CreateModels(bool isChecked, Mock<IContextualResourceModel> mockResourceModel, out IEnvironmentModel environmentModel, out IExplorerItemModel resourceVm, out IExplorerItemModel rootItem)
         {
             Mock<IContextualResourceModel> resourceModel = mockResourceModel;
@@ -79,6 +80,7 @@ namespace Dev2.Core.Tests
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, _Invoke);
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            resourceModel.Setup(a => a.ID).Returns(resourceIdConflict);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
@@ -142,6 +144,78 @@ namespace Dev2.Core.Tests
             CollectionAssert.AreEqual(expected, actual, new DeployStatsTOComparer());
             Assert.AreEqual(expectedDeployItemCount, actualDeployItemCount);
         }
+
+
+        [TestMethod]
+        public void DeploySummayCalculateErrors()
+        {
+            Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
+            IEnvironmentModel environmentModel;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
+
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
+            IExplorerItemModel model = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object,new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object  )
+            {
+                ResourceId = Guid.NewGuid(),
+                ResourcePath = "bob\\dave"
+            };
+
+            var navigationViewModel = CreateDeployNavigationViewModel(environmentModel, studioResourceRepository);
+            var actual = DeployStatsCalculator.CheckForNamingConflicts(new List<IExplorerItemModel>(){model}, navigationViewModel);
+
+            Assert.IsTrue(!actual.Any());
+        }
+
+        [TestMethod]
+        public void DeploySummayCalculateErrorsHasSameIdNoError()
+        {
+            Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
+            IEnvironmentModel environmentModel;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
+
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
+            IExplorerItemModel model = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object)
+            {
+                ResourceId = resourceIdConflict,
+                ResourcePath = "WORKFLOWS\\TestingWF",
+                IsChecked = true
+            };
+
+            var navigationViewModel = CreateDeployNavigationViewModel(environmentModel, studioResourceRepository);
+         
+            var actual = DeployStatsCalculator.CheckForNamingConflicts(new List<IExplorerItemModel>() { model }, navigationViewModel);
+
+            Assert.IsFalse(actual.Any());
+        }
+
+        [TestMethod]
+        public void DeploySummayCalculateErrorsHasDifferentIdHasError()
+        {
+            Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
+            IEnvironmentModel environmentModel;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
+
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
+            IExplorerItemModel model = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object)
+            {
+                ResourceId = Guid.NewGuid(),
+                ResourcePath = "WORKFLOWS\\TestingWF",
+                IsChecked = true
+            };
+
+            var navigationViewModel = CreateDeployNavigationViewModel(environmentModel, studioResourceRepository);
+
+            var actual = DeployStatsCalculator.CheckForNamingConflicts(new List<IExplorerItemModel>() { model }, navigationViewModel);
+
+            Assert.IsTrue(actual.Any());
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -457,6 +531,7 @@ namespace Dev2.Core.Tests
             navigationViewModel.ExplorerItemModels.Add(explorerItemModel);
             navigationViewModel.Environment = environmentModel;
             resourceVm.IsChecked = true;
+            resourceVm.ResourceId = navigationViewModel.Environment.ResourceRepository.All().ToList()[0].ID;
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, navigationViewModel);
 
             Assert.IsTrue(actual);

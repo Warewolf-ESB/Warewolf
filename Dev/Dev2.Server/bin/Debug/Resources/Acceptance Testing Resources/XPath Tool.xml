@@ -1,5 +1,5 @@
 
-<Service ID="c1e8583d-d3ed-4cb8-921f-a230722c68de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XPath Tool" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="c1e8583d-d3ed-4cb8-921f-a230722c68de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XPath Tool" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
   <DisplayName>XPath Tool</DisplayName>
   <Category>Acceptance Testing Resources\XPath Tool</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>JE4Rik7Ojg00jiQ2QoDWjHJ7J4w=</DigestValue>
+        <DigestValue>sjt2yXP2GJBSDtSWWihI51XZ/+A=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>PqRbaPm5AClrsy7mhGe9nC7sxpzhKsdGwmo1m/A5RhE/Z4z3VocOnPzXDYJ/NAwsZWqEZFLrCovhokB8rnCujZgMDIOCPFH1E0iZfyC2pQn/hpEh7LdzQ4mBIxJ4u5uchuKJYKO2UAXnjiU3Bbdb6ofVPGgkWUP6s+aZO0kkrOM=</SignatureValue>
+    <SignatureValue>tMrbNo0mdS73c7b2nVYAlZZNFMY8zMW5IFmlEari6DpZ6JeVCr/TzkpOW94Bs8jFwfKc/QenR7dWymaTe6mJ9LapKfuBVjTJMDbv3GzawOiwkw1gtjpycxWd7XFOV6Brlku3WdSRkq1dhcFKk94FgDKgm5N/B36jl561MJPt4GQ=</SignatureValue>
   </Signature>
 </Service>
