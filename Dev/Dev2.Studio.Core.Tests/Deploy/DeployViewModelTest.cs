@@ -622,7 +622,7 @@ namespace Dev2.Core.Tests
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var treeParent = new ExplorerItemModel
+            var treeParent = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,new Mock<IStudioResourceRepository>().Object)
             {
                 DisplayName = "Test Category",
                 ResourceType = ResourceType.Folder,
@@ -710,7 +710,7 @@ namespace Dev2.Core.Tests
             resourceNode.Setup(model => model.ID).Returns(resourceID);
             resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
-            var resourceTreeNode = new ExplorerItemModel
+            var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 Parent = treeParent,
                 DisplayName = resourceNode.Object.ResourceName,
@@ -1455,7 +1455,7 @@ namespace Dev2.Core.Tests
             IExplorerItemModel explorerItemModel;
             IEnvironmentModel environmentModel;
             StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
-            ExplorerItemModel secondResourceToCheck = new ExplorerItemModel();
+            ExplorerItemModel secondResourceToCheck = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,new Mock<IStudioResourceRepository>().Object );
             explorerItemModel.IsChecked = true;
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;

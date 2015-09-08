@@ -650,7 +650,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 CalculateStats();
             if(checkStateChangedArgs != null && checkStateChangedArgs.NewState && checkStateChangedArgs.PreviousState == false)
             {
-                if (Source.ExplorerItemModels.Any())
+                if (Source!= null&& Source.ExplorerItemModels.Any())
                 {
                     IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
 
