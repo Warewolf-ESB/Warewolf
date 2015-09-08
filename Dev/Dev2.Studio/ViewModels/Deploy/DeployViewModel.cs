@@ -650,20 +650,23 @@ namespace Dev2.Studio.ViewModels.Deploy
                 CalculateStats();
             if(checkStateChangedArgs != null && checkStateChangedArgs.NewState && checkStateChangedArgs.PreviousState == false)
             {
-                IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
-
-                var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)&&model.ResourceId==checkStateChangedArgs.ResourceId).ToList();
-                var namingConflicts = _deployStatsCalculator.CheckForNamingConflicts(items, Target).ToList();
-                if (namingConflicts.Any())
+                if (Source.ExplorerItemModels.Any())
                 {
-                    StringBuilder message = new StringBuilder("The following items exist on the Destination Server with the same path and a different ID. Please rename, move or delete on the destination server before deploying:"+Environment.NewLine);
-                    foreach (var namingConflict in namingConflicts)
-                    {
-                        message.AppendLine(namingConflict.ResourcePath);
-                        namingConflict.IsChecked = false;
-                    }
+                    IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
 
-                    PopupController.Show(message.ToString(), "Resource Conflicts", MessageBoxButton.OK, MessageBoxImage.Error, null);
+                    var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false) && model.ResourceId == checkStateChangedArgs.ResourceId).ToList();
+                    var namingConflicts = _deployStatsCalculator.CheckForNamingConflicts(items, Target).ToList();
+                    if (namingConflicts.Any())
+                    {
+                        StringBuilder message = new StringBuilder("The following items exist on the Destination Server with the same path and a different ID. Please rename, move or delete on the destination server before deploying:" + Environment.NewLine);
+                        foreach (var namingConflict in namingConflicts)
+                        {
+                            message.AppendLine(namingConflict.ResourcePath);
+                            namingConflict.IsChecked = false;
+                        }
+
+                        PopupController.Show(message.ToString(), "Resource Conflicts", MessageBoxButton.OK, MessageBoxImage.Error, null);
+                    }
                 }
             }
         }
