@@ -42,7 +42,14 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             else
             {
-                mapper = data.GetType().IsPrimitive ? new PocoMapper() : null;
+                if(data.GetType().IsPrimitive)
+                {
+                    mapper = new PocoMapper();
+                }
+                else
+                {
+                    mapper = new StringMapper();
+                }
             }
             return mapper;
         }
@@ -67,6 +74,10 @@ namespace Unlimited.Framework.Converters.Graph.String
             else if (pathType == typeof (PocoPath))
             {
                 navigator = new PocoNavigator(data);
+            }
+            else if( pathType == typeof(StringPath))
+            {
+                navigator = new StringNavigator(data);
             }
             else
             {

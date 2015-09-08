@@ -242,7 +242,17 @@ namespace Dev2.Models
             // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public Guid ResourceId { get; set; }
+        public Guid ResourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                _resourceId = value;
+            }
+        }
         public ResourceType ResourceType { get; set; }
 
         public ObservableCollection<IExplorerItemModel> Children
@@ -1579,6 +1589,7 @@ namespace Dev2.Models
         public static Action<CheckStateChangedArgs> OnCheckedStateChangedAction;
         public static Action<bool> OnRenameChangedAction;
         IWindowManager _windowManager;
+        Guid _resourceId;
 
         /// <summary>
         ///     Verifies the state of the IsChecked property by taking the childrens IsChecked State into account

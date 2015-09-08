@@ -1,5 +1,5 @@
 
-<Service ID="d8dc8032-7f2a-4e9d-96d3-0707bf466241" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dropbox" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5716.14858">
+<Service ID="d8dc8032-7f2a-4e9d-96d3-0707bf466241" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dropbox" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
   <DisplayName>Dropbox</DisplayName>
   <Category>Testing\For Each\Dropbox</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>dLUTIGGTmRzZGHKyAlqyJ6pXRsM=</DigestValue>
+        <DigestValue>don4kytgLyC5CvnYLYHJQU2lSZU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>idlZBoq80dPjbkfJAw2xqQDsutEOQ0AME5iJt+ZZoOkwBdQJiA7pqmawFKzBjTL5wA8qtvP1iQziBfgW0rYC/6Z989nkHCANAVkLA1l/kAZpQgIO6oiOmXHoPs4LUsv/dwC8y3O/3bJzhJ2NqkCWtnTOP4A/ehB5Ow50EpUJoBU=</SignatureValue>
+    <SignatureValue>Z3PhVcpf7t13//nzsOQ6ri1uBc+4LG8GUvOq/+PB0YVwTV0OrUQ1KnuojGgW1PXN2vF3oN+uvb8EkJtzbKfed9OUpH7btovExmECUHjq/INmcW1x5g1cwQK9+0cnLxM6/Arjp2kxU2P8+ega98q6hGm9OQvJzCH3/Zd/KjB/ji0=</SignatureValue>
   </Signature>
 </Service>

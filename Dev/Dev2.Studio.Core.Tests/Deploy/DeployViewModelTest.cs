@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
-using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Models;
 using Dev2.Services.Security;
@@ -54,6 +53,7 @@ namespace Dev2.Core.Tests
         public void Init()
         {
             _authService = new Mock<IAuthorizationService>();
+            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
         }
 
         #region Connect
@@ -148,6 +148,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<IExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<IExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(6));
+            mockDeployStatsCalculator.Verify(a=>a.CheckForNamingConflicts(It.IsAny<List<IExplorerItemModel>>(),It.IsAny<DeployNavigationViewModel>()));
         }
 
 
@@ -621,7 +622,7 @@ namespace Dev2.Core.Tests
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var treeParent = new ExplorerItemModel
+            var treeParent = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,new Mock<IStudioResourceRepository>().Object)
             {
                 DisplayName = "Test Category",
                 ResourceType = ResourceType.Folder,
@@ -709,7 +710,7 @@ namespace Dev2.Core.Tests
             resourceNode.Setup(model => model.ID).Returns(resourceID);
             resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
-            var resourceTreeNode = new ExplorerItemModel
+            var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 Parent = treeParent,
                 DisplayName = resourceNode.Object.ResourceName,
@@ -1454,7 +1455,7 @@ namespace Dev2.Core.Tests
             IExplorerItemModel explorerItemModel;
             IEnvironmentModel environmentModel;
             StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
-            ExplorerItemModel secondResourceToCheck = new ExplorerItemModel();
+            ExplorerItemModel secondResourceToCheck = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,new Mock<IStudioResourceRepository>().Object );
             explorerItemModel.IsChecked = true;
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;

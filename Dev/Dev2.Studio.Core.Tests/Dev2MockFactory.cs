@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             mockEnvironmentModel.Setup(e => e.IsLocalHostCheck()).Returns(true);
             mockEnvironmentModel.Setup(e => e.IsLocalHost).Returns(true);
-
+      
             return mockEnvironmentModel;
         }
 

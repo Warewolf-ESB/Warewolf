@@ -1,5 +1,5 @@
 
-<Service ID="fc3e2705-2e28-4737-9d2b-fc7db68b9f24" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_ShowDecimalPlaces" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="fc3e2705-2e28-4737-9d2b-fc7db68b9f24" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_ShowDecimalPlaces" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
   <DisplayName>FormatNumber_ShowDecimalPlaces</DisplayName>
   <Category>Acceptance Testing Resources\FormatNumber_ShowDecimalPlaces</Category>
   <AuthorRoles>
@@ -238,9 +238,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ReQ5USirXnCwribYuo4j69b+Hqk=</DigestValue>
+        <DigestValue>GZz91zlNVzyyRqAm42PPz3XnhU0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>kGwkow+2D6e8AzZq/QLMRIuNvyTV7Cc7z8O5bmnKWv5Lecge3kO6Yb9vt3lcgtgzb5n9N+0UOFkySKL6guKV3yKhKXVfd7LM609N6R3RGfOqjlp4cPzuK7zNRV+FmiFXgpURsvexY3DBQLYosJazWerAeZY2+F4vfqPOIuwaxGQ=</SignatureValue>
+    <SignatureValue>dEs6N/LFXV8bv62K+pLCko6+E5COopn3PE7y2NIY1OUFHQ4UwZDVeELibgcgbziKrNFHo8+3g6ZSPoswvsYnQRELTRLZRt0a2b1PRcepUwDLEUmtwFMWts0jNR/SlNcNwqxY1Ai4jRhcvmLfLtHblDG3KHWBYSWG2j8bodqxIKs=</SignatureValue>
   </Signature>
 </Service>

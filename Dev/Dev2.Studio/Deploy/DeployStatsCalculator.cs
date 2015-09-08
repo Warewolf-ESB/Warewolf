@@ -162,5 +162,26 @@ namespace Dev2.Studio.Deploy
             return targetEnvironment != null && targetEnvironment.ResourceRepository != null &&
                    targetEnvironment.ResourceRepository.All().All(r => r.ID != vm.ResourceId);
         }
+
+        public IEnumerable<IExplorerItemModel> CheckForNamingConflicts(List<IExplorerItemModel> items,  DeployNavigationViewModel targetNavViewModel)
+        {
+            var vm = items;
+            if (vm == null || !vm.All(a => a.IsChecked.GetValueOrDefault(false))) return  new List<IExplorerItemModel>();
+            if (targetNavViewModel != null && targetNavViewModel.Environment != null)
+            {
+                IEnvironmentModel targetEnvironment = targetNavViewModel.Environment;
+                if (targetEnvironment == null || targetEnvironment.ResourceRepository == null) return new List<IExplorerItemModel>();
+
+                var all = targetEnvironment.ResourceRepository.All();
+                if(all != null)
+                {
+                    var conflictingItems = all.Join(vm, a => a.Category, explorerItemModel => explorerItemModel.ResourcePath, (a, explorerItemModel) => new { a, explorerItemModel }).Where(@t => @t.explorerItemModel.ResourceId != @t.a.ID).Select(@t => @t.explorerItemModel);
+
+
+                    return conflictingItems;
+                }
+            }
+            return new List<IExplorerItemModel>();
+        }
     }
 }

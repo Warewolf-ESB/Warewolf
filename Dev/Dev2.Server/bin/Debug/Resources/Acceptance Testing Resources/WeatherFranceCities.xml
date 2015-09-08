@@ -1,5 +1,5 @@
 
-<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
   <DisplayName>WeatherFranceCities</DisplayName>
   <Category>Acceptance Testing Resources\WeatherFranceCities</Category>
   <AuthorRoles>
@@ -14,9 +14,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>zPOkxUGbxaFFzPs3AuE88ESHy0s=</DigestValue>
+        <DigestValue>wxS4ds0IeFC73FZgqM5qUUBV/q4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>EKE4hnqG0ZvX+wKIUjbUENd24HcZq+l0HUX6k7xPgDATV7fh9UDdOA9zelXq+G80IvnHikBMI+7EOSozFxFa8Pi/KAUGNJq2TGEBB0JZQJ1y9Grxkln/MbLFNrbA/rTqLXf3+fv07P5Nv1esuJvqSjO0XMRN2mNfcNr/Sw9esR0=</SignatureValue>
+    <SignatureValue>opC/yspV3XeYY+peyWdgEY+D2y1jaUNH2BTBLcF8lPS85iez6AgASGcj7jZb7xf5/CoWJ9nvETskBHbKkXkXtVRdbvuYt0bCIdC/fym0ITH39KBRUe0QF6Z9rcCA9Os9fpY1/IZw1NWFC5fjHLkQn6c8I72rEtNjVoZz/z+LEbU=</SignatureValue>
   </Signature>
 </Source>

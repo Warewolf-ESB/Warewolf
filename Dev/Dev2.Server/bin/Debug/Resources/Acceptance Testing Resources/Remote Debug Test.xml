@@ -1,5 +1,5 @@
 
-<Service ID="f8f4d105-8a7b-43e8-80ae-83de53cc4a96" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Remote Debug Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="f8f4d105-8a7b-43e8-80ae-83de53cc4a96" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Remote Debug Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
   <DisplayName>Remote Debug Test</DisplayName>
   <Category>Acceptance Testing Resources\Remote Debug Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -58,9 +58,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>sNDYX7xJLQBdKNcSPyLid7veKNY=</DigestValue>
+        <DigestValue>1eDFolvyqWRgC/knoA8tJ4CHx2w=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>o0TxlRaUKRRvmKVFs/4hdphdzg7VrIaa28/UxEU1Mb4CWDDcN9qFTd/Xnb9//u9jstewQNNtpXe1G5zxvTXSV1q2YYOpJh+wpsi9T5W+k2bRxIJo/G1XpcAkwEo+QiRjl9VCmvjs+Eb7ntyJuk5vByqskbery4VWFgictwYZcfk=</SignatureValue>
+    <SignatureValue>mDbNEfRc7KrPwUKeZ8hljWpYN+lWXrHwZ/8u5Y4/AbPxlTnA+9pS62xb3l9jw/zcS5acB1ghC4dgL2oY3TbjeUQK2lvGdMg5SfnEkJpgV5b48a7zC2Wk0ZeiOD7RQV6QOZlsEsy0+FQ6Od8hzxl9oJUP1gI1jGbGE8w1ooTiXAI=</SignatureValue>
   </Signature>
 </Service>

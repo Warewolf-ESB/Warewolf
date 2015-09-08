@@ -57,5 +57,15 @@ namespace Dev2.Studio.Deploy
         ///     The predicate used to detemine which resources are going to be overridden
         /// </summary>
         bool DeploySummaryPredicateNew(IExplorerItemModel node, IEnvironmentModel targetEnvironment);
+
+        /// <summary>
+        /// Check if items exist with same path  but different ids
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="targetStatPredicates"></param>
+        /// <param name="targetNavViewModel"></param>
+        /// <returns></returns>
+        IEnumerable<IExplorerItemModel> CheckForNamingConflicts(List<IExplorerItemModel> items,  DeployNavigationViewModel targetNavViewModel);
+
     }
 }

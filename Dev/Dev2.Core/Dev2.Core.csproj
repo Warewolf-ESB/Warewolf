@@ -183,10 +183,13 @@
     <Compile Include="Converters\Graph\Poco\PocoNavigator.cs" />
     <Compile Include="Converters\Graph\Poco\PocoPath.cs" />
     <Compile Include="Converters\Graph\Poco\PocoPathSegment.cs" />
+    <Compile Include="Converters\Graph\Poco\StringNavigator.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonMapper.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonNavigator.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonPath.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonPathSegment.cs" />
+    <Compile Include="Converters\Graph\String\Json\StringMapper.cs" />
+    <Compile Include="Converters\Graph\String\Json\StringPath.cs" />
     <Compile Include="Converters\Graph\String\StringInterrogator.cs" />
     <Compile Include="Converters\Graph\String\Xml\XmlMapper.cs" />
     <Compile Include="Converters\Graph\String\Xml\XmlNavigator.cs" />
