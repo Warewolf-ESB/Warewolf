@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Dev2.Tests.Runtime.Util
@@ -87,7 +88,7 @@ namespace Dev2.Tests.Runtime.Util
             const string Response = "<string><CurrentWeather>Sunny Skies</string>";
             var expectedPaths = new List<IPath>(new[]
             {
-                new XmlPath("Error", "Error", "", "System.Exception: Couldn't create a mapper for '<string><CurrentWeather>Sunny Skies</string>'")
+                new StringPath(){ActualPath = "Response",DisplayPath = "Response",OutputExpression = "",SampleData = ""}, 
             });
             VerifyScrub(Response, expectedPaths);
         }
