@@ -197,7 +197,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var findRecordsTO = new FindRecordsTO { SearchType = "Starts With", SearchCriteria = string.Empty };
-            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+            VerifyCorrectRulesForEachFieldSearch(findRecordsTO, "SearchCriteria");
         }
 
         [TestMethod]
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var findRecordsTO = new FindRecordsTO { SearchType = "Ends With", SearchCriteria = string.Empty };
-            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+            VerifyCorrectRulesForEachFieldSearch(findRecordsTO, "SearchCriteria");
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var findRecordsTO = new FindRecordsTO { SearchType = "Doesn't End With", SearchCriteria = string.Empty };
-            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+            VerifyCorrectRulesForEachFieldSearch(findRecordsTO, "SearchCriteria");
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var findRecordsTO = new FindRecordsTO { SearchType = "Doesn't Start With", SearchCriteria = string.Empty };
-            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+            VerifyCorrectRulesForEachFieldSearch(findRecordsTO, "SearchCriteria");
         }
         
         [TestMethod]
@@ -279,7 +279,15 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
             Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
         }
-        
+        static void VerifyCorrectRulesForEachFieldSearch(FindRecordsTO findRecordsTO, string fieldName)
+        {
+            //------------Execute Test---------------------------
+            var rulesSet = findRecordsTO.GetRuleSet(fieldName, "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+    
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsValidExpressionRule));
+        }
         #endregion
     }
 }

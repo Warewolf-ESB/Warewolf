@@ -349,34 +349,21 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(10, viewModel.Errors.Count);
+            Assert.AreEqual(4, viewModel.Errors.Count);
 
-            StringAssert.Contains(viewModel.Errors[0].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem1, viewModel.Errors[0].Do, "IsSearchCriteriaFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem2, viewModel.Errors[1].Do, "IsSearchCriteriaFocused");
 
-            StringAssert.Contains(viewModel.Errors[2].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem3, viewModel.Errors[2].Do, "IsSearchCriteriaFocused");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'From' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[0].Do, "IsFromFocused");
 
-            StringAssert.Contains(viewModel.Errors[3].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem4, viewModel.Errors[3].Do, "IsSearchCriteriaFocused");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[1].Do, "IsToFocused");
 
-            StringAssert.Contains(viewModel.Errors[4].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem5, viewModel.Errors[4].Do, "IsSearchCriteriaFocused");
+            StringAssert.Contains(viewModel.Errors[2].Message, "'From' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[2].Do, "IsFromFocused");
 
-            StringAssert.Contains(viewModel.Errors[5].Message, "'From' cannot be empty");
-            Verify_IsFocused(dtoModelItem5, viewModel.Errors[5].Do, "IsFromFocused");
-
-            StringAssert.Contains(viewModel.Errors[6].Message, "'To' cannot be empty");
-            Verify_IsFocused(dtoModelItem5, viewModel.Errors[6].Do, "IsToFocused");
-
-            StringAssert.Contains(viewModel.Errors[7].Message, "'Match' cannot be empty");
-            Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsSearchCriteriaFocused");
-
-            StringAssert.Contains(viewModel.Errors[9].Message, "'To' cannot be empty");
-            Verify_IsFocused(dtoModelItem6, viewModel.Errors[9].Do, "IsToFocused");
+            StringAssert.Contains(viewModel.Errors[3].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[3].Do, "IsToFocused");
 
 
 
