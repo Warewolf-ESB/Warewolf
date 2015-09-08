@@ -42,7 +42,7 @@ namespace Dev2.Activities
         IDSFDataObject _dataObject;
         string _password;
         EmailSource _selectedEmailSource;
-
+    
         #endregion
 
         /// <summary>
@@ -121,6 +121,9 @@ namespace Dev2.Activities
         [FindMissing]
         public string Body { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public bool IsHtml { get; set; }
+
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
@@ -153,7 +156,7 @@ namespace Dev2.Activities
             Subject = string.Empty;
             Attachments = string.Empty;
             Body = string.Empty;
-
+            IsHtml = false;
         }
 
         #endregion
@@ -350,7 +353,7 @@ namespace Dev2.Activities
             var subjectValue = colItr.FetchNextValue(subjectItr);
             var bodyValue = colItr.FetchNextValue(bodyItr);
             var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
-            MailMessage mailMessage = new MailMessage();
+            MailMessage mailMessage = new MailMessage { IsBodyHtml = IsHtml };
             MailPriority priority;
             if(Enum.TryParse(Priority.ToString(), true, out priority))
             {

@@ -85,7 +85,7 @@ namespace Dev2.Studio.Core.Network
             Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.XML);
             if(url != null)
             {
-                Process.Start(url.ToString());
+                Process.Start("explorer.exe", "\"" + url+ "\"");
             }
         }
 

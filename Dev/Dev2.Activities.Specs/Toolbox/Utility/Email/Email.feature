@@ -24,6 +24,7 @@ Scenario: Send email with multiple from accounts
 	Given the from account is "me@freemail.com;me2@freemail.com"  
 	And to address is "test1@freemail.com"
 	And the subject is "Just testing"
+	And the email is html
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed

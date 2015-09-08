@@ -52,6 +52,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             ScenarioContext.Current.TryGetValue("simulationOutput", out simulationOutput);
             string to;
             ScenarioContext.Current.TryGetValue("to", out to);
+            bool isHtml;
+            ScenarioContext.Current.TryGetValue("isHtml", out isHtml);
 
             var server = SimpleSmtpServer.Start(25);
             ScenarioContext.Current.Add("server", server);
@@ -73,7 +75,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                     Subject = string.IsNullOrEmpty(subject) ? "" : subject,
                     FromAccount = string.IsNullOrEmpty(fromAccount) ? "" : fromAccount,
                     To = string.IsNullOrEmpty(to) ? "" : to,
-                    SelectedEmailSource = selectedEmailSource
+                    SelectedEmailSource = selectedEmailSource,
+                    IsHtml = isHtml
                 };
 
             TestStartNode = new FlowStep
@@ -99,6 +102,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         public void GivenTheSubjectIs(string subject)
         {
             ScenarioContext.Current.Add("subject", subject);
+        }
+        [Given(@"the email is html")]
+        public void GivenTheEmailIsHtml()
+        {
+            ScenarioContext.Current.Add("IsHtml", true);
         }
 
 

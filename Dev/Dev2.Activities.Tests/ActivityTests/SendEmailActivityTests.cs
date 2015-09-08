@@ -112,6 +112,48 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
+            mock.Verify(sender => sender.Send(emailSourceForTesting, It.Is<MailMessage>(a => !a.IsBodyHtml)), Times.Once());
+            // remove test datalist ;)
+
+            Assert.AreEqual(activity.Body, mailMessage.Body);
+            Assert.AreEqual(activity.FromAccount, mailMessage.From.Address);
+            Assert.AreEqual(activity.To, mailMessage.To[0].Address);
+            Assert.AreEqual(activity.Subject, mailMessage.Subject);
+        }
+
+
+
+        [TestMethod]
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_StaticValues_CorrectResults_IsHTML()
+        {
+            //------------Setup for test--------------------------
+            var emailSourceForTesting = EmailSourceForTesting();
+            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var mock = new Mock<IEmailSender>();
+            MailMessage mailMessage = null;
+            mock.Setup(sender =>
+                sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
+                Callback<EmailSource, MailMessage>((client, message) =>
+                {
+                    mailMessage = message;
+                });
+            var activity = GetSendEmailActivity(mock);
+            activity.SelectedEmailSource = emailSourceForTesting;
+            activity.Body = "BodyValue";
+            activity.FromAccount = "from.someone@amail.account";
+            activity.To = "to.someone@amail.account";
+            activity.Subject = "SubJectValue";
+            activity.IsHtml = true;
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><testVar /></root>";
+            //------------Execute Test---------------------------
+            ExecuteProcess(channel: esbChannelMock.Object);
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.Send(emailSourceForTesting, It.Is<MailMessage>(a=>a.IsBodyHtml)), Times.Once());
 
             // remove test datalist ;)
 
@@ -120,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(activity.To, mailMessage.To[0].Address);
             Assert.AreEqual(activity.Subject, mailMessage.Subject);
         }
+
 
         [TestMethod]
         [TestCategory("SendEmail_Execute")]
