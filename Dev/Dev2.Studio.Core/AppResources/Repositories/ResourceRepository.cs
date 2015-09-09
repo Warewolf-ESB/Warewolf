@@ -557,7 +557,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             ResourceModels.Add(theResource);
 
             var comsController = new CommunicationController { ServiceName = "DeployResourceService" };
-            comsController.AddPayloadArgument("ResourceDefinition", resource.ToServiceDefinition());
+            comsController.AddPayloadArgument("ResourceDefinition", resource.ToServiceDefinition(true));
             comsController.AddPayloadArgument("Roles", "*");
 
             var con = _environmentModel.Connection;
