@@ -21,7 +21,7 @@ namespace Dev2.Util
         {
             get
             {
-                return _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"]);
+                return _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
             }
         }
 
