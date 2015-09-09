@@ -4236,3 +4236,15 @@ Scenario: ForEach Acceptance Tests
 	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
+
+#WOLF-1034
+Scenario: Web text Parser
+	  Given I have a workflow "WebTextParser"
+	  And "WebTextParser" contains "WebCon" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "WebTextParser" is executed
+	Then the workflow execution has "NO" error
+	  And the 'WebCon' in Workflow 'WebTextParser' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |
