@@ -200,8 +200,11 @@ function DbSourceViewModel(saveContainerID, environment) {
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-
             self.data.server(result.Server);
+            if (result.Server === null || result.Server === "") {
+            }else {
+                self.data.server(result.Server + "," + result.Port);
+            }
             self.data.serverType(result.ServerType);
             self.data.authenticationType(result.AuthenticationType);
             self.data.userID(result.UserID);
