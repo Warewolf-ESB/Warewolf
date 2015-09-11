@@ -16,8 +16,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -167,8 +169,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var executionDlid = GlobalConstants.NullDataListID;
                 if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
-                    ErrorResultTO errors;
-                    executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
+                    ErrorResultTO errors = null;
+                    // set correct principle ;)
+                    Thread.CurrentPrincipal = user;
+                    var userPrinciple = user;                   
+                    Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                     allErrors.MergeErrors(errors);
                 }
                 else if(!canExecute)

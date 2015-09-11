@@ -12,6 +12,8 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Security.Principal;
+using System.Threading;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -86,7 +88,17 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
+            var userPrinciple = Thread.CurrentPrincipal;
+            ErrorResultTO to = errors;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple,()=>{result = ExecuteWf(to);});
+            
+            Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
+            return result;
+        }
 
+        Guid ExecuteWf(ErrorResultTO to)
+        {
+            Guid result = new Guid();
             try
             {
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
@@ -99,12 +111,12 @@ namespace Dev2.Runtime.ESB.Execution
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
                 ErrorResultTO invokeErrors;
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true,false,false);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
                 Eval(DataObject.ResourceID, DataObject);
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
@@ -118,14 +130,13 @@ namespace Dev2.Runtime.ESB.Execution
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
 
                 // trap the no start node error so we can replace it with something nicer ;)
-                errors.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
+                to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
             }
             catch(Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
-                errors.AddError(ex.Message);
+                to.AddError(ex.Message);
             }
-            Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 

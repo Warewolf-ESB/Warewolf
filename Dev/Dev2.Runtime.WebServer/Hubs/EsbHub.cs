@@ -180,17 +180,18 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                         var user = string.Empty;
                         // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        var userPrinciple = Context.User;
                         if (Context.User.Identity != null)
                         // ReSharper restore ConditionIsAlwaysTrueOrFalse
                         {
                             user = Context.User.Identity.Name;
                             // set correct principle ;)
-                            Thread.CurrentPrincipal = Context.User;
+                            userPrinciple = Context.User;
+                            Thread.CurrentPrincipal = userPrinciple;
                             Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                         }
-
-                        var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
-
+                        StringBuilder processRequest = null;
+                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
                         // always place requesting user in here ;)
                         var future = new FutureReceipt
                         {
@@ -200,12 +201,13 @@ namespace Dev2.Runtime.WebServer.Hubs
                         };
 
                         var value = processRequest.ToString();
-
-                        if (!ResultsCache.Instance.AddResult(future, value))
+                        if (!string.IsNullOrEmpty(value))
                         {
-                            Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                            if (!ResultsCache.Instance.AddResult(future, value))
+                            {
+                                Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                            }
                         }
-
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
 
                     }
