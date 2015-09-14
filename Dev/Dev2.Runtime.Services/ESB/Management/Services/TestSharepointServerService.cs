@@ -60,7 +60,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var sharepointSource = serializer.Deserialize<SharepointSource>(serializedSource);
                 var result = sharepointSource.TestConnection();
-                return serializer.SerializeToBuilder(result);
+                var sharepointSourceTo = new SharepointSourceTo
+                {
+                    TestMessage = result,
+                    IsSharepointOnline = sharepointSource.IsSharepointOnline
+                };
+                return serializer.SerializeToBuilder(sharepointSourceTo);
             }
             catch(Exception ex)
             {

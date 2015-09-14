@@ -18,13 +18,14 @@ namespace Dev2.Webs.Callbacks
         readonly string _userName;
         readonly string _password;
         readonly AuthenticationType _authenticationType;
+        bool _isSharepointOnline;
 
         public SharepointServerSourceCallbackHandler()
-            : this(EnvironmentRepository.Instance,"","","",AuthenticationType.Windows)
+            : this(EnvironmentRepository.Instance,"","","",AuthenticationType.Windows, false)
         {
         }
 
-        public SharepointServerSourceCallbackHandler(IEnvironmentRepository environmentRepository,string server,string userName,string password,AuthenticationType authenticationType)
+        public SharepointServerSourceCallbackHandler(IEnvironmentRepository environmentRepository,string server,string userName,string password,AuthenticationType authenticationType,bool isSharepointOnline)
             : base(environmentRepository)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>{{"environmentRepository",environmentRepository}});
@@ -32,9 +33,10 @@ namespace Dev2.Webs.Callbacks
             _userName = userName;
             _password = password;
             _authenticationType = authenticationType;
+            _isSharepointOnline = isSharepointOnline;
         }
 
-        public string Server
+        string Server
         {
             get
             {
@@ -46,7 +48,7 @@ namespace Dev2.Webs.Callbacks
             // ReSharper disable once MaximumChainedReferences
             string resName = jsonObj.resourceName;
             string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
-            var sharepointSource = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
+            var sharepointSource = new SharepointSource { Server = Server,UserName = _userName,Password = _password,AuthenticationType = _authenticationType, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid(),IsSharepointOnline = _isSharepointOnline};
             var source = sharepointSource.ToStringBuilder();
 
             environmentModel.ResourceRepository.SaveResource(environmentModel, source, GlobalConstants.ServerWorkspaceID);

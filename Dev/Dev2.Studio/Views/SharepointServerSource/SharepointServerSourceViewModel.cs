@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -53,10 +54,14 @@ namespace Dev2.Views.SharepointServerSource
                 var source = CreateSharepointServerSource();
                 var comsController = new CommunicationController { ServiceName = "TestSharepointServerService" };
                 comsController.AddPayloadArgument("SharepointServer", serializer.SerializeToBuilder(source));
-                TestResult = comsController.ExecuteCommand<string>(environment.Connection, GlobalConstants.ServerWorkspaceID);
+                var sharepointSourceTo = comsController.ExecuteCommand<SharepointSourceTo>(environment.Connection, GlobalConstants.ServerWorkspaceID);
+                TestResult = sharepointSourceTo.TestMessage;
+                IsSharepointOnline = sharepointSourceTo.IsSharepointOnline;
                 IsLoading = false;
             }, o => !TestComplete);
         }
+
+        public bool IsSharepointOnline { get; set; }
 
         public string TestResult
         {
@@ -193,7 +198,7 @@ namespace Dev2.Views.SharepointServerSource
             UserName = sharepointSource.UserName;
             Password = sharepointSource.Password;
             AuthenticationType = sharepointSource.AuthenticationType;
-
+            IsSharepointOnline = sharepointSource.IsSharepointOnline;
         }
 
         public string UserName

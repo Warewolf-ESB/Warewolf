@@ -350,9 +350,9 @@ namespace Dev2.Webs
             ShowSaveDialog(resourceModel, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""), "OauthSource", HttpUtility.UrlEncode("New Dropbox source"));
         }
         
-        public static void ShowNewSharepointServerSourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model,string server,string userName,string password,AuthenticationType authenticationType)
+        public static void ShowNewSharepointServerSourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model,string server,string userName,string password,AuthenticationType authenticationType,bool isSharepointOnline)
         {
-            ShowSaveDialog(resourceModel, new SharepointServerSourceCallbackHandler(EnvironmentRepository.Instance,server,userName,password,authenticationType), "SharepointServerSource", HttpUtility.UrlEncode("New Sharepoint Server Source"));
+            ShowSaveDialog(resourceModel, new SharepointServerSourceCallbackHandler(EnvironmentRepository.Instance, server, userName, password, authenticationType, isSharepointOnline), "SharepointServerSource", HttpUtility.UrlEncode("New Sharepoint Server Source"));
         }
 
         static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string title, string resourceId = null)

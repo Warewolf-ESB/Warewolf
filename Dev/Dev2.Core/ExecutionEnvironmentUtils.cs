@@ -152,7 +152,7 @@ namespace Dev2
                 result.Append("}");
                 result.Append("]");
                 i++;
-                if (i <= recSets.Count())
+                if (i <= recSets.Length)
                 {
                     result.Append(",");
                 }
@@ -176,12 +176,13 @@ namespace Dev2
                     }
                 }                
                 keyCnt++;
-                if (keyCnt < scalars.Count())
+                if (keyCnt < scalars.Length)
                 {
                     result.Append(",");
                 }
             }
             var jsonOutputFromEnvironment = result.ToString();
+            jsonOutputFromEnvironment = jsonOutputFromEnvironment.TrimEnd(',');
             jsonOutputFromEnvironment += "}";
             return jsonOutputFromEnvironment;
         }

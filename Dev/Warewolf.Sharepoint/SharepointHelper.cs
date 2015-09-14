@@ -18,15 +18,22 @@ namespace Warewolf.Sharepoint
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public SharepointHelper(string server,string userName,string password)
+        public SharepointHelper(string server,string userName,string password,bool isSharepointOnline)
         {
             Server = server;
             UserName = userName;
             Password = password;
+            IsSharepointOnline = isSharepointOnline;
         }
+
+        bool IsSharepointOnline { get; set; }
 
         public ClientContext GetContext()
         {
+            if (IsSharepointOnline)
+            {
+                return GetContextWithOnlineCredentials();
+            }
             var ctx = new ClientContext(Server);
             if(string.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))
             {
@@ -138,9 +145,10 @@ namespace Warewolf.Sharepoint
             return sharepointFieldTo;
         }
 
-        public string TestConnection()
+        public string TestConnection(out bool isSharepointOnline)
         {
             var result = "Test Successful";
+            isSharepointOnline = false;
             try
             {
                 using(var ctx = GetContext())
@@ -159,6 +167,7 @@ namespace Warewolf.Sharepoint
                         Web web = ctx.Web;
                         ctx.Load(web);
                         ctx.ExecuteQuery();
+                        isSharepointOnline = true;
                     }
                 }
                 catch (Exception ex)
@@ -166,7 +175,6 @@ namespace Warewolf.Sharepoint
                     result = "Test Failed: " + ex.Message;
                 }
             }
-
             return result;
         }
 

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 using Warewolf.Sharepoint;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Data.ServiceModel
 {
@@ -49,7 +50,12 @@ namespace Dev2.Data.ServiceModel
             Server = properties["Server"];
             UserName = properties["UserName"];
             Password = properties["Password"];
-
+            var isSharepointSourceValue = xml.AttributeSafe("IsSharepointOnline");
+            bool isSharepointSource;
+            if (bool.TryParse(isSharepointSourceValue, out isSharepointSource))
+            {
+                IsSharepointOnline = isSharepointSource;
+            }
             AuthenticationType authType;
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out authType) ? authType : AuthenticationType.Windows;
         }
@@ -79,6 +85,7 @@ namespace Dev2.Data.ServiceModel
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+                new XAttribute("IsSharepointOnline", IsSharepointOnline),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );
@@ -108,14 +115,19 @@ namespace Dev2.Data.ServiceModel
                 userName = UserName;
                 password = Password;
             }
-            var sharepointHelper = new SharepointHelper(Server, userName, password);
+            var sharepointHelper = new SharepointHelper(Server, userName, password, IsSharepointOnline);
             return sharepointHelper;
         }
 
         public string TestConnection()
         {
             var helper = CreateSharepointHelper();
-            return helper.TestConnection();
+            bool isSharepointOnline;
+            var testConnection = helper.TestConnection(out isSharepointOnline);
+            IsSharepointOnline = true;
+            return testConnection;
         }
+
+        public bool IsSharepointOnline { get; set; }
     }
 }

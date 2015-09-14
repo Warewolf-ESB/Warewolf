@@ -767,12 +767,12 @@ namespace Dev2.Studio.ViewModels
             var showDialog = ShowSharepoint(drop, vm);
             if (showDialog != null && showDialog.Value && vm.Resource.ID == Guid.Empty)
             {
-                ShowSharepointSourceServerSaveDialog(vm.Resource, activeEnvironment, vm.ServerName, vm.UserName, vm.Password, vm.AuthenticationType);
+                ShowSharepointSourceServerSaveDialog(vm.Resource, activeEnvironment, vm.ServerName, vm.UserName, vm.Password, vm.AuthenticationType,vm.IsSharepointOnline);
             }
             else if (showDialog != null && showDialog.Value && vm.Resource.ID != Guid.Empty)
             {
                 // ReSharper disable once MaximumChainedReferences
-                var source = new SharepointSource { Server = vm.ServerName, UserName = vm.UserName, Password = vm.Password, AuthenticationType = vm.AuthenticationType, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                var source = new SharepointSource { Server = vm.ServerName, UserName = vm.UserName, Password = vm.Password, AuthenticationType = vm.AuthenticationType, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID, IsSharepointOnline = vm.IsSharepointOnline}.ToStringBuilder();
                 ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, source, GlobalConstants.ServerWorkspaceID);
 
             }
@@ -784,9 +784,9 @@ namespace Dev2.Studio.ViewModels
             set { _showSaveDialog = value; }
         }
         
-        public Action<IContextualResourceModel, IEnvironmentModel, string, string,string,AuthenticationType> ShowSharepointSourceServerSaveDialog
+        public Action<IContextualResourceModel, IEnvironmentModel, string, string,string,AuthenticationType,bool> ShowSharepointSourceServerSaveDialog
         {
-            get { return _showSharepointServerSourceSaveDialog ?? RootWebSite.ShowNewSharepointServerSourceSaveDialog; }
+            get { return _showSharepointServerSourceSaveDialog ?? ((resourceModel, model, server, userName, password, authenticationType, isSharepointOnline) => RootWebSite.ShowNewSharepointServerSourceSaveDialog(resourceModel, model, server, userName, password, authenticationType, isSharepointOnline)); }
             set { _showSharepointServerSourceSaveDialog = value; }
         }
         public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropboxAction
@@ -1676,7 +1676,7 @@ namespace Dev2.Studio.ViewModels
         public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDropAction;
         public Func<SharepointServerSource, SharepointServerSourceViewModel, bool?> _showSharepointAction;
         Action<IContextualResourceModel, IEnvironmentModel, string, string> _showSaveDialog;
-        Action<IContextualResourceModel, IEnvironmentModel, string, string, string, AuthenticationType> _showSharepointServerSourceSaveDialog;
+        Action<IContextualResourceModel, IEnvironmentModel, string, string, string, AuthenticationType,bool> _showSharepointServerSourceSaveDialog;
         IDropboxFactory _dropboxFactory;
 
         public bool IsDownloading()
