@@ -74,7 +74,20 @@ namespace Dev2.Activities.Sharepoint
                     var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     if (listResult != null)
                     {
-                        startSearchTerm = listResult.Item.Select(warewolfAtom => CastWarewolfValueToCorrectType(warewolfAtom.ToString(), sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                        foreach(var warewolfAtom in listResult.Item)
+                        {
+                            var valueString = warewolfAtom.ToString();
+                            if (valueString.Contains(","))
+                            {
+                                var listOfValues = valueString.Split(',');
+                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                            }
+                            else
+                            {
+                                var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                                startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
+                            }
+                        }
                     }
                 }else
                 {
