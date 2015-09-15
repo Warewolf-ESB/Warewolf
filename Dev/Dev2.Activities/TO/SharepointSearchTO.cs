@@ -251,6 +251,7 @@ namespace Dev2.TO
             var searchOptions = new List<string>
             {
                 "Begins With",
+                "In",
                 "Contains",
                 "=",
                 ">",
@@ -268,6 +269,8 @@ namespace Dev2.TO
             {
                 case "Begins With":
                     return "<BeginsWith>";
+                case "In":
+                    return "<In>";
                 case "Contains":
                     return "<Contains>";
                 case "=":
@@ -291,6 +294,8 @@ namespace Dev2.TO
             {
                 case "Begins With":
                     return "</BeginsWith>";
+                case "In":
+                    return "</In>";
                 case "Contains":
                     return "</Contains>";
                 case "=":

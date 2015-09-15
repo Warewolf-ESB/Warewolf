@@ -164,7 +164,96 @@ namespace Dev2.Tests.Activities.Utils
             //------------Assert Results-------------------------
             Assert.AreEqual("<View><Query><Where><FieldRef Name=\"Title\"></FieldRef><Value Type=\"Text\">Bob</Value>"+Environment.NewLine+"</Where></Query></View>",camlQuery.ViewXml);
         }
+         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ListResult()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+             var executionEnvironment = new ExecutionEnvironment();
+             executionEnvironment.Assign("[[rec().name]]","bob",0);
+             executionEnvironment.Assign("[[rec().name]]","dora",0);
+             //------------Execute Test---------------------------
+             var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "[[rec(*).name]]", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+             Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value><Value Type=\"Text\">dora</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        } 
         
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ScalarResult()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+             var executionEnvironment = new ExecutionEnvironment();
+             executionEnvironment.Assign("[[name]]","bob",0);
+             //------------Execute Test---------------------------
+             var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "[[name]]", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+             Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_TextResult()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+             var executionEnvironment = new ExecutionEnvironment();
+             //------------Execute Test---------------------------
+             var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "bob", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+             Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_TextResultCommaSeperated()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+            var executionEnvironment = new ExecutionEnvironment();
+            //------------Execute Test---------------------------
+            var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "bob,dora", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value><Value Type=\"Text\">dora</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ScalarResultCommaSeperated()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+            var executionEnvironment = new ExecutionEnvironment();
+            executionEnvironment.Assign("[[name]]","bob,dora",0);
+            //------------Execute Test---------------------------
+            var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "[[name]]", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value><Value Type=\"Text\">dora</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointUtils_BuildCamlQuery")]
+        public void SharepointUtils_BuildCamlQuery_ValidFilter_In_RecSetResultCommaSeperated()
+        {
+            //------------Setup for test--------------------------
+            var sharepointUtils = new SharepointUtils();
+            var executionEnvironment = new ExecutionEnvironment();
+            executionEnvironment.Assign("[[names().name]]", "bob,dora", 0);
+            //------------Execute Test---------------------------
+            var camlQuery = sharepointUtils.BuildCamlQuery(executionEnvironment, new List<SharepointSearchTo> { new SharepointSearchTo("Title", "In", "[[names(*).name]]", 1) { InternalName = "Title" } }, new List<ISharepointFieldTo> { new SharepointFieldTo { InternalName = "Title", Type = SharepointFieldType.Text } }, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<View><Query><Where><In><FieldRef Name=\"Title\"></FieldRef><Values><Value Type=\"Text\">bob</Value><Value Type=\"Text\">dora</Value></Values></In>" + Environment.NewLine + "</Where></Query></View>", camlQuery.ViewXml);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]

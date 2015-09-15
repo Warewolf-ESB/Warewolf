@@ -62,11 +62,63 @@ namespace Dev2.Activities.Sharepoint
 
         IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo,int update)
         {
-            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch,update));
-            while (iterator.HasMoreData())
+            var warewolfEvalResult = env.Eval(sharepointSearchTo.ValueToMatch, update);
+            var fieldType = sharepointFieldTo.GetFieldType();
+            if (sharepointSearchTo.SearchType == "In")
             {
-                var fieldType = sharepointFieldTo.GetFieldType();
-                yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"{2}\">{3}</Value>{4}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName, fieldType, CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
+                var startSearchTerm = string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef>", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName);
+               
+                startSearchTerm+="<Values>";
+                if(warewolfEvalResult.IsWarewolfAtomListresult)
+                {
+                    var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (listResult != null)
+                    {
+                        foreach(var warewolfAtom in listResult.Item)
+                        {
+                            var valueString = warewolfAtom.ToString();
+                            if (valueString.Contains(","))
+                            {
+                                var listOfValues = valueString.Split(',');
+                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                            }
+                            else
+                            {
+                                var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                                startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
+                            }
+                        }
+                    }
+                }else
+                {
+                    var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if(scalarResult!=null)
+                    {
+                        var valueString = scalarResult.Item.ToString();
+                        if (valueString.Contains(","))
+                        {
+                            var listOfValues = valueString.Split(',');
+                            startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                        }
+                        else
+                        {
+                            var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                            startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
+                        }
+                    }
+                }
+                startSearchTerm += "</Values>";
+                startSearchTerm += SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType);
+                yield return startSearchTerm;
+            }
+            else
+            {
+                
+                WarewolfIterator iterator = new WarewolfIterator(warewolfEvalResult);
+                while (iterator.HasMoreData())
+                {
+                    yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"{2}\">{3}</Value>{4}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName, fieldType, CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
+                }
             }
         }
 
