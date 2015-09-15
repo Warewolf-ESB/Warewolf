@@ -4237,3 +4237,11 @@ Scenario: ForEach Acceptance Tests
 	  |                   |
 	  | [[Result]] = Pass |
 
+#wolf-1121
+Scenario: ForEach Acceptance Tests
+	  Given I have a workflow "Wolf-1121"
+	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=1cd1fdf9-7382-4456-8be6-1d3ca462b978" is executed
+	Then the workflow execution has "NO" error
