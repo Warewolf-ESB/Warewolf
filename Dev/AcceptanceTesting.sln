@@ -146,7 +146,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Old", "Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj", "{CA1EC490-5138-4714-8188-15D4BF6334DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Flickering.Specs", "Dev2.Flickering.Specs\Dev2.Flickering.Specs.csproj", "{98503680-75D8-46B3-8DF7-ED282EFF413C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Flickering.Specs", "Dev2.FlickeringSpecs\Dev2.Flickering.Specs.csproj", "{98503680-75D8-46B3-8DF7-ED282EFF413C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Network", "Dev2.Network\Dev2.Network.csproj", "{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}"
 EndProject
