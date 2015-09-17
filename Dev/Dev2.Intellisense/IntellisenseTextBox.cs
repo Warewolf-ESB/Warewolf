@@ -1188,14 +1188,29 @@ namespace Dev2.UI
 
                         if(_listBox != null)
                         {
-                            foreach(IntellisenseProviderResult currentResult in
-                                Items.Where(currentResult => currentResult.IsError))
+                            var intellisenseProviderResults = Items.Where(currentResult => currentResult.IsError).ToList();
+                            
+                            for(int index = 0; index < intellisenseProviderResults.Count; index++)
                             {
+                                IntellisenseProviderResult currentResult = intellisenseProviderResults[index];
                                 hasError = true;
 
-                                ttErrorBuilder.Append(++errorCount);
-                                ttErrorBuilder.Append(") ");
-                                ttErrorBuilder.AppendLine(currentResult.Description);
+                                if (index != 0)
+                                {
+                                    var previousResult = intellisenseProviderResults[index - 1];
+                                    if (previousResult.Description != currentResult.Description)
+                                    {
+                                        ttErrorBuilder.Append(++errorCount);
+                                        ttErrorBuilder.Append(") ");
+                                        ttErrorBuilder.AppendLine(currentResult.Description);
+                                    }
+                                }
+                                else
+                                {
+                                    ttErrorBuilder.Append(++errorCount);
+                                    ttErrorBuilder.Append(") ");
+                                    ttErrorBuilder.AppendLine(currentResult.Description);
+                                }
                             }
                         }
 
