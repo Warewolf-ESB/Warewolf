@@ -1086,9 +1086,23 @@ namespace Dev2.UI
                             {
                                 hasError = true;
 
-                                ttErrorBuilder.Append(++errorCount);
-                                ttErrorBuilder.Append(") ");
-                                ttErrorBuilder.AppendLine(currentResult.Description);
+                                if (i != 0)
+                                {
+                                    var previousResult = results[i - 1];
+                                    if (previousResult.Description != currentResult.Description)
+                                    {
+                                        ttErrorBuilder.Append(++errorCount);
+                                        ttErrorBuilder.Append(") ");
+                                        ttErrorBuilder.AppendLine(currentResult.Description);
+                                    }
+                                }
+                                else
+                                {
+                                    ttErrorBuilder.Append(++errorCount);
+                                    ttErrorBuilder.Append(") ");
+                                    ttErrorBuilder.AppendLine(currentResult.Description);
+                                }
+								
                             }
 
                             if(!currentResult.IsError)
