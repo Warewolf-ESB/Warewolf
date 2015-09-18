@@ -4228,7 +4228,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 @ignore
 Scenario: ForEach Acceptance Tests
 	  Given I have a workflow "Master Test"
-	  And "Master Test" contains "Testing/For Each" from server "localhost" with mapping as
+	  And "Testing/For Each" contains "Master Test" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  When "Master Test" is executed
@@ -4245,3 +4245,17 @@ Scenario: ForEach Acceptance Tests2
 	  |                  |               | Result              | [[Result]]  |
 	  When "http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=1cd1fdf9-7382-4456-8be6-1d3ca462b978" is executed
 	Then the workflow execution has "NO" error
+
+
+Scenario: Mixing scalar and Recordset
+	  Given I have a workflow "Wolf-860"
+	  And "Wolf-860" contains "Wolf-860" from server "localhost" with mapping as
+      | Input Data or [[Variable]] | To Service  | Output from Service                | To Variable |
+      | [[CountryName]]            | CountryName | dbo_Pr_CitiesGetByCountry().CityID | [[CityID]]  |
+      | [[Prefix]]                 | Prefix      | dbo_Pr_CitiesGetByCountry().City   | [[City]]    |
+	  When "Wolf-860" is executed
+	Then the workflow execution has "NO" error
+	  And the 'Wolf-860' in Workflow 'Wolf-860' debug outputs as
+	  |              |
+	  | [[CityID]] = |
+	  | [[City]] =   |
