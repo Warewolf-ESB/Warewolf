@@ -372,7 +372,7 @@ namespace Dev2.Services.Execution
                                 // Extract column being mapped to ;)
                                 foreach (var definition in dev2Definitions)
                                 {
-                                    if (definition.MapsTo == subc.Name)
+                                    if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
                                     {
                                         DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
                                     }

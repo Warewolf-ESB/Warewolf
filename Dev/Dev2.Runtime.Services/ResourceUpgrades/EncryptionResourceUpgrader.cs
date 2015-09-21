@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ResourceUpgrades
         {
             _replacements.Add("Source", new StringTransform
             {
-                SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
+                SearchRegex = new Regex(@"<Source ID=""[a-fA-F0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
                 GroupNumbers = new[] { 1 },
                 TransformFunction = DpapiWrapper.EncryptIfDecrypted
             }
