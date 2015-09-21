@@ -4238,6 +4238,7 @@ Scenario: ForEach Acceptance Tests
 	  | [[Result]] = Pass |
 
 #wolf-1121
+@ignore
 Scenario: ForEach Acceptance Tests2
 	  Given I have a workflow "Wolf-1121"
 	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
