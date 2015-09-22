@@ -261,9 +261,9 @@ namespace Dev2.Services.Execution
                     else
                     {
                         // handle a scalar coming out ;)
-                        if (executeService.Rows != null && executeService.Rows.Count == 1)
+                        if (executeService.Rows != null && executeService.Rows.Count> 0)
                         {
-                            var row = executeService.Rows[0].ItemArray;
+                            var row = executeService.Rows[executeService.Rows.Count-1].ItemArray;
                             // Look up the correct index from the columns ;)
 
                             int pos = 0;
@@ -272,7 +272,7 @@ namespace Dev2.Services.Execution
 
                             while (pos < cols.Count && idx == -1)
                             {
-                                if (colMapping[pos] == expression)
+                                if (colMapping.ContainsKey(pos) && colMapping[pos] == expression)
                                 {
                                     idx = pos;
                                 }
@@ -304,7 +304,7 @@ namespace Dev2.Services.Execution
                     var idx = dtCols.IndexOf(def.Name);
                     if (idx != -1)
                     {
-                        if (def.IsRecordSet && DataListUtil.IsValueRecordsetWithFields(def.RawValue))
+                        if ((def.IsRecordSet && DataListUtil.IsValueRecordsetWithFields(def.RawValue)) || (DataListUtil.IsValueRecordsetWithFields(def.RawValue)))
                         {
                             result.Add(idx, DataListUtil.ExtractFieldNameFromValue(def.RawValue));
                         }

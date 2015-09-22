@@ -3895,6 +3895,22 @@ Examples:
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
+Scenario Outline: Database SqlDB  service using Scalar
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[name]] = String |
+	  | [[rec(1).email]] = String |	 
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMailsScalar | SqlEmail    | [[name]]     | [[rec(*).email]] | NO           |
+
 
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
@@ -4039,6 +4055,23 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 Examples: 
     | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithDBServiceMails15 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+
+Scenario Outline: Database MySqlDB Database service inputs and outputs with scalars
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service          | To Variable     |
+	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                            |
+	  | [[countries(1).id]] = 1                    |
+	  | [[countries(2).id]] = 1                    |
+	  | [[description]] = Afghanistan |
+Examples: 
+    | WorkflowName                     | ServiceName       | nameVariable        | emailVariable   | errorOccured |
+    | TestMySqlWFWithDBServiceMailsMix | MySqlGetCountries | [[countries(*).id]] | [[description]] | NO           |
 
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
@@ -4225,24 +4258,15 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
 #FOREACH
-@ignore
+#get resource from leroy
+@ignore 
 Scenario: ForEach Acceptance Tests
-	  Given I have a workflow "Master Test"
-	  And "Master Test" contains "Testing/For Each" from server "localhost" with mapping as
+	  Given I have a workflow "ForEach - Master Test"
+	  And "ForEach - Master Test" contains "For Each" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
-	  When "Master Test" is executed
+	  When "ForEach - Master Test" is executed
 	Then the workflow execution has "NO" error
-	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  And the 'For Each' in Workflow 'ForEach - Master Test' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
-
-#wolf-1121
-@ignore
-Scenario: ForEach Acceptance Tests2
-	  Given I have a workflow "Wolf-1121"
-	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=1cd1fdf9-7382-4456-8be6-1d3ca462b978" is executed
-	Then the workflow execution has "NO" error
