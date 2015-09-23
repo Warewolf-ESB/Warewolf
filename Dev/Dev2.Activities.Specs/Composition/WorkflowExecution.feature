@@ -4247,15 +4247,4 @@ Scenario: ForEach Acceptance Tests2
 	Then the workflow execution has "NO" error
 
 
-Scenario: Mixing scalar and Recordset
-	  Given I have a workflow "Wolf-860"
-	  And "Wolf-860" contains "Wolf-860" from server "localhost" with mapping as
-      | Input Data or [[Variable]] | To Service  | Output from Service                | To Variable |
-      | [[CountryName]]            | CountryName | dbo_Pr_CitiesGetByCountry().CityID | [[CityID]]  |
-      | [[Prefix]]                 | Prefix      | dbo_Pr_CitiesGetByCountry().City   | [[City]]    |
-	  When "Wolf-860" is executed
-	Then the workflow execution has "NO" error
-	  And the 'Wolf-860' in Workflow 'Wolf-860' debug outputs as
-	  |              |
-	  | [[CityID]] = |
-	  | [[City]] =   | 
+
