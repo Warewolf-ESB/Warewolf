@@ -4257,7 +4257,7 @@ Scenario: Recordsets in Debug Output windpw
 	| [[original(2).date]] = 18/08/2014 | [[Compared(2).date]] | dd/mm/yyyy | [[Date(2).Difference]] = 13  |
 	When "DateTimeDifference" is executed
 	Then the workflow execution has "NO" error
-	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
 	  |                              |
 	  | [[Expected]] = Success       |
 	  | [[Date(1).Difference]] = -14 |
