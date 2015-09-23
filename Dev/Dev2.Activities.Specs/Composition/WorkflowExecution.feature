@@ -4258,4 +4258,4 @@ Scenario: Mixing scalar and Recordset
 	  And the 'Wolf-860' in Workflow 'Wolf-860' debug outputs as
 	  |              |
 	  | [[CityID]] = |
-	  | [[City]] =   |
+	  | [[City]] =   | 
