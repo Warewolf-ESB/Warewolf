@@ -15463,54 +15463,6 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Mixing scalar and Recordset")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void MixingScalarAndRecordset()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mixing scalar and Recordset", ((string[])(null)));
-#line 4250
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4251
-   testRunner.Given("I have a workflow \"Wolf-860\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table839 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Data or [[Variable]]",
-                        "To Service",
-                        "Output from Service",
-                        "To Variable"});
-            table839.AddRow(new string[] {
-                        "[[CountryName]]",
-                        "CountryName",
-                        "dbo_Pr_CitiesGetByCountry().CityID",
-                        "[[CityID]]"});
-            table839.AddRow(new string[] {
-                        "[[Prefix]]",
-                        "Prefix",
-                        "dbo_Pr_CitiesGetByCountry().City",
-                        "[[City]]"});
-#line 4252
-   testRunner.And("\"Wolf-860\" contains \"Wolf-860\" from server \"localhost\" with mapping as", ((string)(null)), table839, "And ");
-#line 4256
-   testRunner.When("\"Wolf-860\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4257
- testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table840.AddRow(new string[] {
-                        "[[CityID]] ="});
-            table840.AddRow(new string[] {
-                        "[[City]] ="});
-#line 4258
-   testRunner.And("the \'Wolf-860\' in Workflow \'Wolf-860\' debug outputs as", ((string)(null)), table840, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
