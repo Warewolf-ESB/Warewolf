@@ -4248,3 +4248,17 @@ Scenario: ForEach Acceptance Tests2
 
 
 
+#Wolf-1102
+Scenario: Recordsets in Debug Output windpw
+	Given I have a workflow "DateTimeDifference"
+	And "Testing/For Each" contains "DateTimeDifference" from server "localhost" with mapping as
+	| Input1                            | Input2               | Format     | result                       |
+	| [[original(1).date]] = 22/09/2015 | [[Compared(1).date]] | dd/mm/yyyy | [[Date(1).Difference]] = -14 |
+	| [[original(2).date]] = 18/08/2014 | [[Compared(2).date]] | dd/mm/yyyy | [[Date(2).Difference]] = 13  |
+	When "DateTimeDifference" is executed
+	Then the workflow execution has "NO" error
+	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  |                              |
+	  | [[Expected]] = Success       |
+	  | [[Date(1).Difference]] = -14 |
+	  | [[Date(2).Difference]] = 13  |
