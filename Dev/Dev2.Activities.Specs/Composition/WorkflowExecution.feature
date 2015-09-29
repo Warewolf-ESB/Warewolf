@@ -4228,7 +4228,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 @ignore
 Scenario: ForEach Acceptance Tests
 	  Given I have a workflow "Master Test"
-	  And "Master Test" contains "Testing/For Each" from server "localhost" with mapping as
+	  And "Testing/For Each" contains "Master Test" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  When "Master Test" is executed
@@ -4238,7 +4238,6 @@ Scenario: ForEach Acceptance Tests
 	  | [[Result]] = Pass |
 
 #wolf-1121
-@ignore
 Scenario: ForEach Acceptance Tests2
 	  Given I have a workflow "Wolf-1121"
 	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
@@ -4246,3 +4245,20 @@ Scenario: ForEach Acceptance Tests2
 	  |                  |               | Result              | [[Result]]  |
 	  When "http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=1cd1fdf9-7382-4456-8be6-1d3ca462b978" is executed
 	Then the workflow execution has "NO" error
+
+
+
+#Wolf-1102
+Scenario: Recordsets in Debug Output windpw
+	Given I have a workflow "DateTimeDifference"
+	And "Testing/For Each" contains "DateTimeDifference" from server "localhost" with mapping as
+	| Input1                            | Input2               | Format     | result                       |
+	| [[original(1).date]] = 22/09/2015 | [[Compared(1).date]] | dd/mm/yyyy | [[Date(1).Difference]] = -14 |
+	| [[original(2).date]] = 18/08/2014 | [[Compared(2).date]] | dd/mm/yyyy | [[Date(2).Difference]] = 13  |
+	When "DateTimeDifference" is executed
+	Then the workflow execution has "NO" error
+	And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  |                              |
+	  | [[Expected]] = Success       |
+	  | [[Date(1).Difference]] = -14 |
+	  | [[Date(2).Difference]] = 13  |

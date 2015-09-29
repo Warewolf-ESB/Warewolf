@@ -216,3 +216,20 @@ Scenario: Use XPath to with a comment in it
 	| 1 | [[rec(1).id]] = 1        |
 	|   | [[rec(2).id]] = 2        |
 	|   | [[rec(3).id]] = 3        |	
+
+
+@ignore
+#wolf-829
+#Scenario: Serialization when returning Xml from DLL	
+#	Given I have this xml '' in a variable "[[myxml]]"
+#	And I assign the variable "[[myxml]]" as xml input
+#	And I have a variable "[[ids]]" output with xpath "//root/num/@id"
+#	When the xpath tool is executed
+#	Then the variable "[[ids]]" should have a value ""
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	| XML         | # |                          |
+#	| [[myxml]] = | 1 | [[ids]] = //root/num/@id |
+#	And the debug output as 
+#	| # |           |
+#	| 1 | [[ids]] = |

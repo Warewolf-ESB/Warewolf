@@ -3,7 +3,7 @@
 
 
 **NOTE:** Warewolf is currently undergoing some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). We’ve set the default branch to *development-stable*, please use that branch if you need a stable build. 
-To see how things are progressing with the redesign feel free to grab the *development* branch.
+To see how things are progressing with the redesign feel free to grab the *development branch*.
 
 
 
