@@ -385,7 +385,7 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetSwaggerOutputForService(IResource resource, string dataList)
+        public static string GetSwaggerOutputForService(IResource resource, string dataList, string webServerUrl)
         {
             if(resource == null)
             {
@@ -395,14 +395,16 @@ namespace Dev2
             {
                 throw new ArgumentNullException("dataList");
             }
+            Uri url;
+            Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out url);
             List<JObject> parameters;
             bool isScalarInputOnly;
             var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
             var definitionObject = GetParametersDefinition(out parameters, dataList, out isScalarInputOnly);
             var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" } , {"in","query"},{"required",true},{"schema",new JObject{{"$ref","#/definitions/DataList"}}}});
-            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(resource, parametersForSwagger);
+            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url.AbsolutePath, parametersForSwagger);
             var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();
-            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject);
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject,url.Scheme);
             var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
             return resultString;
         }
@@ -460,7 +462,7 @@ namespace Dev2
             return resultString;
         }
 
-        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject)
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject,string scheme)
         {
             var jsonSwaggerObject = new JObject
             {
@@ -468,8 +470,8 @@ namespace Dev2
                 { "info", jsonSwaggerInfoObject },
                 { "host", new JValue(EnvironmentVariables.PublicWebServerUri) },
                 { "basePath", new JValue("/") },
-                { "schemes", new JArray("http", "https") },
-                { "produces", new JValue("application/json") },
+                { "schemes", new JArray(scheme) },
+                { "produces", new JArray("application/json","application/xml") },
                 { "paths", jsonSwaggerPathObject },
                 { "responses", jsonSwaggerResponsesObject },
                 { "definitions", definitionObject }
@@ -496,11 +498,11 @@ namespace Dev2
             return jsonSwaggerResponsesObject;
         }
 
-        static JObject BuildJsonSwaggerPathObject(IResource resource, JToken parametersForSwagger)
+        static JObject BuildJsonSwaggerPathObject(string path, JToken parametersForSwagger)
         {
             var jsonSwaggerPathObject = new JObject
             {
-                { "serviceName", new JValue(resource.ResourceName) },
+                { "serviceName", new JValue(path) },
                 {
                     "get", new JObject
                     {

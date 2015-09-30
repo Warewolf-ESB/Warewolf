@@ -19,7 +19,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(null, "");
+            ExecutionEnvironmentUtils.GetSwaggerOutputForService(null, "", "");
             //------------Assert Results-------------------------
         }
         
@@ -32,7 +32,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, "");
+            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, "", "");
             //------------Assert Results-------------------------
         }
         
@@ -45,7 +45,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, null);
+            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, null, "");
             //------------Assert Results-------------------------
         }
 
@@ -64,11 +64,12 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
 
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList></DataList>").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
+            StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"http\"]");
         }
 
         [TestMethod]
@@ -92,11 +93,12 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
 
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>").Replace(Environment.NewLine,"").Replace(" ","");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
+            StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"https\"]");
         }
 
         [TestMethod]
@@ -120,12 +122,13 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
             const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
+            StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"http\"]");
         }
 
         [TestMethod]
@@ -149,12 +152,14 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
             const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"Name\":{\"type\":\"string\"},\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService,expectedSwaggerVersion);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
             StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
+            StringAssert.Contains(swaggerOutputForService, "\"produces\":[\"application/json\",\"application/xml\"]");
+            StringAssert.Contains(swaggerOutputForService, "\"schemes\":[\"https\"]");
         }
 
 

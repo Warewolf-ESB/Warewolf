@@ -16,7 +16,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -97,43 +96,70 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 // now set the emition type ;)
-                int loc;
-                if(!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
-                {
-                    // default it to xml
-                    dataObject.ReturnType = EmitionTypes.XML;
-
-                    if(loc > 0)
+                
+                
+                    int loc;
+                    if (!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
                     {
-                        var typeOf = serviceName.Substring((loc + 1)).ToUpper();
-                        EmitionTypes myType;
-                        if(Enum.TryParse(typeOf, out myType))
+                        // default it to xml
+                        dataObject.ReturnType = EmitionTypes.XML;
+
+                        if (loc > 0)
                         {
-                            dataObject.ReturnType = myType;
+                            var typeOf = serviceName.Substring((loc + 1)).ToUpper();
+                            EmitionTypes myType;
+                            if (Enum.TryParse(typeOf, out myType))
+                            {
+                                dataObject.ReturnType = myType;
+                            }
+
+                            // adjust the service name to drop the type ;)
+
+                            // avoid .wiz amendments ;)
+                            if (!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                            {
+                                serviceName = serviceName.Substring(0, loc);
+                                dataObject.ServiceName = serviceName;
+                            }
+
+                            if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                            {
+                                dataObject.ReturnType = EmitionTypes.SWAGGER;
+                            }
+
                         }
-
-                        // adjust the service name to drop the type ;)
-
-                        // avoid .wiz amendments ;)
-                        if(!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
-                        {
-                            serviceName = serviceName.Substring(0, loc);
-                            dataObject.ServiceName = serviceName;
-                        }
-
-                        if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.SWAGGER;
                     }
-
-                }
-                }
-                else
-                {
-                    // default it to xml
-                    dataObject.ReturnType = EmitionTypes.XML;
-                }
-
+                    else
+                    {
+                        if (headers != null)
+                        {
+                            var contentType = headers.Get("Content-Type");
+                            if (String.IsNullOrEmpty(contentType))
+                            {
+                                contentType = headers.Get("Accept");
+                            }
+                            if (String.IsNullOrEmpty(contentType))
+                            {
+                                contentType = headers.Get("ContentType");
+                            }
+                            if (!String.IsNullOrEmpty(contentType))
+                            {
+                                if (contentType.ToLowerInvariant().Contains("json"))
+                                {
+                                    dataObject.ReturnType = EmitionTypes.JSON;
+                                }
+                                if (contentType.ToLowerInvariant().Contains("xml"))
+                                {
+                                    dataObject.ReturnType = EmitionTypes.XML;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataObject.ReturnType = EmitionTypes.XML;
+                        }
+                    }
+                
                 // ensure service gets set ;)
                 if(dataObject.ServiceName == null)
                 {
@@ -212,7 +238,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
                             {
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(),webRequest.WebServerUrl);
                             }
                         }
                         else
