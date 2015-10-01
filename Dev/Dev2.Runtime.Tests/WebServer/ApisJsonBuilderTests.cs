@@ -84,7 +84,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object,mockResourceCatalog.Object);
             var exceptedApisJson = GetExceptedApisJsonForServerNoSecurity();
             //------------Execute Test---------------------------
-            var apisJson = apisJsonBuilder.BuildForPath(null);
+            var apisJson = apisJsonBuilder.BuildForPath(null,false);
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson,apisJson);
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object,mockResourceCatalog.Object);
             var exceptedApisJson = GetExceptedApisJsonForServerPathWithNoSubDirectories();
             //------------Execute Test---------------------------
-            var apisJson = apisJsonBuilder.BuildForPath("Acceptance Testing Resources\\Execution Engine");
+            var apisJson = apisJsonBuilder.BuildForPath("Acceptance Testing Resources\\Execution Engine",true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson,apisJson);
@@ -149,7 +149,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object,mockResourceCatalog.Object);
             var exceptedApisJson = GetExceptedApisJsonForServerWithSubDirectories();
             //------------Execute Test---------------------------
-            var apisJson = apisJsonBuilder.BuildForPath("Acceptance Testing Resources");
+            var apisJson = apisJsonBuilder.BuildForPath("Acceptance Testing Resources",false);
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson,apisJson);
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object, mockResourceCatalog.Object);
             var exceptedApisJson = GetExceptedApisJsonForServerSecurity();
             //------------Execute Test---------------------------
-            var apisJson = apisJsonBuilder.BuildForPath(null);
+            var apisJson = apisJsonBuilder.BuildForPath(null,true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson, apisJson);
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var apisJsonBuilder = new ApisJsonBuilder(mockAuthorizationService.Object, mockResourceCatalog.Object);
             var exceptedApisJson = GetExceptedApisJsonForServerSecurityWithPublic();
             //------------Execute Test---------------------------
-            var apisJson = apisJsonBuilder.BuildForPath(null);
+            var apisJson = apisJsonBuilder.BuildForPath(null,false);
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson, apisJson);

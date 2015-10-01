@@ -27,7 +27,7 @@ namespace Dev2.Runtime.WebServer
             ResourceCatalog = resourceCatalog;
         }
 
-        public ApisJson BuildForPath(string path)
+        public ApisJson BuildForPath(string path, bool isPublic)
         {
             var apiJson = new ApisJson
             {
@@ -53,19 +53,25 @@ namespace Dev2.Runtime.WebServer
             }
             foreach(var resource in resourceList)
             {
-                var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
-                var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
-                if(canView&&canExecute)
+                if (isPublic)
                 {
-                    apiJson.Apis.Add(CreateSingleApiForResource(resource,false));
+                    var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource.ResourceID.ToString());
+                    var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource.ResourceID.ToString());
+                    if (publicCanExecute && publicCanView)
+                    {
+                        apiJson.Apis.Add(CreateSingleApiForResource(resource, true));
+                    }
                 }
-
-                var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal,AuthorizationContext.Execute, resource.ResourceID.ToString());
-                var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal,AuthorizationContext.View, resource.ResourceID.ToString());
-                if (publicCanExecute && publicCanView)
+                else
                 {
-                    apiJson.Apis.Add(CreateSingleApiForResource(resource, true));
+                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
+                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
+                    if (canView && canExecute)
+                    {
+                        apiJson.Apis.Add(CreateSingleApiForResource(resource, false));
+                    }
                 }
+               
             }
             return apiJson;
         }

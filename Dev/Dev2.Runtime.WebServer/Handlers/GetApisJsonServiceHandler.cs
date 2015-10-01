@@ -18,15 +18,20 @@ namespace Dev2.Runtime.WebServer.Handlers
                 throw new ArgumentNullException("ctx");
             }
             var basePath = ctx.Request.BoundVariables["path"];
-            var result = GetApisJson(basePath);
+            bool isPublic;
+            if (!bool.TryParse(ctx.Request.BoundVariables["isPublic"], out isPublic))
+            {
+                isPublic = false;
+            }
+            var result = GetApisJson(basePath,isPublic);
             
             ctx.Send(result);
         }
 
-        static IResponseWriter GetApisJson(string basePath)
+        static IResponseWriter GetApisJson(string basePath,bool isPublic)
         {
             var apiBuilder = new ApisJsonBuilder(ServerAuthorizationService.Instance, ResourceCatalog.Instance);
-            var apis = apiBuilder.BuildForPath(basePath);
+            var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Formatting.Indented };

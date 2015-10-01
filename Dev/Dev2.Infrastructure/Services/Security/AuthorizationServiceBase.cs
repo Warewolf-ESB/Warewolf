@@ -203,21 +203,14 @@ namespace Dev2.Services.Security
         static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
-            Dev2Logger.Log.Debug("getGroupPermissions:"+getGroupPermissions.Method.GetMethodBody());
             var groupPermissions = getGroupPermissions();
-            Dev2Logger.Log.Debug(string.Format("IsAuthorized: {0} for {1}", string.Join(Environment.NewLine,groupPermissions.ToList()), context));
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
-            Dev2Logger.Log.Info("Has SecuritService: " + (_securityService!=null));
             var serverPermissions = _securityService.Permissions;
-            Dev2Logger.Log.Info("GetGroupPermissions Permissions: " + string.Join(Environment.NewLine,_securityService.Permissions.ToList()));
-            Dev2Logger.Log.Info("GetGroupPermissions Principal: "+principal.Identity.Name);
-            DumpPermissionsOnError(principal);
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
-            Dev2Logger.Log.Info("GetGroupPermissions Resource Perms: " + resourcePermissions);
             var groupPermissions = new List<WindowsGroupPermission>();
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var permission in serverPermissions)
@@ -241,7 +234,6 @@ namespace Dev2.Services.Security
         protected virtual bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
-            DumpPermissionsOnError(principal);
             if(principal == null)
             {
                 return p.IsBuiltInGuestsForExecution;

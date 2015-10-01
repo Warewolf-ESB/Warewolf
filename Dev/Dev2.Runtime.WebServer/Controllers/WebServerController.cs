@@ -157,7 +157,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
-        public HttpResponseMessage ExecuteWorkflow(string __name__)
+        public HttpResponseMessage ExecuteWorkflow(string __name__,bool isPublic)
         {
 
             if(__name__.EndsWith("apis.json"))
@@ -165,7 +165,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var path = __name__.Split(new []{"/apis.json"},StringSplitOptions.RemoveEmptyEntries);
                 if(path.Any())
                 {
-                    if (path[0].Equals("services", StringComparison.OrdinalIgnoreCase) || path[0].Equals("public", StringComparison.OrdinalIgnoreCase) || path[0].Equals("secure", StringComparison.OrdinalIgnoreCase))
+                    if (path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                     {
                         path[0] = null;
                     }
@@ -173,7 +173,8 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
                 var requestVar = new NameValueCollection
                 {
-                    { "path", path[0] }
+                    {"path", path[0]},
+                    {"isPublic",isPublic.ToString()}
                 };
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
             }
@@ -194,7 +195,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__);
+          return ExecuteWorkflow(__name__,false);
         }  
         
         
@@ -203,7 +204,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Public/{*__name__}")]
         public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__);
+          return ExecuteWorkflow(__name__,true);
         }
         
         [HttpGet]
