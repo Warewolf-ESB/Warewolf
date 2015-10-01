@@ -58,14 +58,12 @@ namespace Dev2.Network
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.Windows;
-            Principal = ClaimsPrincipal.Current;
         }
 
         public static bool IsShuttingDown { get; private set; }
 
         public ServerProxyWithoutChunking(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
-
             IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
             ServerEvents = EventPublishers.Studio;
@@ -75,11 +73,11 @@ namespace Dev2.Network
             {
                 uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
             }
+            Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
-
-
-            Dev2Logger.Log.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
+            Dev2Logger.Log.Debug(credentials);
+            Dev2Logger.Log.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
             HubConnection = new HubConnectionWrapper(uriString){ Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
@@ -89,10 +87,7 @@ namespace Dev2.Network
             _asyncWorker = worker;
 
         }
-
-
-
-
+        
         public IPrincipal Principal { get; set; }
 
         public ServerProxyWithoutChunking(string webAddress, string userName, string password)

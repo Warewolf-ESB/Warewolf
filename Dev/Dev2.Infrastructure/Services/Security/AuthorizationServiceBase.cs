@@ -170,7 +170,12 @@ namespace Dev2.Services.Security
 
         public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
         {
-            return IsAuthorized(context, () => GetGroupPermissions(principal, resource));
+            Dev2Logger.Log.Debug(string.Format("IsAuthorized: {0} for {1}", principal.Identity.Name, context));
+            return IsAuthorized(context, () =>
+            {
+                Dev2Logger.Log.Debug("Getting Group Permissions");
+                return GetGroupPermissions(principal, resource);
+            });
         }
 
         public void DumpPermissionsOnError(IPrincipal principal)
@@ -190,7 +195,7 @@ namespace Dev2.Services.Security
 
             foreach(var perm in _securityService.Permissions)
             {
-                Dev2Logger.Log.Error("SERVER PERM -> " + perm.WindowsGroup);
+                Dev2Logger.Log.Error("PERM -> " + perm.WindowsGroup);
                 Dev2Logger.Log.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
             }
         }
@@ -198,15 +203,21 @@ namespace Dev2.Services.Security
         static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
+            Dev2Logger.Log.Debug("getGroupPermissions:"+getGroupPermissions.Method.GetMethodBody());
             var groupPermissions = getGroupPermissions();
+            Dev2Logger.Log.Debug(string.Format("IsAuthorized: {0} for {1}", string.Join(Environment.NewLine,groupPermissions.ToList()), context));
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
+            Dev2Logger.Log.Info("Has SecuritService: " + (_securityService!=null));
             var serverPermissions = _securityService.Permissions;
+            Dev2Logger.Log.Info("GetGroupPermissions Permissions: " + string.Join(Environment.NewLine,_securityService.Permissions.ToList()));
+            Dev2Logger.Log.Info("GetGroupPermissions Principal: "+principal.Identity.Name);
+            DumpPermissionsOnError(principal);
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
-
+            Dev2Logger.Log.Info("GetGroupPermissions Resource Perms: " + resourcePermissions);
             var groupPermissions = new List<WindowsGroupPermission>();
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var permission in serverPermissions)
@@ -230,7 +241,7 @@ namespace Dev2.Services.Security
         protected virtual bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
-
+            DumpPermissionsOnError(principal);
             if(principal == null)
             {
                 return p.IsBuiltInGuestsForExecution;

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Network;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
@@ -48,25 +49,42 @@ namespace Dev2.Security
         {
             if(args.ToState == NetworkState.Online)
             {
+                Dev2Logger.Log.Debug("Reading Permissions from Server after online");
                 Read();
             }
         }
 
-        public override void Read()
+        public override async void Read()
         {
-            // ReSharper disable UnusedVariable
-#pragma warning disable 168
-            var task = ReadAsync();
-#pragma warning restore 168
+            Dev2Logger.Log.Debug("Reading Permissions from Server");
+            await ReadAsync();
         }
 
         public virtual async Task ReadAsync()
         {
-            await Task.Factory.StartNew(() => base.Read());
+            var communicationController = new CommunicationController
+            {
+                ServiceName = "SecurityReadService"
+            };
+            Dev2Logger.Log.Debug("Getting Permissions from Server");
+            SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID);
+            List<WindowsGroupPermission> newPermissions = null;
+            if (securitySettingsTo != null)
+            {
+                Permissions = securitySettingsTo.WindowsGroupPermissions;
+                newPermissions = securitySettingsTo.WindowsGroupPermissions;
+                Dev2Logger.Log.Debug("Permissions from Server:" + Permissions);
+            }
+            if (newPermissions != null)
+            {
+                RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions));
+            }
+            RaisePermissionsChanged();
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
+//            Dev2Logger.Log.Debug("Reading Permissions from Server");
 //            var communicationController = new CommunicationController
 //            {
 //                ServiceName = "SecurityReadService"

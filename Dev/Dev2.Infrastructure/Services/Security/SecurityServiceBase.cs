@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Dev2.Common;
 
 namespace Dev2.Services.Security
 {
@@ -89,10 +90,12 @@ namespace Dev2.Services.Security
             LogStart();
             _permissionsLock.EnterWriteLock();
             var previousPermissions = _permissions.ToList();
+            Dev2Logger.Log.Error(previousPermissions);
             List<WindowsGroupPermission> newPermissions;
             try
             {
                 newPermissions = ReadPermissions();
+                Dev2Logger.Log.Error(newPermissions);
                 _permissions.Clear();
                 if(newPermissions != null)
                 {

@@ -31,15 +31,9 @@ namespace Dev2.Network
     public class ServerProxy :  IEnvironmentConnection
     {
         IEnvironmentConnection _wrappedConnection;
-
-
-        
         public ServerProxy(Uri serverUri)
-
         {
            _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
-
-            
             SetupPassthroughEvents();
         }
 
@@ -53,25 +47,16 @@ namespace Dev2.Network
 
         // ReSharper disable MemberCanBeProtected.Global
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
-            // ReSharper restore MemberCanBeProtected.Global
         {
-
             _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
             SetupPassthroughEvents();
-
         }
-
-
-
-
-
+        
         public ServerProxy(string webAddress, string userName, string password)
         {
             _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
-
-
 
         #region Implementation of IDisposable
 
@@ -328,6 +313,7 @@ namespace Dev2.Network
         {
             if (PermissionsModified != null)
             {
+                Dev2Logger.Log.Debug("Permissions Modified: "+args);
                 PermissionsModified(this, args);
             }
         }

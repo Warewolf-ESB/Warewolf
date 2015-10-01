@@ -12,6 +12,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 
@@ -114,7 +115,13 @@ namespace Dev2.Security
 
         bool IsAuthorized()
         {
-            return !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
+            if (AuthorizationService == null)
+            {
+                Dev2Logger.Log.Error("Null AuthorizationService");
+            }
+            var isAuthorized = !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
+            Dev2Logger.Log.Info(string.Format("AuthorizeCommand for {0} is:{1}", AuthorizationContext, isAuthorized));
+            return isAuthorized;
         }
 
         static void OnPermissionsChanged(object sender, EventArgs eventArgs)

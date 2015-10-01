@@ -16,6 +16,7 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.ViewModels.Dialogs;
 
@@ -432,7 +433,14 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 throw new Exception("Unable to locate an instance of the window manager.");
             }
 
-            windowManager.ShowDialog(dev2MessageBoxViewModel);
+            try
+            {
+                windowManager.ShowDialog(dev2MessageBoxViewModel);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error("Showing popup",e);
+            }
 
             // Save don't so again option
             if(dev2MessageBoxViewModel.DontShowAgain)

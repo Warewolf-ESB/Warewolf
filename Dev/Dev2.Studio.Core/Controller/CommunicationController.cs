@@ -13,6 +13,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Studio.Core.Interfaces;
@@ -102,11 +103,18 @@ namespace Dev2.Controller
             {
                 if(connection != null)
                 {
-                    var popupController = CustomContainer.Get<IPopupController>();
-                    if(popupController != null)
+                    try
                     {
-                        popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
-                                                                     "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        if(popupController != null)
+                        {
+                            popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                                                 "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error("Error popup",e);
                     }
                 }
             }
