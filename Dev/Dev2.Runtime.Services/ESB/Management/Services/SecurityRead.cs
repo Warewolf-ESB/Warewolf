@@ -47,6 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            Dev2Logger.Log.Debug("Start Security Read");
             if(File.Exists(ServerSecurityService.FileName))
             {
                 string encryptedData;
@@ -57,10 +58,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         encryptedData = reader.ReadToEnd();
                     }
                 }
-
+                Dev2Logger.Log.Debug("Security Data Read");
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
+                    Dev2Logger.Log.Debug(decryptData);
                     var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
                     var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
 

@@ -253,9 +253,11 @@ namespace Dev2.Services.Security
 
                         // Examine group for this member ;)  
                         isInRole = principal.IsInRole(windowsGroup);
+                        Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principleName, windowsGroup, isInRole));
                         if (!isInRole)
                         {
                             isInRole = DoFallBackCheck(principal);
+                            Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}",principleName, windowsGroup, isInRole));
                         }
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
@@ -266,6 +268,7 @@ namespace Dev2.Services.Security
                             if(windowsPrincipal != null)
                             {
                                 isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
+                                Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principleName, windowsGroup, isInRole));
                                 if(windowsIdentity != null && !isInRole)
                                 {
                                     if(windowsIdentity.Groups != null)
@@ -301,15 +304,18 @@ namespace Dev2.Services.Security
                                 {
                                     // Check user's administrator membership
                                     isInRole = principal.IsInRole(sid.Value);
+                                    Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principleName, windowsGroup, isInRole));
                                 }
 
                                 //Check regardless. Not installing the software can create a situation where the "Administrators" group is not part of Warewolf
                                 isInRole = principal.IsInRole(sid.Value);
+                                Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principleName, windowsGroup, isInRole));
                             }
                         }
                         if (!isInRole)
                         {
                             isInRole = DoFallBackCheck(principal);
+                            Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principleName, windowsGroup, isInRole));
                         }
                         return isInRole;
                     }
@@ -318,6 +324,7 @@ namespace Dev2.Services.Security
                 {
                     // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
                     isInRole = principal.IsInRole(windowsGroup);
+                    Dev2Logger.Log.Debug(string.Format(" {0} IsInRole: {1} {2}", principal.Identity.Name, windowsGroup, isInRole));
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause

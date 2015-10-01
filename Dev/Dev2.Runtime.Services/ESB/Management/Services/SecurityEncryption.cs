@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 #pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
-            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
+            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC, Padding = PaddingMode.Zeros };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -104,32 +104,30 @@ namespace Dev2.Runtime.ESB.Management.Services
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            using(var memoryStream = new MemoryStream())
+            byte[] cipherTextBytes;
+            using (var memoryStream = new MemoryStream())
             {
 
                 // Define cryptographic stream (always use Write mode for encryption).
-                using(var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                 {
                     // Start encrypting.
                     cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
 
                     // Finish encrypting.
                     cryptoStream.FlushFinalBlock();
-
-                    // Convert our encrypted data from a memory stream into a byte array.
-                    var cipherTextBytes = memoryStream.ToArray();
-
-                    // Close both streams.
-                    memoryStream.Close();
-                    cryptoStream.Close();
-
-                    // Convert encrypted data into a base64-encoded string.
-                    var cipherText = Convert.ToBase64String(cipherTextBytes);
-
-                    // Return encrypted string.
-                    return cipherText;
                 }
+                // Convert our encrypted data from a memory stream into a byte array.
+                cipherTextBytes = memoryStream.ToArray();
+                // Close both streams.
             }
+
+            // Cnvert encrypted data into a base64-encoded string.
+            var cipherText = Convert.ToBase64String(cipherTextBytes);
+
+            // Return encrypted string.
+            return cipherText;
+
         }
 
         /// <summary>
@@ -178,7 +176,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 #pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
-            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
+            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC, Padding = PaddingMode.Zeros };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -191,37 +189,34 @@ namespace Dev2.Runtime.ESB.Management.Services
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            using(var memoryStream = new MemoryStream(cipherTextBytes))
+            byte[] plainTextBytes;
+            using (var memoryStream = new MemoryStream(cipherTextBytes))
             {
 
                 // Define cryptographic stream (always use Read mode for encryption).
-                using(var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
                 {
 
                     // Since at this point we don't know what the size of decrypted data
                     // will be, allocate the buffer long enough to hold cipher-text
                     // plain-text is never longer than cipher-text.
-                    var plainTextBytes = new byte[cipherTextBytes.Length];
+                    // plainTextBytes = new byte[cipherTextBytes.Length];
 
                     // Start decrypting.
-                    var decryptedByteCount = cryptoStream.Read(plainTextBytes,
-                        0,
-                        plainTextBytes.Length);
-
-                    // Close both streams.
-                    memoryStream.Close();
-                    cryptoStream.Close();
-
-                    // Convert decrypted data into a string. 
-                    // Let us assume that the original plaintext string was UTF8-encoded.
-                    var plainText = Encoding.UTF8.GetString(plainTextBytes,
-                        0,
-                        decryptedByteCount);
-
-                    // Return decrypted string.   
-                    return plainText;
+                    cryptoStream.Write(cipherTextBytes, 0, cipherTextBytes.Length);
                 }
+                plainTextBytes = memoryStream.ToArray();
             }
+            // Close both streams.
+
+            // Convert decrypted data into a string. 
+            // Let us assume that the original plaintext string was UTF8-encoded.
+            var plainText = Encoding.UTF8.GetString(plainTextBytes);
+
+            // Return decrypted string.   
+            return plainText;
         }
+            
+        
     }
 }
