@@ -149,6 +149,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
                     ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, GetDatalistString(), "1"));
                     ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
                     ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
+                    ruleSet.Add(new ScalarsNotAllowedRule(() => FieldsToSearch));
                     break;
 
                 case "Result":

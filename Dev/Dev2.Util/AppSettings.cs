@@ -30,7 +30,7 @@ namespace Dev2.Util
             get
             {
                 bool collectUsageStats;
-                Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out collectUsageStats);
+                Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out collectUsageStats);
                 return collectUsageStats;
             }
         }

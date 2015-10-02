@@ -110,7 +110,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',').Select(a => a.Trim()).ToList();
-
+                var scalarValues = toSearch.Where(DataListUtil.IsValueScalar).ToList();
+                if(scalarValues.Any())
+                {
+                    throw new Exception("Scalars are not allowed. Please check the following:"+Environment.NewLine+string.Join(Environment.NewLine,scalarValues));
+                }
                 List<int> results = new List<int>();
                 if(dataObject.IsDebugMode())
                 {
