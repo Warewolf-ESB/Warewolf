@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dev2.Util;
 using Trackerbird.Tracker;
 
 #if ! DEBUG
@@ -41,8 +42,10 @@ namespace Dev2.Instrumentation
         {
 #if ! DEBUG
             // RELEASE
-            Start("2386158864", "http://40589.tbnet1.com");
-            TBApp.StartAutoSync(true);
+            
+                Start("2386158864", "http://40589.tbnet1.com");
+                TBApp.StartAutoSync(true);
+            
 #endif
         }
 
@@ -62,22 +65,25 @@ namespace Dev2.Instrumentation
         static void Start(string productId, string callHomeUrl)
         // ReSharper restore UnusedMember.Local
         {
-            Perform(() =>
+            if (AppSettings.CollectUsageStats)
             {
-                var location = Assembly.GetExecutingAssembly().Location;
-                var filePath = Path.GetDirectoryName(location);
+                Perform(() =>
+                {
+                    var location = Assembly.GetExecutingAssembly().Location;
+                    var filePath = Path.GetDirectoryName(location);
 #if ! DEBUG && ! TEST
                 var fvi = VersionInfo.FetchVersionInfo();
                 var productVersion = fvi;
 #else
-                // ReSharper disable ConvertToConstant.Local
-                var productVersion = "0.0.9999.0";
-                // ReSharper restore ConvertToConstant.Local
+                    // ReSharper disable ConvertToConstant.Local
+                    var productVersion = "0.0.9999.0";
+                    // ReSharper restore ConvertToConstant.Local
 #endif
-                TBConfig.SetFilePath(filePath);
-                TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
-                return TBApp.Start();
-            });
+                    TBConfig.SetFilePath(filePath);
+                    TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
+                    return TBApp.Start();
+                });
+            }
         }
 
         /// <summary>
@@ -126,33 +132,38 @@ namespace Dev2.Instrumentation
         /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
-
-            var idx = className.LastIndexOf('.');
-            var newClassName = className.Substring(idx + 1);
-            newClassName = newClassName.Replace("`", "").Replace("1", "");
-            TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
+            if (AppSettings.CollectUsageStats)
+            {
+                var idx = className.LastIndexOf('.');
+                var newClassName = className.Substring(idx + 1);
+                newClassName = newClassName.Replace("`", "").Replace("1", "");
+                TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
+            }
 
         }
 
         static void Perform(Func<GenericReturn> action, bool async = false)
         {
-            try
+            if (AppSettings.CollectUsageStats)
             {
-                if(async)
+                try
                 {
-                    Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                    if (async)
+                    {
+                        Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                    }
+                    else
+                    {
+                        var result = action();
+                        WriteError(result);
+                    }
                 }
-                else
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
-                    var result = action();
-                    WriteError(result);
+                    // this is a tracker issue ;(
                 }
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-                // this is a tracker issue ;(
             }
         }
 

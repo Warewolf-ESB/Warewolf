@@ -43,6 +43,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
+using Dev2.Util;
 using Dev2.Workspaces;
 using log4net.Config;
 
@@ -1305,10 +1306,8 @@ namespace Dev2
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-
+                    
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-
-
                     // start SSL traffic if it is enabled ;)
                     if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Configuration;
 
 namespace Dev2.Util
@@ -24,7 +25,15 @@ namespace Dev2.Util
                 return _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
             }
         }
-
+        public static bool CollectUsageStats
+        {
+            get
+            {
+                bool collectUsageStats;
+                Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out collectUsageStats);
+                return collectUsageStats;
+            }
+        }
         public static string ServicesAddress
         {
             get { return LocalHost + "/wwwroot/services/Service/Resources/{0}"; }
