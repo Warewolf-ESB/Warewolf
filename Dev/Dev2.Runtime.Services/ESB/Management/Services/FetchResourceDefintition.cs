@@ -161,7 +161,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                                                                    {
                                                                        "Source", new StringTransform
                                                                                  {
-                                                                                     SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
+                                                                                     SearchRegex = new Regex(@"<Source ID=""[a-fA-F0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
                                                                                      GroupNumbers = new[] { 1 },
                                                                                      TransformFunction = DpapiWrapper.DecryptIfEncrypted
                                                                                  }

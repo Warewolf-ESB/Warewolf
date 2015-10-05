@@ -157,6 +157,11 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
+        public HttpResponseMessage ExecuteService(string __name__)
+        {
+            return ExecuteWorkflow(__name__, false);
+        }
+        
         public HttpResponseMessage ExecuteWorkflow(string __name__,bool isPublic)
         {
 
