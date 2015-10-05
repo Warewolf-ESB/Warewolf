@@ -4238,7 +4238,7 @@ Scenario: ForEach Acceptance Tests
 	  | [[Result]] = Pass |
 
 #wolf-1121
-Scenario: ForEach Acceptance Tests2
+Scenario: SharePoint JSOn formatting
 	  Given I have a workflow "Wolf-1121"
 	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
@@ -4252,9 +4252,8 @@ Scenario: ForEach Acceptance Tests2
 Scenario: Recordsets in Debug Output windpw
 	Given I have a workflow "DateTimeDifference"
 	And "Testing/For Each" contains "DateTimeDifference" from server "localhost" with mapping as
-	| Input1                            | Input2               | Format     | result                       |
-	| [[original(1).date]] = 22/09/2015 | [[Compared(1).date]] | dd/mm/yyyy | [[Date(1).Difference]] = -14 |
-	| [[original(2).date]] = 18/08/2014 | [[Compared(2).date]] | dd/mm/yyyy | [[Date(2).Difference]] = 13  |
+	     | Input to Service | From Variable | Output from Service | To Variable |
+	     |                  |               | Result              | [[Result]]  |
 	When "DateTimeDifference" is executed
 	Then the workflow execution has "NO" error
 	And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
