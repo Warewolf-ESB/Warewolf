@@ -65,8 +65,7 @@ namespace Dev2.Instrumentation
         static void Start(string productId, string callHomeUrl)
         // ReSharper restore UnusedMember.Local
         {
-            if (AppSettings.CollectUsageStats)
-            {
+            
                 Perform(() =>
                 {
                     var location = Assembly.GetExecutingAssembly().Location;
@@ -79,11 +78,15 @@ namespace Dev2.Instrumentation
                     var productVersion = "0.0.9999.0";
                     // ReSharper restore ConvertToConstant.Local
 #endif
-                    TBConfig.SetFilePath(filePath);
-                    TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
-                    return TBApp.Start();
+                    if (AppSettings.CollectUsageStats)
+                    {
+                        TBConfig.SetFilePath(filePath);
+                        TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
+                        return TBApp.Start();
+                    }
+                    return GenericReturn.OK;
                 });
-            }
+            
         }
 
         /// <summary>
