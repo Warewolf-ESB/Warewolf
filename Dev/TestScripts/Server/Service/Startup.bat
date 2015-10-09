@@ -29,7 +29,7 @@ if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
-IF EXIST "%ServerEXE%" sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester password= "I73573r0" start= demand ELSE exit 1
+IF EXIST "%ServerEXE%" sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand ELSE exit 1
 GOTO StartService
 
 :Running
