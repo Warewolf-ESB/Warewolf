@@ -15430,12 +15430,12 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("ForEach Acceptance Tests2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SharePoint JSOn formatting")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void ForEachAcceptanceTests2()
+        public virtual void SharePointJSOnFormatting()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ForEach Acceptance Tests2", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SharePoint JSOn formatting", ((string[])(null)));
 #line 4241
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -15479,26 +15479,21 @@ this.FeatureBackground();
  testRunner.Given("I have a workflow \"DateTimeDifference\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table839 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input1",
-                        "Input2",
-                        "Format",
-                        "result"});
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
             table839.AddRow(new string[] {
-                        "[[original(1).date]] = 22/09/2015",
-                        "[[Compared(1).date]]",
-                        "dd/mm/yyyy",
-                        "[[Date(1).Difference]] = -14"});
-            table839.AddRow(new string[] {
-                        "[[original(2).date]] = 18/08/2014",
-                        "[[Compared(2).date]]",
-                        "dd/mm/yyyy",
-                        "[[Date(2).Difference]] = 13"});
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
 #line 4254
  testRunner.And("\"Testing/For Each\" contains \"DateTimeDifference\" from server \"localhost\" with map" +
                     "ping as", ((string)(null)), table839, "And ");
-#line 4258
+#line 4257
  testRunner.When("\"DateTimeDifference\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4259
+#line 4258
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15509,7 +15504,7 @@ this.FeatureBackground();
                         "[[Date(1).Difference]] = -14"});
             table840.AddRow(new string[] {
                         "[[Date(2).Difference]] = 13"});
-#line 4260
+#line 4259
  testRunner.And("the \'Testing/For Each\' in Workflow \'Master Test\' debug outputs as", ((string)(null)), table840, "And ");
 #line hidden
             this.ScenarioCleanup();
