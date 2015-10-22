@@ -29,7 +29,7 @@ namespace Dev2.Services.Security
         WebGetScript,
         WebGetView,
         WebInvokeService,
-        WebExecuteWorkflow,
+        WebExecuteService,
         WebExecuteSecureWorkflow,
         WebExecutePublicWorkflow,
         WebExecuteGetLogFile,

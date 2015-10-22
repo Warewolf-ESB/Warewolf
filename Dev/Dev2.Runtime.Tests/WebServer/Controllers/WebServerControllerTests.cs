@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Post);
 
             //------------Execute Test---------------------------
-            controller.ExecuteWorkflow("HelloWorld",false);
+            controller.ExecuteService("HelloWorld");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Get);
 
             //------------Execute Test---------------------------
-            controller.ExecuteWorkflow("HelloWorld",false);
+            controller.ExecuteSecureWorkflow("HelloWorld");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);

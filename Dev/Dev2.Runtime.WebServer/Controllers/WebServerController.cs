@@ -162,7 +162,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ExecuteWorkflow(__name__, false);
         }
         
-        public HttpResponseMessage ExecuteWorkflow(string __name__,bool isPublic)
+        private HttpResponseMessage ExecuteWorkflow(string __name__,bool isPublic)
         {
 
             if(__name__.EndsWith("apis.json"))

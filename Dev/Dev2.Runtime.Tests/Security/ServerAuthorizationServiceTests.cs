@@ -403,7 +403,7 @@ namespace Dev2.Tests.Runtime.Security
             var requests = new[]
             {
                 new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, ResourceName),
-                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, ResourceName)
+                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebExecuteService, string.Format(UrlFormat, ResourceName, ""), queryString.Object, ResourceName)
             };
 
             Verify_IsAuthorized(requests);
