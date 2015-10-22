@@ -372,9 +372,7 @@ xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDi
 :exit</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>cd "$(TargetDir)"
-attrib -R /S
-copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
+    <PreBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
