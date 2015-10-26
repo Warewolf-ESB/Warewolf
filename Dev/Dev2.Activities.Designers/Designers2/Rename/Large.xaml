@@ -217,7 +217,7 @@
                Content="Public Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="6"
-                                DefaultText="[[PublicPrivateKeyPath]]"
+                                DefaultText="[[PathToPublicPrivateKey]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.PublicPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
