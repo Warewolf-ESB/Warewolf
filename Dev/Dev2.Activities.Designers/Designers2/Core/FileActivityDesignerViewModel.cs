@@ -108,8 +108,8 @@ namespace Dev2.Activities.Designers2.Core
 
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
-        string PublicPrivateKeyPath { get { return GetProperty<string>(); } }
-        string DestinationPublicPrivateKeyPath { get { return GetProperty<string>(); } }
+        string PrivateKeyPath { get { return GetProperty<string>(); } }
+        string DestinationPrivateKeyPath { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateInputPath()
         {
@@ -123,12 +123,12 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void ValidateSftpKey()
         {
-            SftpValue = ValidatePath("Public Private Key Path", PublicPrivateKeyPath, () => IsSftpFocused = true, true);
+            SftpValue = ValidatePath("Private Key Path", PrivateKeyPath, () => IsSftpFocused = true, true);
         }
 
         protected virtual void ValidateDestinationSftpKey()
         {
-            DestinationSftpValue = ValidatePath("Public Private Key Path", DestinationPublicPrivateKeyPath, () => IsSftpFocused = true, true);
+            DestinationSftpValue = ValidatePath("Private Key Path", DestinationPrivateKeyPath, () => IsSftpFocused = true, true);
         }
 
         protected virtual void ValidateInputAndOutputPaths()
