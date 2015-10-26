@@ -15,9 +15,9 @@
                                MinWidth="275"
                                Width="275"
                                MaxWidth="600"
-                               MinHeight="366"
-                               Height="366"
-                               MaxHeight="366"
+                               MinHeight="390"
+                               Height="390"
+                               MaxHeight="390"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:RenameDesignerViewModel}">
@@ -38,6 +38,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -213,9 +214,39 @@
         <Label Grid.Column="0"
                Grid.Row="6"
                Style="{StaticResource ActivityLabelStyle}"
+               Content="Private Key" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="6"
+                                DefaultText="[[PathToPrivateKey]]"
+                                FilterType="All"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.PrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.PrivateKeyPath"
+                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="7"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="If it exists" />
         <CheckBox Grid.Column="1"
-                  Grid.Row="6"
+                  Grid.Row="7"
                   Margin="-4,0,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -231,11 +262,11 @@
         </CheckBox>               
 
         <Label Grid.Column="0"
-               Grid.Row="7"
+               Grid.Row="8"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="7"
+                                Grid.Row="8"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
@@ -254,7 +285,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="8"
+                        Grid.Row="9"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 

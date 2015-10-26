@@ -34,18 +34,17 @@ namespace Dev2.Activities.Designers2.Core
             OutputPathLabel = outputPathLabel;
         }
 
-
-
         public string InputPathLabel { get; private set; }
         public string OutputPathLabel { get; private set; }
 
         public string InputPathValue { get; private set; }
         public string OutputPathValue { get; set; }
 
+        public string SftpValue { get; private set; }
+        public string DestinationSftpValue { get; private set; }
 
         public string FileContentValue { get; private set; }
         public string ArchivePasswordValue { get; private set; }
-
 
         public bool IsInputPathFocused
         {
@@ -77,8 +76,40 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty IsOutputPathFocusedProperty =
             DependencyProperty.Register("IsOutputPathFocused", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsSftpFocused
+        {
+            get { return (bool)GetValue(IsSftpFocusedProperty); }
+            set
+            {
+                if (IsSftpFocusedProperty != null)
+                {
+                    SetValue(IsSftpFocusedProperty, value);
+                }
+            }
+        }
+
+        public static readonly DependencyProperty IsSftpFocusedProperty =
+            DependencyProperty.Register("IsSftpFocusedProperty", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+
+        public bool IsDestinationSftpFocused
+        {
+            get { return (bool)GetValue(IsDestinationSftpFocusedProperty); }
+            set
+            {
+                if (IsDestinationSftpFocusedProperty != null)
+                {
+                    SetValue(IsDestinationSftpFocusedProperty, value);
+                }
+            }
+        }
+
+        public static readonly DependencyProperty IsDestinationSftpFocusedProperty =
+            DependencyProperty.Register("IsDestinationSftpFocusedProperty", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
+        string PrivateKeyPath { get { return GetProperty<string>(); } }
+        string DestinationPrivateKeyPath { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateInputPath()
         {
@@ -90,14 +121,22 @@ namespace Dev2.Activities.Designers2.Core
             OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
         }
 
+        protected virtual void ValidateSftpKey()
+        {
+            SftpValue = ValidatePath("Private Key Path", PrivateKeyPath, () => IsSftpFocused = true, true);
+        }
+
+        protected virtual void ValidateDestinationSftpKey()
+        {
+            DestinationSftpValue = ValidatePath("Private Key Path", DestinationPrivateKeyPath, () => IsSftpFocused = true, true);
+        }
+
         protected virtual void ValidateInputAndOutputPaths()
         {
             ValidateOutputPath();
             ValidateInputPath();
-
+            ValidateSftpKey();
         }
-
-
 
         protected virtual string ValidatePath(string label, string path, Action onError, bool pathIsRequired)
         {
@@ -112,7 +151,6 @@ namespace Dev2.Activities.Designers2.Core
             IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
-
 
             string pathValue;
             path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
@@ -135,13 +173,11 @@ namespace Dev2.Activities.Designers2.Core
                 fileActivityRuleSet.Add(isValidExpressionRule);
                 
                 errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
-
             }
 
             UpdateErrors(errors);
             return pathValue;
         }
-
 
         protected virtual void ValidateFileContent(string content, string label)
         {
@@ -154,15 +190,11 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(FileHasContentProperty, value); }
         }
 
-
-        public static readonly DependencyProperty FileHasContentProperty =
-    DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
-
+        public static readonly DependencyProperty FileHasContentProperty = 
+            DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
         protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
         {
-
-
             var errors = new List<IActionableErrorInfo>();
             RuleSet fileActivityRuleSet = new RuleSet();
 
@@ -172,9 +204,7 @@ namespace Dev2.Activities.Designers2.Core
 
             UpdateErrors(errors);
             return content;
-
         }
-
 
         protected virtual void ValidateArchivePassword(string password, string label)
         {
@@ -187,14 +217,11 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(ArchivePasswordExistsProperty, value); }
         }
 
-        public static readonly DependencyProperty ArchivePasswordExistsProperty =
-DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
-
-
+        public static readonly DependencyProperty ArchivePasswordExistsProperty = 
+            DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
         protected virtual string ValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired = true)
         {
-
             var errors = new List<IActionableErrorInfo>();
             RuleSet fileActivityRuleSet = new RuleSet();
 
@@ -204,9 +231,6 @@ DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileAc
 
             UpdateErrors(errors);
             return password;
-
         }
-
-
     }
 }
