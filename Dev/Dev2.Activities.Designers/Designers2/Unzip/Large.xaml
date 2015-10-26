@@ -15,9 +15,9 @@
                                MinWidth="275"
                                Width="275"
                                MaxWidth="600"
-                               MinHeight="395"
-                               Height="395"
-                               MaxHeight="395"
+                               MinHeight="419"
+                               Height="419"
+                               MaxHeight="419"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:UnzipDesignerViewModel}">
@@ -38,6 +38,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -253,9 +254,39 @@
         <Label Grid.Column="0"
                Grid.Row="8"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+               Content="Public Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="8"
+                                DefaultText="[[PublicPrivateKeyPath]]"
+                                FilterType="All"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.PublicPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.SftpPublicPrivateKeyValue}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPublicPrivateKey}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.SftpKey"
+                                     SourcePropertyValue="{Binding  ModelItem.SftpKey, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="9"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Result" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="9"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
@@ -274,7 +305,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="9"
+                        Grid.Row="10"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 
