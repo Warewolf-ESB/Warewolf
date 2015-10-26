@@ -58,7 +58,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
                 Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder), 
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
             };
-
+            var useSourceKey = ScenarioContext.Current.Get<bool>(CommonSteps.UseSourcePrivateKey);
+            var useDestinationKey = ScenarioContext.Current.Get<bool>(CommonSteps.UseDestinationPrivateKey);
+            if(useSourceKey)
+            {
+                create.PrivateKeyFile = PrivatePublicKeyFile;
+            }
+            if(useDestinationKey)
+            {
+                create.DestinationPrivateKeyFile = PrivatePublicKeyFile;
+            }
             TestStartNode = new FlowStep
             {
                 Action = create
