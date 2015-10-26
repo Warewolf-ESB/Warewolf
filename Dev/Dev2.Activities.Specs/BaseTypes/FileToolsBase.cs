@@ -23,6 +23,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public class FileToolsBase : RecordSetBases
     {
+        private const string PrivatePublicKeyFile = "C:\\Temp\\key.opk";
         public static SftpServer Server;
         public static readonly object ServerLock = new object();
 
@@ -44,16 +45,26 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     SshKey rsaKey = SshKey.Generate(SshKeyAlgorithm.RSA, 1024);
                     SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
-
+                    if(File.Exists(PrivatePublicKeyFile))
+                    {
+                        File.Delete(PrivatePublicKeyFile);
+                    }
+                    rsaKey.Save(PrivatePublicKeyFile, "Q/ulw&]");
                     // add keys, bindings and users
-                    Server = new SftpServer { Log = Console.Out };
+                    Server = new SftpServer
+                    {
+                        Log = Console.Out
+                    };
                     Server.Keys.Add(rsaKey);
                     Server.Keys.Add(dssKey);
                     Server.Bindings.Add(IPAddress.Any, 22);
-                    if (Directory.Exists(@"C:\Temp\SFTP"))
-                    Directory.Delete(@"C:\Temp\SFTP",true);
+                    if(Directory.Exists(@"C:\Temp\SFTP"))
+                    {
+                        Directory.Delete(@"C:\Temp\SFTP", true);
+                    }
                     Directory.CreateDirectory(@"C:\Temp\SFTP");
                     Server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp\SFTP"));
+                    
                     // start the server                                                    
                     Server.Start();
                 }

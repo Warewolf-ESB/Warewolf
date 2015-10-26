@@ -42,7 +42,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
 
-        internal string DefferedReadFileContents = string.Empty;
         private string _username;
         private string _password;
 
@@ -215,6 +214,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _username; }
             set { _username = value; }
         }
+
+        [Inputs("PublicPrivateKeyPath")]
+        [FindMissing]
+        public string PublicPrivateKeyPath { get; set; }
 
         /// <summary>
         /// Gets or sets the result.
