@@ -151,7 +151,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 outerIteratorCollection.AddVariableToIterateOn(itrChar);
 
                 var completeResultList = new List<string>();
-
+                if (String.IsNullOrEmpty(InField))
+                    allErrors.AddError("'In Field' is blank");
+                if (String.IsNullOrEmpty(Characters))
+                    allErrors.AddError("'Characters' is blank");
                 while(outerIteratorCollection.HasMoreData())
                 {
                     allErrors.MergeErrors(errors);
@@ -160,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextValue(itrChar);
-                    while(innerIteratorCollection.HasMoreData())
+                    while(innerIteratorCollection.HasMoreData()&& innerIteratorCollection.Depth>0)
                     {
                         if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
