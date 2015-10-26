@@ -132,7 +132,7 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 FilterType="All"
-                                DefaultText="[[PublicPrivateKeyPath]]"
+                                DefaultText="[[PathToPublicPrivateKey]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.PublicPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.SftpPublicPrivateKeyValue}"

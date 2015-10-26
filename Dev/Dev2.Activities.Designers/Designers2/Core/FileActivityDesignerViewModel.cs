@@ -41,6 +41,7 @@ namespace Dev2.Activities.Designers2.Core
         public string OutputPathValue { get; set; }
 
         public string SftpValue { get; private set; }
+        public string DestinationSftpValue { get; private set; }
 
         public string FileContentValue { get; private set; }
         public string ArchivePasswordValue { get; private set; }
@@ -90,9 +91,25 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty IsSftpFocusedProperty =
             DependencyProperty.Register("IsSftpFocusedProperty", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsDestinationSftpFocused
+        {
+            get { return (bool)GetValue(IsDestinationSftpFocusedProperty); }
+            set
+            {
+                if (IsDestinationSftpFocusedProperty != null)
+                {
+                    SetValue(IsDestinationSftpFocusedProperty, value);
+                }
+            }
+        }
+
+        public static readonly DependencyProperty IsDestinationSftpFocusedProperty =
+            DependencyProperty.Register("IsDestinationSftpFocusedProperty", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
         string PublicPrivateKeyPath { get { return GetProperty<string>(); } }
+        string DestinationPublicPrivateKeyPath { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateInputPath()
         {
@@ -107,6 +124,11 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void ValidateSftpKey()
         {
             SftpValue = ValidatePath("Public Private Key Path", PublicPrivateKeyPath, () => IsSftpFocused = true, true);
+        }
+
+        protected virtual void ValidateDestinationSftpKey()
+        {
+            DestinationSftpValue = ValidatePath("Public Private Key Path", DestinationPublicPrivateKeyPath, () => IsSftpFocused = true, true);
         }
 
         protected virtual void ValidateInputAndOutputPaths()
@@ -168,8 +190,8 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(FileHasContentProperty, value); }
         }
 
-        public static readonly DependencyProperty FileHasContentProperty =
-    DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+        public static readonly DependencyProperty FileHasContentProperty = 
+            DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
         protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
         {
@@ -195,8 +217,8 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(ArchivePasswordExistsProperty, value); }
         }
 
-        public static readonly DependencyProperty ArchivePasswordExistsProperty =
-DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+        public static readonly DependencyProperty ArchivePasswordExistsProperty = 
+            DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
         protected virtual string ValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired = true)
         {
