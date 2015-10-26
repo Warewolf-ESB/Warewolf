@@ -235,8 +235,8 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPublicPrivateKey}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.SftpKey"
-                                     SourcePropertyValue="{Binding  ModelItem.SftpKey, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.PublicPrivateKeyPath"
+                                     SourcePropertyValue="{Binding  ModelItem.PublicPrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
