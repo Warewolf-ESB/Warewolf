@@ -235,7 +235,7 @@ Scenario: Characters is blank
 	Then the execution has "An" error
 
 #---find out about rule as no error message will display
-@ignore
+
 Scenario: Find all Occurrences of a character in a variable where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to "[[b]]"
 	And I selected Index "All Occurrence"
@@ -251,7 +251,7 @@ Scenario: Find all Occurrences of a character in a variable where it doesnt exis
 	And the debug output as
 	|                 |
 	| [[result]] = -1 |
-@ignore
+
 Scenario: Find all Occurrences of a numeric character in a string
 	Given I have a findindex variable "[[a]]" equal to "2211"
 	And I selected Index "All Occurrence"

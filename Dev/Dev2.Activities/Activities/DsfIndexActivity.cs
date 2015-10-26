@@ -130,6 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             InitializeDebug(dataObject);
+
             try
             {
                 var outerIteratorCollection = new WarewolfListIterator();
@@ -153,72 +154,77 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var completeResultList = new List<string>();
                 if (String.IsNullOrEmpty(InField))
                     allErrors.AddError("'In Field' is blank");
-                if (String.IsNullOrEmpty(Characters))
+                else if (String.IsNullOrEmpty(Characters))
                     allErrors.AddError("'Characters' is blank");
-                while(outerIteratorCollection.HasMoreData())
+                else
                 {
-                    allErrors.MergeErrors(errors);
-                    errors.ClearErrors();
-                    var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
-                    innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
-                    string chars = outerIteratorCollection.FetchNextValue(itrChar);
-                    while(innerIteratorCollection.HasMoreData()&& innerIteratorCollection.Depth>0)
+
+                    while (outerIteratorCollection.HasMoreData())
                     {
-                        if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+                        allErrors.MergeErrors(errors);
+                        errors.ClearErrors();
+                        var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
+                        innerIteratorCollection.AddVariableToIterateOn(itrInField);
+
+                        string chars = outerIteratorCollection.FetchNextValue(itrChar);
+                        while (innerIteratorCollection.HasMoreData())
                         {
-                            var val = innerIteratorCollection.FetchNextValue(itrInField);
-                            if(val != null)
+                            if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                             {
-                                IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
-                                completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
-                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                var val = innerIteratorCollection.FetchNextValue(itrInField);
+                                if (val != null)
+                                {
+                                    IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
+                                    completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
+                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                }
                             }
                         }
                     }
-                }
-                var rule = new IsSingleValueRule(() => Result);
-                var single = rule.Check();
-                if(single != null)
-                {
-                    allErrors.AddError(single.Message);
-                }
-                else
-                {
-                    if(DataListUtil.IsValueRecordset(Result))
+                    var rule = new IsSingleValueRule(() => Result);
+                    var single = rule.Check();
+                    if (single != null)
                     {
-                        var rsType = DataListUtil.GetRecordsetIndexType(Result);
-                        if(rsType == enRecordsetIndexType.Numeric)
-                        {
-                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
-                            allErrors.MergeErrors(errors);
-                        }
-                        else
-                        {
-                            var idx = 1;
-                            foreach(var res in completeResultList)
-                            {
-                                if(rsType == enRecordsetIndexType.Blank)
-                                {
-                                    dataObject.Environment.Assign(Result, res, update);
-                                }
-                                if(rsType == enRecordsetIndexType.Star)
-                                {
-                                    var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
-                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res, update);
-                                    idx++;
-                                }
-                            }
-                        }
+                        allErrors.AddError(single.Message);
                     }
                     else
                     {
-                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
-                    }
-                    allErrors.MergeErrors(errors);
-                    if(!allErrors.HasErrors() && dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        if (DataListUtil.IsValueRecordset(Result))
+                        {
+                            var rsType = DataListUtil.GetRecordsetIndexType(Result);
+                            if (rsType == enRecordsetIndexType.Numeric)
+                            {
+                                dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
+                                allErrors.MergeErrors(errors);
+                            }
+                            else
+                            {
+                                var idx = 1;
+                                foreach (var res in completeResultList)
+                                {
+                                    if (rsType == enRecordsetIndexType.Blank)
+                                    {
+                                        dataObject.Environment.Assign(Result, res, update);
+                                    }
+                                    if (rsType == enRecordsetIndexType.Star)
+                                    {
+                                        var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
+                                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res, update);
+                                        idx++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
+                        }
+                        allErrors.MergeErrors(errors);
+                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        }
                     }
                 }
 
