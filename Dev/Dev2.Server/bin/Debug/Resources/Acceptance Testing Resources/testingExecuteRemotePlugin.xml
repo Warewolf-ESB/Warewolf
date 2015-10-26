@@ -1,5 +1,5 @@
 
-<Service ID="73b8859d-15d3-485e-94fe-85545a7a1466" Version="1.0" Name="testingExecuteRemotePlugin" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Service ID="73b8859d-15d3-485e-94fe-85545a7a1466" Version="1.0" Name="testingExecuteRemotePlugin" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <Actions>
     <Action Name="testingExecuteRemotePlugin" Type="Plugin" SourceID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" SourceName="testingRemotePluginSrc" SourceMethod="GetBaseException" Namespace="HgCo.WindowsLive.SkyDrive.LogOnFailedException">
       <Inputs />
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>mmcIXheFaRKeb9KVzyqlL6QLo9M=</DigestValue>
+        <DigestValue>isMCoLyATn79aFgSphuwd4+H7Z4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>b/FUpcS3D075UlhcUuUZBM8U7+r+96H0fAl5R51xOAB4wXtV/ZDRfdqX/e1njqtRUS3uuoZ+e1Lm5ZVk3lCRTyZRikV4RHrUYZ6LQS+VGDYk6G4EGetTWlaGFQ2LTTZj9gAK34Q0ATJNGT9tIFnPmKsRlrTcZdqWlq+WUQxBFn8=</SignatureValue>
+    <SignatureValue>t9gO5UBtfNsB30jO1IUa4On8teSW4VZK85vIz8gG6skzPtfahZpljP1sWKW73zj/DTjkntpjQKb2NYEE89ZgPRElSDkFSj+S10ce/zrM9bc7/xi2/cL3OolqE1m09kYeWRAz53DTszId81c6gwN7YAdqXRCa2zklSDG7w8huMW0=</SignatureValue>
   </Signature>
 </Service>

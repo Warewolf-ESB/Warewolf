@@ -1,5 +1,5 @@
 
-<Service ID="69b65e1f-229b-4809-ad27-c34a98517dcc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Num Exe WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5728.18028">
+<Service ID="69b65e1f-229b-4809-ad27-c34a98517dcc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Num Exe WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.27868">
   <DisplayName>Inner Num Exe WF</DisplayName>
   <Category>Acceptance Testing Resources\Inner Num Exe WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -135,9 +135,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>/m9CUC03FtrlnWHsYpMrNcDzugs=</DigestValue>
+        <DigestValue>t/+QYB7LIrBEIixH/lNVYMiGkJI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>g+8FZ296AtuzM9TSpj7ijey2a26SCS6AheOsh59iF2pUYUquS/ovSzHSvP7SXlQfwqwZfLreecWrUWm7OyIJA3D7G9gKGPuedNeyd6MwSzrwcnAcDg7ehZNQDcacDFYL4RUeNdDR3MixC1AMCI4j9KVBazOejUg+8znv6cZWJbU=</SignatureValue>
+    <SignatureValue>Y3QcxreCznkFoqDdkQoXu4J8Ov8V1CxDZAzrNMCO54+Indj1EbXErBgN7DMrUWlOkC9MVs8VbTUZIvduYzMx5t9rXdowk4PD9d3jRZ1Ek2Jwy2DJTxmfAAmB0qtgyJ5w6GzgLr/G+FCGT2TxX9/4e1rwP0SAgsXaxBd9vi22F1A=</SignatureValue>
   </Signature>
 </Service>

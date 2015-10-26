@@ -46,6 +46,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string ResultVariableHolder = "resultVar";
         public const string SourceHolder = "source";
         public const string ActualSourceHolder = "actualSource";
+        public const string UseSourcePrivateKey = "UseSourcePrivateKey";
+        public const string UseDestinationPrivateKey = "UseDestinationPrivateKey";
         public const string SourceUsernameHolder = "sourceUsername";
         public const string SourcePasswordHolder = "sourcePassword";
         public const string ValidationErrors = "validationErrors";
@@ -121,6 +123,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             ScenarioContext.Current.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             ScenarioContext.Current.Add(ActualSourceHolder, location);
         }
+
+        [Given(@"use private public key for source is '(.*)'")]
+        public void GivenUsePrivatePublicKeyForSourceIs(string useSourceKey)
+        {
+            bool useSourcePrivateKeyFile;
+            if(!bool.TryParse(useSourceKey, out useSourcePrivateKeyFile))
+            {
+                useSourcePrivateKeyFile = false;
+            }
+            ScenarioContext.Current.Add(UseSourcePrivateKey,useSourcePrivateKeyFile);
+        }
+
 
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
@@ -231,6 +245,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             ScenarioContext.Current.Add(DestinationUsernameHolder, userName.Replace('"', ' ').Trim());
             ScenarioContext.Current.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
+        }
+
+        [Given(@"use private public key for destination is '(.*)'")]
+        public void GivenUsePrivatePublicKeyForDestinationIs(string useDestinationKey)
+        {
+            bool useDestinationPrivateKeyFile;
+            if (!bool.TryParse(useDestinationKey, out useDestinationPrivateKeyFile))
+            {
+                useDestinationPrivateKeyFile = false;
+            }
+            ScenarioContext.Current.Add(UseDestinationPrivateKey, useDestinationPrivateKeyFile);
         }
 
         [When(@"validating the tool")]

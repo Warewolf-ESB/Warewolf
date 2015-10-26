@@ -23,7 +23,24 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public class FileToolsBase : RecordSetBases
     {
-        private const string PrivatePublicKeyFile = "C:\\Temp\\key.opk";
+        public const string PrivatePublicKeyFile = "C:\\Temp\\key.opk";
+        private const string PrivateKeyData = "-----BEGIN RSA PRIVATE KEY-----" +
+                                              "Proc-Type: 4,ENCRYPTED" +
+                                              "DEK-Info: DES-EDE3-CBC,5CDA5D2764661954" +
+                                              "2UsQKxjSeLNXEs3FoK4fO8u5e2RoxVKAjEpp5K5xreRFoTysuMI5R6fwiyrNpJIx" +
+                                              "zm+6WamQSRmqJBZ23VKB/NOpKrTKLosgLz9LlPxiGUEDGClmh0rJgJHH+GVB+Tbu" +
+                                              "4EW1J4rGbV2MMFzU5gpTEv4VrmmVfEoj8qZcQ91fiPdDS5Qe/Aqudq8/QoSx9Dr5" +
+                                              "oG2aZ5Q/mQ0cZ5le2Mnyp+Uzg9MHFSHIciGWGGhKQcB9YFNddqsFj8lXslXZ2S5d" +
+                                              "GLD8RuWSwVw9TVy/vKt240wS4q/s+Af8w7xZ3ngbA8ibo6zyAC/GNZhTfwOzKwPW" +
+                                              "USQR1HkC6GbMOxH2TaAUrpmFl/AZKrC9ot7S/uMhbmTU8b+TwjT7nIWqz02cM3Co" +
+                                              "KV24aj83VV5iA3rfwRJbBIu2CuZuEZoWyDs/NFURAd+T01zI8YENAPSLaVdxGMcZ" +
+                                              "7AeklCphHkcI8ifVNYpUfRMmpjOnVsWs3lnGUwYvIoEo7VrbYuWGgD29ewIDrV2Y" +
+                                              "A9a0K11v76JR60HBBZmCdwSKlJGjMU35vve/k4FC/GqMbS5C1YqRrNvwFbNTRd3x" +
+                                              "rzP3ZEGdoLA9sKPNZAx0WEbYQ30XXv1ZWE5U3/tDV3HvBe8/aO8leUfR9G1fyHIA" +
+                                              "foD2Q/7kSasqqGbQYWCRAVsm4sgA8+pXF7D9gllO37hk9tgwtCvj+Gcdeto0EVF3" +
+                                              "j+rgY6YDQIssNSBbQ3ZptOKCppY1a1wUgdE70IMQ7bbtNegr/RDnQcfnm6lVfWCV" +
+                                              "G5KhlDKAFw3/dNPhsITyaOOzCRN12Xzyfkmub1RSAVOlTcb0jt10CQ==" +
+                                              "-----END RSA PRIVATE KEY-----";
         public static SftpServer Server;
         public static readonly object ServerLock = new object();
 
@@ -45,11 +62,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     SshKey rsaKey = SshKey.Generate(SshKeyAlgorithm.RSA, 1024);
                     SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
+                    
                     if(File.Exists(PrivatePublicKeyFile))
                     {
                         File.Delete(PrivatePublicKeyFile);
                     }
-                    rsaKey.Save(PrivatePublicKeyFile, "Q/ulw&]");
+                    File.WriteAllText(PrivatePublicKeyFile,PrivateKeyData);
                     // add keys, bindings and users
                     Server = new SftpServer
                     {

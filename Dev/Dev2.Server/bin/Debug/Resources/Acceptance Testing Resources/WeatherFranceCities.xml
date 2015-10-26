@@ -1,5 +1,5 @@
 
-<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAABDoAHFwPoRt+rqATPyf/lAAAAAAASAAACgAAAAEAAAANFmB36A+ye3hfos/SFgDLQQAQAAwRuRXJyzZEeRiAi9Gn77QSHbh3tCMDbEYohfLbXYrpeHhNo2MMj4CHL7AoTOvaYB7DNBBPb54cDNdEWfGj5iRQYlT++ClTGStKfh4qpKHkldPwiUxPZ5DlFjS9mbropnWQf4zLhI7Wj5vh5q8omzRLtGRpFPQP8W3d8Jyvq/08umhX9ICBz7ZYMi/a95N8uwH7efiOHYtYgEVyNNX3w07ITB1/9gYKbxXGR96y3uLtwkuUmsjQsfhM5KTmCYepxi4X+WFNv5y6iPyiQfDGuKkQHdgeZ2kUMNcst/Qn/51ZIqbBSStm6AQibcWC1dtMNI7fLY718CbQnQLpwvmXYFVaZganvLae4WaW2XG9pNtY8UAAAAdiz7A50xWtp0lhCXDpOjF0hafqo=" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <DisplayName>WeatherFranceCities</DisplayName>
   <Category>Acceptance Testing Resources\WeatherFranceCities</Category>
   <AuthorRoles>
@@ -14,9 +14,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>wxS4ds0IeFC73FZgqM5qUUBV/q4=</DigestValue>
+        <DigestValue>PCnvaQtYyRk/bloI69/EJ/rmvpU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>opC/yspV3XeYY+peyWdgEY+D2y1jaUNH2BTBLcF8lPS85iez6AgASGcj7jZb7xf5/CoWJ9nvETskBHbKkXkXtVRdbvuYt0bCIdC/fym0ITH39KBRUe0QF6Z9rcCA9Os9fpY1/IZw1NWFC5fjHLkQn6c8I72rEtNjVoZz/z+LEbU=</SignatureValue>
+    <SignatureValue>MwcdDXisaS07u67u2lMn08og2pmJz/f3iiLZhGmt1KunF9b1Y7W2EpmqZ/rR+GBh/WwxintMRK+IMpS63UfgHi/adc3PQ91oyPaDhxRsl6x5dtBm0S/ily6j4+mhj/wXmoNs7bmiqKYjALEPbnD45C78sljj9sTYo3SjyXzkWqI=</SignatureValue>
   </Signature>
 </Source>

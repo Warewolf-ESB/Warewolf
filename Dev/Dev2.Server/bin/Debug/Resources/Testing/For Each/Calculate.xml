@@ -1,5 +1,5 @@
 
-<Service ID="f5feb8f5-1c40-4687-8481-4965e282ada2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
+<Service ID="f5feb8f5-1c40-4687-8481-4965e282ada2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.27868">
   <DisplayName>Calculate</DisplayName>
   <Category>Testing\For Each\Calculate</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>b0CZ9WF7YB2KQZaT10WIq7Mzi4o=</DigestValue>
+        <DigestValue>+lkzqg8UonN+6h25nYWToFyh248=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YjO9lAPP1XaUyPKfjkn2yn5Ajx/Q2I7QiugQozK4cxt1YwQ3HpSDNUTJu+oZEflqbAI4v/RhVDmIuRTdVNVF/aUNjwzu++EP9P0dddkmne61CF7rSHkC/AywhnLn+wbQ/GGaikSgED9BknEz8KyxiWTh2Ym+JoSjIlNu0aE4uqg=</SignatureValue>
+    <SignatureValue>S55VD2hCOiYrC9dBMHmxNs3Jdlr4Ut9HR/zrBW0mmnOcPRaDts2STbZ1tm4Vix52riNBkkr05aDXYSKldYKwqLJYJcFG7ZTydYT4Fauy65cAcmM0Eyk37ILwGVyaB67fHPMoWNb/tutnrE7GxdioY3cqJzcY5QcbewmEZbwQqEI=</SignatureValue>
   </Signature>
 </Service>

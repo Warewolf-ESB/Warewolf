@@ -215,9 +215,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set { _username = value; }
         }
 
-        [Inputs("PublicPrivateKeyPath")]
+        [Inputs("PrivateKeyFile")]
         [FindMissing]
-        public string PublicPrivateKeyPath { get; set; }
+        public string PrivateKeyFile { get; set; }
 
         /// <summary>
         /// Gets or sets the result.
