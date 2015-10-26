@@ -15,9 +15,9 @@
                                MinWidth="255"
                                Width="255"
                                MaxWidth="600"
-                               MinHeight="380"
-                               Height="380"
-                               MaxHeight="380"
+                               MinHeight="404"
+                               Height="404"
+                               MaxHeight="404"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:WriteFileDesignerViewModel}">
@@ -43,8 +43,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -97,7 +98,7 @@
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </StackPanel>
-        
+
         <Label Grid.Column="0"
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
@@ -125,7 +126,7 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
         <Label Grid.Column="0"
                Grid.Row="3"
                Style="{StaticResource ActivityLabelStyle}"
@@ -173,9 +174,39 @@
         <Label Grid.Column="0"
                Grid.Row="5"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+               Content="Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="5"
+                                DefaultText="[[PathToPrivateKey]]"
+                                FilterType="All"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.PrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.PrivateKeyPath"
+                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="6"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Result" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="6"
                                 FilterType="All"
                                 DefaultText="[[WriteResults]]"
                                 WrapInBrackets="True"
@@ -194,7 +225,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 

@@ -102,7 +102,7 @@ namespace Dev2.Runtime.Security
                     result = IsAuthorized(request.User, authorizationContext, GetResource(request));
                     break;
 
-                case WebServerRequestType.WebExecuteWorkflow:
+                case WebServerRequestType.WebExecuteService:
                 case WebServerRequestType.WebExecuteSecureWorkflow:
                 case WebServerRequestType.WebExecutePublicWorkflow:
                 case WebServerRequestType.WebBookmarkWorkflow:
@@ -158,7 +158,7 @@ namespace Dev2.Runtime.Security
             {
                 switch(request.RequestType)
                 {
-                    case WebServerRequestType.WebExecuteWorkflow:
+                    case WebServerRequestType.WebExecuteService:
                         resource = GetWebExecuteName(request.Url.AbsolutePath);
                         break;
 

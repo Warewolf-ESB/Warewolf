@@ -215,7 +215,27 @@ Scenario: Output values in multiple result variables
 	And the debug output as
 	|                       |
 	| [[res]],[[rs(*).a]] = |
+
+Scenario: InField is blank
+	Given I have a findindex variable "" equal to ""
+	And the sentence ""
+	And I selected Index "1"
+	And I search for characters "a"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the execution has "An" error
+
+Scenario: Characters is blank
+	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
+	And the sentence "[[a]]"
+	And I selected Index "1"
+	And I search for characters ""
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the execution has "An" error
+
 #---find out about rule as no error message will display
+@ignore
 Scenario: Find all Occurrences of a character in a variable where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to "[[b]]"
 	And I selected Index "All Occurrence"
@@ -231,7 +251,7 @@ Scenario: Find all Occurrences of a character in a variable where it doesnt exis
 	And the debug output as
 	|                 |
 	| [[result]] = -1 |
-
+@ignore
 Scenario: Find all Occurrences of a numeric character in a string
 	Given I have a findindex variable "[[a]]" equal to "2211"
 	And I selected Index "All Occurrence"
@@ -247,6 +267,9 @@ Scenario: Find all Occurrences of a numeric character in a string
 	|                  |
 	| [[result]] = 1,2 |
 
+
+
+@ignore
 Scenario Outline: Find all occurances of Characters in a string
 	Given I have a findindex variable "[[a]]" equal to " Warewolf"
 	And I have selected Index "<Index>"
@@ -291,7 +314,7 @@ Examples:
 | 25 | Last Occurrence  | [[rs().a]] = w                    | Right to Left | [[rs(1).a]] = 4                 |
 | 26 | Last Occurrence  | [[rs(*).a]] = w                   | Right to Left | [[rs(1).a]] = 4                 |
 | 27 | Last Occurrence  | [[int]] = 1,[[rs([[int]]).a]] = w | Right to Left | [[rs(1).a]] = 4                 |
-
+@ignore
 Scenario Outline: Find all Recordsets with invalid Indexes
 	Given I have a findindex variable "<var>" equal to "<value>"
 	And I selected Index "First Occurrence"
