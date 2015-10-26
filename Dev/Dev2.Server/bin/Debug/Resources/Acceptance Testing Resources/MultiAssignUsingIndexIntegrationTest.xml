@@ -1,5 +1,5 @@
 
-<Service ID="6a4f08ec-25b1-47bf-ac75-e3b00cfc2f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingIndexIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service ID="6a4f08ec-25b1-47bf-ac75-e3b00cfc2f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingIndexIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <DisplayName>MultiAssignUsingIndexIntegrationTest</DisplayName>
   <Category>Acceptance Testing Resources\MultiAssignUsingIndexIntegrationTest</Category>
   <AuthorRoles>
@@ -177,9 +177,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>lzprihWGA7NwsSqVCQz8iaw8P1I=</DigestValue>
+        <DigestValue>PTIFQcxoyT3xUewDzNvQryG+0YU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>VL8C9H7d84oodIyBc/f/FR4CAXWp0vR08C0OD+umINpsq6vcI5lWoQ00TN6sv7/YPPrQHCg7zRY6/ZvM8ErtRh6CgEq1GaxBKF0/eAaihB/H0U6oveeUrtl5CUtvsndZ++33MmjRxnJn5+GafGpuF20ZvKQIioXBzXqrSV/ewZ8=</SignatureValue>
+    <SignatureValue>uh5cIEiz8XjYnCcCChv1qzRDsyffg207RsYHok26+y1JetpHyX/DNpIqFGRlnKsWwKkusPjFhFoDQr4mlt8taNFnX2xjjuQilrWiKVZRzQnOoPs69WXeWcu4Kj4bD1oqEKz4nTCS346X0D1I4hh74RtNDC8aRPIqPeyW6qq1Jtw=</SignatureValue>
   </Signature>
 </Service>

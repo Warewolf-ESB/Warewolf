@@ -1,5 +1,5 @@
 
-<Service ID="a520ced3-b1e7-4793-be2b-7741798bf570" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Assign Debug With Empty" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5728.18028">
+<Service ID="a520ced3-b1e7-4793-be2b-7741798bf570" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Assign Debug With Empty" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.27868">
   <DisplayName>Assign Debug With Empty</DisplayName>
   <Category>Acceptance Testing Resources\Assign Debug With Empty</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>p8t+T5CjRHYTCQLAG/ddJVIK/mU=</DigestValue>
+        <DigestValue>ogOmY+Ch5aRY9YJUAzXXoEQ0uj8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OEwq+9Syz039SIBTCjF8cYGmZI71wU9jPjUCLITeECEz5G14dJJG37FUPGEcDy2ndC97nVysbY4pXcPkcSUAizWlWJ0Yg4nxBTXlweJDbRiARaKQBlCuTaHaDaVH7WIbap6/3hv3FbbZiFgN0fxGFN6pgDfhPlDvfzkXZlu3lKU=</SignatureValue>
+    <SignatureValue>U6Qv22FOiVYhLdPVHxLTLOFEk1TK86zN3j/EXAXhXAZdurjXpxU7EOiCxxl1B9evFW60vcNSeYkGe29dza4JTylopoO0/6O+s8gI2VXCKGWDcixUb1R5yEnWXYaTaYDbcp5b7itRsrxdBSZKiJ2ToX8vgcMH3trh0xEHmYvFz0w=</SignatureValue>
   </Signature>
 </Service>

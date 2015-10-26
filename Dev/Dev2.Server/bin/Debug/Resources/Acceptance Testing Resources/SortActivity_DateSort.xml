@@ -1,5 +1,5 @@
 
-<Service ID="55919c1b-662b-49bc-80f8-978ac1d63778" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortActivity_DateSort" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service ID="55919c1b-662b-49bc-80f8-978ac1d63778" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortActivity_DateSort" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <DisplayName>SortActivity_DateSort</DisplayName>
   <Category>Acceptance Testing Resources\SortActivity_DateSort</Category>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
@@ -159,9 +159,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>hgHRpnkIJ71L4LsOHlwcNrw/8Y4=</DigestValue>
+        <DigestValue>67JNBOE09qjR4ALEuiLVsrGQ4OA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mSSUFgh+P6GTjTftr2t4kUAh5UxVY15NK1SmDHKwO+l8Esg5nLbHDNwdE2xPERZuuhSBkG4GXhMZG+Q5gKmgnZYNBMKTya0nvGdJzDKf58arK16tTkD84VDyAoy5er+rDLA4rpeujlHo1hTyb0OTCVOUdKPNYHKSIvtpEYE7QNI=</SignatureValue>
+    <SignatureValue>SJsIAoqxxq+ZO3VIRe6CSkpdFbKWYA4F0VmkKhO1aVR3uehB2K3u6MP53HE5tVghsCT9+rLyIfTIJWHZK5vdVpBqudJSOfHKPLQhZpPtLdxh1vOWyz4epISvvC4O+9bQlN19pwIMjXP+yOoxYx1LRS1i7Plt782gCFTAUa57ghs=</SignatureValue>
   </Signature>
 </Service>

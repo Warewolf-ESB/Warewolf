@@ -1,5 +1,5 @@
 
-<Service ID="0e10fb3e-3ec4-4419-8177-62150a74fba7" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ReadFile" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
+<Service ID="0e10fb3e-3ec4-4419-8177-62150a74fba7" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ReadFile" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.27868">
   <DisplayName>ReadFile</DisplayName>
   <Category>Testing\For Each\ReadFile</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>hb5S85o4bATUmBsA/cyWo2jfUsE=</DigestValue>
+        <DigestValue>mXJ3TOH+VZilHMj9nYmu1FSsnPo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Bp0o7fV5w+nDo09AnpgPW2akxcLNm17/cEFHWU3aKy4qvjOpRqjLqZlplm1CvNa7aLBdwyC6oYIUtd82sJWQ7R6LfoBm3FZXL+AVCvCo6JLBs7IJ6andWNAaXlcYu5NvfagoZDxNUYTCLZ+U8ML7WsXh9Ms+LfOLnxivic4cFfc=</SignatureValue>
+    <SignatureValue>Oe1R3Ta/I6Y+MOMyOAAHbldcWNcI47htY6Xj6ghZP3qj+HppZjSI6iQ1ear5l6gtNrm6cOxCcp07ci741mWJoH5mAiSP+v2BB1z6t8N1c64Z/NW3CVCd5xNBYl+iKBzvS1JWRRQFZ5F5C8L4WcKgdhDwv8y50Udbr574TfzUazk=</SignatureValue>
   </Signature>
 </Service>
