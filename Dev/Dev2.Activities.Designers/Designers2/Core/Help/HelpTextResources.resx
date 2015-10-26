@@ -448,11 +448,11 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="CreateSftpPublicPrivateKey" xml:space="preserve">
+  <data name="CreateSftpPrivateKey" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
-  <data name="SftpPublicPrivateKeyValue" xml:space="preserve">
+  <data name="SftpPrivateKeyValue" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>

@@ -138,15 +138,15 @@
                Grid.Row="3"
                Margin="20,2,2,2"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Public Private Key" />
+               Content="Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Margin="20,2,1,2"
-                                DefaultText="[[PathToPublicPrivateKey]]"
+                                DefaultText="[[PathToPrivateKey]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.PublicPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.SftpPublicPrivateKeyValue}"
+                                Text="{Binding Path=ModelItem.PrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -157,11 +157,11 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPublicPrivateKey}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.PublicPrivateKeyPath"
-                                     SourcePropertyValue="{Binding  ModelItem.PublicPrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.PrivateKeyPath"
+                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -248,15 +248,15 @@
                Grid.Row="7"
                Margin="20,2,2,2"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Public Private Key" />
+               Content="Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="7"
                                 Margin="20,2,1,2"
-                                DefaultText="[[MoveToPathPublicPrivateKey]]"
+                                DefaultText="[[MoveToPathPrivateKey]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.DestinationPublicPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.SftpPublicPrivateKeyValue}"
+                                Text="{Binding Path=ModelItem.DestinationPrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -267,11 +267,11 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPublicPrivateKey}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.DestinationPublicPrivateKeyPath"
-                                     SourcePropertyValue="{Binding  ModelItem.DestinationPublicPrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.DestinationPrivateKeyPath"
+                                     SourcePropertyValue="{Binding  ModelItem.DestinationPrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

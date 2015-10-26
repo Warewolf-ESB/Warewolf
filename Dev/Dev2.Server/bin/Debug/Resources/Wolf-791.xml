@@ -1,5 +1,5 @@
 
-<Service ID="b5b34187-3d42-4879-b6e7-99398185b121" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-791" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5738.28203">
+<Service ID="b5b34187-3d42-4879-b6e7-99398185b121" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-791" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.27868">
   <DisplayName>Wolf-791</DisplayName>
   <Category>Wolf-791</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>6R4xLu+l+8gGix1RKyiGaS9AOTY=</DigestValue>
+        <DigestValue>dypNKkzYycfzIPEGEx2FiO1qRU8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>WIz9oVjcsuoUCWVyQY67Q8ImoXnLTroeH8l9oYRg4i9vL0L0btPfDmM50HBo80B6SK+ej0JdaZX1SdYFJ1SKYuQlYKkTuz0Z1EKGHhYvoV75oGwLo8G24SvNL9wm+ggiRSAira0cog8Q+cpJFlhyX95yP2KAXOirrmluyhTvHdE=</SignatureValue>
+    <SignatureValue>JwYmEAE9HBmm+yIjVpSwuiUJxW2tOB781WdU6eOlEPLA4HoG2GEz9LfX9YUvyAM6SlsijTml2eETmSrsSEOfm8PZzT8wkN7D+euObETKxdUv5Nt3RBH5qc3iY/v26/Jtidx2f5fM82ap+c24QwVbY3xvCHiD8qQ8i3ZxtcoDeqs=</SignatureValue>
   </Signature>
 </Service>

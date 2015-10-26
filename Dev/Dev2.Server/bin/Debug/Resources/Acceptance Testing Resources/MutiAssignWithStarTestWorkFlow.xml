@@ -1,5 +1,5 @@
 
-<Service Name="MutiAssignWithStarTestWorkFlow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="3af47373-a8a9-4081-8246-f8a4ff301cee" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service Name="MutiAssignWithStarTestWorkFlow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="3af47373-a8a9-4081-8246-f8a4ff301cee" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="MutiAssignWithStarTestWorkFlow" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -154,9 +154,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>0hJBn7ZDvYlplr6+YidlCK1VcbU=</DigestValue>
+        <DigestValue>aD8+3QYiIjudDQjpJ9JjO4Y1ZsU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>r34tXXWLPKA1uaeKUv3NqZfKPol80ptVIm/RIBpdpn4vrI4tWf3Mqq8DSM+47Huas50gbUbBd+zHF/AOF01lPCdq/556NmKAAiSydPjnOz9Z81Ps5p/f82/nR2VrrVcQ6lFmQ73kZ4tJct78w7JCOfXyI3R1OFjUWPY58S7JM0M=</SignatureValue>
+    <SignatureValue>fzUre5x/+IeR7pM5jsQBUZTJfgnNT7G9/l8zPZwBVKfXaIjbJO0BHdwOKvyRj/IPco4/GMveftNzfnVTHaxyGasCPeeDlIDIJonroWt18zCcOlMzaSqjAc6KnlJIszuemDXRP5xovFpzCTS1XvcyVaMVGL9FYEBBqJ3nU5q08WI=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="102d4bad-61e5-4586-b544-e449df81ca51" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="LastRecordSetNotationUpdatesEntry" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service ID="102d4bad-61e5-4586-b544-e449df81ca51" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="LastRecordSetNotationUpdatesEntry" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <DisplayName>LastRecordSetNotationUpdatesEntry</DisplayName>
   <Category>Acceptance Testing Resources\LastRecordSetNotationUpdatesEntry</Category>
   <AuthorRoles>
@@ -215,9 +215,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>UCYELd9Yv5z2cYc58VoyX37I1aE=</DigestValue>
+        <DigestValue>6XDEoEVyUgnA/ELCycFiy8Yt0P4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ESQnceY2l6aDqtQpbo0sA4MXij/1JWkeEsj0ZFI8o2BCYumHElnWij1hbSL5El9XssKKMrFX0sG6Szg5bWOrhncoqLWm0pJqO5MFF8KAUa+/x/DmtEV3TxxvEUs5N6Volz5BSLwMxmA8UlPo2D/dxEtj82Ffe9DMJncnzgozZdk=</SignatureValue>
+    <SignatureValue>JXOcGSVr/5yQjt8u/1S/ocyEyIdBtNv5B6q9klSJ1vtc3uQbLRLyYGWlxUKYzruCTwAgMkragGeNCgx8rWVVR4I2CcCr03w3Q0iejwGDEVAkdwJyBUxkUoDX3FNjAUJuUKt1WJcIsERHPI/8Gf/0lN8dygIThnsBt0C7AwQqWr4=</SignatureValue>
   </Signature>
 </Service>

@@ -194,6 +194,9 @@ namespace Dev2.Activities.PathOperations
         [Inputs("Destination Username"), FindMissing]
         public string DestinationUsername { get; set; }
 
+        [Inputs("Destination Private Public Key File"), FindMissing]
+        public string DestinationPrivateKeyFile { get; set; }
+
         /// <summary>
         /// Gets or sets the destination file/folder password
         /// </summary>

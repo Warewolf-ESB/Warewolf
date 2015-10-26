@@ -1,5 +1,5 @@
 
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACms4hB3xVWYrAcX4YIsAz4AAAAAASAAACgAAAAEAAAAEKuxT7Z5yzzsVA5J9d7inoYAQAAxpf+HMXK5Mb8DM7RakAiYZ2qzJPi4tFtCgUiFfhhZ0mJWXa0g5KBWObxWqldjLCi8JDMuptbOO5kdO050Ff3JMf6NMkPn6wAjwU3Zn/OodMX83nP4Jycv4scbjXdhtiYN+tUCxrRWe9I//oMJAEQWcuHbVAtassvbBLkR9tuV2G8U712JDWlERvdU+kyPzTXVCAhK4Ef3UzBgYrD/dJeGk6mG6kfwmT8vX3Z6z6GJhdSAz9XXavaAAjSWK9UTluUTvnfF8eW+9GLZ+Dv1btBQ6F/7L/39gcvKLRFv94p8QU3mrhMRYHG+dTPb30amwQGF3IYJs53EjlfBqIf0oKklBZRvjFe7c8WOF2CMzQkDmZXM2RBtheZyBQAAAAuFd3e3oldF6rQLjLWMkhDnk8rGQ==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
   <Category>Acceptance Testing Resources\Dev2 Testing Web Src Faulty</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>TC3aWtUBQY9sybLpCBLWmR/VmVk=</DigestValue>
+        <DigestValue>2sH7uq2PDAz0aauX3nl6/0Y0N8s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>XFO3tWHymhJW8hVIePvLq0BJKQPW6jQQy3FJYYOxxyZHEE4vGuyKtkKLOCeuu0F87YSuIuSPCNVZ2BX6QWvHP9M5jFKUHc2celR7f/8hR+AjHfWT/BHuzlMocnkmB7wLpPvuwnbCIFWbAog3YdzL13AFplkSkl2Y4oMRttQYpKs=</SignatureValue>
+    <SignatureValue>F6o640AQ4jYrcR8xCD5W0KkC+nvpPJAa7Mw/H0PlOrOrrN2Y47wGBv+dTpg6McLw1P3OtJwEWT5PugB3pGSkpc2en0tbGTgp49X+WbMWh+n1YVfS9XVVolmqeRI0gBffgodsMSM+4xLF0FNeGq6RVCUr2h77WPvOxytoPkOacL8=</SignatureValue>
   </Signature>
 </Source>

@@ -1,5 +1,5 @@
 
-<Service Name="Sort Records" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="0382e651-836a-49fc-a922-f3d76156c69a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service Name="Sort Records" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="0382e651-836a-49fc-a922-f3d76156c69a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Sort Records"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -296,9 +296,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>rXWuVY0zN9NUTFWjmoBIsH8z83g=</DigestValue>
+        <DigestValue>AlDpOwBs05HevtpVx3ZkU8hVbOA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YGCFQd4fj/uc3qmNZuZd9FKBaRdnHaW1EDAlT8hPJHt+NQhXVIlvqpVruwNl+3E092XyC5mg00Wl6DoD1ysboCM2bOCnLzv2Nrp1FSOdznHYvAeSUxY8hqzaeWhkHw2e6edXBj8V3mNaTCVqI971HYA9q7GXhgIAtBrTg3ujTus=</SignatureValue>
+    <SignatureValue>BOZqQcBdQbdevHssYzYfSKjSdMkz6BR3VJiXSzxDJQmTVBCOnniCmiLzSE8tjKSiQF9I0ywsaujm0iq3FspylcgexUAuYMVNISnJGNURWcC3Tb4AqMUwwmDW67cNyXUCNExKvkGjMajP/O9QbqqfYQdLNBer7aqbc+hla2kRx1w=</SignatureValue>
   </Signature>
 </Service>

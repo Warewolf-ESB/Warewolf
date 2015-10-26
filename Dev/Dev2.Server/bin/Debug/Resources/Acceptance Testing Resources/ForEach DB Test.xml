@@ -1,5 +1,5 @@
 
-<Service ID="e47cc599-865a-414c-8a37-1b28283479c0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEach DB Test" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5728.18028">
+<Service ID="e47cc599-865a-414c-8a37-1b28283479c0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEach DB Test" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.27868">
   <DisplayName>ForEach DB Test</DisplayName>
   <Category>Acceptance Testing Resources\ForEach DB Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -52,9 +52,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>A9EQhBBQ6KlcgfYqECsqZkD5P+c=</DigestValue>
+        <DigestValue>N8zr1ml2iQ2nP5g8fascTjWtAlg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ooT2aJJdFwjnGBNby28KB7JxLzMkmIDKKAU/pm9FyW9RMTwlh+0tK7y+2b1rClhmrsOivnrj5zaE+ydEhUr80ivJGk5y41wIz6H8DkCwKOLsrdngu71iEk9R6g4NLpUegLE7YdhVAqLDFu6/hnkNaznQzFFD6yzuTRmO0ghASDM=</SignatureValue>
+    <SignatureValue>s//YQJpzPJPCHnwuy1y3Y90z0SNvVtenn6DTQlKGTyFFXS0Ex/yfh96Ds8L8pbgDdY351ZI8OTCHWmPqXiy3kswtHtCFx0pOSwpSXF7vdZLIKak84f6d1aVQhVm3pnT2uEE0nBE2nySEMZCtRjEBRmi6arNzSHllPmlu22Ic3hQ=</SignatureValue>
   </Signature>
 </Service>

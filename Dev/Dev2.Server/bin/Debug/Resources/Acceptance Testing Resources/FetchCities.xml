@@ -1,5 +1,5 @@
 
-<Service ID="767a61bc-a47a-41de-9d15-eb0f02e0c9c7" Version="1.0" Name="FetchCities" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Service ID="767a61bc-a47a-41de-9d15-eb0f02e0c9c7" Version="1.0" Name="FetchCities" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <Actions>
     <Action Name="FetchCities" Type="InvokeWebService" SourceID="8a5c2119-08f5-4a58-888e-bbc95b996e88" SourceName="Dev2GetCountriesWebService" SourceMethod="" RequestUrl="?extension=[[extension]]&amp;prefix=[[prefix]]" RequestMethod="Get" JsonPath="">
       <RequestHeaders><![CDATA[]]></RequestHeaders>
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>LcyOfmPi9DPc25kh74V1Z+j/sGs=</DigestValue>
+        <DigestValue>hx0h7BoQGQnq2oT3l4i4hdMaD18=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>r6ZMnPObU1EJLNtJTUL02Lsv5o8NvovBx+03SyG9sIUqCk2owkhOLlZf0WHrtCFktchGMbfaD8wRzaQ2ZeK49LRz8LaT+dlhxMbR+e48htZpNrqHqKo1IbgbfmwS7AllzK2UpAtPLPO5MqVj4+n0GILa5NaUKQpXRVhllUI5hQs=</SignatureValue>
+    <SignatureValue>LUKH6SuJ8cKj7uCkn9/LK1kFDiV2dHk68LX7UZUzMNBjS6Z441HTQjNyw8HiGfPpAePH6Fsy0mfUx/hWAsZdbpkZnSn7CC6qW7yQAdIGlY3gVAX2bwbxQbjRMIV70opWaA5g1otlKk9aDpCZF6ExJaJXfKlujkmqTcuZlHLWh/A=</SignatureValue>
   </Signature>
 </Service>

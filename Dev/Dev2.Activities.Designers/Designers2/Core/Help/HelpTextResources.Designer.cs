@@ -1034,9 +1034,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
-        public static string CreateSftpPublicPrivateKey {
+        public static string CreateSftpPrivateKey {
             get {
-                return ResourceManager.GetString("CreateSftpPublicPrivateKey", resourceCulture);
+                return ResourceManager.GetString("CreateSftpPrivateKey", resourceCulture);
             }
         }
         
@@ -4501,9 +4501,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
-        public static string SftpPublicPrivateKeyValue {
+        public static string SftpPrivateKeyValue {
             get {
-                return ResourceManager.GetString("SftpPublicPrivateKeyValue", resourceCulture);
+                return ResourceManager.GetString("SftpPrivateKeyValue", resourceCulture);
             }
         }
         
