@@ -4261,3 +4261,12 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Expected]] = Success       |
 	  | [[Date(1).Difference]] = -14 |
 	  | [[Date(2).Difference]] = 13  |
+
+#Wolf-402
+Scenario: SharePoint JSOn formatting
+	  Given I have a workflow "Wolf-402"
+	  And "Wolf-402" contains "Wolf-402" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Wolf-402" is executed
+	Then the workflow execution has "NO" error
