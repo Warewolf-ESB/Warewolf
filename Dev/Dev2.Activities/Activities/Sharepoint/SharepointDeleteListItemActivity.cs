@@ -119,9 +119,12 @@ namespace Dev2.Activities.Sharepoint
                     ctx.ExecuteQuery();
                 }
                 var successfulDeleteCount = listItems.Count();
-                dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString(),update);
-                env.CommitAssign();
-                AddOutputDebug(dataObject,update);
+                if(!String.IsNullOrWhiteSpace(DeleteCount))
+                {
+                    dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString(),update);
+                    env.CommitAssign();
+                    AddOutputDebug(dataObject, update);
+                }
             }
             catch (Exception e)
             {
