@@ -4263,7 +4263,7 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Date(2).Difference]] = 13  |
 
 #Wolf-402
-Scenario: SharePoint JSOn formatting
+Scenario: SharePoint JSOn formatting2
 	  Given I have a workflow "Wolf-402"
 	  And "Wolf-402" contains "Wolf-402" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
