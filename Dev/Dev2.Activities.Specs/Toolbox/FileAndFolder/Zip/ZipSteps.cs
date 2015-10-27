@@ -59,6 +59,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
                     Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
                     ArchivePassword = ScenarioContext.Current.Get<string>("archivePassword"),
                     CompressionRatio = ScenarioContext.Current.Get<string>("compressio"),
+                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                    DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
                 };
 
                 TestStartNode = new FlowStep

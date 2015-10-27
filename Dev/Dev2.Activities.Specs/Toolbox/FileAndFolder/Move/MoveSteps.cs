@@ -32,15 +32,19 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
         {
             BuildShapeAndTestData();
 
-            var move = new DsfPathMove();
-            move.InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder);
-            move.Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder);
-            move.Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder);
-            move.OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder);
-            move.DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder);
-            move.DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder);
-            move.Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder);
-            move.Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder);
+            var move = new DsfPathMove
+            {
+                InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
+                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
+                DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
+                DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
+                Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
+                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+            };
 
             TestStartNode = new FlowStep
             {

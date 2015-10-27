@@ -41,7 +41,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                     DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
                     DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
                     Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-                    Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
+                    Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                    DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
                 };
 
             TestStartNode = new FlowStep

@@ -36,7 +36,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
                 Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
+                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
             };
 
             TestStartNode = new FlowStep

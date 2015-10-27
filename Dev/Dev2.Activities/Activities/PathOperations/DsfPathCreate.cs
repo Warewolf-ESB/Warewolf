@@ -70,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItemUserNamePassword(dataObject.Environment, update);
                 if (!string.IsNullOrEmpty(PrivateKeyFile))
                 {
-                    AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
+                    AddDebugInputItem(PrivateKeyFile, "Destination Private Key File", dataObject.Environment, update);
                 }
             }
 

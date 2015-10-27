@@ -104,7 +104,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
                 Overwrite = overwrite,
                 AppendTop = appendTop,
                 AppendBottom = appendBottom,
-                FileContents = ScenarioContext.Current.Get<string>("content")
+                FileContents = ScenarioContext.Current.Get<string>("content"),
+                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
             };
 
             TestStartNode = new FlowStep
