@@ -1,5 +1,5 @@
 
-<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAAvps04c08nn3pRVRmaDnfSAAAAAASAAACgAAAAEAAAAAxpVLMsZh0MjprpDT/jS6wYAQAATjdjVIAv8pfXsZdHHG2Dje+O0VzQ2syO7RYt5ogbUD8MA7Mq2ZsavX7CmJo8foxFY7sWXadjJ7sVPJKDDabApxXAVTXuxkiu4eNBRPGUvz0v54AfmQu7aUcS+VdNR/UfpqTeZXJqT5uuKBcJHp46bvVmyYyzNaLR4MM6KIH+9SzYLxX5SAC9hRE+hnceHm2b8k5FMgRTNIyb9EcKF/ONXzvrAQEQFx0Dz5tD2f80Q6HVzF5LfT9SG8a5oc1kfuHnXhyBLrSp8kW5tyocrv7L+iKmikF8kDkfTQZYrVVyMn4bFRBtJ2X9ePPFhYL8AUkdk0pYUBcTBxjhAKTOzJKDxbipzAsbweDMtuZkbDWRvw08zZGRkBxOXRQAAADsv64XpiDd8DFx2XdB076snKIGBw==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
+<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAAvps04c08nn3pRVRmaDnfSAAAAAASAAACgAAAAEAAAAAxpVLMsZh0MjprpDT/jS6wYAQAATjdjVIAv8pfXsZdHHG2Dje+O0VzQ2syO7RYt5ogbUD8MA7Mq2ZsavX7CmJo8foxFY7sWXadjJ7sVPJKDDabApxXAVTXuxkiu4eNBRPGUvz0v54AfmQu7aUcS+VdNR/UfpqTeZXJqT5uuKBcJHp46bvVmyYyzNaLR4MM6KIH+9SzYLxX5SAC9hRE+hnceHm2b8k5FMgRTNIyb9EcKF/ONXzvrAQEQFx0Dz5tD2f80Q6HVzF5LfT9SG8a5oc1kfuHnXhyBLrSp8kW5tyocrv7L+iKmikF8kDkfTQZYrVVyMn4bFRBtJ2X9ePPFhYL8AUkdk0pYUBcTBxjhAKTOzJKDxbipzAsbweDMtuZkbDWRvw08zZGRkBxOXRQAAADsv64XpiDd8DFx2XdB076snKIGBw==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
   <DisplayName>TestingInternalCountries</DisplayName>
   <Category>Acceptance Testing Resources\TestingInternalCountries</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>XJ8Ps3rw9QDN3A+rPaiCvUFWJPY=</DigestValue>
+        <DigestValue>kbhYTbgT0mC9SUymR3kyHLCIiMI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>VgxBPBDb4ENdozvLfL0FB6mrWjefQ3uP1V64oacU8I9Hg2KCui/tdhQa3gcvo5xFs/8jX3TG2n2lAVOcx0aS2QvAQkVWbM87Q+Hn0tHm4UlBuSz4kwHfiXKDN3r1rHcmSark4W7yIKqXcugFdO5YcGuIoJRw7YQPVqt6QUFF8iU=</SignatureValue>
+    <SignatureValue>EeTy/AtTQ6S9ZCT3fEopXx3IthpaFPtrCjFXtJeobEmgEIkcUitaHuvvLT9oJse8O4zbnxCHV0ehyXOEmsM/TIDSeiZJxkd1eULRXkKkw5uhr4WskAgMDN51ejPwfCgzfyUvsdW+SZoF5q3AT5lReSMsjoZuEl+4mBLs9IyvcIw=</SignatureValue>
   </Signature>
 </Source>

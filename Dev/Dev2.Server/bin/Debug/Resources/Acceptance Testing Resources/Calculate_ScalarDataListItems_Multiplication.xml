@@ -1,5 +1,5 @@
 
-<Service ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_ScalarDataListItems_Multiplication" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.27868">
+<Service ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_ScalarDataListItems_Multiplication" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
   <DisplayName>Calculate_ScalarDataListItems_Multiplication</DisplayName>
   <Category>Acceptance Testing Resources\Calculate_ScalarDataListItems_Multiplication</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Q55ONAHcZAlADy7pB8GMoecVejM=</DigestValue>
+        <DigestValue>SgKjIvr2tZ8NqV7ZXjWFXx29h9Q=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>eMMYMWzys890lmKECy7ZYJjdaazDt0w710Ysq/yigihG8MLtCvKAqldcZlYPRYtrbubo6uEkpXwEGaAtgOoz+7MG6+9j8dbfzKJYh+lzL35QGGmzV1VSQe8gMwSQsy5ua7TIlOz+s9uN5zETQcIY9E/fLBSZ7s5uB3wd0NhzWtE=</SignatureValue>
+    <SignatureValue>Egx+leRpV9qKjzyXMh6Mo5blqSYFu6lc+Cocqis2ckxeQJsZ201Gb5K+MFrYDg7Ob1pEFf1eZ8yakZcMMkGiv54ZqinPcOG5qrNWjZybfS+LzaqernGq2YlMHQTO4n+eC8+Lps9o5mnPuj63UrNbohTrvCGvvL/AAWFfz6CDLZw=</SignatureValue>
   </Signature>
 </Service>
