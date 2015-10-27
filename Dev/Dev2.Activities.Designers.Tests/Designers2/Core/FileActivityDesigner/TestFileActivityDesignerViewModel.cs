@@ -17,8 +17,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
 {
     public class TestFileActivityDesignerViewModel : FileActivityDesignerViewModel
     {
-        public TestFileActivityDesignerViewModel(ModelItem modelItem, string inputPathLabel, string outputPathLabel, string sftpLabel)
-            : base(modelItem, inputPathLabel, outputPathLabel, sftpLabel)
+        public TestFileActivityDesignerViewModel(ModelItem modelItem, string inputPathLabel, string outputPathLabel)
+            : base(modelItem, inputPathLabel, outputPathLabel)
         {
         }
 
