@@ -1,5 +1,5 @@
 
-<Service ID="df9e59ed-11f0-4359-bd21-7ad35898b383" Version="1.0" Name="Get Rows" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Service ID="df9e59ed-11f0-4359-bd21-7ad35898b383" Version="1.0" Name="Get Rows" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <Actions>
     <Action Name="dbo_proc_get_Rows" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_get_Rows">
       <Inputs>
@@ -136,9 +136,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>TGBzIIu8WNIZIZZNmBonffp58dE=</DigestValue>
+        <DigestValue>7luCy49RmnlBq8nSdiC153L9hgw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>KLTPvzpj6f3ZZ1KjDRdYDnVfveya8mHgBlbO1hgtIjwxXHALiYNNneT2Nyp1l0dcEpO3AEJe5PiLmxCAoEvVop07MjNpnIASquPXF7HZOBjKB4VDMzaGzJ2LRmfVUmsZVW2n0lIH0lcA2BH9nJ+VdG189qPycGsgsZRYlgtklos=</SignatureValue>
+    <SignatureValue>DUOijKtMe2gBOclXFfx9Z6BTuo3mXXNUyo4Nl9bwn3MSHDlg4ini2kg4A0mdgOOU+S2+XnPxpWSFsr0xxuTRq/k5s5RYdvTAHU9BW1iwD/kdCClDmvc3iav5wzWIFYjjjZk1vGWvLlULPzb4gCCep/7V9riG8FPjq+q0cGcPUOM=</SignatureValue>
   </Signature>
 </Service>

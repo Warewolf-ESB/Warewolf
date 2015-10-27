@@ -278,6 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void PerformStopWorkflow(IDSFDataObject dataObject)
         {
+            dataObject.StopExecution = true;
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
             if(service != null)
             {

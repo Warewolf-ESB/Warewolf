@@ -206,7 +206,14 @@ namespace Dev2.Runtime.ESB.Execution
             var next = resource.Execute(dsfDataObject, update);
             while(next != null)
             {
-                next = next.Execute(dsfDataObject, update);
+                if (!dsfDataObject.StopExecution)
+                {
+                    next = next.Execute(dsfDataObject, update);
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }

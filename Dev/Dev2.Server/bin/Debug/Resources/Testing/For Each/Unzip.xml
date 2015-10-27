@@ -1,5 +1,5 @@
 
-<Service ID="550409d7-9760-4fe1-b5e8-c076dcedb1c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Unzip" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5728.18028">
+<Service ID="550409d7-9760-4fe1-b5e8-c076dcedb1c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Unzip" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.27868">
   <DisplayName>Unzip</DisplayName>
   <Category>Testing\For Each\Unzip</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -44,9 +44,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>w12ruOQPWEXPu5v9jX4SW+td3Nw=</DigestValue>
+        <DigestValue>3VnxiTALnm050O/ZKCZJtpRjBjc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ri/Lplzv4VXnTw/pH6dh+OLGwh13MjOQ48e0uwwKkGj0S1QqWprlLqVtqsQiDWgq8pzuGX3ce9ZX8fZ8PhnqnKNFvAxuZmCaCrg7g/QEsPwF1PRkna9efnhw19OP25Rlx7sZSy2A9+eDLs1N6RrxGoTXoADHACyAml+YdzcqWig=</SignatureValue>
+    <SignatureValue>BZWa3UlAD1T8WLgMNSuk5ajaPQI6omcdDNqPeu3vHnFZIngFbAn6RIHiOIsNV/yfHVT9dqr/bcqX/m8rJpVmVPsT/fdjTskmPnCvxXonTMyHeo39IsglY7w95D53bErg4g+hkvANAZnmM5p7EfpB9q7HD2IAz645Y28WC/l6W8M=</SignatureValue>
   </Signature>
 </Service>

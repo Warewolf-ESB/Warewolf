@@ -100,5 +100,6 @@ namespace Dev2
         DateTime StartTime { get; set; }
         Guid DebugEnvironmentId { get; set; }
         bool RemoteNonDebugInvoke { get; set; }
+        bool StopExecution { get; set; }
     }
 }

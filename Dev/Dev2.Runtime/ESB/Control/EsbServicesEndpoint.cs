@@ -358,7 +358,16 @@ namespace Dev2.Runtime.ESB.Control
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
             DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
-           
+            if (innerEnvironment.AllErrors.Count >= 1)
+            {
+                foreach (var error in innerEnvironment.AllErrors)
+                {
+                    if (!dataObject.Environment.AllErrors.Contains(error))
+                    {
+                        dataObject.Environment.AllErrors.Add(error);
+                    }
+                }
+            }
             return innerEnvironment;
         }
 

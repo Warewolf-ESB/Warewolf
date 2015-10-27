@@ -1,5 +1,5 @@
 
-<Source ID="a69a23ca-5d4e-43e3-bb86-d7a1db54fba4" Version="1.0" Name="GreenPoint" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=barney;Password=barney;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Source ID="a69a23ca-5d4e-43e3-bb86-d7a1db54fba4" Version="1.0" Name="GreenPoint" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAD9XUehy0yYrzwJkQXpdIVtAAAAAASAAACgAAAAEAAAACQdp+2xmyldei/KHjNUQRbAAAAAK8tnWAAjnmiuUgoQxQJxhYzyJMR8qp/SMHIYHo72B8FOTRchdnrHrjZhm+nFtkPGgFlsiKDlpNb7dyRpJkiuaBmhxDcOF3UWdZebDB8Me4ps0Y0OC66oCzrVcqDm57VLByu0BmBG9nemN87iM3AKjbLYZkJ4v5gE8hE/y6R2/6K0Ci7+lRYcJF3wriMepytjGZcDNoJIJQLefTod5UaPX//kegRMuWrF6bA5t0RnA2AAqmgaBHSIwIeZL7gxMoXVFAAAAOuK2aF6Sh5h5xwfskN5Nz7ehMaq" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <DisplayName>GreenPoint</DisplayName>
   <Category>Acceptance Testing Resources\GreenPoint</Category>
   <AuthorRoles>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>TUadJ4xiq4Pyl51HLRsRUbo/OqM=</DigestValue>
+        <DigestValue>VV8useSQD8dZoEce6+oMLu4Dk1E=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>cTXyl4y4k4pfQB6MVOwiGhqX0marvEaUdXgHvqrgdm4sFpM8sJE3BEIwiC0MqVWjyZN4ODNWL5ciCGAw7L6/nZjNN2t1Lt8x8HMnSPNPCQUU8SbGivS6MoDhoqsHS5r0lwEmEclfE9StwnCLKc/hLGU72oKG32Jh4rY0p1nfLi4=</SignatureValue>
+    <SignatureValue>TPDqVrbWH+8jbT9ohM/xZsZThAKmdZaW3LM5xLQ+qxoSUe+efu12Io4+s/uiviev5FrQF80iRCzvwEjYwu4oQNfOJZbMwbl1Sqe/BJR1Ur4ctXU7WphDJyucGq1ZJifPiBNVR6IxGZEt+P5UGJEHY/lLh/rQf9DrUzShkWC5Axw=</SignatureValue>
   </Signature>
 </Source>

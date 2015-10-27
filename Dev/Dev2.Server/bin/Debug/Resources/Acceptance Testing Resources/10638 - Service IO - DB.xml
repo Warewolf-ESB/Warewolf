@@ -1,5 +1,5 @@
 
-<Service ID="57ee2766-0b97-4460-942a-cbcf8b8a56c8" Version="1.0" Name="10638 - Service IO - DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Service ID="57ee2766-0b97-4460-942a-cbcf8b8a56c8" Version="1.0" Name="10638 - Service IO - DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.27868">
   <Actions>
     <Action Name="dbo_Pr_MapLocationsGetTop10" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_MapLocationsGetTop10">
       <Inputs />
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>tNDNPpDRRTsgE/pd72eE7D/GDDc=</DigestValue>
+        <DigestValue>srkzBmwGMMlwQ+1ShNyBA1DZ20M=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>dQcmYk+DFNX61hHHjItD7Q6HoCssYkJPZBq2GKxyW4LD9kktCSCkFiquy3FP2w4NI/o4q61rdeFYosU/zkQztqZvtSfVBLeUdwlzRvvsuu6P+7wdhNL4Iq7KCOn+91xjG3KFGDeehxJvoDX3Gf9PKV0hfX4lsUKrEcefJ3nJTbs=</SignatureValue>
+    <SignatureValue>FKKEOJiapCItFsiGoW5J/1I5pVYE4D2hhPPWNhrR4RtwxkYEKWPvCgqEp0a/821F95iOmoVvfMtSoKwhdsb8G3Gx3yQEf28dP4oE+DEI5NVvjMuYXSgKPCc3Mj0oMbwfJn/daRIa1T/AgS4tmuxzhZI8DuX3ar2d6e7awY+wRms=</SignatureValue>
   </Signature>
 </Service>

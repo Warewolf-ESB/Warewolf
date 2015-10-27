@@ -1,5 +1,5 @@
 
-<Service ID="673f4af3-1966-4a82-8e8f-ef294d8ccd9c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Unique" ResourceType="WorkflowService" ServerVersion="0.0.5728.18028">
+<Service ID="673f4af3-1966-4a82-8e8f-ef294d8ccd9c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Unique" ResourceType="WorkflowService" ServerVersion="0.0.5777.27868">
   <DisplayName>Unique</DisplayName>
   <Category>Acceptance Testing Resources\Unique</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -40,9 +40,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>dYJN44yJWr/u2uZH5UqU7DJjyF0=</DigestValue>
+        <DigestValue>sUkT3vVveDnk0v/SGuRY9tMSPY8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>SP3F97o3mk2K4g/MZmwNnly8fmzpKg5Nujb9bY5KMmoKFjSsQ3yzfJ2ZiKNC6iXeSqt0gmCDNaXejQMgU5QzzCqrJZzz4Yc0wnIkLsvbkvX4zepnLT5ZP1TZPkeoIQ7bu+/VmQ+dygKgCdzPa9PFiF8Yet0lW74u6ngslrAeDAQ=</SignatureValue>
+    <SignatureValue>EdmXYL3VQBxxMx9YDWMFDIPaLov6Udk1rzwlX+DFJjHP1/tRY9nFT4Dt+7xYRCPydr5WuWLFTGwk041/AehvS7MwcB1rXl0rVn0JUegZOiR9cIy4rdwFOGIDavTFJdulPFsElVP9c3NRPYs6zB7YaH+0pSVIXiUFm8ZmQcBMa7Y=</SignatureValue>
   </Signature>
 </Service>
