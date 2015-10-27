@@ -46,8 +46,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string ResultVariableHolder = "resultVar";
         public const string SourceHolder = "source";
         public const string ActualSourceHolder = "actualSource";
-        public const string UseSourcePrivateKey = "UseSourcePrivateKey";
-        public const string UseDestinationPrivateKey = "UseDestinationPrivateKey";
+        public const string SourcePrivatePublicKeyFile = "SourcePrivatePublicKeyFile";
+        public const string DestinationPrivateKeyFile = "DestinationPrivateKeyFile";
         public const string SourceUsernameHolder = "sourceUsername";
         public const string SourcePasswordHolder = "sourcePassword";
         public const string ValidationErrors = "validationErrors";
@@ -125,14 +125,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Given(@"use private public key for source is '(.*)'")]
-        public void GivenUsePrivatePublicKeyForSourceIs(string useSourceKey)
+        public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey)
         {
-            bool useSourcePrivateKeyFile;
-            if(!bool.TryParse(useSourceKey, out useSourcePrivateKeyFile))
-            {
-                useSourcePrivateKeyFile = false;
-            }
-            ScenarioContext.Current.Add(UseSourcePrivateKey,useSourcePrivateKeyFile);
+            ScenarioContext.Current.Add(SourcePrivatePublicKeyFile, sourceKey);
         }
 
 
@@ -167,7 +162,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
                     ScenarioContext.Current.Get<string>(SourceUsernameHolder),
                     ScenarioContext.Current.Get<string>(SourcePasswordHolder),
-                    true);
+                    true,"");
                 StringBuilder sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
                 var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
@@ -248,14 +243,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Given(@"use private public key for destination is '(.*)'")]
-        public void GivenUsePrivatePublicKeyForDestinationIs(string useDestinationKey)
+        public void GivenUsePrivatePublicKeyForDestinationIs(string destinationKey)
         {
-            bool useDestinationPrivateKeyFile;
-            if (!bool.TryParse(useDestinationKey, out useDestinationPrivateKeyFile))
-            {
-                useDestinationPrivateKeyFile = false;
-            }
-            ScenarioContext.Current.Add(UseDestinationPrivateKey, useDestinationPrivateKeyFile);
+            ScenarioContext.Current.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
         [When(@"validating the tool")]

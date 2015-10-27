@@ -28,5 +28,7 @@ namespace Dev2.Data.PathOperations.Interfaces {
         /// Password for auth
         /// </summary>
         string Password { get; set; }
+
+        string PrivateKeyFile { get; set; }
     }
 }

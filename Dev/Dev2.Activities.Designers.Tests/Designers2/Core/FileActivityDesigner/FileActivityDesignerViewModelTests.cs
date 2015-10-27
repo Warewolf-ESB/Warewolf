@@ -552,12 +552,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
 
         static TestFileActivityDesignerViewModel CreateViewModel(string inputPathLabel = "Input Label", string outputPathLabel = "Output Label", string inputPath = null, string outputPath = null)
         {
-            var viewModel = new TestFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(
+            var modelItem = ModelItemUtils.CreateModelItem(
                 new DsfPathCopy
                 {
                     InputPath = inputPath,
                     OutputPath = outputPath
-                }), inputPathLabel, outputPathLabel);
+                });
+            var viewModel = new TestFileActivityDesignerViewModel(modelItem, inputPathLabel,outputPathLabel);
             return viewModel;
         }
     }

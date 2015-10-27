@@ -37,10 +37,11 @@ namespace Dev2.PathOperations
         /// </summary>
         /// <param name="path"></param>
         /// <param name="isNotCertVerifiable"></param>
+        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable)
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable,string privateKeyFile="")
         {
-            return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable);
+            return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
         }
 
         /// <summary>
@@ -49,10 +50,11 @@ namespace Dev2.PathOperations
         /// <param name="path">The path.</param>
         /// <param name="user">The user.</param>
         /// <param name="pass">The pass.</param>
+        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass)
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass,string privateKeyFile="")
         {
-            return CreatePathFromString(path, user, pass, false);
+            return CreatePathFromString(path, user, pass, false, privateKeyFile);
         }
 
         /// <summary>
@@ -62,8 +64,9 @@ namespace Dev2.PathOperations
         /// <param name="user">The user.</param>
         /// <param name="pass">The pass.</param>
         /// <param name="isNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
+        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable)
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable,string privateKeyFile="")
         {
             VerifyArgument.IsNotNull("path",path);
             // Fetch path type
@@ -76,7 +79,7 @@ namespace Dev2.PathOperations
                     throw  new IOException("Invalid Path. Please insure that the path provided is an absolute path, if you intended to access the local file system.");
             }
 
-            return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable);
+            return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);
         }
 
         /// <summary>

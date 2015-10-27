@@ -378,7 +378,7 @@ namespace Dev2.PathOperations
                             // unzip locally then Put the contents of the archive to the dst end-point
                             var tempPath = CreateTmpDirectory();
                             ExtractFile(args, zip, tempPath);
-                            var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, "", "");
+                            var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, "", "","");
                             var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
                             Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
                         }
@@ -450,7 +450,7 @@ namespace Dev2.PathOperations
             while(pos >= 0 && deepestIndex == -1)
             {
                 var tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
-                                                                                 activityIOPath.Password, true);
+                                                                                 activityIOPath.Password, true,activityIOPath.PrivateKeyFile);
                 try
                 {
                     if(dst.ListDirectory(tmpPath) != null)
@@ -479,7 +479,7 @@ namespace Dev2.PathOperations
             while(pos <= startDepth && ok)
             {
                 var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
-                                                                                  dst.IOPath.Password, true);
+                                                                                  dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
                 dst.IOPath = toCreate;
                 ok = CreateDirectory(dst, args);
                 pos++;
@@ -647,14 +647,14 @@ namespace Dev2.PathOperations
                             string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
                                 (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
                             dst.IOPath.Username,
-                            dst.IOPath.Password, true);
+                            dst.IOPath.Password, true,dst.IOPath.PrivateKeyFile);
                     var path = cpPath.Path;
                     DoFileTransfer(src, dst, args, cpPath, p, path, ref result);
                 }
                 else if(args.Overwrite || !dst.PathExist(dst.IOPath))
                 {
                     var tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
-                    var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
+                    var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password, dst.IOPath.PrivateKeyFile);
                     DoFileTransfer(src, dst, args, path, p, path.Path, ref result);
                 }
             }
@@ -675,7 +675,7 @@ namespace Dev2.PathOperations
 
         static bool TransferFile(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, string path, IActivityIOPath p, bool result)
         {
-            var tmpPath = ActivityIOFactory.CreatePathFromString(path, dst.IOPath.Username, dst.IOPath.Password, true);
+            var tmpPath = ActivityIOFactory.CreatePathFromString(path, dst.IOPath.Username, dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
             var tmpEp = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
             var whereToPut = GetWhereToPut(src, dst);
             using(var s = src.Get(p, _filesToDelete))
@@ -705,7 +705,7 @@ namespace Dev2.PathOperations
                                 StringSplitOptions.RemoveEmptyEntries);
                         var destinationPath =
                             ActivityIOFactory.CreatePathFromString(dst.Combine(dirParts.Last()), dst.IOPath.Username,
-                                dst.IOPath.Password, true);
+                                dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
                         var destinationEndPoint =
                             ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
                         dst.CreateDirectory(destinationPath, args);
@@ -744,7 +744,7 @@ namespace Dev2.PathOperations
                     var destinationPath =
                         ActivityIOFactory.CreatePathFromString(dst.Combine(directory),
                                                                dst.IOPath.Username,
-                                                               dst.IOPath.Password, true);
+                                                               dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
 
                     var destinationEndPoint =
                         ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
@@ -956,7 +956,7 @@ namespace Dev2.PathOperations
             // tmp dir for files required
             var tmpDir = CreateTmpDirectory();
             var tempFilename = CreateTmpFile();
-            var tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir, "", "");
+            var tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir, "", "","");
             var tmpEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
 
             // stage contents to local folder
@@ -1014,7 +1014,7 @@ namespace Dev2.PathOperations
                 dst =
                     ActivityIOFactory.CreateOperationEndPointFromIOPath(
                         ActivityIOFactory.CreatePathFromString(dst.IOPath.Path, dst.IOPath.Username,
-                                                               dst.IOPath.Password, true));
+                                                               dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile));
 
                 var zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
 

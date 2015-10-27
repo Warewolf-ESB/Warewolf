@@ -47,7 +47,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
             BuildShapeAndTestData();
 
 
-            var create = new DsfPathCopy
+            var copy = new DsfPathCopy
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder), 
                 Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
@@ -56,24 +56,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
                 DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder), 
                 DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder), 
                 Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder), 
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
+                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
             };
-            var useSourceKey = ScenarioContext.Current.Get<bool>(CommonSteps.UseSourcePrivateKey);
-            var useDestinationKey = ScenarioContext.Current.Get<bool>(CommonSteps.UseDestinationPrivateKey);
-            if(useSourceKey)
-            {
-                create.PrivateKeyFile = PrivatePublicKeyFile;
-            }
-            if(useDestinationKey)
-            {
-                create.DestinationPrivateKeyFile = PrivatePublicKeyFile;
-            }
+           
             TestStartNode = new FlowStep
             {
-                Action = create
+                Action = copy
             };
 
-            ScenarioContext.Current.Add("activity", create);
+            ScenarioContext.Current.Add("activity", copy);
         }
     }
 }

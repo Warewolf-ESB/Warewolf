@@ -101,8 +101,8 @@ namespace ActivityUnitTests.ActivityTests
             //------------Setup for test--------------------------
             tempFile = Path.GetTempFileName();
             var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true));
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true,""));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true,""));
             Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
             File.WriteAllText(zipPathName, "");
             //------------Assert Preconditions-------------------

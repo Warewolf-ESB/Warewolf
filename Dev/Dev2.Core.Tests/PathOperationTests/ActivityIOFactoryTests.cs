@@ -58,7 +58,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 // ReSharper restore InconsistentNaming
         {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
+            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "","");
 
             Assert.AreEqual(enActivityIOPathType.FileSystem, result.PathType);
         }
@@ -109,7 +109,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         public void CreatePathFromString_AssertAllPropertiesAreSet_ExpectCorrectValues()
         // ReSharper restore InconsistentNaming
         {
-            var path = ActivityIOFactory.CreatePathFromString(@"c:\bob","dave","monkey", false);
+            var path = ActivityIOFactory.CreatePathFromString(@"c:\bob","dave","monkey", false,"");
             Assert.AreEqual(@"c:\bob",path.Path);
             Assert.AreEqual(@"dave", path.Username);
             Assert.AreEqual(@"monkey", path.Password);
