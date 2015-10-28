@@ -155,16 +155,6 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             Assert.AreEqual(!actualist.Any(),bool.Parse(p0));
         }
 
-
-        [Then(@"the result has no errors")]
-        public void ThenTheResultHasNoErrors()
-        {
-  
-          
-
-        }
-
-
         [Given(@"the drop down list as '(.*)'")]
         public void GivenTheDropDownListAs(string dropDownList)
         {
