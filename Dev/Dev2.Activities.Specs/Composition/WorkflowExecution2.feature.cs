@@ -15454,10 +15454,10 @@ this.FeatureBackground();
                         "Result",
                         "[[Result]]"});
 #line 4243
-   testRunner.And("\"Wolf-1121\" contains \"Wolf-1121\" from server \"localhost\" with mapping as", ((string)(null)), table838, "And ");
+   testRunner.And("\"Testing/Bugs\" contains \"Wolf-1121\" from server \"localhost\" with mapping as", ((string)(null)), table838, "And ");
 #line 4246
-   testRunner.When("\"http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=" +
-                    "1cd1fdf9-7382-4456-8be6-1d3ca462b978\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"http://rsaklfleroy:3142/secure/Testing/Bugs/Wolf-1121.json?%3CDataList%3E%3C/Dat" +
+                    "aList%3E&wid=5515b641-e8f9-4d12-8ec0-54a2072344dd\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4247
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -15535,7 +15535,7 @@ this.FeatureBackground();
                         "Result",
                         "[[Result]]"});
 #line 4268
-   testRunner.And("\"wolf-402\" contains \"wolf-402\" from server \"localhost\" with mapping as", ((string)(null)), table841, "And ");
+   testRunner.And("\"Testing/Bugs\" contains \"wolf-402\" from server \"localhost\" with mapping as", ((string)(null)), table841, "And ");
 #line 4271
    testRunner.When("\"wolf-402\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4272

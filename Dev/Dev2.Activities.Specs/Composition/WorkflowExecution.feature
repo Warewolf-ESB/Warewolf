@@ -4240,10 +4240,10 @@ Scenario: ForEach Acceptance Tests
 #wolf-1121
 Scenario: SharePoint JSOn formatting
 	  Given I have a workflow "Wolf-1121"
-	  And "Wolf-1121" contains "Wolf-1121" from server "localhost" with mapping as
+	  And "Testing/Bugs" contains "Wolf-1121" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
-	  When "http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=1cd1fdf9-7382-4456-8be6-1d3ca462b978" is executed
+	  When "http://rsaklfleroy:3142/secure/Testing/Bugs/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=5515b641-e8f9-4d12-8ec0-54a2072344dd" is executed
 	Then the workflow execution has "NO" error
 
 
@@ -4265,7 +4265,7 @@ Scenario: Recordsets in Debug Output windpw
 #Wolf-402
 Scenario: Ensure that End this Workflow is working 
 	  Given I have a workflow "wolf-402"
-	  And "wolf-402" contains "wolf-402" from server "localhost" with mapping as
+	  And "Testing/Bugs" contains "wolf-402" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  When "wolf-402" is executed
