@@ -194,6 +194,7 @@ namespace Dev2.Tests
             dataObject.RunWorkflowAsync = true;
             dataObject.IsDebugNested = true;
             dataObject.ForEachNestingLevel = 3;
+            dataObject.StopExecution = false;
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -206,7 +207,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(56, properties.Length);
+            Assert.AreEqual(57, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -260,6 +261,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.RunWorkflowAsync, clonedObject.RunWorkflowAsync);
             Assert.AreEqual(dataObject.IsDebugNested, clonedObject.IsDebugNested);
             Assert.AreEqual(dataObject.ForEachNestingLevel, clonedObject.ForEachNestingLevel);
+            Assert.AreEqual(dataObject.StopExecution, clonedObject.StopExecution);
         }
 
         #region Debug Mode Test
