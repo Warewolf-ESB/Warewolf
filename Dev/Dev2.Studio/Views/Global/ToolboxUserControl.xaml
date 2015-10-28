@@ -23,7 +23,7 @@
             <sadt:ToolboxCategory CategoryName="Data" />
             <sadt:ToolboxCategory CategoryName="Resources" />
             <sadt:ToolboxCategory CategoryName="Utility" />
-            <sadt:ToolboxCategory CategoryName="File and Folder" />
+            <sadt:ToolboxCategory CategoryName="File, FTP, FTPS and SFTP" />
             <sadt:ToolboxCategory CategoryName="Scripting" />
             <sadt:ToolboxCategory CategoryName="Connectors" />
             <sadt:ToolboxCategory CategoryName="SharePoint" />
