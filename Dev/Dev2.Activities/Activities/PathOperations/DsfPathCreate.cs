@@ -60,11 +60,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
+            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            colItr.AddVariableToIterateOn(privateKeyItr);
+
             if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(new DebugEvalResult(OutputPath, "File or Folder", dataObject.Environment, update));
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
                 AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                if (!string.IsNullOrEmpty(PrivateKeyFile))
+                {
+                    AddDebugInputItem(PrivateKeyFile, "Destination Private Key File", dataObject.Environment, update);
+                }
             }
 
             while(colItr.HasMoreData())
@@ -77,8 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
-                                                                                true);
-
+                                                                                true, colItr.FetchNextValue(privateKeyItr));
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     string result = broker.Create(dstEndPoint, opTo, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));

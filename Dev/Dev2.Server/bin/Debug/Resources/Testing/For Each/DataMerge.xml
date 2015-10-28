@@ -1,5 +1,5 @@
 
-<Service ID="730c4044-ba33-447e-b9a9-343852e13437" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMerge" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.27868">
+<Service ID="730c4044-ba33-447e-b9a9-343852e13437" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMerge" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>DataMerge</DisplayName>
   <Category>Testing\For Each\DataMerge</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>A7TDDoJt0ufIwyypHLoNz3EKDfA=</DigestValue>
+        <DigestValue>mz95vswA+cUYtAOUGgAglrj/yHY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>KrXw0pLFwGXZSUfrd5k/rBuxJ0RtqznZm9rB6vCFkCgLFB1QlYGZSy4sisdyiFhg04f0wYUTONA3Y31DEKfQ3VseRrgQKO0H/W3o/y5BWgfJS0VGB4yGS7Ip4vGZ7nZt2HBxgrA70vgWzlcTMqXy/wkaiAGhggGzzmjvpqkaNr4=</SignatureValue>
+    <SignatureValue>Ky5EPKIVrNNV0ShSVZlcm+a63U9wyRvrVg0vvczjaQxVjNEth6jpiEKIypQCEgElMN50+6/GBUiqcYuM7ImVnZCnKs76NbAE1HsfX6n9C7rd6iH3yJpbQ0wkF8oPRGvlYHm7tsMMJN1h5uNgxBjFwNnuGbGsoeg/XuSTs/EZ2sk=</SignatureValue>
   </Signature>
 </Service>

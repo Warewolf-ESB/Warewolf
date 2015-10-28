@@ -146,7 +146,7 @@ namespace Dev2.PathOperations
                     if (whereToPut != null)
                     {
                         //Make the destination directory equal to that directory
-                        dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
+                        dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password,dst.PrivateKeyFile);
                     }
                 }
                 if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
@@ -612,7 +612,7 @@ namespace Dev2.PathOperations
                     {
                         foreach (string d in dirs)
                         {
-                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true));
+                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true,src.PrivateKeyFile));
                         }
                     }
                 }
@@ -662,7 +662,7 @@ namespace Dev2.PathOperations
                                     {
                                         foreach (string d in dirs)
                                         {
-                                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
+                                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, src.PrivateKeyFile));
                                         }
                                     }
 

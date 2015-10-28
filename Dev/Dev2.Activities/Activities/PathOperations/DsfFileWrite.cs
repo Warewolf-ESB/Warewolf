@@ -60,16 +60,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
+            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            colItr.AddVariableToIterateOn(privateKeyItr);
+
             var contentItr =new WarewolfIterator(dataObject.Environment.Eval(FileContents, update));
             colItr.AddVariableToIterateOn(contentItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
+
 
             if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(OutputPath, "Output Path", dataObject.Environment, update);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
                 AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                if (!string.IsNullOrEmpty(PrivateKeyFile))
+                {
+                    AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
+                }
                 AddDebugInputItem(FileContents, "File Contents", dataObject.Environment, update);
             }
 
@@ -81,7 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
-                                                                                true);
+                                                                                true, colItr.FetchNextValue(privateKeyItr));
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
 
                 try

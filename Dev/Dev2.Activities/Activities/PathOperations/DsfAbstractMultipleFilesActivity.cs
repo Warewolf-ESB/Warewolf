@@ -43,6 +43,7 @@ namespace Dev2.Activities.PathOperations
             Overwrite = false;
             DestinationPassword = string.Empty;
             DestinationUsername = string.Empty;
+            DestinationPrivateKeyFile = string.Empty;
         }
 
         protected IWarewolfListIterator ColItr;
@@ -70,6 +71,8 @@ namespace Dev2.Activities.PathOperations
             var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
+            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            ColItr.AddVariableToIterateOn(privateKeyItr);
             
             var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername, update));
             ColItr.AddVariableToIterateOn(desunameItr);
@@ -77,6 +80,9 @@ namespace Dev2.Activities.PathOperations
             
             var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
+
+            var destPrivateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPrivateKeyFile, update));
+            ColItr.AddVariableToIterateOn(destPrivateKeyItr);
 
             AddItemsToIterator(dataObject.Environment, update);
 
@@ -86,8 +92,16 @@ namespace Dev2.Activities.PathOperations
             {
                 AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment, update));
                 AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                if(!string.IsNullOrEmpty(PrivateKeyFile))
+                {
+                    AddDebugInputItem(new DebugEvalResult(PrivateKeyFile, "Source Private Key File", dataObject.Environment, update));
+                }
                 AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment, update));
                 AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername, update);
+                if(!string.IsNullOrEmpty(DestinationPrivateKeyFile))
+                {
+                    AddDebugInputItem(new DebugEvalResult(DestinationPrivateKeyFile, "Destination Private Key File", dataObject.Environment, update));
+                }
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
                 AddDebugInputItems(dataObject.Environment, update);
             }
@@ -102,8 +116,7 @@ namespace Dev2.Activities.PathOperations
                     src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(inputItr),
                                                                                  ColItr.FetchNextValue(unameItr),
                                                                                  ColItr.FetchNextValue(passItr),
-                                                                                 true);
-
+                                                                                 true, ColItr.FetchNextValue(privateKeyItr));
 
                 }
                 catch(IOException ioException)
@@ -116,8 +129,7 @@ namespace Dev2.Activities.PathOperations
                     dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(outputItr),
                                                                                      ColItr.FetchNextValue(desunameItr),
                                                                                      ColItr.FetchNextValue(despassItr),
-                                                                                     true);
-
+                                                                                     true, ColItr.FetchNextValue(destPrivateKeyItr));
                 }
                 catch(IOException ioException)
                 {

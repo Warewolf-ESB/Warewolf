@@ -155,7 +155,7 @@
                                 FilterType="All"
                                 DefaultText="[[PathToPrivateKey]]"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.PrivateKeyPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -170,8 +170,8 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.PrivateKeyPath"
-                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.PrivateKeyFile"
+                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

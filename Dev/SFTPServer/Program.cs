@@ -24,10 +24,10 @@ namespace SFTPServer
             SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
             if (File.Exists(@"\FTP.log"))
                 File.Create(@"\FTP.log");
-            
+            rsaKey.Save("C:\\Temp\\private.key","Q/ulw&]");
             TextWriter txt = new StreamWriter(File.OpenWrite(@".\FTP.log"));
             // add keys, bindings and users
-            var server = new SftpServer { Log = txt };
+            var server = new SftpServer { Log = Console.Out };
             server.Keys.Add(rsaKey);
             server.Keys.Add(dssKey);
             server.Bindings.Add(IPAddress.Any, 22);

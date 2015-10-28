@@ -124,7 +124,7 @@ namespace Dev2.Data.ServiceModel
             var helper = CreateSharepointHelper();
             bool isSharepointOnline;
             var testConnection = helper.TestConnection(out isSharepointOnline);
-            IsSharepointOnline = true;
+            IsSharepointOnline = isSharepointOnline;
             return testConnection;
         }
 

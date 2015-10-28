@@ -163,7 +163,17 @@ namespace Dev2.Data.PathOperations
             var hostName = ExtractHostNameFromPath(path.Path);
             if(hostName.ToLower().StartsWith("localhost"))
                 hostName = hostName.Replace("localhost", "127.0.0.1");
-            var sftp = new SftpClient(hostName, 22, path.Username, path.Password) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) };
+            var methods = new List<AuthenticationMethod>();
+            methods.Add(new PasswordAuthenticationMethod(path.Username, path.Password));
+            
+            if(!string.IsNullOrEmpty(path.PrivateKeyFile))
+            {
+                var keyFile = string.IsNullOrEmpty(path.Password) ? new PrivateKeyFile(path.PrivateKeyFile) : new PrivateKeyFile(path.PrivateKeyFile,path.Password);
+                var keyFiles = new[] { keyFile };
+                methods.Add(new PrivateKeyAuthenticationMethod(path.Username, keyFiles)); 
+            }
+            var con = new ConnectionInfo(hostName, 22, path.Username, methods.ToArray());
+            var sftp = new SftpClient(con) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) };
 
             try
             {
@@ -349,7 +359,7 @@ namespace Dev2.Data.PathOperations
                 // directory delete
                 if(PathIs(src) == enPathType.Directory)
                 {
-                    DeleteHandler(new List<string> { src.Path }, src.Username, src.Password);
+                    DeleteHandler(new List<string> { src.Path }, src.Username, src.Password, src.PrivateKeyFile);
                 }
                 else
                 {
@@ -406,7 +416,7 @@ namespace Dev2.Data.PathOperations
                                 while(!reader.EndOfStream)
                                 {
                                     string uri = BuildValidPathForFtp(src, reader.ReadLine());
-                                    result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true));
+                                    result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true,src.PrivateKeyFile));
                                 }
                             }
                         }
@@ -465,7 +475,7 @@ namespace Dev2.Data.PathOperations
                                 where file != ".." && file != "."
                                 select BuildValidPathForFtp(src, file)
                                     into uri
-                                    select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password));
+                                    select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile));
             }
             catch(Exception)
             {
@@ -618,7 +628,7 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
-                                                 src.IsNotCertVerifiable);
+                                                 src.IsNotCertVerifiable,src.PrivateKeyFile);
                 dirs = ExtractDirectoryList(src.Path, tmpDirData);
 
                 // remove the this directory ;)
@@ -632,7 +642,7 @@ namespace Dev2.Data.PathOperations
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
-            return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
+            return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
         }
 
         /// <summary>
@@ -645,7 +655,7 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
-                                                 src.IsNotCertVerifiable);
+                                                 src.IsNotCertVerifiable,src.PrivateKeyFile);
                 dirs = ExtractFileList(src.Path, tmpDirData);
             }
             catch(Exception ex)
@@ -654,7 +664,7 @@ namespace Dev2.Data.PathOperations
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
-            return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
+            return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
         }
 
         #region Private Methods
@@ -679,13 +689,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        /// <summary>
-        /// Recursive handler
-        /// </summary>
-        /// <param name="pathStack"></param>
-        /// <param name="user"></param>
-        /// <param name="pass"></param>
-        void DeleteHandler(IList<string> pathStack, string user, string pass)
+        void DeleteHandler(IList<string> pathStack, string user, string pass,string privateKeyFile)
         {
             if(pathStack.Count > 0)
             {
@@ -694,8 +698,8 @@ namespace Dev2.Data.PathOperations
 
                 bool addBack = true;
 
-                IList<IActivityIOPath> allFiles = ListFilesInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass)).GroupBy(a => a.Path).Select(g => g.First()).ToList();
-                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass));
+                IList<IActivityIOPath> allFiles = ListFilesInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile)).GroupBy(a => a.Path).Select(g => g.First()).ToList();
+                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile));
 
                 if(allDirs.Count == 0)
                 {
@@ -704,7 +708,7 @@ namespace Dev2.Data.PathOperations
                     {
                         DeleteOp(file);
                     }
-                    IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(path, user, pass);
+                    IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile);
                     DeleteOp(tmpPath);
                     addBack = false;
                 }
@@ -714,30 +718,21 @@ namespace Dev2.Data.PathOperations
                     pathStack = pathStack.Union(allDirs.Select(ioPath => ioPath.Path)).ToList();
                 }
 
-                DeleteHandler(pathStack, user, pass);
+                DeleteHandler(pathStack, user, pass, privateKeyFile);
 
                 if(addBack)
                 {
                     // remove the dir now all its sub-dirs are gone ;)
-                    DeleteHandler(new List<string> { path }, user, pass);
+                    DeleteHandler(new List<string> { path }, user, pass, privateKeyFile);
                 }
             }
         }
 
-        /// <summary>
-        /// Get the extended dir listing for internal use
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="user"></param>
-        /// <param name="pass"></param>
-        /// <param name="ssl"></param>
-        /// <param name="isNotCertVerifiable"></param>
-        /// <returns></returns>
-        string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
+        string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable,string privateKeyFile)
         {
             if(path.Contains("sftp://"))
             {
-                return ExtendedDirListSftp(path, user, pass);
+                return ExtendedDirListSftp(path, user, pass, privateKeyFile);
             }
             return ExtendedDirListStandardFtp(path, user, pass, ssl, isNotCertVerifiable);
         }
@@ -794,10 +789,10 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        string ExtendedDirListSftp(string path, string user, string pass)
+        string ExtendedDirListSftp(string path, string user, string pass,string privateKeyFile)
         {
             var result = new StringBuilder();
-            var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass);
+            var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass,privateKeyFile);
             var sftp = BuildSftpClient(pathFromString);
             try
             {

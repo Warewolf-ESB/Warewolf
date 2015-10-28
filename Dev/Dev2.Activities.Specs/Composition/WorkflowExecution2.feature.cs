@@ -15454,10 +15454,10 @@ this.FeatureBackground();
                         "Result",
                         "[[Result]]"});
 #line 4243
-   testRunner.And("\"Wolf-1121\" contains \"Wolf-1121\" from server \"localhost\" with mapping as", ((string)(null)), table838, "And ");
+   testRunner.And("\"Testing/Bugs\" contains \"Wolf-1121\" from server \"localhost\" with mapping as", ((string)(null)), table838, "And ");
 #line 4246
-   testRunner.When("\"http://rsaklfleroy:3142/secure/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=" +
-                    "1cd1fdf9-7382-4456-8be6-1d3ca462b978\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"http://rsaklfleroy:3142/secure/Testing/Bugs/Wolf-1121.json?%3CDataList%3E%3C/Dat" +
+                    "aList%3E&wid=5515b641-e8f9-4d12-8ec0-54a2072344dd\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4247
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -15506,6 +15506,40 @@ this.FeatureBackground();
                         "[[Date(2).Difference]] = 13"});
 #line 4259
  testRunner.And("the \'Testing/For Each\' in Workflow \'Master Test\' debug outputs as", ((string)(null)), table840, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure that End this Workflow is working")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void EnsureThatEndThisWorkflowIsWorking()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that End this Workflow is working", ((string[])(null)));
+#line 4266
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4267
+   testRunner.Given("I have a workflow \"wolf-402\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table841 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table841.AddRow(new string[] {
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
+#line 4268
+   testRunner.And("\"Testing/Bugs\" contains \"wolf-402\" from server \"localhost\" with mapping as", ((string)(null)), table841, "And ");
+#line 4271
+   testRunner.When("\"wolf-402\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4272
+ testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

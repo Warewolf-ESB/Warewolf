@@ -51,7 +51,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Username = string.Empty;
             Password = string.Empty;
             Result = string.Empty;
-
+            PrivateKeyFile = string.Empty;
         }
 
         protected override void OnExecute(NativeActivityContext context)

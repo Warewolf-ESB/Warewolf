@@ -8,24 +8,26 @@ Feature: Read File
 Scenario Outline: Read File at location
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
+	And use private public key for source is '<sourcePrivateKeyFile>'
 	And result as '<resultVar>'
 	When the read file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | Input Path                  | Username   | Password |
-         | <source> = <sourceLocation> | <username> | String   |
+         | Input Path                  | Username   | Password | Private Key File       |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile> |
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| NO | Name       | source   | sourceLocation                                                       | username                     | password | resultVar  | result | errorOccured |
-	| 1 | Local      | [[path]] | c:\filetoread.txt                                                    | ""                           | ""       | [[result]] | Guid   | NO           |
-	| 2 | UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |
-	| 3 | UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |
-	| 4 | FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]] | Guid   | NO           |
-	| 5 | FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |
-	|6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]]             | Guid   | NO           |
+	| NO | Name       | source   | sourceLocation                                                       | username                     | password | resultVar  | result | errorOccured |sourcePrivateKeyFile |
+	| 1  | Local      | [[path]] | c:\filetoread.txt                                                    | ""                           | ""       | [[result]] | Guid   | NO           |                     |
+	| 2  | UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                     |
+	| 3  | UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                     |
+	| 4  | FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]] | Guid   | NO           |                     |
+	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                     |
+	| 6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                     |
+	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
 
 
 	

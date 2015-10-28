@@ -246,7 +246,7 @@ namespace Dev2.Activities.Designers2.Core
             return ModelItemCollection[indexNumber - 1];
         }
 
-        TDev2TOFn GetDto(int indexNumber)
+        protected TDev2TOFn GetDto(int indexNumber)
         {
             var item = GetModelItem(indexNumber);
             return item.GetCurrentValue() as TDev2TOFn;
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Designers2.Core
             return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
         }
 
-        void RemoveDto(TDev2TOFn dto, int indexNumber)
+        protected virtual void RemoveDto(IDev2TOFn dto, int indexNumber)
         {
 
             if(ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count)
@@ -307,7 +307,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        void RemoveAt(int indexNumber, INotifyPropertyChanged notify)
+        protected void RemoveAt(int indexNumber, INotifyPropertyChanged notify)
         {
             notify.PropertyChanged -= OnDtoPropertyChanged;
             var idx = indexNumber - 1;

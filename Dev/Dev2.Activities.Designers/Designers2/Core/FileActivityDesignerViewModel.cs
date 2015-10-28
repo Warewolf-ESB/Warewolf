@@ -108,8 +108,8 @@ namespace Dev2.Activities.Designers2.Core
 
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
-        string PrivateKeyPath { get { return GetProperty<string>(); } }
-        string DestinationPrivateKeyPath { get { return GetProperty<string>(); } }
+        string PrivateKeyFile { get { return GetProperty<string>(); } }
+        string DestinationPrivateKeyFile { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateInputPath()
         {
@@ -121,14 +121,14 @@ namespace Dev2.Activities.Designers2.Core
             OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
         }
 
-        protected virtual void ValidateSftpKey()
+        private void ValidateSftpKey()
         {
-            SftpValue = ValidatePath("Private Key Path", PrivateKeyPath, () => IsSftpFocused = true, true);
+            SftpValue = ValidatePath("Private Key Path", PrivateKeyFile, () => IsSftpFocused = true, false);
         }
 
-        protected virtual void ValidateDestinationSftpKey()
+        private void ValidateDestinationSftpKey()
         {
-            DestinationSftpValue = ValidatePath("Private Key Path", DestinationPrivateKeyPath, () => IsSftpFocused = true, true);
+            DestinationSftpValue = ValidatePath("Destination Private Key Path", DestinationPrivateKeyFile, () => IsSftpFocused = true, false);
         }
 
         protected virtual void ValidateInputAndOutputPaths()
@@ -136,6 +136,7 @@ namespace Dev2.Activities.Designers2.Core
             ValidateOutputPath();
             ValidateInputPath();
             ValidateSftpKey();
+            ValidateDestinationSftpKey();
         }
 
         protected virtual string ValidatePath(string label, string path, Action onError, bool pathIsRequired)

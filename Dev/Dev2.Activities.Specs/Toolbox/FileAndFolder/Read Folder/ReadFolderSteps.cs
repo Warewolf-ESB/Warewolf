@@ -63,7 +63,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
                     Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
                     IsFilesAndFoldersSelected = isFileOrFolder,
                     IsFoldersSelected = isFolderSelected,
-                    IsFilesSelected = isFileSelected
+                    IsFilesSelected = isFileSelected,
+                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
                 };
 
             TestStartNode = new FlowStep

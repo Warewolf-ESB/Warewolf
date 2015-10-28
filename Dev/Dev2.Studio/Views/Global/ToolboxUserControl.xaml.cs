@@ -137,7 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             }
 
 
-            category = GetToolboxCategoryByName("File and Folder");
+            category = GetToolboxCategoryByName("File, FTP, FTPS and SFTP");
             if(category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathCreate), "/Images/ToolFileFolderCreate-32.png", "Create"));

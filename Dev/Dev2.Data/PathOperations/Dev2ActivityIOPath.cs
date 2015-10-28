@@ -24,14 +24,14 @@ namespace Dev2.PathOperations
     public class Dev2ActivityIOPath : IActivityIOPath
     {
 
-        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass, bool isNotCertVerifiable)
+        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass, bool isNotCertVerifiable,string privateKeyFile)
         {
             PathType = type;
             Path = path;
             Username = user;
             Password = pass;
             IsNotCertVerifiable = isNotCertVerifiable;
-
+            PrivateKeyFile = privateKeyFile;
         }
 
         /// <summary>
@@ -75,8 +75,12 @@ namespace Dev2.PathOperations
             get;
             set;
         }
+        public string PrivateKeyFile
+        {
+            get;
+            set;
+        }
 
-       
         public bool IsNotCertVerifiable
         {
             get;

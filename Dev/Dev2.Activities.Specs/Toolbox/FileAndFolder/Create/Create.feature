@@ -9,24 +9,26 @@ Scenario Outline: Create file at location
 	Given I have a destination path '<destination>' with value '<destinationLocation>'
 	And overwrite is '<selected>'
 	And destination credentials as '<username>' and '<password>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
 	And result as '<resultVar>'
 	When the create file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | File or Folder                        | Overwrite  | Username   | Password |
-         | <destination> = <destinationLocation> | <selected> | <username> | String   |
+         | File or Folder                        | Overwrite  | Username   | Password | Destination Private Key File |
+         | <destination> = <destinationLocation> | <selected> | <username> | String   | <destinationPrivateKeyFile>  |
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name       | destination | destinationLocation                                            | selected | username                     | password               | resultVar  | result  | errorOccured |
-		| 1  | Local      | [[path]]    | c:\myfile.txt                                                  | True     | ""                           | ""                     | [[result]] | Success | NO           |
-		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt        | True     | ""                           | ""                     | [[result]] | Success | NO           |
-		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0               | [[result]] | Success | NO           |
-		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                 | True     | ""                           | ""                     | [[result]] | Success | NO           |
-		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0               | [[result]] | Success | NO           |
-		| 6  | SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]                | [[result]] | Success | NO           |
+		| No | Name       | destination | destinationLocation                                            | selected | username                     | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                  | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt        | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
+		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                 | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                     | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 
 
