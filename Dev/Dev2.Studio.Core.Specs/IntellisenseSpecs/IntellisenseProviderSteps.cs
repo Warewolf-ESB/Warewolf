@@ -130,6 +130,41 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             return provider;
         }
 
+
+        [Then(@"the result has '(.*)' errors")]
+        public void ThenTheResultHasErrors(string p0)
+        {
+            var calc = ScenarioContext.Current.Get<bool>("IsInCalculate");
+
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = ScenarioContext.Current.Get<int>("cursorIndex"),
+                CaretPositionOnPopup = ScenarioContext.Current.Get<int>("cursorIndex"),
+                InputText = ScenarioContext.Current.Get<string>("inputText"),
+                DesiredResultSet = calc ? IntellisenseDesiredResultSet.ClosestMatch : IntellisenseDesiredResultSet.Default,
+                FilterType = ScenarioContext.Current.Get<enIntellisensePartType>("filterType"),
+                IsInCalculateMode = calc
+            };
+
+            ScenarioContext.Current.Add("context", context);
+
+            IIntellisenseProvider provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
+
+            var getResults = provider.GetIntellisenseResults(context);
+            var actualist = getResults.Where(i => i.IsError);
+            Assert.AreEqual(!actualist.Any(),bool.Parse(p0));
+        }
+
+
+        [Then(@"the result has no errors")]
+        public void ThenTheResultHasNoErrors()
+        {
+  
+          
+
+        }
+
+
         [Given(@"the drop down list as '(.*)'")]
         public void GivenTheDropDownListAs(string dropDownList)
         {

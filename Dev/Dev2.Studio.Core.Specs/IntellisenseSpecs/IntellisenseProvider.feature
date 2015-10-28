@@ -119,6 +119,18 @@ Scenario Outline: Insert for All FilterType and Calculate Provider
 	| 6        | <att/><sum><b/></sum>     | All        | tan([[at]])            | 11    |                               |         | tan([[at]])             | Default, Calculate | 11            |
 	| 7        | <a/><b/><c/>              | All        | =[[b]]+b               | 8     | [[b]],bin2dec,bin2hex,bin2oct | [[b]]   | =[[b]]+[[b]]            | Default, Calculate | 12            |
 	| 8        | <a/><att/><sum><b/></sum> | All        | tan([[at]]) tan([[a]]) | 8     | [[att]]                       | [[att]] | tan([[att]]) tan([[a]]) | Default, Calculate | 11            |
+
+Scenario Outline: Recset only has no errors for valid variable indexes
+	Given I have the following variable list '<varlist>'
+	And the filter type is 'RecordsetsOnly'
+	And the current text in the textbox is '<input>'
+	And the cursor is at index '11'		
+	And the provider used is 'Default'	
+	Then the result has '<expectError>' errors
+Examples: 	
+	| testName | varlist                            | expectError | input             |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true       | [[sum([[x]])]]    |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false        | [[sum([[assc]])]] |
 	
 Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
 	Given I have the following variable list '<varlist>'
