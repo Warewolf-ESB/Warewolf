@@ -4270,3 +4270,13 @@ Scenario: Ensure that End this Workflow is working
 	  |                  |               | Result              | [[Result]]  |
 	  When "wolf-402" is executed
 	Then the workflow execution has "NO" error
+
+
+#Wolf-829
+Scenario: Xml Serialisation bug when returning xml
+	  Given I have a workflow "wolf-829"
+	  And "Testing/Bugs" contains "wolf-829" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "wolf-829" is executed
+	Then the workflow execution has "NO" error
