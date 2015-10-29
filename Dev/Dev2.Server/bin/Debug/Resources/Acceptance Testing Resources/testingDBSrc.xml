@@ -1,5 +1,5 @@
 
-<Source ID="ebba47dc-e5d4-4303-a203-09e2e9761d16" Version="1.0" Name="testingDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAABAKvbckB1qNbamP97ZTERLAAAAAASAAACgAAAAEAAAACk2jZEfStc+70676+nDgPHIAAAAhUykTyFwbCSWll/+Pvhs15536XCDGW3PFc+fCQOnnfeiO2Hl7Sg+MtWYBTnyeR7e3gqMwHyKBPXVaU2UUVuu/RN1qr0iu+h5cJ+SpT/GIWweyzoTM3Vad5w6ZKnFTQc4JKxiITH5AeSi0XdpRfHX4pDjmpU32r1iyO2gbNp6HNUUF3bbAiPnAf4b3ep4O+rVNR+rBM41cTWFYC9KvCGNA0QOLQYcfCU7gNFF09uBNC0vvTxPowlg6HDIij7fc2SrYWNZFDeFmvMUAAAAl/QQknTGMmBXvqPz60lQXmZwkqw=" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Source ID="ebba47dc-e5d4-4303-a203-09e2e9761d16" Version="1.0" Name="testingDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>testingDBSrc</DisplayName>
   <Category>Acceptance Testing Resources\testingDBSrc</Category>
   <AuthorRoles>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>0tEIF/PaxSi8vmDRulPg9iwSUkc=</DigestValue>
+        <DigestValue>BTnkEqugX9ey3GDY6BTvt1nxNow=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>bboP3smWcWvw3jrisNL82J8ks4EIuG4DRdUeJ6vz/GzgFcmlnalMkVBvHtQRqHUcIuRvZtwHNsAUlHhmP3pQYirt4D9urRGmeYKGGsdevwmrimP3+yFe7qdYMyJvpDKK882+GbGAyhRxfvW0xLWbnY8dx9hFbzx8vRV9Ri0vP2M=</SignatureValue>
+    <SignatureValue>KXdPmSNWCUd3kMhiDfT47hnoHqZNSrky6HCPDuVrm0mPF8FjL0em2SA0xc9boNvkHMed/ruG5/tuBbzx9rNByeKljemUsL5eWfzeCmfRlGuaferwlcDDmggiwLZqN/idb7+848hN7euhRbpjmHJeQtz9HY+5OUa3YG0mYutxDXs=</SignatureValue>
   </Signature>
 </Source>
