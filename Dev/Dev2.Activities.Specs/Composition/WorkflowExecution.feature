@@ -4237,16 +4237,6 @@ Scenario: ForEach Acceptance Tests
 	  |                   |
 	  | [[Result]] = Pass |
 
-#wolf-1121
-Scenario: SharePoint JSOn formatting
-	  Given I have a workflow "Wolf-1121"
-	  And "Testing/Bugs" contains "Wolf-1121" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "http://rsaklfleroy:3142/secure/Testing/Bugs/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=5515b641-e8f9-4d12-8ec0-54a2072344dd" is executed
-	Then the workflow execution has "NO" error
-
-
 
 #Wolf-1102
 Scenario: Recordsets in Debug Output windpw
@@ -4256,7 +4246,7 @@ Scenario: Recordsets in Debug Output windpw
 	     |                  |               | Result              | [[Result]]  |
 	When "DateTimeDifference" is executed
 	Then the workflow execution has "NO" error
-	And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	And the 'Testing/For Each' in Workflow 'DateTimeDifference' debug outputs as
 	  |                              |
 	  | [[Expected]] = Success       |
 	  | [[Date(1).Difference]] = -14 |
