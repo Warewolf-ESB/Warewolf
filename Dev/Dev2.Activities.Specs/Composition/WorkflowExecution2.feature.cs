@@ -15433,14 +15433,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Recordsets in Debug Output windpw")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void RecordsetsInDebugOutputWindpw()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordsets in Debug Output windpw", ((string[])(null)));
-#line 4242
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordsets in Debug Output windpw", new string[] {
+                        "ignore"});
+#line 4243
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4243
+#line 4244
  testRunner.Given("I have a workflow \"DateTimeDifference\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table838 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15453,12 +15455,12 @@ this.FeatureBackground();
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4244
+#line 4245
  testRunner.And("\"Testing/For Each\" contains \"DateTimeDifference\" from server \"localhost\" with map" +
                     "ping as", ((string)(null)), table838, "And ");
-#line 4247
- testRunner.When("\"DateTimeDifference\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4248
+ testRunner.When("\"DateTimeDifference\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4249
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table839 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15469,7 +15471,7 @@ this.FeatureBackground();
                         "[[Date(1).Difference]] = -14"});
             table839.AddRow(new string[] {
                         "[[Date(2).Difference]] = 13"});
-#line 4249
+#line 4250
  testRunner.And("the \'Testing/For Each\' in Workflow \'DateTimeDifference\' debug outputs as", ((string)(null)), table839, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -15479,14 +15481,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure that End this Workflow is working")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EnsureThatEndThisWorkflowIsWorking()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that End this Workflow is working", ((string[])(null)));
-#line 4256
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that End this Workflow is working", new string[] {
+                        "ignore"});
+#line 4258
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4257
+#line 4259
    testRunner.Given("I have a workflow \"wolf-402\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15499,11 +15503,11 @@ this.FeatureBackground();
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4258
+#line 4260
    testRunner.And("\"Testing/Bugs\" contains \"wolf-402\" from server \"localhost\" with mapping as", ((string)(null)), table840, "And ");
-#line 4261
+#line 4263
    testRunner.When("\"wolf-402\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4262
+#line 4264
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -15513,14 +15517,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Xml Serialisation bug when returning xml")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void XmlSerialisationBugWhenReturningXml()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xml Serialisation bug when returning xml", ((string[])(null)));
-#line 4266
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xml Serialisation bug when returning xml", new string[] {
+                        "ignore"});
+#line 4269
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4267
+#line 4270
  testRunner.Given("I have a workflow \"wolf-829\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table841 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15533,11 +15539,11 @@ this.FeatureBackground();
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4268
- testRunner.And("\"Testing/Bugs\" contains \"wolf-829\" from server \"localhost\" with mapping as", ((string)(null)), table841, "And ");
 #line 4271
+ testRunner.And("\"Testing/Bugs\" contains \"wolf-829\" from server \"localhost\" with mapping as", ((string)(null)), table841, "And ");
+#line 4274
  testRunner.When("\"wolf-829\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4272
+#line 4275
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

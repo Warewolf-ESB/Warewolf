@@ -4239,6 +4239,7 @@ Scenario: ForEach Acceptance Tests
 
 
 #Wolf-1102
+@ignore
 Scenario: Recordsets in Debug Output windpw
 	Given I have a workflow "DateTimeDifference"
 	And "Testing/For Each" contains "DateTimeDifference" from server "localhost" with mapping as
@@ -4253,6 +4254,7 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Date(2).Difference]] = 13  |
 
 #Wolf-402
+@ignore
 Scenario: Ensure that End this Workflow is working 
 	  Given I have a workflow "wolf-402"
 	  And "Testing/Bugs" contains "wolf-402" from server "localhost" with mapping as
@@ -4263,6 +4265,7 @@ Scenario: Ensure that End this Workflow is working
 
 
 #Wolf-829
+@ignore
 Scenario: Xml Serialisation bug when returning xml
 	Given I have a workflow "wolf-829"
 	And "Testing/Bugs" contains "wolf-829" from server "localhost" with mapping as
