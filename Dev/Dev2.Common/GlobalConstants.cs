@@ -379,6 +379,8 @@ or type_desc LIKE '%Procedure%'";
             "Doesn't Start With",
             "Doesn't End With",
             "Doesn't Contain",
+            "Is NULL",
+            "Is Not NULL",
             "Is Alphanumeric",
             "Is Base64",
             "Is Between",

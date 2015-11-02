@@ -27,6 +27,8 @@ function DecisionViewModel() {
 			/* Start valid types */
             { displayValue: "There Is An Error", optionValue: "IsError", columnCount: 0 },
             { displayValue: "There Is No Error", optionValue: "IsNotError", columnCount: 0 },
+            { displayValue: "Is NULL", optionValue: "IsNull", columnCount: 1 },
+            { displayValue: "Is Not NULL", optionValue: "IsNotNull", columnCount: 1 },
             { displayValue: "=", optionValue: "IsEqual", columnCount: 2 },
             { displayValue: ">", optionValue: "IsGreaterThan", columnCount: 2 },
             { displayValue: "<", optionValue: "IsLessThan", columnCount: 2 },

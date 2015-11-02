@@ -33,7 +33,7 @@ let AtomtoString (x:WarewolfAtom )=
                      a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
-        | Nothing -> ""
+        | Nothing -> null
         | PositionedValue (a,b) -> b.ToString()
 let WarewolfAtomRecordtoString (x:WarewolfAtomRecord )=
     match x with 
