@@ -247,6 +247,8 @@
     <Compile Include="FindMissingStrategyTest\StaticActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\DsfNativeActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindRecsetOptionsTests\FindRecsetOptionsTests.cs" />
+    <Compile Include="FindRecsetOptionsTests\IsNotNullFindRecsetOptionTests.cs" />
+    <Compile Include="FindRecsetOptionsTests\IsNullFindRecsetOptionTests.cs" />
     <Compile Include="IBaseActivityUnitTest.cs" />
     <Compile Include="Mocks\ActivityOperationBrokerMock.cs" />
     <Compile Include="Mocks\MockAbstractMultipleFilesActivity.cs" />

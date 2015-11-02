@@ -21,7 +21,6 @@ namespace Dev2.DataList
     public class RsOpGreaterThanOrEqualTo : AbstractRecsetSearchValidation
     {
 
-        // Bug 8725 - Fixed to be double rather than int
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
             if (all)
