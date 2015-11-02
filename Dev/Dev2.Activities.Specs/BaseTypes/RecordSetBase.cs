@@ -61,7 +61,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                         {
                             string value = variable.Item2 == "blank" ? "" : variable.Item2;
-                            if (value == "NULL")
+                            if (value.ToUpper() == "NULL")
                             {
                                 DataObject.Environment.AssignDataShape((variable.Item1));
                             }

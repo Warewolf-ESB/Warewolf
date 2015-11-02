@@ -179,6 +179,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
                     IBaseConversionBroker broker = _fac.CreateBroker(@from, to);
                     var value = a.ToString();
+                    if(a.IsNothing)
+                    {
+                        throw new Exception(string.Format("Scalar value {{{0}}} is NULL", item.FromExpression));
+                    }
                     if (String.IsNullOrEmpty(value))
                     {
                            

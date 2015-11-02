@@ -3644,35 +3644,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 702
 this.ScenarioSetup(scenarioInfo);
 #line 703
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"Null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 704
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 705
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 706
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable that is null with text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        public virtual void ConvertAVariableThatIsNullWithText()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null with text", ((string[])(null)));
-#line 708
-this.ScenarioSetup(scenarioInfo);
-#line 709
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"[[a]] text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 710
- testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 711
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 712
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 713
- testRunner.And("the execution has \"Scalar value { a } is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 707
+ testRunner.And("the execution has \"Scalar value {[[var]]} is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
