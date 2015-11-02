@@ -71,8 +71,8 @@ namespace CircularDependencyTool
             // Initially set the location to the center of the first node.
             Point loc = new Point
             {
-                X = node1.LocationX + (node1.NodeWidth / 2),
-                Y = node1.LocationY + (node1.NodeHeight / 2)
+                X = node1.LocationX + node1.NodeWidth / 2,
+                Y = node1.LocationY + node1.NodeHeight / 2
             };
 
             bool overlapY = Math.Abs(node1.LocationY - node2.LocationY) < node1.NodeHeight;

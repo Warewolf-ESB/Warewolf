@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.TOTests
                 }
             );
             Assert.IsFalse(jsonMappingCompound.IsCompound);
-            Assert.AreEqual((new JObject(new JProperty("a", jsonMappingCompound.EvaluatedResultIndexed(0)))).ToString(Formatting.None), "{\"a\":[50,60]}");
+            Assert.AreEqual(new JObject(new JProperty("a", jsonMappingCompound.EvaluatedResultIndexed(0))).ToString(Formatting.None), "{\"a\":[50,60]}");
             jsonMappingCompound = new JsonMappingCompoundTo(
                 env: dataObject.Environment,
             compound: new JsonMappingTo
@@ -227,7 +227,7 @@ namespace Dev2.Tests.Activities.TOTests
                     DestinationName = "myName"
                 }
             );
-            Assert.AreEqual((new JObject(new JProperty("b", jsonMappingCompound.EvaluatedResultIndexed(1)))).ToString(Formatting.None), "{\"b\":[500,600]}");
+            Assert.AreEqual(new JObject(new JProperty("b", jsonMappingCompound.EvaluatedResultIndexed(1))).ToString(Formatting.None), "{\"b\":[500,600]}");
         }
         [TestMethod]
         [Owner("Kerneels Roos")]

@@ -15,7 +15,7 @@ namespace Dev2.Common.DB
     {
         internal string RemoveDelimiting(string payload)
         {
-            return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
+            return payload.Replace("&lt;", "<").Replace("&gt;", ">");
         }
     }
 }

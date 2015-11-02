@@ -189,7 +189,7 @@ namespace Dev2.Runtime.Hosting
                 versionInfo.SetAttributeValue("DateTimeStamp", DateTime.Now);
                 versionInfo.SetAttributeValue("Reason", "Rolback");
                 versionInfo.SetAttributeValue("User", res.VersionInfo.User);
-                versionInfo.SetAttributeValue("VersionNumber", 1 + int.Parse((res.VersionInfo.VersionNumber)));
+                versionInfo.SetAttributeValue("VersionNumber", 1 + int.Parse(res.VersionInfo.VersionNumber));
                 versionInfo.SetAttributeValue("ResourceId", resourceId);
                 versionInfo.SetAttributeValue("VersionId", res.VersionInfo.VersionId);
             }

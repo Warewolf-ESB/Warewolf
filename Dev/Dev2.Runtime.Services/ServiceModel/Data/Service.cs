@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             action.Add(inputs);
             action.Add(outputs);
 
-            var result = base.ToXml();
+            var result = ToXml();
             result.AddFirst(
                 new XElement("Actions", action),
                 new XElement("AuthorRoles"),

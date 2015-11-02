@@ -43,7 +43,7 @@ namespace Dev2.Studio.Views.Workflow
         }
         void WorkflowDesignerView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var vm = (DataContext as WorkflowDesignerViewModel);
+            var vm = DataContext as WorkflowDesignerViewModel;
             if (vm != null)
             {
                 CustomContainer.Get<IMainViewModel>().AddWorkSurfaceContext(vm.ResourceModel);

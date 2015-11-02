@@ -396,7 +396,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                     {
                         foreach(var sharepointReadListTo in fieldMappings)
                         {
-                            var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == sharepointReadListTo.FieldName);
+                            var listTo = sharepointReadListTo;
+                            var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
                             if(readListTo == null)
                             {
                                 ReadListItems.Add(sharepointReadListTo);

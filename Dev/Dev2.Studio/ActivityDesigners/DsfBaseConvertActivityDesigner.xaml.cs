@@ -166,7 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(modelProperty != null)
             {
                 string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     if(currentName.Contains(" ("))
                     {

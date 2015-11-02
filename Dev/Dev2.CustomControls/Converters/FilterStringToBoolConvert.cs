@@ -18,7 +18,7 @@ namespace Dev2.CustomControls.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as string != string.Empty);
+            return value as string != string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

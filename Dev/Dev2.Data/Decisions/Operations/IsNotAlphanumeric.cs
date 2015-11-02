@@ -21,7 +21,7 @@ namespace Dev2.Data.Decisions.Operations
 
             if(!string.IsNullOrEmpty(cols[0]))
             {
-                return !(cols[0].IsAlphaNumeric());
+                return !cols[0].IsAlphaNumeric();
             }
 
             return true;

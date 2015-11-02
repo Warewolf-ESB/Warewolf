@@ -155,8 +155,7 @@ namespace Dev2.Runtime.ESB
                             #region Execute ESB container
 
                             var theStart = theService.Actions.FirstOrDefault();
-                            if(theStart != null && ((theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService &&
-                                                     theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.Workflow) && dataObject.IsFromWebServer))
+                            if(theStart != null && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.Workflow && dataObject.IsFromWebServer)
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
@@ -378,7 +377,7 @@ namespace Dev2.Runtime.ESB
         // BUG 9706 - 2013.06.22 - TWR : refactored
         void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
         {
-            if(errors.HasErrors() && (dataObject.IsDebugMode()))
+            if(errors.HasErrors() && dataObject.IsDebugMode())
             {
                 Guid parentInstanceId;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);

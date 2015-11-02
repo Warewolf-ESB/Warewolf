@@ -138,7 +138,7 @@ namespace Dev2.Runtime.Hosting
                             resource.ResourcePath = string.Empty;
                             // DON'T FORCE A SAVE HERE - EVER!!!!
                         }
-                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, (a =>
+                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                         {
 
                             var fileManager = new TxFileManager();
@@ -167,10 +167,7 @@ namespace Dev2.Runtime.Hosting
                                 }
                             }
 
-                        }
-
-
-                        ));
+                        });
                         if (resource.IsUpgraded)
                         {
                             // Must close the source stream first and then add a new target stream 

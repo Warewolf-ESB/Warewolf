@@ -19,7 +19,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            return (!cols[0].IsNumeric());
+            return !cols[0].IsNumeric();
         }
 
         public Enum HandlesType()

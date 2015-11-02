@@ -97,7 +97,7 @@ namespace Dev2.Common.DateAndTime
                     //
                     // If there is no output format use the input format
                     //
-                    string outputFormat = (string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat))
+                    string outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
                         ? dateTimeTO.InputFormat
                         : dateTimeTO.OutputFormat;
                     if (string.IsNullOrWhiteSpace(outputFormat))

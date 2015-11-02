@@ -134,7 +134,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 if(end > start)
                 {
                     start += 2;
-                    val = val.Substring(start, (end - start));
+                    val = val.Substring(start, end - start);
 
                     // Convert back for usage ;)
                     return FromVBPersitableModelToJSON(val);

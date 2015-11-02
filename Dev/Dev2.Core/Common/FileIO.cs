@@ -81,7 +81,7 @@ namespace Dev2
 
             if (idx > 0)
             {
-                result = path.Substring((idx + 1));
+                result = path.Substring(idx + 1);
             }
 
             return result;
@@ -187,8 +187,8 @@ namespace Dev2
 
             // gets rules that concern the user and his groups
             IEnumerable<AuthorizationRule> userRules = from AuthorizationRule rule in acl
-                where user.Groups != null && (user.User != null && (user.User.Equals(rule.IdentityReference)
-                                                                    || user.Groups.Contains(rule.IdentityReference)))
+                where user.Groups != null && user.User != null && (user.User.Equals(rule.IdentityReference)
+                                                                   || user.Groups.Contains(rule.IdentityReference))
                 select rule;
 
             FileSystemRights denyRights = 0;

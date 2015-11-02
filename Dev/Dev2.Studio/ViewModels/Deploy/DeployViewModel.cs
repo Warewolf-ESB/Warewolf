@@ -263,11 +263,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             get
             {
 
-                return (SelectedDestinationServer == null || SelectedSourceServer == null) || (SelectedDestinationServer.Connection.AppServerUri != SelectedSourceServer.Connection.AppServerUri);
+                return SelectedDestinationServer == null || SelectedSourceServer == null || SelectedDestinationServer.Connection.AppServerUri != SelectedSourceServer.Connection.AppServerUri;
             }
         }
 
-        public Func<int, int, bool> HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => (sourceDeployItemCount > 0 && destinationDeployItemCount > 0);
+        public Func<int, int, bool> HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => sourceDeployItemCount > 0 && destinationDeployItemCount > 0;
 
         /// <summary>
         /// destination is valid.
@@ -853,7 +853,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             }
 
-            if (SelectedDestinationServer != null && (SelectedDestinationServer.Connection.WebServerUri != null && (SelectedDestinationServer.Connection != null && (SelectedDestinationServer != null && SelectedDestinationServer.Connection.WebServerUri.Scheme == "http"))))
+            if (SelectedDestinationServer != null && (SelectedDestinationServer.Connection.WebServerUri != null && SelectedDestinationServer.Connection != null) && SelectedDestinationServer != null && SelectedDestinationServer.Connection.WebServerUri.Scheme == "http")
             {
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
@@ -1172,7 +1172,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                             foreach (var dependant in dependancyNames)
                             {
                                 string dependant1 = dependant;
-                                var treeNode = StudioResourceRepository.FindItem(model => (model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID) || (model.DisplayName==dependant1 && model.EnvironmentId==SelectedSourceServer.ID));
+                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID || model.DisplayName==dependant1 && model.EnvironmentId==SelectedSourceServer.ID);
                                 if (treeNode != null)
                                 {
                                     treeNode.IsChecked = true;

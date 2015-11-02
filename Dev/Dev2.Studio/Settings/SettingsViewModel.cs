@@ -84,7 +84,7 @@ namespace Dev2.Settings
 
         public bool IsSavedSuccessVisible { get { return !HasErrors && !IsDirty && IsSaved; } }
 
-        public bool IsErrorsVisible { get { return HasErrors || (IsDirty && !IsSaved); } }
+        public bool IsErrorsVisible { get { return HasErrors || IsDirty && !IsSaved; } }
 
         public bool HasErrors
         {

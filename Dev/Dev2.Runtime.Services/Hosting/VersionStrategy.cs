@@ -53,7 +53,7 @@ namespace Dev2.Runtime.Hosting
         public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldResource, string userName, string reason)
         {
             if (oldResource !=null && oldResource.VersionInfo == null)
-                return new VersionInfo(DateTime.Now, reason, userName, (1).ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
+                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
 
 
 // ReSharper disable PossibleNullReferenceException
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.Hosting
         public IVersionInfo GetCurrentVersion(IResource newResource, IVersionInfo oldresource, string userName, string reason)
         {
             if (oldresource == null)
-                return new VersionInfo(DateTime.Now, reason, userName, (1).ToString(CultureInfo.InvariantCulture), newResource.ResourceID, Guid.NewGuid());
+                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), newResource.ResourceID, Guid.NewGuid());
 
 
             // ReSharper disable PossibleNullReferenceException

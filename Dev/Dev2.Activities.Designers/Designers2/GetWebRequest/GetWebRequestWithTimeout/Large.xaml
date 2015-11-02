@@ -115,8 +115,7 @@
                                 Focusable="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.TimeOutText, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipTimeOut}">
-        </ui:IntellisenseTextBox>
+                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipTimeOut}" />
         <Label Grid.Column="0"
                Grid.Row="3"
             Style="{StaticResource ActivityLabelStyle}"

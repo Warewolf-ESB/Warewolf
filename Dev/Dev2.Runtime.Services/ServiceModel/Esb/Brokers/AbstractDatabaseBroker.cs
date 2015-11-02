@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Unescape '<>' characters delimiting
             //
-            return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
+            return payload.Replace("&lt;", "<").Replace("&gt;", ">");
         }
 
         private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)

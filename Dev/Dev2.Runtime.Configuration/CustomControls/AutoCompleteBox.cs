@@ -320,14 +320,14 @@ namespace System.Windows.Controls
             }
 
             // Create or clear a dispatcher timer instance
-            if(source != null && (newValue > 0 && source._delayTimer == null))
+            if(source != null && newValue > 0 && source._delayTimer == null)
             {
                 source._delayTimer = new DispatcherTimer();
                 source._delayTimer.Tick += source.PopulateDropDown;
             }
 
             // Set the new tick interval
-            if(source != null && (newValue > 0 && source._delayTimer != null))
+            if(source != null && newValue > 0 && source._delayTimer != null)
             {
                 source._delayTimer.Interval = TimeSpan.FromMilliseconds(newValue);
             }
@@ -1380,7 +1380,7 @@ SelectionChangedEvent,
         {
             get
             {
-                return (ValueMemberBinding != null) ? ValueMemberBinding.Path.Path : null;
+                return ValueMemberBinding != null ? ValueMemberBinding.Path.Path : null;
             }
             set
             {
@@ -1800,7 +1800,7 @@ SelectionChangedEvent,
                 adapter = selector as ISelectionAdapter ?? new SelectorSelectionAdapter(selector);
             }
             // ReSharper disable once SuspiciousTypeConversion.Global
-            return adapter ?? (GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter);
+            return adapter ?? GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
         }
 
         /// <summary>
@@ -2234,7 +2234,7 @@ SelectionChangedEvent,
                 SelectionAdapter.ItemsSource = _view;
             }
 
-            bool isDropDownOpen = _userCalledPopulate && (_view.Count > 0);
+            bool isDropDownOpen = _userCalledPopulate && _view.Count > 0;
             if(isDropDownOpen != IsDropDownOpen)
             {
                 _ignorePropertyChange = true;

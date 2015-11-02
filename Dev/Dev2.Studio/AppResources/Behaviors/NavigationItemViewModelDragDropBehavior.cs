@@ -129,7 +129,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 {
                     Point currentPosition = e.GetPosition(inputElement);
 
-                    if((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) || (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
+                    if(Math.Abs(currentPosition.X - _lastMouseDown.X) > 2 || Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2)
                     {
                         var dragData = new DataObject();
                         var dragSourceDataContext = AssociatedObject.DataContext as ExplorerItemModel;

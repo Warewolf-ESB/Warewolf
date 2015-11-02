@@ -60,7 +60,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     e.Handled = true;
                 }
             }
-            else if ((e.KeyboardDevice.IsKeyDown(Key.LeftShift)) && e.KeyboardDevice.IsKeyDown(Key.Tab))
+            else if (e.KeyboardDevice.IsKeyDown(Key.LeftShift) && e.KeyboardDevice.IsKeyDown(Key.Tab))
             {
                 if (keyboardFocus != null)
                 {

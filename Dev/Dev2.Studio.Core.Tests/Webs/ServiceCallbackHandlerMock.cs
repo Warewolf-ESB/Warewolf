@@ -27,7 +27,7 @@ namespace Dev2.Core.Tests.Webs
 
         public void TestSave(IEnvironmentModel environmentModel, JObject jsonObj)
         {
-            base.Save(environmentModel, jsonObj);
+            Save(environmentModel, jsonObj);
         }
 
         public void TestCheckForServerMessages(IEnvironmentModel environmentModel, Guid id, IWorkspaceItemRepository workspace)

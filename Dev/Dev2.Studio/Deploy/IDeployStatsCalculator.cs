@@ -62,7 +62,6 @@ namespace Dev2.Studio.Deploy
         /// Check if items exist with same path  but different ids
         /// </summary>
         /// <param name="items"></param>
-        /// <param name="targetStatPredicates"></param>
         /// <param name="targetNavViewModel"></param>
         /// <returns></returns>
         IEnumerable<IExplorerItemModel> CheckForNamingConflicts(List<IExplorerItemModel> items,  DeployNavigationViewModel targetNavViewModel);

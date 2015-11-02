@@ -116,9 +116,9 @@ namespace Unlimited.Framework.Converters.Graph.Output
             Type dataSourceShapeType = typeof (IDataSourceShape);
 
             List<Type> knownTypes = typeof (OutputDescription).Assembly.GetTypes()
-                .Where(t => (pathType.IsAssignableFrom(t) && t != pathType) ||
-                            (outputDescriptionType.IsAssignableFrom(t) && t != outputDescriptionType) ||
-                            (dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType)).ToList();
+                .Where(t => pathType.IsAssignableFrom(t) && t != pathType ||
+                            outputDescriptionType.IsAssignableFrom(t) && t != outputDescriptionType ||
+                            dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType).ToList();
 
             return knownTypes;
         }

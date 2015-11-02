@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
 
-            IDSFDataObject dObj = (obj as IDSFDataObject);
+            IDSFDataObject dObj = obj as IDSFDataObject;
             Guid id;
             Assert.IsNotNull(dObj);
             Guid.TryParse(dObj.RemoteInvokerID, out id);
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
 
-            IDSFDataObject dObj = (obj as IDSFDataObject);
+            IDSFDataObject dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);
@@ -132,7 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
 
-            IDSFDataObject dObj = (obj as IDSFDataObject);
+            IDSFDataObject dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);

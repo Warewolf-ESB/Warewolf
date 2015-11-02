@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
         {
             if(sender is Dev2DataGrid)
             {
-                var grid = (sender as Dev2DataGrid);
+                var grid = (Dev2DataGrid)sender;
                 if(grid.SelectedItem != null && grid.SelectedIndex != -1)
                 {
                     grid.Dispatcher.BeginInvoke(
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
 
         private void AssociatedObject_doCustomScroll(object sender, MouseWheelEventArgs e)
         {
-            var theGrid = (sender as Dev2DataGrid);
+            var theGrid = sender as Dev2DataGrid;
 
             if(theGrid == null)
             {

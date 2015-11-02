@@ -458,7 +458,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 }
                 foreach (var mapping in columnList.Items.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
-                    var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
+                    var mapping1 = mapping;
+                    var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping1.OutputColumn.ColumnName);
                     if (oldColumn != null)
                     {
                         if (oldColumn.InputColumn != null)

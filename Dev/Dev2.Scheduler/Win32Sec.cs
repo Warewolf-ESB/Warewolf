@@ -324,7 +324,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             throw new UnauthorizedAccessException();
         }
-        if ((ReturnValue == STATUS_INSUFFICIENT_RESOURCES) || (ReturnValue == STATUS_NO_MEMORY))
+        if (ReturnValue == STATUS_INSUFFICIENT_RESOURCES || ReturnValue == STATUS_NO_MEMORY)
         {
             throw new OutOfMemoryException();
         }

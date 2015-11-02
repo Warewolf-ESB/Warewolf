@@ -47,11 +47,11 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string PostDataToWebserver(string postandUrl)
         {
-            if(postandUrl.Split('?').Count() == 1)
+            if(postandUrl.Split('?').Length == 1)
             {
                 ExecuteGetWorker(postandUrl);
             }
-            else if(postandUrl.Split('?').Count() > 1)
+            else if(postandUrl.Split('?').Length > 1)
             {
                 ExecutePostWorker(postandUrl);
             }
@@ -94,11 +94,11 @@ namespace Dev2.Integration.Tests.Helpers
         public static string PostDataToWebserver(string postandUrl, out bool wasHttps)
         {
             wasHttps = false;
-            if(postandUrl.Split('?').Count() == 1)
+            if(postandUrl.Split('?').Length == 1)
             {
                 wasHttps = ExecuteGetWorker(postandUrl);
             }
-            else if(postandUrl.Split('?').Count() > 1)
+            else if(postandUrl.Split('?').Length > 1)
             {
                 ExecutePostWorker(postandUrl);
             }
@@ -145,7 +145,7 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string PostDataToWebserverAsRemoteAgent(string postandUrl, Guid requestID)
         {
-            var len = postandUrl.Split('?').Count();
+            var len = postandUrl.Split('?').Length;
             if(len == 1)
             {
                 string result = string.Empty;

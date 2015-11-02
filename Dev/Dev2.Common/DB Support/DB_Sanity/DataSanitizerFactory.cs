@@ -30,7 +30,7 @@ namespace Dev2.Common.DB
             Type type = typeof (IDataProviderSanitizer);
 
             List<Type> types = typeof (IDataProviderSanitizer).Assembly.GetTypes()
-                .Where(t => (type.IsAssignableFrom(t))).ToList();
+                .Where(t => type.IsAssignableFrom(t)).ToList();
 
             foreach (Type t in types)
             {

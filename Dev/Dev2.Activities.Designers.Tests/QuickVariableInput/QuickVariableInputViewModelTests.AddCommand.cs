@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             qviViewModel.AddCommand.Execute(null);
 
             Assert.IsNotNull(actualListToAdd);
-            Assert.AreEqual(3, actualListToAdd.Count());
+            Assert.AreEqual(3, actualListToAdd.Count);
 
             Assert.AreEqual(qviViewModel.Overwrite, actualOverwrite);
             var expected = qviViewModel.PreviewViewModel.Inputs.Select(input => input.Key).ToList();

@@ -171,7 +171,7 @@ namespace Dev2.DynamicServices
                 if(Path.HasExtension(path))
                     isFile = true;
 
-                if((isFile ? File.Exists(path) : Directory.Exists(path)))
+                if(isFile ? File.Exists(path) : Directory.Exists(path))
                     return path;
 
                 if(!isFile)

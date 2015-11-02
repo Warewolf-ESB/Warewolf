@@ -16,12 +16,12 @@ namespace Dev2.UndoFramework
     {
         protected Transaction(ActionManager actionManager, bool delayed) : base(actionManager, delayed)
         {
-            base._accumulatingAction = new MultiAction();
+            _accumulatingAction = new MultiAction();
         }
 
         public override void Commit()
         {
-            base.AccumulatingAction.IsDelayed = base.IsDelayed;
+            AccumulatingAction.IsDelayed = IsDelayed;
             base.Commit();
         }
 

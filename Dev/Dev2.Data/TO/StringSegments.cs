@@ -29,7 +29,7 @@ namespace Dev2.Data.TO
 
         public bool IsEmpty()
         {
-            return (Length() == 0);
+            return Length() == 0;
         }
 
         public int Length()

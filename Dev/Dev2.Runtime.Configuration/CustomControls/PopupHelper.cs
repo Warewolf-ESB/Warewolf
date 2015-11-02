@@ -160,7 +160,7 @@ namespace System.Windows.Controls
                 // TODO: USE THE CURRENT WINDOW INSTEAD! WALK THE TREE!
                 u = Application.Current.Windows[0];
             }
-            while((u as Window) == null && u != null)
+            while(u as Window == null && u != null)
             {
                 u = VisualTreeHelper.GetParent(u) as UIElement;
             }

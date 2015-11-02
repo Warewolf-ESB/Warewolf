@@ -118,7 +118,7 @@ namespace Dev2.Simulation
         /// </returns>
         public override int GetHashCode()
         {
-            return (Key != null ? Key.GetHashCode() : 0);
+            return Key != null ? Key.GetHashCode() : 0;
         }
 
         public static bool operator ==(SimulationResult left, SimulationResult right)

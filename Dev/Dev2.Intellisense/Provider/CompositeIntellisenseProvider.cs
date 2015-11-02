@@ -55,8 +55,8 @@ namespace Dev2.Studio.InterfaceImplementors
                     var inputText = context.InputText;
                     var caretPosition = context.CaretPosition;
 
-                    if((!string.IsNullOrEmpty(inputText) && (inputText.EndsWith("]") || inputText.EndsWith(")")))
-                        && (provider.IntellisenseProviderType == IntellisenseProviderType.Default)
+                    if(!string.IsNullOrEmpty(inputText) && (inputText.EndsWith("]") || inputText.EndsWith(")"))
+                        && provider.IntellisenseProviderType == IntellisenseProviderType.Default
                         && caretPosition == inputText.Length)
                     {
                        return results;

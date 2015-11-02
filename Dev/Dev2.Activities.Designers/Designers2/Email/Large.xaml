@@ -293,7 +293,7 @@
                Grid.Row="9"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Html Body" />
-       <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding  ModelItem.IsHtml}"></CheckBox>
+       <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding  ModelItem.IsHtml}" />
         <Label Grid.Column="0"
                Grid.Row="10"
             VerticalAlignment="Top"

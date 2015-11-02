@@ -57,7 +57,7 @@ namespace Dev2.MathOperations
             error = string.Empty;
             evaluation = string.Empty;
 
-            if(!(string.IsNullOrEmpty(expressionTO.Function)))
+            if(!string.IsNullOrEmpty(expressionTO.Function))
             {
                 try
                 {
@@ -94,7 +94,7 @@ namespace Dev2.MathOperations
             bool evaluationState = false;
             error = String.Empty;
             evaluation = String.Empty;
-            if(!(String.IsNullOrEmpty(expression)))
+            if(!String.IsNullOrEmpty(expression))
             {
 
                 try
@@ -197,7 +197,7 @@ namespace Dev2.MathOperations
             bool evaluationState;
             error = String.Empty;
             evaluation = String.Empty;
-            if(!(String.IsNullOrEmpty(expression)))
+            if(!String.IsNullOrEmpty(expression))
             {
 
                 try

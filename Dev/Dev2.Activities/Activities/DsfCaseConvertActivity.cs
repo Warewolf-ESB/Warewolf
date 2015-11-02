@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (returnedFunc != null)
                 {
-                    return (a=>
+                    return a=>
                     {
                         var upper = returnedFunc.Invoke(a.ToString());
                         var evalled = env.Eval(upper, update);
@@ -166,7 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.EvalResultToString(evalled));
-                    });
+                    };
                 }
             }
             throw  new Exception("Convert option does not exist");
@@ -309,7 +309,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(modelProperty != null)
             {
                 string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }

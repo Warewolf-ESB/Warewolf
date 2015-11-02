@@ -715,7 +715,7 @@ namespace Dev2.Activities.Designers2.Service
 
         bool CheckSourceMissing()
         {
-            if (ResourceModel != null && (ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null))
+            if (ResourceModel != null && ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null)
             {
                 var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
                 if (resourceModel != null)
@@ -758,7 +758,7 @@ namespace Dev2.Activities.Designers2.Service
             if (environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                _validationService.Subscribe(UniqueID, (a => UpdateLastValidationMemo(a)));
+                _validationService.Subscribe(UniqueID, a => UpdateLastValidationMemo(a));
             }
         }
 

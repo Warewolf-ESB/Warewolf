@@ -101,7 +101,7 @@ namespace Dev2.PathOperations
                     var type = typeof(IActivityIOOperationsEndPoint);
 
                     List<Type> types = typeof(IActivityIOOperationsEndPoint).Assembly.GetTypes()
-                                                                             .Where(t => (type.IsAssignableFrom(t)))
+                                                                             .Where(t => type.IsAssignableFrom(t))
                                                                              .ToList();
 
                     foreach(Type t in types)

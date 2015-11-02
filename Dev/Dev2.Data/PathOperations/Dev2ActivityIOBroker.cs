@@ -443,7 +443,7 @@ namespace Dev2.PathOperations
 
             // check from lowest path part up
             var deepestIndex = -1;
-            var startDepth = (dirParts.Count - 1);
+            var startDepth = dirParts.Count - 1;
 
             var pos = startDepth;
 
@@ -471,7 +471,7 @@ namespace Dev2.PathOperations
             }
 
             // now create all the directories we need ;)
-            pos = (deepestIndex + 1);
+            pos = deepestIndex + 1;
             var ok = true;
 
             var origPath = dst.IOPath;
@@ -534,7 +534,7 @@ namespace Dev2.PathOperations
             var len = tmp.Length;
             if(candiate.Contains("*.") || candiate.Contains("."))
             {
-                len = (tmp.Length - 1);
+                len = tmp.Length - 1;
             }
 
             var builderPath = "";
@@ -645,7 +645,7 @@ namespace Dev2.PathOperations
                     var cpPath =
                         ActivityIOFactory.CreatePathFromString(
                             string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
-                                (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
+                                Dev2ActivityIOPathUtils.ExtractFileName(p.Path)),
                             dst.IOPath.Username,
                             dst.IOPath.Password, true,dst.IOPath.PrivateKeyFile);
                     var path = cpPath.Path;
@@ -714,7 +714,7 @@ namespace Dev2.PathOperations
             }
             catch(AggregateException e)
             {
-                var message = e.InnerExceptions.Where(exception => exception != null && !string.IsNullOrEmpty(exception.Message)).Aggregate("", (current, exception) => current + (exception.Message + "\r\n"));
+                var message = e.InnerExceptions.Where(exception => exception != null && !string.IsNullOrEmpty(exception.Message)).Aggregate("", (current, exception) => current + exception.Message + "\r\n");
                 throw new Exception(message, e);
             }
         }
@@ -770,7 +770,7 @@ namespace Dev2.PathOperations
                     {
                         var fileNames = commonFiles.Aggregate("",
                                                                  (current, commonFile) =>
-                                                                 current + ("\r\n" + commonFile));
+                                                                 current + "\r\n" + commonFile);
                         throw new Exception(
                             "The following file(s) exist in the destination folder and overwrite is set to false:- " +
                             fileNames);
@@ -838,7 +838,7 @@ namespace Dev2.PathOperations
                 var tmpDir = Path.GetTempPath();
                 var di = Directory.CreateDirectory(tmpDir + "\\" + Guid.NewGuid());
 
-                return (di.FullName);
+                return di.FullName;
             }
             catch(Exception err)
             {

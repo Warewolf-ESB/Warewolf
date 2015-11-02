@@ -65,7 +65,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
             if(domainChar >= 0)
             {
-                theUser = username.Substring((domainChar + 1));
+                theUser = username.Substring(domainChar + 1);
             }
 
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))

@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
                     var endIdx = resource.WorkflowXaml.IndexOf(">", startIdx, true);
                     if(endIdx > 0)
                     {
-                        var len = (endIdx - startIdx) + 1;
+                        var len = endIdx - startIdx + 1;
                         var fragment = resource.WorkflowXaml.Substring(startIdx, len);
 
                         fragment += "</Action>";

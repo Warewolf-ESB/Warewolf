@@ -560,7 +560,7 @@ namespace Dev2.Studio.Dock
             // if the pane was closed because it was removed from the source collection
             // then we don't want to do anything. however if it is remove pane then 
             // we want to try and remove it from the source collection
-            if(pane != null && (IsContainerInUse(pane) && pane.CloseAction == PaneCloseAction.RemovePane))
+            if(pane != null && IsContainerInUse(pane) && pane.CloseAction == PaneCloseAction.RemovePane)
             {
                 var cv = CollectionViewSource.GetDefaultView(ItemsSource) as IEditableCollectionView;
 

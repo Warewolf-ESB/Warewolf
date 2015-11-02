@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         int pos = plugin.LastIndexOf(@"\", StringComparison.Ordinal);
                         pos += 1;
-                        string shortName = plugin.Substring(pos, (plugin.Length - pos));
+                        string shortName = plugin.Substring(pos, plugin.Length - pos);
 
                         // only attempt to load assemblies
                         if(shortName.EndsWith(".dll"))
@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string classString = t.FullName;
                 // ensure no funny xml fragments are present
 
-                if(classString.IndexOf("<", StringComparison.Ordinal) < 0 && (defaultNameSpace || (classString == nameSpace)))
+                if(classString.IndexOf("<", StringComparison.Ordinal) < 0 && (defaultNameSpace || classString == nameSpace))
                 {
                     var exposedMethodsXml = new StringBuilder();
 

@@ -20,7 +20,7 @@ namespace Dev2.Data.Decisions.Operations
         {
             if(!string.IsNullOrEmpty(cols[0]))
             {
-                return (!cols[0].IsAlpha());
+                return !cols[0].IsAlpha();
             }
 
             return true; // blank is not Text

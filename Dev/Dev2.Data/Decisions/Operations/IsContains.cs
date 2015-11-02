@@ -23,7 +23,7 @@ namespace Dev2.Data.Decisions.Operations
         public bool Invoke(string[] cols)
         {
 
-            return (cols[0].Contains(cols[1]));
+            return cols[0].Contains(cols[1]);
         }
     }
 }

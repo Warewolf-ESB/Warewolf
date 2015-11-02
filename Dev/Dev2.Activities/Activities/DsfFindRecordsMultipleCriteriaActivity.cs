@@ -127,8 +127,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Func<DataASTMutable.WarewolfAtom, bool> func = null;
                     foreach(FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
                     {
-                        if((to.From.Length > 0 && String.IsNullOrEmpty(to.To))
-                           || (to.To.Length > 0 && String.IsNullOrEmpty(to.From)))
+                        if(to.From.Length > 0 && String.IsNullOrEmpty(to.To)
+                           || to.To.Length > 0 && String.IsNullOrEmpty(to.From))
                         {
                             throw new Exception("From and to Must be populated");
                         }
@@ -398,7 +398,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return "";
             }
             var currentName = modelProperty.ComputedValue as string;
-            if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+            if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
             {
                 currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
             }
@@ -468,7 +468,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var items = (new[] { FieldsToSearch }).Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria)).Select(c => c.SearchCriteria)).ToArray();
+            var items = new[] { FieldsToSearch }.Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria)).Select(c => c.SearchCriteria)).ToArray();
             return GetForEachItems(items);
         }
 

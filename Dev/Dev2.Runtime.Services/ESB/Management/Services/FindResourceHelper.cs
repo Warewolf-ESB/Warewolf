@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var parseErrors = resource.Errors;
             if(parseErrors != null)
             {
-                errors.AddRange(parseErrors.Select(error => (error as ErrorInfo)));
+                errors.AddRange(parseErrors.Select(error => error as ErrorInfo));
             }
 
             var datalist = "<DataList></DataList>";

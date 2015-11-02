@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                     ExpressionText =
                         string.Format(
                             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"{0}\",AmbientDataList)",
-                            (variableList).First().Item1),
+                            variableList.First().Item1),
                       
                             
                 };

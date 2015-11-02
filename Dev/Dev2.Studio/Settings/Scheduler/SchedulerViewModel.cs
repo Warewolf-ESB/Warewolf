@@ -1057,7 +1057,7 @@ You need Administrator permission.";
 
         public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b)
         {
-            return (a.ToString() == b.ToString()) && (a.StartBoundary == b.StartBoundary) && (a.EndBoundary == b.EndBoundary) && (a.ExecutionTimeLimit == b.ExecutionTimeLimit);
+            return a.ToString() == b.ToString() && a.StartBoundary == b.StartBoundary && a.EndBoundary == b.EndBoundary && a.ExecutionTimeLimit == b.ExecutionTimeLimit;
         }
         [ExcludeFromCodeCoverage]
         public virtual void GetCredentials(IScheduledResource scheduledResource)

@@ -226,7 +226,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             for (int i = 0; i < pathSegments.Count; i++)
             {
                 IPathSegment pathSegment = pathSegments[i];
-                bool lastSegment = (i == pathSegments.Count - 1);
+                bool lastSegment = i == pathSegments.Count - 1;
 
                 if (pathSegment.IsEnumarable)
                 {

@@ -173,7 +173,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             unchecked
             {
-                var hashCode = (ColumnName != null ? ColumnName.GetHashCode() : 0);
+                var hashCode = ColumnName != null ? ColumnName.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (ColumnDescription != null ? ColumnDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsEditable.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)ColumnIODirection;

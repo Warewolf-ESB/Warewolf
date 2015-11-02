@@ -230,7 +230,7 @@ namespace Dev2.Utilities
                 var err = new StringBuilder("Compilation failed.\n");
                 foreach(var message in results.CompilerMessages)
                 {
-                    err.AppendFormat("{0} : {1} ({2}) --> {3}\n", message.Number, (message.IsWarning ? "WARNING" : "ERROR  "), message.SourceLineNumber, message.Message);
+                    err.AppendFormat("{0} : {1} ({2}) --> {3}\n", message.Number, message.IsWarning ? "WARNING" : "ERROR  ", message.SourceLineNumber, message.Message);
                 }
                 throw new Exception(err.ToString());
             }

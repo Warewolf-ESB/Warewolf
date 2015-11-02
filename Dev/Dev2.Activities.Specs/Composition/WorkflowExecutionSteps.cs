@@ -591,8 +591,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                   where String.Equals(((string)elements.Attribute("RecordsetAlias")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
+                                   where String.Equals((string)elements.Attribute("RecordsetAlias"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                     if(element != null)
@@ -689,8 +689,8 @@ namespace Dev2.Activities.Specs.Composition
                         string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where String.Equals(((string)elements.Attribute("Recordset")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
+                                   where String.Equals((string)elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                         if(element != null)
@@ -705,7 +705,7 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where( String.Equals(((string)elements.Attribute("Name")), recordsetName, StringComparison.InvariantCultureIgnoreCase))
+                                   where String.Equals((string)elements.Attribute("Name"), recordsetName, StringComparison.InvariantCultureIgnoreCase)
                                    select elements).SingleOrDefault();
 
                         if(element != null)
@@ -1407,7 +1407,7 @@ namespace Dev2.Activities.Specs.Composition
                 return;
 
             var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel, LogSize = 200};
-            var controller = (new CommunicationControllerFactory()).CreateController("LoggingSettingsWriteService");
+            var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
             IEnvironmentModel environmentModel;

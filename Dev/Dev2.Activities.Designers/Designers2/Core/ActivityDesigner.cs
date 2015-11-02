@@ -83,8 +83,8 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
 
-            if((originalSource is Panel) || (originalSource is Shape) || (originalSource is Decorator) ||
-               (originalSource is ScrollViewer))
+            if(originalSource is Panel || originalSource is Shape || originalSource is Decorator ||
+               originalSource is ScrollViewer)
             {
                 if(eventArgs.Source is Large)
                 {

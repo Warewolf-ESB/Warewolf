@@ -261,7 +261,7 @@ namespace Dev2
                         var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
                         var scalarDefs = scalars as string[] ?? scalars.ToArray();
                         var recSetDefs = recSets as string[] ?? recSets.ToArray();
-                            if(recSetDefs.Count() != 0)
+                            if(recSetDefs.Length != 0)
                         {
                             var nl = c.ChildNodes;
                                 foreach(XmlNode subc in nl)
@@ -282,7 +282,7 @@ namespace Dev2
                                 }
                             }
                         }
-                            if(scalarDefs.Count() != 0)
+                            if(scalarDefs.Length != 0)
                         {
                             // fetch recordset index
                             // process recordset

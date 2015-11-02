@@ -338,10 +338,10 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                        var cmd = val.Substring(0, idx + 1);// keep trailing "
                         if(File.Exists(cmd))
                         {
-                            var args = val.Substring((idx + 2));
+                            var args = val.Substring(idx + 2);
                             psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                         }
                         else
@@ -352,10 +352,10 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                    var cmd = val.Substring(0, idx + 1);// keep trailing "
                     if(File.Exists(cmd))
                     {
-                        var args = val.Substring((idx + 2));
+                        var args = val.Substring(idx + 2);
                         psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                     }
                     else
@@ -374,10 +374,10 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                    var cmd = val.Substring(0, idx + 1);// keep trailing "
                     if(File.Exists(cmd))
                     {
-                        var args = val.Substring((idx + 2));
+                        var args = val.Substring(idx + 2);
                         psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                     }
                     else

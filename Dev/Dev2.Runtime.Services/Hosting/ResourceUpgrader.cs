@@ -35,7 +35,7 @@ namespace Dev2.Runtime.Hosting
             var available = AvailableUpgrades.Where(a => a.CanUpgrade(sourceVersion)).OrderBy(a=>a.UpgradesFrom).Select(a=>a.Upgrade.UpgradeFunc).ToList();
             if (available.Any())
             {
-                var outputLang = available.Aggregate((a, b) => (x => (b(a(x)))));
+                var outputLang = available.Aggregate((a, b) => (x => b(a(x))));
                 
                 var output =  outputLang(sourceVersion);
                 output.SetAttributeValue("ServerVersion",GetVersion());

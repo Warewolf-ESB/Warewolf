@@ -63,7 +63,7 @@ namespace Dev2.Data.Util
         static DataListUtil()
         {
             // build system tags
-            foreach(Enum e in (Enum.GetValues(typeof(enSystemTag))))
+            foreach(Enum e in Enum.GetValues(typeof(enSystemTag)))
             {
                 SysTags.Add(e.ToString());
             }
@@ -205,7 +205,7 @@ namespace Dev2.Data.Util
                 int start = result.IndexOf("<", StringComparison.Ordinal);
                 if(start >= 0)
                 {
-                    result = result.Substring((start));
+                    result = result.Substring(start);
                 }
 
                 if(result.Contains("<") && result.Contains(">"))
@@ -234,7 +234,7 @@ namespace Dev2.Data.Util
         public static string BuildSystemTagForDataList(enSystemTag tag, bool addBrackets)
         {
 
-            string result = (GlobalConstants.SystemTagNamespace + "." + tag);
+            string result = GlobalConstants.SystemTagNamespace + "." + tag;
 
             if(addBrackets)
             {
@@ -253,7 +253,7 @@ namespace Dev2.Data.Util
         public static string BuildSystemTagForDataList(string tag, bool addBrackets)
         {
 
-            string result = (GlobalConstants.SystemTagNamespace + "." + tag);
+            string result = GlobalConstants.SystemTagNamespace + "." + tag;
 
             if(addBrackets)
             {
@@ -424,8 +424,8 @@ namespace Dev2.Data.Util
             else
             {
 
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, (isInput));
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, (isInput));
+                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, isInput);
+                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, isInput);
 
                 // open datashape
                 result.Append(string.Concat("<", AdlRoot, ">"));
@@ -656,7 +656,7 @@ namespace Dev2.Data.Util
             string[] closeParts = Regex.Split(expression, @"\]\]");
 
             //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if(expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+            if(expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
             {
                 result = false;
             }
@@ -700,7 +700,7 @@ namespace Dev2.Data.Util
             int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
             if(dotIdx > 0)
             {
-                result = value.Substring((dotIdx + 1));
+                result = value.Substring(dotIdx + 1);
             }
 
             return result;
@@ -718,7 +718,7 @@ namespace Dev2.Data.Util
             int closeIdx = value.LastIndexOf("]]", StringComparison.Ordinal);
             if(dotIdx > 0)
             {
-                result = value.Substring((dotIdx + 1),closeIdx-dotIdx-1);
+                result = value.Substring(dotIdx + 1,closeIdx-dotIdx-1);
             }
 
             return result;
@@ -751,12 +751,12 @@ namespace Dev2.Data.Util
 
             if(result.StartsWith(OpeningSquareBrackets))
             {
-                result = result.Substring(2, (result.Length - 2));
+                result = result.Substring(2, result.Length - 2);
             }
 
             if(result.EndsWith(ClosingSquareBrackets))
             {
-                result = result.Substring(0, (result.Length - 2));
+                result = result.Substring(0, result.Length - 2);
             }
 
             return result;
@@ -860,7 +860,7 @@ namespace Dev2.Data.Util
                 }
 
                 start += 1;
-                result = rs.Substring(start, (end - start));
+                result = rs.Substring(start, end - start);
             }
 
             return result;
@@ -1041,7 +1041,7 @@ namespace Dev2.Data.Util
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             string trimedData = data.Trim();
-            bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;
@@ -1128,7 +1128,7 @@ namespace Dev2.Data.Util
         public static string AdjustForEncodingIssues(string payload)
         {
             string trimedData = payload.Trim();
-            var isXml = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            var isXml = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             if(!isXml)
             {
@@ -1232,7 +1232,7 @@ namespace Dev2.Data.Util
                             int end = result.IndexOf(myTag, StringComparison.Ordinal);
                             if(start < end && start >= 0)
                             {
-                                string canidate = result.Substring(start, ((end - start) + myTag.Length));
+                                string canidate = result.Substring(start, end - start + myTag.Length);
                                 string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
                                 if(tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
                                 {
@@ -1293,7 +1293,7 @@ namespace Dev2.Data.Util
 
                             if(!string.IsNullOrEmpty(col))
                             {
-                                var toAppend = ("\t<" + col + "></" + col + ">");
+                                var toAppend = "\t<" + col + "></" + col + ">";
                                 result.Append(toAppend);
                             }
 
@@ -1659,8 +1659,8 @@ namespace Dev2.Data.Util
         static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
         {
             return ioDirection == dev2ColumnArgumentDirection ||
-                   (ioDirection == enDev2ColumnArgumentDirection.Both &&
-                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output));
+                   ioDirection == enDev2ColumnArgumentDirection.Both &&
+                   (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
         }
 
         static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)

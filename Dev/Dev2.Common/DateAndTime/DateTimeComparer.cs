@@ -163,7 +163,7 @@ namespace Dev2.Common.DateAndTime
                 }
             }
 
-            result = (result) + (12*(tmpYears));
+            result = result + 12*tmpYears;
             return result;
         }
 
@@ -189,7 +189,7 @@ namespace Dev2.Common.DateAndTime
         private static double ReturnWeeks(DateTime input1, DateTime input2)
         {
             TimeSpan timeDiff = input2 - input1;
-            double result = (timeDiff.TotalDays/7);
+            double result = timeDiff.TotalDays/7;
             return result;
         }
 

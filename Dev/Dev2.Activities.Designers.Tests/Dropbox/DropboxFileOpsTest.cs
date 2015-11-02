@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             //------------Execute Test---------------------------
             var availableSources = fileOps.Sources.ToList();
             //------------Assert Results-------------------------
-            Assert.AreEqual(availableSources.Count(), 4);
+            Assert.AreEqual(availableSources.Count, 4);
             Assert.AreEqual(availableSources[0].ResourceName, "Select a OAuth Source...");
             Assert.AreEqual(availableSources[1].ResourceName, "New OAuth Source...");
             Assert.AreEqual(availableSources[2].ResourceName, "bob");

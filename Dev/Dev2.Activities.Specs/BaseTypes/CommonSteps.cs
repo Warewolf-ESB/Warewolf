@@ -416,7 +416,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             double compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
-                Math.Round(inputFile.Length / (double)(outputFile.Length), 1));
+                Math.Round(inputFile.Length / (double)outputFile.Length, 1));
         }
 
         public static void AddVariableToVariableList(string resultVariable)
@@ -463,7 +463,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     var forEachActivity = pair.Value as DsfForEachActivity;
                     if (forEachActivity == null)
                         return false;
-                    return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && (forEachActivity.DataFunc.Handler as DsfForEachActivity) != null;
+                    return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && forEachActivity.DataFunc.Handler as DsfForEachActivity != null;
                 });
                 var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;
                 if (forEachParentActivity != null)

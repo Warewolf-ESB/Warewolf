@@ -94,7 +94,7 @@ namespace Dev2.Communication
                         var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
                         if(len > (message.Length - startIdx))
                         {
-                            len = (message.Length - startIdx);
+                            len = message.Length - startIdx;
                         }
 
                         var bytes = Encoding.UTF8.GetBytes(message.Substring(startIdx, len));

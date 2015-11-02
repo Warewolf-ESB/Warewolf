@@ -50,7 +50,7 @@ namespace Dev2.DataList.Contract
         {
             get
             {
-                return base.Message;
+                return Message;
             }
         }
 

@@ -146,8 +146,8 @@ namespace Dev2.ViewModels.DependencyVisualization
                     count = 1.5;
                 }
 
-                int xCoOrd = ((int)Math.Round(centerPoint.X - Distance * Math.Sin(count)));
-                int yCoOrd = ((int)Math.Round(centerPoint.Y - Distance * Math.Cos(count)));
+                int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
+                int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
 
                 if(xCoOrd >= maxX)
                 {

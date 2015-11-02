@@ -270,7 +270,7 @@ namespace Dev2.Core.Tests.Security
 
         public void TestWritePermissions()
         {
-            base.WritePermissions(null);
+            WritePermissions(null);
         }
 
         public int ReadAsyncHitCount { get; private set; }

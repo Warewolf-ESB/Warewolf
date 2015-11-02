@@ -117,7 +117,7 @@ namespace Dev2
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             string trimedData = data.Trim();
-            bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;

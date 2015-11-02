@@ -553,7 +553,7 @@ namespace Dev2.CustomControls.Panels
 
             // Determine if the other UIElements' Z-Index 
             // should be raised or lowered by one. 
-            int offset = (elementNewZIndex == 0) ? +1 : -1;
+            int offset = elementNewZIndex == 0 ? +1 : -1;
 
             int elementCurrentZIndex = GetZIndex(element);
 

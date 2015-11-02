@@ -16,7 +16,7 @@ namespace Dev2.DataList.Contract.EqualityComparers
 {
     public class Dev2ColumnComparer : IEqualityComparer<Dev2Column>
     {
-        private static Dev2ColumnComparer _instance = new Dev2ColumnComparer();
+        private static readonly Dev2ColumnComparer _instance = new Dev2ColumnComparer();
 
         public static Dev2ColumnComparer Instance
         {

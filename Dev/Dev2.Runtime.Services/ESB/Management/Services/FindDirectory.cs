@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(username.Length > 0)
                 {
-                    domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
+                    domain = domain.Length > 0 && domain != "." ? domain : Environment.UserDomainName;
                     bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
                                              LOGON32_PROVIDER_DEFAULT, ref accessToken);
                     if(success)

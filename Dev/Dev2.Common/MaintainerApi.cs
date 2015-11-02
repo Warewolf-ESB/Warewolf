@@ -58,7 +58,7 @@ namespace Dev2.Common
         {
             unchecked
             {
-                var hashCode = (Fn != null ? Fn.GetHashCode() : 0);
+                var hashCode = Fn != null ? Fn.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Email != null ? Email.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Org != null ? Org.GetHashCode() : 0);

@@ -55,6 +55,7 @@ namespace Dev2.Activities.Designers2.SortRecords
         {
 
 
+            // ReSharper disable once ExplicitCallerInfoArgument
             IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => GetProperty<string>("SortField"));
             var single = rule.Check();
             if (single != null)

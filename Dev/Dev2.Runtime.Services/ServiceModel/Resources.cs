@@ -110,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel
             // ReSharper restore MaximumChainedReferences
             var paths = new SortedSet<string>(folders);
             // ReSharper disable MaximumChainedReferences
-            var resources = explorerItem.Descendants().Where(item => (item.ResourceType > ResourceType.Unknown && item.ResourceType <= ResourceType.ServerSource)
+            var resources = explorerItem.Descendants().Where(item => item.ResourceType > ResourceType.Unknown && item.ResourceType <= ResourceType.ServerSource
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
             // ReSharper restore MaximumChainedReferences

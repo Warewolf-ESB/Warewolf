@@ -31,7 +31,7 @@ namespace Dev2.Common.DB
             Type type = typeof (IDBHelper);
 
             List<Type> types = typeof (IDBHelper).Assembly.GetTypes()
-                .Where(t => (type.IsAssignableFrom(t))).ToList();
+                .Where(t => type.IsAssignableFrom(t)).ToList();
 
             foreach (Type t in types)
             {
