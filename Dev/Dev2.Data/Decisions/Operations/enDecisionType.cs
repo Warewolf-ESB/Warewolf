@@ -56,6 +56,10 @@ namespace Dev2.Data.Decisions.Operations
         IsError,
         [DecisionTypeDisplayValue("There Is Not An Error")]
         IsNotError,
+        [DecisionTypeDisplayValue("Is NULL")]
+        IsNull,
+        [DecisionTypeDisplayValue("Is Not NULL")]
+        IsNotNull,
         [DecisionTypeDisplayValue("Is Numeric")]
         IsNumeric,
         [DecisionTypeDisplayValue("Not Numeric")]

@@ -157,6 +157,8 @@
     <Compile Include="DataListModel.cs" />
     <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
+    <Compile Include="Decisions\Operations\IsNotNull.cs" />
+    <Compile Include="Decisions\Operations\IsNull.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
     <Compile Include="Decisions\Operations\NotContains.cs" />
     <Compile Include="Decisions\Operations\NotEndsWith.cs" />
