@@ -1,5 +1,5 @@
 
-<Source ID="62505a00-b304-4ac0-a55c-50ce85111f16" Version="1.0" Name="GenDev" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAADBVPMCgB6qnpSxpgZA2DYdAAAAAASAAACgAAAAEAAAAI+eNyY4B7hH7Q3I0RIPtIqwAAAAsUYU6L8VzC9GzkR1jZO7Zc69peBOTXaBzhle4hB/16JE4zlVTG4IK+JWsxZp9lJ6wUAlybvQYdjjKTW+MXGdlA+XU4a1D553xzI0JpdEdAwhk/mB7nFSOl6jJduUzSXFBeYv5p7UB618X1r/+nGr1JSyvNcyjKu8nW2b2aOeOuiBVWudDyNZK4nCyvNAFzyMFKbeFUc6xdxDpehFBV5HRvQg0YSX2UjUpDn9Aor6SasUAAAAU8l63QbgAU6HTlvL2ZuQn2UguVU=" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Source ID="62505a00-b304-4ac0-a55c-50ce85111f16" Version="1.0" Name="GenDev" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAADBVPMCgB6qnpSxpgZA2DYdAAAAAASAAACgAAAAEAAAAI+eNyY4B7hH7Q3I0RIPtIqwAAAAsUYU6L8VzC9GzkR1jZO7Zc69peBOTXaBzhle4hB/16JE4zlVTG4IK+JWsxZp9lJ6wUAlybvQYdjjKTW+MXGdlA+XU4a1D553xzI0JpdEdAwhk/mB7nFSOl6jJduUzSXFBeYv5p7UB618X1r/+nGr1JSyvNcyjKu8nW2b2aOeOuiBVWudDyNZK4nCyvNAFzyMFKbeFUc6xdxDpehFBV5HRvQg0YSX2UjUpDn9Aor6SasUAAAAU8l63QbgAU6HTlvL2ZuQn2UguVU=" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5784.18165">
   <DisplayName>GenDev</DisplayName>
   <Category>Acceptance Testing Resources\GenDev</Category>
   <AuthorRoles>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>lQnKyF45ponBB4pw0d07K88Y71k=</DigestValue>
+        <DigestValue>fs1map4JCige7D7vQnJzniN9GkE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BilLq400gZBKjW46rmQFhKDGzdvkikUK9gPEehnXFv9Wi3t2G8b5NKosZwmAQmjVdYVnHmi3Dn5KCHqKj9lsTxZ+bGY6JKcIwD8kSueD1huChkEJEJr/TXLGVK5mUXza2sScvtnVL0qsadeQ2hIzTc5vzBGttfYJ9DMEpNPCY6A=</SignatureValue>
+    <SignatureValue>sCqC/64X+1wpeTaELV7OMCyl+q7/Z8QNrnoBNDQHTQqjEy8t1jfOQqqLf082nNZXm9GzgLsBjsnJDPh8MLKz/nPhyTmBesRY2dUY2kUWPdWfId76WkhwbPnj3VKRmuA2tHLzJ7+JtYI8+CHNA4x9nJa1Xa5aox20bel5XhpKWXw=</SignatureValue>
   </Signature>
 </Source>

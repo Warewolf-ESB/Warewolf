@@ -733,8 +733,8 @@ Scenario: Assign a Variable That Does Not Exist
 	And the execution has "Scalar value { var } is NULL" error
 
 Scenario: Assign a Variable That is Null to another variable
-	Given I have a variable [[b]] with a value of NULL
-	And I assign the value "[[var]]" to a variable "[[b]]"
+	Given I have a variable "[[b]]" with a value of "NULL"
+	And I assign the value "[[b]]" to a variable "[[var]]"
 	When the assign tool is executed
 	Then the execution has "No" error
 

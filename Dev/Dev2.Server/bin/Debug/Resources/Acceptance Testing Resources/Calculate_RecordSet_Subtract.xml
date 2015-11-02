@@ -1,5 +1,5 @@
 
-<Service Name="Calculate_RecordSet_Subtract" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="6d5d6fdf-26e0-4224-b9b8-acdfe36c58f1" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service Name="Calculate_RecordSet_Subtract" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="6d5d6fdf-26e0-4224-b9b8-acdfe36c58f1" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5784.18165">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="Calculate_RecordSet_Subtract" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -135,9 +135,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>pBFd75oLxoh8L9mjlm3/wM/QPWM=</DigestValue>
+        <DigestValue>BlQB8AA38Zeik3nCOak6H0SoP2U=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>CLMI1TCwIeSeZuEepp5fs/mhBf7XHfttGuwL1Wf/tkxHs/NXAiUih/iCf5rVUbjvs7z7aL9OB6N7UvELAbPxxwYy4ejr6sRmOiBil2JX360NzC+gzw8iaERHv6hzdY2NReZWm6tLUVkbbk2ch5G5TYWKUtRS1A5AGaMSy94D9wI=</SignatureValue>
+    <SignatureValue>b6qHwI7ZKKprFvsUSZHHiptufMOJvOGSfrmoLR2K8UZ84BeVZsKkInzpC7bkm0aXMgAialg9VLIUJ/48BroInqQYD2nI8ZRZuAigJd0nFN/IvLFMf3t8UkjCkov4rtlX28LcONHyV67T0yIKuhA5dusNHmIDrizoHrPG57KlYVI=</SignatureValue>
   </Signature>
 </Service>

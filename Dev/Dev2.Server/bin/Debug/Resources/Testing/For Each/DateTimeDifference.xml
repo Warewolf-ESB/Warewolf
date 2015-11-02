@@ -1,5 +1,5 @@
 
-<Service ID="8129e26f-bd90-4e94-a4ff-2de66b55be7c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DateTimeDifference" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="8129e26f-bd90-4e94-a4ff-2de66b55be7c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DateTimeDifference" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5784.18165">
   <DisplayName>DateTimeDifference</DisplayName>
   <Category>Testing\For Each\DateTimeDifference</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -42,9 +42,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>xsCk+eU0EIt2V5qyUZPr/WAhlq8=</DigestValue>
+        <DigestValue>LuJqUwAnzaRHIFTFineuZjAto9o=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OE4/vw4XFeezfX6XABYyTYd0iVV1gKQrf9Dnf3gltGQKEYG5BF5sqs0z/qGs5rw0HNgUkkiYvDU2ZkBzqTDZRJcn2UIGY6uvVhiCZuv1PJWJA5AmT0hILiFMw4B1MKIJxhGVQ2ZFy12nxOXwrptAMyRAm1Yo53tHLFidnvN7VRM=</SignatureValue>
+    <SignatureValue>DlquDMeGby2t9JKGIlUynVwtHEGPKzO6kI4aNPfnmF2XLoEAWxKA9Q3uKvsfSfKkbCl2z5fDjzqxrhJqIBK19Ol1SRbAlctiYK+s9KPnVMfYZ+/he7p0V5R/vPWJIPs8vDirsYkFD8HkzYajGk68bLuu8XPoIwQYDBQjVPAW4Hw=</SignatureValue>
   </Signature>
 </Service>

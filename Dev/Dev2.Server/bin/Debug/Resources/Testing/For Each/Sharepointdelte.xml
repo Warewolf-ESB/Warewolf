@@ -1,5 +1,5 @@
 
-<Service ID="a39ac2e1-d13d-41cb-9967-c1eb6e3107f6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sharepointdelte" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="a39ac2e1-d13d-41cb-9967-c1eb6e3107f6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sharepointdelte" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5784.18165">
   <DisplayName>Sharepointdelte</DisplayName>
   <Category>Testing\For Each\Sharepointdelte</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>SHYZr6m7NOJYAYOudpH+iY32QUs=</DigestValue>
+        <DigestValue>FaUUdXUiU9AlqMJEfNYdxURpGhA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>B03Pvb2vdWELfMXIM8CN9WDsOps84QSgO4Ep5xf0v7KyijXzFCZxoHJrgRVOvjCiDfKjR2LsGneB5q0sqJyolaf2HHI+HIYZmC4hMBR6mmnb5APjJzVdzFR4Rzo95kcjS4kqZZMs34Lthqh4D55iDP/AibpzU/nCKvw7ny8Fjuk=</SignatureValue>
+    <SignatureValue>p6ZBHhQS93+PLDEvx/EMOpingmXHVWS5/1SHh5FumCAXJz7wfuw2pS500fIz5Bl52+sa4gY172ZZOYJT9K8q2eYKG4W1fkDcbX2sYj5L7M+buuGca1J5UMu+NUBpo2Xqn/Gl33bnj35+GwPd0nsJNQRb6s/la6wLAQz5JXAm0to=</SignatureValue>
   </Signature>
 </Service>

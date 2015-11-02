@@ -1,5 +1,5 @@
 
-<Service ID="499a1606-1e70-4c83-a75b-d594ccfaa1ac" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11714Nested" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="499a1606-1e70-4c83-a75b-d594ccfaa1ac" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11714Nested" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5784.18165">
   <DisplayName>11714Nested</DisplayName>
   <Category>Acceptance Testing Resources\11714Nested</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>cqwm4O29ntFtVOscf09hQIvJf1A=</DigestValue>
+        <DigestValue>AEi0TtkpmIO1YcobbpbF+kOQQQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>hwuJfmplU2DOA78h1b+wfqJCaSW7rsvLRTMyTGjdYGK6rd8wtfLvUB5ikwGdHB1CXlSEcKwCly+9l3oYCF8E6R0YmrQBwr7jLGjA5hohieXmDT0r9r+oLO5Ex/b2XD8Xiq/Ft9dZUiStVNiOMoFgZlFyM2dXA0lo0K3M3ChKXz8=</SignatureValue>
+    <SignatureValue>Uqa01SSQG2gCc6rXyCwUg1fOKK4fEs6w9dMEuihkoKgnk2EN4peWr61/iCGaFKVemSdCyIGV/Y/6t3SeJMnI5J6Y1MQU8leoB/SNrEqcNV4F/8u78CT9Uv1eaBvRX/dgMFT+OL1wFicUI8j4WRRs2KqkvkqPOX6ptxhWMgBtJ44=</SignatureValue>
   </Signature>
 </Service>

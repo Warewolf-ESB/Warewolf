@@ -1,5 +1,5 @@
 
-<Service ID="6618a38d-03ef-479d-9d07-35b87879d0f6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File Copy Tool" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="6618a38d-03ef-479d-9d07-35b87879d0f6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File Copy Tool" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5784.18165">
   <DisplayName>File Copy Tool</DisplayName>
   <Category>Acceptance Testing Resources\File Copy Tool</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>zMODmYyw+LLaZ3B1W+Mwhj+nY3g=</DigestValue>
+        <DigestValue>W+6PrH6DpAliFsUfBW3U036pUJo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ZKgDcBBSL+yoOxr2JwAUCHk5cCSNLcEyxmj6H7Z1UCrjXVMzxqPLJy1v11Nb4ibRPhLHxv15WkBakAmsI7IkS9757qgSIyMi57sFgzou8E9v5ujZaDLA+Q+J0lIL+OO5ctnZdAIsR95mZr75Z25FVVvPzwLvSqGS+Etbjy1/hBE=</SignatureValue>
+    <SignatureValue>sJnFAVlqWVIH7zTsQHwpcQrA3XHV6S0F55xA4Urs0HzHhZJi/MrCTOOvnFGnG2kdDgPdublXio0/eKHxvVhWHTJyKAvqx8bd+HAH/ZUd6YEsZE1gtMJKwRQ+h7XOE64QD8yI/nLk3KfUCbrprpcvR7h5tM+Q1ylmLPEObMzSQmk=</SignatureValue>
   </Signature>
 </Service>

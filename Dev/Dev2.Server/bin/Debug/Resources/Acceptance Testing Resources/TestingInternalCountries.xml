@@ -1,5 +1,5 @@
 
-<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/;DefaultQuery=GetCountries.ashx?extension=xml&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAVwjp6S8+eUS4qT8Nu9ZwtQQAAAACAAAAAAADZgAAwAAAABAAAABOyQSxZt8yLus7dWNWMsPFAAAAAASAAACgAAAAEAAAAAYt0ekEAh1kTdA0toxNWKYYAQAA7PHs/jaOfQEXyKCfGDOqx4uRq0BgDIZ0Z4wSf1Ktg9hda2QVB2LYkJQfQYgYkDieHXyNsgS04cP53KskDK/7UFubO40SoQw8IQtP/GVcQ2rVtSfcLqj4q8iZaGju/kJ5hSFVysWYImWYjOcT/nd00mkP70pdDfUd4DHI6hQdFbBlOKnD2Rat3hXHXDYjfyrpWIXyErpQlaKUz6oE2Gl9fAFjjdr3DBBQB5u3HJuxI6CZeNCMmfTUe6hOJMC/mSzKeos53PFCTVurHX7KrnWaOvei/D05oTUI/DyCIIwyKOZvcY6pTyVeYhzR1zXoeareNP7sEhRkIpBhPGvjeR2NbKzSTGE4XYxjUe1rMRl/BlVB1hBME7TpghQAAAApVzB57GcGExW0nVdfqJpxvZpFRg==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5784.18165">
   <DisplayName>TestingInternalCountries</DisplayName>
   <Category>Acceptance Testing Resources\TestingInternalCountries</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>uSgGcWfaN/T66TdGq6WIXh1zGT4=</DigestValue>
+        <DigestValue>zDGUIuhN8GFa82vwlZdZQ5pNGgk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>XK4gO6emxqa5QUn5p14+cDct9ZtD5/0s51hFqfTSuBTFeXZChYGL8Rn3ipt5uuemoe81w3d13CUa9qCJlosKU/8HLjbyjRCK/atiycqlBUffTrgoh1aJyWRggbwaF3GJaHXnHT4aVDygqH7v1I0r1gW9/K2m/UsVOaTZTpC6Kx8=</SignatureValue>
+    <SignatureValue>c7NJoey8JdMPIFIIku4/uASJXYNz0WBuD9d4zNmu06Q91+pbRGjqZ+XvRN5FzNkkxTB1doVzRBzn63jPBAf1fuaN0P7LT2VnV1j3oUjyUTOnvi5oggU8cqu2iYMcwghaqlv0eMlQHDLHv4oEx4xc/j9tehnyYYqd+NEkAAoNHQI=</SignatureValue>
   </Signature>
 </Source>
