@@ -46,6 +46,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Unlimited.Framework.Converters.Graph.Ouput;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Hosting
@@ -978,7 +979,8 @@ namespace Dev2.Tests.Runtime.Hosting
                 RequestHeaders = "Content-Type: text/xml\nBearer: Trusted",
                 RequestBody = "abc\nhas an enter\nin it",
                 RequestResponse = "xyz",
-                JsonPath = "$.somepath"
+                JsonPath = "$.somepath",
+                OutputDescription = new OutputDescription()
             };
             resourceCatalog.SaveResource(Guid.Empty, webService);
             //------------Execute Test---------------------------
