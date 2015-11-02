@@ -18,13 +18,13 @@ namespace Dev2.Converters
     {
         public string ConvertToBase(byte[] payload)
         {
-            return (Encoding.UTF8.GetString(payload));
+            return Encoding.UTF8.GetString(payload);
         }
 
         public byte[] NeutralizeToCommon(string payload)
         {
             var encoder = new UTF8Encoding();
-            return (encoder.GetBytes(payload));
+            return encoder.GetBytes(payload);
         }
 
         public bool IsType(string payload)

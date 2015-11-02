@@ -1599,7 +1599,7 @@ namespace Dev2.Models
         public virtual void VerifyCheckState()
         {
             bool? state = null;
-            var count = Children.Count();
+            var count = Children.Count;
             var i = 0;
             var stateNull = false;
             while(i < count && !stateNull)

@@ -33,7 +33,7 @@ namespace Dev2.DataList.Contract
         {
             if(!string.IsNullOrEmpty(msg))
             {
-                if((checkForDuplicates && !_errorList.Contains(msg)) || !checkForDuplicates)
+                if(checkForDuplicates && !_errorList.Contains(msg) || !checkForDuplicates)
                 {
                     _errorList.Add(msg);
                 }
@@ -66,7 +66,7 @@ namespace Dev2.DataList.Contract
         /// </returns>
         public bool HasErrors()
         {
-            return (_errorList.Count > 0);
+            return _errorList.Count > 0;
         }
 
         /// <summary>

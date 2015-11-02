@@ -1291,8 +1291,8 @@ namespace Dev2.Runtime.Hosting
 
 
                     var resources = GetResources(workspaceID);
-                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
-                    if ((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         return new ResourceCatalogResult
                         {
@@ -1374,7 +1374,7 @@ namespace Dev2.Runtime.Hosting
                     return new ResourceCatalogResult
                     {
                         Status = ExecStatus.Success,
-                        Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
+                        Message = string.Format("{0} {1} '{2}'", updated ? "Updated" : "Added", resource.ResourceType, resource.ResourceName)
                     };
                 }
                 catch (Exception)

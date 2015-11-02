@@ -52,7 +52,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
 
-                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical});
+                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
             }
 
             if(ServiceUtils.MappingNamesChanged(inputMappings, inputMappingsPost) || ServiceUtils.MappingNamesChanged(outputMappings, outputMappingsPost))
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var outputDefs = DataListUtil.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
 
-                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical});
+                return new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical};
             }
             return null;
         }

@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
 
     public class TestActivityDTO
     {
-        private ActivityDTO _act;
+        private readonly ActivityDTO _act;
 
         public TestActivityDTO(ActivityDTO activityDto)
         {

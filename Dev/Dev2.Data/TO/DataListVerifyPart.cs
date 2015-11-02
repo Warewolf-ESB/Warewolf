@@ -32,7 +32,7 @@ namespace Dev2.DataList.Contract
 
             get
             {
-                return (RecordsetIndex != string.Empty);
+                return RecordsetIndex != string.Empty;
             }
 
         }
@@ -42,7 +42,7 @@ namespace Dev2.DataList.Contract
 
             get
             {
-                return (Recordset.Length == 0);
+                return Recordset.Length == 0;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Dev2.DataList.Contract
                     int start = recordset.IndexOf("(", StringComparison.Ordinal);
                     if(start != -1)
                     {
-                        Recordset = recordset.Substring(0, (start));
+                        Recordset = recordset.Substring(0, start);
                     }
                     else
                     {
@@ -107,7 +107,7 @@ namespace Dev2.DataList.Contract
                 {
                     if(field.Length > 0)
                     {
-                        if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
+                        if(recordset != null && recordset.Contains("(") && recordset.Contains(")"))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
 
@@ -120,7 +120,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
+                        if(recordset != null && recordset.Contains("(") && recordset.Contains(")"))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";

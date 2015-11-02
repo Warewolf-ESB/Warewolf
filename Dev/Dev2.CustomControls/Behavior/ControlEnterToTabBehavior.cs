@@ -56,8 +56,7 @@ namespace Dev2.CustomControls.Behavior
 
         private void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter &&
-                (e.KeyboardDevice.Modifiers != ModifierKeys.Shift && e.KeyboardDevice.Modifiers != ModifierKeys.Control))
+            if (e.Key == Key.Enter && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && e.KeyboardDevice.Modifiers != ModifierKeys.Control)
             {
                 int count = 0;
                 while (count < NumberOfMoves)

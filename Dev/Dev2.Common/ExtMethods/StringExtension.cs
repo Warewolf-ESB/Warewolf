@@ -207,8 +207,8 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return (!String.IsNullOrEmpty(payload) &&
-                    (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
+            return !String.IsNullOrEmpty(payload) &&
+                   (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload));
         }
 
         /// <summary>
@@ -279,9 +279,9 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsHex(this string payload)
         {
-            bool result = (IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload));
+            bool result = IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload);
 
-            if ((payload.Length%2) != 0)
+            if (payload.Length%2 != 0)
             {
                 result = false;
             }

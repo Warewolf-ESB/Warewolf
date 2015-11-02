@@ -158,7 +158,7 @@ namespace Dev2.MathOperations
 
         private void SetFunctionName(string functionName)
         {
-            if(!(string.IsNullOrEmpty(functionName)))
+            if(!string.IsNullOrEmpty(functionName))
             {
                 _functionName = functionName;
             }
@@ -181,7 +181,7 @@ namespace Dev2.MathOperations
 
         private void SetDescription(string description)
         {
-            _description = !(string.IsNullOrEmpty(description)) ? description : string.Empty;
+            _description = !string.IsNullOrEmpty(description) ? description : string.Empty;
         }
 
         #endregion Private Methods

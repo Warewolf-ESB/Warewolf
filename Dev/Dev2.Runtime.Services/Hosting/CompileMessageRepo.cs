@@ -131,7 +131,7 @@ namespace Dev2.Runtime.Hosting
                                 {
                                     object obj = bf.Deserialize(s);
 
-                                    var listOf = (obj as IList<ICompileMessageTO>);
+                                    var listOf = obj as IList<ICompileMessageTO>;
 
                                     if(listOf != null)
                                     {
@@ -242,7 +242,7 @@ namespace Dev2.Runtime.Hosting
 
                 // clean up any messages with the same id and add
 
-                for(int i = (messages.Count - 1); i >= 0; i--)
+                for(int i = messages.Count - 1; i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
                 }
@@ -282,7 +282,7 @@ namespace Dev2.Runtime.Hosting
                         messages.Remove(msg);
                     }
 
-                    return (compileMessageTos.Count > 0);
+                    return compileMessageTos.Count > 0;
                 }
             }
 

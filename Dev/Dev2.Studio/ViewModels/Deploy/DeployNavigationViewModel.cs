@@ -249,10 +249,10 @@ namespace Dev2.ViewModels.Deploy
 
         public virtual void ClearConflictingNodesNodes()
         {
-            Iterate((node =>
+            Iterate(node =>
             {
                 node.IsOverwrite = false;
-            }));
+            });
         }
 
         protected override void DoFiltering(string searhFilter)

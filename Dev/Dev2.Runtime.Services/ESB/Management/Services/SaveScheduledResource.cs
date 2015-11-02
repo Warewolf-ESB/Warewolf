@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             values.TryGetValue("PreviousResource", out previousTask);
 
                             model.Save(res, userName.ToString(), password.ToString());
-                            if(previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && (previousTask.ToString() != res.Name))
+                            if(previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && previousTask.ToString() != res.Name)
                             {
                                 model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null));
                             }

@@ -56,7 +56,7 @@ namespace Dev2
 
         public static bool operator ==(ObservablePair<TKey, TValue> pair1, ObservablePair<TKey, TValue> pair2)
         {
-            if((object)pair1 == null || ((object)pair2) == null)
+            if((object)pair1 == null || (object)pair2 == null)
             {
                 return Equals(pair1, pair2);
             }
@@ -69,7 +69,7 @@ namespace Dev2
             {
                 return !Equals(pair1, pair2);
             }
-            return !(pair1.Equals(pair2));
+            return !pair1.Equals(pair2);
         }
     }
 }

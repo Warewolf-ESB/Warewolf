@@ -104,8 +104,8 @@ namespace Dev2.Runtime.Hosting
                 ResourceCatalogue.GetResourceList(workSpaceId)
                                  .Where(
                                      a =>
-                                     (a.ResourceName == itemToRename.DisplayName.Trim()) &&
-                                     (a.ResourcePath == itemToRename.ResourcePath.Trim()));
+                                     a.ResourceName == itemToRename.DisplayName.Trim() &&
+                                     a.ResourcePath == itemToRename.ResourcePath.Trim());
             if(item.Any())
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");
@@ -276,7 +276,7 @@ namespace Dev2.Runtime.Hosting
                 ResourceCatalogue.GetResourceList(workSpaceId)
                                  .Where(
                                      a =>
-                                     (a.ResourcePath == newPath));
+                                     a.ResourcePath == newPath);
             if (item.Any())
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");

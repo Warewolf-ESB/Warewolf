@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.Utils
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
-            Assert.AreEqual(1,tos.Count());
+            Assert.AreEqual(1,tos.Count);
             Assert.AreEqual("Bob",tos[0].VariableName);
         }
         
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.Utils
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
-            Assert.AreEqual(1,tos.Count());
+            Assert.AreEqual(1,tos.Count);
             Assert.AreEqual("Bob",tos[0].VariableName);
         }
         
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.Utils
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
-            Assert.AreEqual(1,tos.Count());
+            Assert.AreEqual(1,tos.Count);
             Assert.AreEqual("Bob",tos[0].VariableName);
         }
 

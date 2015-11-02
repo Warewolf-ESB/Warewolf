@@ -30,10 +30,10 @@ namespace Petzold.Media2D
         protected PathFigure PathfigLine;
         protected PolyLineSegment PolysegLine;
 
-        PathFigure pathfigHead1;
-        PolyLineSegment polysegHead1;
-        PathFigure pathfigHead2;
-        PolyLineSegment polysegHead2;
+        readonly PathFigure pathfigHead1;
+        readonly PolyLineSegment polysegHead1;
+        readonly PathFigure pathfigHead2;
+        readonly PolyLineSegment polysegHead2;
 
         /// <summary>
         ///     Identifies the ArrowAngle dependency property.

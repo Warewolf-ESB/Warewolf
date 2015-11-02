@@ -38,12 +38,12 @@ namespace Dev2.Core.Tests
 
         public void TestClose()
         {
-            base.OnDeactivate(true);
+            OnDeactivate(true);
         }
 
         public void CallDeactivate(WorkSurfaceContextViewModel item)
         {
-            base.DeactivateItem(item, true);
+            DeactivateItem(item, true);
         }
     }
 }

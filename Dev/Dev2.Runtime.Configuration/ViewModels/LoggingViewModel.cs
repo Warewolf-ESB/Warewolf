@@ -187,9 +187,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             get
             {
-                return (RunPostWorkflow &&
-                        !String.IsNullOrEmpty(PostWorkflowName) &&
-                        ServiceInputOptions.Count > 0);
+                return RunPostWorkflow &&
+                       !String.IsNullOrEmpty(PostWorkflowName) &&
+                       ServiceInputOptions.Count > 0;
             }
         }
 

@@ -512,7 +512,7 @@ namespace Dev2.Data.PathOperations
             else
             {
                 // does not exist, ok to create
-                ok = !(IsDirectoryAlreadyPresent(dst));
+                ok = !IsDirectoryAlreadyPresent(dst);
             }
 
             if(ok)
@@ -838,7 +838,7 @@ namespace Dev2.Data.PathOperations
                     int idx = p.LastIndexOf(" ", StringComparison.Ordinal);
                     if(idx > 0)
                     {
-                        string part = p.Substring((idx + 1)).Trim();
+                        string part = p.Substring(idx + 1).Trim();
                         if(IsDirectory(p))
                         {
                             // directory -- add it
@@ -873,7 +873,7 @@ namespace Dev2.Data.PathOperations
                     int idx = p.LastIndexOf(" ", StringComparison.Ordinal);
                     if(idx > 0)
                     {
-                        string part = p.Substring((idx + 1)).Trim();
+                        string part = p.Substring(idx + 1).Trim();
                         if(!IsDirectory(p))
                         {
                             // directory -- add it

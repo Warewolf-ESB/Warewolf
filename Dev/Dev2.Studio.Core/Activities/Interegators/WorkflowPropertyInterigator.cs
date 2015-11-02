@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
                     if(endIdx > 0)
                     {
                         startIdx += 10;
-                        var len = (endIdx - startIdx);
+                        var len = endIdx - startIdx;
 
                         activity.HelpLink = resource.WorkflowXaml.Substring(startIdx, len);
                     }

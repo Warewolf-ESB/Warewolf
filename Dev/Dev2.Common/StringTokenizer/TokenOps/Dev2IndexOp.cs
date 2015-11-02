@@ -38,7 +38,7 @@ namespace Dev2.Common
             var result = new StringBuilder();
 
             int start = startIdx;
-            int end = (startIdx + ToIndex);
+            int end = startIdx + ToIndex;
 
             // Avoid boundry over-run
             if (end > candidate.Length)
@@ -48,7 +48,7 @@ namespace Dev2.Common
 
             if (isReversed)
             {
-                start = (startIdx - ToIndex) + 1;
+                start = startIdx - ToIndex + 1;
                 if (start < 0) start = 0;
                 end = startIdx + 1;
             }

@@ -154,7 +154,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
-            Assert.AreEqual(1, resource.Dependencies.Count());
+            Assert.AreEqual(1, resource.Dependencies.Count);
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeChild1 = resourceForTrees[0];
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.UniqueID);
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
-            Assert.AreEqual(3, resource.Dependencies.Count());
+            Assert.AreEqual(3, resource.Dependencies.Count);
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
@@ -214,7 +214,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
-            Assert.AreEqual(1, resource.Dependencies.Count());
+            Assert.AreEqual(1, resource.Dependencies.Count);
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeRoot = resourceForTrees[0];
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.UniqueID);

@@ -62,14 +62,14 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input><Output>" + JsonConvert.SerializeObject(tmpOutput) + "</Output></Args>";
 
                 return
-                    (new CompileMessageTO
+                    new CompileMessageTO
                     {
                         MessageType = CompileMessageType.MappingChange,
                         ServiceID = serviceID,
                         MessageID = Guid.NewGuid(),
                         MessagePayload = defStr,
                         ErrorType = ErrorType.Critical
-                    });
+                    };
             }
             return null;
 

@@ -13,6 +13,8 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Collections;
+using System.Collections.ObjectModel;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Utils
@@ -45,10 +47,9 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             EditingContext ec = new EditingContext();
             ModelTreeManager mtm = new ModelTreeManager(ec);
-
+            
             mtm.Load(objectToMakeModelItem);
-
-
+           
             return mtm.Root;
         }
 
@@ -63,6 +64,29 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
+        }
+
+        public static ModelItemCollection CreateModelItemCollection(ICollection objectToMakeModelItem)
+        {
+            EditingContext ec = new EditingContext();
+            ModelTreeManager mtm = new ModelTreeManager(ec);
+
+            mtm.Load(objectToMakeModelItem);
+
+            return mtm.Root as ModelItemCollection;
+        }
+
+        public static ModelItemCollection CreateModelItemCollection(object parent, object objectToMakeModelItem)
+        {
+            EditingContext ec = new EditingContext();
+            ModelTreeManager mtm = new ModelTreeManager(ec);
+
+            return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem) as ModelItemCollection;
+        }
+
+        public static ModelItemCollection CreateModelItemCollection()
+        {
+            return CreateModelItemCollection(new Collection<object>());
         }
 
         public static T GetProperty<T>(this ModelItem modelItem, string propertyName)

@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.WF
                     debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
                 }
 
-                if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     var debugDispatcher = _getDebugDispatcher();
                     if(debugState.StateType == StateType.End)

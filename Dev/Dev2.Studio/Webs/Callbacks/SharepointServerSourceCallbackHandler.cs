@@ -18,7 +18,7 @@ namespace Dev2.Webs.Callbacks
         readonly string _userName;
         readonly string _password;
         readonly AuthenticationType _authenticationType;
-        bool _isSharepointOnline;
+        readonly bool _isSharepointOnline;
 
         public SharepointServerSourceCallbackHandler()
             : this(EnvironmentRepository.Instance,"","","",AuthenticationType.Windows, false)

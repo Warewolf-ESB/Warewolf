@@ -100,7 +100,7 @@ namespace Dev2.Diagnostics
                 if(!isDeserialize)
                 {
                     _fileName = string.Format("{0}.txt", _itemId);
-                    if(itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
+                    if(itemToAdd.GroupIndex == MaxItemDispatchCount + 1 && !_isMoreLinkCreated)
                     {
                         ClearFile(_fileName);
                         _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());

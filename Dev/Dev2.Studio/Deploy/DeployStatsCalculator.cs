@@ -89,7 +89,7 @@ namespace Dev2.Studio.Deploy
             var vm = node;
             if(vm == null || !vm.IsChecked.GetValueOrDefault(false)) return false;
 
-            return (type.HasFlag(vm.ResourceType))
+            return type.HasFlag(vm.ResourceType)
                     && (
                         inclusionCategories.Count == 0
                         || inclusionCategories.Contains(vm.ResourcePath)

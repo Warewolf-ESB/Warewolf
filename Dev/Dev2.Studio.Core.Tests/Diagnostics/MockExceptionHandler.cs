@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests.Diagnostics
 
         public void TestShutdownApp()
         {
-            base.ShutdownApp();
+            ShutdownApp();
         }
 
         #endregion
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.Diagnostics
 
         public void TestRestartApp()
         {
-            base.RestartApp();
+            RestartApp();
         }
 
         #endregion

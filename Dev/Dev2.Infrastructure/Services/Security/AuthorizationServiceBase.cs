@@ -338,7 +338,7 @@ namespace Dev2.Services.Security
                         var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
                         if (domainChar >= 0)
                         {
-                            theUser = username.Substring((domainChar + 1));
+                            theUser = username.Substring(domainChar + 1);
                         }
                         var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
                         using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))

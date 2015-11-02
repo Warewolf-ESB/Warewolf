@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
         {
 
             // only fetch paths with valid data to map ;)
-            var outputsToMap = outputDescription.DataSourceShapes[0].Paths.Where(p => (!string.IsNullOrEmpty(p.DisplayPath) && p.DisplayPath != "DocumentElement"));
+            var outputsToMap = outputDescription.DataSourceShapes[0].Paths.Where(p => !string.IsNullOrEmpty(p.DisplayPath) && p.DisplayPath != "DocumentElement");
             
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
             #pragma warning disable 219
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
         {
 
             // only fetch paths with valid data to map ;)
-            var outputsToMap = outputDescription.DataSourceShapes[0].Paths.Where(p => (!string.IsNullOrEmpty(p.DisplayPath) && p.DisplayPath != "DocumentElement"));
+            var outputsToMap = outputDescription.DataSourceShapes[0].Paths.Where(p => !string.IsNullOrEmpty(p.DisplayPath) && p.DisplayPath != "DocumentElement");
 
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
 #pragma warning disable 219

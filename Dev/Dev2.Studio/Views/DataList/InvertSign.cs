@@ -25,13 +25,13 @@ namespace Dev2.UI.Controls
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double val = (double)value;
-            return (val * -1);
+            return val * -1;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double val = (double)value;
-            return (val * -1);
+            return val * -1;
         }
 
         #endregion

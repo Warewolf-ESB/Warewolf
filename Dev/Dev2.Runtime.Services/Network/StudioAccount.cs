@@ -19,7 +19,7 @@ namespace Dev2.DynamicServices
     public sealed class StudioAccount : NetworkAccount
     {
         #region Static Members
-        private static Encoding _encoding = Encoding.ASCII;
+        private static readonly Encoding _encoding = Encoding.ASCII;
 
         private static byte[] GetPasswordBytes(string password)
         {

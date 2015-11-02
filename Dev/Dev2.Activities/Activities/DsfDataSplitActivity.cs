@@ -209,7 +209,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(tokenizer != null)
                             {
                                 int pos = 0;
-                                int end = (ResultsCollection.Count - 1);
+                                int end = ResultsCollection.Count - 1;
 
                                 // track used tokens so we can adjust flushing ;)
                                 while(tokenizer.HasMoreOps())
@@ -421,7 +421,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(modelProperty != null)
             {
                 string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
@@ -653,7 +653,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var items = (new[] { SourceString }).Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At)).Select(c => c.At)).ToArray();
+            var items = new[] { SourceString }.Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At)).Select(c => c.At)).ToArray();
             return GetForEachItems(items);
         }
 

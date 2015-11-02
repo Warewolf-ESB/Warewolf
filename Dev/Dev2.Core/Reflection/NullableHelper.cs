@@ -34,7 +34,7 @@ namespace Dev2.Reflection
         {
             // If the default is not null, then set to false.
             // ReSharper disable RedundantCast
-            if (((object) default(T)) != null)
+            if ((object) default(T) != null)
             {
                 return t => false;
             }

@@ -32,8 +32,8 @@ namespace Dev2.ViewModels.Workflow
 
                 // process scalars ;)
                 foreach (var entry in listOfScalars
-                    .Where(e => ((e.IODirection == enDev2ColumnArgumentDirection.Input ||
-                                 e.IODirection == enDev2ColumnArgumentDirection.Both))))
+                    .Where(e => e.IODirection == enDev2ColumnArgumentDirection.Input ||
+                                e.IODirection == enDev2ColumnArgumentDirection.Both))
                 {
                     result.AddRange(ConvertToIDataListItem(entry));
                 }

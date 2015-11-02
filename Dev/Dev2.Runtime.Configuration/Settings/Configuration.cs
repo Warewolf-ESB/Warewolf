@@ -71,9 +71,9 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             get
             {
-                return (Logging != null && Logging.HasChanges) ||
-                     (Security != null && Security.HasChanges) ||
-                      (Backup != null && Backup.HasChanges);
+                return Logging != null && Logging.HasChanges ||
+                     Security != null && Security.HasChanges ||
+                      Backup != null && Backup.HasChanges;
             }
         }
 
@@ -81,9 +81,9 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             get
             {
-                return (Logging != null && Logging.HasError) ||
-                       (Security != null && Security.HasError) ||
-                       (Backup != null && Backup.HasError);
+                return Logging != null && Logging.HasError ||
+                       Security != null && Security.HasError ||
+                       Backup != null && Backup.HasError;
             }
         }
 

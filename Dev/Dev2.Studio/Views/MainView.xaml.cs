@@ -129,7 +129,7 @@ namespace Dev2.Studio.Views
             
         }
 
-        void ContentPaneOnPreviewDragEnter(object sender, System.Windows.DragEventArgs dragEventArgs)
+        void ContentPaneOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
         {
             dragEventArgs.Handled = true;
         }
@@ -188,7 +188,7 @@ namespace Dev2.Studio.Views
             }
         }
 
-        private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ContentControl_MouseEnter(object sender, MouseEventArgs e)
         {
 
         }

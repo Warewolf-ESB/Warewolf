@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         public void TestAddToCollection(IEnumerable<string> source, bool overWrite)
         {
-            base.AddToCollection(source, overWrite);
+            AddToCollection(source, overWrite);
         }
     }
 }

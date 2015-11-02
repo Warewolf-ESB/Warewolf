@@ -54,7 +54,7 @@ namespace Dev2.DataList.Contract
         {
             get
             {
-                return !((RecordSetName == null) || RecordSetName.Equals(string.Empty));
+                return !(RecordSetName == null || RecordSetName.Equals(string.Empty));
             }
         }
 

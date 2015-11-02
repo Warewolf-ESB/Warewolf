@@ -556,7 +556,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          
             }
 
-            if (_debugState != null && (_debugState.StateType != StateType.Duration) && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty))
+            if (_debugState != null && _debugState.StateType != StateType.Duration && !(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty)
             {
                 _debugState.StateType = StateType.All;
 
@@ -931,7 +931,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </returns>
         public override int GetHashCode()
         {
-            return (UniqueID != null ? UniqueID.GetHashCode() : 0);
+            return UniqueID != null ? UniqueID.GetHashCode() : 0;
         }
 
         public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)

@@ -171,7 +171,7 @@ namespace Dev2.Activities
             foreach(var o in searcher.Get())
             {
                 var item = (ManagementObject)o;
-                stringBuilder.Append((100 - Convert.ToInt32(item["LoadPercentage"])) + "%");
+                stringBuilder.Append(100 - Convert.ToInt32(item["LoadPercentage"]) + "%");
             }
             return stringBuilder.ToString();
         }

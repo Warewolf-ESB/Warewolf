@@ -12,18 +12,18 @@
         MinWidth="490" Width="490" MaxWidth="550" WindowStyle="SingleBorderWindow"  WindowStartupLocation="CenterScreen">
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=PropertyChanged}"/>
@@ -34,7 +34,7 @@
                      Margin="3,0,0,0" 
                      VerticalAlignment="Center" 
                      Grid.Row="0" Grid.Column="1" 
-                     Text="{Binding ServerName}" customControls:WatermarkTextBox.Watermark="http://YourSharePointServer"></TextBox>
+                     Text="{Binding ServerName}" customControls:WatermarkTextBox.Watermark="http://YourSharePointServer" />
             <TextBlock x:Name="Authentication" 
                                VerticalAlignment="Center" 
                                Grid.Row="1" 
@@ -53,8 +53,8 @@
               Margin="0,0,0,0"
               Visibility="{Binding IsUser,Converter={StaticResource BoolToVisConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=PropertyChanged}"/>
@@ -67,7 +67,7 @@
                      Margin="3,0,0,0" 
                      Grid.Row="0" 
                      Grid.Column="1" 
-                     Text="{Binding UserName}"></TextBox>
+                     Text="{Binding UserName}" />
             <TextBlock VerticalAlignment="Center" 
                        Margin="0,3,0,0"
                        Grid.Row="1" 
@@ -77,7 +77,7 @@
                          Grid.Column="1"
                          Margin="3,3,0,0"
                          attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                         attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></PasswordBox>
+                         attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <StackPanel Orientation="Horizontal" 
                         Margin="0,1,-2,-2"
@@ -87,7 +87,7 @@
                         HorizontalAlignment="Right">
             <TextBlock Style="{StaticResource TextBlockErrorStyle}"
                        Margin="0,0,3,0" 
-                       Text="{Binding TestResult}"></TextBlock>
+                       Text="{Binding TestResult}" />
             <customControls:CircularProgressBar Height="14"
                                                 Width="14"
                                                 VerticalAlignment="Center"

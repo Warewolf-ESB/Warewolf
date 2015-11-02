@@ -101,7 +101,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"the fields to search is")]
         public void GivenTheFieldsToSearchIs(Table table)
         {
-            var fieldToSearch = table.Rows.Aggregate("", (current, tableRow) => current + (tableRow["field"] + ","));
+            var fieldToSearch = table.Rows.Aggregate("", (current, tableRow) => current + tableRow["field"] + ",");
             fieldToSearch = fieldToSearch.TrimEnd(',');
             ScenarioContext.Current.Add("fieldsToSearch", fieldToSearch);
         }

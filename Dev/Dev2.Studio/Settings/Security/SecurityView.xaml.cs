@@ -35,7 +35,7 @@ namespace Dev2.Settings.Security
             // prevent the built-in sort from sorting
             e.Handled = true;
 
-            var direction = (column.SortDirection != ListSortDirection.Ascending) ? ListSortDirection.Ascending : ListSortDirection.Descending;
+            var direction = column.SortDirection != ListSortDirection.Ascending ? ListSortDirection.Ascending : ListSortDirection.Descending;
 
             //set the sort order on the column
             column.SortDirection = direction;

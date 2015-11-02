@@ -47,7 +47,7 @@ namespace Dev2.Converters
             string tmp = Encoding.UTF8.GetString(decoded);
 
             var encoder = new UTF8Encoding();
-            return (encoder.GetBytes(tmp));
+            return encoder.GetBytes(tmp);
         }
 
         public Enum HandlesType()

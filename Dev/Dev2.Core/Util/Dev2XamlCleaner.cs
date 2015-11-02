@@ -70,8 +70,8 @@ namespace Dev2.Util
             StringBuilder result = def;
             for (int i = 0; i < (replaceNamespaces.Length/2); i++)
             {
-                result = result.Replace((replacePrefix + replaceNamespaces[i, 0]),
-                    (replacePrefix + replaceNamespaces[i, 1]));
+                result = result.Replace(replacePrefix + replaceNamespaces[i, 0],
+                    replacePrefix + replaceNamespaces[i, 1]);
             }
 
             return result;

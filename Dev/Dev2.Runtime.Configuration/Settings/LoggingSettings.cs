@@ -338,7 +338,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 PostWorkflow = new WorkflowDescriptor(xml.Element("PostWorkflow"));
             }
 
-            RunPostWorkflow = (PostWorkflow != null);
+            RunPostWorkflow = PostWorkflow != null;
 
             IsInitializing = false;
         }

@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             error = PluginServiceExecutionFactory.ValidatePlugin(toLoad);
 
-            return (error == string.Empty);
+            return error == string.Empty;
         }
 
         /// <summary>

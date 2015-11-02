@@ -314,8 +314,8 @@ namespace Dev2.Settings.Security
 
         static void SwitchContributePermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if((!windowsGroupPermission.View && propertyName == "View")
-               || (!windowsGroupPermission.Execute && propertyName == "Execute"))
+            if(!windowsGroupPermission.View && propertyName == "View"
+               || !windowsGroupPermission.Execute && propertyName == "Execute")
             {
                 windowsGroupPermission.Contribute = false;
             }
@@ -323,9 +323,9 @@ namespace Dev2.Settings.Security
 
         static void SwitchAdminPermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if((!windowsGroupPermission.DeployTo && propertyName == "DeployTo")
-               || (!windowsGroupPermission.DeployFrom && propertyName == "DeployFrom")
-               || (!windowsGroupPermission.Contribute && propertyName == "Contribute"))
+            if(!windowsGroupPermission.DeployTo && propertyName == "DeployTo"
+               || !windowsGroupPermission.DeployFrom && propertyName == "DeployFrom"
+               || !windowsGroupPermission.Contribute && propertyName == "Contribute")
             {
                 windowsGroupPermission.Administrator = false;
             }

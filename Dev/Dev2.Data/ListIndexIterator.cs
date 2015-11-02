@@ -36,10 +36,10 @@ namespace Dev2.Data.Binary_Objects
 
         public int Count
         {
-            get { return (IndexList.Count()); }
+            get { return IndexList.Count(); }
         }
 
-        public bool IsEmpty { get { return (_curValue - Count == 0); } }
+        public bool IsEmpty { get { return _curValue - Count == 0; } }
 
         public ListIndexIterator(List<int> indexes)
         {

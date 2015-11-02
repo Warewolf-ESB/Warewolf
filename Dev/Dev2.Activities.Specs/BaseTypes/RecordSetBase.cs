@@ -152,7 +152,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         int indexForRecset;
                         int.TryParse(indexRegionFromRecordset, out indexForRecset);
 
-                        var blankRowsToAdd = rowIndex == 0 ? 0 : (indexForRecset - 1) - _lastAddedIndex;
+                        var blankRowsToAdd = rowIndex == 0 ? 0 : indexForRecset - 1 - _lastAddedIndex;
 
                         if(blankRowsToAdd > 0)
                         {

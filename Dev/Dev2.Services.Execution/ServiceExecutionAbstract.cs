@@ -177,7 +177,7 @@ namespace Dev2.Services.Execution
                             var sai1 = sai;
                             var dev2Definitions = inputDefs.Where(definition => definition.Name == sai1.Name);
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
-                            if (definitions.Count() == 1)
+                            if (definitions.Length == 1)
                             {
                                 toInject = DataListUtil.IsEvaluated(definitions[0].RawValue) ? DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue) : definitions[0].RawValue;
                             }
@@ -362,7 +362,7 @@ namespace Dev2.Services.Execution
                         var c1 = c;
                         var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
                         var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                        if (dev2Definitions.Count() != 0)
+                        if (dev2Definitions.Length != 0)
                         {
                             // fetch recordset index
                             int fetchIdx;

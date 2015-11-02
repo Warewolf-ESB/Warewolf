@@ -136,8 +136,8 @@ namespace Dev2.Runtime.Security
                 signedXml.LoadXml((XmlElement) nodeList[0]);
 
 
-                var result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
-                             (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
+                var result = serverID == ServerID && signedXml.CheckSignature(_serverKey) ||
+                             serverID != InternalServerID == signedXml.CheckSignature(_systemKey);
 
 
                 // Check if signed by the server or the system
@@ -222,7 +222,7 @@ namespace Dev2.Runtime.Security
 
                 if (endIdx >= 0)
                 {
-                    var len = (endIdx - startIdx) + signatureEnd.Length;
+                    var len = endIdx - startIdx + signatureEnd.Length;
                     return sb.Remove(startIdx, len);
                 }
             }

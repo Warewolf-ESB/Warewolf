@@ -84,7 +84,7 @@ namespace Dev2.UI
                         var virtualizingStackPanel = scrollInfo as VirtualizingStackPanel;
                         int index = listBox.ItemContainerGenerator.IndexFromContainer(container);
 
-                        if((stackPanel != null && Orientation.Horizontal == stackPanel.Orientation) || (virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation))
+                        if(stackPanel != null && Orientation.Horizontal == stackPanel.Orientation || virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation)
                         {
                             scrollInfo.SetHorizontalOffset(index - (int)(scrollInfo.ViewportWidth / 2));
                         }
@@ -1751,7 +1751,7 @@ namespace Dev2.UI
 
         bool IsListBoxInputKey(KeyEventArgs e)
         {
-            return (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.PageDown || e.Key == Key.PageUp);
+            return e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.PageDown || e.Key == Key.PageUp;
         }
 
         void EmulateEventOnListBox(KeyEventArgs e)

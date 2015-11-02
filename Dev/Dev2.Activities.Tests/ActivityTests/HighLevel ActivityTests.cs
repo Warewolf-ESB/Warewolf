@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfZip.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            var count = properties.Count();
+            var count = properties.Length;
             Assert.IsTrue(count == 3);
         }
 
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfUnZip.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            var count = properties.Count();
+            var count = properties.Length;
             Assert.IsTrue(count == 1);
         }
 
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
 
-            Assert.IsTrue(properties.Count() == 1);
+            Assert.IsTrue(properties.Length == 1);
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfPathCreate.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 2);
+            Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfFolderRead.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 4);
+            Assert.IsTrue(properties.Length == 4);
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfFileRead.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 1);
+            Assert.IsTrue(properties.Length == 1);
         }
 
         
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfSortRecordsActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 2);
+            Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfMultiAssignActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 4);
+            Assert.IsTrue(properties.Length == 4);
         }
 
 
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfForEachActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.AreEqual(14, properties.Count());
+            Assert.AreEqual(14, properties.Length);
         }
 
 
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfDateTimeActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 7);
+            Assert.IsTrue(properties.Length == 7);
         }
 
 
@@ -197,7 +197,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfDataSplitActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.AreEqual(4, properties.Count());
+            Assert.AreEqual(4, properties.Length);
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfCountRecordsetActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 2);
+            Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfCalculateActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 2);
+            Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfFindRecordsActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.AreEqual(9, properties.Count());
+            Assert.AreEqual(9, properties.Length);
         }
 
         [TestMethod]
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfCaseConvertActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 1);
+            Assert.IsTrue(properties.Length == 1);
         }
 
         [TestMethod]
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Could not find DsfBaseConvertActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 1);
+            Assert.IsTrue(properties.Length == 1);
         }
 
         #endregion Check Property Count Tests
@@ -459,13 +459,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var type = typeof(DsfActivityAbstract<bool>);
 
             List<Type> types = type.Assembly.GetTypes()
-                                .Where(t => (type.IsAssignableFrom(t)))
+                                .Where(t => type.IsAssignableFrom(t))
                                 .ToList();
 
             type = typeof(DsfActivityAbstract<string>);
 
             types.AddRange(type.Assembly.GetTypes()
-                                .Where(t => (type.IsAssignableFrom(t)))
+                                .Where(t => type.IsAssignableFrom(t))
                                 .ToList());
             return types;
         }

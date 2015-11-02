@@ -279,7 +279,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugState(dataObject, StateType.Before, 0);
                 }
@@ -360,7 +360,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
 
-                if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugState(dataObject, StateType.After, 0);
                 }
@@ -447,7 +447,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            dataObject.EnvironmentID = (EnvironmentID==null || EnvironmentID.Expression == null) ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.EnvironmentID = EnvironmentID==null || EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
             dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
             ParentServiceName = dataObject.ServiceName;
 
@@ -483,7 +483,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before);
 
@@ -560,7 +560,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     var dt = DateTime.Now;
                     DispatchDebugState(dataObject, StateType.After,  update,dt);

@@ -35,7 +35,6 @@ namespace Dev2.Integration.Tests.Activities
 
         private string _uncdir1;
 
-        static bool _inDomain = true;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -142,7 +141,6 @@ namespace Dev2.Integration.Tests.Activities
             }
             catch(ActiveDirectoryObjectNotFoundException)
             {
-                _inDomain = false;
             }
         }
 

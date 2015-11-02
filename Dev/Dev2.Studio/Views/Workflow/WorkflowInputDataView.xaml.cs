@@ -119,7 +119,7 @@ namespace Dev2.Studio.Views.Workflow
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
 
-            if(vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            if(vm != null && vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -143,7 +143,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if(vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            if(vm != null && vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
             }
@@ -164,7 +164,7 @@ namespace Dev2.Studio.Views.Workflow
             if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+                if(vm != null && vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                     Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -174,7 +174,7 @@ namespace Dev2.Studio.Views.Workflow
             else if(e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+                if(vm != null && vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                 }

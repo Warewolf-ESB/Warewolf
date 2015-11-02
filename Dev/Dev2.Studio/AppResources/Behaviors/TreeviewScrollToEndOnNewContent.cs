@@ -77,7 +77,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            if (((e.ExtentHeightChange > 0 && e.ViewportHeightChange.CompareTo(0D) == 0)))
+            if (e.ExtentHeightChange > 0 && e.ViewportHeightChange.CompareTo(0D) == 0)
             {
                 _treeviewScrollViewer.ScrollToEnd();
             }

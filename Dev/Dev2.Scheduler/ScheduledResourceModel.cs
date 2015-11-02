@@ -208,7 +208,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                 nextDate = trigger.StartBoundary;
                 output = action.Arguments.Split(ArgWrapper).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
-            if(output.Count() == 2 && output.All(a => a.Contains(NameSeperator)))
+            if(output.Count == 2 && output.All(a => a.Contains(NameSeperator)))
             {
 
                 var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
@@ -249,7 +249,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             ITaskEventLog evt = _factory.CreateTaskEventLog(String.Format("\\{0}\\", _warewolfFolderPath) + resource.Name);
             var groupings =
                 from a in
-                    evt.Where(x => !String.IsNullOrEmpty(x.Correlation) && !String.IsNullOrEmpty(x.TaskCategory) && (_taskStates.Values.Contains(x.TaskCategory)))
+                    evt.Where(x => !String.IsNullOrEmpty(x.Correlation) && !String.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
                 group a by a.Correlation
                     into corrGroup
                     select new
@@ -261,11 +261,11 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                             corrGroup.Key
                         };
             // for each grouping get the data and debug output
-            IList<IResourceHistory> eventList = (groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep).Select(
+            IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep).Select(
                 a =>
-                new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
-                                    new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
-                as IResourceHistory)).ToList();
+                    new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
+                        new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
+                        as IResourceHistory).ToList();
             return eventList;
         }
 
@@ -274,7 +274,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             bool debugExists = DebugHistoryExists(debugHistoryPath,key);
             bool debugHasErrors = DebugHasErrors(debugHistoryPath,key);
             bool winSuccess = eventId < 103;
-            if(debugExists && (!debugHasErrors) && winSuccess)
+            if(debugExists && !debugHasErrors && winSuccess)
                 return ScheduleRunStatus.Success;
             if (!debugExists)
                 return  ScheduleRunStatus.Unknown;

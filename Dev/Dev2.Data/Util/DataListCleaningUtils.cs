@@ -191,7 +191,7 @@ namespace Dev2.DataList.Contract
 
             string[] parts = canidate.Split(tokens);
 
-            if(parts.Count() == 3)
+            if(parts.Length == 3)
             {
                 result = true;
             }

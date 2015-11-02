@@ -61,7 +61,7 @@ namespace Dev2.Common.Common
             if (removeStartIdx >= 0)
             {
                 int removeEndIdx = sb.IndexOf("?>", 0, false);
-                int len = (removeEndIdx - removeStartIdx) + 2;
+                int len = removeEndIdx - removeStartIdx + 2;
                 StringBuilder result = sb.Remove(removeStartIdx, len);
 
                 return result;
@@ -102,7 +102,7 @@ namespace Dev2.Common.Common
                     var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
                     if (len > (sb.Length - startIdx))
                     {
-                        len = (sb.Length - startIdx);
+                        len = sb.Length - startIdx;
                     }
 
                     byte[] bytes = encoding.GetBytes(sb.Substring(startIdx, len));
@@ -184,7 +184,7 @@ namespace Dev2.Common.Common
                 var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
                 if (len > (sb.Length - startIdx))
                 {
-                    len = (sb.Length - startIdx);
+                    len = sb.Length - startIdx;
                 }
 
                 byte[] bytes = encoding.GetBytes(sb.Substring(startIdx, len));
@@ -246,7 +246,7 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static bool Contains(this StringBuilder sb, string value)
         {
-            return (IndexOf(sb, value, 0, false) >= 0);
+            return IndexOf(sb, value, 0, false) >= 0;
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace Dev2.Common.Common
         {
             int result = -1;
             int startIndex = -1;
-            while ((startIndex = IndexOf(sb, value, (startIndex + 1), ignoreCase)) >= 0)
+            while ((startIndex = IndexOf(sb, value, startIndex + 1, ignoreCase)) >= 0)
             {
                 result = startIndex;
             }
@@ -293,7 +293,7 @@ namespace Dev2.Common.Common
             if (value == null) return -1;
             int index;
             int length = value.Length;
-            int maxSearchLength = (sb.Length - length) + 1;
+            int maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
@@ -302,7 +302,7 @@ namespace Dev2.Common.Common
                     if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
                     {
                         index = 1;
-                        while ((index < length) && (Char.ToLower(sb[i + index]) == Char.ToLower(value[index])))
+                        while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
                         {
                             ++index;
                         }
@@ -322,7 +322,7 @@ namespace Dev2.Common.Common
                 if (sb[i] == value[0])
                 {
                     index = 1;
-                    while ((index < length) && (sb[i + index] == value[index]))
+                    while (index < length && sb[i + index] == value[index])
                     {
                         ++index;
                     }
@@ -355,7 +355,7 @@ namespace Dev2.Common.Common
 
         public static bool IsEqual(this StringBuilder sb, StringBuilder that)
         {
-            if (that != null && (sb != null && sb.Length == that.Length))
+            if (that != null && sb != null && sb.Length == that.Length)
             {
                 // length check passes, check content ;)
                 for (int i = 0; i < sb.Length; i++)
