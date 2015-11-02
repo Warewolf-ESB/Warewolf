@@ -57,6 +57,7 @@ Scenario Outline: Copy file at location
 		 | 31 | [[sourcePath]] | sftp://localhost/copyfile6.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/copied51.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 		 | 32 | [[sourcePath]] | c:\copyfile6.txt                                             | ""                | ""       | [[destPath]] | sftp://localhost/copied61.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      | C:\\Temp\\key.opk         |
 		 | 33 | [[sourcePath]] | sftp://localhost/copyfile7.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/copied71.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+		 | 34 | [[variable]]   | NULL                                                         | ""                | ""       | [[destPath]] | E:\test.txt                                                | ""                | ""           | True     | [[result]] | Error   | An           |                      |                           |
                        																										 
 
 
