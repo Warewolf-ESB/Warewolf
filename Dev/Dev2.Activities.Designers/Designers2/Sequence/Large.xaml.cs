@@ -10,6 +10,7 @@
 */
 
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Sequence
@@ -79,5 +80,31 @@ namespace Dev2.Activities.Designers2.Sequence
         }
 
         #endregion
+
+        private void CopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {            
+        }
+
+        private void CopyCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void CopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CopyCommandPreviewCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void SapvCopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void SapvCopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {            
+        }
     }
 }
