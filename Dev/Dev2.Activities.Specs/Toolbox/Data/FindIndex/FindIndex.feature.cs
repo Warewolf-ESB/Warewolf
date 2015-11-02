@@ -1431,13 +1431,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Characters", "[[rs([[b]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[result]] = -1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Index is not an integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Variable { b } is NULL.")]
         public virtual void FindAllRecordsetsWithInvalidIndexes_5()
         {
-            this.FindAllRecordsetsWithInvalidIndexes("5", "[[b]]", "\"\"", "[[rs([[b]]).a]]", "[[result]] = -1", "Index is not an integer", ((string[])(null)));
+            this.FindAllRecordsetsWithInvalidIndexes("5", "[[b]]", "", "[[rs([[b]]).a]]", "[[result]] = -1", "Variable { b } is NULL.", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]

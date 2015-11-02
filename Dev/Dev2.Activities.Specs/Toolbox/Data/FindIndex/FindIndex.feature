@@ -335,5 +335,5 @@ Examples:
 | 2  | [[var]] | w     | [[rs([[var]]).a]] | [[result]] = -1 | Index is not an integer |
 | 3  | [[var]] | " "   | [[rs([[var]]).a]] | [[result]] =    | Index is not an integer |
 | 4  | [[var]] | 1.2   | [[rs([[var]]).a]] | [[result]] =    | Index is not an integer |
-| 5  | [[b]]   | ""    | [[rs([[b]]).a]]   | [[result]] = -1 | Index is not an integer |
+| 5  | [[b]]   |       | [[rs([[b]]).a]]   | [[result]] = -1 | Variable { b } is NULL. |
 | 6  | [[var]] | 123   | [[rs([[var]]).a]] | [[result]] = -1 | Index is not valid      |
