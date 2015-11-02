@@ -1,5 +1,5 @@
 
-<Source ID="de51798e-cbc3-41f4-b928-1f44cb1755cc" Name="SharepointPlugin" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\sharepointdll\SharepointLibrary\ClassLibrary1\bin\Debug\Warewolf.Sharepoint.dll" AssemblyName="Warewolf.Sharepoint" Type="Plugin" ServerVersion="0.0.5784.18165" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="de51798e-cbc3-41f4-b928-1f44cb1755cc" Name="SharepointPlugin" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\sharepointdll\SharepointLibrary\ClassLibrary1\bin\Debug\Warewolf.Sharepoint.dll" AssemblyName="Warewolf.Sharepoint" Type="Plugin" ServerVersion="0.0.5779.20657" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>SharepointPlugin</DisplayName>
   <Category>SharepointPlugin</Category>
   <AuthorRoles>
@@ -16,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>RWahZOz/kd9BUXHF6xknQ14eTaE=</DigestValue>
+        <DigestValue>F1QUdndRo45+XkygVfBAt0fuW6E=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>A0vGC61FuvlbYvZ94arI+bHxhhduek37W+htabGn116ropmTF4n+hk6pqoRqctSkQg0DWwZ9c2Lm/IEGH/Z+aZQ1OLWI8iIIIShrpLYzOMWX4oP11o5cFVg9brWc7iLTsPzOVi3U3sVEzfL6kYY41VDLa2QgwojjWJ54NAETx2A=</SignatureValue>
+    <SignatureValue>GxrllGQC/tfcuWtq9sHPfnvHOg/lp1U5wwc7Nc8f1VsK96pP/vUBo8rGzrd3T2N5ladO/SANMo+MNdLg7flGXk5RZVpPOPEVV/tSqqNmuexktzdRQGSuM5E0QUptLBajyMcgibPHBDOI7S+LmXR0uV5woB7w55tXBa7EbdyyKbc=</SignatureValue>
   </Signature>
 </Source>

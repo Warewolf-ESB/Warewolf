@@ -1,5 +1,5 @@
 
-<Service ID="30646a03-91c9-4e5d-a4d3-b4a042a21f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RecordsetDebugOutput" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5784.18165">
+<Service ID="30646a03-91c9-4e5d-a4d3-b4a042a21f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RecordsetDebugOutput" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5781.19507">
   <DisplayName>RecordsetDebugOutput</DisplayName>
   <Category>Testing\Bugs\RecordsetDebugOutput</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>tdVcJ3+2oxVkykdPpaoK2pdCLqs=</DigestValue>
+        <DigestValue>3wIo4LwhxmLiA54C5/KuucEx+ok=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OsJbyfv9gF+fNxshJUtUVRZVi4xZZ8Kz7lJqBQyCBB4Kek0a+xCOOt1b3UXQCOF97o3jmavxaQ+rAC25z2C3fk6ZPjlGBHKmYboz+Z5IT5PCLCckp1L5n+VZgsmKtB3uc/bZUim6ZvcS/C5+67EiNRmd1/OnnXzdfOzATP0q3qQ=</SignatureValue>
+    <SignatureValue>UisYixKVdLMt8/oFdlNw2twTi8JApgkgZHPCgFZdTMfInRN1buyx7cUt5Sbw8pTHhZf1kmV8RRDfcci76Istj4LzBBfZTg+tX2s+0eTJVL4ZFVs3i62ioOnZh5Y8b+0hacJDqwawdUgzoVwgiHHUnMGxjqlN/h/rm/yT/WQ7s0M=</SignatureValue>
   </Signature>
 </Service>

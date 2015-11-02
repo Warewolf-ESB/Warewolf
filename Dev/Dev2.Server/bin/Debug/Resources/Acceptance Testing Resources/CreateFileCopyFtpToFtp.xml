@@ -1,5 +1,5 @@
 
-<Service ID="212301f2-d3fa-4e86-8e6d-d6d0764202da" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileCopyFtpToFtp" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5784.18165">
+<Service ID="212301f2-d3fa-4e86-8e6d-d6d0764202da" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileCopyFtpToFtp" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>CreateFileCopyFtpToFtp</DisplayName>
   <Category>Acceptance Testing Resources\CreateFileCopyFtpToFtp</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>nWjmCOHGzCU3dxXMVALOpp0zGyo=</DigestValue>
+        <DigestValue>umHP28l8ppps/CXZOW9VqCSDcOg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OQWx7uwwnONu586MfVZRZ9Fpv5oOIJws6oBOVkP/8x1y4VkT6b1zGJJSsOiRhO4SAJKkCLzAikh75fqKYb4PUougXT7ov7ZXI0Ochp1pm1sS02l4zSDucj6z2iYbGypLuqrFdcfPlR+obfPuSGjhF4Vf1e7fyLGiP5GnoEsT7OE=</SignatureValue>
+    <SignatureValue>bPU7pMyiCxqz8Kd7gMT/9ZyTPNU0GZHO0vs79/vZvq90LAf8qC7aUFQIuMnpNr3edAhkegpf2E+/kVuGKa/SxiZ0GXEHtLlLzx+rroso9dZlaeo0Knh2RiDeNswZAzwkqL1Osd8bSffRRkLSYu+A3iKKSMyMTknybuFFQ4+FqAA=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service Name="MutiAssignRecursiveEvaluationTestWorkflow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f7d2fbd9-9849-472b-bea4-3e3587300d01" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5784.18165">
+<Service Name="MutiAssignRecursiveEvaluationTestWorkflow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f7d2fbd9-9849-472b-bea4-3e3587300d01" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="MutiAssignRecursiveEvaluationTestWorkflow" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -229,9 +229,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>LCgwmTD01aT5Xi3sqxeg0Ji0364=</DigestValue>
+        <DigestValue>irS1oMa4FvhyHOR4dODnN45steU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>sbHJnaW43P8bL+1pP23Xeq8z5fVzKZsH7kL4gkXpD0tKhyst8HjI3ajws8Vk+mZyehCy0+2tz4SsUuMrxIgoB/m9/1ffJc3Bq6QhWFK/20asW+YJd+6s0oNK+W0luEylefocplSeY9Z61eUGjIFtpz/PFhksYMHdIf5YvmLMBLc=</SignatureValue>
+    <SignatureValue>owEeACfFFrExlWvCOGMhjPWqfTdF/gWuWn1BgtIA9RF98Hg/KOkiFjOhO+vL28p1QunScdUOzYmJRv8DphaidNoUBmKnjn39MS3rxFNFjalusDwRwsm47Y0sKZyw/Y+UP6JB7sIEKzjcnD7CTPUG+dhwSOOLlsSAre0eLdBz5xY=</SignatureValue>
   </Signature>
 </Service>
