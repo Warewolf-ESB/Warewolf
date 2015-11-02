@@ -345,6 +345,21 @@ Scenario: Merge a variable inside the invalid varaible
 	|              |
 	| [[result]] = |
 
+
+Scenario Outline: Merge a variable that does not exist
+	Given an Input "[[rec([[a]]).set]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the execution has "AN" error
+	And the execution has "Variable { a } is NULL." error
+Examples: 
+	| No | Type     |
+	| 1  | None     |
+	| 2  | Index    |
+	| 3  | Chars    |
+	| 4  | New Line |
+	| 5  | Tab      | 
+
 #----------------->
 #Scenario: Merge a scalar to a scalar using merge type none 2
 #	Given a merge variable "[[a]]" equal to "Warewolf " 
@@ -364,19 +379,7 @@ Scenario: Merge a variable inside the invalid varaible
 #	|                              |
 #	| [[result]] = Warewolf Rocks  |
 #
-#Scenario Outline: Merge a variable that does not exist
-#	Given an Input "[[a]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
-#	When the data merge tool is executed
-#	Then the merged result is ""
-#	And the execution has "AN" error
-#	And the execution has "Variable { a } is NULL." error
-#Examples: 
-#	| No | Type     |
-#	| 1  | None     |
-#	| 2  | Index    |
-#	| 3  | Chars    |
-#	| 4  | New Line |
-#	| 5  | Tab      | 
+
 #
 # This is a bug that needs to be resolved
 #Scenario: Merge a recordset table and free text using Tab 2
