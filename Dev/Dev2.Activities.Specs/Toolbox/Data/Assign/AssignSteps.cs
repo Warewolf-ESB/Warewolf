@@ -78,6 +78,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
         }
 
+
+        [Given(@"I have a variable ""(.*)"" with a value of ""(.*)""")]
+        public void GivenIHaveAVariableWithAValueOf(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+
         [Then(@"the value of ""(.*)"" is null")]
         public void ThenTheValueOfIsNull(string variable)
         {
