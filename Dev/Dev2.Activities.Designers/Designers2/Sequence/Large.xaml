@@ -35,6 +35,26 @@
                                     HintText="Add New Activity"
                                     ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}"
                                     IsDefaultContainer="true">
+            <sap:WorkflowItemsPresenter.CommandBindings>
+                    <CommandBinding
+                        Command="Copy" Executed="CopyCommandExecuted"
+                        CanExecute="CopyCommandCanExecute"
+                        PreviewExecuted="CopyCommandPreviewExecuted"
+                        PreviewCanExecute="CopyCommandPreviewCanExecute"/>
+                    <CommandBinding
+                        Command="sap:DesignerView.CopyCommand" 
+                        Executed="SapvCopyCommandExecuted"
+                        PreviewExecuted="SapvCopyCommandPreviewExecuted"/>
+                    <CommandBinding
+                        Command="Paste" Executed="CopyCommandExecuted"
+                        CanExecute="CopyCommandCanExecute"
+                        PreviewExecuted="CopyCommandPreviewExecuted"
+                        PreviewCanExecute="CopyCommandPreviewCanExecute"/>
+                    <CommandBinding
+                        Command="sap:DesignerView.PasteCommand" 
+                        Executed="SapvCopyCommandExecuted"
+                        PreviewExecuted="SapvCopyCommandPreviewExecuted"/>
+                </sap:WorkflowItemsPresenter.CommandBindings>
             <sap:WorkflowItemsPresenter.Items>
                 <Binding Path="ModelItem.Activities"/>
             </sap:WorkflowItemsPresenter.Items>
