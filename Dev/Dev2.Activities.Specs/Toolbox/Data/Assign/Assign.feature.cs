@@ -2354,7 +2354,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 735
 this.ScenarioSetup(scenarioInfo);
 #line 736
- testRunner.Given("I assign the value NULL to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a variable [[b]] with a value of NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 737
  testRunner.And("I assign the value \"[[var]]\" to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 738
@@ -2366,11 +2366,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a Variable That is Null with text to another variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a Variable That is Null with conatenation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignAVariableThatIsNullWithTextToAnotherVariable()
+        public virtual void AssignAVariableThatIsNullWithConatenation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a Variable That is Null with text to another variable", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a Variable That is Null with conatenation", ((string[])(null)));
 #line 742
 this.ScenarioSetup(scenarioInfo);
 #line 743
