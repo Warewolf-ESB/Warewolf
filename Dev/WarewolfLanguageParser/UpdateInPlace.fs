@@ -8,20 +8,7 @@ open WarewolfParserInterop
 open WarewolfDataEvaluationCommon
 
 let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (update:int) (func: WarewolfAtom->WarewolfAtom) : WarewolfEnvironment=
-    let EvalComplex (exp:LanguageExpression list) = 
-        if((List.length exp) =1) then
-            match exp.[0] with
-                | RecordSetExpression a ->  evalRecordSetAsString env a
-                | ScalarExpression a ->  (evalScalar a env)
-                | WarewolfAtomAtomExpression a ->  a
-                | _ ->failwith "you should not get here"
-        else    
-            let start = List.map LanguageExpressionToString  exp |> (List.fold (+) "")
-            let evaled = (List.map (LanguageExpressionToString >> (Eval  env update)>>EvalResultToString)  exp )|> (List.fold (+) "")
-            if( evaled = start) then
-                DataString evaled
-            else DataString (Eval env update evaled|>  EvalResultToString)
-    
+   
     let exp = ParseCache.TryFind lang
     let buffer =  match exp with 
                     | Some a ->  a
@@ -53,7 +40,6 @@ and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEn
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
         failwith "invalid recordset"     
     else
-            let positions = env.RecordSets.[recset.Name].Data.[PositionColumn]
             match recset.Index with
                 | IntIndex value ->  let data = WarewolfDataEvaluationCommon.Eval env update  (LanguageExpressionToString (RecordSetExpression recset)) |> EvalResultToString |> DataString |> func
                                      AssignEvaluation.EvalAssign (LanguageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env  
