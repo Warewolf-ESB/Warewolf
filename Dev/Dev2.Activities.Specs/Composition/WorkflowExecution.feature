@@ -4227,46 +4227,50 @@ Scenario: Workflow with AsyncLogging and ForEach
 #FOREACH
 @ignore
 Scenario: ForEach Acceptance Tests
-	  Given I have a workflow "Master Test"
-	  And "Testing/For Each" contains "Master Test" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "Master Test" is executed
+	  Given I have a workflow "ForEachMasterTest"
+	  And "ForEachMasterTest" contains "Testing/For Each/Master Test" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable    |
+      |                  |               | TestResult          | [[TestResult]] |
+      |                  |               | Result              | [[Result]]     |
+	  When "ForEachMasterTest" is executed
 	Then the workflow execution has "NO" error
-	  And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	  And the 'Testing/For Each/Master Test' in Workflow 'ForEachMasterTest' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
 
-#wolf-1121
-Scenario: SharePoint JSOn formatting
-	  Given I have a workflow "Wolf-1121"
-	  And "Testing/Bugs" contains "Wolf-1121" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "http://rsaklfleroy:3142/secure/Testing/Bugs/Wolf-1121.json?%3CDataList%3E%3C/DataList%3E&wid=5515b641-e8f9-4d12-8ec0-54a2072344dd" is executed
-	Then the workflow execution has "NO" error
-
-
 
 #Wolf-1102
+@ignore
 Scenario: Recordsets in Debug Output windpw
-	Given I have a workflow "DateTimeDifference"
-	And "Testing/For Each" contains "DateTimeDifference" from server "localhost" with mapping as
-	     | Input to Service | From Variable | Output from Service | To Variable |
-	     |                  |               | Result              | [[Result]]  |
-	When "DateTimeDifference" is executed
+	Given I have a workflow "RecordsetDebugOutput"
+	And "RecordsetDebugOutput" contains "Testing/For Each/DateTimeDifference" from server "localhost" with mapping as
+	     | Input to Service | From Variable | Output from Service | To Variable    |
+	     |                  |               | TestResult          | [[TestResult]] |
+	When "RecordsetDebugOutput" is executed
 	Then the workflow execution has "NO" error
-	And the 'Testing/For Each' in Workflow 'Master Test' debug outputs as
+	And the 'Testing/For Each/DateTimeDifference' in Workflow 'RecordsetDebugOutput' debug outputs as
 	  |                              |
-	  | [[Expected]] = Success       |
+	  | [[TestResult]] = Success     |
 	  | [[Date(1).Difference]] = -14 |
 	  | [[Date(2).Difference]] = 13  |
 
 #Wolf-402
+@ignore
 Scenario: Ensure that End this Workflow is working 
-	  Given I have a workflow "wolf-402"
-	  And "Testing/Bugs" contains "wolf-402" from server "localhost" with mapping as
+	  Given I have a workflow "EndNestedWorkflows"
+	  And "EndNestedWorkflows" contains "Testing/Bugs/wolf-402" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
-	  When "wolf-402" is executed
+	  When "EndNestedWorkflows" is executed
+	Then the workflow execution has "NO" error
+
+
+#Wolf-829
+@ignore
+Scenario: Xml Serialisation bug when returning xml
+	Given I have a workflow "XmlSerialisation"
+	And "XmlSerialisation" contains "Testing/Bugs/wolf-829" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	When "XmlSerialisation" is executed
 	Then the workflow execution has "NO" error

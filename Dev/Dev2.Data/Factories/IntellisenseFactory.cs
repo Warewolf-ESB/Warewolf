@@ -26,7 +26,7 @@ namespace Dev2.DataList.Contract {
 
         public static IIntellisenseResult CreateCalculateIntellisenseResult(int start, int end, string displayName, string description, string errorMessage)
         {
-            return new IntellisenseResult(start, end, new DateTimeVerifyPart(displayName, description), errorMessage, String.IsNullOrEmpty(errorMessage) ? enIntellisenseResultType.Selectable : enIntellisenseResultType.Error, String.IsNullOrEmpty(errorMessage) ? enIntellisenseErrorCode.None : enIntellisenseErrorCode.SyntaxError, true);
+          return new IntellisenseResult(start, end, new DateTimeVerifyPart(displayName, description), errorMessage, String.IsNullOrEmpty(errorMessage) ? enIntellisenseResultType.Selectable : enIntellisenseResultType.Error, String.IsNullOrEmpty(errorMessage) ? enIntellisenseErrorCode.None : enIntellisenseErrorCode.SyntaxError, true);
         }
 
         public static IIntellisenseResult CreateDateTimeResult(IDataListVerifyPart opt)

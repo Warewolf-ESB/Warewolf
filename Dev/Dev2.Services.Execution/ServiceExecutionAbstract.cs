@@ -11,8 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
@@ -388,7 +390,7 @@ namespace Dev2.Services.Execution
                             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
                             if(scalarName != null)
                             {
-                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), c1.InnerXml, update);
+                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml( c1.InnerXml), update);
                             }
                         }
                     }
@@ -403,6 +405,16 @@ namespace Dev2.Services.Execution
                 }
             }
         }
+
+        string UnescapeRawXml(string innerXml)
+        {
+            if(innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
+            {
+                return new StringBuilder(innerXml).Unescape().ToString();
+            }
+            return innerXml;
+        }
+
         #endregion
 
         #region GetOutputFormatter

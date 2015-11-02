@@ -138,7 +138,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="6"
+                                Grid.Row="3"
                                 DefaultText="[[PathToPrivateKey]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
@@ -166,7 +166,7 @@
                Grid.Row="4"
                Style="{StaticResource ActivityLabelStyle}"
                Content="{Binding OutputPathLabel, Mode=OneWay}" />
-        <ui:IntellisenseTextBox Grid.Row="3"
+        <ui:IntellisenseTextBox Grid.Row="4"
                                 Grid.Column="1"
                                 FilterType="All"
                                 DefaultText="[[FileOrFolderName]]"
@@ -198,7 +198,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="Username" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="4"
+                                Grid.Row="5"
                                 Margin="20,2,1,2"
                                 DefaultText="[[Username]]"
                                 WrapInBrackets="False"
@@ -223,7 +223,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="Password" />
         <PasswordBox Grid.Column="1"
-                     Grid.Row="5"
+                     Grid.Row="6"
                      Margin="20,2,1,2"
                      ToolTip="{x:Static help:HelpTextResources.RenameToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -245,7 +245,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="Private Key" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="6"
+                                Grid.Row="7"
                                 DefaultText="[[PathToDestinationPrivateKey]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
@@ -275,7 +275,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="If it exists" />
         <CheckBox Grid.Column="1"
-                  Grid.Row="7"
+                  Grid.Row="8"
                   Margin="-4,0,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -295,7 +295,7 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="8"
+                                Grid.Row="9"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
