@@ -29,6 +29,7 @@ Scenario Outline: Create file at location
 		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                     | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 1  | Local      | [[path]]    | NULL                                                           | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 
 
 

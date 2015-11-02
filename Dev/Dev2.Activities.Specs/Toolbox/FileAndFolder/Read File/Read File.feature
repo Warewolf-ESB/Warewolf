@@ -28,6 +28,7 @@ Scenario Outline: Read File at location
 	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                     |
 	| 6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                     |
 	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
+	| 8  | Local      | [[path]] | NULL                                                                 | ""                           | ""       | [[result]] | Error  | AN           |                     |
 
 
 	
