@@ -2885,7 +2885,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 580
 this.ScenarioSetup(scenarioInfo);
 #line 581
- testRunner.Given("A string to split with value \"[[rec([[var]]).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("A string to split with value \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 582
  testRunner.And(string.Format("assign to variable \'{0}\' split type \"Index\" at \'5\' and Include \'Selected\' and Esc" +
                         "ape \'\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -2893,38 +2893,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 584
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
-                        "String to Split",
-                        "Process Direction",
-                        "Skip blank rows",
-                        "#",
-                        "",
-                        "With",
-                        "Using",
-                        "Include",
-                        "Escape"});
-            table61.AddRow(new string[] {
-                        "[[rec([[var]]).set]] =  Null",
-                        "Forward",
-                        "No",
-                        "1",
-                        string.Format("{0}  =", variable),
-                        "Index",
-                        "5",
-                        "Yes",
-                        ""});
-#line 585
- testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table62.AddRow(new string[] {
-                        "",
-                        "Variable { var } is NULL."});
-#line 588
- testRunner.And("the debug output as", ((string)(null)), table62, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

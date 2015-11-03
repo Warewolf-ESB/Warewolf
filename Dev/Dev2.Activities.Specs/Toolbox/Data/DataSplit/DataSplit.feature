@@ -578,16 +578,10 @@ Examples:
 
 
 Scenario Outline: Debug output Validation errors x
-	Given A string to split with value "[[rec([[var]]).set]]"	
+	Given A string to split with value "[[rec(1).set]]"	
 	And assign to variable '<Variable>' split type "Index" at '5' and Include 'Selected' and Escape ''
 	When the data split tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| String to Split              | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	| [[rec([[var]]).set]] =  Null | Forward           | No              | 1 | <Variable>  = | Index | 5     | Yes     |        |
-	And the debug output as
-	| # |                           |
-	|   | Variable { var } is NULL. |
 Examples: 
 	 | No | Variable       |
 	 | 1  | [[rec().a]] |

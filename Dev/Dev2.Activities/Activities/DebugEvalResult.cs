@@ -58,7 +58,7 @@ namespace Dev2.Activities
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
                         _inputVariable = finalString;
-                        _evalResult = environment.Eval(finalString, update);
+                        _evalResult = environment.Eval(finalString, update,false);
                     }
                     else
                     {
@@ -76,7 +76,7 @@ namespace Dev2.Activities
                     {
                         _inputVariable = evalToExpression;
                     }
-                    _evalResult = environment.Eval(_inputVariable, update);
+                    _evalResult = environment.Eval(_inputVariable, update,false);
                 }
 
             }

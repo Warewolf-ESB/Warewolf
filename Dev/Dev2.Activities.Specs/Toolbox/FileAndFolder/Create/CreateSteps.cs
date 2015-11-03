@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Statements;
 using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
@@ -63,7 +64,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         public void CleanUpFiles()
         {
             ShutdownSftpServer();
-            RemovedFilesCreatedForTesting();
+            try
+            {
+                RemovedFilesCreatedForTesting();
+            }
+            catch(Exception)
+            {
+                
+              
+            }
+           
           
         }
     }
