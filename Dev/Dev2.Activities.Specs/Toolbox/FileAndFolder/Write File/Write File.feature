@@ -41,6 +41,21 @@ Scenario Outline: Write file at location
 		| Local with Overwrite       | [[path]] |                                                                 | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Error   | AN           |                      |
 
 
+Scenario Outline: Write file at location Null
+	Given I have a source path '<source>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'	
+	And Method is '<method>'
+	And input contents as '<content>'    
+	And use private public key for source is '<sourcePrivateKeyFile>' 
+	And result as '<resultVar>'
+    When the write file tool is executed
+	Then the execution has "<errorOccured>" error
+		Examples: 
+		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] | Error  | AN           |                      |
+
+
+
 Scenario: Write file with carriage returns
 	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
 	And source credentials as '' and ''	

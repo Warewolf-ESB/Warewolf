@@ -17,7 +17,7 @@ let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (update:int) (func
                         temp
     match buffer with
         | RecordSetExpression a ->   (evalRecordsSetExpressionUpdate a env update func) 
-        | ScalarExpression a ->  let data = env.Scalar.[a] |> func
+        | ScalarExpression a ->  let data = evalScalar a env |> func
                                  AssignEvaluation.EvalAssign (LanguageExpressionToString ( ScalarExpression a)) (data.ToString()) update env
         | WarewolfAtomAtomExpression a -> failwith "invalid convert"
         | RecordSetNameExpression x -> let data = env.RecordSets.[x.Name].Data

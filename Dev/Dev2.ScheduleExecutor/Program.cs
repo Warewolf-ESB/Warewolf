@@ -208,8 +208,8 @@ namespace Dev2.ScheduleExecutor
                 ID = Guid.NewGuid(),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,
-                ActivityType = ActivityType.Step,
-                StateType = StateType.End,
+                ActivityType = ActivityType.Workflow,
+                ExecutingUser = user,
                 Server = "localhost",
                 ServerID = Guid.Empty,
                 DisplayName = workflowName

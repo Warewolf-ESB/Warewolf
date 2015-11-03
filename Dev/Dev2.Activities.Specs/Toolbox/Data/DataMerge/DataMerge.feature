@@ -351,7 +351,7 @@ Scenario Outline: Merge a variable that does not exist
 	When the data merge tool is executed
 	Then the merged result is ""
 	And the execution has "AN" error
-	And the execution has "Variable { a } is NULL." error
+	And the execution has "Variable { rec } is NULL." error
 Examples: 
 	| No | Type     |
 	| 1  | None     |

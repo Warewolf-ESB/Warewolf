@@ -52,8 +52,24 @@ Scenario Outline: Zip file at location
 		| 24 | FTPS to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip4.txt          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/filetozip13.txt                               | dev2              | Q/ulw&]      | True     |                 | BestCompression | [[result]] | Success | NO           |                      |                           |
 		| 25 | SFTP to SFTP    | [[path]] | sftp://localhost/filetozip4.txt                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/filetozip14.txt                               | dev2              | Q/ulw&]      | True     |                 | None            | [[result]] | Success | NO           |                      |                           |
 		| 26 | SFTP to SFTP PK | [[path]] | sftp://localhost/filetozip41.txt                              | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/filetozip141.txt                              | dev2              | Q/ulw&]      | True     |                 | None            | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-		| 37 | Local to FTPS   | [[path]] |                                                               | ""                | ""       | [[path1]]   | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip20.txt          | integrationtester | I73573r0     | True     |                 | BestCompression | [[result]] | Error   | An           |                      |                           |
 
+Scenario Outline: Zip file at location Null
+	Given I have a source path '<source>' with value '<sourceLocation>'
+	And source credentials as '<username>' and '<password>' for zip tests
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+	And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And use private public key for source is '<sourcePrivateKeyFile>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
+	And result as '<resultVar>'	
+	And Archive Password as '<archivepassword>'
+	And the Compression as '<compression>'
+    When the Zip file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples: 
+		| No | Name          | source   | sourceLocation    | username | password | destination | destinationLocation | destUsername      | destPassword | selected | archivepassword | compression     | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		| 1  | Local to FTPS | [[path]] | NULL              | ""       | ""       | [[path1]]   | c:\filetozip0.txt   | integrationtester | I73573r0     | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
+		| 1  | Local to FTPS | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | Null                | integrationtester | I73573r0     | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 
 Scenario Outline: Zip file at location is compressed at ratio
 	Given I have a source path '<source>' with value '<sourceLocation>'
