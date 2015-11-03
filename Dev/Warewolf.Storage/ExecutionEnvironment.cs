@@ -303,6 +303,19 @@ namespace Warewolf.Storage
             return a.ToString();
         }
 
+        public static string WarewolfAtomToStringErrorIfNull(DataASTMutable.WarewolfAtom a)
+        {
+            if (a == null)
+            {
+                return "";
+            }
+            if(a.IsNothing)
+            {
+                throw new NullValueInVariableException("Variable is null","");
+            }
+            return a.ToString();
+        }
+
         public static bool IsRecordSetName(string a)
         {
             try
@@ -348,7 +361,7 @@ namespace Warewolf.Storage
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing) return null;
                 // ReSharper restore PossibleNullReferenceException
-                return WarewolfAtomToString(x);
+                return WarewolfAtomToStringErrorIfNull(x);
             }
                 throw new Exception("null when f# said it should not be");
             }
