@@ -700,14 +700,8 @@ Scenario: Convert a Variable That Does Not Exist
  
 
 Scenario: Convert a Variable that is null 
-	Given I have a convert variable "[[var]]" with a value of "Null"
-	And I convert a variable "[[var]]" from type "Text" to type "Binary" 
-	When the base conversion tool is executed
-	Then the execution has "NO" error
-
-Scenario: Convert a Variable that is null with text 
-	Given I have a convert variable "[[var]]" with a value of "[[a]] text"
+	Given I have a convert variable "[[var]]" with a value of "NULL"
 	And I convert a variable "[[var]]" from type "Text" to type "Binary" 
 	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the execution has "Scalar value { a } is NULL" error
+	And the execution has "Scalar value {[[var]]} is NULL" error

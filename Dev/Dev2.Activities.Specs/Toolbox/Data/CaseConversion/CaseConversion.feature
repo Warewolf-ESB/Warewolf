@@ -334,24 +334,16 @@ Examples:
 
 
 Scenario: Convert a Variable That Does Not Exist
-	Given I have a case convert variable "[[my(1).sentenct]]" with a value of "[[a]]"
-	And I convert a variable "[[my(1).sentenct]]" to "lower"		
+	Given I convert a variable "[[var]]" to "lower"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the execution has "invalid recordset" error
-
 
 Scenario: Convert a Variable That is NULL
-	Given I have a case convert variable "[[my(1).sentenct]]" with a value of "Null"
-	And I convert a variable "[[my(1).sentenct]]" to "lower"		
+	Given I have a case convert variable "[[var]]" with a value of "Null"
+	And I convert a variable "[[var]]" to "lower"		
 	When the case conversion tool is executed
 	Then the execution has "No" error
 
-Scenario: Convert a Variable that is null with text
-	Given I have a case convert variable "[[my(1).sentenct]]" with a value of "[[a]] TEXT"
-	And I convert a variable "[[my(1).sentenct]]" to "lower"		
-	When the case conversion tool is executed
-	Then the execution has "AN" error
-	And the execution has "Scalar value { a } is NULL" error
+
 
 
