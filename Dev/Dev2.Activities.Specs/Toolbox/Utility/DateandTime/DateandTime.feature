@@ -266,3 +266,12 @@ Scenario: Date and Time output format without inputs must return correct format
        Then the datetime result should contain milliseconds
        And the execution has "NO" error
 
+Scenario: Date and Time output format with NULL inputs 
+       Given I have a variable "[[a]]" with value "NULL"
+	   And I have a date "[[a]]" 
+       And the input format as "dd-MM-yy"
+       And the output format as "dd-MM-yy"
+	  And I selected Add time as "Years" with a value of 0
+       When the datetime tool is executed
+       Then the execution has "An" error
+

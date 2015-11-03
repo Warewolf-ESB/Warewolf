@@ -300,3 +300,20 @@ Scenario: Generate a Number between double min and double max with no decimals
 	And the debug output as 
 	|                     |
 	| [[result]] = Double |
+
+
+Scenario: Generate a Number using a null variable
+	Given  I have a formatnumber variable "[[int]]" equal to NULL
+	And I have a type as "Numbers"
+	And I have a range from "[[int]]" to "170000000000000" 
+	When the random tool is executed 
+	Then the execution has "An" error
+	And the debug inputs as  
+	| Random  | From  | To              |
+	| Numbers | [[a]] | 170000000000000 |
+	And the debug output as 
+	|                                                         |
+	| [[result]] = The Expression [[a]] has no value assigned |
+
+
+
