@@ -1,5 +1,5 @@
 
-<Service ID="eaa3baad-e375-4875-9404-fd165626022d" Version="1.0" Name="Big Bulk Testing - Select and Truncate" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Service ID="eaa3baad-e375-4875-9404-fd165626022d" Version="1.0" Name="Big Bulk Testing - Select and Truncate" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.20583">
   <Actions>
     <Action Name="dbo_SelectAndTruncateBulkInsert" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.SelectAndTruncateBulkInsert">
       <Inputs />
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>UVAUYRo4vRPcKaY1hEHINPvXnOM=</DigestValue>
+        <DigestValue>wMpRnGJ0c/np286TvwlMsbfw5XY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>LUyXgeNq/caBzFXsdZPasekaYlKV3EpHzCxTSlCWKLAaTnJ2sdlx5jSBZjIA9pMm+J+Fn78R1lb3xeycehsm1+K8X24rXQvmxAQqfvBx4+IVOsNTD9JIQD347PwjWpCeCIwTX0lMKP3+gq5EDTs683OxA8wu2c11J9APxwIdRsw=</SignatureValue>
+    <SignatureValue>UhONyZxBuNntP+EkOA9Rd0qs79xySeV9rSkjrnqRoqSkLdBMlykdmpKDkWr2kj74yJM2NYL4rLSUfVYe0iH3J41QrcYNPh50iyyRaQn42EhmwL8ukm3/mnXZg9QxaA8zFKcFxSb0zos6314DiaexEg4curYyHKj/V9RtqGHYnTw=</SignatureValue>
   </Signature>
 </Service>

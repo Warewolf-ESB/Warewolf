@@ -1,5 +1,5 @@
 
-<Service ID="e5316bcc-3662-4015-8654-e2eeee727b06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="e5316bcc-3662-4015-8654-e2eeee727b06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
   <DisplayName>11536_FireForget</DisplayName>
   <Category>Acceptance Testing Resources\11536_FireForget</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>e9njX9CysUaMO7r4b+KyxPdziPg=</DigestValue>
+        <DigestValue>P72XqHtr9k69VbaY1L64XA8Mj6U=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>gn9kJllUKniLsn1stDXUaohCP+TinaCS1Ow7gy9eOKuIHG2nqXQ0m7CTsDJS9aCqPaCTsnwrPK/twCAjzZXTFvjjo2IEMyzbSaWCV8VUcrTU6UuSCMYSQ8tK9IKxrELOxz6fpks/Cr6ys3ttPcSJZdwcutMOn6vklbrYv4jAPb0=</SignatureValue>
+    <SignatureValue>jwuGlIPupFWZ5/hi9dTVfbpPX0k2Ka4xtnaEhQhL8AEzE83eqB24yZbBx7riEJbT72/VA8RXgrC9Mfiu5VFYhaAWkD30cRmvpgi5Nd7AeofPQD9U0AAS1DNrF7vDlTi8Jo+faSThyNqmWWKw/4IZZ0sC+uXDrR0MTUZJF/Wr7BM=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="03a766bb-19b8-46f6-9010-1e160bbcf3de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Foreach Execution Type Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="03a766bb-19b8-46f6-9010-1e160bbcf3de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Foreach Execution Type Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
   <DisplayName>Inner Foreach Execution Type Test</DisplayName>
   <Category>Acceptance Testing Resources\Inner Foreach Execution Type Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -237,9 +237,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>GjLFGRVG0yCEqF6FOkgvTpgFIrA=</DigestValue>
+        <DigestValue>27MNomxXS6miUMlrc8spG+SO+pM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>XqV+dk3FdGXy846D4l3s32Izd+A7FW2DoQYfbArVD9QUP8z23ZVGjqCU1nOobP/v5rO64BLkrV1eXcG25ZS9/BsLz8qQbMAjA3bdSoTbLNCeziu3NfygOMZA/9gzvM4y2GRz1pUg75UUT9K63pDjaBU+gKjaSImQms04zOsG8HM=</SignatureValue>
+    <SignatureValue>MqhNSIrZV52O4oqnpmlXMmcVPrLYQGmaXmoEiqKEGGyBEpgx3Q2fSoGyPj/aqMAhzbQIYcvJjaH0CDVT8FmtjVpf7wnH4DpVFWTaY9/Dl3urxpivIYenPtIlw4wJ15NdoPVGT35VzFbC+1Tuv0Nr+MSH8SB93SC/SwGOQfC6qz8=</SignatureValue>
   </Signature>
 </Service>

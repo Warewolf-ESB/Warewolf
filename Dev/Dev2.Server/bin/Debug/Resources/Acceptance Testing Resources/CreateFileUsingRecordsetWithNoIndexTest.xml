@@ -1,5 +1,5 @@
 
-<Service ID="7f3f8abf-2163-4e5d-9ec2-c9e4730262a2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingRecordsetWithNoIndexTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="7f3f8abf-2163-4e5d-9ec2-c9e4730262a2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingRecordsetWithNoIndexTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5785.20583">
   <DisplayName>CreateFileUsingRecordsetWithNoIndexTest</DisplayName>
   <Category>Acceptance Testing Resources\CreateFileUsingRecordsetWithNoIndexTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>rasp2wv5LI3Oce45gT+UUKv6Go4=</DigestValue>
+        <DigestValue>GE1cK7clzCuAL6puqEcDzQ57t04=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>FxM+GueFmCsAbKD02QjytMQuVwFVkpMYNQp0HE/saqlLQhgcvfZ53vkZTQZImgBfZt9pO00H61tccpXPlKk9efkiT41R22qoTVER2m2s2yVdv4n6nbLdQmieaKCyRGYNn0WTc040hehJi+Cn4OSyA3Ed7ghQ2Jv+DaTx2LcAAuE=</SignatureValue>
+    <SignatureValue>NwvVvxbcexuGegIN0c2CiXVajoKOLJalwubIxasp0avg14eYm8nw7/yRbltkqvxe3DuDHyWQm3MBnycN+nxZ9WytHgy9wUjLuAbFqoLE2tKT7y090Bj6h5TR9owSIlXncwiSAkpmH5pPiyAIzqSsTvKvka9nJ4tlAS9eK6unx5E=</SignatureValue>
   </Signature>
 </Service>

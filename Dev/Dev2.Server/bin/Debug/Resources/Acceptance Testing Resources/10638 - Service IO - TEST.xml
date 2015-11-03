@@ -1,5 +1,5 @@
 
-<Service ID="63d4e615-6675-4f39-955f-88ca0220677d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="10638 - Service IO - TEST" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="63d4e615-6675-4f39-955f-88ca0220677d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="10638 - Service IO - TEST" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
   <DisplayName>10638 - Service IO - TEST</DisplayName>
   <Category>Acceptance Testing Resources\10638 - Service IO - TEST</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Tc1xOEyphZ6PwzTU11pdKPjZarI=</DigestValue>
+        <DigestValue>c6bgZkT9+tKHn/01gVIdJQKfOJY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Ag7aoShIHkw2+sXb4e//1BtdIcovQA1aNFSAywb+184cIYWquZKqLgUhr95skYhjqmPLQr0lf83dR60brr3/vrqDYkMCYNty6ZnF6uI2PE4MOujMuXmjr6RcXlOPwvFYmThRWGtWM/BB4HS31ViI93qRU59Z4IYrOq55jiWt0e8=</SignatureValue>
+    <SignatureValue>F17uaIGK3IqKpE4GEzEeqeM1j1bqy4To0O0aihWFR3MoSp/ji7FgibsKBBY1wQS8a9qyDVwga9EzMiewiNLYFZvtP4acyNXuawtKJJ5M4UX03qPFgOD35wqIX3IdO4A84cYwnT1lMg7rMiIxFZoLAIBsat5DbsPE8uJIuqhvzm8=</SignatureValue>
   </Signature>
 </Service>

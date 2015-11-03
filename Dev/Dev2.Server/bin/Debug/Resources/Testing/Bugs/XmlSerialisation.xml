@@ -1,5 +1,5 @@
 
-<Service ID="995e4561-3339-45a7-a289-f022ec18784e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XmlSerialisation" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5781.19507">
+<Service ID="995e4561-3339-45a7-a289-f022ec18784e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XmlSerialisation" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
   <DisplayName>XmlSerialisation</DisplayName>
   <Category>Testing\Bugs\XmlSerialisation</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>RmCO+ak2Bmd/FnbfsuR7Gm3pS48=</DigestValue>
+        <DigestValue>Z4R8ny12wTe5QHPPkmPokRQG6Xs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ceOEXUIxqbc/7uNF4NuOLAXwf3kZ57ripXyCDUPKGmRZkOs36BHZhl16W+nVAn6rEymYA225MVmRifZhX5jvYLiDL28IuHCnDH7sPu3jjaE6VVuei8H1cslka41BUJp2Kg9yIlrHCBAkZyaH5ZaEi/YwjA7SM+z7k6RJ2Zf8B1w=</SignatureValue>
+    <SignatureValue>vFi4GiDG6GolvPk9qRG0Qfml2Fpp7WRgse6pM17j9Zfiwp8re2fDzouXaJHbGbSNyWVo1f/btxgG7mgz9rw4dSHDrIPpyHTXNp6oEZXXtvKMg9uyQeuoPhnr9SqIPlWdB0ahFfTJ+6CuBV0OrSNY9T3ayET2OP4YNdeJ7MjOuTs=</SignatureValue>
   </Signature>
 </Service>

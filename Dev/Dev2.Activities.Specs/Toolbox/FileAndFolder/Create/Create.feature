@@ -29,9 +29,21 @@ Scenario Outline: Create file at location
 		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                     | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
-		| 1  | Local      | [[path]]    | NULL                                                           | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 
 
+Scenario Outline: Create file at location Nulls
+	Given I have a destination path '<destination>' with value '<destinationLocation>'
+	And overwrite is '<selected>'
+	And destination credentials as '<username>' and '<password>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
+	And result as '<resultVar>'
+	When the create file tool is executed
+	Then the execution has "<errorOccured>" error
+
+	Examples: 
+		| No | Name  | destination | destinationLocation | selected | username | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local | [[path]]    |                     | True     |          |          | [[result]] | Success | AN          |                           |
+	
 
 	
 #Scenario Outline: Create File at location1

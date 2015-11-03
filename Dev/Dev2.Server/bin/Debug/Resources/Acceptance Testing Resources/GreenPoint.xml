@@ -1,5 +1,5 @@
 
-<Source ID="a69a23ca-5d4e-43e3-bb86-d7a1db54fba4" Version="1.0" Name="GreenPoint" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAD9XUehy0yYrzwJkQXpdIVtAAAAAASAAACgAAAAEAAAACQdp+2xmyldei/KHjNUQRbAAAAAK8tnWAAjnmiuUgoQxQJxhYzyJMR8qp/SMHIYHo72B8FOTRchdnrHrjZhm+nFtkPGgFlsiKDlpNb7dyRpJkiuaBmhxDcOF3UWdZebDB8Me4ps0Y0OC66oCzrVcqDm57VLByu0BmBG9nemN87iM3AKjbLYZkJ4v5gE8hE/y6R2/6K0Ci7+lRYcJF3wriMepytjGZcDNoJIJQLefTod5UaPX//kegRMuWrF6bA5t0RnA2AAqmgaBHSIwIeZL7gxMoXVFAAAAOuK2aF6Sh5h5xwfskN5Nz7ehMaq" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Source ID="a69a23ca-5d4e-43e3-bb86-d7a1db54fba4" Version="1.0" Name="GreenPoint" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAD9XUehy0yYrzwJkQXpdIVtAAAAAASAAACgAAAAEAAAACQdp+2xmyldei/KHjNUQRbAAAAAK8tnWAAjnmiuUgoQxQJxhYzyJMR8qp/SMHIYHo72B8FOTRchdnrHrjZhm+nFtkPGgFlsiKDlpNb7dyRpJkiuaBmhxDcOF3UWdZebDB8Me4ps0Y0OC66oCzrVcqDm57VLByu0BmBG9nemN87iM3AKjbLYZkJ4v5gE8hE/y6R2/6K0Ci7+lRYcJF3wriMepytjGZcDNoJIJQLefTod5UaPX//kegRMuWrF6bA5t0RnA2AAqmgaBHSIwIeZL7gxMoXVFAAAAOuK2aF6Sh5h5xwfskN5Nz7ehMaq" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.20583">
   <DisplayName>GreenPoint</DisplayName>
   <Category>Acceptance Testing Resources\GreenPoint</Category>
   <AuthorRoles>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>7FQZMcpGtZGQSrDiB2dfrsMYbfs=</DigestValue>
+        <DigestValue>QOBrs0S7okoKsIW6FmJ8iBCQCYU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>uoR2UVdGLUt5y0q2vrREuKo58rjj9SbQyIy8WUghJJqfWsaUKGIR6t68TlYmiLm2ITG4FlQLRLG1YWBM+zyWNJD9Tz9SCh6clRJSCYojqdIa6zzweNOx+xGdP2elcMqbO63yDhbwrSdy7pN6MN6nViw5FRicSEB9JIu1byTTVsI=</SignatureValue>
+    <SignatureValue>UG9JN2+KWHCYM8A4ii8FrUKuQ4r6tXTCDCKgn6dnQe7hLrS6JN8hh7zX3Lrk+WCumAT6O7xhiwWTPnnZBlUWV1Gu02iBuQc1DAGE40CaY3CoY32o4Mscbp03e6yAdOnuVToMO7/WXd/0SycgaSjQe3y3UoDZew+2J5AZoZtQ7gA=</SignatureValue>
   </Signature>
 </Source>

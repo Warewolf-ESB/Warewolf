@@ -11,7 +11,7 @@ namespace Warewolf.Storage
 
     public interface IExecutionEnvironment
     {
-        WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp,int update);
+        WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp,int update,bool throwsifnotexists=true);
 
         WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp, int update);
         void Assign(string exp, string value, int update);
@@ -82,12 +82,9 @@ namespace Warewolf.Storage
             AllErrors = new HashSet<string>(); 
         }
 
-        public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp, int update)
+        public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp, int update,bool throwsifnotexists = false)
         {
-            if (string.IsNullOrEmpty(exp))
-            {
-                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
-            }
+      
             try
             {
                 return PublicFunctions.EvalEnvExpression(exp,update, _env);
@@ -98,7 +95,7 @@ namespace Warewolf.Storage
             }
             catch (Exception e)
             {
-                if (e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
+                if (throwsifnotexists||e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
                 return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 

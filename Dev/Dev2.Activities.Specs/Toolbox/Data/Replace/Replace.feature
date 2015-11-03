@@ -125,18 +125,17 @@ Scenario Outline: Replace when the recordset is numeric
 	And I want to find the characters "<characters>"
 	And I want to replace them with "<replacement>"
 	When the replace tool is executed
-	Then the replace result should be "<count>"
-	And "<var>" should be "<result>"
-	And the execution has "NO" error
+	Then the execution has "<error>" error
 Examples: 
-| No | var           | value    | characters                                            | replacement                                           | count | result                  |
-| 1  | [[a]]         | 54575    | 5                                                     | 2                                                     | 3     | 24272                   |
-| 2  | [[b]]         |          | 2                                                     | 5                                                     | 0     | Variable { b } is NULL. |
-| 3  | [[rs(1).set]] | Warewolf | rs(2).set="w"                                         | [[rs(3).set]]="m"                                     | 2     | rs(1).set = "maremolf"  |
-| 4  | [[c]]         | hello    | [[rec().set]]="h"                                     | [[rs().set]]="h"                                      | 1     | Hello                   |
-| 5  | [[rs(1).set]] | Warewolf | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | rs().set="h"                                          | 1     | Wahewolf                |
-| 6  | [[rs(1).set]] | Warewolf | [[rs(2).set]] = "w"                                   | [[rs([[a]]).set]] {[[a]]= 3} = "m"                    | 2     | maremolf                |
-| 7  | [[rs(1).set]] | Warewolf | rs().set="h"                                          | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | 1     | Wahewolf                |
+| No | var   | value | characters | replacement | count | error                      |
+| 1  | [[b]] | Null  | 2          | 5           | 0     | No                         |
+| 2  | [[b]] |       | 2          | 5           | 0     | Scalar value { b } is NULL |
+#| 2  | [[rs(1).set]] | Warewolf | rs(2).set="w"                                         | [[rs(3).set]]="m"                                     | 2     | rs(1).set = "maremolf"  |
+#| 3  | [[c]]         | hello    | [[rec().set]]="h"                                     | [[rs().set]]="h"                                      | 1     | Hello                   |
+#| 4  | [[rs(1).set]] | Warewolf | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | rs().set="h"                                          | 1     | Wahewolf                |
+#| 5  | [[rs(1).set]] | Warewolf | [[rs(2).set]] = "w"                                   | [[rs([[a]]).set]] {[[a]]= 3} = "m"                    | 2     | maremolf                |
+#| 6  | [[rs(1).set]] | Warewolf | rs().set="h"                                          | [[rec(*).set]] ={ rec(1).set = "r",rec(2).set = "t" } | 1     | Wahewolf                |
+#| 7  | [[a]]         | 54575    | 5                                                     | 2                                                     | 3     | 24272                   |
 
 
 
