@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Unique")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Recordset.Unique.UniqueFeature.FeatureSetup(null);
             }
         }
         
@@ -750,6 +750,55 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
 #line 221
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Unique record tool with NULL recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unique")]
+        public virtual void ExecutingUniqueRecordToolWithNULLRecordset()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Unique record tool with NULL recordset", ((string[])(null)));
+#line 225
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "val"});
+            table39.AddRow(new string[] {
+                        "rs().row",
+                        "NULL"});
+#line 226
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table39, "Given ");
+#line 229
+ testRunner.And("I want to find unique in field \"\" with the return field \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+ testRunner.And("The result variable is \"[[rs().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 231
+ testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 232
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "In Field(s)",
+                        "Return Fields"});
+            table40.AddRow(new string[] {
+                        "1",
+                        "[[rs(*).row]]",
+                        "[[rs().val]]"});
+#line 233
+ testRunner.And("the debug inputs as", ((string)(null)), table40, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Result"});
+            table41.AddRow(new string[] {
+                        "",
+                        "The Given key was not present in the dictionary"});
+#line 236
+ testRunner.And("the debug output as", ((string)(null)), table41, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
