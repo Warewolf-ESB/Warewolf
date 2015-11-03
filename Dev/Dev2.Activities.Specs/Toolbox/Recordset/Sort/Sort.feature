@@ -279,13 +279,18 @@ Scenario: Sort Recordset without field Forwards
 Scenario: Sort Null Recordset
 	Given I have the following recordset to sort
 	| rs     | value |
-	| rs().a | NULL  |
-	And I sort a record "[[rs(*)]]"
+	| [[rs().a]] | NULL  |
+	And I sort a record "[[rs(*).a]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the execution has "AN" error
+	Then the execution has "No" error
 
 
+	Scenario: Sort non existent Recordset
+	Given I sort a record "[[rs(*)]]"
+	And my sort order is "Backwards"
+	When the sort records tool is executed
+	Then the execution has "An" error
 
 
 

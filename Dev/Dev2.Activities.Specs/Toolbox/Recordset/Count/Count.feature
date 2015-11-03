@@ -51,29 +51,21 @@ Scenario: Count a number of records in a recordset with 8 rows
 	|                 |
 	| [[result]] = 8 |
 
-Scenario: Count a number of records in a recordset with 0 rows
+
+
+Scenario: Count a number of records in a empty recordset
 	Given I have a recordset with this shape
-	| rs      |
+	| rs ||
+	| [[rs().row]] | NULL |
 	And count on record "[[rs()]]"	
 	When the count tool is executed
 	Then the result count should be 0
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Recordset  |
-	| [[rs(*)]] = |
-	And the debug output as 
-	|                |
-	| [[result]] = 0 |
-
+	And the execution has "No" error
 
 Scenario: Count a number of records in a unassigned recordset
-	Given I have a recordset with this shape
-	| rs().a |
-	| NULL   |
-	And count on record "[[rs().a]]"	
+	Given count on record "[[rs()]]"	
 	When the count tool is executed
-	Then the result count should be 0
-	And the execution has "AN" error
+	Then the execution has "An" error
 
 
 #Below 3 scenarios should be passed after the bug 12136 is fixed.

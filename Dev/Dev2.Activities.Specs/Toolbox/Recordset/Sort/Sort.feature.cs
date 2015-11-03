@@ -760,18 +760,38 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table28.AddRow(new string[] {
-                        "rs().a",
+                        "[[rs().a]]",
                         "NULL"});
 #line 280
  testRunner.Given("I have the following recordset to sort", ((string)(null)), table28, "Given ");
 #line 283
- testRunner.And("I sort a record \"[[rs(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I sort a record \"[[rs(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 284
  testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 285
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 286
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort non existent Recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void SortNonExistentRecordset()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort non existent Recordset", ((string[])(null)));
+#line 289
+ this.ScenarioSetup(scenarioInfo);
+#line 290
+ testRunner.Given("I sort a record \"[[rs(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 291
+ testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 292
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 293
+ testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
