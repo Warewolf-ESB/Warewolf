@@ -183,7 +183,7 @@ and  LanguageExpressionToStringWithoutStuff  (x:LanguageExpression) =
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        raise (new Dev2.Common.Common.NullValueInVariableException((sprintf "Recordset does not exist %s" (recset.Index.ToString()) ),recset.Name))
+        raise (new Dev2.Common.Common.NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name) ),recset.Name))
             
     else
             match recset.Index with

@@ -300,7 +300,7 @@ namespace Warewolf.Storage
             {
                 return "";
             }
-            return PublicFunctions.AtomtoString(a);
+            return a.ToString();
         }
 
         public static bool IsRecordSetName(string a)
