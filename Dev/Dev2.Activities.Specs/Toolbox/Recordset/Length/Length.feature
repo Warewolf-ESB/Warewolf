@@ -147,7 +147,14 @@ Scenario: Recordset length for invalid recordset
 	And the debug output as 
 	|                |
 
-
+Scenario: Length of an unassigned recordset
+	Given I get  the length from a recordset that looks like with this shape
+	| rs().a |
+	| NULL   |
+	And get length on record "[[rs()]]"	
+	When the length tool is executed
+	Then the length result should be 0
+	And the execution has "AN" error
 
 
 

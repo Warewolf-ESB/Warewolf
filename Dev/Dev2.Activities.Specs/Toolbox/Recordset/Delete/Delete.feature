@@ -163,7 +163,7 @@ Scenario: Delete a record an empty recordset
 	| Records          |
 	| [[rs()]]  = |
 	And the debug output as  
-	|              |
+	|                      |
 	| [[result]] = Failure |
 
 Scenario: Delete a scalar insted of a recordset

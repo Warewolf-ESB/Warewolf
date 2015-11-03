@@ -64,6 +64,18 @@ Scenario: Count a number of records in a recordset with 0 rows
 	And the debug output as 
 	|                |
 	| [[result]] = 0 |
+
+
+Scenario: Count a number of records in a unassigned recordset
+	Given I have a recordset with this shape
+	| rs().a |
+	| NULL   |
+	And count on record "[[rs().a]]"	
+	When the count tool is executed
+	Then the result count should be 0
+	And the execution has "AN" error
+
+
 #Below 3 scenarios should be passed after the bug 12136 is fixed.
 #This 3 scenarios are getting passed but error is not actually generating in studio and in browser too,
 # please investigate why this specs are getting passed without the functionality is not coming right
