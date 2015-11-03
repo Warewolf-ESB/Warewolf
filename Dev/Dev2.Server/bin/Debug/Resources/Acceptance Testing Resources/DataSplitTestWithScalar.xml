@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestWithScalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="79ef45e5-39ff-4b5f-920f-662d2027733f" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service Name="DataSplitTestWithScalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="79ef45e5-39ff-4b5f-920f-662d2027733f" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5785.21908">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestWithScalar" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -114,9 +114,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Bjyvkfd0QFX71eg37+26/AaJHbE=</DigestValue>
+        <DigestValue>HEQS0V3ZrLBumQ787G2nULJdkI8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>jf9TVuyspUWR+kvC0oPsfFUElEDk3TxfrQiGACVKWErAyPjfXxb67Uwg5k/9Y3DFIXn/yAtrVBQMK8mH1bx7pmzQrulK8tmqQLVQZKAdl88qh8h9eDZOI57LJIcWtZq1gQeM7lVS4KlvfvO8zwPKn4Zt46kd89GI8Iospep/w9Q=</SignatureValue>
+    <SignatureValue>lpXV2CT6kCsSiK6TICMexSEZ7vC6AlpN551H8GOEHmmLdfip4xXeqKK3n9QhOCd+bzOogJ4OkryGle/C3wptEF+5IX1vZYOEvcJQEtRnq8PtCm9mIGjs2+G2xfVlRA6o6x29p5TLcR/VrvhsUNbQEq25iL4xdb77W5lBo8kwbI8=</SignatureValue>
   </Signature>
 </Service>

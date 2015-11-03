@@ -1,5 +1,5 @@
 
-<Service ID="221b40e1-cc26-419d-ad8e-52db2711634e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ZipFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="221b40e1-cc26-419d-ad8e-52db2711634e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ZipFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5785.21908">
   <DisplayName>ZipFolderOnFileSystemTest</DisplayName>
   <Category>Acceptance Testing Resources\ZipFolderOnFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>rx4qE7Z7hoodwIKm3n5Pbp3pCaU=</DigestValue>
+        <DigestValue>LEkXfkDqseLGEV21ANZpGPYKpwY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YhM/l+dMy8cAD+niKe0FifVMTHVu2/eZtniBuhJhaAAT3aV3pFNZAv9dgD0OPvRs3a4KCRY1UyORBXp7d26+0zOdfkj4v2bI/rDalIJOfdYjNShReMm5eeJ1OJ5oyefx+BdI286OnvwoBbzHZ70ZW9QItdGrXRtU9uUCfLEBHK0=</SignatureValue>
+    <SignatureValue>MfRtb61rD2cIzyf4zQ4UvMP5FknfGBaRtA0RbhxXw8O9+qa30lrEEzLQJBW8rzwjw/ZH9HOffJoxr8gy+qc90kyK2x86zYZjgNun/vUax9AkgeYfOQimTsDRJYRy9k5xy41U0lRIDrH8OFDhd2E9jUmsh0VtUzSwca0FTYpXt0A=</SignatureValue>
   </Signature>
 </Service>

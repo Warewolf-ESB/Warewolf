@@ -1,5 +1,5 @@
 
-<Service ID="6263dcd5-68cf-4a4c-a966-3b2d2399f74b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FolderReadUsingScalar" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service ID="6263dcd5-68cf-4a4c-a966-3b2d2399f74b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FolderReadUsingScalar" ResourceType="WorkflowService" ServerVersion="0.0.5785.21908">
   <DisplayName>FolderReadUsingScalar</DisplayName>
   <Category>Acceptance Testing Resources\FolderReadUsingScalar</Category>
   <AuthorRoles>
@@ -107,9 +107,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>7L1s249wetDyLv54cY84pNYiKvg=</DigestValue>
+        <DigestValue>lfHU0sYChF4Oo+FwYVpV/2uJLs4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>GiiROEYJa0c0W/T0z7vBMNe1uc3fyTymG65S8Gt8YMN/tkukqP0gCWD07ksMMmiK2BDF6144ht04jR3/GKtYzTTdS+MSo+6vCMpYOP4VZeoDgtRc3PQ9VWLUMY4bL63DGFDzzTvtusm+6s8XEuCzy/rWkT/eR04Rd35IDiCMx5Y=</SignatureValue>
+    <SignatureValue>sVkV6t25IWMTv2mGadaYUxZ1+2r0d2U6d8FWeclRsJ1zWAUKwnL7jfYm9dj/8PtKKV3Mg0ImL0zs35W/fqWDsChFso4K/3KCK++JHszFziAc8qz61cUiH2XD0j71Vkryts0kLlWbY0eupb9qKcZbs2yNVeR5hCXSdE4rLvpEsQk=</SignatureValue>
   </Signature>
 </Service>

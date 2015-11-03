@@ -1,5 +1,5 @@
 
-<Service ID="8c574370-e61e-4e9f-b770-957118c84d00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebGetRequest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="8c574370-e61e-4e9f-b770-957118c84d00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebGetRequest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.21908">
   <DisplayName>WebGetRequest</DisplayName>
   <Category>Acceptance Testing Resources\WebGetRequest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>cl85vHxz3pxtspc3vytanCAt94s=</DigestValue>
+        <DigestValue>HnJCi8NAVpk9Z0zQLte++WVy7Ow=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>sdTSqugzvMPqtQ6jfeCqIOH5znSeGJOK/ZyCLDrDE0lfP2FNTEbPlD0a0MdffcozRLPZdYDx1oQ+mY4hAvjmHfNplHIcurDZGUsbV8odHMVK3nHbrYD6d4JRcCAnihfFFR6IH5V50ZKqoXg9jQtztQ43FKIoZZEHwwB/JQ9AMR8=</SignatureValue>
+    <SignatureValue>Zc7epwEuOfVJiUD0N9g8QUVs5UxWhHF1JDezvy5l6f+bPfdx0vSZnLBzBJmdylxQAzQ/e262wQ/Cy2VoRDB7Y8sBntkUhupSHyDWNsCoQeKuLN/28VEK+cmEB9mdbqTpXiJtQIDfNkJp9dKb5GCePstfMyPr6KOkzKMa35Y6/vU=</SignatureValue>
   </Signature>
 </Service>

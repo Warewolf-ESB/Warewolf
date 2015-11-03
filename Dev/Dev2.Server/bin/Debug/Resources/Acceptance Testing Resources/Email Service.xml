@@ -1,5 +1,5 @@
 
-<Service ID="72536234-b49a-4ac8-9c16-c9b1c7d202c3" Version="1.0" Name="Email Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Service ID="72536234-b49a-4ac8-9c16-c9b1c7d202c3" Version="1.0" Name="Email Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.21908">
   <Actions>
     <Action Name="Email Service" Type="Plugin" SourceID="2a7a78af-826f-4334-a402-b35e910295c9" SourceName="Email Plugin" SourceMethod="Send" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -56,9 +56,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>hAiWp5JnCX6P7gG0xy6k+9rSydw=</DigestValue>
+        <DigestValue>hohQoDXbbM4rxhoZqt9LXgM0wJw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>O/+CiGsV97A1cYr/3KPZD5MBhj4lsQMFXhHN6isVvSrzKv4tQ+6KlaN2FeTX1i5cLP3Ldj20wgOr0KnWYHKEZ0SBVukaTkAEfhF9l3qac6xhYd17DTYhkNwbPmnT2XYMXK1j+OO4Am/7NiCR8g0FCnGy/2wvd9TwYRGoSuieS3I=</SignatureValue>
+    <SignatureValue>BTVa/sflcdWUN8DnU5i+pLxm9OFMtzoIyW3l2SB/qLMjUJv+42f1oMgVK1lXM903DuhbWY+0hCk+gGoNiPAqzrLJ9msomeOC69zzNEHHhoZksnA6EuKFk/GD/27tHi9u4qPzM3yZSgAwigt3TxYW/BWy/8SUUs79Y/DCd7wljuc=</SignatureValue>
   </Signature>
 </Service>

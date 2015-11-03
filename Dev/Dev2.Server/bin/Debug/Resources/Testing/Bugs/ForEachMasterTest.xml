@@ -1,5 +1,5 @@
 
-<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5781.19507">
+<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.21908">
   <DisplayName>ForEachMasterTest</DisplayName>
   <Category>Testing\Bugs\ForEachMasterTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ojZoggVb0uGHYqDfxEtEVOKlbVc=</DigestValue>
+        <DigestValue>sSKsFidsRh3DNMR0NsjzX2I27xE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>N+VjNij5J4ZSgWkSAHpjA/z12N7uPBHLhheA4w4ezCCk9e69GNua8ds03u07uN3RsLg2J7Hg7n4TGXCko7zz79ShQSQuZBG5RabdNt3Bg6J7XhVfIo6CPkD2h4sRZiVdii27eu2m34InRPFLnYOCYpAyeJ43eCoDUHpuuxNx/oE=</SignatureValue>
+    <SignatureValue>cfZ1l8ktIFHAaXezALalLKg484JdV9n0bsQbt+BZEmOL+XTce6VIjYr/8NU4ATsuQ0VgY6AzPL5JWLl76wxEZ9roym9KoaTwZ5caEAYIBByueTjK+WOf/IiQBUtb55vvCnmfp7MLU6mxXvc2Ikq3adWrN8q/gMi0QWqG6CYV4a0=</SignatureValue>
   </Signature>
 </Service>

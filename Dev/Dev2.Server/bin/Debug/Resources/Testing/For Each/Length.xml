@@ -1,5 +1,5 @@
 
-<Service ID="faa752a0-4cdc-493f-8e93-0fc032829864" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Length" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="faa752a0-4cdc-493f-8e93-0fc032829864" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Length" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.21908">
   <DisplayName>Length</DisplayName>
   <Category>Testing\For Each\Length</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>h6ReMkM7Be3ySM/tvSK/wkupIfI=</DigestValue>
+        <DigestValue>AuTNehSmNBHFM32ua8RC45cHuZY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>f2+5r2/xfaBOEx4lRgve9uYbOBNNSFvO3ubnor9YPKgWDLXfAu11g+WWSWWk8PjSARaeTakT4WgQ+tsQ59+0kj68Iu8qu2RDl1k3LbYoRZfNlZ0S6L74oUjRwsPOXJXMCP6h6MR/qo5xvIyX5tmkRYppVq3Ox3YmE4u2JNtv7h4=</SignatureValue>
+    <SignatureValue>FJqk2avMpQl0tBdUAxn9ZdjYCx9wFPhtbmhATqVy/Z6MVi0lIGXvI9vcpL5sNdbLR6fMmrn+RmksnFTEpQt24hMpmVjiuw7/yPp2594hJ/TNL7xytP7VgWvJ600XZ0UNSlzQotc4+tMEaiaPUI08BZ+VBUUjdcdxRx4v/svc8Xk=</SignatureValue>
   </Signature>
 </Service>
