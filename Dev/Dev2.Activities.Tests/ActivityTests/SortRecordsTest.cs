@@ -367,24 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(SortField, dsfForEachItems[0].Name);
             Assert.AreEqual(SortField, dsfForEachItems[0].Value);
         }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfSortRecordsActivity_Execute")]
-        public void DsfSortRecordsActivity_Execute_GetDebugInputs_ExpectCorrectInputs()
-        {
-            DsfSortRecordsActivity act = SetupArgumentsReturnObj(
-                            TestData = ActivityStrings.SortDataList_Shape
-                          , TestData = ActivityStrings.SortDataList
-                          , "[[recset().DoesntExisit]]"
-                          , "Forward"
-                          );
-
-            TestData = ActivityStrings.SortDataList;
-            IDSFDataObject result = ExecuteProcess(isDebug:true);
-            var debug = act.GetDebugInputs(null, 0);
-            Assert.AreEqual(debug.Count,2);
-            // remove test datalist ;)
-        }
+ 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfSortRecordsActivity_Execute")]
