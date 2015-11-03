@@ -13,9 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Versioning;
@@ -31,10 +29,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : IEsbManagementEndpoint
     {
-        const string PayloadStart = "<XamlDefinition>";
-        const string PayloadEnd = "</XamlDefinition>";
-        const string AltPayloadStart = "<Actions>";
-        const string AltPayloadEnd = "</Actions>";
         #region Implementation of ISpookyLoadable<string>
         private IServerVersionRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalog   ;
@@ -74,59 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Log.Info("Get Version. " + version);
                 var result = ServerVersionRepo.GetVersion(version);
-                var resource = Resources.GetResource(theWorkspace.ID, version.ResourceId);
-                if (resource != null && resource.ResourceType == ResourceType.DbSource)
-                {
-                    res.Message.Append(result);
-                }
-                else
-                {
-                    var startIdx = result.IndexOf(PayloadStart, 0, false);
-
-                    if (startIdx >= 0)
-                    {
-                        // remove beginning junk
-                        startIdx += PayloadStart.Length;
-                        result = result.Remove(0, startIdx);
-
-                        startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                        if (startIdx > 0)
-                        {
-                            var len = result.Length - startIdx;
-                            result = result.Remove(startIdx, len);
-
-                            res.Message.Append(result.Unescape());
-                        }
-                    }
-                    else
-                    {
-                        // handle services ;)
-                        startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                        if (startIdx >= 0)
-                        {
-                            // remove begging junk
-                            startIdx += AltPayloadStart.Length;
-                            result = result.Remove(0, startIdx);
-
-                            startIdx = result.IndexOf(AltPayloadEnd, 0, false);
-
-                            if (startIdx > 0)
-                            {
-                                var len = result.Length - startIdx;
-                                result = result.Remove(startIdx, len);
-
-                                res.Message.Append(result.Unescape());
-                            }
-                        }
-                        else
-                        {
-                            // send the entire thing ;)
-                            res.Message.Append(result);
-                        }
-                    }
-                }
-
+                res.Message.Append(result);
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 

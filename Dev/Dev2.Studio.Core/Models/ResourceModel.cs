@@ -355,7 +355,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        // Problems ;)
         public StringBuilder WorkflowXaml
         {
             get
