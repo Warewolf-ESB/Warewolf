@@ -319,18 +319,6 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 #	| 169                 | TRUE                                                       | TRUE                     |
 
 
-Scenario: Calculate using variables with a null value
-	Given I have a calculate variable "[[a]]" equal to "NULL"
-	And I have a calculate variable "[[b]]" equal to "NULL"
-	And I have the formula "SUM([[a]],[[b]])"
-	When the calculate tool is executed
-	Then the execution has "An" error
-	And the debug inputs as  
-	| fx =                       |
-	| SUM([[b]],[[a]) = SUM(NULL,NULL) |
-	And the debug output as 
-	|                                            |
-	| [[result]] = Error with variables in input |
 
 
 

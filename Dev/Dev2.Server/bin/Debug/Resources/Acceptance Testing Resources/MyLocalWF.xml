@@ -1,5 +1,5 @@
 
-<Service ID="82d937c4-4ea0-496c-a033-d881fc2ef577" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MyLocalWF" ResourceType="WorkflowService" ServerVersion="0.0.5785.21908">
+<Service ID="82d937c4-4ea0-496c-a033-d881fc2ef577" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MyLocalWF" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <DisplayName>MyLocalWF</DisplayName>
   <Category>Acceptance Testing Resources\MyLocalWF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Cy2UqGiZ0tvrL4NjYAccJa/E0vI=</DigestValue>
+        <DigestValue>POJyHefiN49KuJa/U+ERKdh/jtI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>nFQgqHDHh7toT4Ld3OKdYH3kZ4jfZd/yKo742yCGPcab7lBIyTeRvEVWNAr/t6gEU4ZdEoV5p7CY4DVpUI4bmLqlkDu4knqty8JGgLAD6eyGccgZig7p87peaBstIW1UNT5COLlvb37aj+bk4JS21ALFqjLAFda4kMd1wCexRlU=</SignatureValue>
+    <SignatureValue>pmNZ92PJk1f4kLtouPg3dWgQ79eUWja05bv9/YskOQUpAKwhm5SRMDD6Aks96ekncu3AsSL9/QPWJa8q2vqFe/y4AeZRmgehsxUC73KfSti59waQovZDrk/HNwNRLlQItNiR2hxjpW5oyoBeVG+4LSpTa7d+/mddGC50ibKJdzM=</SignatureValue>
   </Signature>
 </Service>

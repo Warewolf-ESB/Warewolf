@@ -1,5 +1,5 @@
 
-<Service ID="a6513454-2e41-415b-a64b-304320a577bb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DB Service With No Output" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.21908">
+<Service ID="a6513454-2e41-415b-a64b-304320a577bb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DB Service With No Output" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>DB Service With No Output</DisplayName>
   <Category>Acceptance Testing Resources\DB Service With No Output</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ktzye2dA3Ain0g64ulZO/IpUfAI=</DigestValue>
+        <DigestValue>MMp4hplBdk7kYNuo+35LJQvi68s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>uHJNuQOgxuLJB9qOaO+vU+7Ob+Ph1B2cOx12/XEJZDcw+3yPb40jQxKEMsnu5I1zZKRv7yUusGzc+mlHXBYlWE2uI6vyQRRxAkXcXD08kbWrfKJruXJzcm0eea57CPPBFOAEJ17qTs5SosIAkkDUNoPnrdC2VfYhXHmiXZjEh2o=</SignatureValue>
+    <SignatureValue>ir8R4/bzUSkf3uFc+cPOWq8X1uWscDSq4tji9/QHI4WusnY13Ib6YdboTK2qyzRk0JN2KYmeCIYezAvmWzt4Z1LK3cy96SWfwHLNL0Gi98NNHjZooj3a/TQCy4teopHES/NRIrqAsRDElnGEYhvbafY3csFcpxHr+YLiS6sWhY8=</SignatureValue>
   </Signature>
 </Service>

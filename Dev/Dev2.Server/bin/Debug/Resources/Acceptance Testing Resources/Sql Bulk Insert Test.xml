@@ -1,5 +1,5 @@
 
-<Service ID="7176c57e-9f74-478a-8213-f42e844b57ae" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sql Bulk Insert Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.21908">
+<Service ID="7176c57e-9f74-478a-8213-f42e844b57ae" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sql Bulk Insert Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>Sql Bulk Insert Test</DisplayName>
   <Category>Acceptance Testing Resources\Sql Bulk Insert Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -249,9 +249,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>FI7vfFjA9I2kQ1BXjeve3arLr5I=</DigestValue>
+        <DigestValue>go89pkKxCuISAvZJBLq2OpsG0zU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>TS/AXHmOH3wc+XzOJcHNiwg8zVbydNkszoON9wZNXOs0+LVW1B1B7W6m9y55u3MJmnaqd++aw8sm3qlEtu/BdGAc2cH/5e9+LP5LKN1YtR9xrhTxQtxqz/bM6UTKLRziAIlZImPdc18p7M/dcIvYXcjgI37WVtxgKenyJunME7o=</SignatureValue>
+    <SignatureValue>lhc44KO0rxP3CciiIXrk0UCQBBuQjq/aoRIdFktZ4DXQbIOlkAwGUDOgrMccCAOS/S8P0j6tQx5GYt6XVkW/AiZJh2ZOyozvqjGqzeTL5jQFU6fPAQ/ulG/Zi7ifCKO5ls+r5L6nIOKUyaexfMNtZndYB5vZ3r8m3nKXW8ZsVBM=</SignatureValue>
   </Signature>
 </Service>

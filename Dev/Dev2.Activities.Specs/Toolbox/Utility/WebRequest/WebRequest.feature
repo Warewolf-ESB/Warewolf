@@ -121,15 +121,3 @@ Scenario: Enter a URL that is a negative index recordset
 	|              |
 	| [[result]] = |
 
-
-Scenario: Enter a URL that is a null variable
-	Given I have a formatnumber variable "[[var]]" equal to NULL
-	And I have the url "[[var]]"
-	When the web request tool is executed	
-	Then the execution has "AN" error
-	And the debug inputs as  
-	| URL       | Header |
-	| [[var]] = |        |
-	And the debug output as 
-	|                                                           |
-	| [[result]] = The Expression [[var]] has no value assigned |

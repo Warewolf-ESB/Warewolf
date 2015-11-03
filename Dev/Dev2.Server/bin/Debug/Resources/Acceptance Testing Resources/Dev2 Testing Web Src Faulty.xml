@@ -1,5 +1,5 @@
 
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACms4hB3xVWYrAcX4YIsAz4AAAAAASAAACgAAAAEAAAAEKuxT7Z5yzzsVA5J9d7inoYAQAAxpf+HMXK5Mb8DM7RakAiYZ2qzJPi4tFtCgUiFfhhZ0mJWXa0g5KBWObxWqldjLCi8JDMuptbOO5kdO050Ff3JMf6NMkPn6wAjwU3Zn/OodMX83nP4Jycv4scbjXdhtiYN+tUCxrRWe9I//oMJAEQWcuHbVAtassvbBLkR9tuV2G8U712JDWlERvdU+kyPzTXVCAhK4Ef3UzBgYrD/dJeGk6mG6kfwmT8vX3Z6z6GJhdSAz9XXavaAAjSWK9UTluUTvnfF8eW+9GLZ+Dv1btBQ6F/7L/39gcvKLRFv94p8QU3mrhMRYHG+dTPb30amwQGF3IYJs53EjlfBqIf0oKklBZRvjFe7c8WOF2CMzQkDmZXM2RBtheZyBQAAAAuFd3e3oldF6rQLjLWMkhDnk8rGQ==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.21908">
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACms4hB3xVWYrAcX4YIsAz4AAAAAASAAACgAAAAEAAAAEKuxT7Z5yzzsVA5J9d7inoYAQAAxpf+HMXK5Mb8DM7RakAiYZ2qzJPi4tFtCgUiFfhhZ0mJWXa0g5KBWObxWqldjLCi8JDMuptbOO5kdO050Ff3JMf6NMkPn6wAjwU3Zn/OodMX83nP4Jycv4scbjXdhtiYN+tUCxrRWe9I//oMJAEQWcuHbVAtassvbBLkR9tuV2G8U712JDWlERvdU+kyPzTXVCAhK4Ef3UzBgYrD/dJeGk6mG6kfwmT8vX3Z6z6GJhdSAz9XXavaAAjSWK9UTluUTvnfF8eW+9GLZ+Dv1btBQ6F/7L/39gcvKLRFv94p8QU3mrhMRYHG+dTPb30amwQGF3IYJs53EjlfBqIf0oKklBZRvjFe7c8WOF2CMzQkDmZXM2RBtheZyBQAAAAuFd3e3oldF6rQLjLWMkhDnk8rGQ==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
   <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
   <Category>Acceptance Testing Resources\Dev2 Testing Web Src Faulty</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>c3UNA5Jh6nRtqYALyIge59F/BCk=</DigestValue>
+        <DigestValue>xn2sczYrCPH6Za2Ee7WP+jKqcLA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>b/fC3ftHSs1nQKgn8GdVnCOxt8nVpQUDRSOEg/fXEcvdvU2bhbQxEVQz+QbahDQ/JXYXGlRo0hJxp39YIe8XvGc1A8r0F74+D2M87uY2W8z4fSySd/QPInpDriL3VGdg6z573zHAhg9GXSJtYRGCpK+h59zMZleO7kyorosTvEM=</SignatureValue>
+    <SignatureValue>odBR/jUqUaRv0CwPdQTa1Yi718aswCxBeWTL5vS9Py+902zzsbAHk19EhbHjiJ92n62aJ5MCvabIrQuaxHTSyGWGsRCX8AAMO+SIpmDXSV2dDYmAXZYuOzb7qLo9l1J0/n02OIwSV/t3NykVzB79qJJIcMwWH5atFZEiZYTQGAk=</SignatureValue>
   </Signature>
 </Source>

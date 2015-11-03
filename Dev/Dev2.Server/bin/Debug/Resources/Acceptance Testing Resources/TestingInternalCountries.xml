@@ -1,5 +1,5 @@
 
-<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACqidRuWFWNvkeNMwWQzrd7AAAAAASAAACgAAAAEAAAAN2GqeaHillUWMciprvb64wYAQAAgf5Kff8rk+uae7Tb5yBUsGIkcDwJEOpnN3ihgLkUQD1yb/hP0sBmzmMoAQqSS9dpPNrA+isYOFv7pbDSAH91IyXFffOxV4PbBjUoCFwvXpih39NdRKwQgXMAr7CuzW6PDlTEsx0vMWbjk6TltqfGs+pWFAeZLWV76ZPbQziD6vb7JA2EJuH39SacPueYXfaNZr+8AB+NOHTPOmDXhRKOYFL1y2hVYTkfKpP905gtVZ8JW0CaYuc3s8V7TePn2nX2SMEWFP+CzP6dp//nccO8Q0Gp3lnXz4oEyx5Hsqy88pU88tDYIzkga1l/agXE08wXcKfyvHcl60/TWwKMLDtytjNuyT4tA5wQ5jkm8l7DfRdn/n+RpSrUYRQAAAAHPWHWloYPyRQnmTZNYHlBYwZ2DA==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.21908">
+<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/;DefaultQuery=GetCountries.ashx?extension=xml&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
   <DisplayName>TestingInternalCountries</DisplayName>
   <Category>Acceptance Testing Resources\TestingInternalCountries</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>5vvXU+HgWc2LWVTe9JEDsP4ima0=</DigestValue>
+        <DigestValue>uSgGcWfaN/T66TdGq6WIXh1zGT4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>tTsTDrcitTQiLv8oxdQ7zYWe9Qfxf3pnbESWKvh6pBhMdaclgQlqnaBAApPuehbkAZNnb109oypTC6Np/I7fecBxLojZCeYNRcQ+1pjkO1+lx48JQkF6svC5M1wDMPClO5lDW8SYKJiRWjMA0ZjZtWbCHekz1vHZLXVS9O7/6Io=</SignatureValue>
+    <SignatureValue>XK4gO6emxqa5QUn5p14+cDct9ZtD5/0s51hFqfTSuBTFeXZChYGL8Rn3ipt5uuemoe81w3d13CUa9qCJlosKU/8HLjbyjRCK/atiycqlBUffTrgoh1aJyWRggbwaF3GJaHXnHT4aVDygqH7v1I0r1gW9/K2m/UsVOaTZTpC6Kx8=</SignatureValue>
   </Signature>
 </Source>
