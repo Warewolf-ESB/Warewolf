@@ -18,10 +18,12 @@ using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Threading;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.TaskScheduler.Wrappers;
@@ -92,9 +94,6 @@ namespace Dev2.ScheduleExecutor
                 req.Credentials = CredentialCache.DefaultNetworkCredentials;
                 req.Method = "GET";
 
-                req.Headers.Add(HttpRequestHeader.From, requestID.ToString()); // Set to remote invoke ID ;)
-                req.Headers.Add(HttpRequestHeader.Cookie, "RemoteWarewolfServer");
-
                 try
                 {
                     using(var response = req.GetResponse() as HttpWebResponse)
@@ -116,7 +115,7 @@ namespace Dev2.ScheduleExecutor
                             {
                                 Log("Info", string.Format("Completed execution. Output: {0}", result));
 
-                                WriteDebugItems(requestID, workflowName, taskName);
+                                WriteDebugItems(workflowName, taskName, result);
                             }
                         }
                     }
@@ -150,15 +149,14 @@ namespace Dev2.ScheduleExecutor
                     ErrorMessage = string.Format("{0}", result),
                     DisplayName = workflowName
                 };
-
             var debug = new DebugItem();
             debug.Add(new DebugItemResult
-                {
-                    Type = DebugItemResultType.Label,
-                    Value = "Warewolf Execution Error:",
-                    Label = "Scheduler Execution Error",
-                    Variable = result
-                });
+            {
+                Type = DebugItemResultType.Label,
+                Value = "Warewolf Execution Error:",
+                Label = "Scheduler Execution Error",
+                Variable = result
+            });
             var js = new Dev2JsonSerializer();
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
@@ -200,48 +198,100 @@ namespace Dev2.ScheduleExecutor
             return "";
         }
 
-        private static void WriteDebugItems(Guid id, string workflowName, string taskName)
+        private static void WriteDebugItems(string workflowName, string taskName, string result)
         {
             string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
-            string getDebugItemsUrl = "http://localhost:3142/services/FetchRemoteDebugMessagesService?InvokerID=" +
-                                      id.ToString();
-            WebRequest req = WebRequest.Create(getDebugItemsUrl);
-            req.Credentials = CredentialCache.DefaultCredentials;
-            req.Method = "GET";
 
-            using(var response = req.GetResponse() as HttpWebResponse)
+            var state = new DebugState
             {
-                if(response != null)
+                HasError = false,
+                ID = Guid.NewGuid(),
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now,
+                ActivityType = ActivityType.Step,
+                StateType = StateType.End,
+                Server = "localhost",
+                ServerID = Guid.Empty,
+                DisplayName = workflowName
+            };
+            if(!string.IsNullOrEmpty(result))
+            {
+                var data = DataListUtil.AdjustForEncodingIssues(result);
+                bool isFragment;
+                var isXml = DataListUtil.IsXml(data, out isFragment);
+                if(isXml)
                 {
-                    Stream responseStream = response.GetResponseStream();
-                    if(responseStream != null)
+                    var xmlData = XElement.Parse(data);
+                    var allChildren = xmlData.Elements();
+                    var groupedData = allChildren.GroupBy(element => element.Name);
+
+                    var recSets = groupedData as IGrouping<XName, XElement>[] ?? groupedData.ToArray();
+                    foreach(var grouping in recSets)
                     {
-                        using(var reader = new StreamReader(responseStream))
+                        var debugItem = new DebugItem();
+                        foreach(var name in grouping)
                         {
-                            string data = reader.ReadToEnd();
-                            if(Stopwatch.ElapsedMilliseconds < 5000)
+                            if(name.HasElements)
                             {
-                                Thread.Sleep(5000);
+                                var debugItemResult = ProcessRecordSet(name, name.Elements());
+                                debugItem.ResultsList.AddRange(debugItemResult);
                             }
-                            string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
-                            File.WriteAllText(
-                                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
-                                              DateTime.Now.ToString("yyyy-MM-dd"), correlation, user), data);
+                            else
+                            {
+                                var debugItemResult = new DebugItemResult
+                                {
+                                    Variable = DataListUtil.AddBracketsToValueIfNotExist(name.Name.LocalName),
+                                    Value = name.Value,
+                                    Operator = "=",
+                                    Type = DebugItemResultType.Variable
+                                };
+                                debugItem.ResultsList.Add(debugItemResult);
+                            }
                         }
+                        state.Outputs.Add(debugItem);
                     }
                 }
             }
+            var js = new Dev2JsonSerializer();
+            Thread.Sleep(5000);
+            string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
+            if(!Directory.Exists(OutputPath))
+                Directory.CreateDirectory(OutputPath);
+            File.WriteAllText(
+                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
+                    DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
+                js.SerializeToBuilder(new List<DebugState> { state }).ToString());
+
+        }
+
+        private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
+        {
+            var processRecordSet = new List<IDebugItemResult>();
+            var recSetName = recordSetElement.Name.LocalName;
+            var index = recordSetElement.Attribute("Index").Value;
+            foreach(var xElement in elements)
+            {
+                var debugItemResult = new DebugItemResult
+                {
+                    GroupName = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recSetName, true)),
+                    Value = xElement.Value,
+                    GroupIndex = int.Parse(index),
+                    Variable = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recSetName, xElement.Name.LocalName, index)),
+                    Operator = "=",
+                    Type = DebugItemResultType.Variable
+                };
+                processRecordSet.Add(debugItemResult);
+            }
+            return processRecordSet;
         }
 
         private static void Log(string logType, string logMessage)
         {
             try
             {
-
-
                 using(
                     TextWriter tsw =
-                        new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd"),
+                        new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd")+".log",
                                                         FileMode.Append)))
                 {
                     tsw.WriteLine();
@@ -254,8 +304,6 @@ namespace Dev2.ScheduleExecutor
             catch
             // ReSharper restore EmptyGeneralCatchClause
             {
-
-
             }
         }
 
@@ -266,13 +314,10 @@ namespace Dev2.ScheduleExecutor
             {
                 var directoryInfo = new DirectoryInfo(SchedulerLogDirectory);
                 FileInfo[] logFiles = directoryInfo.GetFiles();
-                if(logFiles.Count() > 20)
+                if(logFiles.Length > 20)
                 {
                     try
                     {
-
-
-
                         FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
                         fileInfo.Delete();
                     }
@@ -281,7 +326,6 @@ namespace Dev2.ScheduleExecutor
                     // ReSharper restore EmptyGeneralCatchClause
                     {
                     }
-
                 }
             }
             else

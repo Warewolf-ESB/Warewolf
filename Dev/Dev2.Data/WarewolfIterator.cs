@@ -97,6 +97,10 @@ namespace Dev2.Data
 
         static string DoCalcution(string warewolfAtomToString)
         {
+            if(warewolfAtomToString == null)
+            {
+                return null;
+            }
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
 
