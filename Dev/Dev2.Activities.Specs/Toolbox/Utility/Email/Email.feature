@@ -213,3 +213,17 @@ Scenario: Send email with a negative index recordset for Body
 	|                       |
 	| [[result]] =  |
 
+
+Scenario: Send email with a null variable in from account
+	Given I have a variable "[[a]]" with value "NULL" 
+	And the from account is "[[a]]" 
+	And to address is "test1@freemail.com" 	
+	And body is "this is a test"
+	When the email tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| From Account | To                 | Subject | Body           |
+	| [[a]]        | test1@freemail.com | ""      | this is a test |
+	And the debug output as 
+	|                                                         |
+	| [[result]] = Error  From account variable { a } is NULL |
