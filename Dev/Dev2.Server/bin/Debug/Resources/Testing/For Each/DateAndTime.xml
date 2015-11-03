@@ -1,5 +1,5 @@
 
-<Service ID="f82c6e78-f838-4c08-b69c-ed68e1a00b87" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DateAndTime" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
+<Service ID="f82c6e78-f838-4c08-b69c-ed68e1a00b87" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DateAndTime" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>DateAndTime</DisplayName>
   <Category>Testing\For Each\DateAndTime</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ZMR7/Bjtx0zGTbAEXI/QF5H+VCk=</DigestValue>
+        <DigestValue>7x5p+a5oLTMZIn5MZc11GXW2Lj8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>VDQSjuOcpbl+UjTLF6G1XRNQ7kYjD6q0KW2wypzuwfx6lZ+II0+XpUgVXv+k2LMYrLB5BaYrloT/CsGiH2EvRMCFDJxLsptdEuOsiXDSyWSVeZE4DZZ+d2kGIJGX/Z0UWXJpsXdbgru20LChsw1bAVwdB8Lgt82N7Yo5deEfx50=</SignatureValue>
+    <SignatureValue>k3YajflOujFdwcMfYmdMF6/9sWeolJlR7LMAsk1HI/JLQZd+dNryAUyrAUy3w36GYx0Qiz+KkwMnakkXUY65HgJ8kSKwVu7GHEy7B92F7R5TEmJ+cGRBh9xhdDBF6/yBsuU2NMr8Sc0/N2OJXJm5I8dvZ2LWHw5MyIQTmvSzOr8=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="8d003e61-6002-4745-8f5a-c261c4bc2e2f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5785.20583">
+<Service ID="8d003e61-6002-4745-8f5a-c261c4bc2e2f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
   <DisplayName>CreateFolderOnFileSystemTest</DisplayName>
   <Category>Acceptance Testing Resources\CreateFolderOnFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>3UvvtFYMWTINB/mbGexXyh0vaL8=</DigestValue>
+        <DigestValue>L5645ksrIRsqC44SiYXbWLGx+v4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BixfEVKCVTUdUrS6lxTMemjwKELci2Pp35Y/KOW3UyAnBkUaatB/hxNDBMOsoXFZdf30HjH8pc6FJMcSFLXf5aiTMFdIRYz+XRHNSXxlOfAU4cf3tVjsZNr+W2foDt6Urp7x4tHpol3Rzw9X71iRlo62pUPhkKJYn55jDdi3eDo=</SignatureValue>
+    <SignatureValue>P8/b9PoYt3DYtsgJt17UkWquZ/x8zBdSa7Ck+3P1527aPmaYrn28UsaIuGWHkNQoss0Ax06iIHRq6AQIW6xtGs9fgK8XZcFzRkkUYfyG3/IxnNEcwo7NluoWawmhnd9MCh1iPbFF5QEYdPHAEcRxjEgoqwafPUMDjSbgLLXH3lg=</SignatureValue>
   </Signature>
 </Service>

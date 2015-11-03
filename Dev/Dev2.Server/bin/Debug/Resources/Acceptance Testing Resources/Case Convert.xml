@@ -1,5 +1,5 @@
 
-<Service ID="008f5bdb-e6e6-4d65-b9cf-20ea8f8c0dcb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Case Convert" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5785.20583">
+<Service ID="008f5bdb-e6e6-4d65-b9cf-20ea8f8c0dcb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Case Convert" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
   <DisplayName>Case Convert</DisplayName>
   <Category>Acceptance Testing Resources\Case Convert</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>3VJ32GaYEpBXcTFmaqKvmR7Pu+s=</DigestValue>
+        <DigestValue>IMpl5Hc0niiVUYcArFyGVPHgWQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>vVLjXaGR87y/aKhgx7yor6lzI8+6LvbonIikUUae54tNvJ0s0ME5vbuoCgntDJf/oTxUx4CoxgaRDnolN0+xqzPdkgmTNxVtF1SiKfcafA9V4bWFnH0kepSiQC01X8KeI/xdk9pfjavneVRK7zhKrnjS5PAJHwG1WaFrv0JQPuo=</SignatureValue>
+    <SignatureValue>BQTYC/PZjnnmHNE7tKwvM4lwjyafaArVYJutSofjT5sw16pR7TJXhZSfn9AxujNAnpBNUVGW9SvjbdvW4rFGGTCod8fyAK5bIUH7otyLeDqDVrNdz0knp80zdhL+byoM5kf5JlcjmGBW3TXU/yM82sXWSKyhmmMhdBCpg7TPrPc=</SignatureValue>
   </Signature>
 </Service>

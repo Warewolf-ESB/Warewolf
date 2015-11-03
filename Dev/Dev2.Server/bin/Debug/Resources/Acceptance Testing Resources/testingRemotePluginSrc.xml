@@ -1,5 +1,5 @@
 
-<Source ID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" Version="1.0" Name="testingRemotePluginSrc" ResourceType="PluginSource" IsValid="false" AssemblyLocation="\\rsaklfsvrsbspdc\Company\HgCo.WindowsLive.SkyDriveServiceClient.dll" AssemblyName="HgCo.WindowsLive.SkyDriveServiceClient" Type="Plugin" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5785.20583">
+<Source ID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" Version="1.0" Name="testingRemotePluginSrc" ResourceType="PluginSource" IsValid="false" AssemblyLocation="\\rsaklfsvrsbspdc\Company\HgCo.WindowsLive.SkyDriveServiceClient.dll" AssemblyName="HgCo.WindowsLive.SkyDriveServiceClient" Type="Plugin" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
   <DisplayName>testingRemotePluginSrc</DisplayName>
   <Category>Acceptance Testing Resources\testingRemotePluginSrc</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>IYI7ic+HohOegrIORlxs89M3vtY=</DigestValue>
+        <DigestValue>qZm6nKqYAYfXs/UNpoQN09r6BTw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>rAjF2SlJwrQx0D4Me4/MPdnsZdNXK615e4X3FDwOu4OgOuJJ/WLrg5HywdxAL42wj3L2z5nOSd+BTO4nzTE1sO9ZnVaG55Ja454QPN+q6CeQXD1YwiYq6A8VdyfhApGFy42aBDzMSSiFGwi0JuG6w9eaFF98JRFUoYw1c7oXyFw=</SignatureValue>
+    <SignatureValue>Iba69Jw2Dbto9TN0BEbyUEzzL/9XclgNo/3+VxTxvWdx9M9eFSalBebANVqH2bBoPtD7NanrkP+z6Ym2EkH5/APo8xqs9xBHozpMaPGjaTVfY1lQLddYLjxDZ/bK2m7R6NAioZXGN2CA9oexXk9LjfT8a2EkYhfldQdFyFn8Vj4=</SignatureValue>
   </Signature>
 </Source>

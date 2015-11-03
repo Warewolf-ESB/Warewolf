@@ -1,5 +1,5 @@
 
-<Service ID="07ff7162-cead-4167-b295-219d4a5c3ec9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="wolf-402" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5785.20583">
+<Service ID="07ff7162-cead-4167-b295-219d4a5c3ec9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="wolf-402" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5779.13273">
   <DisplayName>wolf-402</DisplayName>
   <Category>Testing\Bugs\wolf-402</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>/Zsz8R0GGjmoPAv2qg3sJ7QjLIA=</DigestValue>
+        <DigestValue>YGIQCrW4GpEsM69yg7LLqiJCO7I=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>pOjII+V+2G1QswOvrapxVYflhr1RI8YOZNhlxRqj5Aqf+nVhwwuirf0cw2k1YJvZyby8yTvG93KSxOh9VFp8V3CY0aXOPGTOnVFZ+0koUMAI/y48Rz0mbEAfdDtOrA74OQm+o6lKfBKDhIxgzXK7hvBeIs1RoxTICV/pJo1Ym0w=</SignatureValue>
+    <SignatureValue>i/C0ks/ZbxQXJxAR5Xg86UsCP+0VsjI8qOsm38FW+GJ/eexvYitZajG5cNG/jHrhueNVtEdXV4kVIVMTn2/dDYyLOZo0AyveY40cUqrNCTG9wUMnC78kLes+tCL29sB2aB0VHrNTbgUL6v/TE6WEvyLkemASBl+e9N2Un/wJfXQ=</SignatureValue>
   </Signature>
 </Service>

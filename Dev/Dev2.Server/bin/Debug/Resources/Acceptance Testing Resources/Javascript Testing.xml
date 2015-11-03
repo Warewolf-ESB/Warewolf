@@ -1,5 +1,5 @@
 
-<Service ID="d43e31b3-7b79-4dd6-ad9a-b7c6b7486962" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Javascript Testing" ResourceType="WorkflowService" ServerVersion="0.0.5785.20583">
+<Service ID="d43e31b3-7b79-4dd6-ad9a-b7c6b7486962" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Javascript Testing" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <DisplayName>Javascript Testing</DisplayName>
   <Category>Acceptance Testing Resources\Javascript Testing</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -44,9 +44,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>/cn9FUOoQc/jEPES3IgYBfomFVA=</DigestValue>
+        <DigestValue>+OnyppFDho0SEX0sV9xpwOwOBHA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>PoiPy7Qy0cD8dfhmLUlZFho7r4NWN5uRYp+9XQvkbmI/L3Ak+thToBvByNzLYqZ6J1PRrutKVGKDGnVbNV6SoByvLT/Yfs5HnkRBAiczV8jGq6GYF5L4RRRp7sF0TzIs3KsHEWWZk5DMe83CjCA5bKhGXS11mBFygiTeuYukyrU=</SignatureValue>
+    <SignatureValue>rtqVMccwBgQx/ew0ir/Lt3D9u5yrqYU0YUtX7ATOWA1bt1xUA5FOjB542xF/5DmBr+y0D/jAncG1/9DtJMcpEw8yUY+oLzf/A7YWUjawEqsQdp7XRsNc0HKHtAtQN3j9oQXfHigXDL5hL25d6cvyE0glTh45FImv5mMC4boCGSQ=</SignatureValue>
   </Signature>
 </Service>
