@@ -74,7 +74,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             action.Add(inputs);
             action.Add(outputs);
 
-            var result = ToXml();
+            // ReSharper disable once RedundantBaseQualifier
+            var result = base.ToXml();
             result.AddFirst(
                 new XElement("Actions", action),
                 new XElement("AuthorRoles"),

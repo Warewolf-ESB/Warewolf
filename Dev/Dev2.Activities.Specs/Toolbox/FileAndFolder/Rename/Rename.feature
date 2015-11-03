@@ -51,6 +51,7 @@ Scenario Outline: Rename file at location
 	| 24 | SFTP to FTPS    | [[sourcePath]] | sftp://localhost/renamefile3.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed4.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |                      |                           |
 	| 25 | SFTP to SFTP    | [[sourcePath]] | sftp://localhost/renamefile4.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/renamed4.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://localhost/renamefile41.txt                              | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/renamed41.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+	| 27 | Local to Local  | [[sourcePath]] | NULL                                                           | ""                | ""       | [[destPath]] | C:\renamed0.txt                                             | ""                | ""           | True     | [[result]] | Error   | AN           |                      |                           |
 
 
 

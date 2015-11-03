@@ -28,6 +28,7 @@ Scenario Outline: Delete file at location
 	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                   | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                      |
 	| SFTP       | [[path]] | sftp://localhost/filetodelete.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                      |
 	| SFTP PK    | [[path]] | sftp://localhost/filetodelete1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
+	| Local      | [[path]] | NULL                                                                   | ""                           | ""       | [[result]] | Error   | AN           |                      |
 
 
 
