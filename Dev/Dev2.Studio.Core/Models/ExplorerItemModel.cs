@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
@@ -1431,24 +1432,26 @@ namespace Dev2.Models
                 if(resourceDefinition != null)
                 {
                     IResourceModel resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == Parent.ResourceId);
-                    var xamlElement = XElement.Parse(resourceDefinition.ToString());
-                    var dataList = xamlElement.Element("DataList");
-                    var dataListString = "";
-                    if(dataList != null)
+                    try
                     {
-                        dataListString = dataList.ToString();
-                    }
-                    var action = xamlElement.Element("Action");
-                    var xamlString = "";
-                    if (action != null)
-                    {
-                        var xaml = action.Element("XamlDefinition");
-                        if(xaml != null)
+                        var xamlElement = XElement.Parse(resourceDefinition.ToString());
+                        var dataList = xamlElement.Element("DataList");
+                        var dataListString = "";
+                        if(dataList != null)
                         {
-                            xamlString = xaml.Value;
+                            dataListString = dataList.ToString();
                         }
-                    }
-                    var resourceVersion = new ResourceModel(environmentModel, EventPublishers.Aggregator)
+                        var action = xamlElement.Element("Action");
+                        var xamlString = "";
+                        if (action != null)
+                        {
+                            var xaml = action.Element("XamlDefinition");
+                            if(xaml != null)
+                            {
+                                xamlString = xaml.Value;
+                            }
+                        }
+                        var resourceVersion = new ResourceModel(environmentModel, EventPublishers.Aggregator)
                         {
                             ResourceType = resourceModel.ResourceType,
                             ResourceName = string.Format("{0} (v.{1})", Parent.DisplayName, VersionInfo.VersionNumber),
@@ -1458,8 +1461,12 @@ namespace Dev2.Models
                             IsVersionResource = true,
                             ID = ResourceId
                         };
-                    
-                    WorkflowDesignerUtils.EditResource(resourceVersion, EventPublishers.Aggregator);
+                        WorkflowDesignerUtils.EditResource(resourceVersion, EventPublishers.Aggregator);
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message,e);
+                    }
                 }
             }
             else

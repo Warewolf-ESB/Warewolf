@@ -858,7 +858,7 @@ namespace Dev2.Core.Tests.ModelTests
             var studioResourceRepo = new Mock<IStudioResourceRepository>();
             // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
-                .Returns(new StringBuilder("Hail HTML5"))
+                .Returns(new StringBuilder("<Service><DataList><a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList><Action><XamlDefinition>Hail HTML 1</XamlDefinition></Action></Service>"))
 
                 .Verifiable();
             // ReSharper restore MaximumChainedReferences
