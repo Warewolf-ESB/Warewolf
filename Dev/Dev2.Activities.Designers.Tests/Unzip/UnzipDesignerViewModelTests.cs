@@ -9,7 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -45,6 +48,9 @@ namespace Dev2.Activities.Designers.Tests.Unzip
         public void UnzipDesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
             //------------Setup for test-------------------------
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
+            DataListSingleton.SetDataList(dataListViewModel);
             var viewModel = UnzipViewModel();
 
             //------------Execute Test---------------------------

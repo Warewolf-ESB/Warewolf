@@ -258,7 +258,7 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
 
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
 
             foreach(var resource in result)
             {

@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"0";
+            const string expected = "";
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
