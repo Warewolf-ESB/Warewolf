@@ -430,6 +430,54 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	|                 | Number |
 	| No. of Executes | 8      |
 
+
+#NULL Specs
+Scenario: Execute a foreach using a NULL value for type In Recordset
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | NULL  |
+	And I have selected the foreach type as "InRecordset" as "[[rs()]]"
+	When the foreach tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	|                         |
+	| Variable { rs } is NULL | 
+
+Scenario: Execute a foreach using a NULL value for type Num Of Execution
+	Given There is a recordset in the datalist with this shape
+	| Variable  | value |
+	| [[count]] | NULL  |
+	And I have selected the foreach type as "NumOfExecution" as "[[count]]"
+	When the foreach tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	|                            |
+	| Variable { count } is NULL |
+
+Scenario: Execute a foreach using a NULL value for type In Range
+	Given I have a variable "[[value]]" with a value of "NULL"
+	And There is a recordset in the datalist with this shape
+	| rs              | value |
+	| [[rs(2).field]] | 1     |
+	| [[rs(1).field]] | 3     |
+	And I have selected the foreach type as "InRange" from "[[rs(2).field]]" to "[[value]]"
+	When the foreach tool is executed
+	Then the execution has "An" error
+	And the debug inputs as
+	|                            |
+	| Variable { count } is NULL |
+
+
+Scenario: Execute a foreach using a NULL value for type in CSV
+	Given There is a recordset in the datalist with this shape
+	| Variable  | value |
+	| [[count]] | NULL  |
+	And I have selected the foreach type as "inCsv" as "[[count]]"
+	When the foreach tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	|                            |
+	| Variable { count } is NULL |
 #Scenario: Execute a foreach over an activity with number of executions equals +1 invalid
 #	And I have selected the foreach type as "NumOfExecution" as "+1"
 #	And the underlying dropped activity is a(n) "Activity"
