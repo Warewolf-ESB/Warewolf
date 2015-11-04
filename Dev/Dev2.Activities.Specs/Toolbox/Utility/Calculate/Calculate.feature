@@ -327,10 +327,14 @@ Scenario: Calculate using variables with a null value
 	Then the execution has "An" error
 	And the debug inputs as  
 	| fx =                       |
-	| SUM([[b]],[[a]) = SUM(NULL,NULL) |
-	And the debug output as 
-	|                                            |
-	| [[result]] = Error with variables in input |
+	| SUM([[a]],[[b]]) = SUM(,) |
 
+Scenario: Calculate using variables with a no existent value
+	Given I have the formula "SUM([[a]],[[b]])"
+	When the calculate tool is executed
+	Then the execution has "An" error
+	And the debug inputs as  
+	| fx =                       |
+	| SUM([[a]],[[b]]) =  |
 
 

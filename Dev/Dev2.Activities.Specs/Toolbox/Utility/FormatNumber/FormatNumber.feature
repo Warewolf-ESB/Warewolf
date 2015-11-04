@@ -199,7 +199,9 @@ Scenario: Format a variable with a null value
 	And I want to show "2" decimals 
 	When the format number is executed
 	Then the execution has "AN" error
-	And the debug output as
-         | outPut                                              |
-         | Error Unable to format '' because it isn't a number | 
 
+Scenario: Format a variable with a non existent value
+	Given I have a number "[[int]]"
+	And I want to show "2" decimals 
+	When the format number is executed
+	Then the execution has "AN" error

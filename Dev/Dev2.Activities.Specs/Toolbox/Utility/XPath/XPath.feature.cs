@@ -771,36 +771,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 222
  testRunner.Given("I have a formatnumber variable \"[[var]]\" equal to NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 223
- testRunner.And("I have this xml \'\' in a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
  testRunner.And("I assign the variable \"[[var]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 224
  testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\'2\']/text" +
                     "()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 225
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 227
+#line 226
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "XML",
-                        "#",
-                        ""});
-            table32.AddRow(new string[] {
-                        "[[var]] = NULL",
-                        "1",
-                        "[[rec(1).ids]] = //root/number[@id=\'2\']/text()"});
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Use XPath with a non existent variable as output")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "XPath")]
+        public virtual void UseXPathWithANonExistentVariableAsOutput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with a non existent variable as output", ((string[])(null)));
 #line 228
- testRunner.And("the debug inputs as", ((string)(null)), table32, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table33.AddRow(new string[] {
-                        "1",
-                        "Error Value cannot be Null"});
+this.ScenarioSetup(scenarioInfo);
+#line 229
+ testRunner.Given("I assign the variable \"[[var]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 230
+ testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\'2\']/text" +
+                    "()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
- testRunner.And("the debug output as", ((string)(null)), table33, "And ");
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 232
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

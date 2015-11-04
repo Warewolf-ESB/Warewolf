@@ -725,7 +725,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 217
 this.ScenarioSetup(scenarioInfo);
 #line 218
- testRunner.Given("I have a variable \"[[a]]\" with value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have an email variable \"[[a]]\" equal to \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 219
  testRunner.And("the from account is \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 220
@@ -737,25 +737,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 223
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
-                        "From Account",
-                        "To",
-                        "Subject",
-                        "Body"});
-            table29.AddRow(new string[] {
-                        "[[a]]",
-                        "test1@freemail.com",
-                        "\"\"",
-                        "this is a test"});
-#line 224
- testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table30.AddRow(new string[] {
-                        "[[result]] = Error  From account variable { a } is NULL"});
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with a non existent variable in from account")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email")]
+        public virtual void SendEmailWithANonExistentVariableInFromAccount()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a non existent variable in from account", ((string[])(null)));
+#line 226
+this.ScenarioSetup(scenarioInfo);
 #line 227
- testRunner.And("the debug output as", ((string)(null)), table30, "And ");
+ testRunner.Given("the from account is \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 228
+ testRunner.And("to address is \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+ testRunner.And("body is \"this is a test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+ testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 231
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -81,6 +81,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             ScenarioContext.Current.Add("outputIn", outputIn);
         }
 
+        [Given(@"I have date time difference variable ""(.*)"" with value ""(.*)""")]
+        public void GivenIHaveDateTimeDifferenceVariableWithValue(string name, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(name, value));
+        }
+
+
         [Given(@"the date format as ""(.*)""")]
         public void GivenTheDateFormatAs(string inputFormat)
         {

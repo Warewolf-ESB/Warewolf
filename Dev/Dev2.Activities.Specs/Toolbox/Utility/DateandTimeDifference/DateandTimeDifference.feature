@@ -471,8 +471,22 @@ Scenario: Calculate the number of Years by using default system date Input 1
 
 
 Scenario: Calculate the number of Years by using Null variable as first date
-	Given I have a variable "[[a]]" with value "NULL"
+	Given I have date time difference variable "[[a]]" with value "NULL"
 	And I have a first date "[[a]]"  
+	And I have a second date "2014/01/06 08:00:01.00" 
+	And the date format as "dd MM yyyy"
+	And I selected output in "Years" 	
+	When the datetime difference tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| Input 1 | Input 2                | Input Format | Output In |
+	| [[a]]   | 2014/01/06 08:00:01.00 | dd MM yyyy   | Years     |
+	And the debug output as 
+	|                                                               |
+	| [[result]] = Error The expression [[a]] has no value assigned |
+
+Scenario: Calculate the number of Years by using non existent variable as first date
+	Given  I have a first date "[[a]]"  
 	And I have a second date "2014/01/06 08:00:01.00" 
 	And the date format as "dd MM yyyy"
 	And I selected output in "Years" 	

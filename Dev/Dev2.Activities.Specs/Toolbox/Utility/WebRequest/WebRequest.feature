@@ -130,6 +130,12 @@ Scenario: Enter a URL that is a null variable
 	And the debug inputs as  
 	| URL       | Header |
 	| [[var]] = |        |
-	And the debug output as 
-	|                                                           |
-	| [[result]] = The Expression [[var]] has no value assigned |
+
+
+Scenario: Enter a URL that is a non existent variable
+	Given I have the url "[[var]]"
+	When the web request tool is executed	
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| URL       | Header |
+	| [[var]] = |        |

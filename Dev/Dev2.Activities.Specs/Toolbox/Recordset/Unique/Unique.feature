@@ -226,16 +226,18 @@ Scenario: Executing Unique record tool with NULL recordset
 	Given I have the following duplicated recordset
 	| rs       | val  |
 	| rs().row | NULL |
+	| rs().val | NULL |
 	And I want to find unique in field "" with the return field "[[rs(*).row]]"
 	And The result variable is "[[rs().val]]"
 	When the unique tool is executed	
 	Then the execution has "AN" error	
-	And the debug inputs as  
-	| # | In Field(s)   | Return Fields |
-	| 1  | [[rs(*).row]] | [[rs().val]]  |
-	And the debug output as 
-	| # | Result                                          |
-	|   | The Given key was not present in the dictionary |
+
+
+Scenario: Executing Unique record tool with non existent recordset
+	Given I want to find unique in field "" with the return field "[[rs(*).row]]"
+	And The result variable is "[[rs().val]]"
+	When the unique tool is executed	
+	Then the execution has "AN" error	
 
 ##This Test Scenario should be passed after the bug 11994 is fixed
 #Scenario: Find unique records and assigning result in two variables

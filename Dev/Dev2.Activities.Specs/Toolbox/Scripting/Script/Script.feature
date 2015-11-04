@@ -333,14 +333,16 @@ Scenario: Execute Python with a negative recordset index
 
 
 Scenario: Execute JavaScript with a null variable 
-	Given I have a variable "[[a]]" with value ""
-	And I have this script to execute "[[a]]"
+	Given I have a script variable "[[val1]]" with this value "null"
+	Given I have a script variable "[[val2]]" with this value "null"
+	And I have this script to execute "[[val2]]"
+	And I have selected the language as "JavaScript"
+	When I execute the script tool
+	Then the execution has "An" error
+
+
+	Scenario: Execute JavaScript with a non existent variable 
+	Given I have this script to execute "[[val2]]"
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| Language   | Script |
-	| JavaScript | [[a]]  |
-	And the debug output as 
-	|               |
-	| [[result]] = Scalar value { a } is NULL |

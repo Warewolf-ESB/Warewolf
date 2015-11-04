@@ -267,7 +267,7 @@ Scenario: Date and Time output format without inputs must return correct format
        And the execution has "NO" error
 
 Scenario: Date and Time output format with NULL inputs 
-       Given I have a variable "[[a]]" with value "NULL"
+       Given I have a Date time variable "[[a]]" with value "NULL"
 	   And I have a date "[[a]]" 
        And the input format as "dd-MM-yy"
        And the output format as "dd-MM-yy"

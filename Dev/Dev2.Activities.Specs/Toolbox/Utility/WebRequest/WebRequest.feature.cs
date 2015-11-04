@@ -437,12 +437,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 130
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL that is a non existent variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
+        public virtual void EnterAURLThatIsANonExistentVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that is a non existent variable", ((string[])(null)));
+#line 135
+this.ScenarioSetup(scenarioInfo);
+#line 136
+ testRunner.Given("I have the url \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 137
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 138
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "URL",
+                        "Header"});
             table20.AddRow(new string[] {
-                        "[[result]] = The Expression [[var]] has no value assigned"});
-#line 133
- testRunner.And("the debug output as", ((string)(null)), table20, "And ");
+                        "[[var]] =",
+                        ""});
+#line 139
+ testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

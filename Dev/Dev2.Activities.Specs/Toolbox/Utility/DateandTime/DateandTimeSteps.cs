@@ -80,6 +80,22 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             ScenarioContext.Current.Add("inputDate", inputDate);
         }
+        [Given(@"I have a Date time variable ""(.*)"" with value ""(.*)""")]
+        public void GivenIHaveADateTimeVariableWithValue(string name, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(name, value));
+        }
+
+
+
 
         [Given(@"the input format as ""(.*)""")]
         public void GivenTheInputFormatAs(string inputFormat)

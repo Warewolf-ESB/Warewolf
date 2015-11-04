@@ -2419,16 +2419,34 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table21.AddRow(new string[] {
-                        "SUM([[b]],[[a]) = SUM(NULL,NULL)"});
+                        "SUM([[a]],[[b]]) = SUM(,)"});
 #line 328
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using variables with a no existent value")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
+        public virtual void CalculateUsingVariablesWithANoExistentValue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variables with a no existent value", ((string[])(null)));
+#line 332
+this.ScenarioSetup(scenarioInfo);
+#line 333
+ testRunner.Given("I have the formula \"SUM([[a]],[[b]])\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 334
+ testRunner.When("the calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 335
+ testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "fx ="});
             table22.AddRow(new string[] {
-                        "[[result]] = Error with variables in input"});
-#line 331
- testRunner.And("the debug output as", ((string)(null)), table22, "And ");
+                        "SUM([[a]],[[b]]) ="});
+#line 336
+ testRunner.And("the debug inputs as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

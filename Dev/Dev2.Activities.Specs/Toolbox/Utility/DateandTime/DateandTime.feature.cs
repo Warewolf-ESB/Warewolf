@@ -954,7 +954,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 269
 this.ScenarioSetup(scenarioInfo);
 #line 270
-       testRunner.Given("I have a variable \"[[a]]\" with value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have a Date time variable \"[[a]]\" with value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 271
     testRunner.And("I have a date \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
