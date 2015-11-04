@@ -456,7 +456,7 @@ namespace Dev2.Data.PathOperations
 
         static string BuildValidPathForFtp(IActivityIOPath src, string fileName)
         {
-            if(src.Path.EndsWith("/"))
+            if(src.Path.EndsWith("/") || fileName.StartsWith("/"))
             {
                 return string.Format("{0}{1}", src.Path, fileName);
             }
@@ -470,9 +470,9 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var fromPath = ExtractFileNameFromPath(src.Path);
-                var fileList = sftp.ListDirectory(fromPath).Select(a => a.FullName);
+                var fileList = sftp.ListDirectory(fromPath).Select(a => a.Name);
                 result.AddRange(from string file in fileList
-                                where file != ".." && file != "."
+                                where !file.EndsWith("..") && !file.EndsWith(".")
                                 select BuildValidPathForFtp(src, file)
                                     into uri
                                     select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile));
@@ -481,11 +481,6 @@ namespace Dev2.Data.PathOperations
             {
                 throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
             }
-            //catch(Exception ex)
-            //{
-            //    Dev2Logger.Log.Error(this, ex);
-            //    throw;
-            //}
             finally
             {
                 sftp.Dispose();
