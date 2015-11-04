@@ -93,28 +93,5 @@ namespace Dev2.Core.Tests.DataList
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("InputOutputViewModelEqualityComparer_GetHashCode")]
-        public void InputOutputViewModelEqualityComparer_Equals_WhenValidObject_ExpectHashCode()
-        {
-            //------------Setup for test--------------------------
-            var inputOutputViewModelEqualityComparer = new InputOutputViewModelEqualityComparer();
-
-            Mock<IInputOutputViewModel> obj1 = new Mock<IInputOutputViewModel>();
-            Mock<IInputOutputViewModel> obj2 = new Mock<IInputOutputViewModel>();
-
-            obj1.Setup(c => c.DisplayName).Returns("rs().val");
-            obj2.Setup(c => c.DisplayName).Returns("rs().val");
-
-            //------------Execute Test---------------------------
-            var result = inputOutputViewModelEqualityComparer.GetHashCode(obj1.Object);
-            var result2 = inputOutputViewModelEqualityComparer.GetHashCode(obj2.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(253903065==result || -31290647==result, "Unrecognized Hash.");
-            Assert.AreEqual(result, result2, "Unrecognized Hash.");
-        }
     }
 }
