@@ -37,9 +37,9 @@ namespace Warewolf.Storage
                 if (_listResult.MoveNext())
                 {
                     _currentResult = _listResult.Current;
-                    return ExecutionEnvironment.WarewolfAtomToString(_listResult.Current);
+                    return ExecutionEnvironment.WarewolfAtomToStringNullAsNothing(_listResult.Current);
                 }
-                return ExecutionEnvironment.WarewolfAtomToString(_currentResult);
+                return ExecutionEnvironment.WarewolfAtomToStringNullAsNothing(_currentResult);
             }
             return null;
           

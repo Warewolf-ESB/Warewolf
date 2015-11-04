@@ -44,7 +44,7 @@ namespace Warewolf.Storage
 
         string ToStar(string expression);
 
-        IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update);
+        IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update,bool throwsifnotexists = false);
 
         IEnumerable<int> EnvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update);
 
@@ -300,6 +300,11 @@ namespace Warewolf.Storage
             return a.ToString();
         }
 
+        public static string WarewolfAtomToStringNullAsNothing(DataASTMutable.WarewolfAtom a)
+        {
+            return a == null ? null : (a.IsNothing ? null : a.ToString());
+        }
+
         public static string WarewolfAtomToStringErrorIfNull(DataASTMutable.WarewolfAtom a)
         {
             if (a == null)
@@ -455,9 +460,9 @@ namespace Warewolf.Storage
             return expression;
         }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string expression, int update)
+        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string expression, int update,bool throwsifnotexists = false)
         {
-            var result = Eval(expression, update);
+            var result = Eval(expression, update,throwsifnotexists);
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException

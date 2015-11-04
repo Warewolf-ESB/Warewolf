@@ -61,9 +61,9 @@ namespace Dev2.Activities
 
         private  Dev2Decision ParseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
-            var col1 =env.EvalAsList(decision.Col1, 0);
-            var col2 = env.EvalAsList(decision.Col2, 0);
-            var col3 = env.EvalAsList(decision.Col3, 0);
+            var col1 =env.EvalAsList(decision.Col1, 0,false);
+            var col2 = env.EvalAsList(decision.Col2, 0, false);
+            var col3 = env.EvalAsList(decision.Col3, 0,false);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 

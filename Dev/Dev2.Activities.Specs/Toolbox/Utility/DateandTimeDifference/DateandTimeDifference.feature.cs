@@ -1529,26 +1529,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 480
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input 1",
-                        "Input 2",
-                        "Input Format",
-                        "Output In"});
-            table62.AddRow(new string[] {
-                        "[[a]]",
-                        "2014/01/06 08:00:01.00",
-                        "dd MM yyyy",
-                        "Years"});
-#line 481
- testRunner.And("the debug inputs as", ((string)(null)), table62, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table63.AddRow(new string[] {
-                        "[[result]] = Error The expression [[a]] has no value assigned"});
-#line 484
- testRunner.And("the debug output as", ((string)(null)), table63, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
@@ -1558,40 +1538,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsByUsingNonExistentVariableAsFirstDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Years by using non existent variable as first date", ((string[])(null)));
-#line 488
+#line 484
 this.ScenarioSetup(scenarioInfo);
-#line 489
+#line 485
  testRunner.Given("I have a first date \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 490
+#line 486
  testRunner.And("I have a second date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 491
+#line 487
  testRunner.And("the date format as \"dd MM yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 492
+#line 488
  testRunner.And("I selected output in \"Years\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 493
+#line 489
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 494
+#line 490
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input 1",
-                        "Input 2",
-                        "Input Format",
-                        "Output In"});
-            table64.AddRow(new string[] {
-                        "[[a]]",
-                        "2014/01/06 08:00:01.00",
-                        "dd MM yyyy",
-                        "Years"});
-#line 495
- testRunner.And("the debug inputs as", ((string)(null)), table64, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table65.AddRow(new string[] {
-                        "[[result]] = Error The expression [[a]] has no value assigned"});
-#line 498
- testRunner.And("the debug output as", ((string)(null)), table65, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -1168,16 +1168,29 @@ Scenario: Runtime invalid recordset variable positve test
        | YES |
 
 
-Scenario: validate that a variable is Null
-	Given a decision variable "[[A]]" value "NULL"
-	And is "[[A]]" "is NULL"
+Scenario: validate that a variable is Null negative
+	Given a decision variable "[[A]]" value "1"
+	And decide if "[[A]]" "IsNull" 
 	When the decision tool is executed
 	Then the execution has "NO" error
-	And the decision result should be "True"
+    And the debug output as 
+       |     |
+       | NO |
 
-Scenario: validate that a variable is not Null
-	Given a decision variable "[[B]]" value "10"
-	And is "[[B]]" "is Not NULL"
+Scenario: validate that a variable is Null Positive
+	Given decide if "[[A]]" "IsNull" 
 	When the decision tool is executed
 	Then the execution has "NO" error
-	And the decision result should be "True"
+    And the debug output as 
+       |     |
+       | YES |
+
+Scenario: validate that a variable is not Null positive
+	Given a decision variable "[[B]]" value "10"
+	And decide if "[[B]]" "IsNotNull" 
+	When the decision tool is executed
+	Then the execution has "NO" error
+    And the debug output as 
+       |     |
+       | YES |
+
