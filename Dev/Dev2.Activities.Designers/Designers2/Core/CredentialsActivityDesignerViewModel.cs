@@ -95,13 +95,17 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
             
             RuleSet credentialUserRuleSet = new RuleSet();
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, DataListSingleton.ActiveDataList.Resource.DataList);
-            credentialUserRuleSet.Add(isValidExpressionRule);
-            errors.AddRange(credentialUserRuleSet.ValidateRules(userNameLabel, onUserNameError));
-            RuleSet credentialPasswordRuleSet = new RuleSet();
-            isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, DataListSingleton.ActiveDataList.Resource.DataList);
-            credentialPasswordRuleSet.Add(isValidExpressionRule);
-            errors.AddRange(credentialPasswordRuleSet.ValidateRules(passwordLabel, onPasswordError));
+            var dataListViewModel = DataListSingleton.ActiveDataList;
+            if(dataListViewModel != null)
+            {
+                IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, dataListViewModel.Resource.DataList);
+                credentialUserRuleSet.Add(isValidExpressionRule);
+                errors.AddRange(credentialUserRuleSet.ValidateRules(userNameLabel, onUserNameError));
+                RuleSet credentialPasswordRuleSet = new RuleSet();
+                isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, dataListViewModel.Resource.DataList);
+                credentialPasswordRuleSet.Add(isValidExpressionRule);
+                errors.AddRange(credentialPasswordRuleSet.ValidateRules(passwordLabel, onPasswordError));
+            }
             if(errors.Count == 0)
             {
                 IsStringEmptyOrWhiteSpaceRule isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => userNameValue)
