@@ -113,8 +113,8 @@ namespace Dev2.Core.Tests.DataList
             var result2 = inputOutputViewModelEqualityComparer.GetHashCode(obj2.Object);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(253903065, result);
-            Assert.AreEqual(result, result2);
+            Assert.IsTrue(253903065==result || -31290647==result, "Unrecognized Hash.");
+            Assert.AreEqual(result, result2, "Unrecognized Hash.");
         }
     }
 }
