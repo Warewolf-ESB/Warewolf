@@ -25,8 +25,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         const double OffsetX = 0.0;
         const double OffsetY = 0.0;
 
-        double _positionX = Double.NaN;
-        double _positionY = Double.NaN;
+        private const double PositionX = Double.NaN;
+        private const double _positionY = Double.NaN;
 
         AdornerLayer _adornerLayer;
 
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var x = _positionX;
+            var x = PositionX;
             if(Double.IsNaN(x))
             {
                 x = DetermineX();
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                     return adornedWidth + OffsetX;
 
                 case HorizontalAlignment.Center:
-                    var x = (adornedWidth / 2) - (adornerWidth / 2);
+                    var x = adornedWidth / 2 - adornerWidth / 2;
                     return x + OffsetX;
 
                 case HorizontalAlignment.Stretch:
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
                     return adornedHeight - adornerHeight + OffsetY;
 
                 case VerticalAlignment.Center:
-                    var x = (adornedHeight / 2) - (adornerHeight / 2);
+                    var x = adornedHeight / 2 - adornerHeight / 2;
                     return x + OffsetY;
 
                 case VerticalAlignment.Stretch:
@@ -151,7 +151,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
 
         double DetermineWidth()
         {
-            if(!Double.IsNaN(_positionX))
+            if(!Double.IsNaN(PositionX))
             {
                 return Content.DesiredSize.Width;
             }

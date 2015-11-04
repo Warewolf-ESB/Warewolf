@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "CaseConversion")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Data.CaseConversion.CaseConversionFeature.FeatureSetup(null);
             }
         }
         
@@ -1300,18 +1300,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAVariableThatDoesNotExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That Does Not Exist", ((string[])(null)));
+#line 336
+this.ScenarioSetup(scenarioInfo);
+#line 337
+ testRunner.Given("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 338
- this.ScenarioSetup(scenarioInfo);
-#line 339
- testRunner.Given("I have a case convert variable \"[[my(1).sentenct]]\" with a value of \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 340
- testRunner.And("I convert a variable \"[[my(1).sentenct]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 342
+#line 339
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable That is NULL")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
+        public virtual void ConvertAVariableThatIsNULL()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That is NULL", ((string[])(null)));
+#line 341
+this.ScenarioSetup(scenarioInfo);
+#line 342
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"Null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 343
- testRunner.And("the execution has \"invalid recordset\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 344
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 345
+ testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -97,20 +97,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
-                        if(single != null)
+                        if (single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
                             var count = 0;
-                            if(dataObject.Environment.HasRecordSet(RecordsetName))
+                            if (dataObject.Environment.HasRecordSet(RecordsetName))
                             {
                                 count = dataObject.Environment.GetCount(rs);
+                                var value = count.ToString();
+                                dataObject.Environment.Assign(CountNumber, value, update);
+                                AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+
                             }
-                            var value = count.ToString();
-                            dataObject.Environment.Assign(CountNumber, value, update);
-                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+                            else
+                            {
+                                allErrors.AddError(String.Format( "Recordset is null {0}",RecordsetName));
+                            }
                         }
                     }
                     catch(Exception e)

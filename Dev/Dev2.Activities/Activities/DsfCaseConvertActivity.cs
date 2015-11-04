@@ -102,7 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         try
                         {
-                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env, update), update);
+                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item, env, update), update);
                         }
                         catch(Exception e)
                         {
@@ -142,31 +142,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(string conversionType,IExecutionEnvironment env,int update)
+        public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(ICaseConvertTO conversionType,IExecutionEnvironment env,int update)
         {
             var convertFunct = CaseConverter.GetFuncs();
             Func<string, string> returnedFunc;
 
-            if (convertFunct.TryGetValue(conversionType, out returnedFunc))
+            if (convertFunct.TryGetValue(conversionType.ConvertType, out returnedFunc))
             {
                 if (returnedFunc != null)
                 {
-                    return (a=>
+                    return a=>
                     {
                         var upper = returnedFunc.Invoke(a.ToString());
                         var evalled = env.Eval(upper, update);
+                    
                         if(evalled.IsWarewolfAtomResult)
                         {
                             var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                             if(warewolfAtomResult != null)
                             {
+
                                 return warewolfAtomResult.Item;
                             }
                             return DataASTMutable.WarewolfAtom.Nothing;
                         }
 
                         return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.EvalResultToString(evalled));
-                    });
+                    };
                 }
             }
             throw  new Exception("Convert option does not exist");
@@ -309,7 +311,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(modelProperty != null)
             {
                 string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }

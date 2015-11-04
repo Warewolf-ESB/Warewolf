@@ -173,31 +173,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update)
         {
-                return (a =>
+                return a =>
+                {
+                    IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                    IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                    IBaseConversionBroker broker = _fac.CreateBroker(@from, to);
+                    var value = a.ToString();
+                    if(a.IsNothing)
                     {
-                        IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                        IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                        IBaseConversionBroker broker = _fac.CreateBroker(from, to);
-                        var value = a.ToString();
-                        if (String.IsNullOrEmpty(value))
-                        {
+                        throw new Exception(string.Format("Scalar value {{{0}}} is NULL", item.FromExpression));
+                    }
+                    if (String.IsNullOrEmpty(value))
+                    {
                            
-                            return DataASTMutable.WarewolfAtom.NewDataString("");
+                        return DataASTMutable.WarewolfAtom.NewDataString("");
                             
-                        }
-                        var upper = broker.Convert(value);
-                        var evalled = env.Eval(upper, update);
-                        if (evalled.IsWarewolfAtomResult)
+                    }
+                    var upper = broker.Convert(value);
+                    var evalled = env.Eval(upper, update);
+                    if (evalled.IsWarewolfAtomResult)
+                    {
+                        var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if (warewolfAtomResult != null)
                         {
-                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            if (warewolfAtomResult != null)
-                            {
-                                return warewolfAtomResult.Item;
-                            }
-                            return DataASTMutable.WarewolfAtom.Nothing;
+                            return warewolfAtomResult.Item;
                         }
-                        return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
-                    });
+                        return DataASTMutable.WarewolfAtom.Nothing;
+                    }
+                    return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                };
 
         }
 
@@ -318,7 +322,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(modelProperty != null)
             {
                 string currentName = modelProperty.ComputedValue as string;
-                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
                 {
                     currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }

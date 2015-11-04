@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities.Utils
 
         protected override void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
-            IDebugState state = base.GetDebugState();
+            IDebugState state = GetDebugState();
             if(state == null)
             {
                 IsDebugStateNull = true;

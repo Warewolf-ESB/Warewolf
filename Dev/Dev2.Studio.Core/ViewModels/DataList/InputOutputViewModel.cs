@@ -44,7 +44,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _typeName = value;
 
-                base.OnPropertyChanged("TypeName");
+                OnPropertyChanged("TypeName");
             }
         }
         public bool RequiredMissing
@@ -115,7 +115,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _value = value;
 
-                base.OnPropertyChanged("Value");
+                OnPropertyChanged("Value");
             }
         }
 
@@ -130,7 +130,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if(!value.Equals(_mapsTo))
                 {
                     _mapsTo = value;
-                    base.OnPropertyChanged("MapsTo");
+                    OnPropertyChanged("MapsTo");
 
                     if(Required)
                     {
@@ -161,9 +161,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 if(!value.Equals(_required))
                 {
                     _required = value;
-                    base.OnPropertyChanged("Required");
+                    OnPropertyChanged("Required");
                     NotifyOfPropertyChange(() => Required);
-                    base.OnPropertyChanged("Required");
+                    OnPropertyChanged("Required");
                 }
             }
         }

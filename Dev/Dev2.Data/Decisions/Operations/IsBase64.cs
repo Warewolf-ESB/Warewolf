@@ -23,7 +23,7 @@ namespace Dev2.Data.Decisions.Operations
         {
             if (!string.IsNullOrEmpty(cols[0]))
             {
-                return (cols[0].IsBase64());
+                return cols[0].IsBase64();
             }
 
             return false;

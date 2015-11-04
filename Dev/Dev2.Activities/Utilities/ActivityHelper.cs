@@ -64,7 +64,7 @@ namespace Dev2.Utilities
                     if(end > start)
                     {
                         start += 2;
-                        val = val.Substring(start, (end - start));
+                        val = val.Substring(start, end - start);
 
                         // Convert back for usage ;)
                         val = Dev2DecisionStack.FromVBPersitableModelToJSON(val);

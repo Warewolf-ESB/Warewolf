@@ -391,7 +391,7 @@ namespace System.Windows.Controls
         public static FrameworkElement GetImplementationRoot(DependencyObject dependencyObject)
         {
             Debug.Assert(dependencyObject != null, "DependencyObject should not be null.");
-            return (1 == VisualTreeHelper.GetChildrenCount(dependencyObject)) ?
+            return 1 == VisualTreeHelper.GetChildrenCount(dependencyObject) ?
                 VisualTreeHelper.GetChild(dependencyObject, 0) as FrameworkElement :
                 null;
         }

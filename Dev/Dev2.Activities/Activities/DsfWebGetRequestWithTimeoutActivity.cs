@@ -166,7 +166,7 @@ namespace Dev2.Activities
                     {
                         var result = WebRequestInvoker.ExecuteRequest(Method,
                             c,
-                            headersEntries, (TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000)  // important to list the parameter name here to see the conversion from seconds to milliseconds
+                            headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
                             );
 
                         allErrors.MergeErrors(errorsTo);

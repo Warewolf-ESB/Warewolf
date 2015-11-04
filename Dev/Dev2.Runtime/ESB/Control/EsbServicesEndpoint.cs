@@ -558,7 +558,7 @@ namespace Dev2.Runtime.ESB.Control
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return (removeCondition && !el.HasElements);
+                    return removeCondition && !el.HasElements;
                 }).Remove();
 
                 var xElements = rootEl.Elements().Where(el => el.HasElements);

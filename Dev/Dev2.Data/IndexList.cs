@@ -81,7 +81,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool Contains(int idx)
         {
-            bool result = (idx <= MaxValue && idx >= 0 && !Gaps.Contains(idx));
+            bool result = idx <= MaxValue && idx >= 0 && !Gaps.Contains(idx);
 
             return result;
         }
@@ -91,7 +91,7 @@ namespace Dev2.Data.Binary_Objects
 
             if(MinValue > 1)
             {
-                var res = (MaxValue - MinValue);
+                var res = MaxValue - MinValue;
 
                 return res;
             }
@@ -117,7 +117,7 @@ namespace Dev2.Data.Binary_Objects
                 }
 
                 // now fill in the gaps?!
-                for(int i = (currMax + 1); i < idx; i++)
+                for(int i = currMax + 1; i < idx; i++)
                 {
                     Gaps.Add(i);
                 }

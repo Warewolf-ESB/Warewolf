@@ -34,7 +34,7 @@ namespace Dev2.DataList
             var type = typeof(IFindRecsetOptions);
 
             List<Type> types = typeof(IFindRecsetOptions).Assembly.GetTypes()
-                   .Where(t => (type.IsAssignableFrom(t))).ToList();
+                   .Where(t => type.IsAssignableFrom(t)).ToList();
 
             foreach(Type t in types)
             {

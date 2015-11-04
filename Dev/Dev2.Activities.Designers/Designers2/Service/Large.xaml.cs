@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Service
 
                 var heightInfo = GetHeightInfo(dataGrid);
                 var minItemCount = Math.Min(itemCount, 5);
-                var height = heightInfo.Header + (minItemCount * heightInfo.Row) + DataGridBorderThickness;
+                var height = heightInfo.Header + minItemCount * heightInfo.Row + DataGridBorderThickness;
                 rowDef.Height = new GridLength(CalcPercentage(itemCount, totalCount), GridUnitType.Star);
                 rowDef.MinHeight = height;
                 return rowDef;
@@ -85,7 +85,7 @@ namespace Dev2.Activities.Designers2.Service
         static double CalcPercentage(int itemCount, double totalCount)
         {
             const double Weight = 100; // Otherwize vertical scrollbar disappears behind errors control
-            var p = (int)((itemCount / totalCount) * 100);
+            var p = (int)(itemCount / totalCount * 100);
             return p + Weight;
         }
 

@@ -41,7 +41,7 @@ namespace Dev2.Common
 
         public bool CanUseEnumerator(bool isReversed)
         {
-            return (isReversed != true && _tokenParts.Length == 1);
+            return isReversed != true && _tokenParts.Length == 1;
         }
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
@@ -173,10 +173,9 @@ namespace Dev2.Common
                 cnt = _tokenParts.Length - 1;
             }
 
-            if (((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed) || !isReversed)
+            if ((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed || !isReversed)
             {
-                while (((cnt < _tokenParts.Length) && (cnt >= 0)) && (canidateIdx >= 0 && canidateIdx < canidate.Length) &&
-                       result)
+                while (cnt < _tokenParts.Length && cnt >= 0 && canidateIdx >= 0 && canidateIdx < canidate.Length && result)
                 {
                     if (canidate[canidateIdx] != _tokenParts[cnt])
                     {

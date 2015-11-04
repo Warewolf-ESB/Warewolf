@@ -48,14 +48,14 @@ namespace Dev2.Data.TO
         public bool IsRoot {
 
             get {
-                return (Parent == null);
+                return Parent == null;
             }
         }
 
         public bool IsLeaf {
 
             get {
-                return (Child == null);
+                return Child == null;
             }
         }
     }

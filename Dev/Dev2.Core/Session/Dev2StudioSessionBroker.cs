@@ -85,7 +85,7 @@ namespace Dev2.Session
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                 {
                     to.XmlData = tmp.RememberInputs
-                        ? (tmp.XmlData)
+                        ? tmp.XmlData
                         : (to.XmlData ?? "<DataList></DataList>");
                     tmp.CleanUp();
                 }

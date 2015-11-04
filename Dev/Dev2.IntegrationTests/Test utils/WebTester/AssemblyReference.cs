@@ -19,9 +19,9 @@ namespace Dev2.Integration.Tests.WebTester
     class AssemblyReference
     {
         private Assembly _assembly;
-        Dictionary<string, ParameterInfo[]> methodParamMap;
+        readonly Dictionary<string, ParameterInfo[]> methodParamMap;
 
-        private string path = Path.GetFullPath(@".\plugins\");
+        private readonly string path = Path.GetFullPath(@".\plugins\");
 
         public AssemblyReference()
         {

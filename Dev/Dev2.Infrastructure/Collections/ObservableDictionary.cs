@@ -182,7 +182,7 @@ namespace Dev2.Collections
         protected virtual bool ClearEntries()
         {
             // check whether there are entries to clear
-            var result = (Count > 0);
+            var result = Count > 0;
             if(result)
             {
                 // if so, clear the dictionary
@@ -455,7 +455,7 @@ namespace Dev2.Collections
             {
                 throw new ArgumentNullException("array");
             }
-            if((index < 0) || (index > array.Length))
+            if(index < 0 || index > array.Length)
             {
                 throw new ArgumentOutOfRangeException("index");
             }

@@ -330,3 +330,17 @@ Scenario: Execute Python with a negative recordset index
 	And the debug output as 
 	|               |
 	| [[result]] = |
+
+
+Scenario: Execute JavaScript with a null variable 
+	Given I have a variable "[[a]]" with value ""
+	And I have this script to execute "[[a]]"
+	And I have selected the language as "JavaScript"
+	When I execute the script tool
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language   | Script |
+	| JavaScript | [[a]]  |
+	And the debug output as 
+	|               |
+	| [[result]] = Scalar value { a } is NULL |

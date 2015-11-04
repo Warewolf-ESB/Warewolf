@@ -42,12 +42,12 @@ namespace Dev2.Converters
         {
             if (payload.Length >= 8)
             {
-                var result = new byte[(payload.Length/8)];
+                var result = new byte[payload.Length/8];
 
                 int pos = 0;
                 for (int i = 0; i < payload.Length; i += 8)
                 {
-                    result[pos] = Convert.ToByte((payload.Substring(i, 8)), 2);
+                    result[pos] = Convert.ToByte(payload.Substring(i, 8), 2);
                     pos++;
                 }
 

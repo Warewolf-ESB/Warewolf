@@ -18,7 +18,7 @@ namespace Dev2.DynamicServices
     public class StudioNetworkSession : NetworkContext, IStudioNetworkSession
     {
         private StudioAccount _account;
-        private object _auxiliaryLock;
+        private readonly object _auxiliaryLock;
         private HashSet<AuxiliaryConnectionRequest> _auxiliaryRequests;
 
         public StudioAccount Account
@@ -80,8 +80,8 @@ namespace Dev2.DynamicServices
 
         private sealed class AuxiliaryConnectionRequest
         {
-            private DateTime _expiration;
-            private Guid _identifier;
+            private readonly DateTime _expiration;
+            private readonly Guid _identifier;
 
             public DateTime Expiration { get { return _expiration; } }
             public Guid Identifier { get { return _identifier; } }

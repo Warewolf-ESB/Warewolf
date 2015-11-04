@@ -476,7 +476,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         // ReSharper restore ExcessiveIndentation
         // ReSharper restore MethodTooLong
         {
-            for (int i = 0; i < addedItems.Count(); i++)
+            for (int i = 0; i < addedItems.Count; i++)
             {
                 var mi = addedItems.ToList()[i];
 
@@ -546,7 +546,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         start += 2;
                                         end -= 1;
-                                        switchExpressionValue = tmp.Substring(start, (end - start));
+                                        switchExpressionValue = tmp.Substring(start, end - start);
                                     }
                                 }
                             }
@@ -556,7 +556,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 #endregion
 
                     ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
+                    if (modelProperty != null && modelProperty.Value != null && modelProperty.Value.ToString().Contains("Case"))
                     {
                         Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
                         EventPublisher.Publish(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
@@ -887,7 +887,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var getCol = getCols[i];
                             var parsed = GetParsedRegions(getCol, datalistModel);
-                            if (!DataListUtil.IsValueRecordset((getCol)) && parsed.Any(a => DataListUtil.IsValueRecordset((a))))
+                            if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(a => DataListUtil.IsValueRecordset(a)))
                             {
                                 IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
 
@@ -903,7 +903,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 catch (Exception)
                 {
 
-                    if (!DataListUtil.IsValueRecordset((decisionValue)))
+                    if (!DataListUtil.IsValueRecordset(decisionValue))
                     {
                         IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
 
@@ -1475,7 +1475,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
-            if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
+            if (Designer != null && Designer.View.IsKeyboardFocusWithin || sender != null)
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
 
@@ -1804,7 +1804,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
         private Action<IList<IDataListVerifyPart>> _dispatcherAction;
         bool _firstWorkflowChange;
-        IAsyncWorker _asyncWorker;
+        readonly IAsyncWorker _asyncWorker;
 
         /// <summary>
         /// Models the service model changed.
@@ -2106,7 +2106,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return (ResourceModel == null)
+                return ResourceModel == null
                            ? WorkSurfaceContext.Unknown
                            : ResourceModel.ResourceType.ToWorkSurfaceContext();
             }

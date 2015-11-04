@@ -41,7 +41,7 @@ namespace Dev2.Services.Security
         public static bool CanDebug(this Permissions permissions)
         {
             return permissions.IsContributor() ||
-                   (permissions.HasFlag(Permissions.View) && permissions.HasFlag(Permissions.Execute));
+                   permissions.HasFlag(Permissions.View) && permissions.HasFlag(Permissions.Execute);
         }
 
         public static Permissions ToPermissions(this AuthorizationContext context)

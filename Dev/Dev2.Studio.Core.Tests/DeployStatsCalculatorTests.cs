@@ -61,7 +61,7 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
 
         }
-        static Guid resourceIdConflict = Guid.NewGuid();
+        static readonly Guid resourceIdConflict = Guid.NewGuid();
         protected StudioResourceRepository CreateModels(bool isChecked, Mock<IContextualResourceModel> mockResourceModel, out IEnvironmentModel environmentModel, out IExplorerItemModel resourceVm, out IExplorerItemModel rootItem)
         {
             Mock<IContextualResourceModel> resourceModel = mockResourceModel;

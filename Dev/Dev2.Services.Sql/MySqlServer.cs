@@ -132,7 +132,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
+            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
@@ -323,7 +323,7 @@ namespace Dev2.Services.Sql
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
+                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                     delegate(IDataReader reader)
                     {
                         var sb = new StringBuilder();

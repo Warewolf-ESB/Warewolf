@@ -32,14 +32,14 @@ namespace Dev2.DataList.Contract
         public bool HasRecordsetIndex
         {
 
-            get { return (RecordsetIndex != string.Empty); }
+            get { return RecordsetIndex != string.Empty; }
 
         }
 
         public bool IsScalar
         {
 
-            get { return (Recordset.Length == 0); }
+            get { return Recordset.Length == 0; }
         }
 
         internal DateTimeVerifyPart(string displayValue, string description)

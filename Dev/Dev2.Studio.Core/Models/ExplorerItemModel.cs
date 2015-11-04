@@ -17,11 +17,14 @@ using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
@@ -42,6 +45,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Models
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ExplorerItemModel : ObservableObject, IExplorerItemModel
     {
         #region Fields
@@ -242,17 +246,7 @@ namespace Dev2.Models
             // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public Guid ResourceId
-        {
-            get
-            {
-                return _resourceId;
-            }
-            set
-            {
-                _resourceId = value;
-            }
-        }
+        public Guid ResourceId { get; set; }
         public ResourceType ResourceType { get; set; }
 
         public ObservableCollection<IExplorerItemModel> Children
@@ -923,6 +917,7 @@ namespace Dev2.Models
         }
         public IWindowManager WindowManager
         {
+            // ReSharper disable once MemberCanBePrivate.Global
             get
             {
                 return _windowManager?? (_windowManager = new WindowManager());
@@ -1433,20 +1428,45 @@ namespace Dev2.Models
 
             if(ResourceType == ResourceType.Version)
             {
-                var workflowXaml = _studioResourceRepository.GetVersion(VersionInfo, EnvironmentId);
-                if(workflowXaml != null)
+                var resourceDefinition = _studioResourceRepository.GetVersion(VersionInfo, EnvironmentId);
+                if(resourceDefinition != null)
                 {
                     IResourceModel resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == Parent.ResourceId);
-                    var resourceVersion = new ResourceModel(environmentModel, EventPublishers.Aggregator)
+                    try
+                    {
+                        var xamlElement = XElement.Parse(resourceDefinition.ToString());
+                        var dataList = xamlElement.Element("DataList");
+                        var dataListString = "";
+                        if(dataList != null)
+                        {
+                            dataListString = dataList.ToString();
+                        }
+                        var action = xamlElement.Element("Action");
+                        var xamlString = "";
+                        if (action != null)
+                        {
+                            var xaml = action.Element("XamlDefinition");
+                            if(xaml != null)
+                            {
+                                xamlString = xaml.Value;
+                            }
+                        }
+                        var resourceVersion = new ResourceModel(environmentModel, EventPublishers.Aggregator)
                         {
                             ResourceType = resourceModel.ResourceType,
                             ResourceName = string.Format("{0} (v.{1})", Parent.DisplayName, VersionInfo.VersionNumber),
-                            WorkflowXaml = workflowXaml,
+                            WorkflowXaml = new StringBuilder(xamlString),
                             UserPermissions = Permissions.View,
+                            DataList = dataListString,
                             IsVersionResource = true,
                             ID = ResourceId
                         };
-                    WorkflowDesignerUtils.EditResource(resourceVersion, EventPublishers.Aggregator);
+                        WorkflowDesignerUtils.EditResource(resourceVersion, EventPublishers.Aggregator);
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message,e);
+                    }
                 }
             }
             else
@@ -1589,7 +1609,6 @@ namespace Dev2.Models
         public static Action<CheckStateChangedArgs> OnCheckedStateChangedAction;
         public static Action<bool> OnRenameChangedAction;
         IWindowManager _windowManager;
-        Guid _resourceId;
 
         /// <summary>
         ///     Verifies the state of the IsChecked property by taking the childrens IsChecked State into account
@@ -1599,7 +1618,7 @@ namespace Dev2.Models
         public virtual void VerifyCheckState()
         {
             bool? state = null;
-            var count = Children.Count();
+            var count = Children.Count;
             var i = 0;
             var stateNull = false;
             while(i < count && !stateNull)

@@ -88,15 +88,19 @@ namespace Dev2.Data
             _currentValue++;
             if (_listResult != null)
             {
-                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());
+                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(_listResult.Item.GetNextValue());
                 warewolfAtomToString = DoCalcution(warewolfAtomToString);
                 return warewolfAtomToString;
             }
-            return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item)) : null;
+            return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(_scalarResult.Item)) : null;
         }
 
         static string DoCalcution(string warewolfAtomToString)
         {
+            if(warewolfAtomToString == null)
+            {
+                return null;
+            }
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
 

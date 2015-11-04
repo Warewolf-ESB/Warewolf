@@ -305,12 +305,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             DsfFileRead activity = new DsfFileRead();
             activity.InputPath = "[[InputPath]]";
             activity.Password = "[[Password]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.Username = "[[Username]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[InputPath]]", "[[Password]]", "[[Username]]", "[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -325,12 +326,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.FileContents = "[[FileContents]]";
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.Username = "[[Username]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[FileContents]]", "[[OutputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[FileContents]]", "[[OutputPath]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -344,12 +346,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             DsfFolderRead activity = new DsfFolderRead();
             activity.InputPath = "[[InputPath]]";
             activity.Password = "[[Password]]";
+            activity.PrivateKeyFile = "[[PrivateKey]]";
             activity.Username = "[[Username]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "False", "False", "False", "[[InputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "False", "False", "False", "[[InputPath]]", "[[Password]]", "[[Username]]","[[PrivateKey]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -364,14 +367,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.InputPath = "[[InputPath]]";
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.Username = "[[Username]]";
             activity.DestinationPassword = "[[DestPassword]]";
             activity.DestinationUsername = "[[DestUsername]]";
+            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestKeyFile]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -386,11 +391,12 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[OutputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[OutputPath]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -405,11 +411,12 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.InputPath = "[[InputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[InputPath]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -425,13 +432,15 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.DestinationPassword = "[[DestPassword]]";
             activity.DestinationUsername = "[[DestUsername]]";
+            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]","[[DestKeyFile]]", "[[DestPassword]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -447,13 +456,15 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.DestinationPassword = "[[DestPassword]]";
             activity.DestinationUsername = "[[DestUsername]]";
+            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]","[[DestKeyFile]]", "[[DestPassword]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -470,13 +481,15 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.InputPath = "[[InputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.DestinationPassword = "[[DestPassword]]";
             activity.DestinationUsername = "[[DestUsername]]";
+            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[ArchivePassword]]", "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[ArchivePassword]]", "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]","[[DestKeyFile]]", "[[DestPassword]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -495,13 +508,15 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             activity.OutputPath = "[[OutputPath]]";
             activity.Password = "[[Password]]";
             activity.Username = "[[Username]]";
+            activity.PrivateKeyFile = "[[KeyFile]]";
             activity.DestinationPassword = "[[DestPassword]]";
             activity.DestinationUsername = "[[DestUsername]]";
+            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
             activity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> {"[[ArchivePassword]]", "[[ArchiveName]]", "[[CompressionRatio]]", "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]", "[[DestPassword]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> {"[[ArchivePassword]]", "[[ArchiveName]]", "[[CompressionRatio]]", "[[InputPath]]", "[[OutputPath]]", "[[DestUsername]]","[[DestKeyFile]]", "[[DestPassword]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 

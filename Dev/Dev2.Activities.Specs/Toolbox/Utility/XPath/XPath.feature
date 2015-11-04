@@ -218,6 +218,21 @@ Scenario: Use XPath to with a comment in it
 	|   | [[rec(3).id]] = 3        |	
 
 
+Scenario: Use XPath with a NULL variable as output 
+	Given I have a formatnumber variable "[[var]]" equal to NULL
+	And I have this xml '' in a variable "[[var]]"
+	And I assign the variable "[[var]]" as xml input
+	And I have a variable "[[rec(1).ids]]" output with xpath "//root/number[@id='2']/text()"
+	When the xpath tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| XML            | # |                                                |
+	| [[var]] = NULL | 1 | [[rec(1).ids]] = //root/number[@id='2']/text() |
+	And the debug output as 
+	| # |                   |
+	| 1 | Error Value cannot be Null |
+
+
 @ignore
 #wolf-829
 #Scenario: Serialization when returning Xml from DLL	

@@ -56,14 +56,23 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 
             if (variableList != null)
             {
-                foreach (dynamic variable in variableList)
-                {
-                    if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+ foreach (dynamic variable in variableList)
                     {
-                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2), 0);
+                        if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+                        {
+                            string value = variable.Item2 == "blank" ? "" : variable.Item2;
+                            if (value.ToUpper() == "NULL")
+                            {
+                                DataObject.Environment.AssignDataShape((variable.Item1));
+                            }
+                            else
+                            {
+                                DataObject.Environment.AssignWithFrame(new AssignValue(  DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value), 0);
+                            }
+                        }
+                        //Build(variable, shape, data, row);
+                        row++;
                     }
-                    row++;
-                }
                 DataObject.Environment.CommitAssign();
             }
 

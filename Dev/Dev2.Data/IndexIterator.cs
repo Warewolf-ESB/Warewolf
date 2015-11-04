@@ -46,7 +46,7 @@ namespace Dev2.Data
         /// </value>
         public int Count
         {
-            get { return (IndexList.Count()); }
+            get { return IndexList.Count(); }
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Dev2.Data
                     return true;
                 }
 
-                return (result == 0);
+                return result == 0;
             }
         }
 
@@ -100,7 +100,7 @@ namespace Dev2.Data
                 canidate++;
             }
 
-            return (canidate <= IndexList.MaxValue);
+            return canidate <= IndexList.MaxValue;
         }
 
         /// <summary>

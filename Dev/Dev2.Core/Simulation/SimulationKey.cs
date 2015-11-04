@@ -48,7 +48,7 @@ namespace Dev2.Simulation
         {
             unchecked
             {
-                var hashCode = (WorkflowID != null ? WorkflowID.GetHashCode() : 0);
+                var hashCode = WorkflowID != null ? WorkflowID.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (ActivityID != null ? ActivityID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ScenarioID != null ? ScenarioID.GetHashCode() : 0);
                 return hashCode;

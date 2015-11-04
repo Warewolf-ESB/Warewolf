@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core
             set
             {
                 _isSelected = value;
-                base.OnPropertyChanged("IsSelected");
+                OnPropertyChanged("IsSelected");
             }
         }
 
@@ -60,7 +60,7 @@ namespace Dev2.Studio.Core
             set
             {
                 _isExpanded = value;
-                base.OnPropertyChanged("IsExpanded");
+                OnPropertyChanged("IsExpanded");
             }
         }
 

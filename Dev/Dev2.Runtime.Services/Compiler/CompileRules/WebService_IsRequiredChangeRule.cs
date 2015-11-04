@@ -48,14 +48,14 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
 
                 return
-                    (new CompileMessageTO
+                    new CompileMessageTO
                     {
                         MessageType = CompileMessageType.MappingIsRequiredChanged,
                         ServiceID = serviceID,
                         MessageID = Guid.NewGuid(),
                         MessagePayload = defStr,
                         ErrorType = ErrorType.Critical
-                    });
+                    };
             }
             else
             {
@@ -64,14 +64,14 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
 
                 return
-                    (new CompileMessageTO
+                    new CompileMessageTO
                     {
                         MessageType = CompileMessageType.MappingIsRequiredChanged,
                         ServiceID = serviceID,
                         MessageID = Guid.NewGuid(),
                         MessagePayload = defStr,
                         ErrorType = ErrorType.None
-                    });
+                    };
             }
 
         }

@@ -67,7 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     
 
-                    var evalledFrom = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from, update));
+                    var evalledFrom = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from, update));
                     int intFrom;
                     if (!int.TryParse(evalledFrom, out intFrom) || intFrom < 1)
                     {
@@ -81,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         break;
                     }
 
-                    var evalledTo= Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to, update));
+                    var evalledTo= ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to, update));
                
                     int intTo;
                     if (!int.TryParse(evalledTo, out intTo) || intTo < 1)
@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     break;
                 case enForEachType.InCSV:
-                    var csvIndexedsItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers, update));
+                    var csvIndexedsItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers, update));
 
                     ErrorResultTO allErrors;
                     List<int> listOfIndexes = SplitOutCsvIndexes(csvIndexedsItr, out allErrors);
@@ -128,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     }
 
                     int intExNum;
-                    var numOfExItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes, update));
+                    var numOfExItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes, update));
 
                     if (!int.TryParse(numOfExItr, out intExNum))
                     {

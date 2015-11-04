@@ -1,12 +1,12 @@
 
-<Source ID="94d4b4ca-31e1-494d-886b-cd94224c9a8b" Name="SharePoint Test Server" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAAAShkcmXW8PcUehuU/7/DmlAAAAAASAAACgAAAAEAAAAEMbDrgsF+fRn6trULkvQ214AAAAIvzHESWFZhKzoPxLuc1idsAu5i93TK5XaP0Du3XK2yoUaYtdApA0y79x4zX3ZsXlC6WLOtjYSqx4MIznoxZPbMsIHELgrIsIGs8t9Im8i/LKGQkqwF+xFwQSX6DBVxcTnq6x+O75rCrA6NZl7m7galXQuOp9ks8qFAAAAC7sjlbduoVBmGZj96e8mcAp8TqO" IsSharepointOnline="true" Type="SharepointServerSource" ServerVersion="0.0.5777.29405" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="94d4b4ca-31e1-494d-886b-cd94224c9a8b" Name="SharePoint Test Server" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="Server=http://rsaklfsvrsharep/;AuthenticationType=Windows" Type="SharepointServerSource" ServerVersion="0.5.5666.20657" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>SharePoint Test Server</DisplayName>
   <Category>Acceptance Testing Resources\SharePoint\SharePoint Test Server</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>SharepointServerSource</TypeOf>
-  <VersionInfo DateTimeStamp="2015-10-26T16:14:48.1431358+02:00" Reason="Save" User="" VersionNumber="5" ResourceId="94d4b4ca-31e1-494d-886b-cd94224c9a8b" VersionId="a56b0127-dfd6-4cbc-9d41-7c8fd436d69e" />
+  <VersionInfo DateTimeStamp="2015-07-07T09:49:43.2102319+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="94d4b4ca-31e1-494d-886b-cd94224c9a8b" VersionId="6d47f370-c0d3-4b96-89d7-52090a38331a" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -16,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>jWIMWSltWZCIe3QagT8Gns6s8gw=</DigestValue>
+        <DigestValue>A05xOGwdRTJqRxIKPNMh7JQwopk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>kzJiIoBATCktdxw2gteQLeamuoiwyg/ZiJm/E9ybL808H2Aqok6qlT+Jf4/KKj7/OEG1VYhsK4XA/C8sZMqgbX4Y5knP8UPW6EUjjVZ8xKATKARBIblAP2XZPC4WnhhDJyiXLhoER4b/bWg18LeIV4XaiOSAiJsTKTMxkcRGdIc=</SignatureValue>
+    <SignatureValue>fZDA11ZKn1y1rs/EPt9v7ZfbJYhKWg7+NuotQ32rpTHHcvhpYSSJXBBZIOZxOpmAMzZt2YvKbsTk6DywNMnHMA2GSSwFUqvUcQvM31UuG5ZchKU1fiurrK1sa2qzQtpqEBPDJ/SE1uLytk72mrsBV2vpnhPDz3GovpQuyYc86hg=</SignatureValue>
   </Signature>
 </Source>

@@ -79,7 +79,7 @@ namespace Dev2.Data.Decisions.Operations
                 throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
             }
 
-            return (!(left > 0 && right < 0));
+            return !(left > 0 && right < 0);
         }
     }
 }

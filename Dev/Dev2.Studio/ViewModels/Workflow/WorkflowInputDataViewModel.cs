@@ -325,7 +325,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
             if(allScalars && WorkflowInputs.Count > 0)
             {
-                return WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=" + workflowInput.Value + "&")).TrimEnd('&');
+                return WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=") + workflowInput.Value + "&").TrimEnd('&');
             }
             return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
         }
@@ -437,13 +437,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if(numberOfRows == 2)
                 {
-                    IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => (c.RecordsetIndex == "1") && c.Recordset == itemToRemove.Recordset);
+                    IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => c.RecordsetIndex == "1" && c.Recordset == itemToRemove.Recordset);
                     bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
                     if(removeRow)
                     {
 
-                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => (c.RecordsetIndex == "2") && c.Recordset == itemToRemove.Recordset);
+                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.RecordsetIndex == "2" && c.Recordset == itemToRemove.Recordset);
 
                         foreach(IDataListItem item in listToChange)
                         {
@@ -468,7 +468,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else if(numberOfRows > 2)
                 {
-                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => (c.RecordsetIndex == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture)) && c.Recordset == itemToRemove.Recordset);
+                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.RecordsetIndex == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
                     foreach(IDataListItem item in listToChange)
                     {
                         item.Value = string.Empty;

@@ -192,3 +192,14 @@ Scenario: Format number with negative recordset index for decimals to show
 	When the format number is executed
 	Then the execution has "AN" error
 
+
+Scenario: Format a variable with a null value
+	Given I have a formatnumber variable "[[int]]" equal to NULL
+	And I have a number "[[int]]"
+	And I want to show "2" decimals 
+	When the format number is executed
+	Then the execution has "AN" error
+	And the debug output as
+         | outPut                                              |
+         | Error Unable to format '' because it isn't a number | 
+

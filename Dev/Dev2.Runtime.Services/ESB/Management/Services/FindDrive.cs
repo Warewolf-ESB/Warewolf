@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(!string.IsNullOrEmpty(username))
                 {
-                    domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
+                    domain = domain.Length > 0 && domain != "." ? domain : Environment.UserDomainName;
                     bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
                                              LOGON32_PROVIDER_DEFAULT, ref accessToken);
                     if(success)
@@ -152,7 +152,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             @""", ""isLazy"": true, ""title"": """ + name[0] + @":""},";
                 }
             }
-            json = json.Substring(0, (json.Length - 1));
+            json = json.Substring(0, json.Length - 1);
             json += "]";
             return json;
         }

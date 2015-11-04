@@ -276,19 +276,21 @@ Scenario: Sort Recordset without field Forwards
 	Then the execution has "AN" error
 
 #				
-Scenario: Sort Recordset without field Backwards
+Scenario: Sort Null Recordset
 	Given I have the following recordset to sort
-	| rs       | value     |
-	| rs(1).a  | Zambia    |
-	| rec(1).a | Mangolia  |
-	| rs(2).a  | America   |
-	| rec(2).a | Australia |
-	And I sort a record "[[rs(*)]]"
+	| rs     | value |
+	| [[rs().a]] | NULL  |
+	And I sort a record "[[rs(*).a]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the execution has "AN" error
+	Then the execution has "No" error
 
 
+	Scenario: Sort non existent Recordset
+	Given I sort a record "[[rs(*)]]"
+	And my sort order is "Backwards"
+	When the sort records tool is executed
+	Then the execution has "An" error
 
 
 

@@ -59,7 +59,7 @@ namespace Dev2.Common
         {
             unchecked
             {
-                var hashCode = (Name != null ? Name.GetHashCode() : 0);
+                var hashCode = Name != null ? Name.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Image != null ? Image.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);

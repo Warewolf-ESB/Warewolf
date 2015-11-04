@@ -68,3 +68,13 @@ Scenario: Execute cmd with negative recordset index
 	| [[result]] = |
 
 
+Scenario: Execute a NULL cmd
+	Given I have a variable "[[command]]" with value "NULL"
+	And I have this command script to execute "dir [[command]]"
+	When the command tool is executed
+	Then the result of the command tool will be ""
+	And the execution has "AN" error
+	And the debug output as 
+	|                    |
+	| [[result]] = Error |
+

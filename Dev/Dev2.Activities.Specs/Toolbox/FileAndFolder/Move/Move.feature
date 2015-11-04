@@ -55,6 +55,23 @@ Scenario Outline: Move file at location
 	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://localhost/movefile31.txt                              | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved41.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://localhost/movefile41.txt                              | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/moved41.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 																																																																														                     
+
+Scenario Outline: Move file at location Null
+	Given I have a source path '<source>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+    And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And use private public key for source is '<sourcePrivateKeyFile>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
+	And result as '<resultVar>'
+    When the Move file tool is executed
+	Then the execution has "<errorOccured>" error
+
+	Examples: 
+	   | No | Name           | source         | sourceLocation | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | Local to Local | [[sourcePath]] | C:\moved0.txt  | ""       | ""       | [[destPath]] | C:\moved0.txt       | ""           | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 2  | Local to Local | [[sourcePath]] | NULL           | ""       | ""       | [[destPath]] | Null                | ""           | ""           | True     | [[result]] | Failure | AN           |                      |                           |
 																																																																														                     
 	 																																																																													                     
 																																																																														                     

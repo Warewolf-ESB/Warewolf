@@ -1916,7 +1916,7 @@ namespace Dev2.Core.Tests.Repositories
                 };
 
             var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Execute Test---------------------------
             studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
                 {
@@ -1924,7 +1924,7 @@ namespace Dev2.Core.Tests.Repositories
                     ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
                     ResourceType = ResourceType.Folder
                 });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
             Assert.AreEqual(0, before);
@@ -2040,14 +2040,14 @@ namespace Dev2.Core.Tests.Repositories
                 };
 
             var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Execute Test---------------------------
             studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
                 {
                     DisplayName = "TEST FOLDER",
                     ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER"
                 });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
             Assert.AreEqual(0, before);
@@ -2129,7 +2129,7 @@ namespace Dev2.Core.Tests.Repositories
             };
 
             var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Execute Test---------------------------
             studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
             {
@@ -2137,7 +2137,7 @@ namespace Dev2.Core.Tests.Repositories
                 ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
                 ResourceId = Guid.NewGuid()
             });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Assert Results-------------------------
             mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
             Assert.AreEqual(0, before);
@@ -2171,7 +2171,7 @@ namespace Dev2.Core.Tests.Repositories
             repo.GetCurrentEnvironment = () => Guid.Empty;
 
             var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Execute Test---------------------------
             studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
             {
@@ -2179,7 +2179,7 @@ namespace Dev2.Core.Tests.Repositories
                 ResourcePath = "MANFOLDER\\APRIL\\TEST FOLDER"
             });
 
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
             //------------Assert Results-------------------------
             Assert.AreEqual(0, before);
             Assert.AreEqual(0, after);

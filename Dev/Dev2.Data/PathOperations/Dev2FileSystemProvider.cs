@@ -149,7 +149,7 @@ namespace Dev2.PathOperations
                         dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password,dst.PrivateKeyFile);
                     }
                 }
-                if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+                if (args.Overwrite || !args.Overwrite && !FileExist(dst))
                 {
                     _fileLock.EnterWriteLock();
                     try
@@ -445,7 +445,7 @@ namespace Dev2.PathOperations
         public bool HandlesType(enActivityIOPathType type)
         {
 
-            return (type == enActivityIOPathType.FileSystem);
+            return type == enActivityIOPathType.FileSystem;
         }
 
         public enPathType PathIs(IActivityIOPath path)
@@ -526,7 +526,7 @@ namespace Dev2.PathOperations
 
             if (idx > 0)
             {
-                result = path.Username.Substring((idx + 1));
+                result = path.Username.Substring(idx + 1);
             }
 
             return result;

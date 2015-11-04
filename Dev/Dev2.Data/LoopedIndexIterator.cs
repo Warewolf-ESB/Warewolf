@@ -35,7 +35,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool HasMore()
         {
-            return (_curPos < _itrCnt);
+            return _curPos < _itrCnt;
         }
 
         public int FetchNextIndex()

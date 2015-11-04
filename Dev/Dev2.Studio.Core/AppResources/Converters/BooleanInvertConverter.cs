@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            return !((bool)value);
+            return !(bool)value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            return !((bool)value);
+            return !(bool)value;
         }
     }
 }

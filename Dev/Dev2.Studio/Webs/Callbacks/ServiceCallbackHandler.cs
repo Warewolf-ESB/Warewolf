@@ -130,7 +130,7 @@ namespace Dev2.Webs.Callbacks
                 var start = idx + SourceParam.Length;
                 var end = uri.IndexOf('&', start);
                 end = end > 0 ? end : uri.Length;
-                uri = uri.Remove(start, (end - start));
+                uri = uri.Remove(start, end - start);
                 uri = uri.Insert(start, sourceID.ToString());
             }
             else

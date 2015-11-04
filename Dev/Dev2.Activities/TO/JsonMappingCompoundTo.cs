@@ -83,7 +83,7 @@ namespace Dev2.TO
                             {
                                 _evalResultAsObject = true;
                             }
-                            else if ((x.Item as DataASTMutable.WarewolfAtom.DataString).Item == "false")
+                            else if (((DataASTMutable.WarewolfAtom.DataString)x.Item).Item == "false")
                             {
                                 _evalResultAsObject = false;
                             }
@@ -326,8 +326,8 @@ namespace Dev2.TO
                     {
                         return "Cannot specify a Recordset as part of a comma seperated list of expressions";
                     }
-                    if ((complex.Item.Count() < 3 ||
-                        complex.Item.Count() % 2 != 1) ||
+                    if (complex.Item.Count() < 3 ||
+                        complex.Item.Count() % 2 != 1 ||
                         // ReSharper disable MaximumChainedReferences
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)

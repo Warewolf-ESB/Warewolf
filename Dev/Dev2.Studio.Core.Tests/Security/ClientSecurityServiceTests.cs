@@ -132,40 +132,6 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_Read")]
-        public void ClientSecurityService_ReadAsync_DoesInvokeReadPermissions()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            var dataListID = Guid.Empty;
-
-            var serializer = new Dev2JsonSerializer();
-            var requestResult = serializer.SerializeToBuilder(new SecuritySettingsTO());
-
-            StringBuilder actualRequest = null;
-
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            connection.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID))
-                .Callback((StringBuilder xmlRequest, Guid wsID) => { actualRequest = xmlRequest; })
-                .Returns(requestResult)
-                .Verifiable();
-
-            var clientSecurityService = new ClientSecurityService(connection.Object);
-
-            //------------Execute Test---------------------------
-            var readTask = clientSecurityService.ReadAsync();
-            readTask.Wait();
-
-            //------------Assert Results-------------------------
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID),Times.Never());
-            Assert.IsNull(actualRequest);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
         [TestCategory("ClientSecurityService_WritePermissions")]
         public void ClientSecurityService_WritePermissions_DoesNothing()
         {
@@ -270,7 +236,7 @@ namespace Dev2.Core.Tests.Security
 
         public void TestWritePermissions()
         {
-            base.WritePermissions(null);
+            WritePermissions(null);
         }
 
         public int ReadAsyncHitCount { get; private set; }

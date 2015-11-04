@@ -76,7 +76,7 @@ Scenario: Find last Occurrence of a bracket in a sentence
 	| [[result]] = 11 |
 
 Scenario: Find first Occurrence of a character in a blank string
-	Given I have a findindex variable "[[a]]" equal to ""
+	Given I have a findindex variable "[[a]]" equal to "blank"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "a"
@@ -108,7 +108,7 @@ Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	| [[result]] = -1 |
 
 Scenario: Find all Occurrences of a character in a string where it doesnt exist
-	Given I have a findindex variable "[[a]]" equal to ""
+	Given I have a findindex variable "[[a]]" equal to "blank"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrence"
 	And I search for characters "a"
@@ -236,22 +236,8 @@ Scenario: Characters is blank
 
 #---find out about rule as no error message will display
 
-Scenario: Find all Occurrences of a character in a variable where it doesnt exist
-	Given I have a findindex variable "[[a]]" equal to "[[b]]"
-	And I selected Index "All Occurrence"
-	And I search for characters "[[c]]"
-	And I selected direction as "Left to Right"
-	When the data find index tool is executed
-	Then the find index result is "-1"
-	And the execution has "NO" error
-	And the debug inputs as
-	| In Field | Index          | Characters | Direction     |
-	| [[a]] =  | All Occurrence | [[c]]      | Left to Right |
 
-	And the debug output as
-	|                 |
-	| [[result]] = -1 |
-
+@ignore
 Scenario: Find all Occurrences of a numeric character in a string
 	Given I have a findindex variable "[[a]]" equal to "2211"
 	And I selected Index "All Occurrence"
@@ -335,5 +321,22 @@ Examples:
 | 2  | [[var]] | w     | [[rs([[var]]).a]] | [[result]] = -1 | Index is not an integer |
 | 3  | [[var]] | " "   | [[rs([[var]]).a]] | [[result]] =    | Index is not an integer |
 | 4  | [[var]] | 1.2   | [[rs([[var]]).a]] | [[result]] =    | Index is not an integer |
-| 5  | [[b]]   | ""    | [[rs([[b]]).a]]   | [[result]] = -1 | Index is not an integer |
 | 6  | [[var]] | 123   | [[rs([[var]]).a]] | [[result]] = -1 | Index is not valid      |
+
+
+Scenario: Find first Occurrence of a character non existent imput
+	Given the sentence "[[a]]"
+	And I selected Index "First Occurrence"
+	And I search for characters "a"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the execution has "AN" error
+
+Scenario: Find first Occurrence of  of a character non existent character
+	Given I have a findindex variable "[[a]]" equal to ""
+	And the sentence "[[a]]"
+	And I selected Index "First Occurrence"
+	And I search for characters "[[x]]"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the execution has "AN" error

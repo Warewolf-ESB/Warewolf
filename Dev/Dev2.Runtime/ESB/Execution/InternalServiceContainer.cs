@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Execution
                 request.Args = new Dictionary<string, StringBuilder>();
                 foreach(var input in dataListTO.Inputs)
                 {
-                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
+                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0,false);
                     if(warewolfEvalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;

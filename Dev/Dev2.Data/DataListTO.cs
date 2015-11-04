@@ -50,7 +50,7 @@ namespace Dev2.Data
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                    return (removeCondition && !el.HasElements);
+                    return removeCondition && !el.HasElements;
                 }).Select(element => element.Name.ToString()));
 
             Outputs.AddRange(
@@ -60,7 +60,7 @@ namespace Dev2.Data
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                    return (removeCondition && !el.HasElements);
+                    return removeCondition && !el.HasElements;
                 }).Select(element => element.Name.ToString()));
 
             var xElements = rootEl.Elements().Where(el => el.HasElements);

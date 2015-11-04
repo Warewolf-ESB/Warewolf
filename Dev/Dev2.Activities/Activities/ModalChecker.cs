@@ -32,7 +32,7 @@ namespace Dev2.Activities
         #region Native Windows Stuff
         // ReSharper disable InconsistentNaming
         private const int WS_EX_DLGMODALFRAME = 0x00000001;
-        private const int GWL_EXSTYLE = (-20);
+        private const int GWL_EXSTYLE = -20;
         public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
         private delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
         [DllImport("user32")]

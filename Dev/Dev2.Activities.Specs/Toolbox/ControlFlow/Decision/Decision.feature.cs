@@ -10,12 +10,12 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Decision")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.ControlFlow.Decision.DecisionFeature.FeatureSetup(null);
             }
         }
         
@@ -3273,6 +3273,50 @@ this.ScenarioSetup(scenarioInfo);
                         "YES"});
 #line 1166
        testRunner.And("the debug output as", ((string)(null)), table156, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ValidateThatAVariableIsNull()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Null", ((string[])(null)));
+#line 1171
+this.ScenarioSetup(scenarioInfo);
+#line 1172
+ testRunner.Given("a decision variable \"[[A]]\" value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1173
+ testRunner.And("is \"[[A]]\" \"is NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1174
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1175
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1176
+ testRunner.And("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is not Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ValidateThatAVariableIsNotNull()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is not Null", ((string[])(null)));
+#line 1178
+this.ScenarioSetup(scenarioInfo);
+#line 1179
+ testRunner.Given("a decision variable \"[[B]]\" value \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1180
+ testRunner.And("is \"[[B]]\" \"is Not NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1181
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1182
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1183
+ testRunner.And("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

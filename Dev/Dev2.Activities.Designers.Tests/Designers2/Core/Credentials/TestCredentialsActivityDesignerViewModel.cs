@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
 
         public void TestValidateUserNameAndPassword()
         {
-            base.ValidateUserNameAndPassword();
+            ValidateUserNameAndPassword();
         }
 
         public void TestUpdateErrors(List<IActionableErrorInfo> errors)

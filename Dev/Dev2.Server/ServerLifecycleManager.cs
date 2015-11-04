@@ -1077,7 +1077,7 @@ namespace Dev2
                         }
                         else
                         {
-                            string fullPath = Path.Combine(currentReference.Path, currentReference.Name.EndsWith(".dll") ? currentReference.Name : (currentReference.Name + ".dll"));
+                            string fullPath = Path.Combine(currentReference.Path, currentReference.Name.EndsWith(".dll") ? currentReference.Name : currentReference.Name + ".dll");
 
                             if(File.Exists(fullPath))
                             {

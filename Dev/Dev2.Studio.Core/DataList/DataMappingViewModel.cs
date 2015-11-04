@@ -281,7 +281,7 @@ namespace Dev2.Studio.ViewModels.DataList
             set
             {
                 _currentlySelectedOutput = value;
-                base.OnPropertyChanged("CurrentlySelectedOutput");
+                OnPropertyChanged("CurrentlySelectedOutput");
             }
         }
         #endregion Get Current Output Item
@@ -297,7 +297,7 @@ namespace Dev2.Studio.ViewModels.DataList
             set
             {
                 _currentlySelectedInput = value;
-                base.OnPropertyChanged("CurrentlySelectedInput");
+                OnPropertyChanged("CurrentlySelectedInput");
             }
         }
         #endregion Get Current Input Item

@@ -44,7 +44,7 @@ namespace Dev2.AppResources.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string isEnabledRadioButton = parameter as string;
-            if((isEnabledRadioButton == "true" && (bool)value) || (isEnabledRadioButton == "false" && !(bool)value))
+            if(isEnabledRadioButton == "true" && (bool)value || isEnabledRadioButton == "false" && !(bool)value)
             {
                 return SchedulerStatus.Enabled;
             }

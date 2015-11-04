@@ -885,7 +885,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             HasActiveConnection = ActiveItem != null && ActiveItem.IsEnvironmentConnected();
-            return ((ActiveEnvironment != null) && (ActiveEnvironment.IsConnected) && (ActiveEnvironment.CanStudioExecute));
+            return ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
         }
 
         public void AddDependencyVisualizerWorkSurface(IContextualResourceModel resource)
@@ -1151,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
 
         private void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm = true, System.Action actionToDoOnDelete = null)
         {
-            if (models == null || (showConfirm && !ConfirmDelete(models, folderName)))
+            if (models == null || showConfirm && !ConfirmDelete(models, folderName))
             {
                 return;
             }
@@ -1399,7 +1399,7 @@ namespace Dev2.Studio.ViewModels
         }
         public void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath)
         {
-            var x = (FindWorkSurfaceContextViewModel(resource));
+            var x = FindWorkSurfaceContextViewModel(resource);
             if (x != null)
             {
 

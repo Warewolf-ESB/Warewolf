@@ -109,13 +109,13 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsTrue(zipTO.Overwrite);
             Assert.IsTrue(File.Exists(zipPathName));
             var readAllBytes = File.ReadAllBytes(zipPathName);
-            Assert.AreEqual(0, readAllBytes.Count());
+            Assert.AreEqual(0, readAllBytes.Length);
             //------------Execute Test---------------------------
             ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(zipPathName));
             readAllBytes = File.ReadAllBytes(zipPathName);
-            Assert.AreNotEqual(0, readAllBytes.Count());
+            Assert.AreNotEqual(0, readAllBytes.Length);
             File.Delete(tempFile);
             File.Delete(zipPathName);
         }

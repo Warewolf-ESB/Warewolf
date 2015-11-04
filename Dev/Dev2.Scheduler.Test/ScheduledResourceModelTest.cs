@@ -105,7 +105,7 @@ securityWrapper
                                                    _convertorFactory.Object, @"c:\", _wrapper.Object);
 
             Assert.AreEqual(1,
-                            model.ScheduledResources.Count());
+                            model.ScheduledResources.Count);
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ securityWrapper
                                                    _convertorFactory.Object, @"c:\", _wrapper.Object);
 
             Assert.AreEqual(1,
-                            model.ScheduledResources.Count());
+                            model.ScheduledResources.Count);
         }
 
 

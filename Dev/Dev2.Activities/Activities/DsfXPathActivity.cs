@@ -145,14 +145,14 @@ namespace Dev2.Activities
                                                     //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
                                                     string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
                                                     string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
-                                                    if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+                                                    if(openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
                                                     {
                                                         foreach(var newFieldName in openParts)
                                                         {
                                                             if(!string.IsNullOrEmpty(newFieldName))
                                                             {
                                                                 string cleanFieldName;
-                                                                if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
+                                                                if((newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2) < newFieldName.Length)
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
                                                                 }
@@ -377,7 +377,7 @@ namespace Dev2.Activities
                 return "";
             }
             var currentName = modelProperty.ComputedValue as string;
-            if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+            if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
             {
                 currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
             }
@@ -468,7 +468,7 @@ namespace Dev2.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var items = (new[] { SourceString }).Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.XPath)).Select(c => c.XPath)).ToArray();
+            var items = new[] { SourceString }.Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.XPath)).Select(c => c.XPath)).ToArray();
             return GetForEachItems(items);
         }
 

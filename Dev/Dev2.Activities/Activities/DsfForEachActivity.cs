@@ -332,13 +332,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #region Coded Activity IO ManIP
 
-                var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
+                var tmp = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>;
 
                 if (_previousInputsIndex != -1)
                 {
                     if (_inputsToken != "*")
                     {
-                        _inputsToken = (_previousInputsIndex).ToString(CultureInfo.InvariantCulture);
+                        _inputsToken = _previousInputsIndex.ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -346,7 +346,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (_outputsToken != "*")
                     {
-                        _outputsToken = (_previousOutputsIndex).ToString(CultureInfo.InvariantCulture);
+                        _outputsToken = _previousOutputsIndex.ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -389,7 +389,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
+                    var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
                     if (tmp2 != null && !(tmp2 is DsfForEachActivity))
                     {
@@ -563,7 +563,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void RestoreHandlerFn()
         {
 
-            var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
+            var activity = DataFunc.Handler as IDev2ActivityIOMapping;
 
             if (activity != null)
             {
@@ -573,7 +573,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     //MO - CHANGE:This is to be reinstated for restoring actives back to state with star
                     #region Coded Activity
-                    var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
+                    var tmp = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>;
 
 
                     // this is wrong, we need the last index ;)
@@ -624,7 +624,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var tmp2 = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>);
+                        var tmp2 = operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<bool>;
 
                         // Restore Inputs ;)
                         if (tmp2 != null)

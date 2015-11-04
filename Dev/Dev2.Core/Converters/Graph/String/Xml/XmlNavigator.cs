@@ -255,10 +255,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                         parentPathSegment = null;
                     }
 
-                    if (indexedPathSegmentTreeNode != null &&
-                        (pathSegment != null &&
-                         !indexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
-                             out tmpIndexedPathSegmentTreeNode)))
+                    if (indexedPathSegmentTreeNode != null && pathSegment != null && !indexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
+                        out tmpIndexedPathSegmentTreeNode))
                     {
                         IndexedPathSegmentTreeNode<string> newIndexedPathSegmentTreeNode =
                             CreatePathSegmentIndexedPathSegmentTreeNode(pathSegment, parentPathSegment,
@@ -412,7 +410,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                         previousPathSegment = parentPathSegment as XmlPathSegment;
                     }
 
-                    bool lastSegment = (i == pathSegments.Count - 1);
+                    bool lastSegment = i == pathSegments.Count - 1;
 
                     if (previousPathSegment != null && previousPathSegment.IsEnumarable)
                     {

@@ -38,6 +38,22 @@ Scenario Outline: Write file at location
 		| FTPS with Append Bottom    | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |                      |
 		| SFTP with Append Bottom    | [[path]] | sftp://localhost/filetowrite2.txt                               | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
 		| SFTP with Append Bottom PK | [[path]] | sftp://localhost/filetowrite21.txt                              | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
+		| Local with Overwrite       | [[path]] |                                                                 | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Error   | AN           |                      |
+
+
+Scenario Outline: Write file at location Null
+	Given I have a source path '<source>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'	
+	And Method is '<method>'
+	And input contents as '<content>'    
+	And use private public key for source is '<sourcePrivateKeyFile>' 
+	And result as '<resultVar>'
+    When the write file tool is executed
+	Then the execution has "<errorOccured>" error
+		Examples: 
+		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] | Error  | AN           |                      |
+
 
 
 Scenario: Write file with carriage returns

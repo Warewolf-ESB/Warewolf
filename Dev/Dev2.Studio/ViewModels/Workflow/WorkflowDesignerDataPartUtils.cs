@@ -45,7 +45,7 @@ namespace Dev2.ViewModels.Workflow
            IDataListVerifyPart verifyPart;
            string fullyFormattedStringValue;
            string[] fieldList = dataPartFieldData.Split('.');
-           if (fieldList.Count() > 1 && !String.IsNullOrEmpty(fieldList[0]))
+           if (fieldList.Length > 1 && !String.IsNullOrEmpty(fieldList[0]))
            {
                // If it's a RecordSet Containing a field
                bool recAdded = false;
@@ -88,7 +88,7 @@ namespace Dev2.ViewModels.Workflow
                    }
                }
            }
-           else if (fieldList.Count() == 1 && !String.IsNullOrEmpty(fieldList[0]))
+           else if (fieldList.Length == 1 && !String.IsNullOrEmpty(fieldList[0]))
            {
                // If the workflow field is simply a scalar or a record set without a child
                if (dataPartFieldData.EndsWith(")") && dataPartFieldData == fieldList[0])

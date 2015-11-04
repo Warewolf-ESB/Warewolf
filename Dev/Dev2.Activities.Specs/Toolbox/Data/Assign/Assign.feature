@@ -732,7 +732,18 @@ Scenario: Assign a Variable That Does Not Exist
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
 
+Scenario: Assign a Variable That is Null to another variable
+	Given I have a variable "[[b]]" with a value of "NULL"
+	And I assign the value "[[b]]" to a variable "[[var]]"
+	When the assign tool is executed
+	Then the execution has "No" error
 
+
+Scenario: Assign a Variable That is Null with conatenation
+	Given I assign the value "[[var]] abc" to a variable "[[a]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the execution has "Scalar value { var } is NULL" error
 
 
 

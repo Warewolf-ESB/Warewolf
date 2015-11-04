@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.AppResources.Attributes
     {
         public static T GetResourceLookup<T>(Type resourceType, string resourceName)
         {
-            if((resourceType != null) && (resourceName != null))
+            if(resourceType != null && resourceName != null)
             {
                 PropertyInfo property = resourceType.GetProperty(resourceName,
                     BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic);

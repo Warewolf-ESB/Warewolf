@@ -35,10 +35,10 @@ namespace Dev2.Data.Binary_Objects
 
         public int Count
         {
-            get { return (IndexList.Count()); }
+            get { return IndexList.Count(); }
         }
 
-        public bool IsEmpty { get { return (_curValue - Count == 0); } }
+        public bool IsEmpty { get { return _curValue - Count == 0; } }
 
         public ReverseIndexIterator(HashSet<int> gaps, int maxValue)
         {
@@ -54,7 +54,7 @@ namespace Dev2.Data.Binary_Objects
                 canidate--;
             }
 
-            return (canidate >= IndexList.MaxValue);
+            return canidate >= IndexList.MaxValue;
         }
 
         public int FetchNextIndex()

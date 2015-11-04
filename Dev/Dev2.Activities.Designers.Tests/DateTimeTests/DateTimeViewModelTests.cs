@@ -16,6 +16,8 @@ using Dev2.Activities.Designers2.DateTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+// ReSharper disable ObjectCreationAsStatement
+// ReSharper disable CollectionNeverQueried.Local
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {

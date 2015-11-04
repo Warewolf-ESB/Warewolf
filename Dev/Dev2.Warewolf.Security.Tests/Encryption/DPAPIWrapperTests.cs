@@ -26,7 +26,7 @@ namespace Dev2.Warewolf.Security.Encryption
     {
         // ReSharper disable InconsistentNaming
 
-        private string message = "This is the secret message to encrypt.";
+        private readonly string message = "This is the secret message to encrypt.";
 
         [TestMethod]
         [Owner("Kerneels Roos")]

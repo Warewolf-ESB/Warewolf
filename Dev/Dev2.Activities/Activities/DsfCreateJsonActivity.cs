@@ -231,7 +231,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         bool validMapping(JsonMappingTo a)
         {
-            return !((String.IsNullOrEmpty(a.DestinationName)) && (string.IsNullOrEmpty(a.SourceName)));
+            return !(String.IsNullOrEmpty(a.DestinationName) && string.IsNullOrEmpty(a.SourceName));
         }
 
         #region Get Debug Inputs/Outputs
@@ -296,7 +296,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             // ReSharper disable MaximumChainedReferences
-            var items = (JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName)).ToArray();
+            var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName).ToArray();
             // ReSharper restore MaximumChainedReferences
             return GetForEachItems(items);
         }

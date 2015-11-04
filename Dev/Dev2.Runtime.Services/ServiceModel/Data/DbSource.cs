@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             }
                         }
                         return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
-                            (Port > 0 ? "," + Port : string.Empty),
+                            Port > 0 ? "," + Port : string.Empty,
                             AuthenticationType == AuthenticationType.Windows
                                 ? "Integrated Security=SSPI;"
                                 : string.Format("User ID={0};Password={1};", UserID, Password));
@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     case enSourceType.MySqlDatabase:
                         return string.Format("Server={0};{4}Database={1};Uid={2};Pwd={3};",
                             Server, DatabaseName, UserID, Password,
-                            (Port > 0 ? string.Format("Port={0};", Port) : string.Empty));
+                            Port > 0 ? string.Format("Port={0};", Port) : string.Empty);
                 }
                 return string.Empty;
             }

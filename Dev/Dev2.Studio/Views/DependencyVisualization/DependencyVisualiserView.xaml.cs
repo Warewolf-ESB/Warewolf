@@ -86,12 +86,12 @@ namespace Dev2.Studio.Views.DependencyVisualization
             _scrollStartOffset.Y = myScrollViewer.VerticalOffset;
 
             // Update the cursor if scrolling is possible 
-            Cursor = (myScrollViewer.ExtentWidth > myScrollViewer.ViewportWidth) ||
-                (myScrollViewer.ExtentHeight > myScrollViewer.ViewportHeight) ?
+            Cursor = myScrollViewer.ExtentWidth > myScrollViewer.ViewportWidth ||
+                myScrollViewer.ExtentHeight > myScrollViewer.ViewportHeight ?
                 Cursors.ScrollAll : Cursors.Arrow;
 
             CaptureMouse();
-            base.OnPreviewMouseDown(e);
+            OnPreviewMouseDown(e);
         }
 
         protected override void OnPreviewMouseMove(MouseEventArgs e)

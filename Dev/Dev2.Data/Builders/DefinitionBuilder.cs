@@ -43,7 +43,7 @@ namespace Dev2.DataList.Contract
             StringBuilder result = new StringBuilder();
 
             XmlDocument xDoc = new XmlDocument();
-            XmlElement rootNode = xDoc.CreateElement((string.Concat(ArgumentType.ToString(), "s")));
+            XmlElement rootNode = xDoc.CreateElement(string.Concat(ArgumentType.ToString(), "s"));
 
 
             foreach(IDev2Definition def in Definitions)

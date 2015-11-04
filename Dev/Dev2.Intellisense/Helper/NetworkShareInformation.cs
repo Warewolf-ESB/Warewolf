@@ -181,7 +181,7 @@ namespace Dev2.Intellisense.Helper
 
                 if(NoError == nRet && entriesRead > 0)
                 {
-                    Type t = (2 == level) ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                    Type t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
                     int offset = Marshal.SizeOf(t);
 
                     for(int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
@@ -251,12 +251,12 @@ namespace Dev2.Intellisense.Helper
         struct ShareInfo1
         {
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string NetName;
+            public readonly string NetName;
 
-            public ShareType ShareType;
+            public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Remark;
+            public readonly string Remark;
         }
 
         /// <summary>Share information, NT, level 2</summary>
@@ -267,22 +267,22 @@ namespace Dev2.Intellisense.Helper
         struct ShareInfo2
         {
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string NetName;
+            public readonly string NetName;
 
-            public ShareType ShareType;
-
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string Remark;
-
-            public int Permissions;
-            public int MaxUsers;
-            public int CurrentUsers;
+            public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Path;
+            public readonly string Remark;
+
+            public readonly int Permissions;
+            public readonly int MaxUsers;
+            public readonly int CurrentUsers;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Password;
+            public readonly string Path;
+
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public readonly string Password;
         }
 
         #endregion

@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ESB.WF
             // Set the old AmbientDatalist as the DataListID ;)
             inputarguments.Add("AmbientDataList", new List<string> { dataTransferObject.DataListID.ToString() });
 
-            if((parentInstanceID != Guid.Empty && instanceId == Guid.Empty) || string.IsNullOrEmpty(bookmarkName))
+            if(parentInstanceID != Guid.Empty && instanceId == Guid.Empty || string.IsNullOrEmpty(bookmarkName))
             {
                 wfApp = new WorkflowApplication(workflowActivity, inputarguments);
             }

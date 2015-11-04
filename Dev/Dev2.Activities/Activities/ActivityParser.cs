@@ -26,19 +26,19 @@ namespace Dev2.Activities
                     {
                         return null;
                     }
-                    var start = (chart.StartNode) as FlowStep;
+                    var start = chart.StartNode as FlowStep;
 
                     if (start != null)
                     {
                         var tool = ParseTools(start, seenActivities);
                         return tool.FirstOrDefault();
                     }
-                    var flowstart = (chart.StartNode) as FlowSwitch<string>;
+                    var flowstart = chart.StartNode as FlowSwitch<string>;
                     if (flowstart != null)
                     {
                         return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
                     }
-                    var flowdec = (chart.StartNode) as FlowDecision;
+                    var flowdec = chart.StartNode as FlowDecision;
                     return ParseDecision(flowdec, seenActivities).FirstOrDefault();
                 }
                 return null;
@@ -97,7 +97,7 @@ namespace Dev2.Activities
                  {
                      seenActivities.Add(swi);
                  }
-                swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary((a => a.Item1), a => a.Item2);
+                swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
                 swi.Switch = ds.SwitchVariable;
                 

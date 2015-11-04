@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
 
             if(rules != null)
             {
-                return (rules.Where(c => c.HandlesType() == typeOf));
+                return rules.Where(c => c.HandlesType() == typeOf);
             }
 
             return null;

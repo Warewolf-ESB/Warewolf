@@ -61,8 +61,8 @@ namespace Dev2.Activities.AttachedProperties
                 return;
             }
 
-            var wasBound = (bool)(e.OldValue);
-            var needToBind = (bool)(e.NewValue);
+            var wasBound = (bool)e.OldValue;
+            var needToBind = (bool)e.NewValue;
 
             if(wasBound)
             {

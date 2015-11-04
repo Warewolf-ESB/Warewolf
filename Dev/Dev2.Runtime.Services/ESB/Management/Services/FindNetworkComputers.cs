@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var computers = GetComputerNames.ComputerNames;
                 // DirectoryEntry with WinNT: was timing out, swapped to using a NetworkBrowser...
-                json = computers.Cast<object>().Aggregate(json, (current, comp) => current + (@"{""ComputerName"":""" + comp + @"""},"));
+                json = computers.Cast<object>().Aggregate(json, (current, comp) => current + (@"{""ComputerName"":""" + comp) + @"""},");
                 json += "]";
                 json = json.Replace(",]", "]"); // remove last comma
                 result.Append("<JSON>");

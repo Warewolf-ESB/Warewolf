@@ -49,7 +49,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count());
+            Assert.AreEqual(6,data.Count);
             Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
         }
 
@@ -184,7 +184,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
             var dataList = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(11, dataList.Count());
+            Assert.AreEqual(11, dataList.Count);
             Assert.AreEqual("ActivityCollectionDesignerViewModel_ExecuteShowErrorsCommand_ShowErrorsIsTrue_ShowErrorsIsSetToFalse", dataList[0]);
             Assert.AreEqual("SortActivity_MultipleRecordSetContainingSameSortValue_DateTime_SortedWithTheRecordSetAppearingMultipleTimes", dataList[10]);
         }
@@ -333,7 +333,7 @@ namespace Dev2.Data.Tests
 </Deployment>";
 
             var dataList = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(1, dataList.Count());
+            Assert.AreEqual(1, dataList.Count);
             Assert.AreEqual(expected, dataList[0]);
            
         }
@@ -471,7 +471,7 @@ namespace Dev2.Data.Tests
             const string expected = @"D:\Builds\ReleaseGate\TestResults";
 
             var dataList = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(1, dataList.Count());
+            Assert.AreEqual(1, dataList.Count);
             Assert.AreEqual(expected, dataList[0]);
 
         }
@@ -531,7 +531,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath("<x><a>1</a></x>", XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(1,data.Count());
+            Assert.AreEqual(1,data.Count);
             Assert.AreEqual("1",data[0]);
         }
         
@@ -544,7 +544,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count());
+            Assert.AreEqual(6,data.Count);
             Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
         }
 
@@ -557,7 +557,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count());
+            Assert.AreEqual(6,data.Count);
             Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
         }
 
@@ -572,7 +572,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6, data.Count());
+            Assert.AreEqual(6, data.Count);
             Assert.AreEqual("ExtractOutMergeDataFromRequest", data[1]);
         }
 
@@ -587,7 +587,7 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(12, data.Count());
+            Assert.AreEqual(12, data.Count);
             Assert.AreEqual("ExtractInMergeDataFromRequest", data[0]);
             Assert.AreEqual("void(object)", data[1]);
         }

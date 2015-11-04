@@ -575,3 +575,13 @@ Examples:
 	 | 86 | [[rec()*.a]]                              |	 
 	 | 89 | [[rec(-1).a                               |
 	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |
+
+
+Scenario Outline: Debug output Validation errors x
+	Given A string to split with value "[[rec(1).set]]"	
+	And assign to variable '<Variable>' split type "Index" at '5' and Include 'Selected' and Escape ''
+	When the data split tool is executed
+	Then the execution has "AN" error
+Examples: 
+	 | No | Variable       |
+	 | 1  | [[rec().a]] |

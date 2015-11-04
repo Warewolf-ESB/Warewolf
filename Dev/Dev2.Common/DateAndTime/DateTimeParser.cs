@@ -684,7 +684,7 @@ namespace Dev2.Common.DateAndTime
             error = "";
             //2013.06.03: Ashley Lewis for bug 9601 - reduced forward look up from 3 to 2
             result = ForwardLookup(formatArray, startPosition, 2);
-            return (result == "''");
+            return result == "''";
         }
 
         /// <summary>
@@ -1393,8 +1393,8 @@ namespace Dev2.Common.DateAndTime
                 {
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
-                        string min = (minutes == 0) ? "00" : "30";
-                        string hrs = string.Concat(((hours/Math.Abs(hours) < 0) ? "-" : "+"),
+                        string min = minutes == 0 ? "00" : "30";
+                        string hrs = string.Concat(hours/Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
                         string uct = string.Concat(UctShort, hrs, ":", min);
                         TimeZones.Add(uct.ToLower(), new TimeZoneTO(UctShort, uct, UctLong));
@@ -1421,8 +1421,8 @@ namespace Dev2.Common.DateAndTime
                 {
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
-                        string min = (minutes == 0) ? "00" : "30";
-                        string hrs = string.Concat(((hours/Math.Abs(hours) < 0) ? "-" : "+"),
+                        string min = minutes == 0 ? "00" : "30";
+                        string hrs = string.Concat(hours/Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
                         string gmt = string.Concat(GmtShort, hrs, ":", min);
                         TimeZones.Add(gmt.ToLower(), new TimeZoneTO(GmtShort, gmt, GmtLong));
@@ -1711,7 +1711,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 0 && numericData <= 59);
+                    nothingDied = numericData >= 0 && numericData <= 59;
                 }
             }
             else
@@ -1734,7 +1734,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 0 && numericData <= 999);
+                    nothingDied = numericData >= 0 && numericData <= 999;
                 }
             }
             else
@@ -1757,7 +1757,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 0 && numericData <= 59);
+                    nothingDied = numericData >= 0 && numericData <= 59;
                 }
             }
             else
@@ -1780,7 +1780,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 0 && numericData <= 24);
+                    nothingDied = numericData >= 0 && numericData <= 24;
                 }
             }
             else
@@ -1803,7 +1803,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 1 && numericData <= 12);
+                    nothingDied = numericData >= 1 && numericData <= 12;
                 }
             }
             else
@@ -1826,7 +1826,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 1 && numericData <= 12);
+                    nothingDied = numericData >= 1 && numericData <= 12;
                 }
             }
             else
@@ -1849,7 +1849,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 1 && numericData <= 31);
+                    nothingDied = numericData >= 1 && numericData <= 31;
                 }
             }
             else
@@ -1872,7 +1872,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 1 && numericData <= 7);
+                    nothingDied = numericData >= 1 && numericData <= 7;
                 }
             }
             else
@@ -1891,7 +1891,7 @@ namespace Dev2.Common.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData) && (numericData >= 1 && numericData <= 365))
+            if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
             {
                 //nothing to do since nothignDied is already true
             }
@@ -1915,7 +1915,7 @@ namespace Dev2.Common.DateAndTime
             {
                 if (!treatAsTime)
                 {
-                    nothingDied = (numericData >= 1 && numericData <= 52);
+                    nothingDied = numericData >= 1 && numericData <= 52;
                 }
             }
             else

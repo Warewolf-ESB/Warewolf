@@ -35,7 +35,7 @@ namespace Dev2.Providers.Validation.Rules
 
             IEnumerable<string> enumerable = fields.Distinct();
 
-            if(enumerable.Count() != fields.Count())
+            if(enumerable.Count() != fields.Length)
             {
                 return CreatError();
             }
@@ -73,7 +73,7 @@ namespace Dev2.Providers.Validation.Rules
                 }
 
                 start += 1;
-                result = rs.Substring(start, (end - start));
+                result = rs.Substring(start, end - start);
             }
 
             return result;

@@ -465,7 +465,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             unchecked
             {
-                return (ResourceID.GetHashCode() * 397);
+                return ResourceID.GetHashCode() * 397;
             }
         }
 
@@ -569,7 +569,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                                   desc.Attribute("UniqueID") != null
                                               select desc;
                     var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-                    var count = xElements.Count();
+                    var count = xElements.Count;
                     if(count > 0)
                     {
                         Dependencies = new List<IResourceForTree>();
@@ -613,7 +613,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                       where desc.Name.LocalName.Contains("DbSource") && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-            var count = xElements.Count();
+            var count = xElements.Count;
             if(count == 1)
             {
                 var element = xElements[0];
@@ -641,7 +641,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                       where desc.Name.LocalName.Contains("EmailSource") && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-            var count = xElements.Count();
+            var count = xElements.Count;
             if(count == 1)
             {
                 var element = xElements[0];
@@ -688,7 +688,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                                   desc.Attribute("SourceID") != null
                                               select desc;
                     var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-                    var count = xElements.Count();
+                    var count = xElements.Count;
                     if(count > 0)
                     {
                         Dependencies = new List<IResourceForTree>();

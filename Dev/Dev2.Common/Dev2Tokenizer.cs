@@ -130,11 +130,11 @@ namespace Dev2.Common
 
             if (!_isReversed)
             {
-                result = (_startIdx < _masterLen);
+                result = _startIdx < _masterLen;
             }
             else
             {
-                result = (_startIdx >= 0);
+                result = _startIdx >= 0;
             }
 
             return result;
@@ -221,10 +221,10 @@ namespace Dev2.Common
                     result = _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
                 }
 
-                MoveStartIndex((result.Length + _ops[_opPointer].OpLength()));
+                MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
                 MoveOpPointer();
                 // check to see if there is data to fetch still?
-                _hasMoreOps = (!_ops[_opPointer].IsFinalOp() & HasMoreData());
+                _hasMoreOps = !_ops[_opPointer].IsFinalOp() & HasMoreData();
             }
             catch
             {
