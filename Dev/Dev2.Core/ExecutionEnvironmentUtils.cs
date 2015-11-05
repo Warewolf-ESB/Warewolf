@@ -38,7 +38,7 @@ namespace Dev2
                     var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
                     try
                     {
-                        warewolfEvalResult = environment.Eval(name, update);
+                        warewolfEvalResult = environment.Eval(name, update,false);
                     }
                     // ReSharper disable once RESP510236
                     // ReSharper disable once RESP510241
@@ -76,7 +76,7 @@ namespace Dev2
 
             foreach (var output in scalarOutputs)
             {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -116,7 +116,7 @@ namespace Dev2
                 Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name, update));
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name, update,false));
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
@@ -161,7 +161,7 @@ namespace Dev2
             var scalars = scalarOutputs as string[] ?? scalarOutputs.ToArray();
             foreach (var output in scalars)
             {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
