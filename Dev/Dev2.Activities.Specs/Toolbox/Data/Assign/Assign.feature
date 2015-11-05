@@ -442,7 +442,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | SUM([[a]],1) = SUM(1,1) |
+	| 3 | [[Result]] = | SUM([[[[b]]]],1) = SUM(1,1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -460,7 +460,7 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	| # | Variable         | New Value                               |
 	| 1 | [[rec(1).a]]   = | 1                                       |
 	| 2 | [[rec(1).b]]   = | rec(1).a                                |
-	| 3 | [[Result]] =     | [[rec(1).a]]+1 = 1+1 |
+	| 3 | [[Result]] =     | [[[[rec(1).b]]]]+1 = 1+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -691,10 +691,10 @@ Scenario: Assign a variable to another variable
 	Then the value of "[[var]]" equals a
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable   | New Value     |
-	| 1 | [[x]]  =   | a             |
-	| 2 | [[b]] =    | x             |
-	| 3 | [[var]]  = | [[x]] = a |
+	| # | Variable   | New Value |
+	| 1 | [[x]]  =   | a         |
+	| 2 | [[b]] =    | x         |
+	| 3 | [[var]] = | [[[[b]]]] = a |
 	And the debug output as
     | # |             |
     | 1 | [[x]] = a   |

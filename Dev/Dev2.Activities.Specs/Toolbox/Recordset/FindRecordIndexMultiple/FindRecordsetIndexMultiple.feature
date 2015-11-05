@@ -2408,21 +2408,21 @@ Scenario: Find Record with blank value
 Scenario: Find Record using match type as is Null
 	Given I have the following recordset to search for multiple criteria
 	| rs       | value  |
-	| rs().row |        |
+	| [[rs().row]] |  NULL      |
 	And field to search is "[[rs().row]]"
-	And search the recordset with type "Is Null" and criteria is ""	
+	And search the recordset with type "Is NULL" and criteria is ""	
 	And when match all search criteria is "true"
 	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
-	Then the execution has "No" error
+	Then the execution has "NO" error
 
 Scenario: Find Record using match type as is not Null
 	Given I have the following recordset to search for multiple criteria
 	| rs       | value  |
-	| rs().row |        |
+	| [[rs().row]] |  NULL      |
 	And field to search is "[[rs().row]]"
-	And search the recordset with type "Is Not Null" and criteria is ""	
+	And search the recordset with type "Is Not NULL" and criteria is ""	
 	And when match all search criteria is "true"
 	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
-	Then the execution has "No" error
+	Then the execution has "NO" error
