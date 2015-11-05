@@ -261,7 +261,7 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 2 | [[rec(1).a]] = Warewolf |
 	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
-	  | 1 | [[new]] = | [[rec(1).a]] = Warewolf |
+	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
