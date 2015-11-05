@@ -1128,143 +1128,118 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach using a NULL value for type In Recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool null in csv")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAForeachUsingANULLValueForTypeInRecordset()
+        public virtual void ExecuteAForeachOverAToolNullInCsv()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using a NULL value for type In Recordset", ((string[])(null)));
-#line 435
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in csv", ((string[])(null)));
+#line 436
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table44.AddRow(new string[] {
-                        "[[rs().field]]",
+                        "[[count]]",
                         "NULL"});
-#line 436
+#line 437
  testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table44, "Given ");
-#line 439
- testRunner.And("I have selected the foreach type as \"InRecordset\" as \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 440
- testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have selected the foreach type as \"InCSV\" and used \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 441
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table45.AddRow(new string[] {
-                        "Variable { rs } is NULL"});
+ testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 442
- testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
+ testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 443
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach using a NULL value for type Num Of Execution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool null in Recordsets")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAForeachUsingANULLValueForTypeNumOfExecution()
+        public virtual void ExecuteAForeachOverAToolNullInRecordsets()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using a NULL value for type Num Of Execution", ((string[])(null)));
-#line 446
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in Recordsets", ((string[])(null)));
+#line 445
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable",
+            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
                         "value"});
-            table46.AddRow(new string[] {
-                        "[[count]]",
+            table45.AddRow(new string[] {
+                        "[[count().a]]",
                         "NULL"});
-#line 447
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table46, "Given ");
+#line 446
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table45, "Given ");
+#line 449
+ testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[count().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 450
- testRunner.And("I have selected the foreach type as \"NumOfExecution\" as \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 451
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 452
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table47.AddRow(new string[] {
-                        "Variable { count } is NULL"});
-#line 453
- testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach using a NULL value for type In Range")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool null in numberofexecutions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAForeachUsingANULLValueForTypeInRange()
+        public virtual void ExecuteAForeachOverAToolNullInNumberofexecutions()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using a NULL value for type In Range", ((string[])(null)));
-#line 457
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in numberofexecutions", ((string[])(null)));
+#line 454
 this.ScenarioSetup(scenarioInfo);
-#line 458
- testRunner.Given("I have a variable \"[[value]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table48.AddRow(new string[] {
-                        "[[rs(2).field]]",
-                        "1"});
-            table48.AddRow(new string[] {
-                        "[[rs(1).field]]",
-                        "3"});
+            table46.AddRow(new string[] {
+                        "[[count]]",
+                        "NULL"});
+#line 455
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table46, "Given ");
+#line 458
+ testRunner.And("I have selected the foreach type as \"NumOfExecution\" and used \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 459
- testRunner.And("There is a recordset in the datalist with this shape", ((string)(null)), table48, "And ");
-#line 463
- testRunner.And("I have selected the foreach type as \"InRange\" from \"[[rs(2).field]]\" to \"[[value]" +
-                    "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 464
+ testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 460
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 465
- testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table49.AddRow(new string[] {
-                        "Variable { count } is NULL"});
-#line 466
- testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
+#line 461
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach using a NULL value for type in CSV")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool null in Range")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAForeachUsingANULLValueForTypeInCSV()
+        public virtual void ExecuteAForeachOverAToolNullInRange()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using a NULL value for type in CSV", ((string[])(null)));
-#line 471
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in Range", ((string[])(null)));
+#line 463
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable",
+            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
                         "value"});
-            table50.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "[[count]]",
                         "NULL"});
-#line 472
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table50, "Given ");
-#line 475
- testRunner.And("I have selected the foreach type as \"inCsv\" as \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 476
+#line 464
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table47, "Given ");
+#line 467
+ testRunner.And("I have selected the foreach type as \"InRange\" from \"[[rs(2).field]]\" to \"[[value]" +
+                    "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
+ testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 469
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 477
+#line 470
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table51.AddRow(new string[] {
-                        "Variable { count } is NULL"});
-#line 478
- testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
