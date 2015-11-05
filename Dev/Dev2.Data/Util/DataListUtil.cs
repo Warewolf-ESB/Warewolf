@@ -522,7 +522,7 @@ namespace Dev2.Data.Util
                 {
                     if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update,false);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
                             ScalarAtomList(warewolfEvalResult, env, dev2Definition);
@@ -1462,7 +1462,7 @@ namespace Dev2.Data.Util
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
                             var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
+                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0,false);
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;

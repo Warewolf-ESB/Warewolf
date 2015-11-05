@@ -53,7 +53,7 @@ Scenario Outline: Read Folder file at location
 	| 29 | Empty_FTPS_Files_Folders  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir          | Files & Folders | integrationtester | I73573r0 | [[result]] | String | NO           |                      |
 	| 30 | Empty_SFTP_Files_Folders  | [[path]] | sftp://localhost/emptydir                               | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           |                      |
 	| 31 | SFTP PK                   | [[path]] | sftp://localhost                                        | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           | C:\\Temp\\key.opk    |
-	| 1  | Local Files               | [[path]] | NULL                                                    | Files           | ""                | ""       | [[result]] | Error  | AN           |                      |
+	| 1  | Local Files               | [[path]] | NULL                                                    | Files           | ""                | ""       | [[result]] |        | AN           |                      |
 	
 	
 #Scenario Outline: Read Folder file at location1	

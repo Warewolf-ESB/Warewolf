@@ -58,7 +58,7 @@ Scenario Outline: Copy file at location
 		 | 32 | [[sourcePath]] | c:\copyfile6.txt                                             | ""                | ""       | [[destPath]] | sftp://localhost/copied61.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      | C:\\Temp\\key.opk         |
 		 | 33 | [[sourcePath]] | sftp://localhost/copyfile7.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/copied71.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
                        																										 
-Scenario Outline: Copy file at location Null																															 Scenario Outline: Copy file at location
+Scenario Outline: Copy file at location Null			
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'
 	And I have a destination path '<destination>' with value '<destinationLocation>'
@@ -70,9 +70,11 @@ Scenario Outline: Copy file at location Null																															 Scen
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
-		 | No | source       | sourceLocation   | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-		 | 34 | [[variable]] | NULL             | ""       | ""       | [[destPath]] |c:\test.txt         | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
-		 | 34 | [[variable]] | c:\copyfile0.txt | ""       | ""       | [[destPath]] | NULL                | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
+		 | No | source       | sourceLocation    | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		 | 1  | [[variable]] | NULL              | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
+#		 | 2  | [[variable]] | c:\copyfile0.txt  | ""       | ""       | [[destPath]] | NULL                | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
+#		 | 3  | [[variable]] | cz:\copyfile0.txt | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
+#		 | 4  | [[variable]] | c:\copyfile0.txt  | ""       | ""       | [[destPath]] | v:\                 | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
 
 
 

@@ -364,14 +364,3 @@ Scenario: Import data into table with blank data
 	Then the new table will have
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
-
-
-Scenario: Import data into table with NULL data
-	Given I have this data
-		| rec().set | rec().val | rec().id |
-		| NULL      | NULL      | NULL     |
-	When the tool is executed
-	Then the execution has "AN" error
-	And the debug output as 
-	|                      |
-	| [[result]] = Failure |
