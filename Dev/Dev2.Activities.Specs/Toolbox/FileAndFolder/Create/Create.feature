@@ -41,9 +41,15 @@ Scenario Outline: Create file at location Nulls
 	Then the execution has "<errorOccured>" error
 
 	Examples: 
-		| No | Name  | destination | destinationLocation | selected | username | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local | [[path]]    |                     | True     |          |          | [[result]] | Success | AN          |                           |
-	
+		| No | Name       | destination | destinationLocation                                           | selected | username                      | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | NULL                                                          | True     |                               |          | [[result]] | Failure | AN           |                           |
+#		| 2  | Local      | [[path]]    | v:\myfile.txt                                                 | True     |                               |          | [[result]] | Failure | AN           |                           |
+#		| 3  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                    | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
+#		| 4  | UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt       | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
+#		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
+#		| 6  | FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
+#		| 7  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test/txt                | True     | IntegrationTester             | I73573r0 | [[result]] | Failure | AN           |                           |
+		
 
 	
 #Scenario Outline: Create File at location1

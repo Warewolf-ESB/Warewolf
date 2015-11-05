@@ -51,9 +51,37 @@ Scenario Outline: Rename file at location
 	| 24 | SFTP to FTPS    | [[sourcePath]] | sftp://localhost/renamefile3.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed4.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |                      |                           |
 	| 25 | SFTP to SFTP    | [[sourcePath]] | sftp://localhost/renamefile4.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/renamed4.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://localhost/renamefile41.txt                              | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/renamed41.txt                              | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-	| 27 | Local to Local  | [[sourcePath]] | NULL                                                           | ""                | ""       | [[destPath]] | C:\renamed0.txt                                             | ""                | ""           | True     | [[result]] | Error   | AN           |                      |                           |
+	
 
 
+
+Scenario Outline: Rename file at location with NULL variables
+	Given I have a source path '<source>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+    And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And use private public key for source is '<sourcePrivateKeyFile>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
+	And result as '<resultVar>'
+    When the rename file tool is executed
+	Then the result variable '<resultVar>' will be '<result>'
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name           | source         | sourceLocation     | username | password | destination  | destinationLocation                                | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local | [[sourcePath]] | NULL               | ""       | ""       | [[destPath]] | C:\renamed0.txt                                    | ""           | ""           | True     | [[result]] | Error  | AN           |                      |                           |
+#	| 2  | Local to Local | [[sourcePath]] | c:\renamefile0.txt | ""       | ""       | [[destPath]] | NULL                                               | ""           | ""           | True     | [[result]] | Error  | AN           |                      |                           |
+#	| 3  | Local to FTP   | [[sourcePath]] | c:\renamefile1.x   | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed0.txt | ""           | ""           | True     | [[result]] | Error  | AN           |                      |                           |
+#	| 4  | Local to FTPS  | [[sourcePath]] | c:\renamefile2.txt | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed0.txt |              | I73573r0     | True     | [[result]] | Error  | AN           |                      |                           |
+#	| 5  | Local to SFTP  | [[sourcePath]] | c:\renamefile3.txt | ""       | ""       | [[destPath]] | sftp://localhost/renamed0.txt                      | dev2         | Q/ulw&]      | True     | [[result]] | Error  | AN           | " "                  |                           |
+#	| 6  | Local to UNC   | [[sourcePath]] | c:\renamefile4.txt | ""       | ""       | [[destPath]] | " "                                                | ""           | ""           | True     | [[result]] | Error  | AN           |                      |                           |
+	
 
 #Scenario Outline: Rename file at location1
 #    Given I have a variable "[[a]]" with a value '<Val1>'
