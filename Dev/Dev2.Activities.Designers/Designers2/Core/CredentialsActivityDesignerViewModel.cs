@@ -94,21 +94,21 @@ namespace Dev2.Activities.Designers2.Core
         {
             var errors = new List<IActionableErrorInfo>();
             
-            RuleSet credentialUserRuleSet = new RuleSet();
+            var credentialUserRuleSet = new RuleSet();
             var dataListViewModel = DataListSingleton.ActiveDataList;
             if(dataListViewModel != null)
             {
-                IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, dataListViewModel.Resource.DataList);
+                var isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, dataListViewModel.Resource.DataList);
                 credentialUserRuleSet.Add(isValidExpressionRule);
                 errors.AddRange(credentialUserRuleSet.ValidateRules(userNameLabel, onUserNameError));
-                RuleSet credentialPasswordRuleSet = new RuleSet();
+                var credentialPasswordRuleSet = new RuleSet();
                 isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, dataListViewModel.Resource.DataList);
                 credentialPasswordRuleSet.Add(isValidExpressionRule);
                 errors.AddRange(credentialPasswordRuleSet.ValidateRules(passwordLabel, onPasswordError));
             }
             if(errors.Count == 0)
             {
-                IsStringEmptyOrWhiteSpaceRule isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => userNameValue)
+                var isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => userNameValue)
                 {
                     LabelText = userNameLabel, 
                     DoError = onUserNameError

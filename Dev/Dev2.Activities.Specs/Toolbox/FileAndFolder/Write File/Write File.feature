@@ -50,9 +50,13 @@ Scenario Outline: Write file at location Null
     When the write file tool is executed
 	Then the execution has "<errorOccured>" error
 		Examples: 
-		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] | Error  | AN           |                      |
-
+		| Name                 | source   | sourceLocation                                                  | method    | content        | username          | password | resultVar  | result  | errorOccured | sourcePrivateKeyFile |
+		| Local with Overwrite | [[path]] | NULL                                                            | Overwrite | warewolf rules | ""                | ""       | [[result]] | Error   | AN           |                      |
+#		| UNC with Overwrite   | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSiteFILE\filetowrite0.txt | Overwrite | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+#		| FTP with Overwrite   | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite0.txt          | Overwrite | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+#		| FTPS with Overwrite  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite0.txt          | Overwrite | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |                      |
+#		| SFTP with Overwrite  | [[path]] | sftp://localhost/filetowrite0.txt                               | Overwrite | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
+		
 
 
 Scenario: Write file with carriage returns

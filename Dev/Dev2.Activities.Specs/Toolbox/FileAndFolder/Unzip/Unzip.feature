@@ -51,9 +51,38 @@ Scenario Outline: Unzip file at location
 	| 24 | FTPS to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/ZIP3                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |                      |                           |
 	| 25 | SFTP to SFTP    | [[path]] | sftp://localhost/test5.zip                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP6                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |                      |                           |
 	| 26 | SFTP to SFTP PK | [[path]] | sftp://localhost/test51.zip                              | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP61                              | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+	
+
+
+
+Scenario Outline: Unzip file at location using Null variable
+	Given I have a source path '<source>' with value '<sourceLocation>'
+	And zip credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+	And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And use private public key for source is '<sourcePrivateKeyFile>'
+	And use private public key for destination is '<destinationPrivateKeyFile>'
+	And result as '<resultVar>'	
+	And Archive Password as '<archivepassword>'
+    When the Unzip file tool is executed
+	Then the result variable '<resultVar>' will be '<result>'
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name            | source   | sourceLocation                                           | username          | password | destination | destinationLocation                                 | destUsername      | destPassword | selected | archivepassword | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 	| 1  | Local to Local  | [[path]] | NULL                                                     | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[result]] | Error   | An           |                      |                           |
-
-
+#	| 2  | Local to Local  | [[path]] | c:\test0                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[result]] | Success | NO           |                      |                           |
+#	| 3  | UNC to Local    | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test0.zip | ""                | ""       | [[path1]]   |                                            | ""                | ""           | True     | ""              | [[result]] | Success | NO           |                      |                           |
+#	| 4  | FTP to Local    | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTINGFILE/test0.zip          | ""                | ""       | [[path1]]   | c:\ZIP2                                             | ""                | ""           | True     | ""              | [[result]] | Success | NO           |                      |                           |
+#	| 5  | FTPS to Local   | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test0.zip          | integrationtester | sdf | [[path1]]   | c:\ZIP3                                             | ""                | ""           | True     | ""              | [[result]] | Success | NO           |                      |                           |
+#	| 6  | SFTP to Local   | [[path]] | sftp://localhost/test0.zip                               | dev2              | Q/ulw&]  | [[path1]]   | c:\ZIP4                                             | ""                | ""           | True     | ""              | [[result]] | Success | NO           |  ""          |                           |
+	
 
 #Scenario Outline: Unzip file at location1
 #    Given I have a variable "[[a]]" with a value '<Val1>'
