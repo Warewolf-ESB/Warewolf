@@ -112,9 +112,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 var i = 0;
                 foreach (string columnName in table.Header)
                 {
-                    var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
-                    var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
-                    DataObject.Environment.AssignWithFrame(assignValue, 0);
+                    string value = row[i] == "blank" ? "" : row[i];
+                    if (value.ToUpper() == "NULL")
+                    {
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
+
+                        DataObject.Environment.AssignDataShape((DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue)));
+                    }
+                    else
+                    {
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
+                        var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
+                        DataObject.Environment.AssignWithFrame(assignValue, 0);
+                    }
+                   
                     i++;
                 }
                 DataObject.Environment.CommitAssign();

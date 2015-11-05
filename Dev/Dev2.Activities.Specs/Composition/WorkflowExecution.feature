@@ -284,7 +284,7 @@ Scenario: Workflow with Assign and Date and Time Difference tools executing agai
 	  And the 'InputDates' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as  
 	  | # |              |
 	  | 1 | [[a]] = 2014 |
-	  | 2 | [[b]] = 10.0  |
+	  | 2 | [[b]] = 10   |
 	  And the 'DateAndTime' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
 	  | Input 1       | Input 2    | Input Format | Output In |
 	  | 2020/[[b]]/01 = 2020/10.0/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
@@ -513,7 +513,7 @@ Scenario: Workflow with Assign Create and Delete Record tools with incorrect inp
 
 Scenario: Workflow with 2 Assign tools executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntools"
-	  And "WorkflowWith3Assigntools" contains an Assign "tool1" as
+	  And "WorkflowWith2Assigntools" contains an Assign "tool1" as
 	  | variable | value    |
 	  | [[a]]    | b        |
 	  | [[b]]    | test     |
@@ -560,7 +560,7 @@ Scenario: Workflow with 2 Assign tools by using recordsets in fields executing a
 	  | 1 | [[rec(1).a]] = rec(2).a |
 	  | 2 | [[rec(2).a]] = test     |
 	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
-	  | # | Variable                | New Value |
+	  | # | Variable            | New Value |
 	  | 1 | [[rec(2).a]] = test | warewolf  |
 	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
 	  | # |                          |
