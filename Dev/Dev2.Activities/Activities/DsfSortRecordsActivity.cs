@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(dataObject.IsDebugMode())
             {
-                var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField), update);
+                var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField), update,false);
                 if(data.IsWarewolfAtomListresult)
                 {
                     var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, int update)
         {
-            var data =  env.Eval(env.ToStar( expression), update);
+            var data =  env.Eval(env.ToStar( expression), update,false);
             if (data.IsWarewolfAtomListresult)
             {
                 var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
