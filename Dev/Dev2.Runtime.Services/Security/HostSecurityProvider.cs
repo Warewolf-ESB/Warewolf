@@ -13,7 +13,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -40,8 +39,8 @@ namespace Dev2.Runtime.Security
         // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile IHostSecurityProvider TheInstance;
-        static readonly object SyncRoot = new Object();
+        static volatile IHostSecurityProvider _theInstance;
+        static readonly object SyncRoot = new object();
 
         /// <summary>
         /// Gets the repository instance.
@@ -50,18 +49,18 @@ namespace Dev2.Runtime.Security
         {
             get
             {
-                if (TheInstance == null)
+                if (_theInstance == null)
                 {
                     lock (SyncRoot)
                     {
-                        if (TheInstance == null)
+                        if (_theInstance == null)
                         {
                             var config = new HostSecureConfig();
-                            TheInstance = new HostSecurityProvider(config);
+                            _theInstance = new HostSecurityProvider(config);
                         }
                     }
                 }
-                return TheInstance;
+                return _theInstance;
             }
         }
 
@@ -95,54 +94,6 @@ namespace Dev2.Runtime.Security
             {
                 throw new ArgumentNullException("xml");
             }
-
-//            using(Stream s = xml.EncodeForXmlDocument())
-//            {
-//                var doc = new XmlDocument();
-//                doc.Load(s);
-//
-//                // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
-//                var serverID = GetServerID(doc);
-//
-//                /*
-//                 * NOTE : 
-//                 * 
-//                 * This magical check is here for shipping resources
-//                 * It enables the server on first start to resign the resource such that
-//                 * the end user's install can view and execute them ;)
-//                 * 
-//                 * To ship a resource you need to do the following : 
-//                 * 
-//                 * 1) Set the type to Unknown
-//                 * 2) Give the resource a server ID of our InternalServerID
-//                 * 3) Remove any existing signing data 
-//                 * 
-//                 */
-//                if (serverID != ServerID && serverID != InternalServerID)
-//                {
-//                    return false;
-//                }
-//
-//                // Find the "Signature" node and add it to the SignedXml object
-//                var signedXml = new SignedXml(doc);
-//                var nodeList = doc.GetElementsByTagName("Signature");
-//
-//                // allow unsigned resources with our internal server ID
-//                if (nodeList.Count == 0 && serverID == InternalServerID)
-//                {
-//                    return true;
-//                }
-//
-//                signedXml.LoadXml((XmlElement) nodeList[0]);
-//
-//
-//                var result = serverID == ServerID && signedXml.CheckSignature(_serverKey) ||
-//                             serverID != InternalServerID == signedXml.CheckSignature(_systemKey);
-//
-//
-//                // Check if signed by the server or the system
-//                return result;
-//            }
             return true;
         }
 
@@ -161,7 +112,7 @@ namespace Dev2.Runtime.Security
             // remove the signature element here as it does not pick up correctly futher down ;(
             xml = RemoveSignature(xml);
 
-            using(Stream s = xml.EncodeForXmlDocument())
+            using(var s = xml.EncodeForXmlDocument())
             {
                 var doc = new XmlDocument();
                
@@ -169,34 +120,8 @@ namespace Dev2.Runtime.Security
 
                 SetServerID(doc);
 
-//                // Create a reference to be signed and add
-//                // an enveloped transformation to the reference.
-//                var reference = new Reference
-//                {
-//                    Uri = ""
-//                };
-//
-//                reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
-//
-//                var signedXml = new SignedXml(doc)
-//                {
-//                    SigningKey = _serverKey
-//                };
-//                signedXml.AddReference(reference);
-//                signedXml.ComputeSignature();
-//
-//                // Get the XML representation of the signature and save
-//                // it to an XmlElement object.
-//                var xmlDigitalSignature = signedXml.GetXml();
-//
-//                // Append the element to the XML document.
-//                if (doc.DocumentElement != null)
-//                {
-//                    doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
-//                }
-
-                StringBuilder result = new StringBuilder();
-                using (StringWriter sw = new StringWriter(result))
+                var result = new StringBuilder();
+                using (var sw = new StringWriter(result))
                 {
                     doc.Save(sw);
                 }
@@ -213,17 +138,17 @@ namespace Dev2.Runtime.Security
         #region Remove Signature
         StringBuilder RemoveSignature(StringBuilder sb)
         {
-            const string signatureStart = "<Signature xmlns";
-            const string signatureEnd = "</Signature>";
+            const string SignatureStart = "<Signature xmlns";
+            const string SignatureEnd = "</Signature>";
 
-            var startIdx = sb.IndexOf(signatureStart, 0,false);
+            var startIdx = sb.IndexOf(SignatureStart, 0,false);
             if (startIdx >= 0)
             {
-                var endIdx = sb.IndexOf(signatureEnd, startIdx,false);
+                var endIdx = sb.IndexOf(SignatureEnd, startIdx,false);
 
                 if (endIdx >= 0)
                 {
-                    var len = endIdx - startIdx + signatureEnd.Length;
+                    var len = endIdx - startIdx + SignatureEnd.Length;
                     return sb.Remove(startIdx, len);
                 }
             }

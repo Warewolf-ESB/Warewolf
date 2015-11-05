@@ -11,7 +11,14 @@ namespace Dev2.Common
             WindowsImpersonationContext impersonationContext = null;
             if(identity != null)
             {
-                impersonationContext = identity.Impersonate();
+                if(identity.IsAnonymous)
+                {
+                    identity = ServerUser.Identity as WindowsIdentity;
+                }
+                if(identity != null)
+                {
+                    impersonationContext = identity.Impersonate();
+                }
             }
             try
             {
@@ -24,6 +31,12 @@ namespace Dev2.Common
                     impersonationContext.Undo();
                 }
             }
+        }
+
+        public static IPrincipal ServerUser
+        {
+            get;
+            set;
         }
     }
 }

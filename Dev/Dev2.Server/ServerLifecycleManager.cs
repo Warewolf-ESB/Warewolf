@@ -22,6 +22,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
@@ -321,6 +322,7 @@ namespace Dev2
             {
                 Console.WriteLine(e);
             }
+            Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             InitializeCommandLineArguments();
         }
 
