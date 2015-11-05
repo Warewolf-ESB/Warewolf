@@ -1001,7 +1001,7 @@ this.FeatureBackground();
                         "[[a]] = 2014"});
             table62.AddRow(new string[] {
                         "2",
-                        "[[b]] = 10.0"});
+                        "[[b]] = 10"});
 #line 284
    testRunner.And("the \'InputDates\' in Workflow \'WorkflowWithAssignAndDateTimeDifferencetools1\' debu" +
                     "g outputs as", ((string)(null)), table62, "And ");
@@ -1948,7 +1948,7 @@ this.FeatureBackground();
                         "[[test]]",
                         "warewolf"});
 #line 516
-   testRunner.And("\"WorkflowWith3Assigntools\" contains an Assign \"tool1\" as", ((string)(null)), table116, "And ");
+   testRunner.And("\"WorkflowWith2Assigntools\" contains an Assign \"tool1\" as", ((string)(null)), table116, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
