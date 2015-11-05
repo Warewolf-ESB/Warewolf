@@ -432,52 +432,43 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 
 
 #NULL Specs
-Scenario: Execute a foreach using a NULL value for type In Recordset
-	Given There is a recordset in the datalist with this shape
-	| rs             | value |
-	| [[rs().field]] | NULL  |
-	And I have selected the foreach type as "InRecordset" as "[[rs()]]"
-	When the foreach tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as
-	|                         |
-	| Variable { rs } is NULL | 
 
-Scenario: Execute a foreach using a NULL value for type Num Of Execution
+Scenario: Execute a foreach over a tool null in csv
 	Given There is a recordset in the datalist with this shape
-	| Variable  | value |
+	| rs        | value |
 	| [[count]] | NULL  |
-	And I have selected the foreach type as "NumOfExecution" as "[[count]]"
+	And I have selected the foreach type as "InCSV" and used "[[count]]"	
+	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as
-	|                            |
-	| Variable { count } is NULL |
 
-Scenario: Execute a foreach using a NULL value for type In Range
-	Given I have a variable "[[value]]" with a value of "NULL"
-	And There is a recordset in the datalist with this shape
-	| rs              | value |
-	| [[rs(2).field]] | 1     |
-	| [[rs(1).field]] | 3     |
-	And I have selected the foreach type as "InRange" from "[[rs(2).field]]" to "[[value]]"
-	When the foreach tool is executed
-	Then the execution has "An" error
-	And the debug inputs as
-	|                            |
-	| Variable { count } is NULL |
-
-
-Scenario: Execute a foreach using a NULL value for type in CSV
+Scenario: Execute a foreach over a tool null in Recordsets
 	Given There is a recordset in the datalist with this shape
-	| Variable  | value |
-	| [[count]] | NULL  |
-	And I have selected the foreach type as "inCsv" as "[[count]]"
+	| rs        | value |
+	| [[count().a]] | NULL  |
+	And I have selected the foreach type as "InRecordset" and used "[[count().a]]"	
+	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as
-	|                            |
-	| Variable { count } is NULL |
+
+Scenario: Execute a foreach over a tool null in numberofexecutions
+	Given There is a recordset in the datalist with this shape
+	| rs        | value |
+	| [[count]] | NULL  |
+	And I have selected the foreach type as "NumOfExecution" and used "[[count]]"	
+	And the underlying dropped activity is a(n) "Tool"
+	When the foreach tool is executed
+	Then the execution has "AN" error
+
+Scenario: Execute a foreach over a tool null in Range
+	Given There is a recordset in the datalist with this shape
+	| rs        | value |
+	| [[count]] | NULL  |
+	And I have selected the foreach type as "InRange" from "[[rs(2).field]]" to "[[value]]"	
+	And the underlying dropped activity is a(n) "Tool"
+	When the foreach tool is executed
+	Then the execution has "AN" error
+
 #Scenario: Execute a foreach over an activity with number of executions equals +1 invalid
 #	And I have selected the foreach type as "NumOfExecution" as "+1"
 #	And the underlying dropped activity is a(n) "Activity"
