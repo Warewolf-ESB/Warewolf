@@ -74,8 +74,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheDebugInputsAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            var inputDebugItems = GetInputDebugItems(null, result.Environment);
-            ThenTheDebugInputsAs(table, inputDebugItems);
+            if(!result.Environment.HasErrors())
+            {
+                var inputDebugItems = GetInputDebugItems(null, result.Environment);
+                ThenTheDebugInputsAs(table, inputDebugItems);
+            }
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -88,8 +91,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheDebugOutputAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            var outputDebugItems = GetOutputDebugItems(null, result.Environment);
-            ThenTheDebugOutputAs(table, outputDebugItems);
+            if(!result.Environment.HasErrors())
+            {
+                var outputDebugItems = GetOutputDebugItems(null, result.Environment);
+                ThenTheDebugOutputAs(table, outputDebugItems);
+            }
         }
 
         public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge = false)

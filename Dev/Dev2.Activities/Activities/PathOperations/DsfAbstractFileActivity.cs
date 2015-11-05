@@ -136,6 +136,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             dataObject.Environment.Errors.Add(err);
                         }
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        {
+                            dataObject.Environment.Assign(region, "", update);
+                        }
                     }
 
                     if (dataObject.IsDebugMode())

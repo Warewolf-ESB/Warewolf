@@ -53,35 +53,9 @@ Scenario Outline: Read Folder file at location
 	| 29 | Empty_FTPS_Files_Folders  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir          | Files & Folders | integrationtester | I73573r0 | [[result]] | String | NO           |                      |
 	| 30 | Empty_SFTP_Files_Folders  | [[path]] | sftp://localhost/emptydir                               | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           |                      |
 	| 31 | SFTP PK                   | [[path]] | sftp://localhost                                        | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           | C:\\Temp\\key.opk    |
+	| 1  | Local Files               | [[path]] | NULL                                                    | Files           | ""                | ""       | [[result]] |        | AN           |                      |
 	
 	
-	
-
-Scenario Outline: Read Folder file at location using null variable
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And Read is '<read>'   
-	And result as '<resultVar>'
-    When the read folder file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Input Path                   | Read   | Username   | Password |Private Key File       |
-         | <source> = <sourceLocation> | <read> | <username> | String   | <sourcePrivateKeyFile> |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-    Examples: 
-	| No | Name        | source   | sourceLocation                                 | read  | username          | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-	| 1  | Local Files | [[path]] | NULL                                           | Files | ""                | ""       | [[result]] | Error  | AN           |                      |
-#	| 2  | Local Files | [[path]] | c:\                                            | Files | ""                | ""       | [[result]] | Error  | AN           |                      |
-#	| 3  | UNC         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite | Files | ""                | ""       | [[result]] | Error  | AN           |                      |
-#	| 4  | FTP         | [[path]] | ftp://rsaklfsvrsbspdc:1001/                    | Files | ""                | ""       | [[result]] | Error  | AN           |                      |
-#	| 5  | FTPS        | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt | Files | integrationtester | I73573r0 | [[result]] | Error  | AN           |                      |
-#	| 6  | SFTP        | [[path]] | sftp://localhost                               | Files | dev2.local        | Q/ulw&]  | [[result]] | Error  | AN           |                      |
-	
-
 #Scenario Outline: Read Folder file at location1	
 #    Given I have a variable "[[a]]" with a value '<Val1>'
 #	Given I have a variable "[[b]]" with a value '<Val2>'
