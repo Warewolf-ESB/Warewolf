@@ -51,7 +51,6 @@ Scenario Outline: Unzip file at location
 	| 24 | FTPS to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/ZIP3                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |                      |                           |
 	| 25 | SFTP to SFTP    | [[path]] | sftp://localhost/test5.zip                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP6                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |                      |                           |
 	| 26 | SFTP to SFTP PK | [[path]] | sftp://localhost/test51.zip                              | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP61                              | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-	| 1  | Local to Local  | [[path]] | NULL                                                     | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[result]] | Error   | An           |                      |                           |
 
 
 
