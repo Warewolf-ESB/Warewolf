@@ -23,7 +23,6 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
-using Infragistics.Windows.Controls;
 
 namespace Dev2.Data.Parsers
 {

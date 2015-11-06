@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+//Disabled so that logging can easily be put back
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;

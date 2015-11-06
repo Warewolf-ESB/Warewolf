@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
@@ -62,8 +61,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                     ErrorMessage = ex.Message
                 };
             }
-            
-            ctx.Send(new StringResponseWriter(result.ToString(), ContentTypes.Json));
+            if(result != null)
+            {
+                ctx.Send(new StringResponseWriter(result.ToString(), ContentTypes.Json));
+            }
         }
     }
 }

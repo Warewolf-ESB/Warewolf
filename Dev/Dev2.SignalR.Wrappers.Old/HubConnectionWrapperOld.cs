@@ -3,7 +3,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client.Old;
-using Microsoft.AspNet.SignalR.Client.Old.Transports;
 
 namespace Dev2.SignalR.Wrappers.Old
 {
