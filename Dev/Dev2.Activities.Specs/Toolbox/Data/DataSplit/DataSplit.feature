@@ -240,7 +240,7 @@ Scenario: Split CSV file format into recordset - some fields blank
 	|                 |                   |                 | 3 |                   | Chars    | ,     | No      | " "    |
 	|                 |                   |                 | 4 | [[rec().phone]] = | New Line |       | No      |        |
 	And the debug output as
-	| # |                    |
+	| # |                          |
 	| 1 | [[rec(1).id]] = ID       |
 	|   | [[rec(2).id]] = 1        |
 	|   | [[rec(3).id]] = 2        |
@@ -251,7 +251,7 @@ Scenario: Split CSV file format into recordset - some fields blank
 	|   | [[rec(3).name]] = Tshepo |
 	|   | [[rec(4).name]] =        |
 	|   | [[rec(5).name]] = Mo     |
-	| 3 | " "                      | 
+	| 3 |                          |
 	| 4 | [[rec(1).phone]] = PHONE | 
 	|   | [[rec(2).phone]] = 1234  | 
 	|   | [[rec(3).phone]] = 5678  | 
@@ -292,7 +292,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	|                 |                   |                 | 3 |                   | Chars    | ,     | No      | " "    |
 	|                 |                   |                 | 4 | [[rec().phone]] = | New Line |       | No      |        |
 	And the debug output as
-	| # |                    |
+	| # |                          |
 	| 1 | [[rec(1).id]] = ID       |
 	|   | [[rec(2).id]] = 1        |
 	|   | [[rec(3).id]] = 2        |
@@ -301,7 +301,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	|   | [[rec(2).name]] = Barney |
 	|   | [[rec(3).name]] = Tshepo |
 	|   | [[rec(4).name]] = Mo     |
-	| 3 | " "                      | 
+	| 3 |                          |
 	| 4 | [[rec(1).phone]] = PHONE |
 	|   | [[rec(2).phone]] = 1234  |
 	|   | [[rec(3).phone]] = 5678  |

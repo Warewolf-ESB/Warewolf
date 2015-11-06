@@ -52,7 +52,7 @@ Scenario Outline: Write file at location Null
 	Then the execution has "<errorOccured>" error
 		Examples: 
 		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] | Error  | AN           |                      |
+		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] |        | AN           |                      |
 
 
 
@@ -76,7 +76,7 @@ Scenario: Write file when contents has variables that cannot be evealuated
 	And result as '[[res]]'
 	When the write file tool is executed	
 	Then the result variable '[[res]]' will be ''
-	And the execution has "NO" error
+	And the execution has "AN" error
 
 
 	

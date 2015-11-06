@@ -38,8 +38,8 @@ Scenario Outline: Delete file at location Null
 	Then the result variable '<resultVar>' will be '<result>'
 	Then the execution has "<errorOccured>" error
 	Examples: 
-	| Name       | source   | sourceLocation                                                         | username                     | password | resultVar  | result  | errorOccured | sourcePrivateKeyFile  |
-	| Local      | [[path]] | NULL                                                                   | ""                           | ""       | [[result]] | Failure | AN           |                       |
+	| Name  | source   | sourceLocation | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+	| Local | [[path]] | NULL           | ""       | ""       | [[result]] |        | AN           |                      |
 #	| Local      | [[path]] | G:\filetodelete                                                        | ""                           | ""       | [[result]] | Failure | AN           |                       |
 #	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Memo.txt                | ""                           | ""       | [[result]] | Failure | AN           |                       |
 #	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | password | [[result]] | Failure | AN           |                       |
