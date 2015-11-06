@@ -215,6 +215,10 @@ namespace Dev2.Activities.Specs.Composition
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
         {
+            if (!ScenarioContext.Current.ContainsKey("ConnectTimeoutCountdown"))
+            {
+                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 1000);
+            }
             while(!environmentModel.IsConnected)
             {
                 try
@@ -225,6 +229,13 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Thread.Sleep(100);
                 }
+                int ScenarioEnvironmentConnectCountdown = (int)ScenarioContext.Current["ConnectTimeoutCountdown"];
+                ScenarioEnvironmentConnectCountdown--;
+                if (ScenarioEnvironmentConnectCountdown <= 0)
+                {
+                    throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
+                }
+                ScenarioContext.Current["ConnectTimeoutCountdown"] = ScenarioEnvironmentConnectCountdown;
             }
         }
 
