@@ -1001,7 +1001,7 @@ this.FeatureBackground();
                         "[[a]] = 2014"});
             table62.AddRow(new string[] {
                         "2",
-                        "[[b]] = 10"});
+                        "[[b]] = 10.0"});
 #line 284
    testRunner.And("the \'InputDates\' in Workflow \'WorkflowWithAssignAndDateTimeDifferencetools1\' debu" +
                     "g outputs as", ((string)(null)), table62, "And ");
