@@ -50,7 +50,7 @@ namespace Warewolf.Storage
 
         void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update);
 
-        HashSet<string> Errors { get; set; }
+        HashSet<string> Errors { get; }
         HashSet<string> AllErrors { get; } 
         void AddError(string error);
 
@@ -164,15 +164,6 @@ namespace Warewolf.Storage
            
         }
 
-
-        public void MultiAssign(IEnumerable<IAssignValue> values, int update)
-        {
-            
-                var envTemp = PublicFunctions.EvalMultiAssign(values, update, _env);
-                _env = envTemp;
-
-        }
-
         public void AssignWithFrame(IAssignValue values, int update)
         {
             try
@@ -190,50 +181,6 @@ namespace Warewolf.Storage
 
                 Errors.Add(err.Message);
                 throw;
-            }
-        
-  
-        }
-
-        public int GetEvaluationResultAsInt(string exp, int update)
-        {
-            var result = Eval(exp, update);
-            if(result.IsWarewolfAtomResult)
-            {
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
-                // ReSharper restore PossibleNullReferenceException
-                if(x.IsInt)
-                {
-                    var resultvalue = x as DataASTMutable.WarewolfAtom.Int;
-                    // ReSharper disable PossibleNullReferenceException
-                    return resultvalue.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                }
-                return 0;
-            }
-                // ReSharper disable once RedundantIfElseBlock
-            else if(result.IsWarewolfRecordSetResult)
-            {
-                var x = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                // ReSharper disable PossibleNullReferenceException
-                return  x.Item.Data[PublicFunctions.PositionColumn].Count;
-                // ReSharper restore PossibleNullReferenceException
-            }
-            else
-            {
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.Last();
-                // ReSharper restore PossibleNullReferenceException
-                // ReSharper restore PossibleNullReferenceException
-                if (x.IsInt)
-                {
-                    var resultvalue = x as DataASTMutable.WarewolfAtom.Int;
-                    // ReSharper disable PossibleNullReferenceException
-                    return resultvalue.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                }
-                return 0;
             }
         }
 
@@ -407,6 +354,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataASTMutable.WarewolfAtom> item, bool shouldUseLast,int update)
         {
            _env = PublicFunctions.EvalAssignFromList(assignValue, item,_env,update,shouldUseLast);
@@ -499,7 +447,7 @@ namespace Warewolf.Storage
 
         }
 
-        public HashSet<string> Errors { get;  set; }
+        public HashSet<string> Errors { get; private set; }
         public HashSet<string> AllErrors
         {
             get;

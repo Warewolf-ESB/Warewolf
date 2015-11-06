@@ -11,18 +11,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -205,10 +202,6 @@ namespace Dev2.Runtime.ESB.Control
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
-
-            var principle = Thread.CurrentPrincipal;
-            var name = principle.Identity.Name;
-
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -451,7 +444,7 @@ namespace Dev2.Runtime.ESB.Control
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             generateInvokeContainer.Execute(out errors,update);
-            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,Guid.Empty, "", update);
+            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "", update);
             var jsonSerializerSettings = new JsonSerializerSettings();
             var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;
@@ -499,82 +492,6 @@ namespace Dev2.Runtime.ESB.Control
 
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
-        /// <summary>
-        /// Finds the service shape.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="resourceName">Name of the service.</param>
-        /// <returns></returns>
-        public StringBuilder FindServiceShape(Guid workspaceId, string resourceName)
-        {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-            StringBuilder result = new StringBuilder();
-            if(resource == null)
-            {
-                return EmptyDataList;
-            }
-
-            if(resource.DataList != null)
-            {
-                result = resource.DataList;
-
-            }
-
-            // Handle services ;)
-            if(result.ToString() == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
-            {
-                ErrorResultTO errors;
-                result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
-            }
-
-
-            if(string.IsNullOrEmpty(result.ToString()))
-            {
-                return EmptyDataList;
-            }
-            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
-            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
-            return result;
-        }
-
-        /// <summary>
-        /// Manipulates the data list shape for output.
-        /// </summary>
-        /// <param name="preShape">The pre shape.</param>
-        /// <returns></returns>
-        public string ManipulateDataListShapeForOutput(string preShape)
-        {
-
-            using(var stringReader = new StringReader(preShape))
-            {
-                var xDoc = XDocument.Load(stringReader);
-
-                var rootEl = xDoc.Element("DataList");
-                if(rootEl == null) return xDoc.ToString();
-
-                rootEl.Elements().Where(el =>
-                {
-                    var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
-                    var removeCondition = firstOrDefault != null &&
-                                          (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
-                                           firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return removeCondition && !el.HasElements;
-                }).Remove();
-
-                var xElements = rootEl.Elements().Where(el => el.HasElements);
-                var enumerable = xElements as IList<XElement> ?? xElements.ToList();
-                enumerable.Elements().Where(element =>
-                {
-                    var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
-                    var removeCondition = xAttribute != null &&
-                                          (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
-                                           xAttribute.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return removeCondition;
-                }).Remove();
-                enumerable.Where(element => !element.HasElements).Remove();
-                return xDoc.ToString();
-            }
-        }
 
         /// <summary>
         /// Glues the input and output mapping segments.

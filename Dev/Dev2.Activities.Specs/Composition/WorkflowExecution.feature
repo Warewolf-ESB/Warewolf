@@ -2776,16 +2776,12 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the 'Create12' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug inputs as
 	  | File or Folder | Overwrite | Username | Password |
-	  | [[NoValue]] =  | True      | ""       | ""       |  
 	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
 	   |                    |
-	   | [[res1]] = Failure |
 	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug inputs as
 	  | Input Path    | Username | Password |
-	  | [[NoValue]] = | ""       | ""       |
 	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
 	  |                    |
-	  | [[res2]] = Failure |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned2
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
@@ -2808,16 +2804,12 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the 'Create12' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
 	  | File or Folder                           | Overwrite | Username | Password |
-	  | [[NoValue]]\copied00.txt = | True      | ""       | ""       |  
 	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
 	   |                    |
-	   | [[res1]] = Failure |
 	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
 	  | Input Path                               | Username | Password |
-	  | [[NoValue]]\copied00.txt =  | ""       | ""       |
 	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
 	  |                    |
-	  | [[res2]] = Failure |
 
 
 Scenario: Calculate testing variable values that hasn't been assigned
@@ -3075,14 +3067,14 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  When "Utility - Date and Time Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Date and Time(1)' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format           | =                      |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
+	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format           | =                      |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	  And the 'Date and Time(1)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |   
 	 And the 'Date and Time(2)' in WorkFlow 'Utility - Date and Time' debug inputs as
-	 | Input                 | Input Format            | =                      | Add Time |    | Output Format          |
-	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
+	 | Input                 | Input Format            | =                      | Add Time |  | Output Format          |
+	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | mm/dd/yy 12h:min am/pm |
 	  And the 'Date and Time(2)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |  
@@ -3093,14 +3085,14 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  |                             |
 	  | [[SomeTimeBack]] = DateTime |  
 	 And the 'Date and Time(4)' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input | Input Format | Add Time |    | Output Format                  |
-	  | am    | am/pm        | ""       | "" | mm/dd/yyyy 12h:min:ss.sp am/pm |
+	  | Input | Input Format | Add Time |  | Output Format                  |
+	  | am    | am/pm        | ""       |  | mm/dd/yyyy 12h:min:ss.sp am/pm |
 	  And the 'Date and Time(4)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                               |
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
+	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"

@@ -99,7 +99,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             // get data in a format we can send ;)
             Dev2Logger.Log.Debug("Creating DataList fragment for remote execute");
-            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString(), update);
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString(), update);
 
             string result = string.Empty;
 
@@ -138,7 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
-            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID,true);
+            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
 
             if (data != null)
             {
@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public virtual bool ServerIsUp()
+        public bool ServerIsUp()
         {
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)

@@ -143,7 +143,7 @@ namespace Dev2.Diagnostics
         {
             foreach(var debugItemResult in itemsToAdd)
             {
-                if(debugItemResult.Operator == "=" && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable)
+                if(string.IsNullOrEmpty(debugItemResult.Label) && string.IsNullOrEmpty(debugItemResult.Value) && string.IsNullOrEmpty(debugItemResult.Variable) && debugItemResult.Type == DebugItemResultType.Variable)
                 {
                     continue;
                 }

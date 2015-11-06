@@ -103,10 +103,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = 0;
                             if (dataObject.Environment.HasRecordSet(RecordsetName))
                             {
-                                count = dataObject.Environment.GetCount(rs);
+                                var count = dataObject.Environment.GetCount(rs);
                                 var value = count.ToString();
                                 dataObject.Environment.Assign(CountNumber, value, update);
                                 AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));

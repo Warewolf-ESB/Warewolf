@@ -20,7 +20,7 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList,int update)
+        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -306,6 +306,7 @@ namespace Dev2
                 dataObject.Environment.CommitAssign();
             }
         }
+        // ReSharper disable once InconsistentNaming
         static string RemoveXMLPrefix(string a)
         {
             if (a.StartsWith(GlobalConstants.XMLPrefix))
@@ -315,7 +316,7 @@ namespace Dev2
             }
             return a;
         }
-        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList, int update)
+        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
