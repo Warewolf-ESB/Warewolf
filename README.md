@@ -1,4 +1,8 @@
-[![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)](http://warewolf.io/) 
+[![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)](http://warewolf.io/)   
+
+[![Bossie award](http://warewolf.io/images/Bossie-Award-badge.png)](http://www.infoworld.com/article/2982622/open-source-tools/bossie-awards-2015-the-best-open-source-applications.html#slide13) 
+
+      
 
 
 
