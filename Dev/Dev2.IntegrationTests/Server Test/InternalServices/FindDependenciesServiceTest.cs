@@ -28,6 +28,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         private readonly string _webserverURI = ServerSettings.WebserverURI;
 
         [TestMethod]
+        [Ignore]
         public void FindDependencies_ExistingService_Expected_AllDependanciesReturned() {
             string postData = String.Format("{0}{1}", _webserverURI, @"FindDependencyService?ResourceId=e59b7fe3-ad37-4363-8678-74601b9ea3cb");
             XElement response = XElement.Parse(TestHelper.PostDataToWebserver(postData));

@@ -27,6 +27,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         private readonly string webserverURI = ServerSettings.WebserverURI;
 
         [TestMethod]
+        [Ignore]
         public void GetTest_ExpectedReturnedServiceInformation()
         {
             WebCommunicationResponse webCommResp = new WebCommunicationResponse();
