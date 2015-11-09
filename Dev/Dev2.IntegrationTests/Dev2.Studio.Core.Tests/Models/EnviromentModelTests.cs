@@ -25,12 +25,14 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         #region Connect Tests
 
         [TestMethod]
+        [Ignore]
         public void EnvironmentModelConnectToAvailableServersAuxiliaryChannelOnLocalhostExpectedConnectionSuccesful()
         {
             TestAuxilliaryConnections(ServerSettings.DsfAddress);
         }
 
         [TestMethod]
+        [Ignore]
         public void EnvironmentModelConnectToAvailableServersAuxiliaryChannelOnPCNameExpectedConnectionSuccesful()
         {
             TestAuxilliaryConnections(string.Format(ServerSettings.DsfAddressFormat, Environment.MachineName));
@@ -67,7 +69,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
         static IEnvironmentConnection CreateConnection(string appServerUri)
         {
-
             return new ServerProxy(new Uri(appServerUri));
         }
 
