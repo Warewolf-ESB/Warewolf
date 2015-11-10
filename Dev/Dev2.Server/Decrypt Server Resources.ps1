@@ -12,14 +12,14 @@ Add-Type -Path "$CurrentDirectory\..\Dev2.Runtime.Services\bin\Debug\Dev2.Runtim
 Write-Host Assembly loaded. 
 
 Write-Host Loading type.
-$ResourceHandler = New-Object -TypeName "Dev2.Runtime.ESB.Management.Services.FetchResourceDefintition"
+$ResourceHandler = New-Object Dev2.Runtime.ESB.Management.Services.FetchResourceDefintition
 Write-Host Type loaded.
 
 Write-Host Recursing through resources.
 get-childitem "$CurrentDirectory\bin\Debug\Resources" -recurse | where {$_.extension -eq ".xml"} | % {
 
 	Write-Host Resource found at $_.FullName.
-	$sb = New-Object -TypeName "System.Text.StringBuilder"
+	$sb = New-Object System.Text.StringBuilder
 	[void]$sb.Append([string](Get-Content $_.FullName))
 	Write-Host Resource read.
 	
