@@ -20,7 +20,7 @@ get-childitem "$CurrentDirectory\bin\Debug\Resources" -recurse | where {$_.exten
 
 	Write-Host Resource found at $_.FullName.
 	$sb = New-Object -TypeName "System.Text.StringBuilder"
-	[void]$sb.Append($_.FullName)
+	[void]$sb.Append([string](Get-Content $_.FullName))
 	Write-Host Resource read.
 	
 	Write-Host Decrypting resource.
