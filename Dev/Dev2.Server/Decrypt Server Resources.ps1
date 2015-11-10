@@ -16,11 +16,11 @@ $ResourceHandler = New-Object -TypeName "Dev2.Runtime.ESB.Management.Services.Fe
 Write-Host Type loaded.
 
 Write-Host Recursing through resources.
-foreach ($resource in Get-ChildItem -Path "$CurrentDirectory\bin\Debug\Resources" -Recurse)
-{
-	Write-Host Resource found at "$resource".
+get-childitem "$CurrentDirectory\bin\Debug\Resources" -recurse | where {$_.extension -eq ".xml"} | % {
+
+	Write-Host Resource found at $_.FullName.
 	$sb = New-Object -TypeName "System.Text.StringBuilder"
-	[void]$sb.Append($resource)
+	[void]$sb.Append($_.FullName)
 	Write-Host Resource read.
 	
 	Write-Host Decrypting resource.
@@ -28,6 +28,6 @@ foreach ($resource in Get-ChildItem -Path "$CurrentDirectory\bin\Debug\Resources
 	Write-Host Resource decrypted.
 
 	Write-Host Writing decrypted resource.
-	$sb.ToString() | Out-File -LiteralPath $resource -Encoding utf8 -Force
-	Write-Host Written back to "$resource".
+	$sb.ToString() | Out-File -LiteralPath $_.FullName -Encoding utf8 -Force
+	Write-Host Written back to $_.FullName.
 }
