@@ -4148,7 +4148,7 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	  |                      |
 	  | [[Result]] = Pass |
 
-	  
+@ignore
 Scenario: Time Zone Changes
 	  Given I have a workflow "TimeZoneChangeTest"
 	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
