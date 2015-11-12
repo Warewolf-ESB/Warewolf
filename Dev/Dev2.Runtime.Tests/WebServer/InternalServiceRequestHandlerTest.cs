@@ -105,6 +105,7 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
+            ctx.Setup(c => c.Request.User).Returns(new GenericPrincipal(new GenericIdentity("FakeUser"), new []{(string)null}));
 
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = principle.Object };
 
