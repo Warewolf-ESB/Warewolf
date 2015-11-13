@@ -217,7 +217,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (!ScenarioContext.Current.ContainsKey("ConnectTimeoutCountdown"))
             {
-                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 1000);
+                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 3000);
             }
             while(!environmentModel.IsConnected)
             {
