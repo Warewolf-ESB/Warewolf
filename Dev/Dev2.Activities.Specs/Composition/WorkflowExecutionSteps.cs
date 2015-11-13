@@ -61,6 +61,8 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
+        const int _environmentConnectionTimeout = 3000;
+
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
         protected override void BuildDataList()
@@ -174,7 +176,7 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
-                    EnsureEnvironmentConnected(newEnvironment);
+                    EnsureEnvironmentConnected(newEnvironment, _environmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
                     // now find the bloody resource model for execution
@@ -199,7 +201,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            EnsureEnvironmentConnected(environmentModel);
+            EnsureEnvironmentConnected(environmentModel, _environmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
@@ -213,29 +215,18 @@ namespace Dev2.Activities.Specs.Composition
             Add("debugStates", new List<IDebugState>());
         }
 
-        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
+        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int Timeout)
         {
-            if (!ScenarioContext.Current.ContainsKey("ConnectTimeoutCountdown"))
+            if (Timeout <= 0)
             {
-                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 3000);
+                throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
-            while(!environmentModel.IsConnected)
+            environmentModel.Connect();
+            if (!environmentModel.IsConnected)
             {
-                try
-                {
-                    environmentModel.Connect();
-                }
-                catch(Exception)
-                {
-                    Thread.Sleep(100);
-                }
-                int ScenarioEnvironmentConnectCountdown = (int)ScenarioContext.Current["ConnectTimeoutCountdown"];
-                ScenarioEnvironmentConnectCountdown--;
-                if (ScenarioEnvironmentConnectCountdown <= 0)
-                {
-                    throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
-                }
-                ScenarioContext.Current["ConnectTimeoutCountdown"] = ScenarioEnvironmentConnectCountdown;
+                Timeout--;
+                Thread.Sleep(100);
+                EnsureEnvironmentConnected(environmentModel, Timeout);
             }
         }
 
@@ -430,7 +421,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source);
+            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source, _environmentConnectionTimeout);
             EnvironmentRepository.Instance.Source.ForceLoadResources();
             
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
@@ -441,7 +432,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(remoteEnvironment != null)
             {
-                EnsureEnvironmentConnected(remoteEnvironment);
+                EnsureEnvironmentConnected(remoteEnvironment, _environmentConnectionTimeout);
                 remoteEnvironment.ForceLoadResources();
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
                 if(remoteResourceModel != null)
@@ -1195,7 +1186,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
-            EnsureEnvironmentConnected(resourceModel.Environment);
+            EnsureEnvironmentConnected(resourceModel.Environment, _environmentConnectionTimeout);
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {
@@ -1443,6 +1434,7 @@ namespace Dev2.Activities.Specs.Composition
                 d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
+
 
 
     }
