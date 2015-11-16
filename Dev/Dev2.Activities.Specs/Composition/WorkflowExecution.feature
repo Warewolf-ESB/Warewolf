@@ -4266,3 +4266,14 @@ Scenario: Xml Serialisation bug when returning xml
 	  |                  |               | Result              | [[Result]]  |
 	When "XmlSerialisation" is executed
 	Then the workflow execution has "NO" error
+
+Scenario: ForEach using * and web get request with error
+	  Given I have a workflow "Spec - Test For Each  Get"
+	  And "Spec - Test For Each  Get" contains "GetRequestErrorHandling" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Spec - Test For Each  Get" is executed
+	  Then the workflow execution has "AN" error	  
+	  And the 'GetRequestErrorHandling' in Workflow 'Spec - Test For Each  Get' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |

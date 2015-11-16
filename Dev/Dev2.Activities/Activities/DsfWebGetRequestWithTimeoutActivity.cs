@@ -189,7 +189,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    var expression = GetExpression(1);
+                    var expression = Result;
                     PushResultsToDataList(expression, null, dataObject,update);
                 }
                 if (dataObject.IsDebugMode())
@@ -200,19 +200,6 @@ namespace Dev2.Activities
             }
         }
 
-        string GetExpression(int indexToUpsertTo)
-        {
-            string expression;
-            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                expression = Result;
-            }
-            return expression;
-        }
 
         void PushResultsToDataList(string expression, string result, IDSFDataObject dataObject,int update)
         {
