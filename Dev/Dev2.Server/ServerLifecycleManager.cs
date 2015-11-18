@@ -272,6 +272,7 @@ namespace Dev2
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
+        private int _daysToKeepTempFiles;
 
         // END OF GC MANAGEMENT
 
@@ -323,8 +324,23 @@ namespace Dev2
                 Console.WriteLine(e);
             }
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+            SetupTempCleanupSetting();
             InitializeCommandLineArguments();
         }
+        private void SetupTempCleanupSetting()
+        {
+            var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
+            if(!string.IsNullOrEmpty(daysToKeepTempFilesValue))
+            {
+                int daysToKeepTempFiles;
+                if(int.TryParse(daysToKeepTempFilesValue, out daysToKeepTempFiles))
+                {
+                    _daysToKeepTempFiles = daysToKeepTempFiles;
+                }
+            }
+        }
+
+        
 
         #endregion
 
@@ -431,7 +447,7 @@ namespace Dev2
             if(!didBreak)
             {
                 // set background timer to query network computer name list every 15 minutes ;)
-                _timer = new Timer(RefreshComputerList, null, 10000, GlobalConstants.NetworkComputerNameQueryFreq);
+                _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 result = ServerLoop(interactiveMode);
                 StartPulseLogger();
             }
@@ -448,9 +464,41 @@ namespace Dev2
             _pulseLogger.Start();
         }
 
-        void RefreshComputerList(object state)
+        void PerformTimerActions(object state)
         {
             GetComputerNames.GetComputerNamesList();
+            if(_daysToKeepTempFiles != 0)
+            {
+                DeleteTempFiles();
+            }
+        }
+
+        private void DeleteTempFiles()
+        {
+            var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            DeleteTempFiles(tempPath);
+            string schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+            DeleteTempFiles(schedulerTempPath);
+        }
+
+        private void DeleteTempFiles(string tempPath)
+        {
+            if(Directory.Exists(tempPath))
+            {
+                var dir = new DirectoryInfo(tempPath);
+                var files = dir.GetFiles();
+                var filesToDelete = files.Where(info =>
+                {
+                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles, 0, 0);
+                    var time = DateTime.Now.Subtract(info.CreationTime);
+                    return time > maxDaysToKeepTimeSpan;
+                }).ToList();
+
+                foreach(var fileInfo in filesToDelete)
+                {
+                    fileInfo.Delete();
+                }
+            }
         }
 
         int Stop(bool didBreak, int result)
