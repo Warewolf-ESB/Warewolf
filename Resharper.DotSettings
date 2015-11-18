@@ -15,30 +15,7 @@
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002ASteps_002Ecs/@EntryIndexedValue">True</s:Boolean>	
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002AUIMap_002Ecs/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexedValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexRemoved">True</s:Boolean>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexRemoved">True</s:Boolean>		
 	<s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=_002A_002Efeature_002Ecs/@EntryIndexedValue">*.feature.cs</s:String>	
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>	
 	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/IdentifierHighlightingEnabled/@EntryValue">True</s:Boolean>
@@ -106,7 +83,7 @@
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantExplicitArrayCreation/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantExplicitArraySize/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantExplicitNullableCreation/@EntryIndexedValue">ERROR</s:String>
-	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantIfElseBlock/@EntryIndexedValue">ERROR</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantIfElseBlock/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantOverload_002EGlobal/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantOverload_002ELocal/@EntryIndexedValue">WARNING</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantOverridenMember/@EntryIndexedValue">ERROR</s:String>
