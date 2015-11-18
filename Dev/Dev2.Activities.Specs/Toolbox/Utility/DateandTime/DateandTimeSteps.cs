@@ -147,10 +147,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
             if(actualValue != null)
             {
+                //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
+
+                //Ashley: Windows 8 and above say AD and BC instead of A.D. and B.C. for the 'Era' datepart
+                actualValue = actualValue.Replace("A.D.", "AD").Replace("B.C.", "BC");
             }
             if (string.IsNullOrEmpty(expectedResult))
             {

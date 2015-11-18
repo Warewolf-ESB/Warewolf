@@ -233,7 +233,7 @@ Scenario: Default outputs for dateparts not present
 	And I selected Add time as "None" with a value of 0
 	And the output format as "yyyy-mm-dd 24hr:min:ss am/pm Era"
 	When the datetime tool is executed
-	Then the datetime result should be "0001-01-01 00r:00:00 AM A.D."
+	Then the datetime result should be "0001-01-01 00r:00:00 AM AD"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Input | Input Format | Add Time |   | Output Format                    |
