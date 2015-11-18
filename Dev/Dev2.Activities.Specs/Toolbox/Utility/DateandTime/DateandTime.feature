@@ -122,7 +122,7 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	| 2013/12/05 04:18:51 PM | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | None     | 0 | 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ |
 	And the debug output as 
 	|                                                                                                                    |
-	| [[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12 |
+	| [[result]] = 04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12 |
 
 Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D.
 	Given I have a date "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"

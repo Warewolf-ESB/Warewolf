@@ -469,8 +469,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table16.AddRow(new string[] {
-                        "[[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standar" +
-                            "d Time:PM:16:5:4:Thursday:339:12"});
+                        "[[result]] = 04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard " +
+                            "Time:PM:16:5:4:Thursday:339:12"});
 #line 123
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
