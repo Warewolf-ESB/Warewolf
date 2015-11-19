@@ -82,7 +82,6 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            
             InitializeEsbProxy();
             _asyncWorker = worker;
 
@@ -200,14 +199,14 @@ namespace Dev2.Network
                 {
                     if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                     {
-                        HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+                        HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
                     }
                 }
 
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if (!HubConnection.Start().Wait(5000))
+                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut))
                     {
                         if (!IsLocalHost)
                         {
@@ -250,7 +249,7 @@ namespace Dev2.Network
 
         private void ConnectionRetry()
         {
-            HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+            HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
             IPopupController popup = CustomContainer.Get<IPopupController>();
 
             var application = Application.Current;
@@ -265,7 +264,7 @@ namespace Dev2.Network
 
             if (res == MessageBoxResult.Yes)
             {
-                if (!HubConnection.Start().Wait(5000))
+                if (!HubConnection.Start().Wait(30000))
                 {
                     ConnectionRetry();
                 }
@@ -295,7 +294,7 @@ namespace Dev2.Network
                 {
                     _reconnectHeartbeat = new System.Timers.Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                    _reconnectHeartbeat.Interval = 3000;
+                    _reconnectHeartbeat.Interval = 1000;
                     _reconnectHeartbeat.AutoReset = true;
                     _reconnectHeartbeat.Start();
                 }
@@ -549,7 +548,12 @@ namespace Dev2.Network
             Wait(invoke, result);
             if (invoke.IsFaulted)
             {
-                throw new Exception("Task execution in faulted state.");
+                var popupController = CustomContainer.Get<IPopupController>();
+                if (popupController != null)
+                {
+                    popupController.Show("Error connecting to server. Please check your network connection.","Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null);
+                }
+                return result;
             }
             Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
             Wait(fragmentInvoke, result);
@@ -599,31 +603,35 @@ namespace Dev2.Network
             try
             {
                 await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+                var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
+                result.Append(fragmentInvoke);
+
+                // prune any result for old datalist junk ;)
+                if (result.Length > 0)
+                {
+                    // Only return Dev2System.ManagmentServicePayload if present ;)
+                    var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0)
+                    {
+                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                        if (start < end && (end - start) > 1)
+                        {
+                            // we can return the trimmed payload instead
+                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
+                            return new StringBuilder(result.Substring(start, (end - start)));
+                        }
+                    }
+                }
             }
             catch(Exception e)
             {
                 Dev2Logger.Log.Error(e);
-            }
-            var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
-            result.Append(fragmentInvoke);
-
-            // prune any result for old datalist junk ;)
-            if (result.Length > 0)
-            {
-                // Only return Dev2System.ManagmentServicePayload if present ;)
-                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if (start > 0)
+                var popupController = CustomContainer.Get<IPopupController>();
+                if (popupController != null)
                 {
-                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start < end && (end - start) > 1)
-                    {
-                        // we can return the trimmed payload instead
-                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                        return new StringBuilder(result.Substring(start, (end - start)));
-                    }
+                    popupController.Show("Error connecting to server. Please check your network connection.", "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null);
                 }
             }
-
             return result;
         }
 

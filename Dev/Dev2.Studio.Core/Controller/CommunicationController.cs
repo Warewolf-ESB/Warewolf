@@ -16,6 +16,7 @@ using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Controller
@@ -106,7 +107,7 @@ namespace Dev2.Controller
                     try
                     {
                         var popupController = CustomContainer.Get<IPopupController>();
-                        if(popupController != null)
+                        if (popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                         {
                             popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
                                                  "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");
@@ -152,7 +153,7 @@ namespace Dev2.Controller
                 if (connection != null)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
-                    if (popupController != null)
+                    if (popupController != null && connection.HubConnection.State==ConnectionStateWrapped.Disconnected)
                     {
                         popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
                                                                      "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");

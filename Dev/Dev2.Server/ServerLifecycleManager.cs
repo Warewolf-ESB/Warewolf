@@ -489,7 +489,7 @@ namespace Dev2
                 var files = dir.GetFiles();
                 var filesToDelete = files.Where(info =>
                 {
-                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles, 0, 0);
+                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles,0, 0, 0);
                     var time = DateTime.Now.Subtract(info.CreationTime);
                     return time > maxDaysToKeepTimeSpan;
                 }).ToList();
