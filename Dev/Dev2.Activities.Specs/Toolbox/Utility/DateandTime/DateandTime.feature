@@ -115,7 +115,7 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	And I selected Add time as "None" with a value of 0
 	And the output format as "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
 	When the datetime tool is executed
-	Then the datetime result should be "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
+	Then the datetime result should be "04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
 	And the execution has "NO" error
 	 And the debug inputs as  
 	| Input                  | Input Format            | =                      | Add Time |   | Output Format                                                               |
