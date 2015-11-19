@@ -443,9 +443,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 117
  testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 118
- testRunner.Then("the datetime result should be \"04:05:Thursday:A.D.:12:December:18:51:0:2013:13:So" +
-                    "uth Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard " +
-                    "Time:49:(UTC+02:00) Harare, Pretoria\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the datetime result should be \"04:05:Thursday:AD:12:December:18:51:0:2013:13:Sout" +
+                    "h Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Ti" +
+                    "me:49:(UTC+02:00) Harare, Pretoria\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 119
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -469,8 +469,8 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table16.AddRow(new string[] {
-                        "[[result]] = 04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard " +
-                            "Time:PM:16:5:4:Thursday:339:12"});
+                        "[[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standar" +
+                            "d Time:PM:16:5:4:Thursday:339:12"});
 #line 123
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
