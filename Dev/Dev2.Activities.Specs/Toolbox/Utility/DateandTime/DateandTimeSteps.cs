@@ -13,6 +13,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -151,9 +152,35 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             {
                 //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
+                if(expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
+                {
+                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                    if(eraValue == -1) //The Era value does not use punctuation
+                    {
+                        actualValue = actualValue.Replace("A.D.", "AD");
+                        expectedResult = actualValue.Replace("A.D.", "AD");
+                    }
+                    else
+                    {
+                        actualValue = actualValue.Replace("AD", "A.D.");
+                        expectedResult = actualValue.Replace("AD", "A.D.");
+                    }
+                }
+                if (expectedResult.Contains("B.C.") || expectedResult.Contains("BC"))
+                {
+                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                    if (eraValue == -1) //The Era value does not use punctuation
+                    {
+                        actualValue = actualValue.Replace("B.C.", "BC");
+                        expectedResult = actualValue.Replace("B.C.", "BC");
+                    }
+                    else
+                    {
+                        actualValue = actualValue.Replace("BC", "B.C.");
+                        expectedResult = actualValue.Replace("BC", "B.C.");
+                    }
 
-                //Ashley: Windows 8 and above say AD and BC instead of A.D. and B.C. for the 'Era' datepart
-                actualValue = actualValue.Replace("A.D.", "AD").Replace("B.C.", "BC");
+                }
             }
             if (string.IsNullOrEmpty(expectedResult))
             {

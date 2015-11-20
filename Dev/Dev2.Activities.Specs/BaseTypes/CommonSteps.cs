@@ -13,6 +13,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -772,7 +773,22 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
 
-
+            if (expectedValue.Contains("A.D."))
+            {
+                var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                if (eraValue == -1) //The Era value does not use punctuation
+                {
+                    actualValue = actualValue.Replace("A.D.", "AD");
+                }
+            }
+            if (expectedValue.Contains("B.C."))
+            {
+                var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                if (eraValue == -1) //The Era value does not use punctuation
+                {
+                    actualValue = actualValue.Replace("B.C.", "BC");
+                }
+            }
             if (string.IsNullOrEmpty(type) && actualValue != null)
             {
                 actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
