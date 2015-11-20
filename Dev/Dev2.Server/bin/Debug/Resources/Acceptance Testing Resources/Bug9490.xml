@@ -1,5 +1,5 @@
 
-<Service ID="cca5a985-1fdc-41f1-a542-c0fe69ff8966" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9490" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="cca5a985-1fdc-41f1-a542-c0fe69ff8966" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9490" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5802.19306">
   <DisplayName>Bug9490</DisplayName>
   <Category>Acceptance Testing Resources\Bug9490</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -26,18 +26,4 @@
     <ErrorMessage InstanceID="752fb1ef-6a26-4db7-aaf3-761913c3258f" Message="IsRequired mapping has changed" ErrorType="None" MessageType="MappingIsRequiredChanged" FixType="IsRequiredChanged" StackTrace=""><![CDATA[<Args><Input>[{"Name":"isUpper","MapsTo":"isUpper","Value":"isUpper","IsRecordSet":false,"RecordSetName":"","IsEvaluated":false,"DefaultValue":"","IsRequired":false,"RawValue":"isUpper","EmptyToNull":false}]</Input></Args>]]></ErrorMessage>
     <ErrorMessage InstanceID="06029893-339b-430a-b706-802b88abde64" Message="IsRequired mapping has changed" ErrorType="None" MessageType="MappingIsRequiredChanged" FixType="IsRequiredChanged" StackTrace=""><![CDATA[<Args><Input>[{"Name":"isUpper","MapsTo":"isUpper","Value":"isUpper","IsRecordSet":false,"RecordSetName":"","IsEvaluated":false,"DefaultValue":"","IsRequired":false,"RawValue":"isUpper","EmptyToNull":false}]</Input></Args>]]></ErrorMessage>
   </ErrorMessages>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>3eWDrusffZg3rd3/SrPIc2sLfZc=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>i1Ieo8qoaLbtAx9pBzookhgNdJv+3u16ov5oTXNY9mXmksxdtJJlTt9W3dcSSqjhCqq0V9Hn8T8HIVRA7hTQIBH0fBoy/ai5+eiTYH2m+IFjbILEtK6Tm7wmTrK8tJbAqAdwFhp2p3w9E1FG9MCFzgch6liNRuklhPYxV6iPAaU=</SignatureValue>
-  </Signature>
 </Service>

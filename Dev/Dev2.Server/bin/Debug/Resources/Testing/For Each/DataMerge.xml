@@ -1,5 +1,5 @@
 
-<Service ID="730c4044-ba33-447e-b9a9-343852e13437" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMerge" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="730c4044-ba33-447e-b9a9-343852e13437" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMerge" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5802.19306">
   <DisplayName>DataMerge</DisplayName>
   <Category>Testing\For Each\DataMerge</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,18 +30,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-08-26T08:48:27.3588126+02:00" Reason="Save" User="" VersionNumber="2" ResourceId="730c4044-ba33-447e-b9a9-343852e13437" VersionId="80397fe1-ebef-456f-904d-d0ee21cea959" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>mz95vswA+cUYtAOUGgAglrj/yHY=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>Ky5EPKIVrNNV0ShSVZlcm+a63U9wyRvrVg0vvczjaQxVjNEth6jpiEKIypQCEgElMN50+6/GBUiqcYuM7ImVnZCnKs76NbAE1HsfX6n9C7rd6iH3yJpbQ0wkF8oPRGvlYHm7tsMMJN1h5uNgxBjFwNnuGbGsoeg/XuSTs/EZ2sk=</SignatureValue>
-  </Signature>
 </Service>

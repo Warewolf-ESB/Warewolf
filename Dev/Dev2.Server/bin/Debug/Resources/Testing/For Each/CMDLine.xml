@@ -1,5 +1,5 @@
 
-<Service ID="a2eb1fc4-37ce-4cad-a213-40b0d33a3a56" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CMDLine" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="a2eb1fc4-37ce-4cad-a213-40b0d33a3a56" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CMDLine" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5802.19306">
   <DisplayName>CMDLine</DisplayName>
   <Category>Testing\For Each\CMDLine</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,18 +30,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-08-25T16:47:50.0253806+02:00" Reason="Save" User="" VersionNumber="2" ResourceId="a2eb1fc4-37ce-4cad-a213-40b0d33a3a56" VersionId="64bfcc48-6f40-47f7-971c-a30d2f7dddcb" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>k4rlc8kG1DBkF7wsQ2nv2Mg3xSA=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>nAybCAGM7f5icSXXuOMURu0xoZJwvvjiaA0PITaghL2MEz1jEYGrY2SUHW/5xXujVabpewHBwwb9IAnt4bSFTGQQ8u1byp5of15uNXONiol6ll3RxvBfrslRgQN95fHoWNvWDb7LJGta7d0mbSEvz6PPFAnchYlVOBsKxhdgDWU=</SignatureValue>
-  </Signature>
 </Service>

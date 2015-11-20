@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestAppendingToDifferentRecordsets" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2f5ecdb0-397b-445a-b541-b02c8cf5ae5b" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service Name="DataSplitTestAppendingToDifferentRecordsets" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2f5ecdb0-397b-445a-b541-b02c8cf5ae5b" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestAppendingToDifferentRecordsets" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -116,18 +116,4 @@
       <Tel Description="" />
     </Tels>
   </DataList>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>sitHAaZ9Gpcr5JtUqNmS4Gk8iHY=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>n/27VOYf1oI5/qfre4f/xAlyApnvCuQUJoiazVxYEd1HsFkb9G1hwsr+o7bznk+mt9NvNl3eKmZnNTJNDBUn3ADESkVObvFkH1j7i2zp0xYKujDfUvOcsj4bAKJLvfEwLZh4MNzNzvHYhOMNbjlgr8d+T4OBnG19pLHT9YOxE0o=</SignatureValue>
-  </Signature>
 </Service>

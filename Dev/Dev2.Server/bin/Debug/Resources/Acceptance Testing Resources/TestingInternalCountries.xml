@@ -1,23 +1,9 @@
 
-<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/;DefaultQuery=GetCountries.ashx?extension=xml&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5728.18028">
+<Source ID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" Version="1.0" Name="TestingInternalCountries" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAVwjp6S8+eUS4qT8Nu9ZwtQQAAAACAAAAAAADZgAAwAAAABAAAACca+WM5WQ76tQRxC4qB0N/AAAAAASAAACgAAAAEAAAAMdbL5knIf2rwsyIhyw++fIYAQAAnH8xkkYAbMtYpqyT/+fhCPMvGy/0IYQ5WUI4NiG1Vg1oN3j7vaHgxSfeEdIvqZ62zo/2wBaVQr9NF+HdBnJ7zwmWmR0GxvZ+PZcda3vCZrMnqKX4SPX2Mr1blig2JPnLZ9P2vl052WUGszid6ibxr01/FremIFSjNGz4m4hU5j5VK2plbFs61ZDGZmyYVye0FTqkg2+wTbxcIyCo5Y3ARj1p3dKmjyn1Lhdpnoup5mWrL6fHawVsitmBPougGBmBIye6cp0F9fpGdfZv66D0XL4ZJDmblMDAvGphYLWlU0WBvFjZ7gpTmP7V56QqyeGgUWkk42VBDZn76MQquhMo7tRo/GDjTe1T/BInK2qlNGHhcYQ1GK6yIBQAAABIdpZf4ckpOkUxwtTvxjLgKNPU/w==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5802.19306">
   <DisplayName>TestingInternalCountries</DisplayName>
   <Category>Acceptance Testing Resources\TestingInternalCountries</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>WebSource</TypeOf>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>uSgGcWfaN/T66TdGq6WIXh1zGT4=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>XK4gO6emxqa5QUn5p14+cDct9ZtD5/0s51hFqfTSuBTFeXZChYGL8Rn3ipt5uuemoe81w3d13CUa9qCJlosKU/8HLjbyjRCK/atiycqlBUffTrgoh1aJyWRggbwaF3GJaHXnHT4aVDygqH7v1I0r1gW9/K2m/UsVOaTZTpC6Kx8=</SignatureValue>
-  </Signature>
 </Source>

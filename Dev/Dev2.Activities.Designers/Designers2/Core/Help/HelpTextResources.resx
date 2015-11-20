@@ -2534,7 +2534,7 @@ If the workflow is nested, the calling workflow will resume.</value>
   </data>
   <data name="NativeActivityToolTipPuterrorinthisvariable" xml:space="preserve">
     <value>If an error occurs the error message will be placed into this variable as well the result variable.
-If left empty the result will still be placed in the result variable.</value>
+If left empty the result will still be placed in the result variable. This will cause the error to be handled</value>
   </data>
   <data name="ParallelForEachHelp" xml:space="preserve">
     <value />

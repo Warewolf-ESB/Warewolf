@@ -1,5 +1,5 @@
 
-<Service ID="87703a15-8411-432d-a56d-5664b6600e0b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebRequest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="87703a15-8411-432d-a56d-5664b6600e0b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebRequest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5802.19306">
   <DisplayName>WebRequest</DisplayName>
   <Category>Testing\For Each\WebRequest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -27,18 +27,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-08-26T13:46:54.2871819+02:00" Reason="Save" User="" VersionNumber="2" ResourceId="87703a15-8411-432d-a56d-5664b6600e0b" VersionId="29b4fc9a-babf-4d18-8628-e9485a56897d" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ZHMLZ3KtVEViqoGGUW4THPEeok4=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>jr5RLluzefP2Am2AbbLehoHMkXLItJLBokyKVir3ZFnNg6urWySFHqS6SSGg60qpX9/wYws4RPf9WfBi0vF/Itk3MQS0OK3jT7O/htVl27SL8GrhJLtk0uc4Zzk+6ggxLMucxhySaZiQsTYwHnZSK8+DtWgFiwNdnqWbC2D4lfU=</SignatureValue>
-  </Signature>
 </Service>

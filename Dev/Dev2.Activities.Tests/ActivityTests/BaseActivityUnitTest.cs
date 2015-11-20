@@ -43,7 +43,9 @@ namespace ActivityUnitTests
     [ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
-        public BaseActivityUnitTest()
+        readonly bool _b;
+
+        public BaseActivityUnitTest(bool b)
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             TestStartNode = new FlowStep
@@ -51,6 +53,7 @@ namespace ActivityUnitTests
                 Action = new DsfCommentActivity()
             };
            DataObject = new DsfDataObject("",Guid.NewGuid());
+            _b = b;
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -256,7 +259,7 @@ namespace ActivityUnitTests
 
             // we need to set this now ;)
 
-            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0)).Verifiable();
+            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, _b)).Verifiable();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 

@@ -30,6 +30,15 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class ForEachActivityTest : BaseActivityUnitTest
     {
+        public ForEachActivityTest(bool b1, bool b2)
+            : base(b1)
+        {
+            _b1 = b1;
+            _b2 = b2;
+        }
+
+        bool _b1;
+        bool _b2;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -51,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(0));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b2), Times.Exactly(0));
         }
 
         [TestMethod]
@@ -75,7 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(2));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -96,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(0));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(0));
         }
 
         [TestMethod]
@@ -116,7 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(5));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(5));
         }
 
         [TestMethod]
@@ -136,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(5));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(5));
         }
 
         [TestMethod]
@@ -156,7 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO errors;
             // remove test datalist ;)
 
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(0));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(0));
 
         }
 
@@ -175,7 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(0));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(0));
         }
 
         [TestMethod]
@@ -195,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(2));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -215,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(4));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(4));
 
         }
 
@@ -236,7 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
             // remove test datalist ;)
-            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>()), Times.Exactly(3));
+            coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), _b1), Times.Exactly(3));
 
         }
 

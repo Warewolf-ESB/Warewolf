@@ -52,8 +52,9 @@ namespace Dev2
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="update"></param>
+        /// <param name="b"></param>
         /// <returns></returns>
-        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update);
+        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool b);
 
         /// <summary>
         ///     Finds the service shape.
@@ -66,7 +67,7 @@ namespace Dev2
         void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update);
 
 
-        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update);
+        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors);
 
         void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update);
     }

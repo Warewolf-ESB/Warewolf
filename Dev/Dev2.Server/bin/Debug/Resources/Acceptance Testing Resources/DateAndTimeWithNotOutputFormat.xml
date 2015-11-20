@@ -1,5 +1,5 @@
 
-<Service Name="DateAndTimeWithNotOutputFormat" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c3f41cdb-7aa5-4197-b74e-261f96ada8b2" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service Name="DateAndTimeWithNotOutputFormat" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c3f41cdb-7aa5-4197-b74e-261f96ada8b2" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DateAndTimeWithNotOutputFormat" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -108,18 +108,4 @@
     <InputFormat Description="" />
     <MyBirthday Description="" />
   </DataList>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>YVO6miYxwjWQbS1NtGn/6mo5rZQ=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>PtB4eSKakhPgTDZeKgxraeXDRXm9Xwt7oA3Blkou9LFcWBvuN9qOvhuqEKDC2rjwO88yBJRkGHvn3aKXq3UWHvJ5hu874k8aV4haE5+f3G83Cq27tYfA16tBWr7L3Li0L+a+oDH+o6Fjz+BEFWbb/QmoP4A8Iaic/6Q4dbRLBQE=</SignatureValue>
-  </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5802.19306">
   <Actions>
     <Action Name="PrimitiveTestWithPlainString" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchStringValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -28,18 +28,4 @@
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>iF1J/pZsJEJLfHGVLPlNeuzCo+s=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>BY2JINkABbgwC+XSHHyAMpKLasM/SE6B/u2BTkZO9QfXEBEHazU+OOKfoptpnvQugVTKD8WFTeHxU+TCOMt9BrGUrNCldwamGdM8ObDOhmFFbjiLZZDFzXd4e7FzpOLrlPxOKJINwH5gA8mlaFqLD3c7RU9GadOrb+Q7CwGNgt0=</SignatureValue>
-  </Signature>
 </Service>

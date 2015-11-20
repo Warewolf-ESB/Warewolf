@@ -422,7 +422,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
 
-            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update);
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, !String.IsNullOrEmpty(OnErrorVariable));
 
             return Guid.NewGuid();
         }
@@ -550,7 +550,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
-                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
+                        //dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if (!String.IsNullOrEmpty(OnErrorVariable))
                         {

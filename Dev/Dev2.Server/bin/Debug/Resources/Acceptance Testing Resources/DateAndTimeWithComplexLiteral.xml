@@ -1,5 +1,5 @@
 
-<Service Name="DateAndTimeWithComplexLiteral" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="10ca3301-ba80-4816-b7be-f0f9dd712832" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
+<Service Name="DateAndTimeWithComplexLiteral" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="10ca3301-ba80-4816-b7be-f0f9dd712832" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DateAndTimeWithComplexLiteral" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -116,18 +116,4 @@
     <OutputFormat Description="" />
     <MyBirthday Description="" />
   </DataList>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>MSGQArULcNA1Yyz/U22cgH/Lrgc=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>A+fMlJfDilclU4iG24cieCgss1i+3nuQY207Z7gqEyYoYVVfGsYUv01J7r/J7HVJ9XIZKW1tN138eakuhu6bFLhUwpQYzsrvSv/cYgt3sylNsKfqCNuEkypgsQUd96cmzXjfp1jlj71aNmYwi9LWxLDNt54RIwwV0KT0hAkH228=</SignatureValue>
-  </Signature>
 </Service>

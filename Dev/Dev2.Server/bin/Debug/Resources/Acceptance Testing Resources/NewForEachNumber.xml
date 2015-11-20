@@ -1,5 +1,5 @@
 
-<Service ID="9fddc6a3-2095-443e-a007-e6f5b8680d16" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachNumber" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="9fddc6a3-2095-443e-a007-e6f5b8680d16" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachNumber" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5802.19306">
   <DisplayName>NewForEachNumber</DisplayName>
   <Category>Acceptance Testing Resources\NewForEachNumber</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -24,18 +24,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2014-09-12T07:47:58.9251093+02:00" Reason="Save" User="" VersionNumber="2" ResourceId="9fddc6a3-2095-443e-a007-e6f5b8680d16" VersionId="59f13b9e-d1cd-4ae0-ad93-11c40d575efe" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Gbig1evYYv2C/c7oaAlPD/a41i0=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>hLPQd1bJCqBvb45GG4cKLQuSVzg99015vv3eHHSDhx+JWPjiMdNY/AE9XZu8nKpItarNWeoFWQHIPnZHwhcj/nSJVAoN/H2Wwcem7PDVJp4bqVvyYY2pN6x8Jw4J0XrGfQxfm5k3Lm5TX8hNlTpSXunfmoEeFR6KS2UeqPFDmpM=</SignatureValue>
-  </Signature>
 </Service>
