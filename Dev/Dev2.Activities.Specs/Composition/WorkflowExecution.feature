@@ -4275,5 +4275,36 @@ Scenario: ForEach using * and web get request with error
 	  When "Spec - Test For Each  Get" is executed
 	  Then the workflow execution has "AN" error	  
 	  And the 'GetRequestErrorHandling' in Workflow 'Spec - Test For Each  Get' debug outputs as
-	  |                      |
+	  |                   |
 	  | [[Result]] = Pass |
+
+
+#Wolf-1212
+@ignore
+Scenario: Error not bubbling up
+	Given I have a workflow "Wolf-1212"
+	And "Wolf-1212" contains "Testing/Bugs/InnerError" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  |                  |               | Error              | [[Error]]  |
+	When "Wolf-1212" is executed
+	Then the workflow execution has "NO" error
+	And the 'Testing/Bugs/InnerError' in Workflow 'Wolf-1212' debug outputs as
+	  |                                                                                                                                                       |
+	  | [[Error]] = If There Is Not An Error OR                                                                                                               |
+	  | If <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> = |
+	  | THEN No Error                                                                                                                                         |
+	  | ELSE Error                                                                                                                                            |
+	  | [[Result]] = Fail                                                                                                                                     |
+@ignore
+Scenario: Error not bubbling up error message
+	Given I have a workflow "Wolf-1212"
+	And "Wolf-1212" contains "Testing/Bugs/InnerError" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	When "Wolf-1212" is executed
+	Then the workflow execution has "NO" error
+	And the 'Testing/Bugs/InnerError' in Workflow 'Wolf-1212' debug outputs as
+	  |                                                                                                                                |
+	  | Error: Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
+	  | [[Result]] = Pass                                                                                                              |
