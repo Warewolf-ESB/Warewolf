@@ -291,7 +291,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch
             {
-                var user = hubCallerConnectionContext.All;
+                var user = hubCallerConnectionContext.Caller;
                 user.SendDebugState(debugSerializated);
             }
            
