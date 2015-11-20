@@ -143,6 +143,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("123.123456", enRoundingType.None, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
+            actual = "'" + actual + "'";
 
             Assert.AreEqual(formatNumberTO.Number, actual);
         }
@@ -153,6 +154,7 @@ namespace Dev2.Data.Tests.Operations
             FormatNumberTO formatNumberTO = new FormatNumberTO("-123.123456", enRoundingType.None, 0, false, 0);
             Dev2NumberFormatter dev2NumberFormatter = new Dev2NumberFormatter();
             string actual = dev2NumberFormatter.Format(formatNumberTO);
+            actual = "'" + actual + "'";
 
             Assert.AreEqual(formatNumberTO.Number, actual);
         }
