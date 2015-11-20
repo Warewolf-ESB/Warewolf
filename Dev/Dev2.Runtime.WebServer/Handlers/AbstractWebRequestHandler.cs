@@ -206,8 +206,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
                 }
-                foreach(var error in dataObject.Environment.Errors)
+                foreach (var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
                 {
+                    if(error.Length>0)
                     allErrors.AddError(error,true);
                 }
                 // Fetch return type ;)

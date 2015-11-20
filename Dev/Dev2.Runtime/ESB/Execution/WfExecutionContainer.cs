@@ -208,6 +208,14 @@ namespace Dev2.Runtime.ESB.Execution
                 if (!dsfDataObject.StopExecution)
                 {
                     next = next.Execute(dsfDataObject, update);
+                    if(dsfDataObject.Environment.Errors.Count>0)
+                    {
+                        foreach(var e in dsfDataObject.Environment.Errors)
+                        {
+                            dsfDataObject.Environment.AllErrors.Add(e);
+                        }
+                       
+                    }
                 }
                 else
                 {
