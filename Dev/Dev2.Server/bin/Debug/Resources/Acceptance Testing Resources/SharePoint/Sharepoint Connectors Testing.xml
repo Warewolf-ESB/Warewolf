@@ -1,5 +1,5 @@
 
-<Service ID="75547f6f-3b4b-4a0d-88b4-72efae3bc85f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sharepoint Connectors Testing" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5802.19306">
+<Service ID="75547f6f-3b4b-4a0d-88b4-72efae3bc85f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sharepoint Connectors Testing" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5787.22007">
   <DisplayName>Sharepoint Connectors Testing</DisplayName>
   <Category>Acceptance Testing Resources\SharePoint\Sharepoint Connectors Testing</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

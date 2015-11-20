@@ -1,5 +1,5 @@
 
-<Source Name="Anything To Xml Hook Plugin" Type="Plugin" AssemblyName="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin" AssemblyLocation="Plugins/Dev2.AnytingToXmlHook.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" Version="1.0" ResourceType="PluginSource" ServerVersion="0.0.5802.19306">
+<Source Name="Anything To Xml Hook Plugin" Type="Plugin" AssemblyName="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin" AssemblyLocation="Plugins/Dev2.AnytingToXmlHook.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" Version="1.0" ResourceType="PluginSource" ServerVersion="0.0.5777.29405">
   <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
   <Comment>.NET Assembly Used as an entry point to the databrowser map functionality and to emit any given string data.</Comment>
   <HelpLink>http://d</HelpLink>
@@ -12,4 +12,18 @@
   <WorkflowActivityDef />
   <XamlDefinition />
   <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>IyXv7wPZS9LMrTzpLb3OlWBQDNA=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>iPK8BVJhOZqTwYnjXGbIKCy86HauJVG1GkUSFRDO+blRrEAmRI+2y5Otu3zQOBCB6hrOsa0tHZGmcX8Q9z5Kqi6YChXRKDLxK3bT80HN/kFZq19NPYz5KEmLrNIfgPnhLqBKy4fCm88cA83Aaldq47PHOMU/X6gFpsPX26RBeSU=</SignatureValue>
+  </Signature>
 </Source>

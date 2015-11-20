@@ -1,5 +1,5 @@
 
-<Service ID="2655f332-6a1b-468a-8402-fe45c73da1fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithStarIndex" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
+<Service ID="2655f332-6a1b-468a-8402-fe45c73da1fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithStarIndex" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <DisplayName>DeleteRecordUsingRecordsetWithStarIndex</DisplayName>
   <Category>Acceptance Testing Resources\DeleteRecordUsingRecordsetWithStarIndex</Category>
   <AuthorRoles>
@@ -246,4 +246,18 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>nPkwhbvl6F3un0SDEWk0ZHIPz0s=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>r0EnT/ZCl5lMvTkPGKIGiu3KwfQDostNbmDZcsc35CBxS/xq9NJOCcRJLhHzst864XIllkknSTLHuf47V0GhddPkHrSTtMkB5I6dfyfsm5yFtYOdrRVNxSMvY5Z09+Oin7JXs1khogm0guBceOgN5snYXvMvN75ZUJMzLEvU1pw=</SignatureValue>
+  </Signature>
 </Service>

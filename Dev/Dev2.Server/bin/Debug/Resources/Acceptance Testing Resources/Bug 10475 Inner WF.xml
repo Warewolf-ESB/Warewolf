@@ -1,5 +1,5 @@
 
-<Service ID="981c1463-f9e2-48db-899d-310bb9327792" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Inner WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5802.19306">
+<Service ID="981c1463-f9e2-48db-899d-310bb9327792" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Inner WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
   <DisplayName>Bug 10475 Inner WF</DisplayName>
   <Category>Acceptance Testing Resources\Bug 10475 Inner WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -127,4 +127,18 @@
   <ErrorMessages>
     <ErrorMessage InstanceID="f5427206-66c4-47b1-9a5b-2f5b5bf0ed20" Message="IsRequired mapping has changed" ErrorType="None" MessageType="MappingIsRequiredChanged" FixType="IsRequiredChanged" StackTrace=""><![CDATA[<Args><Input>[{"Name":"Rows","MapsTo":"Rows","Value":"Rows","IsRecordSet":false,"RecordSetName":"","IsEvaluated":false,"DefaultValue":"","IsRequired":false,"RawValue":"Rows","EmptyToNull":false}]</Input></Args>]]></ErrorMessage>
   </ErrorMessages>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>WmzDNaMY9b2Ll/aUfug+IeTMJ8w=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>fr947b5gSYZzqd53spTtVcsNL2Eo1gXaNA5STNNoF9nsbJ5hKQNmjrXqqk1GT00miyBqabhHyfF4gTqhhmZdZ0EgM4GVHNVgrVzLN2XTgwgWfnJ9YFOSfzlQb5G05B8KBTD6ojcOQkqESF3xarjnq0rzBqwBM3kT3y09Xdf5AWI=</SignatureValue>
+  </Signature>
 </Service>

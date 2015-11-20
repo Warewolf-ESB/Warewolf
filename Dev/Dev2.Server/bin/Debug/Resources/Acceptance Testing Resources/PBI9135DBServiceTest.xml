@@ -1,5 +1,5 @@
 
-<Service ID="4578dde3-f9ca-4de2-bb6c-d75b1bb9bf08" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PBI9135DBServiceTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5802.19306">
+<Service ID="4578dde3-f9ca-4de2-bb6c-d75b1bb9bf08" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PBI9135DBServiceTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
   <DisplayName>PBI9135DBServiceTest</DisplayName>
   <Category>Acceptance Testing Resources\PBI9135DBServiceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -27,4 +27,18 @@
     <ErrorMessage InstanceID="88e304c4-3d34-4e36-b8be-a38fdee45aa1" Message="IsRequired mapping has changed" ErrorType="None" MessageType="MappingIsRequiredChanged" FixType="IsRequiredChanged" StackTrace=""><![CDATA[<Args><Input>[{"Name":"Prefix","MapsTo":"Prefix","Value":"Prefix","IsRecordSet":false,"RecordSetName":"","IsEvaluated":false,"DefaultValue":"","IsRequired":false,"RawValue":"Prefix","EmptyToNull":false}]</Input></Args>]]></ErrorMessage>
   </ErrorMessages>
   <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>14J0ZCxUbI0xEWuZ6x2D4AdU7tc=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>PO+mfKowIMB+sX7g7cTENdOe3tWTkFW8NBSGILcP+fr3pO68eVU1kDR87BowgPeDec6vOAiOW1szJ8mH3/0NLitSHc2qu9mGsUA+6F/CPVZG0YNRMDcdvAhKdGc0Vs8/558QvlkDzmhxNTL5TPqR6PDZDd2L9QEP1O3HYFMXynI=</SignatureValue>
+  </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="688f2415-e051-4cd7-bcf8-0c4515c2cb78" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_Rounding" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
+<Service ID="688f2415-e051-4cd7-bcf8-0c4515c2cb78" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_Rounding" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <DisplayName>FormatNumber_Rounding</DisplayName>
   <Category>Acceptance Testing Resources\FormatNumber_Rounding</Category>
   <AuthorRoles>
@@ -299,4 +299,18 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>Ra3Vx8xg8IAxwG8ik3WaBtHhlgE=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>FNFJwH4ql753W5BBa2vAGhxaz9R+4zVIefv9wVpGRX6tjgOOuNkzsQLux+L8Reksf3p8kdxBzuzCd+o6cYHj7j3+M2vrqP4rWl6qcHBUbjBbZOxxUzymMivGdszAf4lhR8XlkmOYI2H+Td+JiHZ7ryzzxwZfrI/kN4ERX52oNTc=</SignatureValue>
+  </Signature>
 </Service>

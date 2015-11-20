@@ -1,5 +1,5 @@
 
-<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerVersion="0.0.5802.19306" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerVersion="0.0.5777.29405" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <Actions>
     <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" ExecuteAction="dbo.Pr_CitiesGetCountries" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>
@@ -28,4 +28,18 @@
   </AuthorRoles>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2014-09-30T11:16:22.4508265+02:00" Reason="" User="" VersionNumber="3" ResourceId="61a24a17-f609-4934-8c6f-47c7d7e729c0" VersionId="09b63e8e-27a4-4710-bfc2-bfb23e40d363" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>spozVNt4lRhtp66tr3gofZ4BD1g=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>T7KEVygiZzSSO6P0umXPyjRD5knxaMrqUW7QviVcEP9OtYeor0GjmsYkbYrI7bQ+Gtl8j2JtM/eT+BkiQyJejfPCax0pebk/UWrY/KXjYZJHo/AvAqawqxpEyvZ1+3emBze7p3jehBZxT+UTHhjVWSRU3zFX5oXUyDmML9CmgAw=</SignatureValue>
+  </Signature>
 </Service>

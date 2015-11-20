@@ -1,5 +1,5 @@
 
-<Service ID="dce65086-6ee8-4c09-bddd-7ef297e0d26e" Version="1.0" Name="Emit ComplexType Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5802.19306">
+<Service ID="dce65086-6ee8-4c09-bddd-7ef297e0d26e" Version="1.0" Name="Emit ComplexType Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5792.24637">
   <Actions>
     <Action Name="Emit ComplexType Service" Type="Plugin" SourceID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" SourceName="Anything To Xml Hook Plugin" SourceMethod="EmitComplex" Namespace="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin">
       <Inputs />

@@ -1,5 +1,5 @@
 
-<Service ID="c78a3436-e895-4efc-b849-b1d7f9e5a0e9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EndNestedWorkflows" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5802.19306">
+<Service ID="c78a3436-e895-4efc-b849-b1d7f9e5a0e9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EndNestedWorkflows" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5781.19507">
   <DisplayName>EndNestedWorkflows</DisplayName>
   <Category>Testing\Bugs\EndNestedWorkflows</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -22,4 +22,18 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-10-30T11:26:56.5704294+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="c78a3436-e895-4efc-b849-b1d7f9e5a0e9" VersionId="e6a8dc4e-fc98-4a88-9085-4226f92fdf41" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>5mJyXhtx3Rp+yfUwzEZYKZatfCw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>dO6JPphAnqYOufHGg3JpkegWf6T5kbg0QjAoOkmleAX6MrUlZE5LIOR2Ee9DLp037RFkYKsCf7osckj3LSXRU92Kddbtzs2LvRW0Wa0UzajdBMUuuHrV+rB0zslMgz/XvNWfwm8eYKw0lY4wkz7Lnc8gKwIp5U9t9tLJ5luV6YE=</SignatureValue>
+  </Signature>
 </Service>

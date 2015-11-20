@@ -1,5 +1,5 @@
 
-<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5802.19306">
+<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
   <Actions>
     <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -43,4 +43,18 @@
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>g2I6E4vDf9tcG+JbgLW0KxXGqA4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>WKVB3UNvV6YUevd2H3tnuwNyoZ6Qu15qCop2A91Ix8dYrKq7jrkEFaJwqP3lvliNB8ULT3bbdTXJCSX6e0lir4gON2ycNkARuyGoxVWmmpyv5tjpR2+pQX6efy5PJtJ/5HfwIV6dVth3OOzmpgW+a+jYCEYd46RauZYmibj06N0=</SignatureValue>
+  </Signature>
 </Service>

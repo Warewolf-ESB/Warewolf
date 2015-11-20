@@ -1,5 +1,5 @@
 
-<Service ID="1f630caf-aa38-4f05-b871-eb5ef88a7ce1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5802.19306">
+<Service ID="1f630caf-aa38-4f05-b871-eb5ef88a7ce1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
   <DisplayName>FormatNumber</DisplayName>
   <Category>Testing\For Each\FormatNumber</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -27,4 +27,18 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-08-26T10:19:23.7055783+02:00" Reason="Save" User="" VersionNumber="4" ResourceId="1f630caf-aa38-4f05-b871-eb5ef88a7ce1" VersionId="889ca20b-e9ee-4f97-a713-0044f960885f" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>qJ41l94Wj0QFWBPeVSa0QvGKNOs=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>iXdIyNYKkTRBoNw8l+A+QuYdREOUboblHBk++MIGDBz3s6wGrwU6uzrE99Jb8jpAwpu96hVtec7ZMYVC03jaQ57TGa/Gobb+TFEHdzyv5IL4fvelZZu/pI4ntwnGBAFmXxm+9sY2RWCjjqEbNpC2xOVTAEYMVT4RAJfSD77egb4=</SignatureValue>
+  </Signature>
 </Service>

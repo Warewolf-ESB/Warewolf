@@ -1,5 +1,5 @@
 
-<Service ID="7e6b90ba-5c7d-4bc6-95f0-2abc6ed5d649" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithIndex" ResourceType="WorkflowService" ServerVersion="0.0.5802.19306">
+<Service ID="7e6b90ba-5c7d-4bc6-95f0-2abc6ed5d649" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithIndex" ResourceType="WorkflowService" ServerVersion="0.0.5777.29405">
   <DisplayName>BaseConvertRecsetWithIndex</DisplayName>
   <Category>Acceptance Testing Resources\BaseConvertRecsetWithIndex</Category>
   <AuthorRoles>
@@ -171,4 +171,18 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>QPzoBcGY1/d1aDVQZA2bzBG/87k=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>MlsGNRmiJ0pr96MolempeERmX6bKuUodosbvvenSgnYWpUAAerHl8/ykbUlU2/Ln9E/0GI0trB0GabmZAL+AEsSoThN8VFkMYeee6YO/EXvLxKqgS3enCGeLnJ8LfG3cIhgT+NUVaQEU4LBzUusaiMiE2crW9nuUyu5N8Uq1gH0=</SignatureValue>
+  </Signature>
 </Service>
