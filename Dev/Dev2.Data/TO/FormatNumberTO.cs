@@ -37,7 +37,7 @@ namespace Dev2.Data.TO
         public FormatNumberTO(string number, enRoundingType roundingType, int roundingDecimalPlaces,
                               bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
-            Number = number;
+            Number = "'" + number + "'"; 
             RoundingType = Dev2EnumConverter.ConvertEnumValueToString(roundingType);
             RoundingDecimalPlaces = roundingDecimalPlaces;
             AdjustDecimalPlaces = adjustDecimalPlaces;
@@ -47,7 +47,7 @@ namespace Dev2.Data.TO
         public FormatNumberTO(string number, string roundingType, int roundingDecimalPlaces, bool adjustDecimalPlaces,
                               int decimalPlacesToShow)
         {
-            Number = number;
+            Number = "'"+number+"'";
             RoundingType = roundingType;
             RoundingDecimalPlaces = roundingDecimalPlaces;
             AdjustDecimalPlaces = adjustDecimalPlaces;

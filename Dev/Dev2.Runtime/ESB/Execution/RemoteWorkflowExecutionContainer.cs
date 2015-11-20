@@ -230,6 +230,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, isdebug?GlobalConstants.RemoteServerInvoke: GlobalConstants.RemoteDebugServerInvoke);
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
                 return req;
             }
             catch (Exception)
