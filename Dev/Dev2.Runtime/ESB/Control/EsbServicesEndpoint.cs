@@ -279,6 +279,8 @@ namespace Dev2.Runtime.ESB.Control
             executionContainer.PerformLogExecution(uri, update);
         }
 
+
+
         /// <summary>
         /// Executes the sub request.
         /// </summary>
@@ -288,8 +290,9 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="update"></param>
+        /// <param name="handleErrors"> buble up errors or not</param>
         /// <returns></returns>
-        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
@@ -333,7 +336,8 @@ namespace Dev2.Runtime.ESB.Control
                         executionContainer.InstanceInputDefinition = inputDefs;
                         executionContainer.InstanceOutputDefinition = outputDefs;
                         executionContainer.Execute(out invokeErrors, update);
-                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+                        
                         errors.MergeErrors(invokeErrors);
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -346,18 +350,19 @@ namespace Dev2.Runtime.ESB.Control
             return new ExecutionEnvironment();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
             DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
-            if (innerEnvironment.HasErrors())
+            if (innerEnvironment.HasErrors() && !handleErrors)
             {
                 foreach (var error in innerEnvironment.AllErrors)
                 {
                     if (!dataObject.Environment.AllErrors.Contains(error))
                     {
                         dataObject.Environment.AllErrors.Add(error);
+                        errors.AddError(error);
                     }
                 }
                 foreach (var error in innerEnvironment.Errors)
@@ -365,6 +370,26 @@ namespace Dev2.Runtime.ESB.Control
                     if (!dataObject.Environment.AllErrors.Contains(error))
                     {
                         dataObject.Environment.AllErrors.Add(error);
+                        errors.AddError(error);
+                    }
+                }
+            }
+            if (innerEnvironment.HasErrors() && handleErrors)
+            {
+                foreach (var error in innerEnvironment.AllErrors)
+                {
+                    if (!dataObject.Environment.AllErrors.Contains(error))
+                    {
+               
+                        errors.AddError(error);
+                    }
+                }
+                foreach (var error in innerEnvironment.Errors)
+                {
+                    if (!dataObject.Environment.AllErrors.Contains(error))
+                    {
+          
+                        errors.AddError(error);
                     }
                 }
             }

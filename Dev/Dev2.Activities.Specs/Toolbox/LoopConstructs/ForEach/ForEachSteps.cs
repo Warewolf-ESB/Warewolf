@@ -320,7 +320,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             throw new NotImplementedException();
         }
 
-        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
             return null;
         }
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         #endregion
 
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
-                                      out ErrorResultTO errors, int update)
+                                      out ErrorResultTO errors, int update,bool b)
         {
             List<string> inputList;
             List<string> outputList;

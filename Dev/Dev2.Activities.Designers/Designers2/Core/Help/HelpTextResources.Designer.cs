@@ -3313,7 +3313,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
-        ///If left empty the result will still be placed in the result variable..
+        ///If left empty the result will still be placed in the result variable. This will cause the error to be handled.
         /// </summary>
         public static string NativeActivityToolTipPuterrorinthisvariable {
             get {

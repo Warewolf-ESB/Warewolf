@@ -43,6 +43,9 @@ namespace ActivityUnitTests
     [ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
+        // ReSharper disable once MemberInitializerValueIgnored
+       
+
         public BaseActivityUnitTest()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -51,6 +54,7 @@ namespace ActivityUnitTests
                 Action = new DsfCommentActivity()
             };
            DataObject = new DsfDataObject("",Guid.NewGuid());
+      
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -256,7 +260,7 @@ namespace ActivityUnitTests
 
             // we need to set this now ;)
 
-            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0)).Verifiable();
+            mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
