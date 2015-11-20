@@ -158,12 +158,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                     if(eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("A.D.", "AD");
-                        expectedResult = actualValue.Replace("A.D.", "AD");
+                        expectedResult = expectedResult.Replace("A.D.", "AD");
                     }
                     else
                     {
                         actualValue = actualValue.Replace("AD", "A.D.");
-                        expectedResult = actualValue.Replace("AD", "A.D.");
+                        expectedResult = expectedResult.Replace("AD", "A.D.");
                     }
                 }
                 if (expectedResult.Contains("B.C.") || expectedResult.Contains("BC"))
@@ -172,12 +172,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                     if (eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("B.C.", "BC");
-                        expectedResult = actualValue.Replace("B.C.", "BC");
+                        expectedResult = expectedResult.Replace("B.C.", "BC");
                     }
                     else
                     {
                         actualValue = actualValue.Replace("BC", "B.C.");
-                        expectedResult = actualValue.Replace("BC", "B.C.");
+                        expectedResult = expectedResult.Replace("BC", "B.C.");
                     }
 
                 }
