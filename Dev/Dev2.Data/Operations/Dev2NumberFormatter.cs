@@ -47,12 +47,6 @@ namespace Dev2.Data.Operations
                 throw new ArgumentNullException("formatNumberTO");
             }
 
-            //decimal tmp;
-            //if(!formatNumberTO.Number.IsNumeric(out tmp))
-            //{
-            //    throw new InvalidOperationException("Unable to format '" + formatNumberTO.Number + "' because it isn't a number.");
-            //}
-
             if(formatNumberTO.RoundingDecimalPlaces < -14 || formatNumberTO.RoundingDecimalPlaces > 14)
             {
                 throw new InvalidOperationException("Rounding decimal places must be between -14 and 14.");

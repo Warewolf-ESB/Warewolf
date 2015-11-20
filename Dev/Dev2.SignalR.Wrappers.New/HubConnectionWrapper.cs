@@ -26,8 +26,6 @@ namespace Dev2.SignalR.Wrappers.New
         public HubConnectionWrapper(string uriString)
             : this(new HubConnection(uriString))
         {
-//            _wrapped.TraceLevel = TraceLevels.Events;
-//            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public IHubProxyWrapper CreateHubProxy(string hubName)
