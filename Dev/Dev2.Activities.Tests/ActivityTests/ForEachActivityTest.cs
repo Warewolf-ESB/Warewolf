@@ -31,7 +31,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class ForEachActivityTest : BaseActivityUnitTest
     {
         public ForEachActivityTest(bool b1, bool b2)
-            : base(b1)
+            : base()
         {
             _b1 = b1;
             _b2 = b2;

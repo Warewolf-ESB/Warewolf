@@ -45,7 +45,7 @@ namespace ActivityUnitTests
     {
         readonly bool _b;
 
-        public BaseActivityUnitTest(bool b)
+        public BaseActivityUnitTest()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             TestStartNode = new FlowStep
@@ -53,7 +53,7 @@ namespace ActivityUnitTests
                 Action = new DsfCommentActivity()
             };
            DataObject = new DsfDataObject("",Guid.NewGuid());
-            _b = b;
+            _b = false;
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
