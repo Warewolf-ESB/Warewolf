@@ -64,28 +64,6 @@ using Moq;
             [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
-            public void GetVersions_Execute_ExpectName()
-            {
-                //------------Setup for test--------------------------
-                var getVersions = new GetVersions();
-                var resourceId = Guid.NewGuid();
-                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
-                var repo = new Mock<IServerVersionRepository>();
-                var ws = new Mock<IWorkspace>();
-                repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});
-                var serializer = new Dev2JsonSerializer();
-                ws.Setup(a => a.ID).Returns(Guid.Empty);
-                getVersions.ServerVersionRepo = repo.Object;
-                //------------Execute Test---------------------------
-                var ax = getVersions.Execute(new Dictionary<string, StringBuilder> {{"resourceId",new StringBuilder( resourceId.ToString())}}, ws.Object);
-                //------------Assert Results-------------------------
-                repo.Verify(a => a.GetVersions(It.IsAny<Guid>()));
-                Assert.AreEqual(serializer.Deserialize<IList<IExplorerItem>>(ax.ToString())[0].ResourceId, item.ResourceId);
-            }
-
-            [TestMethod]
-            [Owner("Leon Rajindrapersadh")]
-            [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_CreateServiceEntry_ExpectProperlyFormedDynamicService()
             {
                 //------------Setup for test--------------------------

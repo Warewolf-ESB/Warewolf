@@ -771,7 +771,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         }
                     }
                 }
-                var debugState = _contentItems.FirstOrDefault(state => state.ID == content.ID && state.StateType == content.StateType);
+                var debugState = _contentItems.FirstOrDefault(state => state.ID == content.ID && state.StateType == content.StateType && state.DisplayName == content.DisplayName);
                 if(debugState == null)
                 {
                     _contentItems.Add(content);

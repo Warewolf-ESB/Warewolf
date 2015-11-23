@@ -39,10 +39,12 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             //------------Execute Test---------------------------
-            var result = PluginServiceExecutionFactory.GetNamespaces(source);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.Count > 0);
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = PluginServiceExecutionFactory.GetNamespaces(source);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result.Count > 0);
+            }
         }
 
         [TestMethod]
@@ -89,12 +91,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             var service = CreatePluginService();
-
             //------------Execute Test---------------------------
-            var result = PluginServiceExecutionFactory.GetMethods(source.AssemblyLocation, source.AssemblyName, service.Namespace);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.Count > 0);
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = PluginServiceExecutionFactory.GetMethods(source.AssemblyLocation, source.AssemblyName, service.Namespace);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result.Count > 0);
+            }            
         }
 
         [TestMethod]
@@ -105,21 +108,26 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             var svc = CreatePluginService();
-            PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
+                     
+            
 
             //------------Execute Test---------------------------
-            var result = PluginServiceExecutionFactory.InvokePlugin(args);
-            var castResult = result as DummyClassForPluginTest;
-
-            //------------Assert Results-------------------------
-            if(castResult != null)
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                StringAssert.Contains(castResult.Name, "test data");
-            }
-            else
-            {
-                Assert.Fail("Failed Conversion for Assert");
-            }
+                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
+                var result = PluginServiceExecutionFactory.InvokePlugin(args);
+                var castResult = result as DummyClassForPluginTest;
+                //------------Assert Results-------------------------
+                if (castResult != null)
+                {
+                    StringAssert.Contains(castResult.Name, "test data");
+                }
+                else
+                {
+                    Assert.Fail("Failed Conversion for Assert");
+                }
+            }  
+            
         }
 
         #region Helper Methods
