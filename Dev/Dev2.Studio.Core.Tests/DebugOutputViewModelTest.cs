@@ -355,12 +355,12 @@ namespace Dev2.Core.Tests
             }
 
             Assert.AreEqual(5, vm.PendingItemCount);
-            Assert.AreEqual(5, vm.ContentItemCount);
+            Assert.AreEqual(1, vm.ContentItemCount);
 
             vm.DebugStatus = DebugStatus.Finished;
 
             Assert.AreEqual(0, vm.PendingItemCount);
-            Assert.AreEqual(10, vm.ContentItemCount);
+            Assert.AreEqual(2, vm.ContentItemCount);
         }
 
         [TestMethod]
