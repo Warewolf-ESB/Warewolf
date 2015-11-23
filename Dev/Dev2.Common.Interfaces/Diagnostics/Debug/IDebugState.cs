@@ -32,6 +32,12 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         Guid ID { get; set; }
 
         /// <summary>
+        ///     Gets or sets the ID.
+        /// </summary>
+        Guid DisconnectedID { get; set; }
+
+
+        /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
         Guid ParentID { get; set; }
