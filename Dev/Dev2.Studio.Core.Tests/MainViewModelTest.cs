@@ -1047,6 +1047,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
         {
             //Setup
+            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
             CreateFullExportsAndVmWithEmptyRepo();
             MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
             var environmentRepo = CreateMockEnvironment();
