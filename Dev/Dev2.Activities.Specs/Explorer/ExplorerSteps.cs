@@ -89,7 +89,8 @@ namespace Dev2.Activities.Specs.Explorer
             {
                 return null;
             }
-            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
+            var path = (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
+            return path;
         }
 
         [Given(@"the folder '(.*)' exists on the server '(.*)'")]

@@ -117,14 +117,14 @@ namespace Dev2.Core.Tests
             mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
             mock1.SetupGet(m => m.ServerID).Returns(_serverID);
             mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
-
+            mock1.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
             mock2.SetupGet(m => m.ServerID).Returns(_serverID);
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
             mock2.SetupGet(m => m.StateType).Returns(StateType.Append);
             mock2.SetupGet(m => m.HasError).Returns(true);
             mock2.SetupGet(m => m.ErrorMessage).Returns("Error Test");
-
+            mock2.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
             mock1.SetupSet(s => s.ErrorMessage = It.IsAny<string>()).Callback<string>(s => Assert.IsTrue(s.Equals("Error Test")));
             mock1.SetupSet(s => s.HasError = It.IsAny<bool>()).Callback<bool>(s => Assert.IsTrue(s.Equals(true)));
 
@@ -160,8 +160,9 @@ namespace Dev2.Core.Tests
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);
 
             mock1.Setup(m => m.SessionID).Returns(vm.SessionID);
+            mock1.Setup(m => m.DisconnectedID).Returns(Guid.NewGuid());
             mock2.Setup(m => m.SessionID).Returns(vm.SessionID);
-
+            mock2.Setup(m => m.DisconnectedID).Returns(Guid.NewGuid());
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
             Assert.AreEqual(1, vm.RootItems.Count);
@@ -351,16 +352,17 @@ namespace Dev2.Core.Tests
                 var stateType = i % 2 == 0 ? StateType.Message : StateType.After;
                 state.Setup(s => s.StateType).Returns(stateType);
                 state.Setup(s => s.SessionID).Returns(vm.SessionID);
+                state.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
                 vm.Append(state.Object);
             }
 
             Assert.AreEqual(5, vm.PendingItemCount);
-            Assert.AreEqual(1, vm.ContentItemCount);
+            Assert.AreEqual(5, vm.ContentItemCount);
 
             vm.DebugStatus = DebugStatus.Finished;
 
             Assert.AreEqual(0, vm.PendingItemCount);
-            Assert.AreEqual(2, vm.ContentItemCount);
+            Assert.AreEqual(10, vm.ContentItemCount);
         }
 
         [TestMethod]
@@ -376,12 +378,14 @@ namespace Dev2.Core.Tests
             var state = new Mock<IDebugState>();
             state.Setup(s => s.StateType).Returns(StateType.After);
             state.Setup(s => s.SessionID).Returns(vm.SessionID);
+            state.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
             vm.Append(state.Object);
 
             state = new Mock<IDebugState>();
             state.Setup(s => s.StateType).Returns(StateType.Message);
             state.Setup(s => s.Message).Returns("Some random message");
             state.Setup(s => s.SessionID).Returns(vm.SessionID);
+            state.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
             vm.Append(state.Object);
 
             Assert.AreEqual(3, vm.RootItems.Count);
