@@ -3637,50 +3637,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
-        [Ignore]
-        public void WorkflowDesignerViewModel_DoWorkspaceSave_IsNewResourceModel_ShouldCallSave()
-        {
-            //------------Setup for test--------------------------
-            var workflow = new ActivityBuilder
-            {
-                Implementation = new Flowchart
-                {
-                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
-                }
-            };
-
-            #region Setup viewModel
-
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
-            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
-            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 57");
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-            resourceModel.SetupProperty(model => model.WorkflowXaml);
-
-            #endregion
-            //------------Assert Preconditions-------------------
-            Assert.IsNull(resourceModel.Object.WorkflowXaml);
-            //------------Execute Test---------------------------
-            viewModel.DoWorkspaceSave();
-            //------------Assert Results-------------------------
-            resourceRep.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
-            Assert.IsNotNull(resourceModel.Object.WorkflowXaml);
-            Assert.AreEqual("my workflow", resourceModel.Object.WorkflowXaml.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
         public void WorkflowDesignerViewModel_LinkName_DataListNull_ShouldReturnUrlEmptyDataListPortion()
         {
             //------------Setup for test--------------------------
