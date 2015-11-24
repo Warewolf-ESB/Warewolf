@@ -17,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Security
 {
     [TestClass]
-    [Ignore] // These fail intermittently when using mstest runner???
     public class ServerSecurityServiceTests
     {
         static void WaitForEvents()

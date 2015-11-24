@@ -147,33 +147,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("WorkSurfaceContextViewModel_HandleDebugOutputMessage")]
-        [Ignore]
-        public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasData_OnlyOneRootItemIsDisplayed()
-        {
-            //------------Setup for test--------------------------
-            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
-            const string msg = "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]";
-
-            var serializer = new Dev2JsonSerializer();
-            var tmp = serializer.Deserialize<List<IDebugState>>(msg);
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Handle(new DebugOutputMessage(tmp));
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.RootItems.Count);
-        }
-
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("WorkSurfaceContextViewModel_HandleDebugOutputMessage")]
         public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasNoData_RootItemsIsZero()
