@@ -152,7 +152,7 @@ namespace Dev2.Services.Execution
         }
 
         // ReSharper disable once OptionalParameterHierarchyMismatch
-        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters,int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
@@ -161,7 +161,7 @@ namespace Dev2.Services.Execution
             {
                 case enSourceType.SqlDatabase:
                 {
-                    SqlExecution(invokeErrors);
+                    SqlExecution(invokeErrors, update);
 
                     ErrorResult.MergeErrors(invokeErrors);
 
@@ -169,8 +169,8 @@ namespace Dev2.Services.Execution
                 }
                 case enSourceType.MySqlDatabase:
                 {
-                  
-                    object result = MySqlExecution(invokeErrors);
+
+                    object result = MySqlExecution(invokeErrors, update);
 
                     ErrorResult.MergeErrors(invokeErrors);
 
@@ -181,7 +181,7 @@ namespace Dev2.Services.Execution
             return null;
         }
 
-        void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment)
+        void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update)
         {
             if (executeService != null && InstanceOutputDefintions != null)
             {
@@ -247,8 +247,12 @@ namespace Dev2.Services.Execution
 
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
+                                        if(update != 0)
+                                        {
+                                            rowIdx = update;
+                                        }
                                         var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
-                                        environment.Assign(displayExpression, item.ToString(),0);
+                                        environment.Assign(displayExpression, item.ToString(),update);
                                     }
 
                                     idx++;
@@ -319,7 +323,7 @@ namespace Dev2.Services.Execution
 
             return result;
         }
-        private void SqlExecution(ErrorResultTO errors)
+        private void SqlExecution(ErrorResultTO errors,int update)
         {
             try
             {
@@ -334,7 +338,7 @@ namespace Dev2.Services.Execution
                             // ReSharper restore CoVariantArrayConversion
                         {
                             ApplyColumnMappings(dataSet);
-                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment,update);
                         }
                     }
                 }
@@ -346,7 +350,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MySqlExecution(ErrorResultTO errors)
+        private bool MySqlExecution(ErrorResultTO errors, int update)
         {
             try
             {
@@ -364,7 +368,7 @@ namespace Dev2.Services.Execution
                             // ReSharper restore CoVariantArrayConversion
                             {
                                 ApplyColumnMappings(dataSet);
-                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
+                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment,update);
                                 return true;
                             }
                         }

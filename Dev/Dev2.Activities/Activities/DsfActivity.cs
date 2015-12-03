@@ -485,7 +485,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
-                    DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before);
+                    DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before,update);
 
                 }
 

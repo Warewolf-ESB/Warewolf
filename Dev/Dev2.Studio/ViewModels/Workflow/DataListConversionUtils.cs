@@ -90,6 +90,7 @@ namespace Dev2.ViewModels.Workflow
                     singleRes.Field = col.Name;
                     singleRes.RecordsetIndex = column.Key.ToString();
                     singleRes.Value = col.Value;
+                    singleRes.DisplayValue = string.Concat(recordSet.Name, "(", column.Key, ").", col.Name);
                     singleRes.Description = col.Description;
                     result.Add(singleRes);
 

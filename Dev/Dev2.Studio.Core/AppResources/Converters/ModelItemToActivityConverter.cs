@@ -14,6 +14,8 @@ using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Globalization;
 using System.Windows.Data;
+using Dev2.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
@@ -58,7 +60,23 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
                 if(modelItem != null)
                 {
-                    Activity act = modelItem.GetCurrentValue() as Activity;
+                    var currentValue = modelItem.GetCurrentValue();
+                    var databaseActivity = currentValue as DsfDatabaseActivity;
+                    if(databaseActivity != null)
+                    {
+                        return databaseActivity;
+                    }
+                    var pluginActivity = currentValue as DsfPluginActivity;
+                    if(pluginActivity != null)
+                    {
+                        return pluginActivity;
+                    }
+                    var webServiceActivity = currentValue as DsfWebserviceActivity;
+                    if(webServiceActivity != null)
+                    {
+                        return webServiceActivity;
+                    }
+                    var act = currentValue as Activity;
                     return act;
                 }
             }

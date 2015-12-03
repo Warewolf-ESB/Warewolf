@@ -636,7 +636,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before)
+        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before,int update)
         {
             if(_debugState!= null)
             {
@@ -646,7 +646,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
                 _debugState.Server = name;
             }
-            DispatchDebugState(dataObject,before,0);
+            DispatchDebugState(dataObject,before,update);
         }
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)

@@ -110,7 +110,7 @@ namespace Dev2.Services.Execution
             return true;
         }
 
-        protected abstract object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater);
+        protected abstract object ExecuteService(List<MethodParameter> methodParameters, int update, out ErrorResultTO errors, IOutputFormatter formater);
 
         #region ExecuteImpl
 
@@ -286,12 +286,12 @@ namespace Dev2.Services.Execution
                 string result;
                 if (parameters.Any())
                 {
-                    result = ExecuteService(parameters.ToList(), out errors, formater).ToString();
+                    result = ExecuteService(parameters.ToList(), update, out errors, formater).ToString();
                 }
                 else
                 {
                     ErrorResultTO invokeErrors;
-                    result = ExecuteService(new List<MethodParameter>(), out invokeErrors, formater).ToString();
+                    result = ExecuteService(new List<MethodParameter>(), update, out invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
                 if (!HandlesOutputFormatting)
