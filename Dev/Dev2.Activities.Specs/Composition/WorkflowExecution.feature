@@ -4304,3 +4304,15 @@ Scenario: Error not bubbling up error message
 	And the 'ErrorBubbleUp' in Workflow 'Wolf-1212_2' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
+
+
+Scenario: ForEach using * and Database Connector
+	  Given I have a workflow "DBConnInForEach_3"
+	  And "DBConnInForEach_3" contains "ForeachDBCon" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "DBConnInForEach_3" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'ForeachDBCon' in Workflow 'DBConnInForEach_3' debug outputs as
+	  |                   |
+	  | [[Result]] = pass |
