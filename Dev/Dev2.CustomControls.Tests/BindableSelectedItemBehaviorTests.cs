@@ -32,6 +32,19 @@ namespace Dev2.CustomControls.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(treeView, behavior.GetAssociatedObject());
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("BindableSelectedItemBehavior_Detach")]
+        public void BindableSelectedItemBehavior_Detach_FromTreeView_AssociatedObjectIsSetToTreeView()
+        {
+            //------------Setup for test--------------------------
+            var behavior = new SelectedBehavior();
+            //------------Execute Test---------------------------
+            behavior.Detach();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(null, behavior.GetAssociatedObject());
+        }
     }
 
 
