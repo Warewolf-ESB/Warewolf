@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -61,9 +62,10 @@ namespace Dev2.Activities
 
         private  Dev2Decision ParseDecision(IExecutionEnvironment env , Dev2Decision decision)
         {
-            var col1 =env.EvalAsList(decision.Col1, 0,false);
-            var col2 = env.EvalAsList(decision.Col2, 0, false);
-            var col3 = env.EvalAsList(decision.Col3, 0,false);
+            bool errorifnull = !decision.EvaluationFn.ToString().ToLower().Contains("null") ;
+            var col1 = env.EvalAsList(decision.Col1, 0, errorifnull);
+            var col2 = env.EvalAsList(decision.Col2, 0, errorifnull);
+            var col3 = env.EvalAsList(decision.Col3, 0, errorifnull);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
@@ -298,7 +300,17 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    string expressiomToStringValue;
+                    try
+                    {
+                         expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0,true));
+                    }
+                    catch(NullValueInVariableException)
+                    {
+                        
+                         expressiomToStringValue = expression;
+                    }
+                    // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
                     debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }

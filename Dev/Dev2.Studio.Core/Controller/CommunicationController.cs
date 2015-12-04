@@ -134,7 +134,7 @@ namespace Dev2.Controller
                 if(payload == null || payload.Length == 0)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
-                    if(popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    if(connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         popupController.Show("Server connection has dropped during execution of command." + Environment.NewLine + "Please ensure that your server is still and your network connection is working."
                                             ,"Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "");
