@@ -10,6 +10,7 @@
 */
 
 using System;
+using Dev2.Activities;
 using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -29,7 +30,22 @@ namespace Dev2.Studio.Core.Factories
             {
                 if(ifNullCreateNew)
                 {
-                    activityToUpdate = new DsfActivity();
+                    if (resource.ServerResourceType == "WebService")
+                    {
+                        activityToUpdate = new DsfWebserviceActivity();
+                    }
+                    else if (resource.ServerResourceType == "PluginService")
+                    {
+                        activityToUpdate = new DsfPluginActivity();
+                    }
+                    else if (resource.ServerResourceType == "DbService")
+                    {
+                        activityToUpdate = new DsfDatabaseActivity();
+                    }
+                    else
+                    {
+                        activityToUpdate = new DsfActivity();
+                    }
                 }
                 else
                 {
