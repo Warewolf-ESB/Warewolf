@@ -3335,7 +3335,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Statement",
                         "Require All decisions to be True"});
             table159.AddRow(new string[] {
-                        "[[A]]",
+                        "[[A]] = [[A]]",
                         "String",
                         "YES"});
 #line 1187
@@ -3385,6 +3385,24 @@ this.ScenarioSetup(scenarioInfo);
                         "YES"});
 #line 1202
     testRunner.And("the debug output as", ((string)(null)), table162, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Null throws an error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void NullThrowsAnError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Null throws an error", ((string[])(null)));
+#line 1206
+this.ScenarioSetup(scenarioInfo);
+#line 1207
+ testRunner.Given("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1208
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1210
+ testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

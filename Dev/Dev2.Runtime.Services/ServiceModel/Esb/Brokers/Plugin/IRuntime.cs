@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         IOutputDescription Test(PluginInvokeArgs setupInfo);
 
-        IEnumerable<string> ListNamespaces(string assemblyLocation, string assemblyName);
+        List<string> ListNamespaces(string assemblyLocation, string assemblyName);
 
         ServiceMethodList ListMethods(string assemblyLocation, string assemblyName, string fullName);
 

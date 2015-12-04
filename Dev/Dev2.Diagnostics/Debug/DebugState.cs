@@ -41,6 +41,7 @@ namespace Dev2.Diagnostics.Debug
         bool _isDurationVisible;
         string _server;
         Guid _environmentID;
+        Guid _disconnectedID;
 
         #region Ctor
 
@@ -51,6 +52,7 @@ namespace Dev2.Diagnostics.Debug
 
 
             IsDurationVisible = true;
+            _disconnectedID = Guid.NewGuid();
         }
 
 
@@ -70,6 +72,20 @@ namespace Dev2.Diagnostics.Debug
         ///     Gets or sets the ID.
         /// </summary>
         public Guid ID { get; set; }
+        /// <summary>
+        ///     Gets or sets the ID.
+        /// </summary>
+        public Guid DisconnectedID
+        {
+            get
+            {
+                return _disconnectedID;
+            }
+            set
+            {
+                _disconnectedID = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the parent ID.

@@ -78,14 +78,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         }
 
         [Given(@"I selected Index ""(.*)""")]
+        [Given(@"I have selected Index ""(.*)""")]
         public void GivenISelectedIndex(string index)
         {
             ScenarioContext.Current.Add("index", index);
         }
 
+       
         [Given(@"I search for characters ""(.*)""")]
         public void GivenISearchForCharacters(string characters)
         {
+            if(characters == "\" \"")
+            {
+                characters = ' '.ToString();
+            }
             ScenarioContext.Current.Add("characters", characters);
         }
 

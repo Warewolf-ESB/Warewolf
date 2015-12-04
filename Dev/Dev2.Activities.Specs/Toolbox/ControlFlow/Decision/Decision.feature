@@ -1186,7 +1186,7 @@ Scenario: validate that a variable is Null Positive
 	Then the execution has "NO" error
 	Then the debug inputs as  
        |       | Statement | Require All decisions to be True |
-       | [[A]] | String    | YES                              |
+       | [[A]] = [[A]]  | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
@@ -1203,3 +1203,9 @@ Scenario: validate that a variable is not Null positive
        |     |
        | YES |
 
+Scenario: Null throws an error
+	Given is "[[A]]" "IsEqual" "123   234"	
+	When the decision tool is executed
+	##Then the decision result should be "False"
+	Then the execution has "An" error
+	

@@ -4148,6 +4148,7 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	  |                      |
 	  | [[Result]] = Pass |
 
+#flickering test
 @ignore
 Scenario: Time Zone Changes
 	  Given I have a workflow "TimeZoneChangeTest"
@@ -4216,17 +4217,17 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-#FOREACH
+#FOREACH - Huggs: @Leroy Please check MasterTest workflow and ensure it is correct. Once correct unignore this test and commit the code.
 @ignore
 Scenario: ForEach Acceptance Tests
 	  Given I have a workflow "ForEachMasterTest"
-	  And "ForEachMasterTest" contains "Testing/For Each/Master Test" from server "localhost" with mapping as
+	  And "ForEachMasterTest" contains "Testing/For Each/MasterTest" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable    |
       |                  |               | TestResult          | [[TestResult]] |
       |                  |               | Result              | [[Result]]     |
 	  When "ForEachMasterTest" is executed
 	Then the workflow execution has "NO" error
-	  And the 'Testing/For Each/Master Test' in Workflow 'ForEachMasterTest' debug outputs as
+	  And the 'Testing/For Each/MasterTest' in Workflow 'ForEachMasterTest' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
 
@@ -4280,31 +4281,26 @@ Scenario: ForEach using * and web get request with error
 
 
 #Wolf-1212
-@ignore
 Scenario: Error not bubbling up
-	Given I have a workflow "Wolf-1212"
-	And "Wolf-1212" contains "Testing/Bugs/InnerError" from server "localhost" with mapping as
+	Given I have a workflow "Wolf-1212_Test"
+	And "Wolf-1212_Test" contains "ErrorHandled" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  |                  |               | Error              | [[Error]]  |
-	When "Wolf-1212" is executed
+	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
-	And the 'Testing/Bugs/InnerError' in Workflow 'Wolf-1212' debug outputs as
-	  |                                                                                                                                                       |
-	  | [[Error]] = If There Is Not An Error OR                                                                                                               |
-	  | If <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> = |
-	  | THEN No Error                                                                                                                                         |
-	  | ELSE Error                                                                                                                                            |
-	  | [[Result]] = Fail                                                                                                                                     |
-@ignore
+	And the 'ErrorHandled' in Workflow 'Wolf-1212_Test' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |
+	  | [[Error]] = <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> |
+
 Scenario: Error not bubbling up error message
-	Given I have a workflow "Wolf-1212"
-	And "Wolf-1212" contains "Testing/Bugs/InnerError" from server "localhost" with mapping as
+	Given I have a workflow "Wolf-1212_2"
+	And "Wolf-1212_2" contains "ErrorBubbleUp" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
-	When "Wolf-1212" is executed
+	When "Wolf-1212_2" is executed
 	Then the workflow execution has "NO" error
-	And the 'Testing/Bugs/InnerError' in Workflow 'Wolf-1212' debug outputs as
-	  |                                                                                                                                |
-	  | Error: Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
-	  | [[Result]] = Pass                                                                                                              |
+	And the 'ErrorBubbleUp' in Workflow 'Wolf-1212_2' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |

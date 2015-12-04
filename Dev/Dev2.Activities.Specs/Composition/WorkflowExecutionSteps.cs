@@ -434,7 +434,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 EnsureEnvironmentConnected(remoteEnvironment, _environmentConnectionTimeout);
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf || model.Category== remoteWf, true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
