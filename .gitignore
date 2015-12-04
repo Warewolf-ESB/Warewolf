@@ -38,6 +38,7 @@ obj
 !/Dev/Dev2.Server/bin/Debug
 /Dev/Dev2.Server/bin/Debug/*
 !/Dev/Dev2.Server/bin/Debug/Resources
+/Dev/Dev2.Server/bin/Debug/Resources/**/VersionControl
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
