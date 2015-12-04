@@ -4190,7 +4190,7 @@ Scenario: Sharepoint Acceptance Tests
 	  |                   |
 	  | [[Result]] = Pass |
 
-Scenario: ForEach using * in CSV executed as a sub execution should maintain data integrity
+Scenario: ForEach using * in CSV executed as a sub execution passes out an ordered recordset
 	  Given I have a workflow "Spec - Test For Each Shared Memory"
 	  And "Spec - Test For Each Shared Memory" contains "Test For Each Shared Memory" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |
