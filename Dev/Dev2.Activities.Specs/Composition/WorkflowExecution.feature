@@ -4308,3 +4308,16 @@ Scenario: Error not bubbling up error message
 	  |                                                                                                                                |
 	  | Error: Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
 	  | [[Result]] = Pass                                                                                                              |
+
+
+
+Scenario: ForEach using * and Database Connector
+	  Given I have a workflow "DBConnInForEach"
+	  And "DBConnInForEach" contains "Testing/Bugs/ForeachDBCon" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "DBConnInForEach" is executed
+	  Then the workflow execution has "AN" error	  
+	  And the 'Testing/Bugs/ForeachDBCon' in Workflow 'DBConnInForEach' debug outputs as
+	  |                   |
+	  | [[Result]] = Pass |
