@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Invoke Remote WF Here ;)
                 result = ExecuteGetRequest(connection, serviceName, dataListFragment);
-                IList<IDebugState> msg = FetchRemoteDebugItems(connection);
+                IList<IDebugState> msg = DataObject.IsDebug? FetchRemoteDebugItems(connection):new List<IDebugState>();
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch (Exception e)
