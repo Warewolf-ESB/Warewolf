@@ -84,6 +84,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         File.Delete(PrivatePublicKeyFile);
                     }
+                    if (!Directory.Exists("C:\\Temp"))
+                    {
+                        Directory.CreateDirectory("C:\\Temp");
+                    }
                     File.WriteAllText(PrivatePublicKeyFile,privateKeyData);
                     // add keys, bindings and users
                     Server = new SftpServer

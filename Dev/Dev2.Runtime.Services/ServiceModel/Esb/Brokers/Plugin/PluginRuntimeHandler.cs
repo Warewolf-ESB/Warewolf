@@ -114,10 +114,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        public IEnumerable<string> ListNamespaces(string assemblyLocation, string assemblyName)
+        public List<string> ListNamespaces(string assemblyLocation, string assemblyName)
         {
             Assembly loadedAssembly;
-            IEnumerable<string> namespaces = new string[0];
+            List<string> namespaces = new List<string>();
             if(TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
             {
                 // ensure we flush out the rubbish that GAC brings ;)
@@ -127,7 +127,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                                          .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
                                                   && q.IndexOf("+", StringComparison.Ordinal) < 0
                                                   && q.IndexOf("<", StringComparison.Ordinal) < 0
-                                                  && !q.StartsWith("_"));
+                                                  && !q.StartsWith("_")).ToList();
             }
             return namespaces;
         }

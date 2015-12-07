@@ -22,17 +22,8 @@ namespace Dev2.Activities.Designers2.Foreach
         {
             InitializeComponent();
             DropPoint.PreviewDrop += DoDrop;
-            DropPoint.Drop += DropPoint_Drop;
             DropPoint.PreviewDragOver += DropPointOnDragEnter;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
-        }
-
-        void DropPoint_Drop(object sender, DragEventArgs e)
-        {
-            if(e.Data != null)
-            {
-                
-            }
         }
 
         ForeachDesignerViewModel ViewModel

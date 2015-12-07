@@ -236,11 +236,10 @@ Scenario: Characters is blank
 
 #---find out about rule as no error message will display
 
-
-@ignore
 Scenario: Find all Occurrences of a numeric character in a string
 	Given I have a findindex variable "[[a]]" equal to "2211"
-	And I selected Index "All Occurrence"
+	And the sentence "[[a]]"
+	And I selected Index "All Occurrences"
 	And I search for characters "2"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
@@ -248,16 +247,15 @@ Scenario: Find all Occurrences of a numeric character in a string
 	And the execution has "NO" error
 	And the debug inputs as
 	| In Field | Index          | Characters | Direction     |
-	| [[a]] =  | All Occurrence | 2          | Left to Right |
+	| [[a]] = 2211 | All Occurrences | 2          | Left to Right |
 	And the debug output as
 	|                  |
 	| [[result]] = 1,2 |
 
 
-
-@ignore
 Scenario Outline: Find all occurances of Characters in a string
 	Given I have a findindex variable "[[a]]" equal to " Warewolf"
+	And the sentence "[[a]]"
 	And I have selected Index "<Index>"
 	And I search for characters "<Characters>"
 	And I selected direction as "<Direction>" 
@@ -265,42 +263,19 @@ Scenario Outline: Find all occurances of Characters in a string
 	Then the find index result is "<Result>"
 	And the execution has "NO" error
 	And the debug inputs as
-	| In Field | Index    | Characters  | Direction   |
-	| [[a]] =  | <Index > | <Character> | <Direction> |
-	And the debug inputs as
-	|          |
-	| <result> |
-
+	| In Field          | Index    | Characters  | Direction   |
+	| [[a]] =  Warewolf | <Index > | <Characters> | <Direction> |
+	And the debug output as
+	|       |
+	| <res> |
 Examples: 
-| No | Index            | Characters                        | Directon      | Result                          |
-| 1  | All Occurrences  | ""                                | Left to Right | No Character to search          |
-| 2  | All Occurrences  | " "                               | Left to Right | [[result]] = 1                  |
-| 3  | All Occurrences  | w                                 | Left to Right | [[rs(1).a]] = 1,[[rs(2).a]] = 5 |
-| 4  | All Occurrences  | [[b]] = ""                        | Left to Right | [[result]] = -1                 |
-| 5  | All Occurrences  | [[rs(1).a]] = a                   | Left to Right | [[result]] = 2                  |
-| 6  | All Occurrences  | [[rs().a]] = w                    | Left to Right | [[rs(1).a]] = 1,[[rs(2).a]] = 5 |
-| 7  | All Occurrences  | [[rs().a]] = w                    | Right to Left | [[rs(1).a]] = 4,[[rs(2).a]] = 8 |
-| 8  | All Occurrences  | [[rs(*).a]] = w                   | Right to Left | [[rs(1).a]] = 4,[[rs(2).a]] = 8 |
-| 9  | All Occurrences  | [[int]] = 1,[[rs([[int]]).a]] = a | Right to Left | [[rs(1).a]] = 7                 |
-| 10 | First Occurrence | ""                                | Left to Right | No Character to search          |
-| 11 | First Occurrence | " "                               | Left to Right | [[result]] = 1                  |
-| 12 | First Occurrence | w                                 | Left to Right | [[result]] = 2                  |
-| 13 | First Occurrence | [[b]] = ""                        | Left to Right | [[result]] = -1                 |
-| 14 | First Occurrence | [[rs(1).a]] = a                   | Left to Right | [[result]] = 2                  |
-| 15 | First Occurrence | [[rs().a]] = w                    | Left to Right | [[rs(1).a]] = 1                 |
-| 16 | First Occurrence | [[rs().a]] = w                    | Right to Left | [[rs(1).a]] = 4                 |
-| 17 | First Occurrence | [[rs(*).a]] = w                   | Right to Left | [[rs(1).a]] = 4                 |
-| 18 | First Occurrence | [[int]] = 1,[[rs([[int]]).a]] = w | Right to Left | [[rs(1).a]] = 4                 |
-| 19 | Last Occurrence  | ""                                | Left to Right | No Character to search          |
-| 20 | Last Occurrence  | " "                               | Left to Right | [[result]] = 1                  |
-| 21 | Last Occurrence  | w                                 | Left to Right | [[result]] = 2                  |
-| 22 | Last Occurrence  | [[b]] = ""                        | Left to Right | [[result]] = -1                 |
-| 23 | Last Occurrence  | [[rs(1).a]] = a                   | Left to Right | [[result]] = 2                  |
-| 24 | Last Occurrence  | [[rs().a]] = w                    | Left to Right | [[rs(1).a]] = 1                 |
-| 25 | Last Occurrence  | [[rs().a]] = w                    | Right to Left | [[rs(1).a]] = 4                 |
-| 26 | Last Occurrence  | [[rs(*).a]] = w                   | Right to Left | [[rs(1).a]] = 4                 |
-| 27 | Last Occurrence  | [[int]] = 1,[[rs([[int]]).a]] = w | Right to Left | [[rs(1).a]] = 4                 |
-@ignore
+| No | Index           | Characters | Directon      | Result | res             |
+| 1  | All Occurrences | ""         | Left to Right | -1     | [[result]] = -1 |
+| 2  | All Occurrences | " "        | Left to Right | 1      | [[result]] = 1  |
+| 3  | All Occurrences | w          | Left to Right | 2,6    | [[result]] = 2,6 |
+| 4  | All Occurrences | a          | Left to Right | 3      | [[result]] = 3   |
+| 5  | All Occurrences | w          | Right to Left | 2,6    | [[result]] = 2,6 |
+
 Scenario Outline: Find all Recordsets with invalid Indexes
 	Given I have a findindex variable "<var>" equal to "<value>"
 	And I selected Index "First Occurrence"
@@ -314,7 +289,6 @@ Scenario Outline: Find all Recordsets with invalid Indexes
 	And the debug output as
 	|          |
 	| <result> |
-
 Examples: 
 | No | var     | value | Characters        | result          | Error                   |
 | 1  | [[var]] | wolf  | [[rs([[var]]).a]] | [[result]] = -1 | Index is not an integer |
