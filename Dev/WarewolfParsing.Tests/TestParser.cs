@@ -707,6 +707,123 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_WithNoIndexLeftAndRight()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[rec().b]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[bec().a]]", "[[rec().a]]"),
+                 new AssignValue("[[bec().b]]", "[[rec().b]]"),
+   
+
+             };
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
+
+            var recordSet = testEnv3.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 1);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(NullValueInVariableException))]
+        public void WarewolfParse_Eval_FramedAssign_WithNoIndexLeftAndRightError()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+          
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[bec().a]]", "[[rec().a]]"),
+                 new AssignValue("[[bec().b]]", "[[rec().b]]"),
+   
+
+             };
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
+
+            var recordSet = testEnv3.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 1);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_WithNoIndexLeftAndRightIndex()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[rec().b]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[bec().a]]", "[[rec(1).a]]"),
+                 new AssignValue("[[bec().b]]", "[[rec(1).b]]"),
+   
+
+             };
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
+
+            var recordSet = testEnv3.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 1);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_FramedAssign_WithNoIndexAndMultipleColumns_Mixed_multipleSecondColumn()
         {
 
