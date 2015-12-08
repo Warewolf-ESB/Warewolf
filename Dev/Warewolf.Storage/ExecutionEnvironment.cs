@@ -235,7 +235,7 @@ namespace Warewolf.Storage
                     // ReSharper restore PossibleNullReferenceException
                     return x.Select(WarewolfAtomToString).ToList();
                 }
-                throw new Exception("bob");
+                throw new Exception(string.Format("Could not retrieve list of strings from expression {0}", expression));
             }
 
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)

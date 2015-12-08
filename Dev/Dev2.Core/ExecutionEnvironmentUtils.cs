@@ -57,14 +57,21 @@ namespace Dev2
                     result.Append(string.Format(" Index=\"{0}\">", i));
                     foreach (var namedIterator in iterators)
                     {
-                        var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
-                        result.Append("<");
-                        result.Append(namedIterator.Key);
-                        result.Append(">");
-                        result.Append(value);
-                        result.Append("</");
-                        result.Append(namedIterator.Key);
-                        result.Append(">");
+                        try
+                        {
+                            var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
+                            result.Append("<");
+                            result.Append(namedIterator.Key);
+                            result.Append(">");
+                            result.Append(value);
+                            result.Append("</");
+                            result.Append(namedIterator.Key);
+                            result.Append(">");
+                        }
+                        catch(Exception e)
+                        {
+                            Dev2Logger.Log.Debug(e.Message,e);
+                        }
                     }
                     result.Append("</");
                     result.Append(groupedRecSet.Key);
@@ -131,20 +138,30 @@ namespace Dev2
                     result.Append("{");
                     foreach (var namedIterator in iterators)
                     {
-                        var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
-                        result.Append("\"");
-                        result.Append(namedIterator.Key);
-                        result.Append("\":\"");
-                        result.Append(value);
-                        result.Append("\"");
-                        colIdx++;
-                        if (colIdx < iterators.Count)
+                        try
                         {
-                            result.Append(",");
+                            var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
+                            result.Append("\"");
+                            result.Append(namedIterator.Key);
+                            result.Append("\":\"");
+                            result.Append(value);
+                            result.Append("\"");
+                            colIdx++;
+                            if (colIdx < iterators.Count)
+                            {
+                                result.Append(",");
+                            }
                         }
+                        catch(Exception e)
+                        {
+                            Dev2Logger.Log.Debug(e.Message,e);
+                            colIdx++;
+                        }
+                        
                     }
                     if (warewolfListIterators.HasMoreData())
                     {
+                        result = new StringBuilder(result.ToString().TrimEnd(','));
                         result.Append("}");
                         result.Append(",");
                     }
