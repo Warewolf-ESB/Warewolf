@@ -657,20 +657,26 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(dlItem.IsRecordset)
             {
                 IList<IScalar> recsetCols = columns;
+                string colName = null;
                 foreach(var col in recsetCols)
                 {
-                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                    if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                     {
-                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
-                        Value = string.Empty,
-                        IsRecordset = dlItem.IsRecordset,
-                        Recordset = dlItem.Recordset,
-                        Field = col.Name,
-                        Description = col.Description,
-                        RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
-                    });
+                        WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                        {
+                            DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
+                            Value = string.Empty,
+                            IsRecordset = dlItem.IsRecordset,
+                            Recordset = dlItem.Recordset,
+                            Field = col.Name,
+                            Description = col.Description,
+                            RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
+                        });
+                        indexToInsertAt++;
+                    }
+                    colName = col.Name;
                     itemsAdded = true;
-                    indexToInsertAt++;
+                    
                 }
             }
             return itemsAdded;
