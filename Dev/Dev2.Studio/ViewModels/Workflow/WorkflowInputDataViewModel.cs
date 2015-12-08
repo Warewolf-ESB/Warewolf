@@ -510,7 +510,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
                 }
-                if (item.IsRecordset && !string.IsNullOrEmpty(val))
+                if (item.IsRecordset)
                 {
                     var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
                     if (recordSet==null)
@@ -519,7 +519,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         recordSet.Columns = new Dictionary<int, List<IScalar>>();
                         recordSets.Add(recordSet);
                     }
-                    recordSet.AddColumn(item.Value, item.Field, Convert.ToInt32(item.RecordsetIndex));
+                    recordSet.AddColumn(val, item.Field, Convert.ToInt32(item.RecordsetIndex));
                 }
                 else if(!item.IsRecordset)
                 {
@@ -528,6 +528,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             foreach(var recordSet in recordSets)
             {
+                
                 DoRecordSetAppending(recordSet,result);
             }
             result.Append("</" + RootTag + ">");
@@ -541,7 +542,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        internal static void DoScalarAppending(StringBuilder result, IDataListItem val)
+        private static void DoScalarAppending(StringBuilder result, IDataListItem val)
         {
 
             var fName = val.Field;
@@ -562,14 +563,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             result.Append(">");
         }
 
-        internal static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
+        private static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
         {
             var cnt = recordSet.Columns.Max(pair => pair.Key);
             
             for (var i = 1; i <= cnt; i++)
             {
                 var rowData = recordSet.Columns[i];
-
+                
+                if (rowData.All(scalar => string.IsNullOrEmpty(scalar.Value)))
+                {
+                    continue;
+                }
                 result.Append("<");
                 result.Append(recordSet.Name);
                 result.Append(">");
@@ -657,20 +662,26 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(dlItem.IsRecordset)
             {
                 IList<IScalar> recsetCols = columns;
+                string colName = null;
                 foreach(var col in recsetCols)
                 {
-                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                    if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                     {
-                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
-                        Value = string.Empty,
-                        IsRecordset = dlItem.IsRecordset,
-                        Recordset = dlItem.Recordset,
-                        Field = col.Name,
-                        Description = col.Description,
-                        RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
-                    });
+                        WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                        {
+                            DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
+                            Value = string.Empty,
+                            IsRecordset = dlItem.IsRecordset,
+                            Recordset = dlItem.Recordset,
+                            Field = col.Name,
+                            Description = col.Description,
+                            RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
+                        });
+                        indexToInsertAt++;
+                    }
+                    colName = col.Name;
                     itemsAdded = true;
-                    indexToInsertAt++;
+                    
                 }
             }
             return itemsAdded;

@@ -201,6 +201,29 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
+        public void SetXmlData_ExtraRows_Expected_CorrectXml()
+        {
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns("<DataList><Recset Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><Field1 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /><Field2 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></Recset></DataList>");
+
+            var serviceDebugInfo = GetMockServiceDebugInfo(rm);
+            serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
+            workflowInputDataviewModel.LoadWorkflowInputs();
+            GetInputTestDataDataNames();
+            workflowInputDataviewModel.WorkflowInputs[0].Value = "bob";
+            workflowInputDataviewModel.SetXmlData();
+            var xmlData = workflowInputDataviewModel.XmlData;
+
+            Assert.IsNotNull(xmlData);
+            Assert.AreEqual("<DataList>\r\n  <Recset>\r\n    <Field1>bob</Field1>\r\n    <Field2></Field2>\r\n  </Recset>\r\n</DataList>",xmlData);
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WorkflowInputDataViewModel_AddRow")]
         public void SetWorkflowInputData_AddRow_WhenNotAllColumnsInput_ExpectNewRowWithOnlyInputColumns()

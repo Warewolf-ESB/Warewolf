@@ -148,7 +148,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                             match left with 
                             |   ScalarExpression a -> AddToScalars env a x
                             |   RecordSetExpression b -> AddToRecordSetFramed env b x
-                            |   WarewolfAtomAtomExpression a -> failwith "invalid variabe assigned to"
+                            |   WarewolfAtomAtomExpression a -> failwith (sprintf "invalid variable assigned to%s" value.Name)
                             |   _ -> let expression = (EvalToExpression env update value.Name)
                                      if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
@@ -157,8 +157,15 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                 | WarewolfAtomListresult x -> 
                         match left with 
                         |   ScalarExpression a -> AddToScalars env a (Seq.last x)
-                        |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
-                        |   WarewolfAtomAtomExpression a ->  failwith "invalid variabe assigned to"
+                        |   RecordSetExpression b ->    match b.Index with 
+                                                        | Star -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
+                                                        | _ ->      try
+                                                                        AddToRecordSetFramed env b x.[0]                  
+                                                                    with
+                                                                        | :? Dev2.Common.Common.NullValueInVariableException as ex -> raise( new  Dev2.Common.Common.NullValueInVariableException("The expression result is  null", value.Value ) )    // added 0 here!
+ 
+
+                        |   WarewolfAtomAtomExpression _ ->  failwith "invalid variabe assigned to"
                         |    _ -> let expression = (EvalToExpression env update value.Name)
                                   if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env

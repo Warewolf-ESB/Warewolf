@@ -1038,7 +1038,7 @@ namespace Dev2.UI
                             context.CaretPosition = CaretIndex - 1;
                         }
 
-                        if(_textOnPopup.Length > 0 && _textOnPopup[0] == '=')
+                        if(!string.IsNullOrEmpty(_textOnPopup) && _textOnPopup.Length > 0 && _textOnPopup[0] == '=')
                         {
                             context.TextOnPopup = _textOnPopup.Substring(1);
 
