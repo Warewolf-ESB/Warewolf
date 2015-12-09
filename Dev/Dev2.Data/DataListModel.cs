@@ -12,7 +12,9 @@ namespace Dev2.Data
         #region Implementation of IDataListModel
 
         public List<IScalar> Scalars { get; set; }
+        public List<IScalar> ShapeScalars { get; set; }
         public List<IRecordSet> RecordSets { get; set; }
+        public List<IRecordSet> ShapeRecordSets { get; set; }
 
         #endregion
 
@@ -23,6 +25,8 @@ namespace Dev2.Data
         {
             Scalars = new List<IScalar>();
             RecordSets = new List<IRecordSet>();
+            ShapeScalars = new List<IScalar>();
+            ShapeRecordSets = new List<IRecordSet>();
         }
 
         public void Create(string data, string shape)
@@ -74,16 +78,17 @@ namespace Dev2.Data
                             continue;
                         }
                         var recSet = RecordSets.FirstOrDefault(set => set.Name == c.Name);
+                        var shapeRecSet = ShapeRecordSets.FirstOrDefault(set => set.Name == c.Name);
                         var scalar = Scalars.FirstOrDefault(scalar1 => scalar1.Name == c.Name);
                         // scalars and recordset fetch
                         {
-                            if (recSet!=null)
+                            if (recSet!=null && shapeRecSet!=null)
                             {
                                 // fetch recordset index
                                 int fetchIdx;
                                 int idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1; // recset index
                                 // process recordset
-                                var scalars = recSet.Columns[1];
+                                var scalars = shapeRecSet.Columns[1];
                                 var colToIoDirection = scalars.ToDictionary(scalar1 => scalar1.Name, scalar1 => scalar1.IODirection);
                                 XmlNodeList nl = c.ChildNodes;
                                 if (!recSet.Columns.ContainsKey(idx))
@@ -173,6 +178,8 @@ namespace Dev2.Data
                             }
                             var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
                             RecordSets.Add(recSet);
+                            var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+                            ShapeRecordSets.Add(shapeRecSet);
                         }
                         else
                         {
@@ -193,6 +200,7 @@ namespace Dev2.Data
                             }
                             var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
                             Scalars.Add(scalar);
+                            ShapeScalars.Add(scalar);
                         }
                     }
                 }

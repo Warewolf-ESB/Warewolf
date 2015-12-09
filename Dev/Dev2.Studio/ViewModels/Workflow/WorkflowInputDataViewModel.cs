@@ -385,7 +385,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(itemToAdd != null && itemToAdd.IsRecordset)
             {
-                IRecordSet recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
+                IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
                 if(recordset != null)
                 {
                     var recsetCols = new List<IScalar>();
@@ -661,7 +661,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool itemsAdded = false;
             if(dlItem.IsRecordset)
             {
-                IList<IScalar> recsetCols = columns;
+                IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
                 string colName = null;
                 foreach(var col in recsetCols)
                 {

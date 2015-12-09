@@ -6,6 +6,8 @@ namespace Dev2.Data
     {
         List<IScalar> Scalars { get; set; }
         List<IRecordSet> RecordSets { get; set; }
+        List<IScalar> ShapeScalars { get; set; }
+        List<IRecordSet> ShapeRecordSets { get; set; }
 
         void Create(string data, string shape);
         void PopulateWithData(string data);
