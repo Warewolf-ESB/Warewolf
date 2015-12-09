@@ -94,6 +94,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>

@@ -87,6 +87,9 @@
     </When>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
