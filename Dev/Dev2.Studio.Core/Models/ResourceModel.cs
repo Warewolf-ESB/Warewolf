@@ -580,41 +580,32 @@ namespace Dev2.Studio.Core.Models
             //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
             StringBuilder result = new StringBuilder();
 
-            if (ResourceType == ResourceType.WorkflowService)
+            if(ResourceType == ResourceType.WorkflowService)
             {
-                var xaml = WorkflowXaml;
-
-                if (xaml == null || xaml.Length == 0)
+                StringBuilder xaml = null;
+                var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
+                if(msg != null && msg.Message != null)
                 {
-                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
-                    if (msg != null && msg.Message != null)
+                    xaml = msg.Message;
+                }
+                if(xaml != null && xaml.Length != 0)
+                {
+                    var service = CreateWorkflowXElement(xaml);
+
+                    // save to the string builder ;)
+                    XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
+                    using(XmlWriter xwriter = XmlWriter.Create(result, xws))
                     {
-                        xaml = msg.Message;
+                        service.Save(xwriter);
                     }
                 }
-
-                var service = CreateWorkflowXElement(xaml);
-
-                // save to the string builder ;)
-                XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
-                using (XmlWriter xwriter = XmlWriter.Create(result, xws))
-                {
-                    service.Save(xwriter);
-                }
             }
-            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+            else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
-                result = WorkflowXaml;
+                var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
+                result = msg.Message;
 
-                // when null fetch the XAML ;)
-                if (result == null)
-                {
-                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
-                    result = msg.Message;
-
-                }
-
-                if (ResourceType == ResourceType.Service)
+                if(ResourceType == ResourceType.Service)
                 {
                     var completeDefintion = CreateServiceXElement(result);
                     result = completeDefintion.ToStringBuilder();
@@ -623,11 +614,11 @@ namespace Dev2.Studio.Core.Models
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
                 var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
                 var endNode = result.IndexOf("</Category>", 0, true);
-                if (endNode > startNode)
+                if(endNode > startNode)
                 {
                     var len = (endNode - startNode);
                     var oldCategory = result.Substring(startNode, len);
-                    if (oldCategory != Category)
+                    if(oldCategory != Category)
                     {
                         result = result.Replace(oldCategory, Category);
                     }

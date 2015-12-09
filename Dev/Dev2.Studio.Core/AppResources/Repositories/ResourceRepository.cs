@@ -446,7 +446,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     if (result != null && ((result.ResourceType == Enums.ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                     {
                         var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
-                        result.WorkflowXaml = msg.Message;
+                        if(msg != null)
+                        {
+                            result.WorkflowXaml = msg.Message;
+                        }
                     }
 
                     return result;
@@ -546,7 +549,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new ArgumentNullException("resource");
             }
             Dev2Logger.Log.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
-            var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase), true, true);
+            var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if (theResource != null)
             {
