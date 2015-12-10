@@ -588,6 +588,10 @@ namespace Dev2.Studio.Core.Models
                 {
                     xaml = msg.Message;
                 }
+                if(xaml == null || xaml.Length == 0)
+                {
+                    xaml = WorkflowXaml;
+                }
                 if(xaml != null && xaml.Length != 0)
                 {
                     var service = CreateWorkflowXElement(xaml);
@@ -604,6 +608,11 @@ namespace Dev2.Studio.Core.Models
             {
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 result = msg.Message;
+
+                if(result == null || result.Length == 0)
+                {
+                    result = WorkflowXaml;
+                }
 
                 if(ResourceType == ResourceType.Service)
                 {

@@ -24,6 +24,26 @@ namespace Dev2.Common
             {
                 actionToBePerformed();
             }
+            catch(Exception)
+            {
+                if(impersonationContext != null)
+                {
+                    impersonationContext.Undo();
+                }
+                identity = ServerUser.Identity as WindowsIdentity;
+                if(identity != null)
+                {
+                    impersonationContext = identity.Impersonate();
+                }
+                try
+                {
+                    actionToBePerformed();
+                }
+                catch(Exception)
+                {
+                    //Ignore
+                }
+            }
             finally
             {
                 if(impersonationContext != null)
