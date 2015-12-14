@@ -649,9 +649,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(17, data.Count);
+            Assert.AreEqual(8, data.Count);
             Assert.AreEqual("Value1", data[7]);
-            Assert.AreEqual("Value10", data[16]);
 
         }
 
@@ -753,7 +752,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "Value10";
+            const string expected = "Value1";
             string error;
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error)[1];
 

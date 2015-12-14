@@ -582,23 +582,19 @@ namespace Dev2.Studio.Core.Models
 
             if(ResourceType == ResourceType.WorkflowService)
             {
-                StringBuilder xaml = null;
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
-                if(msg != null && msg.Message != null)
+                StringBuilder xaml = WorkflowXaml;
+
+                if ((xaml==null || xaml.Length==0) && msg != null && msg.Message != null)
                 {
                     xaml = msg.Message;
                 }
-                if(xaml == null || xaml.Length == 0)
-                {
-                    xaml = WorkflowXaml;
-                }
-                if(xaml != null && xaml.Length != 0)
+                if (xaml != null && xaml.Length != 0)
                 {
                     var service = CreateWorkflowXElement(xaml);
-
                     // save to the string builder ;)
                     XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
-                    using(XmlWriter xwriter = XmlWriter.Create(result, xws))
+                    using (XmlWriter xwriter = XmlWriter.Create(result, xws))
                     {
                         service.Save(xwriter);
                     }

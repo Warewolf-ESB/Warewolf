@@ -131,25 +131,6 @@ namespace Dev2.Tests.Diagnostics
 
         }
 
-        [TestMethod]
-        public void WriteWithValidState()
-        {
-
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
-
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
-
-            var state = new Mock<IDebugState>();
-            state.Setup(s => s.WorkspaceID).Returns(workspaceID);
-            DebugDispatcher.Instance.Write(state.Object);
-
-            // Write happens asynchronously on a separate thread
-            Thread.Sleep(50);
-            writer.Verify(s => s.Write(It.IsAny<IDebugState>()), Times.Exactly(1));
-
-        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -181,99 +162,6 @@ namespace Dev2.Tests.Diagnostics
             var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(remoteID);
             Assert.AreEqual(1, items.Count);
             Assert.IsNotNull(items[0]);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DebugDispatcher_Write")]
-        // ReSharper disable InconsistentNaming
-        public void DebugDispatcher_Write_WhenRemoteInvokeItemsPresent_ExpectRemoteItemsDispatched()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
-
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
-
-            var state = new Mock<IDebugState>();
-            state.Setup(s => s.WorkspaceID).Returns(workspaceID);
-
-            var remoteID = Guid.NewGuid();
-
-            //------------Execute Test---------------------------
-            DebugDispatcher.Instance.Write(state.Object, false, remoteID.ToString(), null, new List<IDebugState> { state.Object }); // queue remote item ;)
-
-            //------------Assert Results-------------------------
-
-            // Write happens asynchronously on a separate thread
-            Thread.Sleep(50);
-            writer.Verify(s => s.Write(It.IsAny<IDebugState>()), Times.Exactly(2));
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DebugDispatcher_Write")]
-        // ReSharper disable InconsistentNaming
-        public void DebugDispatcher_Write_WhenRemoteInvokeItemsPresentAfterEndMessage_ExpectRemoteItemsDispatchedBeforeEndMessage()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
-            writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
-            var writerList = new List<IDebugState>();
-            // .Callback<ISqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
-            // ReSharper disable ConvertClosureToMethodGroup
-            writer.Setup(w => w.Write(It.IsAny<IDebugState>())).Callback<IDebugState>(ds =>
-            {
-                writerList.Add(ds);
-            });
-            // ReSharper restore ConvertClosureToMethodGroup
-
-            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
-
-            var origResourceID = Guid.NewGuid();
-            var server = Guid.NewGuid();
-
-            var state2 = new Mock<IDebugState>();
-            state2.Setup(s => s.WorkspaceID).Returns(workspaceID);
-            state2.Setup(s => s.OriginatingResourceID).Returns(origResourceID);
-            state2.Setup(s => s.Server).Returns(server.ToString);
-            state2.Setup(s => s.StateType).Returns(StateType.Message);
-
-            var state1 = new Mock<IDebugState>();
-            state1.Setup(s => s.WorkspaceID).Returns(workspaceID);
-            state1.Setup(s => s.OriginatingResourceID).Returns(origResourceID);
-            state1.Setup(s => s.Server).Returns(server.ToString);
-            state1.Setup(s => s.StateType).Returns(StateType.Message);
-
-            var utils = new WfApplicationUtils();
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.Setup(d => d.RemoteDebugItems).Returns(new List<IDebugState> { state1.Object, state2.Object });
-            dataObject.Setup(d => d.IsDebugMode()).Returns(true);
-            dataObject.Setup(d => d.WorkspaceID).Returns(workspaceID);
-            dataObject.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
-
-            //------------Execute Test---------------------------
-
-            ErrorResultTO errors;
-            utils.DispatchDebugState(dataObject.Object, StateType.End, false, string.Empty, out errors);
-
-            //------------Assert Results-------------------------
-
-            // Write happens asynchronously on a separate thread
-            Thread.Sleep(50);
-            writer.Verify(s => s.Write(It.IsAny<IDebugState>()), Times.Exactly(3));
-
-            Assert.AreEqual(3, writerList.Count);
-            // Now ensure ordering is correct ;)
-            Assert.AreEqual(state1.Object, writerList[0]);
-            Assert.AreEqual(state2.Object, writerList[1]);
-            // ensure end state last to dispatch ;)
-            Assert.AreEqual(StateType.End, writerList[2].StateType);
-
         }
 
 

@@ -667,55 +667,6 @@ namespace Dev2.Core.Tests
             StringAssert.Contains(serviceDefinition, "this has a &amp;");
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
-        public void ResourceModel_ToServiceDefinition_Service_WhenHasAnAmpersand_CanBeMadeXElement()
-        {
-            //------------Setup for test--------------------------
-            var resourceModel = CreateResourceModel();
-            resourceModel.ResourceType = ResourceType.Service;
-            resourceModel.ServerResourceType = "WebService";
-            const string actionTag = "<Action Name=\"SaveItWebService\"" +
-                                     " Type=\"InvokeWebService\"" +
-                                     " SourceID=\"8a5c2119-08f5-4a58-888e-bbc95b996e88\"" +
-                                     " SourceName=\"Dev2GetCountriesWebService\"" +
-                                     " SourceMethod=\"\"" +
-                                     " RequestUrl=\"?extension=[[extension]]&prefix=[[prefix]]\"" +
-                                     " RequestMethod=\"Get\"" +
-                                     " JsonPath=\"\">" +
-                                     "</Action>"
-                                     ;
-            resourceModel.WorkflowXaml = new StringBuilder(actionTag);
-            //------------Execute Test---------------------------
-            var serviceDefinition = resourceModel.ToServiceDefinition().ToXElement();
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(serviceDefinition);
-            var actionsElement = serviceDefinition.Element("Actions");
-            Assert.IsNotNull(actionsElement);
-            var actionElement = actionsElement.Element("Action");
-            Assert.IsNotNull(actionElement);
-            var requestUrlAttribute = actionElement.Attribute("RequestUrl");
-            Assert.IsNotNull(requestUrlAttribute);
-            Assert.AreEqual("RequestUrl=\"?extension=[[extension]]&amp;prefix=[[prefix]]\"", requestUrlAttribute.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_ToServiceDefinition")]
-        public void ResourceModel_ToServiceDefinition_Source_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
-        {
-            //------------Setup for test--------------------------
-            var resourceModel = CreateResourceModel();
-            resourceModel.ResourceType = ResourceType.Source;
-            resourceModel.ServerResourceType = "DbSource";
-            resourceModel.WorkflowXaml = new StringBuilder("this has a &");
-            //------------Execute Test---------------------------
-            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
-            //------------Assert Results-------------------------
-            StringAssert.Contains(serviceDefinition, "this has a &");
-        }
-
         public static Mock<IEnvironmentModel> CreateMockEnvironment()
         {
             return CreateMockEnvironment(new EventPublisher());

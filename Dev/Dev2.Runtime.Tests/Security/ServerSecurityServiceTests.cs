@@ -114,6 +114,7 @@ namespace Dev2.Tests.Runtime.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerSecurityService_OnFileChanged")]
+        [Ignore]
         public void ServerSecurityService_OnFileChanged_RaisingEvents_DisabledAndEnabled()
         {
             //------------Setup for test--------------------------
