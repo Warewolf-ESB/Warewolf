@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -113,7 +114,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
+                result = ExecutePostRequest(connection, serviceName, dataListFragment);
                 IList<IDebugState> msg = DataObject.IsDebug? FetchRemoteDebugItems(connection):new List<IDebugState>();
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
@@ -131,6 +132,32 @@ namespace Dev2.Runtime.ESB.Execution
             return Guid.Empty;
         }
 
+        private string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
+        {
+            var result = string.Empty;
+
+            var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
+            var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
+            Dev2Logger.Log.Debug("Executing the remote request.");
+            if (req != null)
+            {
+                using (var response = req.GetResponse() as HttpWebResponse)
+                {
+                    if (response != null)
+                    {
+                        // ReSharper disable AssignNullToNotNullAttribute
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        // ReSharper restore AssignNullToNotNullAttribute
+                        {
+                            result = reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
@@ -138,7 +165,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
-            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
+            var data = ExecutePostRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
 
             if (data != null)
             {
@@ -179,18 +206,22 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var result = string.Empty;
 
-            var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
-            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode);
+            var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
+            var requestUri = serviceToExecute + "?" + payload;
+            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
             Dev2Logger.Log.Debug("Executing the remote request.");
-            using (var response = req.GetResponse() as HttpWebResponse)
+            if(req != null)
             {
-                if (response != null)
+                using (var response = req.GetResponse() as HttpWebResponse)
                 {
-                    // ReSharper disable AssignNullToNotNullAttribute
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    // ReSharper restore AssignNullToNotNullAttribute
+                    if (response != null)
                     {
-                        result = reader.ReadToEnd();
+                        // ReSharper disable AssignNullToNotNullAttribute
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                            // ReSharper restore AssignNullToNotNullAttribute
+                        {
+                            result = reader.ReadToEnd();
+                        }
                     }
                 }
             }
@@ -198,39 +229,61 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        private WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
+        {
+            var escapeUriString = Uri.EscapeUriString(serviceToExecute);
+            var req = WebRequest.Create(escapeUriString);
+            req.Method = "POST";
+            UpdateRequest(authenticationType, userName, password, isDebug, req);
+
+            byte[] data = Encoding.ASCII.GetBytes(payload);
+
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.ContentLength = data.Length;
+
+            using(Stream requestStream = req.GetRequestStream())
+            {
+                requestStream.Write(data, 0, data.Length);
+                requestStream.Close();
+            }       
+            return req;
+        }
+
+        private void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, WebRequest req)
+        {
+            if(authenticationType == AuthenticationType.Windows)
+            {
+                req.UseDefaultCredentials = true;
+            }
+            else
+            {
+                req.UseDefaultCredentials = false;
+
+                // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                if(authenticationType == AuthenticationType.Public)
+                {
+                    userName = GlobalConstants.PublicUsername;
+                    password = string.Empty;
+                }
+
+                req.Credentials = new NetworkCredential(userName, password);
+            }
+            var remoteInvokerId = DataObject.RemoteInvokerID;
+            if(remoteInvokerId == Guid.Empty.ToString())
+            {
+                throw new Exception("Remote Server ID Empty");
+            }
+            req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
+            req.Headers.Add(HttpRequestHeader.Cookie, isDebug ? GlobalConstants.RemoteServerInvoke : GlobalConstants.RemoteDebugServerInvoke);
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+        }
+
         WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password,bool isdebug)
         {
             try
             {
                 var req = BuildSimpleGetWebRequest(requestUri);
-                if (authenticationType == AuthenticationType.Windows)
-                {
-                    req.UseDefaultCredentials = true;
-                }
-                else
-                {
-                    req.UseDefaultCredentials = false;
-
-                    // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                    if (authenticationType == AuthenticationType.Public)
-                    {
-                        userName = GlobalConstants.PublicUsername;
-                        password = string.Empty;
-                    }
-
-                    req.Credentials = new NetworkCredential(userName, password);
-                }
-                req.Method = "GET";
-
-                // set header for server to know this is a remote invoke ;)
-                var remoteInvokerId = DataObject.RemoteInvokerID;
-                if (remoteInvokerId == Guid.Empty.ToString())
-                {
-                    throw new Exception("Remote Server ID Empty");
-                }
-                req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
-                req.Headers.Add(HttpRequestHeader.Cookie, isdebug?GlobalConstants.RemoteServerInvoke: GlobalConstants.RemoteDebugServerInvoke);
-                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                UpdateRequest(authenticationType, userName, password, isdebug, req);
                 return req;
             }
             catch (Exception)

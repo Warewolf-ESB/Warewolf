@@ -12,9 +12,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Newtonsoft.Json;
 
 namespace Dev2.Diagnostics.Debug
 {
@@ -27,7 +29,11 @@ namespace Dev2.Diagnostics.Debug
         private static readonly ManualResetEventSlim WriteWaithandle = new ManualResetEventSlim(false);
         private static readonly object WaitHandleGuard = new object();
         private static bool _shutdownRequested;
-
+        static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+        };
         #region Singleton Instance
 
         static DebugDispatcher _instance;
@@ -236,7 +242,8 @@ namespace Dev2.Diagnostics.Debug
                         IDebugWriter writer;
                         if((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {
-                            writer.Write(debugState);
+                            var serializeObject = JsonConvert.SerializeObject(debugState, _serializerSettings);
+                            writer.Write(serializeObject);
                         }
                     }
                 }

@@ -24,5 +24,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
         void Write(IDebugState debugState);
+
+        void Write(string serializeObject);
     }
 }

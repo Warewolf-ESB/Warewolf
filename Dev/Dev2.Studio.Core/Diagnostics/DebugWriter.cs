@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Newtonsoft.Json;
 
 namespace Dev2.Diagnostics
 {
@@ -41,6 +42,18 @@ namespace Dev2.Diagnostics
             if(debugState != null)
             {
                 _write(debugState);
+            }
+        }
+
+        public void Write(string serializeObject)
+        {
+            if(!string.IsNullOrEmpty(serializeObject))
+            {
+                var debugState = JsonConvert.DeserializeObject<IDebugState>(serializeObject);
+                if(debugState != null)
+                {
+                    Write(debugState);
+                }
             }
         }
 
