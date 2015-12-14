@@ -63,24 +63,6 @@ namespace Dev2.Tests.Runtime.ESB
 
         [TestMethod]
         [TestCategory("RemoteWorkflowExecutionContainer_Execute")]
-        [Description("RemoteWorkflowExecutionContainer execute must fetch the connection uri from the resource catalog.")]
-        [Owner("Trevor Williams-Ros")]
-        public void RemoteWorkflowExecutionContainer_UnitTest_ExecuteWithConnectionInResourceCatalog_ConnectionRetrieved()
-        {
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
-
-            var container = CreateExecutionContainer(resourceCatalog.Object);
-
-            ErrorResultTO errors;
-            container.Execute(out errors, 0);
-
-            Assert.AreEqual(_connection.WebAddress, container.GetRequestUri, "ExecuteGetRequest did not fetch web address from resource catalog connection.");
-            Assert.AreEqual(_connection.WebAddress, container.FetchRemoteDebugItemsUri, "FetchRemoteDebugItems did not fetch web address from resource catalog connection.");
-        }
-
-        [TestMethod]
-        [TestCategory("RemoteWorkflowExecutionContainer_Execute")]
         [Description("RemoteWorkflowExecutionContainer execute must return an error when the connection cannot be retrieved from the resource catalog.")]
         [Owner("Trevor Williams-Ros")]
         public void RemoteWorkflowExecutionContainer_UnitTest_ExecuteWithoutConnectionInCatalog_ConnectionNotRetrieved()
