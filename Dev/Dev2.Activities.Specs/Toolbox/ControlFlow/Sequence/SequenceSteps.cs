@@ -18,6 +18,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Control;
@@ -653,6 +654,13 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void Write(IDebugState debugState)
         {
             DebugStates.Add(debugState);
+        }
+
+        public void Write(string serializeObject)
+        {
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var debugState = dev2JsonSerializer.Deserialize<DebugState>(serializeObject);
+            Write(debugState);
         }
 
         #endregion
