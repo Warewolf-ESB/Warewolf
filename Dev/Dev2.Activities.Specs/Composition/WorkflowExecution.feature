@@ -4279,8 +4279,9 @@ Scenario: ForEach using * and web get request with error
 	  |                   |
 	  | [[Result]] = Pass |
 
-@ignore
+
 #recreate resources ErrorHandled
+@ignore
 Scenario: Error not bubbling up
 	Given I have a workflow "Wolf-1212_Test"
 	And "Wolf-1212_Test" contains "ErrorHandled" from server "localhost" with mapping as
@@ -4294,8 +4295,9 @@ Scenario: Error not bubbling up
 	  | [[Result]] = Pass |
 	  | [[Error]] = <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> |
 
-@ignore
+
 #recreate resources ErrorBubbleUp
+@ignore
 Scenario: Error not bubbling up error message
 	Given I have a workflow "Wolf-1212_2"
 	And "Wolf-1212_2" contains "ErrorBubbleUp" from server "localhost" with mapping as

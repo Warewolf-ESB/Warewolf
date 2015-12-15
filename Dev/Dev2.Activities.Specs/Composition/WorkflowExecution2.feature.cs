@@ -15586,11 +15586,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error not bubbling up", new string[] {
                         "ignore"});
-#line 4284
+#line 4285
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4285
+#line 4286
  testRunner.Given("I have a workflow \"Wolf-1212_Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table844 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15608,11 +15608,11 @@ this.FeatureBackground();
                         "",
                         "Error",
                         "[[Error]]"});
-#line 4286
+#line 4287
  testRunner.And("\"Wolf-1212_Test\" contains \"ErrorHandled\" from server \"localhost\" with mapping as", ((string)(null)), table844, "And ");
-#line 4290
- testRunner.When("\"Wolf-1212_Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4291
+ testRunner.When("\"Wolf-1212_Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4292
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table845 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15622,7 +15622,7 @@ this.FeatureBackground();
             table845.AddRow(new string[] {
                         "[[Error]] = <InnerError>Could not parse input datetime with given input format (e" +
                             "ven after trying default datetime formats from other cultures)</InnerError>"});
-#line 4292
+#line 4293
  testRunner.And("the \'ErrorHandled\' in Workflow \'Wolf-1212_Test\' debug outputs as", ((string)(null)), table845, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -15637,11 +15637,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error not bubbling up error message", new string[] {
                         "ignore"});
-#line 4299
+#line 4301
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4300
+#line 4302
  testRunner.Given("I have a workflow \"Wolf-1212_2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table846 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15654,18 +15654,18 @@ this.FeatureBackground();
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4301
+#line 4303
  testRunner.And("\"Wolf-1212_2\" contains \"ErrorBubbleUp\" from server \"localhost\" with mapping as", ((string)(null)), table846, "And ");
-#line 4304
+#line 4306
  testRunner.When("\"Wolf-1212_2\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4305
+#line 4307
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table847 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table847.AddRow(new string[] {
                         "[[Result]] = Pass"});
-#line 4306
+#line 4308
  testRunner.And("the \'ErrorBubbleUp\' in Workflow \'Wolf-1212_2\' debug outputs as", ((string)(null)), table847, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -15678,11 +15678,11 @@ this.FeatureBackground();
         public virtual void ForEachUsingAndDatabaseConnector()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ForEach using * and Database Connector", ((string[])(null)));
-#line 4311
+#line 4313
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4312
+#line 4314
    testRunner.Given("I have a workflow \"DBConnInForEach_3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table848 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15695,19 +15695,19 @@ this.FeatureBackground();
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4313
+#line 4315
    testRunner.And("\"DBConnInForEach_3\" contains \"ForeachDBCon\" from server \"localhost\" with mapping " +
                     "as", ((string)(null)), table848, "And ");
-#line 4316
+#line 4318
    testRunner.When("\"DBConnInForEach_3\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4317
+#line 4319
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table849 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table849.AddRow(new string[] {
                         "[[Result]] = pass"});
-#line 4318
+#line 4320
    testRunner.And("the \'ForeachDBCon\' in Workflow \'DBConnInForEach_3\' debug outputs as", ((string)(null)), table849, "And ");
 #line hidden
             this.ScenarioCleanup();
