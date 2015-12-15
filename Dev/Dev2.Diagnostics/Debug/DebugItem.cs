@@ -64,7 +64,7 @@ namespace Dev2.Diagnostics
         public DebugItem(IEnumerable<IDebugItemResult> results)
         {
             ResultsList = new List<IDebugItemResult>();
-            _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            _tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             if(!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);

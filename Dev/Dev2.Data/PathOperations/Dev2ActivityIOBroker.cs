@@ -835,7 +835,7 @@ namespace Dev2.PathOperations
         {
             try
             {
-                var tmpDir = Path.GetTempPath();
+                var tmpDir = GlobalConstants.TempLocation;
                 var di = Directory.CreateDirectory(tmpDir + "\\" + Guid.NewGuid());
 
                 return di.FullName;

@@ -13,6 +13,7 @@ using System.Activities.XamlIntegration;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Security.Principal;
 using Microsoft.Win32;
 
@@ -458,6 +459,16 @@ or type_desc LIKE '%Procedure%'";
                 return "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
             }
      
+        }
+
+        public static string TempLocation
+        {
+            get
+            {
+                var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                var tempPath = Path.Combine(appDataFolder, "Warewolf", "Temp");
+                return tempPath;
+            }
         }
         // ReSharper restore InconsistentNaming
     }

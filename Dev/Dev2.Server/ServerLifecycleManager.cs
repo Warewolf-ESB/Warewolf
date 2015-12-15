@@ -478,7 +478,7 @@ namespace Dev2
 
         private void DeleteTempFiles()
         {
-            var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             DeleteTempFiles(tempPath);
             string schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
             DeleteTempFiles(schedulerTempPath);
