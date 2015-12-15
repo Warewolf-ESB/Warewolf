@@ -403,7 +403,7 @@ namespace Dev2.Activities
 
         static ProcessStartInfo ExecuteSystemCommand(string val)
         {
-            _fullPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".bat");
+            _fullPath = Path.Combine(GlobalConstants.TempLocation, Path.GetTempFileName() + ".bat");
             File.Create(_fullPath).Close();
             File.WriteAllText(_fullPath, val);
             if (File.Exists(_fullPath))

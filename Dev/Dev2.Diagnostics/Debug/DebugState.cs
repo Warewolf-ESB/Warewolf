@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
@@ -58,7 +59,7 @@ namespace Dev2.Diagnostics.Debug
 
          static DebugState()
         {
-            var tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);

@@ -99,9 +99,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ServiceName = request.ServiceName;
            
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+            var isManagementResource = false;
             if(resource != null)
             {
                 dataObject.ResourceID = resource.ResourceID;
+                isManagementResource =  ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
             dataObject.ClientID = Guid.Parse(connectionId);
             dataObject.ExecutingUser = ExecutingUser;
@@ -121,6 +123,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
+                        if(isManagementResource)
+                        {
+                            Thread.CurrentPrincipal = Common.Utilities.ServerUser;
+                            ExecutingUser = Common.Utilities.ServerUser;
+                            dataObject.ExecutingUser = Common.Utilities.ServerUser;
+                        }
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 

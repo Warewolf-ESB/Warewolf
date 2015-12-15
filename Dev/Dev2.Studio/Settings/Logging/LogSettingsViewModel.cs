@@ -92,8 +92,7 @@ namespace Dev2.Settings.Logging
             client.DownloadProgressChanged += DownloadProgressChanged;
             client.DownloadFileCompleted += DownloadFileCompleted;
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
-            var tempPath = Path.GetTempPath();
-            _serverLogFile = Path.Combine(tempPath, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
+            _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
             client.DownloadFileAsync(managementServiceUri, _serverLogFile);
            
         }

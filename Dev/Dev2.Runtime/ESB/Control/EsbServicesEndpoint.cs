@@ -201,8 +201,11 @@ namespace Dev2.Runtime.ESB.Control
 
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
-
+            IWorkspace theWorkspace = null;
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
+            {
+                theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
+            });
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {

@@ -89,7 +89,7 @@ namespace Dev2.Studio
                 {
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
                     DirectoryHelper.CleanUp(path);
-                    DirectoryHelper.CleanUp(Path.Combine(Path.GetTempPath(), "Warewolf", "Debug"));
+                    DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
                 });
 
             // ReSharper disable once UnusedVariable
