@@ -7,33 +7,24 @@ namespace Dev2.Common
     {
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
-            WindowsIdentity identity = userPrinciple.Identity as WindowsIdentity;
-            WindowsImpersonationContext impersonationContext = null;
-            if(identity != null)
-            {
-                if(identity.IsAnonymous)
-                {
-                    identity = ServerUser.Identity as WindowsIdentity;
-                }
-                if(identity != null)
-                {
-                    impersonationContext = identity.Impersonate();
-                }
-            }
-            try
+            if(userPrinciple == null)
             {
                 actionToBePerformed();
             }
-            catch(Exception)
+            else
             {
-                if(impersonationContext != null)
-                {
-                    impersonationContext.Undo();
-                }
-                identity = ServerUser.Identity as WindowsIdentity;
+                WindowsIdentity identity = userPrinciple.Identity as WindowsIdentity;
+                WindowsImpersonationContext impersonationContext = null;
                 if(identity != null)
                 {
-                    impersonationContext = identity.Impersonate();
+                    if(identity.IsAnonymous)
+                    {
+                        identity = ServerUser.Identity as WindowsIdentity;
+                    }
+                    if(identity != null)
+                    {
+                        impersonationContext = identity.Impersonate();
+                    }
                 }
                 try
                 {
@@ -41,14 +32,30 @@ namespace Dev2.Common
                 }
                 catch(Exception)
                 {
-                    //Ignore
+                    if(impersonationContext != null)
+                    {
+                        impersonationContext.Undo();
+                    }
+                    identity = ServerUser.Identity as WindowsIdentity;
+                    if(identity != null)
+                    {
+                        impersonationContext = identity.Impersonate();
+                    }
+                    try
+                    {
+                        actionToBePerformed();
+                    }
+                    catch(Exception)
+                    {
+                        //Ignore
+                    }
                 }
-            }
-            finally
-            {
-                if(impersonationContext != null)
+                finally
                 {
-                    impersonationContext.Undo();
+                    if(impersonationContext != null)
+                    {
+                        impersonationContext.Undo();
+                    }
                 }
             }
         }
