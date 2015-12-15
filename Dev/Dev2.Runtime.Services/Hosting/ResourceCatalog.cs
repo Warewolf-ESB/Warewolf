@@ -1307,6 +1307,7 @@ namespace Dev2.Runtime.Hosting
                                 Status = ExecStatus.DuplicateMatch,
                                 Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
                             };
+                            return;
                         }
 
                         var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
