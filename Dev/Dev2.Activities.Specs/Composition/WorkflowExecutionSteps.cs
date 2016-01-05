@@ -1004,7 +1004,7 @@ namespace Dev2.Activities.Specs.Composition
 
             if(parentWorkflowName != workflowName)
             {
-                if(toolName != null and workflowName != null)
+                if(toolName != null && workflowName != null)
                 {
                     workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
                 }
