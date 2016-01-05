@@ -1010,7 +1010,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else
                 {
-                    throw System.InvalidOperationException("SpecFlow broke.");
+                    throw new InvalidOperationException("SpecFlow broke.");
                 }
             }
 
