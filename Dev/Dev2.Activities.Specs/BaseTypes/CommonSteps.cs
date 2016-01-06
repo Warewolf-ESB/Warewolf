@@ -334,9 +334,16 @@ namespace Dev2.Activities.Specs.BaseTypes
                                        out errorValue, out error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
-            //Call the service and get the result
-            WebClient webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
-            var webCallResult = webClient.DownloadString(webservice);
+            var retryCount = 0;
+            var webCallResult = "";
+
+            do
+            {
+                retryCount++;
+                //Call the service and get the result
+                WebClient webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+                webCallResult = webClient.DownloadString(webservice);
+            } while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
 
