@@ -797,12 +797,18 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("activityList", out activityList);
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates");
+            Guid workflowId = Guid.Empty;
 
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
-
-            if(parentWorkflowName == workflowName)
+            if(parentWorkflowName != workflowName)
             {
-                workflowId = Guid.Empty;
+                if(toolName != null && workflowName != null)
+                {
+                    workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+                }
+                else
+                {
+                    throw new InvalidOperationException("SpecFlow broke.");
+                }
             }
 
             var toolSpecificDebug =
