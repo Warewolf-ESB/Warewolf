@@ -788,11 +788,18 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void ListDirectory_StarDotStar_With_Contents_Expected_ListOfDirectoriesAndFiles()
         {
+            string tmpFileLocal = Path.GetTempPath() + "1.testfile";
+            string tmpFileLocal2 = Path.GetTempPath() + "2.testfile";
+            CreateLocalPath(tmpFileLocal);
+            CreateLocalPath(tmpFileLocal2);
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + "\\*.*", "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            Assert.IsTrue(result.Count > 0);
+            DeleteLocalPath(tmpFileLocal);
+            DeleteLocalPath(tmpFileLocal2);
+
+            Assert.IsTrue(result.Count > 1);
         }
 
         [TestMethod]
