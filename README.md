@@ -6,8 +6,7 @@
 
 
 
-**NOTE:** Warewolf is currently undergoing some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). We’ve set the default branch to *Release_0.6.0*, please use that branch if you need a stable build. 
-To see how things are progressing with the redesign feel free to grab the *development-studio-Restyle* branch.
+**NOTE:** Warewolf is currently undergoing some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). On Friday 22nd January 2016 This repositories history will be backed up and removed. This will render any repositories cloned before this date incompatable and will have to be recloned.
 
 
 
