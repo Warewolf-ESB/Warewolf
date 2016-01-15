@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/Brushes.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/TextBoxMetro.xaml" />
+        <!--<ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"></ResourceDictionary>-->
         <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/DataTemplatesIntellisense.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

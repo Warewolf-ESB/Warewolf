@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ********************************** THEME COLORS **********************************-->
+     <!--********************************** THEME COLORS **********************************-->
     
     <!--Core Colors-->
     <Color x:Key="WarewolfLightGrey">#C1C3C5</Color>
@@ -47,19 +47,19 @@
     <!--0% Black-->
     <Color x:Key="Color_022b">#66E2E2E2</Color>
 
-    <!--Theme Accent colors -->
+    <!--Theme Accent colors--> 
     <Color x:Key="Color_023b">#FFF3700D</Color>
     <Color x:Key="Color_024b">#FFff8613</Color>
     <Color x:Key="Color_025b">#FFF19D5E</Color>
     <Color x:Key="Color_026b">#FFF1CDB2</Color>
     <Color x:Key="Color_027b">#26F3700D</Color>
 
-    <!--Theme Error colors -->
+    <!--Theme Error colors--> 
     <Color x:Key="Color_028b">#FFA60013</Color>
     <Color x:Key="Color_029b">#FFF55E7F</Color>
     <Color x:Key="Color_030b">#FFFFCAD5</Color>
     
-    <!-- *********************************  COLORS  ********************************* -->
+     <!--*********************************  COLORS  *********************************--> 
     <Color x:Key="Color_000">#FF161616</Color>
     <Color x:Key="Color_001">#FF3F3F3F</Color>
     <Color x:Key="Color_002">#FF565656</Color>

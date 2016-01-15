@@ -191,6 +191,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data you have entered is invalid. Please correct the data..
+        /// </summary>
+        public static string DataInput_Error {
+            get {
+                return ResourceManager.GetString("DataInput_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you know?.
+        /// </summary>
+        public static string DataInput_Error_Title {
+            get {
+                return ResourceManager.GetString("DataInput_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to //Inputs.
         /// </summary>
         public static string DataMapping_InputXpathExpression {
@@ -218,6 +236,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please resolve all variable errors, before debugging..
+        /// </summary>
+        public static string Debugging_Error {
+            get {
+                return ResourceManager.GetString("Debugging_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Debugging.
+        /// </summary>
+        public static string Debugging_Error_Title {
+            get {
+                return ResourceManager.GetString("Debugging_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 3142.
         /// </summary>
         public static string Default_WebServer_Port {
@@ -232,6 +268,33 @@ namespace Dev2 {
         public static string DefaultEnvironmentName {
             get {
                 return ResourceManager.GetString("DefaultEnvironmentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The resource {0} cannot be deleted because something depends on it..
+        /// </summary>
+        public static string Delete_Error {
+            get {
+                return ResourceManager.GetString("Delete_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Error.
+        /// </summary>
+        public static string Delete_Error_Title {
+            get {
+                return ResourceManager.GetString("Delete_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination server permission Deploy To not allowed..
+        /// </summary>
+        public static string DestinationPermission_Error {
+            get {
+                return ResourceManager.GetString("DestinationPermission_Error", resourceCulture);
             }
         }
         
@@ -263,7 +326,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you wish to delete the {0} {1}?
+        ///   Looks up a localized string similar to Are you sure you wish to delete {0} {1}?
         ///
         ///Version History will also be deleted..
         /// </summary>
@@ -279,6 +342,20 @@ namespace Dev2 {
         public static string DialogBody_ConfirmFolderDelete {
             get {
                 return ResourceManager.GetString("DialogBody_ConfirmFolderDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
+        ///The workflow is linked to a disconnected server. 
+        ///To save the workflow, select Cancel and reconnect the server, or select Ok to discard your changes.
+        ///-----------------------------------------------------------------
+        ///Ok - Discard your changes.
+        ///Cancel - Returns you to the workflow..
+        /// </summary>
+        public static string DialogBody_DisconnectedItemNotSaved {
+            get {
+                return ResourceManager.GetString("DialogBody_DisconnectedItemNotSaved", resourceCulture);
             }
         }
         
@@ -321,7 +398,7 @@ namespace Dev2 {
         /// <summary>
         ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
         ///Would you like to save the workflow?
-        ///-------------------------------------------------------------------
+        ///-----------------------------------------------------------------
         ///Yes - Save the workflow.
         ///No - Discard your changes.
         ///Cancel - Returns you to the workflow..
@@ -684,6 +761,20 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your changes have not been saved.
+        ///Would you like to save? 
+        ///-----------------------------------------------------------------
+        ///Yes - Save your changes.
+        ///No - Discard your changes.
+        ///Cancel - Returns you to the tab..
+        /// </summary>
+        public static string ItemSource_NotSaved {
+            get {
+                return ResourceManager.GetString("ItemSource_NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfLive.
         /// </summary>
         public static string Live_SPN_Endpoint_Identity {
@@ -995,6 +1086,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please resolve the variable(s) errors below, before saving..
+        /// </summary>
+        public static string Saving_Error {
+            get {
+                return ResourceManager.GetString("Saving_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Saving.
+        /// </summary>
+        public static string Saving_Error_Title {
+            get {
+                return ResourceManager.GetString("Saving_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server: Version {1}
         ///
         ///Sofware development by: www.dev2.co.za
@@ -1021,6 +1130,15 @@ namespace Dev2 {
         public static string Services_Delete_Resource {
             get {
                 return ResourceManager.GetString("Services_Delete_Resource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source server permission Deploy From not allowed..
+        /// </summary>
+        public static string SourcePermission_Error {
+            get {
+                return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
             }
         }
         
@@ -1214,6 +1332,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can pass variables into your workflow by selecting the Input checkbox in the Variables window..
+        /// </summary>
+        public static string VariablesInput_Information {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you know?.
+        /// </summary>
+        public static string VariablesInput_Information_Title {
+            get {
+                return ResourceManager.GetString("VariablesInput_Information_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/checksum.txt.
         /// </summary>
         public static string Warewolf_Checksum {
@@ -1232,7 +1368,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg.
         /// </summary>
         public static string Warewolf_Logo {
             get {

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -69,86 +69,12 @@ namespace Dev2 {
  * limitations under the License.
  */
 
-  /// <summary>
-  /// Indicates that marked element should be localized or not.
-  /// </summary>
-  [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-  public sealed class LocalizationRequiredAttribute : Attribute
-  {
     /// <summary>
-    /// Initializes a new instance of the <see cref="LocalizationRequiredAttribute"/> class.
-    /// </summary>
-    /// <param name="required"><c>true</c> if a element should be localized; otherwise, <c>false</c>.</param>
-    public LocalizationRequiredAttribute(bool required)
-    {
-      Required = required;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether a element should be localized.
-    /// <value><c>true</c> if a element should be localized; otherwise, <c>false</c>.</value>
-    /// </summary>
-    [UsedImplicitly] public bool Required { get; set; }
-
-    /// <summary>
-    /// Returns whether the value of the given object is equal to the current <see cref="LocalizationRequiredAttribute"/>.
-    /// </summary>
-    /// <param name="obj">The object to test the value equality of. </param>
-    /// <returns>
-    /// <c>true</c> if the value of the given object is equal to that of the current; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool Equals(object obj)
-    {
-      var attribute = obj as LocalizationRequiredAttribute;
-      return attribute != null && attribute.Required == Required;
-    }
-
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>A hash code for the current <see cref="LocalizationRequiredAttribute"/>.</returns>
-    public override int GetHashCode()
-    {
-      return base.GetHashCode();
-    }
-  }
-
-  /// <summary>
-  /// Indicates that marked method builds string by format pattern and (optional) arguments. 
-  /// Parameter, which contains format string, should be given in constructor.
-  /// The format string should be in <see cref="string.Format(IFormatProvider,string,object[])"/> -like form
-  /// </summary>
-  [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-  public sealed class StringFormatMethodAttribute : Attribute
-  {
-    /// <summary>
-    /// Initializes new instance of StringFormatMethodAttribute
-    /// </summary>
-    /// <param name="formatParameterName">Specifies which parameter of an annotated method should be treated as format-string</param>
-    public StringFormatMethodAttribute(string formatParameterName)
-    {
-      FormatParameterName = formatParameterName;
-    }
-
-    /// <summary>
-    /// Gets format parameter name
-    /// </summary>
-    [UsedImplicitly] public string FormatParameterName { get; private set; }
-  }
-
-  /// <summary>
-  /// Indicates that the function argument should be string literal and match one  of the parameters of the caller function.
-  /// For example, <see cref="ArgumentNullException"/> has such parameter.
-  /// </summary>
-  [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute { }
-
-  /// <summary>
   /// Indicates that the marked method is assertion method, i.e. it halts control flow if one of the conditions is satisfied. 
   /// To set the condition, mark one of the parameters with <see cref="AssertionConditionAttribute"/> attribute
   /// </summary>
   /// <seealso cref="AssertionConditionAttribute"/>
-  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method)]
   public sealed class AssertionMethodAttribute : Attribute { }
 
   /// <summary>
@@ -157,7 +83,7 @@ namespace Dev2 {
   /// The mandatory argument of the attribute is the assertion type.
   /// </summary>
   /// <seealso cref="AssertionConditionType"/>
-  [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   public sealed class AssertionConditionAttribute : Attribute
   {
     /// <summary>
@@ -199,33 +125,33 @@ namespace Dev2 {
     /// <summary>
     /// Indicates that the marked parameter should be evaluated to not null value
     /// </summary>
-    IS_NOT_NULL = 3,
+    IS_NOT_NULL = 3
   }
 
   /// <summary>
   /// Indicates that the marked method unconditionally terminates control flow execution.
   /// For example, it could unconditionally throw exception
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method)]
   public sealed class TerminatesProgramAttribute : Attribute { }
 
   /// <summary>
   /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field)]
   public sealed class CanBeNullAttribute : Attribute { }
 
   /// <summary>
   /// Indicates that the value of marked element could never be <c>null</c>
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field)]
   public sealed class NotNullAttribute : Attribute { }
 
   /// <summary>
   /// Indicates that the value of marked type (or its derivatives) cannot be compared using '==' or '!=' operators.
   /// There is only exception to compare with <c>null</c>, it is permitted
   /// </summary>
-  [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
   public sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
 
   /// <summary>
@@ -243,7 +169,7 @@ namespace Dev2 {
   /// {}
   /// </code>
   /// </example>
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
   [BaseTypeRequired(typeof(Attribute))]
   public sealed class BaseTypeRequiredAttribute : Attribute
   {
@@ -266,7 +192,7 @@ namespace Dev2 {
   /// Indicates that the marked symbol is used implicitly (e.g. via reflection, in external library),
   /// so this symbol will not be marked as unused (as well as by other usage inspections)
   /// </summary>
-  [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.All)]
   public sealed class UsedImplicitlyAttribute : Attribute
   {
     /// <summary>
@@ -315,7 +241,7 @@ namespace Dev2 {
   /// <summary>
   /// Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes as unused (as well as by other usage inspections)
   /// </summary>
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class)]
   public sealed  class MeansImplicitUseAttribute : Attribute
   {
     /// <summary>
@@ -392,7 +318,7 @@ namespace Dev2 {
     /// <summary>
     /// Indicates implicit instantiation of a type
     /// </summary>
-    InstantiatedNoFixedConstructorSignature = 8,
+    InstantiatedNoFixedConstructorSignature = 8
   }
 
   /// <summary>
@@ -449,14 +375,14 @@ namespace Dev2 {
   /// If the parameter is delegate, indicates that delegate is executed while the method is executed.
   /// If the parameter is enumerable, indicates that it is enumerated while the method is executed.
   /// </summary>
-  [AttributeUsage(AttributeTargets.Parameter, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   public sealed class InstantHandleAttribute : Attribute { }
 
   /// <summary>
   /// Indicates that method doesn't contain observable side effects.
   /// The same as <see cref="System.Diagnostics.Contracts.PureAttribute"/>
   /// </summary>
-  [AttributeUsage(AttributeTargets.Method, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method)]
   public sealed class PureAttribute : Attribute { }
 
   /// <summary>

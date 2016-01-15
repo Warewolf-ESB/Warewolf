@@ -67,7 +67,45 @@ Scenario: Execute cmd with negative recordset index
 	|               |
 	| [[result]] = |
 
+@ignore
+#Audit
+Scenario Outline: Execute a command that requires recordsets
+	Given I have this command script to execute '<variable>' with '<val>'
+	When the command tool is executed
+	Then the '<resultVariable>' of the command tool will be '<Result>'
+	And the execution has '<Error>' error
+	And the debug inputs as  
+	| variable   | Command |
+	| <variable> | <val>   |  
+	And the debug output as 
+	|                             |
+	| <resultVariable> = <result> |
+	Examples: 
+	| Variable                          | Val                | resultVariable               | Result                                                                                    | Error |
+	| [[rec().set]]                     | Echo a message     | [[rj().a]]                   | a message                                                                                 | No    |
+	| [[rec(*).set]]                    | Echo Press any key | [[rj(1).a]]                  | Press any key                                                                             | No    |
+	| [[rec([[int]]).set]], [[int]] = 1 | Echo a message     | [[rj(*).a]]                  | a message                                                                                 | No    |
+	| [[rec(1).set]]                    | Echo a message     | [[rj([[int]]).a]],[[int]] =3 | a message                                                                                 | No    |
+	| [[var]]                           | 444                | [[rj([[int]]).a]],[[int]] =3 | '444' is not recognized as an internal or external command,operable program or batch file | An    |
+	| [[v]]                             |                    | [[int]]                      | Empty script to execute                                                                   | An    |
 
+
+@ignore
+#Complex Types
+Scenario Outline: Execute a command that requires complex types
+	Given I have this command script to execute '<object>' with '<val>'
+	When the command tool is executed
+	Then the '<resultVariable>' of the command tool will be '<Result>'
+	And the execution has '<Error>' error
+	And the debug inputs as  
+	| object   | Command |
+	| <object> | <val>   |  
+	And the debug output as 
+	|                             |
+	| <resultVariable> = <result> |
+	Examples: 
+	| object                 | Val            | resultVariable              | Result    | Error |
+	| [[rec().set(1).value]] | Echo a message | [[rj().set([[int]]).value]] | a message | No    |
 Scenario: Execute a NULL cmd
 	Given I have a command variable "[[command]]" equal to "NULL"
 	And I have this command script to execute "dir c:\[[command]]"

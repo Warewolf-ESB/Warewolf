@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,8 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Move
             Assert.IsNull(viewModel.InputPathValue);
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
-            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
-            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Help");
+            Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,17 +14,20 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.CustomControls.Connections;
+using Dev2.Common.Interfaces.Threading;
+
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
+using Dev2.Settings.Scheduler;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -51,17 +54,20 @@ namespace Dev2.Settings
 
         SecurityViewModel _securityViewModel;
         LogSettingsViewModel _logSettingsViewModel;
-        IConnectControlViewModel _connectControlViewModel;
         private bool _showLog;
+        private IEnvironmentModel _currentEnvironment;
+        private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
 
         public SettingsViewModel()
-            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow, null)
+            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
         }
 
-        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, IConnectControlViewModel connectControlViewModel)
+        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel)
             : base(eventPublisher)
         {
+            Server = server;
+            server.NetworkStateChanged += ServerNetworkStateChanged;
             Settings = new Data.Settings.Settings();
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
@@ -71,16 +77,67 @@ namespace Dev2.Settings
             _parentWindow = parentWindow;
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
-            ServerChangedCommand = new DelegateCommand(OnServerChanged);
 
-            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(OnServerChanged, "Server:", false);
+            IShellViewModel vm = CustomContainer.Get<IShellViewModel>();
+            CreateEnvironmentFromServer(vm.LocalhostServer);
+
+            ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
+            CurrentEnvironment= ToEnvironmentModel(server);
+            LoadSettings();
+ 
         }
 
+        public override string DisplayName
+        {
+            get
+            {
+                return "Settings - " + Server.ResourceName;
+            }
+            set
+            {
+
+            }
+        }
+
+        void ServerNetworkStateChanged(INetworkStateChangedEventArgs args, IServer server)
+        {
+            if(args.State == ConnectionNetworkState.Connected)
+            {
+                LoadSettings();
+            }
+            if (args.State == ConnectionNetworkState.Disconnected)
+            {
+                LoadSettings();
+            }
+        }
+
+        public IServer Server { get; set; }
+
+        void CreateEnvironmentFromServer(IServer server)
+        {
+            if (server != null && server.UpdateRepository != null)
+            {
+                server.UpdateRepository.ItemSaved += Refresh;
+            }
+        }
         public RelayCommand SaveCommand { get; private set; }
 
-        public ICommand ServerChangedCommand { get; private set; }
 
-        public IEnvironmentModel CurrentEnvironment { get; set; }
+        public IEnvironmentModel CurrentEnvironment
+        {
+            get
+            {
+                return _currentEnvironment;
+            }
+            set
+            {
+                _currentEnvironment = value;
+                if(CurrentEnvironment.IsConnected &&_currentEnvironment.AuthorizationService != null  )
+                {
+                    _currentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null);
+                }
+            }
+        }
 
         public bool IsSavedSuccessVisible { get { return !HasErrors && !IsDirty && IsSaved; } }
 
@@ -102,22 +159,7 @@ namespace Dev2.Settings
             }
         }
 
-        public IConnectControlViewModel ConnectControlViewModel
-        {
-            get
-            {
-                return _connectControlViewModel;
-            }
-            set
-            {
-                if(Equals(value, _connectControlViewModel))
-                {
-                    return;
-                }
-                _connectControlViewModel = value;
-                NotifyOfPropertyChange(() => ConnectControlViewModel);
-            }
-        }
+    
 
         public string Errors
         {
@@ -151,7 +193,10 @@ namespace Dev2.Settings
 
         public bool IsDirty
         {
-            get { return _isDirty; }
+            get
+            {
+                return _isDirty;
+            }
             set
             {
                 if(value.Equals(_isDirty))
@@ -259,14 +304,14 @@ namespace Dev2.Settings
         {
             get
             {
-                return SecurityViewModel != null && SecurityViewModel.IsDirty ? "Security *" : "Security";
+                return SecurityViewModel != null && SecurityViewModel.IsDirty ? "SECURITY *" : "SECURITY";
             }
         }
         public string LogHeader
         {
             get
             {
-                return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "Logging *" : "Logging";
+                return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "LOGGING *" : "LOGGING";
             }
         }
         public bool HasLogSettings
@@ -313,25 +358,20 @@ namespace Dev2.Settings
             _selectionChanging = false;
         }
 
-        void OnServerChanged(object obj)
+
+
+
+
+        public Func<IServer, IEnvironmentModel> ToEnvironmentModel
         {
-            var server = obj as IEnvironmentModel;
-
-            if(server == null)
+            get
             {
-                return;
+                return _toEnvironmentModel ?? (a => a.ToEnvironmentModel()); 
             }
-
-            if(SecurityViewModel != null)
+            set
             {
-                if(!DoDeactivate())
-                {
-                    return;
-                }
+                _toEnvironmentModel = value;
             }
-
-            CurrentEnvironment = server;
-            LoadSettings();
         }
 
         void LoadSettings()
@@ -343,7 +383,8 @@ namespace Dev2.Settings
 
             _asyncWorker.Start(() =>
             {
-                Settings = CurrentEnvironment.IsConnected ? ReadSettings() : new Data.Settings.Settings { Security = new SecuritySettingsTO() };
+     
+                Settings =  CurrentEnvironment.IsConnected ? ReadSettings() : new Data.Settings.Settings { Security = new SecuritySettingsTO() };
 
             }, () =>
             {
@@ -377,27 +418,36 @@ namespace Dev2.Settings
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
-            isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
-            isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
-            SecurityViewModel.PropertyChanged += (sender, args) =>
+            if (LogSettingsViewModel != null)
             {
-                if (args.PropertyName == "IsDirty")
+                isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
+                LogSettingsViewModel.PropertyChanged += (sender, args) =>
                 {
-                    OnIsDirtyPropertyChanged(null, new EventArgs());
-                }
-            };
-            LogSettingsViewModel.PropertyChanged += (sender, args) =>
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
+            if (SecurityViewModel != null)
             {
-                if (args.PropertyName == "IsDirty")
+                isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
+                SecurityViewModel.PropertyChanged += (sender, args) =>
                 {
-                    OnIsDirtyPropertyChanged(null, new EventArgs());
-                }
-            };
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty;
+            if (SecurityViewModel != null && LogSettingsViewModel != null)
+            {
+                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty;
+            }
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             ClearErrors();
@@ -421,24 +471,28 @@ namespace Dev2.Settings
 
         #region Overrides of Screen
 
-        public virtual bool DoDeactivate()
+        public virtual bool DoDeactivate(bool showMessage)
         {
-            var messageBoxResult = GetSaveResult();
-            if(messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
+            if (showMessage)
             {
-                return false;
+                var messageBoxResult = GetSaveResult();
+                if (messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
+                {
+                    return false;
+                }
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    return SaveSettings();
+                }
+
+                if (messageBoxResult == MessageBoxResult.No)
+                {
+                    IsDirty = false;
+                    ResetIsDirtyForChildren();
+                }
             }
-            if(messageBoxResult == MessageBoxResult.Yes)
-            {
+            else
                 return SaveSettings();
-            }
-
-            if(messageBoxResult == MessageBoxResult.No)
-            {
-                IsDirty = false;
-                ResetIsDirtyForChildren();
-            }
-
             return true;
         }
 
@@ -551,6 +605,14 @@ namespace Dev2.Settings
         {
             HasErrors = true;
             Errors = description;
+        }
+
+        public ResourceType ResourceType
+        {
+            get
+            {
+                return ResourceType.Settings;
+            }
         }
     }
 }

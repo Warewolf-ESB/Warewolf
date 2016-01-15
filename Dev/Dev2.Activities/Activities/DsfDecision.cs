@@ -28,9 +28,10 @@ namespace Dev2.Activities
        // ReSharper restore MemberCanBePrivate.Global
         readonly DsfFlowDecisionActivity _inner;    
         #region Overrides of DsfNativeActivity<string>
-        public DsfDecision(DsfFlowDecisionActivity inner)
+        public DsfDecision(DsfFlowDecisionActivity inner):this()
         {
             _inner = inner;
+            UniqueID = _inner.UniqueID;
         }
  
         public DsfDecision() { }
@@ -65,7 +66,7 @@ namespace Dev2.Activities
             bool errorifnull = !decision.EvaluationFn.ToString().ToLower().Contains("null") ;
             var col1 = env.EvalAsList(decision.Col1, 0, errorifnull);
             var col2 = env.EvalAsList(decision.Col2, 0, errorifnull);
-            var col3 = env.EvalAsList(decision.Col3, 0, errorifnull);
+            var col3 = env.EvalAsList(decision.Col3??"", 0, errorifnull);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
@@ -82,7 +83,7 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
                     _debugInputs = CreateDebugInputs(dataObject.Environment);
-                    DispatchDebugState(dataObject, StateType.Before,0);
+                    DispatchDebugState(dataObject, StateType.Before,0,null,true);
                 }
 
                 var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a));
@@ -145,7 +146,7 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
+                    DisplayAndWriteError("DsfDecision", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
 

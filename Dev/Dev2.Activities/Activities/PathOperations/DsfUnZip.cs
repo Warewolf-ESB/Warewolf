@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,22 +11,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.PathOperations.Interfaces;
-using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Warewolf.Security.Encryption;
+using Warewolf.Core;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
+    [ToolDescriptorInfo("FileFolder-UnZip", "UnZip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File & Folder", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfUnZip : DsfAbstractMultipleFilesActivity, IUnZip, IPathOverwrite, IPathOutput, IPathInput,
                             IDestinationUsernamePassword
     {
@@ -37,7 +37,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         WarewolfIterator _archPassItr;
-        string _archivePassword;
 
         #region Properties
         /// <summary>
@@ -45,40 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>      
         [Inputs("Archive Password")]
         [FindMissing]
-        public string ArchivePassword
-        {
-            get { return _archivePassword; }
-            set
-            {
-                if (DataListUtil.ShouldEncrypt(value))
-                {
-                    try
-                    {
-                        _archivePassword = DpapiWrapper.Encrypt(value);
-                    }
-                    catch (Exception)
-                    {
-                        _archivePassword = value;
-                    }
-                }
-                else
-                {
-                    _archivePassword = value;
-                }
-            }
-        }
-
-
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected string DecryptedArchivePassword
-        {
-            get
-            {
-                return DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DpapiWrapper.Decrypt(ArchivePassword);
-            }
-        }
+        public string ArchivePassword { get; set; }
         #endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -109,9 +75,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected override void AddItemsToIterator(IExecutionEnvironment environment,int update)
+        protected override void AddItemsToIterator(IExecutionEnvironment environment, int update)
         {
-            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword,update));
+            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword, update));
             ColItr.AddVariableToIterateOn(_archPassItr);
         }
 

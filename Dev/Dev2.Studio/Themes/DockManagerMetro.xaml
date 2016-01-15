@@ -74,7 +74,7 @@
 
     <!-- ========== CaptionButtonStyleBase ========== -->
     <!-- Base style for the buttons in the PaneHeaderPresenter -->
-    <Style x:Key="CaptionButtonStyleBase" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyleBase}">  
+    <Style x:Key="CaptionButtonStyleBase" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">  
         <Style.Triggers>
 
             <!-- HotTracked Button in an Active ContentPane -->

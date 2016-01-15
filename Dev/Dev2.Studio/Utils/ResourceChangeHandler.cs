@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
@@ -72,11 +73,8 @@ namespace Dev2.Utils
             {
                 if(numberOfDependants.Count == 1)
                 {
-                    var resourceModel = resource.Environment.ResourceRepository.FindSingle(model => model.ResourceName == numberOfDependants[0]);
-                    if(resourceModel != null)
-                    {
-                        WorkflowDesignerUtils.EditResource(resourceModel, _eventPublisher);
-                    }
+                    var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                    shellViewModel.OpenResourceAsync(Guid.Parse(numberOfDependants[0]),shellViewModel.ActiveServer);                    
                 }
                 else
                 {

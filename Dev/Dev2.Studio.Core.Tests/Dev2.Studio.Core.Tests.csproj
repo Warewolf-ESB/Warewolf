@@ -44,48 +44,10 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp, Version=1.25.0.25466, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp.Wpf, Version=1.25.5.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5058.16094, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -100,13 +62,13 @@
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -126,6 +88,33 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Composition">
+      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.18776, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
@@ -210,10 +199,8 @@
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
-    <Compile Include="DeployNavigationViewModelTest.cs" />
     <Compile Include="DialogFactoryTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
-    <Compile Include="Dock\ContentPaneFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -242,7 +229,6 @@
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
-    <Compile Include="Deploy\DeployViewModelTestBase.cs" />
     <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
@@ -259,11 +245,6 @@
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
-    <Compile Include="NavigationViewModelTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\ServerProxyChunkedTests.Specs.cs" />
-    <Compile Include="Network\ServerProxyChunkedTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
@@ -297,8 +278,6 @@
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
-    <Compile Include="DeployStatsCalculatorTests.cs" />
-    <Compile Include="Deploy\DeployViewModelTest.cs" />
     <Compile Include="Dev2DialogueTest.cs" />
     <Compile Include="Diagnostics\AppExceptionHandlerTests.cs" />
     <Compile Include="Diagnostics\ExceptionFactoryTests.cs" />
@@ -314,7 +293,6 @@
     <Compile Include="Environments\TestEnvironmentRespository.cs" />
     <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />
-    <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
@@ -333,7 +311,6 @@
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
     <Compile Include="ProperMoqs\MoqPopup.cs" />
     <Compile Include="ProperMoqs\TestResourceModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
     <Compile Include="ResourceModelTest.cs" />
@@ -341,7 +318,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Environments\ServerProviderTest.cs" />
-    <Compile Include="SplashScreenTest.cs" />
     <Compile Include="StringResourcesTest1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -360,8 +336,6 @@
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
-    <Compile Include="Views\ExplorerViewTests.cs" />
-    <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,18 +351,6 @@
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
-    <Compile Include="WebResourceViewModelTest.cs" />
-    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\RootWebSiteTest.cs" />
-    <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\FileChooserCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebsiteCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
@@ -411,7 +373,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\DependenciesGraphUniqueTest.xml" />
-    <EmbeddedResource Include="Assets\Dev2Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -502,14 +463,25 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717E42-DF21-45A4-9527-F0BB95D7135D}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+      <Project>{CC1B89CD-3222-4019-A0D1-58664F92CC47}</Project>
+      <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\" />
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="Dock\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />
-    <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -518,22 +490,14 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Activities\TestImage.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>%windir%\system32\ROBOCOPY /A-:R "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
-REM Visual Studio expects 0 when successful
-set rce=%25errorlevel%25
-if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

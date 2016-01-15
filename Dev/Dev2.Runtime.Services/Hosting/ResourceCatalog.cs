@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -463,11 +463,6 @@ namespace Dev2.Runtime.Hosting
 
         public IList<Resource> GetResourceList(Guid workspaceId, string guidCsv, string type)
         {
-            if(type == null)
-            {
-                throw new ArgumentNullException("type");
-            }
-
             if(guidCsv == null)
             {
                 guidCsv = string.Empty;
@@ -482,12 +477,19 @@ namespace Dev2.Runtime.Hosting
                     guids.Add(guid);
                 }
             }
-
-            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
             var workspaceResources = GetResources(workspaceId);
-            var resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
-                                                            && resourceTypes.Contains(r.ResourceType));
-
+            List<IResource> resources;
+            if (string.IsNullOrEmpty(type))
+            {
+                resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID));
+            }
+            else
+            {
+                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
+                resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
+                                                                && resourceTypes.Contains(r.ResourceType));
+            }
+            
             return resources.Cast<Resource>().ToList();
         }
 
@@ -583,14 +585,14 @@ namespace Dev2.Runtime.Hosting
             Parse(workspaceID, resource.ResourceID);
         }
 
-        static DynamicActivity GetActivity(ServiceAction sa)
+        public DynamicActivity GetActivity(ServiceAction sa)
         {
             var act = sa.PopActivity();
             var theActivity = act.Value as DynamicActivity;
             return theActivity;
         }
 
-        DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName)
+        public DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName)
         {
             DynamicService serviceAction = null;
             if (resourceID != Guid.Empty)
@@ -609,7 +611,7 @@ namespace Dev2.Runtime.Hosting
             return serviceAction;
         }
 
-        private void MapServiceActionDependencies(Guid workspaceID,ServiceAction serviceAction)
+        public void MapServiceActionDependencies(Guid workspaceID,ServiceAction serviceAction)
         {
 
             serviceAction.Service = GetService(workspaceID,serviceAction.ServiceID,serviceAction.ServiceName);
@@ -791,7 +793,7 @@ namespace Dev2.Runtime.Hosting
                     throw new InvalidDataContractException("ResourceName or Type is missing from the request");
                 }
 
-                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
+                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
 
                 var workspaceResources = GetResources(workspaceID);
                 var resources = workspaceResources.FindAll(r =>
@@ -1173,6 +1175,11 @@ namespace Dev2.Runtime.Hosting
             return GetResource<T>(resourceContents);
         }
 
+        public string GetResourcePath(Guid id)
+        {
+            return GetResource(Guid.Empty, id).ResourcePath;
+        }
+
         StringBuilder ResourceContents<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
             var resource = GetResource(workspaceID, resourceName);
@@ -1309,7 +1316,10 @@ namespace Dev2.Runtime.Hosting
                             };
                             return;
                         }
-
+                    if (resource.ResourcePath.EndsWith("\\"))
+                    {
+                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                    }
                         var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                         var originalRes = resource.ResourcePath ?? "";
                         int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
@@ -1318,7 +1328,7 @@ namespace Dev2.Runtime.Hosting
                             resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
                         var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
 
-                        resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
+                        resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
 
                         #region Save to disk
 
@@ -1362,17 +1372,22 @@ namespace Dev2.Runtime.Hosting
 
                         #region Add to catalog
 
-                        var index = resources.IndexOf(resource);
-                        var updated = false;
-                        if (index != -1)
+                    var index = resources.IndexOf(resource);
+                    var updated = false;
+                    if (index != -1)
+                    {
+                        var existing = resources[index];
+                        if(existing.FilePath!= resource.FilePath)
                         {
-                            resources.RemoveAt(index);
-                            updated = true;
+                            fileManager.Delete(existing.FilePath);
                         }
-                        resource.GetInputsOutputs(xml);
-                        resource.ReadDataList(xml);
-                        resource.SetIsNew(xml);
-                        resource.UpdateErrorsBasedOnXML(xml);
+                        resources.RemoveAt(index);
+                        updated = true;
+                    }
+                    resource.GetInputsOutputs(xml);
+                    resource.ReadDataList(xml);
+                    resource.SetIsNew(xml);
+                    resource.UpdateErrorsBasedOnXML(xml);
 
                         resources.Add(resource);
 
@@ -1433,7 +1448,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));       
                     });
-                    SendResourceMessages(resource.ResourceID, dependsMessageList);
+                    if(SendResourceMessages != null)
+                    {
+                        SendResourceMessages(resource.ResourceID, dependsMessageList);
+                    }
                 }
             }
         }

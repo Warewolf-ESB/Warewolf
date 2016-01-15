@@ -25,12 +25,30 @@
     </EventTrigger>
   </FrameworkElement.Triggers>
   <Grid x:Uid="Grid_1">
-    <Path x:Uid="Path_1" VerticalAlignment="Top" Margin="0,15,0,0" Stretch="Fill" StrokeMiterLimit="2.75"
-          Stroke="#FFA8B3C2" Fill="#FFFFFFFF"
-          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" Width="16" Height="10"/>
-    <Path x:Uid="Path_2" VerticalAlignment="Bottom" Margin="0,0,0,15" Stretch="Fill" StrokeMiterLimit="2.75"
-          Stroke="#FFA8B3C2" Fill="#FFFFFFFF"
-          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" Width="16" Height="10"/>
-    <Rectangle x:Name="dropTarget" x:Uid="dropTarget" Fill="#FFE9ECEE" Height="10" Visibility="Hidden"/>
+    <Path x:Uid="Path_1" 
+          VerticalAlignment="Top" 
+          Margin="0,15,0,0" 
+          Stretch="Fill" 
+          StrokeMiterLimit="2.75"
+          Stroke="#FFA8B3C2" 
+          Fill="#FFFFFFFF"
+          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" 
+          Width="16" 
+          Height="10"/>
+    <Path x:Uid="Path_2" 
+          VerticalAlignment="Bottom" 
+          Margin="0,0,0,15" 
+          Stretch="Fill" 
+          StrokeMiterLimit="2.75"
+          Stroke="#FFA8B3C2" 
+          Fill="#FFFFFFFF"
+          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" 
+          Width="16" 
+          Height="10"/>
+    <Rectangle x:Name="dropTarget" 
+               x:Uid="dropTarget" 
+               Fill="#FFE9ECEE" 
+               Height="10" 
+               Visibility="Hidden"/>
   </Grid>
 </UserControl>

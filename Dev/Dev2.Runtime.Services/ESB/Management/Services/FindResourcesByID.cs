@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,9 +56,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
 
             IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(resourceList);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(resourceList));
+         
+            return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {

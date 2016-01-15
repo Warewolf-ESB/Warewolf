@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Explorer;
 using Dev2.Models;
@@ -32,15 +33,14 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using ServiceStack.Common.Extensions;
 
 namespace Dev2.AppResources.Repositories
 {
     public class StudioResourceRepository : IStudioResourceRepository
     {
-        private readonly Dispatcher _currentDispatcher;
-        private readonly Action<System.Action, DispatcherPriority> _invoke;
+
+        private readonly Lazy<Action<System.Action, DispatcherPriority>> _invoke;
 
         static StudioResourceRepository()
         {
@@ -53,21 +53,21 @@ namespace Dev2.AppResources.Repositories
             ExplorerItemModelClone = a => a.Clone();
             try
             {
-                _currentDispatcher = Dispatcher.CurrentDispatcher;
-                _invoke = _currentDispatcher.Invoke;
+      
+                _invoke = new Lazy<Action<System.Action, DispatcherPriority>>(()=> Application.Current.Dispatcher.Invoke);
             }
             catch(Exception)
             {
                 //This is primarily for the testing as the server runs as a service and no window handle i.e. Ui dispatcher can be gotten.
-                _invoke = (action, priority) => { };
+                _invoke =new Lazy<Action<System.Action, DispatcherPriority>>(()=> (action, priority) => { });
             }
         }
 
-        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<System.Action, DispatcherPriority> invoke)
+        public StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
-            _invoke = invoke;
+            _invoke = new Lazy<Action<System.Action, DispatcherPriority>>(()=> invoke);
 
             if(explorerItem != null)
             {
@@ -79,11 +79,11 @@ namespace Dev2.AppResources.Repositories
         }
 
         //This is for testing only need better way of putting this together
-        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<System.Action, DispatcherPriority> invoke)
+        public StudioResourceRepository(ExplorerItemModel explorerItem, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
-            _invoke = invoke;
+            _invoke = new Lazy<Action<System.Action, DispatcherPriority>>( ()=>invoke);
             if(explorerItem != null)
             {
                 LoadItemsToTree(explorerItem.EnvironmentId, explorerItem);
@@ -103,7 +103,10 @@ namespace Dev2.AppResources.Repositories
         {
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var connection = environmentModel.Connection;
-            connection.ItemAddedMessageAction = Instance.ItemAddedMessageHandler;
+            //if (!connection.IsLocalHost)
+            {
+                connection.ItemAddedMessageAction = Instance.ItemAddedMessageHandler;
+            }
             return new ServerExplorerClientProxy(connection);
         };
 
@@ -443,7 +446,7 @@ namespace Dev2.AppResources.Repositories
             }
             model.Parent.RemoveChild(model);
             model.ResourcePath = newPath;
-            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName){ServerId = model.EnvironmentId});
+            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName, model.ResourceId, model.ResourceType, null, model.Permissions, newPath + "\\" + model.DisplayName, "", "") { ServerId = model.EnvironmentId });
 
             RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
@@ -499,37 +502,35 @@ namespace Dev2.AppResources.Repositories
             var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
             var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
 
-            if(!String.IsNullOrEmpty(resourcePath))
+            if(!String.IsNullOrEmpty(resourcePath) )
             {
                 resourcePath = resourcePath.Equals(item.DisplayName) ? "" : resourcePath.Substring(0, resourcePath.LastIndexOf("\\" + item.DisplayName, StringComparison.Ordinal));
             }
-
+            if (!item.ResourcePath.Contains("\\"))
+                resourcePath = "";
             // ReSharper disable ImplicitlyCapturedClosure
             var parent = FindItem(model => model.ResourcePath != null && model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
             var alreadyAdded = FindItem(model =>  model.ResourcePath == item.ResourcePath && model.EnvironmentId == environmentId) != null;
             // ReSharper restore ImplicitlyCapturedClosure
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
-            // ReSharper disable ImplicitlyCapturedClosure
-            var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
-            // ReSharper restore ImplicitlyCapturedClosure
-            if(resourceModel == null && item.ResourceType != ResourceType.Folder)
+            if(item.ResourceType != ResourceType.Folder)
             {
                 if(item.ResourceType == ResourceType.ServerSource)
                 {
-                   resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                   resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType >= ResourceType.DbSource)
                 {
-                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
                 {
-                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
                 }
                 else if(item.ResourceType == ResourceType.WorkflowService)
                 {
-                    resourceRepository.LoadResourceFromWorkspace(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
+                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
                 }
             }
 
@@ -543,12 +544,7 @@ namespace Dev2.AppResources.Repositories
                     {
                         parent.Children = new ObservableCollection<IExplorerItemModel>();
                     }
-                    if(_currentDispatcher == null)
-                    {
-                        AddChildItem(parent, explorerItem);
-                    }
-                    else
-                    {
+ {
                         PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
 
                     }
@@ -558,7 +554,7 @@ namespace Dev2.AppResources.Repositories
 
         public void PerformUpdateOnDispatcher(System.Action action)
         {
-            _invoke(action, DispatcherPriority.Send);
+            _invoke.Value(action, DispatcherPriority.Send);
         }
 
         static void AddChildItem(IExplorerItemModel parent, IExplorerItemModel explorerItem)
@@ -822,7 +818,7 @@ namespace Dev2.AppResources.Repositories
                                           item.Children == null
                                               ? null
                                               : item.Children.Select(MapData).ToList(),
-                                          item.Permissions, item.ResourcePath);
+                                          item.Permissions, item.ResourcePath, "", "");
 
         }
 

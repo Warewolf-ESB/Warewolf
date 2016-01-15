@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,18 +13,19 @@ using System;
 using System.Windows;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Utils;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Core.Tests.Helpers
 {
     public class VersionCheckerTestClass : VersionChecker
     {
         public int ShowPopUpHitCount = 0;
-        public VersionCheckerTestClass(IDev2WebClient webClient)
+        public VersionCheckerTestClass(IWarewolfWebClient webClient)
             : base(webClient, VersionInfo.FetchVersionInfoAsVersion)
         {
         }
 
-        public VersionCheckerTestClass(IDev2WebClient webClient, Func<Version> func)
+        public VersionCheckerTestClass(IWarewolfWebClient webClient, Func<Version> func)
             : base(webClient, func)
         {
         }

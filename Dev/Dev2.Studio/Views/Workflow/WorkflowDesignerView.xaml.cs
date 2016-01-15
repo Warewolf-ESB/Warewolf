@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Interfaces;
@@ -29,7 +28,8 @@ namespace Dev2.Studio.Views.Workflow
             InitializeComponent();
             PreviewDrop += DropPointOnDragEnter;
             PreviewDragOver += DropPointOnDragEnter;
-            PreviewMouseDown += WorkflowDesignerView_PreviewMouseDown;
+            PreviewMouseDown += WorkflowDesignerViewPreviewMouseDown;
+            KeyDown += OnKeyDown;
             _dragDropHelpers = new DragDropHelpers(this);
             //            var pattern = Observable.FromEventPattern<KeyEventArgs>(this,"KeyUp");
             //            pattern.Throttle(TimeSpan.FromMilliseconds(50000))
@@ -37,11 +37,16 @@ namespace Dev2.Studio.Views.Workflow
             //
             //            pattern.Subscribe(PerformOnDispatcher);
         }
-        void PerformOnDispatcher(EventPattern<KeyEventArgs> eventPattern)
+
+        void OnKeyDown(object sender, KeyEventArgs e)
         {
-            //Dispatcher.BeginInvoke(DispatcherPriority.Background,new Action(()=>PerfromAction(eventPattern.EventArgs)));
+            if (e.Key == Key.Enter)
+            {
+                
+            }
         }
-        void WorkflowDesignerView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+
+        void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var vm = DataContext as WorkflowDesignerViewModel;
             if (vm != null)
@@ -57,23 +62,6 @@ namespace Dev2.Studio.Views.Workflow
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
-            }
-        }
-        void UIElement_OnKeyUp(object sender, KeyEventArgs e)
-        {       
-            //PerfromAction(e);
-        }
-        void PerfromAction(KeyEventArgs e)
-        {
-
-            if (e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.PageDown || e.Key == Key.PageUp || e.Key == Key.Left || e.Key == Key.Right)
-            {
-                return;
-            }
-            var workflowDesignerViewModel = DataContext as WorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null)
-            {
-                workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             }
         }
     }

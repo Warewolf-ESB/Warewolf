@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,36 +20,64 @@ using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
+using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource
     {
-        readonly IResourcePickerDialog _resourcePicker;
+         IResourcePickerDialog _resourcePicker;
         readonly DirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
 
         internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IEnvironmentModel environment)
-            : this(securitySettings, new ResourcePickerDialog(enDsfActivityType.All, environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
+            : this(securitySettings,new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
 
-        public SecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
+        public IResourcePickerDialog CreateResourcePickerDialog()
         {
-            VerifyArgument.IsNotNull("resourcePicker", resourcePicker);
+            var env = GetEnvironment();
+             var res =  new ResourcePickerDialog(enDsfActivityType.All, env);
+             ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, env).ContinueWith(a=> _resourcePicker=a.Result);
+             return res;
+        }
+
+        static IEnvironmentViewModel GetEnvironment()
+        {
+            var environment = EnvironmentRepository.Instance.ActiveEnvironment;
+
+            IServer server = new Server(environment);
+
+            if (server.Permissions == null)
+            {
+                server.Permissions = new List<IWindowsGroupPermission>();
+                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+            }
+            var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            return env;
+        }
+
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        {
+
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             VerifyArgument.IsNotNull("environment", environment);
 
-            _resourcePicker = resourcePicker;
+            _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
             _directoryObjectPicker = directoryObjectPicker;
             _parentWindow = parentWindow;
             _environment = environment;
@@ -182,11 +210,11 @@ namespace Dev2.Settings.Security
                 return;
             }
 
-            permission.ResourceID = resourceModel.ID;
-            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.Category, resourceModel.ResourceName);
+            permission.ResourceID = resourceModel.ResourceId;
+            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.ResourcePath, resourceModel.ResourceName);
         }
 
-        IResourceModel PickResource(WindowsGroupPermission permission)
+        IExplorerTreeItem PickResource(WindowsGroupPermission permission)
         {
             if(permission != null && permission.ResourceID != Guid.Empty)
             {
@@ -195,12 +223,17 @@ namespace Dev2.Settings.Security
                     var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
                     if(foundResourceModel != null)
                     {
-                        _resourcePicker.SelectedResource = foundResourceModel;
+                        _resourcePicker.SelectResource( foundResourceModel.ID);
                     }
                 }
             }
             var hasResult = _resourcePicker.ShowDialog(_environment);
-            return hasResult ? _resourcePicker.SelectedResource : null;
+
+            if(_environment.ResourceRepository != null)
+            {
+                return hasResult ? _resourcePicker.SelectedResource : null;
+            }
+            throw  new Exception("Server does not exist");
         }
 
         void PickWindowsGroup(object obj)
@@ -353,7 +386,7 @@ namespace Dev2.Settings.Security
 
         ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
         {
-            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Close Help", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Open Help", "HelpToggle", this, targetProperty
+            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle", this, targetProperty
                 );
 
             return toggle;

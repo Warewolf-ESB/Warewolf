@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,18 +38,26 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Language Help")]
         LanguageHelp,
 
-        [IconLocation("/images/Deploy-32.png")]
         [Description("Deploy")]
-        DeployResources,
+        DeployViewer,
 
-        [IconLocation("Pack_Uri_Application_Image_Home", typeof(StringResources))]
         [Description("Start Page")]
         StartPage,
         [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Reverse Dependency Visualiser")]
         ReverseDependencyVisualiser,
 
-        Help
+        Help,
+
+        EmailSource,
+        ServerSource,
+        DbSource,
+        DbService,
+        WebSource,
+        WebService,
+        PluginSource,
+        PluginService,
+        SharepointServerSource
     }
 
 }

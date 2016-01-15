@@ -28,6 +28,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
@@ -171,12 +172,14 @@ namespace Dev2.Network
             {
                 case ConnectionStateWrapped.Connected:
                     IsConnected = true;
+                    IsConnecting = false;
                     UpdateIsAuthorized(true);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
                     break;
                 case ConnectionStateWrapped.Connecting:
                 case ConnectionStateWrapped.Reconnecting:
                     IsConnected = false;
+                    IsConnecting = true;
                     UpdateIsAuthorized(false);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
@@ -187,6 +190,7 @@ namespace Dev2.Network
         }
 
         public bool IsConnected { get; set; }
+        public bool IsConnecting { get; set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
@@ -245,6 +249,81 @@ namespace Dev2.Network
             {
                 HandleConnectError(e);
             }
+        }
+        
+        public async Task<bool> ConnectAsync(Guid id)
+        {
+            ID = id;
+            try
+            {
+                var x = HubConnection.State;
+                x.ToString();
+                if (!IsLocalHost)
+                {
+                    if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
+                    {
+                        HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+                    }
+                }
+
+                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    await HubConnection.Start();
+                    if(HubConnection.State==ConnectionStateWrapped.Disconnected)
+                    {
+                        if (!IsLocalHost)
+                        {
+                            ConnectionRetry();
+                        }
+                    }
+                }
+                if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
+                {
+
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    await HubConnection.Start();
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    {
+                        if (!IsLocalHost)
+                        {
+                            ConnectionRetry();
+                        }
+                    }
+                }
+            }
+            catch (AggregateException aex)
+            {
+                aex.Flatten();
+                aex.Handle(ex =>
+                {
+                    if(ex.Message.Contains("1.4"))
+                        throw new FallbackException();
+                    Dev2Logger.Log.Error(this, aex);
+                    var hex = ex as HttpClientException;
+                    if (hex != null)
+                    {
+                        switch (hex.Response.StatusCode)
+                        {
+                            case HttpStatusCode.Unauthorized:
+                            case HttpStatusCode.Forbidden:
+                                UpdateIsAuthorized(false);
+                                throw new UnauthorizedAccessException();
+                        }
+                    }
+                    throw new NotConnectedException();
+                });
+            }
+            catch (NotConnectedException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                HandleConnectError(e);
+                return false;
+            }
+            return true;
         }
 
         private void ConnectionRetry()
@@ -330,6 +409,7 @@ namespace Dev2.Network
             {
                 IsShuttingDown = true;
                 IsConnected = false;
+                IsConnecting = false;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
             catch (AggregateException aex)
@@ -436,11 +516,12 @@ namespace Dev2.Network
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             if (serverExplorerItem.ServerId == ServerID)
             {
-                return;
+              //  return;
             }
             serverExplorerItem.ServerId = ID;
             if (ItemAddedMessageAction != null)
             {
+        
                 ItemAddedMessageAction(serverExplorerItem);
             }
         }
@@ -551,7 +632,7 @@ namespace Dev2.Network
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
                 {
-                    popupController.Show("Error connecting to server. Please check your network connection.","Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null);
+                    popupController.Show("Error connecting to server. Please check your network connection.","Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
                 }
                 return result;
             }
@@ -629,7 +710,7 @@ namespace Dev2.Network
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
                 {
-                    popupController.Show("Error connecting to server. Please check your network connection.", "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null);
+                    popupController.Show("Error connecting to server. Please check your network connection.", "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
                 }
             }
             return result;

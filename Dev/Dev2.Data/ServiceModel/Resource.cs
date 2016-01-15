@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
@@ -284,6 +285,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [JsonIgnore]
         public string Outputs { get; set; }
+        public Permissions UserPermissions { get; set; }
 
         [JsonIgnore]
         public bool IsNewResource { get; set; }
@@ -788,7 +790,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         
     }
 
-   
+   [Serializable]
     public class VersionInfo : IVersionInfo
     {
         public  VersionInfo(DateTime dateTimeStamp, string  reason, string user, string versionNumber, Guid resourceId ,Guid versionId)

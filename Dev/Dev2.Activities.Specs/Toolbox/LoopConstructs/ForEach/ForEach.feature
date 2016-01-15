@@ -39,7 +39,6 @@ Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	|                | [[rs(3)]] = |
 	|                | [[rs(4)]] = |
 	
-#This Scenarios should pass after the bug 12021 is fixed
 #Scenario: Execute a foreach over a tool using a recordset with invalid
 #	Given There is a recordset in the datalist with this shape
 #	| rs             | value |
@@ -47,53 +46,24 @@ Scenario: Execute a foreach over a tool using a recordset with 4 rows
 #	| [[rs().field]] | 2     |
 #	| [[rs().field]] | 3     |
 #	| [[rs().field]] | 6     |	
-#	And I have selected the foreach type as "InRecordset" and used "[[rs()]]+1"	
+#	And I have selected the foreach type as "<type>" and used "<input>"
 #	And the underlying dropped activity is a(n) "Tool"
 #	When the foreach tool is executed	
-#	Then the foreach executes 4 times
-#	And the execution has "AN" error
-#	And the debug inputs as
-#	|                | Recordset           |
-#
-#Scenario: Execute a foreach using a recordset with invalid
-#	Given There is a recordset in the datalist with this shape
-#	| rs             | value |
-#	| [[rs().field]] | 1     |
-#	| [[rs().field]] | 2     |
-#	| [[rs().field]] | 3     |
-#	| [[rs().field]] | 6     |	
-#	And I have selected the foreach type as "InRecordset" and used "[[rs().a]]"	
-#	And the underlying dropped activity is a(n) "Tool"
-#	When the foreach tool is executed	
-#	Then the foreach executes 4 times
-#	And the execution has "AN" error
-#	And the debug inputs as
-#	|                | Recordset           |
-#
-#Scenario: Execute a foreach using a recordset with special character
-#	Given There is a recordset in the datalist with this shape
-#	| rs             | value |
-#	| [[rs().field]] | 1     |
-#	| [[rs().field]] | 2     |
-#	| [[rs().field]] | 3     |
-#	| [[rs().field]] | 6     |	
-#	And I have selected the foreach type as "InRecordset" and used "[[rs()]]#$%3"	
-#	And the underlying dropped activity is a(n) "Tool"
-#	When the foreach tool is executed	
-#	Then the foreach executes 4 times
-#	And the execution has "AN" error
-#	And the debug inputs as
-#	|                | Recordset           |
+#	Then the foreach executes 0 times
+#	And the execution has '<error>' error
+#	Examples: 
+#	| type        | input        | error                                                                       |
+#	| InRecordset | [[rs()]]+1   | Only recordset names can be used with * in Recordset. Invalid: [[rs()]]+1   |
+#	| InRecordset | [[rs().a]]   | Only recordset names can be used with * in Recordset. Invalid: [[rs().a]]   |
+#	| InRecordset | [[rs()]]#$%3 | Only recordset names can be used with * in Recordset. Invalid: [[rs()]]#$%3 |
+
 
 Scenario: Execute a foreach over a tool for range 0 to 0
 	And I have selected the foreach type as "InRange" from 0 to 0
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "AN" error
-#	And the debug inputs as
-#	|            | From | To |
-#	| * in Range | 0    | 0  |	
+	And the execution has "NO" error
 
 Scenario: Execute a foreach over a tool for range 1 to 5
 	And I have selected the foreach type as "InRange" from 1 to 5
@@ -101,9 +71,9 @@ Scenario: Execute a foreach over a tool for range 1 to 5
 	When the foreach tool is executed
 	Then the foreach executes 5 times
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|            | From | To |
-#	| * in Range | 1    | 5  |
+	And the debug inputs as
+	|            | From | To |
+	| * in Range | 1    | 5  |
 
 Scenario: Execute a foreach over a tool for range 9 to 10
 	And I have selected the foreach type as "InRange" from 9 to 10
@@ -111,9 +81,9 @@ Scenario: Execute a foreach over a tool for range 9 to 10
 	When the foreach tool is executed
 	Then the foreach executes 2 times
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|           | From | To |
-#	| * in Range | 9    | 10 |
+	And the debug inputs as
+	|           | From | To |
+	| * in Range | 9    | 10 |
 
 Scenario: Execute a foreach over a tool with Csv Indexes 1,2,3
 	And I have selected the foreach type as "InCSV" as "1,2,3"
@@ -441,6 +411,83 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 8      |
+
+
+@ignore
+#Audit
+Scenario Outline: Execute a foreach over a tool 
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
+	| [[rs().field]] | 2     |
+	| [[rs().field]] | 3     |	
+	And I have selected the foreach type as "<Type>" and used "<variable>"	
+	And the underlying dropped activity is a(n) "Tool"
+	When the foreach tool is executed
+	Then the foreach executes <value> times
+	And the execution has "<Error>" error
+	And the debug outputs as "<Message>"
+Examples: 
+| Type           | Variable                       | value | from                               | To                                 | Error | Message                                                  |
+| NumOfExecution | " "                            |       |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | Test                           | Test  |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | [[var]]                        | 1     |                                    |                                    | No    |                                                          |
+| NumOfExecution | [[q]]                          |       |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | [[rec(1).a]]                   | 2     |                                    |                                    | No    |                                                          |
+| NumOfExecution | [[rec().a]]                    | 3     |                                    |                                    | No    |                                                          |
+| NumOfExecution | [[rec(*).a]]                   | 3     |                                    |                                    | An    | The Star notation is not accepted in the Numbers field   |
+| NumOfExecution | [[rec([[int]]).a]],[[int]] = 3 | 3     |                                    |                                    | An    | The Star notation is not accepted in the Numbers field   |
+| InCSV          | " "                            |       |                                    |                                    | An    | CSv cannot be null and must be an integer                |
+| InCSV          | Test                           | Test  |                                    |                                    | An    | Invalid characters have been entered in the CSV Numbers  |
+| InCSV          | [[var]]                        | 1     |                                    |                                    | No    |                                                          |
+| InCSV          | [[q]]                          |       |                                    |                                    | An    | CSv cannot be null and must be an integer                |
+| InCSV          | [[rec(1).a]]                   | 1     |                                    |                                    | No    |                                                          |
+| InCSV          | [[rec().a]]                    | 3     |                                    |                                    | No    |                                                          |
+| InCSV          | [[rec([[int]]).a]],[[int]] = 3 | 3     |                                    |                                    | An    |                                                          |
+| InRecordset    | " "                            |       |                                    |                                    | An    | Invalid Recordset                                        |
+| InRecordset    | 11                             | 11    |                                    |                                    | An    | Invalid Recordset                                        |
+| InRecordset    | Test                           | Test  |                                    |                                    | An    | Invalid characters have been entered as Recordset        |
+| InRecordset    | [[var]]                        | 1     |                                    |                                    | No    | Scalar not allowed                                       |
+| InRecordset    | [[q]]                          |       |                                    |                                    | An    | Scalar not allowed                                       |
+| InRecordset    | [[rec(1)]]                     | 1     |                                    |                                    | No    |                                                          |
+| InRecordset    | [[rec([[int]])]],[[int]] = 3   | 3     |                                    |                                    | An    |                                                          |
+| InRange        |                                |       | " "                                | 2                                  | An    | The from field cannot be left empty                      |
+| InRange        |                                |       | Test                               | [[var]] =1                         | An    | From range must be a whole number from 1 onwards         |
+| InRange        |                                |       | [[var]] = 1                        | [[rec(1).a]]   = 2                 | No    |                                                          |
+| InRange        |                                |       | [[q]]                              | [[rec().a]]  = 3                   | An    | From range must be a whole number from 1 onwards         |
+| InRange        |                                |       | [[rec(1).a]]   = 2                 | [[rec(*).a]]  = 3                  | An    | The Star notation is not accepted in the Numbers field   |
+| InRange        |                                |       | [[rec().a]]  = 3                   | [[q]]                              | No    | To range must be a whole number from 1 onwards           |
+| InRange        |                                |       | [[rec(*).a]]  = 3                  | [[rec([[int]]).a]] = 3,[[int]] = 3 | An    | The Star notation is not accepted in the Numbers field   |
+| InRange        |                                |       | [[rec([[int]]).a]] = 3,[[int]] = 3 | " "                                | An    | The To field cannot be left empty                        |
+
+	
+
+#Complex Types
+Scenario Outline: Execute a foreach over a tool using complex types
+	Given There is a recordset in the datalist with this shape
+	| rs                     | value |
+	| [[rs().field().value]] | 1     |
+	| [[rs().field().value]] | 2     |
+	| [[rs().field().value]] | 3     |	
+	And I have selected the foreach type as "<Type>" and used "<variable>"	
+	And the underlying dropped activity is a(n) "Tool"
+	When the foreach tool is executed
+	Then the foreach executes <value> times
+	And the execution has "<Error>" error
+	And the debug outputs as "<Message>"
+Examples: 
+| Type           | Variable           | value | from                 | To                   | Error | Message                                                  |
+| InRecordset    | [[rs(*).field(*)]] |       |                      |                      | An    | Number of Executes must be a whole number from 1 onwards |
+| InRecordset    | [[rs().field()]]   | 5     |                      |                      | No    |                                                          |
+| InCSV          | [[rs(*).field(*)]] |       |                      |                      | An    | Number of Executes must be a whole number from 1 onwards |
+| InCSV          | [[rs().field()]]   | 5     |                      |                      | No    |                                                          |
+| InRange        |                    |       | [[rs(*).field(*)]]   | [[rs(*).field(*)]]   | An    | Number of Executes must be a whole number from 1 onwards |
+| InRange        |                    |       | [[rs().field()]] = 1 | [[rs().field()]] = 2 | No    |                                                          |
+| NumOfExecution | [[rs(*).field(*)]] |       |                      |                      | An    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | [[rs().field()]]   | 5     |                      |                      | No    |                                                          |
+
+
+	#Not Sure of below
 
 
 #NULL Specs

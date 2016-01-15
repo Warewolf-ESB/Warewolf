@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -141,6 +141,7 @@ namespace Dev2.Tests.Runtime.ESB
             dataObj.Setup(d => d.ServiceName).Returns("Test");
             dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
             dataObj.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
+            dataObj.Setup(d => d.IsDebug).Returns(true);
             ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj.Object,new StringBuilder(dataListData),dataListShape, 0);
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();

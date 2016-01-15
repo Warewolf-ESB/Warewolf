@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,10 +25,11 @@ using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Interfaces;
@@ -240,7 +241,16 @@ namespace Dev2.Models
 
         public void SetDisplay(string display)
         {
+            if (!ResourcePath.Contains("\\"))
+            {
+                ResourcePath = ResourcePath.Replace(_displayName, display);
+            }
+            else
+            {
+                ResourcePath = ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\") + 1) + display;
+            }
             _displayName = display;
+            
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("DisplayName");
             // ReSharper restore ExplicitCallerInfoArgument
@@ -912,8 +922,8 @@ namespace Dev2.Models
 
         void ShowServerVersionAbout()
         {
-            var factory = CustomContainer.Get<IDialogViewModelFactory>();
-            WindowManager.ShowDialog(factory.CreateServerAboutDialog(_studioResourceRepository.GetServerVersion(EnvironmentId)));
+            var mainView = CustomContainer.Get<IShellViewModel>();
+            mainView.ShowAboutBox();
         }
         public IWindowManager WindowManager
         {
@@ -1034,7 +1044,8 @@ namespace Dev2.Models
                     Parent = this,
                     EnvironmentId = EnvironmentId,
                     Permissions = Permissions,
-                    ResourcePath = resourcePath
+                    ResourcePath = resourcePath,
+                    ResourceId =  Guid.NewGuid()
                 };
             _studioResourceRepository.AddItem(explorerItemModel);
 
@@ -1596,13 +1607,16 @@ namespace Dev2.Models
 
         void UpdateChildren(bool updateChildren)
         {
-            if(!updateChildren || !_isChecked.HasValue)
+            if (!updateChildren || !_isChecked.HasValue)
             {
                 return;
             }
-            foreach(var c in Children)
+            if (Children != null && Children.Count > 0)
             {
-                c.SetIsChecked(_isChecked, true, false,false);
+                foreach (var c in Children)
+                {
+                    c.SetIsChecked(_isChecked, true, false, false);
+                }
             }
         }
 

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -142,22 +142,6 @@ namespace Dev2.Core.Tests.Factories
 
             //------------Assert Results-------------------------
             Assert.AreEqual("PluginService", ((Literal<string>)(activity.Type.Expression)).Value);
-        }
-
-        [TestMethod]
-        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
-        [Description("DsfActivityFactory must not throw exception when a null source method is supplied.")]
-        [Owner("Trevor Williams-Ros")]
-        public void DsfActivityFactory_UnitTest_ServiceActivityAndNullSourceMethod_DoesNotThrowException()
-        {
-            var activity = new DsfServiceActivity();
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlNullSourceMethodServiceDef));
-            var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
-            DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true, environmentRepository, false);
-
-            //If no exception - pass
-            Assert.IsTrue(true);
         }
 
         [TestMethod]

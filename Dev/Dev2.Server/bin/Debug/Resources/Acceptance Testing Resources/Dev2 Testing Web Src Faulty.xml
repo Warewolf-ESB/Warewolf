@@ -1,23 +1,9 @@
 
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACms4hB3xVWYrAcX4YIsAz4AAAAAASAAACgAAAAEAAAAEKuxT7Z5yzzsVA5J9d7inoYAQAAxpf+HMXK5Mb8DM7RakAiYZ2qzJPi4tFtCgUiFfhhZ0mJWXa0g5KBWObxWqldjLCi8JDMuptbOO5kdO050Ff3JMf6NMkPn6wAjwU3Zn/OodMX83nP4Jycv4scbjXdhtiYN+tUCxrRWe9I//oMJAEQWcuHbVAtassvbBLkR9tuV2G8U712JDWlERvdU+kyPzTXVCAhK4Ef3UzBgYrD/dJeGk6mG6kfwmT8vX3Z6z6GJhdSAz9XXavaAAjSWK9UTluUTvnfF8eW+9GLZ+Dv1btBQ6F/7L/39gcvKLRFv94p8QU3mrhMRYHG+dTPb30amwQGF3IYJs53EjlfBqIf0oKklBZRvjFe7c8WOF2CMzQkDmZXM2RBtheZyBQAAAAuFd3e3oldF6rQLjLWMkhDnk8rGQ==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAACb3TKh08MNcsbhxJcVJ1vWAAAAAASAAACgAAAAEAAAAJUZCk94fdxbqJYJLsFgPUAYAQAAP2B/rYLTB6gPbk+jrQ5hSEntNVaSL9ezZIy6eiaOSEaUIZD4P44Do0c2jr+InqL3QdOgCeLpJg0KDj9xQE6u434w98eXkN1gOSPo5LM4wRvb2tLUGuoc0QsRzSx5Q01W/GdtX4dTJOpYQRyx/GElsfdCWPSYJ4x/jjo+wfXTG9d3PLKnKDvO5FjcfCEJXKrdNEyMMBVCMX15F+mg1VYgk5N+O16AOuYixgKKq28pOilNHQ+c2q+DpnJLiFi10txkc/qgv3MTOUZkLDJ2s8ff7HPtsH7d0BiIayT1N8N/fEiZznN2axK6os0YAOHbJ70P3Bq83J9yq7cFZb2R0usn18uWVnLtKPpkjTxtRcBEyCLnfL1yX8jELxQAAABeeszEq6M+Afy16uzBndOgQhaEZg==" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5854.28948">
   <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
   <Category>Acceptance Testing Resources\Dev2 Testing Web Src Faulty</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>WebSource</TypeOf>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>xn2sczYrCPH6Za2Ee7WP+jKqcLA=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>odBR/jUqUaRv0CwPdQTa1Yi718aswCxBeWTL5vS9Py+902zzsbAHk19EhbHjiJ92n62aJ5MCvabIrQuaxHTSyGWGsRCX8AAMO+SIpmDXSV2dDYmAXZYuOzb7qLo9l1J0/n02OIwSV/t3NykVzB79qJJIcMwWH5atFZEiZYTQGAk=</SignatureValue>
-  </Signature>
 </Source>

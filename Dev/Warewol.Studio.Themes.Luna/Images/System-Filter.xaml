@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="System-Filter">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 230.596,-636.539L 222.596,-636.539C 222.419,-636.539 222.298,-636.461 222.223,-636.297C 222.158,-636.124 222.186,-635.979 222.312,-635.862L 225.398,-632.778L 225.398,-629.745C 225.398,-629.628 225.434,-629.53 225.514,-629.459L 227.12,-627.864C 227.189,-627.784 227.278,-627.737 227.395,-627.737C 227.436,-627.737 227.497,-627.752 227.554,-627.774C 227.716,-627.849 227.795,-627.966 227.795,-628.138L 227.795,-632.778L 230.88,-635.862C 231.007,-635.979 231.035,-636.124 230.97,-636.297C 230.895,-636.461 230.773,-636.539 230.596,-636.539 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+
+    <DrawingImage x:Key="System-Filter-Inverted">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="M 230.596,-636.539L 222.596,-636.539C 222.419,-636.539 222.298,-636.461 222.223,-636.297C 222.158,-636.124 222.186,-635.979 222.312,-635.862L 225.398,-632.778L 225.398,-629.745C 225.398,-629.628 225.434,-629.53 225.514,-629.459L 227.12,-627.864C 227.189,-627.784 227.278,-627.737 227.395,-627.737C 227.436,-627.737 227.497,-627.752 227.554,-627.774C 227.716,-627.849 227.795,-627.966 227.795,-628.138L 227.795,-632.778L 230.88,-635.862C 231.007,-635.979 231.035,-636.124 230.97,-636.297C 230.895,-636.461 230.773,-636.539 230.596,-636.539 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

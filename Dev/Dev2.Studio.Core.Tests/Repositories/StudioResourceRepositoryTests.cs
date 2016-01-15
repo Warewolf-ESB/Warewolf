@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -103,7 +104,7 @@ namespace Dev2.Core.Tests.Repositories
             GetEnvironmentRepository(mockEnvironment);
 
             //------------Execute Test---------------------------
-            repository.Load(Guid.Empty, new TestAsyncWorker());
+            repository.Load(Guid.Empty, new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
             mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.AtLeastOnce());
         }
@@ -127,7 +128,7 @@ namespace Dev2.Core.Tests.Repositories
                 };
             var countBeforeConnecting = repository.ExplorerItemModels.Count;
             //------------Execute Test---------------------------
-            repository.Load(Guid.Empty, new TestAsyncWorker());
+            repository.Load(Guid.Empty, new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
             Assert.AreEqual(0, countBeforeConnecting);
         }
@@ -150,7 +151,7 @@ namespace Dev2.Core.Tests.Repositories
                 };
             var countBeforeConnecting = repository.ExplorerItemModels.Count;
             //------------Execute Test---------------------------
-            repository.Load(Guid.Empty, new TestAsyncWorker());
+            repository.Load(Guid.Empty, new SynchronousAsyncWorker());
             //------------Assert Results-------------------------
             Assert.AreEqual(0, countBeforeConnecting);
             Assert.AreEqual(0, repository.ExplorerItemModels.Count);
@@ -1848,301 +1849,10 @@ namespace Dev2.Core.Tests.Repositories
 
 
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Service_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-                {
-                    ResourceType = ResourceType.Folder,
-                    DisplayName = "SUB FOLDER",
-                    ResourceId = Guid.NewGuid(),
-                    Permissions = Permissions.Contribute,
-                    ResourcePath = "MANFOLDER\\SUB FOLDER"
-                };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-                // ReSharper restore ObjectCreationAsStatement
-                {
-                    GetVersionProxy = id => mockVersionRepository.Object,
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                    GetCurrentEnvironment = () => Guid.Empty
-                };
 
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-                {
-                    DisplayName = "TEST FOLDER",
-                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
-                    ResourceType = ResourceType.DbService
-                });
+      
 
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ItemIsFolder_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-                {
-                    ResourceType = ResourceType.Folder,
-                    DisplayName = "SUB FOLDER",
-                    ResourceId = Guid.NewGuid(),
-                    Permissions = Permissions.Contribute,
-                    ResourcePath = "MANFOLDER\\SUB FOLDER"
-                };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-                // ReSharper restore ObjectCreationAsStatement
-                {
-                    GetVersionProxy = id => mockVersionRepository.Object,
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                    GetCurrentEnvironment = () => Guid.Empty
-                };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-                {
-                    DisplayName = "TEST FOLDER",
-                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
-                    ResourceType = ResourceType.Folder
-                });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
-            Assert.AreEqual(0, before);
-            Assert.AreEqual(1, after);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Source_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-                {
-                    ResourceType = ResourceType.Folder,
-                    DisplayName = "SUB FOLDER",
-                    ResourceId = Guid.NewGuid(),
-                    Permissions = Permissions.Contribute,
-                    ResourcePath = "MANFOLDER\\SUB FOLDER"
-                };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Source), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-                // ReSharper restore ObjectCreationAsStatement
-                {
-                    GetVersionProxy = id => mockVersionRepository.Object,
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                    GetCurrentEnvironment = () => Guid.Empty
-                };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-                {
-                    DisplayName = "TEST FOLDER",
-                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
-                    ResourceType = ResourceType.DbSource
-                });
-
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Workflow_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-                {
-                    ResourceType = ResourceType.Folder,
-                    DisplayName = "SUB FOLDER",
-                    ResourceId = Guid.NewGuid(),
-                    Permissions = Permissions.Contribute,
-                    ResourcePath = "MANFOLDER\\SUB FOLDER"
-                };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.WorkflowService), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-                // ReSharper restore ObjectCreationAsStatement
-                {
-                    GetVersionProxy = id => mockVersionRepository.Object,
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                    GetCurrentEnvironment = () => Guid.Empty
-                };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-                {
-                    DisplayName = "TEST FOLDER",
-                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
-                    ResourceType = ResourceType.WorkflowService
-                });
-
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.LoadResourceFromWorkspace(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<Guid>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ParentExistsOnTree_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-                {
-                    ResourceType = ResourceType.Folder,
-                    DisplayName = "SUB FOLDER",
-                    ResourceId = Guid.NewGuid(),
-                    Permissions = Permissions.Contribute,
-                    ResourcePath = "MANFOLDER\\SUB FOLDER"
-                };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-                // ReSharper restore ObjectCreationAsStatement
-                {
-                    GetVersionProxy = id => mockVersionRepository.Object,
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                    GetCurrentEnvironment = () => Guid.Empty
-                };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-                {
-                    DisplayName = "TEST FOLDER",
-                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER"
-                });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
-            Assert.AreEqual(0, before);
-            Assert.AreEqual(1, after);
-        }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("StudioResourceRepository_MoveItem")]
-        public void StudioResourceRepository_MoveItem_ParentExistsOnTree_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-            {
-                ResourceType = ResourceType.Folder,
-                DisplayName = "SUB FOLDER",
-                ResourceId = Guid.NewGuid(),
-                Permissions = Permissions.Contribute,
-                ResourcePath = "MANFOLDER\\SUB FOLDER"
-            };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            mockExplorerResourceRepository.Setup(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), Guid.Empty)).Returns(new ExplorerRepositoryResult(ExecStatus.Success, ""));
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-            // ReSharper restore ObjectCreationAsStatement
-            {
-                GetVersionProxy = id => mockVersionRepository.Object,
-                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                GetCurrentEnvironment = () => Guid.Empty
-            };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-
-            //------------Execute Test---------------------------
-            var itemToMove = new ExplorerItemModel(studioResourceRepository, new Mock<IAsyncWorker>().Object,
-                new Mock<IConnectControlSingleton>().Object)
-                {
-                    ResourcePath = "dave",
-                    DisplayName = "dave\bob",
-                    Children = new ObservableCollection<IExplorerItemModel> { new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository) },
-                    Parent = new ExplorerItemModel { Children = new ObservableCollection<IExplorerItemModel>() }
-                };
-            Assert.AreEqual(itemToMove.Children.Count, 1);
-            studioResourceRepository.MoveItem(itemToMove, "bob");
-
-            mockExplorerResourceRepository.Verify(a => a.MoveItem(It.IsAny<IExplorerItem>(), "bob", Guid.Empty));
-            Assert.AreEqual(itemToMove.Children.Count, 0);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
-        public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotServerNode_AddedSuccessfully()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
-            var mockVersionRepository = new Mock<IVersionRepository>();
-            var parent = new ServerExplorerItem
-            {
-                ResourceType = ResourceType.Folder,
-                DisplayName = "SUB FOLDER",
-                ResourceId = Guid.NewGuid(),
-                Permissions = Permissions.Contribute,
-                ResourcePath = "MANFOLDER\\SUB FOLDER"
-            };
-            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
-            mockResourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
-            // ReSharper disable ObjectCreationAsStatement
-            new StudioResourceRepository(parent, Guid.Empty, _invoke)
-            // ReSharper restore ObjectCreationAsStatement
-            {
-                GetVersionProxy = id => mockVersionRepository.Object,
-                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                GetCurrentEnvironment = () => Guid.Empty
-            };
-
-            var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Execute Test---------------------------
-            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
-            {
-                DisplayName = "TEST FOLDER",
-                ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
-                ResourceId = Guid.NewGuid()
-            });
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
-            //------------Assert Results-------------------------
-            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
-            Assert.AreEqual(0, before);
-            Assert.AreEqual(1, after);
-        }
+     
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -2171,7 +1881,7 @@ namespace Dev2.Core.Tests.Repositories
             repo.GetCurrentEnvironment = () => Guid.Empty;
 
             var studioResourceRepository = StudioResourceRepository.Instance;
-            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count;
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
             //------------Execute Test---------------------------
             studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
             {
@@ -2179,7 +1889,7 @@ namespace Dev2.Core.Tests.Repositories
                 ResourcePath = "MANFOLDER\\APRIL\\TEST FOLDER"
             });
 
-            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count;
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
             //------------Assert Results-------------------------
             Assert.AreEqual(0, before);
             Assert.AreEqual(0, after);
@@ -2280,39 +1990,7 @@ namespace Dev2.Core.Tests.Repositories
             Assert.IsTrue(found);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_AddResourceItem")]
-        public void StudioResourceRepository_AddResourceItem_ItemAdded()
-        {
-            //------------Setup for test--------------------------
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(model => model.DisplayName).Returns("some resource name");
-            var connection = new Mock<IEnvironmentConnection>();
 
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
-            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
-            var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
-
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
-            var rootItem = serverItemModel;
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
-            serverItemModel.Children.Add(workflowsFolder);
-
-            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
-            resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
-            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
-            new EnvironmentRepository(testEnvironmentRespository);
-            resourceModel.Setup(a => a.Environment).Returns(mockEnvironmentModel.Object);
-            IEnvironmentModel internalEnvironmentModel = environmentModel;
-            studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            //------------Execute Test---------------------------
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, rootItem.Children.Count);
-            Assert.AreEqual(1, rootItem.Children[0].Children.Count);
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -2338,7 +2016,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new TestAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
@@ -2370,7 +2048,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new TestAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
@@ -2404,7 +2082,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new TestAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);

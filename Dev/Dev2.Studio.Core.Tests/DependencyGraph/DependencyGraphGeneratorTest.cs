@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,7 @@
 */
 
 using System.Text;
-using Dev2.ViewModels.DependencyVisualization;
+using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
@@ -35,14 +35,14 @@ namespace Dev2.Core.Tests
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             const string expected = @"<graph title=""Local Dependants Graph: MyLocalWF""><node id=""9139Local"" x=""-100"" y=""-400"" broken=""False""><dependency id=""MyLocalWF"" /></node><node id=""MyLocalWF"" x=""-352"" y=""-262"" broken=""False""></node></graph>";
-            
+
             //------------Execute Test---------------------------
             // for some silly reason this is what comes through when you debug?
-            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0);
+            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0, 0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, result.ToString());
-            
+
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             //------------Execute Test---------------------------
-            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0);
+            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0, 0);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(result.Title, expected);
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             //------------Execute Test---------------------------
-            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0);
+            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0, 0);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(result.Title, expected);
@@ -95,11 +95,11 @@ namespace Dev2.Core.Tests
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             //------------Execute Test---------------------------
-            var result = dependencyGraphGenerator.BuildGraph(null, "Test Model", 0, 0);
+            var result = dependencyGraphGenerator.BuildGraph(null, "Test Model", 0, 0, 0);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(result.Title, expected);
         }
-       
+
     }
 }

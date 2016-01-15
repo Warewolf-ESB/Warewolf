@@ -51,8 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Encryption\DPAPIWrapperTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Encryption\DPAPIWrapperTests.cs" />  
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">

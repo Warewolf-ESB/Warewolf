@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,10 @@ using System.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -157,12 +159,8 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
         public RelayCommand EditDropboxSourceCommand { get; private set; }
         private void EditDropBoxSource()
         {
-            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == SelectedSource.ResourceID);
-            if (resourceModel != null)
-            {
-                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
-                OnPropertyChanged("Sources");
-            }
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -173,6 +171,14 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
     }

@@ -12,24 +12,14 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolUniqueRecord-32.png" />
-                <!--<ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolUniqueRecord-32}"/>-->
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
+        <Binding Source="{StaticResource RecordSet-UniqueRecords-Icon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
-        <local:Small x:Key="Small"
-                     AutomationProperties.AutomationId="SmallViewContent" />
+        <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
 
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
+        <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+            <Setter Property="Content" Value="{DynamicResource Small}" />
         </Style>
     </sap:ActivityDesigner.Resources>
 

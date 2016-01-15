@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -36,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            IExplorerRepositoryResult item;
+            IExplorerRepositoryResult item=null;
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -46,18 +48,35 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 StringBuilder itemToBeRenamed;
                 StringBuilder newName;
+                StringBuilder folderToBeRenamed=null;
                 if(!values.TryGetValue("itemToRename", out itemToBeRenamed))
                 {
-                    throw new ArgumentException("itemToRename value not supplied.");
+                    if (!values.TryGetValue("folderToRename", out folderToBeRenamed))
+                    {
+                        throw new ArgumentException("itemToRename value not supplied.");
+                    }
                 }
                 if(!values.TryGetValue("newName", out newName))
                 {
                     throw new ArgumentException("newName value not supplied.");
                 }
-                
-                var itemToRename = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
-                Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", itemToBeRenamed, newName));
-                item = ServerExplorerRepo.RenameItem(itemToRename, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                IExplorerItem explorerItem;
+                if (itemToBeRenamed != null)
+                {
+                    explorerItem = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString()));
+                    Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", explorerItem.ResourcePath, newName));
+                    item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                }
+                else if (folderToBeRenamed != null)
+                {
+                    explorerItem = new ServerExplorerItem()
+                    {
+                        ResourceType = ResourceType.Folder,
+                        ResourcePath = folderToBeRenamed.ToString()
+
+                    };
+                    item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                }
             }
             catch(Exception e)
             {

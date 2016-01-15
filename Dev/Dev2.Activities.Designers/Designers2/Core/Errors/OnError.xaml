@@ -7,22 +7,18 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
              xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
+             MinWidth="300"
              d:DesignHeight="300" d:DesignWidth="300">
     
-    <UserControl.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </UserControl.Resources>
-
     <GroupBox x:Name="OnErrorGroupBox"             
               Style="{StaticResource ActivityGroupBoxStyle}"
               VerticalContentAlignment="Stretch"
               Width="Auto">
         <GroupBox.Header>
-            <TextBlock Text="On Error"
-                       Margin="1"
-                       Padding="1" />
+            <TextBlock Text="On Error" Margin="1" Padding="1" />
         </GroupBox.Header>
 
         <Grid>
@@ -38,10 +34,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0"
-                   Grid.Column="0"
-                   Content="Put error in this variable"
-                   Style="{StaticResource ActivityMapppingLabelStyle}" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Put error in this variable" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
                                     x:Name="ErrorVariable"
@@ -49,11 +42,12 @@
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.OnErrorVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    AcceptsReturn="False"
+                                    MaxHeight="25"
                                     ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipPuterrorinthisvariable}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Variable_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpPuterrorinthisvariable}"
-                                     DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpPuterrorinthisvariable}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="OnErrorVariable"
                                          SourcePropertyValue="{Binding ModelItem.OnErrorVariable, UpdateSourceTrigger=PropertyChanged}"
@@ -61,21 +55,20 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <Label Grid.Row="1"
-                   Grid.Column="0"
-                   Content="Call this web service"
-                   Style="{StaticResource ActivityMapppingLabelStyle}" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Call this web service" Margin="{StaticResource ControlBorderTop}" />
             <ui:IntellisenseTextBox Grid.Row="1"
                                     Grid.Column="1"
+                                    Margin="{StaticResource ControlBorderTop}"
                                     DefaultText="http://lcl:3142/services/err"
                                     WrapInBrackets="False"
                                     Text="{Binding ModelItem.OnErrorWorkflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    AcceptsReturn="False"
+                                    MaxHeight="25"
                                     ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipCallthiswebservice}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Workflow_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpCallthiswebservice}"
-                                     DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpCallthiswebservice}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="OnErrorWorkflow"
                                          SourcePropertyValue="{Binding ModelItem.OnErrorWorkflow, UpdateSourceTrigger=PropertyChanged}"
@@ -86,14 +79,13 @@
             <CheckBox Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      Margin="-3,0,0,0"
+                      Margin="-6,3,0,0"
                       Content="End this workflow"
                       IsChecked="{Binding ModelItem.IsEndedOnError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipEndtheworkflow}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IsEnded_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpEndtheworkflow}"
-                                     DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpEndtheworkflow}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="IsEndedOnError"
                                          SourcePropertyValue="{Binding ModelItem.IsEndedOnError, UpdateSourceTrigger=PropertyChanged}"

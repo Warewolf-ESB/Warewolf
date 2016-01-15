@@ -3,24 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
         Height="500" Width="550"
-        Title="{Binding Title}"
-        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
-        >
+        Style="{StaticResource WindowBorderlessStyle}"
+        Closing="DropBoxViewWindow_OnClosing"
+        Title="DropBoxViewWindow"
+        WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="CommandBinding_OnExecuted" />
+    </Window.CommandBindings>
     <Grid>
-        <customControls:CircularProgressBar x:Name="CircularProgressBar"
-                                            Grid.Column="1"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Image HorizontalAlignment="Left" Source="{StaticResource DropBoxLogo}" Height="20" Width="20" Margin="{StaticResource ControlBorderLeft}"></Image>
+                <TextBlock HorizontalAlignment="Left" FontSize="{StaticResource FontSize-Medium}" Text="Dropbox" Margin="{StaticResource ControlBorderLeft}"></TextBlock>
+            </StackPanel>
+            <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" Command="{x:Static SystemCommands.CloseWindowCommand}" />
+        </Grid>
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
+            <customControls:CircularProgressBar x:Name="CircularProgressBar"
                                             Height="150"
                                             Width="150"
-                                            Margin="0,0,2,0"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Visibility="Visible" />
-        <ScrollViewer>
-            <WebBrowser Name="WebBrowserHost"
-                        Margin="3"
+            <ScrollViewer>
+                <WebBrowser Name="WebBrowserHost"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Visibility="Collapsed" />
-        </ScrollViewer>
+            </ScrollViewer>
+        </Grid>
     </Grid>
+
 </Window>

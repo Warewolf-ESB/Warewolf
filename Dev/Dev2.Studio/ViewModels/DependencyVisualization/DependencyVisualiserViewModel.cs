@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,14 +10,23 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Caliburn.Micro;
-using Dev2.AppResources.DependencyVisualization;
 using Dev2.Common;
+using Dev2.Common.DependencyVisualization;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Events;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.ViewModels.DependencyVisualization;
+using Dev2.Studio.Views.DependencyVisualization;
+using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.ViewModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DependencyVisualization
@@ -25,25 +34,36 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 {
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
+        readonly DependencyVisualiserView _view;
         private IContextualResourceModel _resourceModel;
-        private ObservableCollection<Graph> _graphs;
+        public ResourceType ResourceType { get; set; }
+        private double _availableWidth;
+        private double _availableHeight;
+        ObservableCollection<IExplorerItemNodeViewModel> _allNodes;
+        bool _getDependsOnMe;
+        bool _getDependsOnOther;
+        string _nestingLevel;
+        public Guid EnvironmentId { get; set; }
+        readonly IServer _server;
+        IPopupController _popupController;
 
         public DependencyVisualiserViewModel(IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-        } 
-        
-        public DependencyVisualiserViewModel()
+            _popupController = new PopupController();
+        }
+
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe = false)
             : base(EventPublishers.Aggregator)
         {
+            _view = view;
+            _server = server;
+            GetDependsOnMe = getDependsOnMe;
+            GetDependsOnOther = !GetDependsOnMe;
+            NestingLevel = "0";
+            _popupController = new PopupController();
         }
 
-        public ObservableCollection<Graph> Graphs
-        {
-            get { return _graphs ?? (_graphs = new ObservableCollection<Graph>()); }
-        }
-
-        private double _availableWidth;
         public double AvailableWidth
         {
             get
@@ -58,12 +78,11 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 }
 
                 _availableWidth = value;
-                BuildGraphs();
+
                 NotifyOfPropertyChange(() => AvailableWidth);
             }
         }
 
-        private double _availableHeight;
         public double AvailableHeight
         {
             get
@@ -76,9 +95,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 {
                     return;
                 }
-
                 _availableHeight = value;
-                BuildGraphs();
                 NotifyOfPropertyChange(() => AvailableHeight);
             }
         }
@@ -101,38 +118,163 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
-        public bool GetDependsOnMe { get; set; }
+        public bool GetDependsOnMe
+        {
+            get
+            {
+                return _getDependsOnMe;
+            }
+            set
+            {
+                _getDependsOnMe = value;
+                NotifyOfPropertyChange(() => GetDependsOnMe);
+                if (ResourceModel != null)
+                {
+                    BuildGraphs();
+                }
+            }
+        }
+
+        public bool GetDependsOnOther
+        {
+            get
+            {
+                return _getDependsOnOther;
+            }
+            set
+            {
+                _getDependsOnOther = value;
+                NotifyOfPropertyChange(() => GetDependsOnOther);
+                if (_getDependsOnOther)
+                {
+                    NotifyOfPropertyChange(() => GetDependsOnMe);
+                }
+            }
+        }
+
+        public string NestingLevel
+        {
+            get { return _nestingLevel; }
+            set
+            {
+                _nestingLevel = value;
+                NotifyOfPropertyChange(() => NestingLevel);
+                if (ResourceModel != null && !string.IsNullOrEmpty(_nestingLevel) && NestingLevel.IsNumeric())
+                {
+                    BuildGraphs();
+                }
+            }
+        }
 
         public override string DisplayName
         {
             get
             {
-                return string.Format(GetDependsOnMe ? "{0}*Dependants" 
-                    : "{0}*Dependencies", ResourceModel.ResourceName);
+                return string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
             }
         }
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
-        public void BuildGraphs()
+        async void BuildGraphs()
         {
-            Graphs.Clear();
-
             var repo = ResourceModel.Environment.ResourceRepository;
-            var graphData = repo.GetDependenciesXml(ResourceModel, GetDependsOnMe);
+            var graphData = await repo.GetDependenciesXmlAsync(ResourceModel, GetDependsOnMe);
 
-            if(graphData == null)
+            if (graphData == null)
             {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependenciesXml"));
             }
 
+            int nestingLevel = int.Parse(NestingLevel);
             var graphGenerator = new DependencyGraphGenerator();
+            var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight, nestingLevel);
 
-            var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight);
-
-            Graphs.Add(graph);
-
+            if (graph.Nodes.Count > 0)
+            {
+                List<Guid> seenResource = new List<Guid>();
+                var acc = new List<ExplorerItemNodeViewModel>();
+                GetItems(new List<Node> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
+            
+                AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
+            }
         }
 
-        
+        public string FavoritesLabel
+        {
+            get { return "Show what depends on " + ResourceModel.ResourceName; }
+        }
+
+        public string DependantsLabel
+        {
+            get { return "Show what " + ResourceModel.ResourceName + " depends on"; }
+        }
+
+
+        public ObservableCollection<IExplorerItemNodeViewModel> AllNodes
+        {
+            get
+            {
+                return _allNodes;
+            }
+            set
+            {
+                _allNodes = value;
+                NotifyOfPropertyChange(() => AllNodes);
+            }
+        }
+
+        public ICollection<ExplorerItemNodeViewModel> GetItems(List<Node> nodes, IExplorerItemNodeViewModel parent, List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource)
+        {
+            List<ExplorerItemNodeViewModel> items = new List<ExplorerItemNodeViewModel>(nodes.Count);
+            foreach (var node in nodes)
+            {
+                if (!seenResource.Contains(Guid.Parse(node.ID)))
+                {
+                    var exploreritem = _server.ExplorerRepository.FindItemByID(Guid.Parse(node.ID));
+                    ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)
+                    {
+                        ResourceName = exploreritem.DisplayName,
+                        TextVisibility = true,
+                        ResourceType = exploreritem.ResourceType,
+                        IsMainNode = exploreritem.DisplayName.Equals(ResourceModel.ResourceName),
+                        ResourceId = Guid.Parse(node.ID)
+                    };
+                    if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)
+                    {
+                        seenResource.Add(Guid.Parse(node.ID));
+                        item.Children = new ObservableCollection<IExplorerItemViewModel>(GetItems(node.NodeDependencies, item, acc, seenResource).Select(a => a as IExplorerItemViewModel));
+                    }
+                    else
+                    {
+                        seenResource.Add(Guid.Parse(node.ID));
+                        item.Children = new ObservableCollection<IExplorerItemViewModel>();
+                    }
+                    items.Add(item);
+                    acc.Add(item);
+                }
+            }
+            return items;
+        }
+
+        public bool TextVisibility { get; set; }
+        public override object GetView(object context = null)
+        {
+            return _view;
+        }
+
+        protected override void OnViewLoaded(object view)
+        {
+            var loadedView = view as IView;
+            if (loadedView != null)
+            {
+                base.OnViewLoaded(loadedView);
+            }
+        }
+
+        protected override void OnViewAttached(object view, object context)
+        {
+            base.OnViewAttached(view, this);
+        }
+
     }
 }

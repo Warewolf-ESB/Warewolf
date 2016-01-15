@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,12 +19,12 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 
 namespace Dev2.Network
 {
@@ -170,6 +170,13 @@ namespace Dev2.Network
                 return _wrappedConnection.IsConnected;
             }
         }
+        public bool IsConnecting
+        {
+            get
+            {
+                return _wrappedConnection.IsConnecting;
+            }
+        }
         public string Alias
         {
             get
@@ -200,22 +207,27 @@ namespace Dev2.Network
                 _wrappedConnection.Connect(_wrappedConnection.ID);
            
             }
+           
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
+        }
+        
+        public async Task<bool> ConnectAsync(Guid id)
+        {
+            try
+            {
+                return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID);
+           
+            }
              catch( FallbackException)
             {
                 Dev2Logger.Log.Info("Falling Back to previous signal r client");
                 var name = _wrappedConnection.DisplayName;
                 
-                if (AuthenticationType == AuthenticationType.User)
-                {
-                    _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri.ToString(),UserName,Password)
-                    {
-                        DisplayName = name,
-                    };
-                }
-                else
-                {
-                    _wrappedConnection = new ServerProxyWithChunking(_wrappedConnection.WebServerUri) { DisplayName = name };
-                }
+               
                 SetupPassthroughEvents();
                 _wrappedConnection.Connect(_wrappedConnection.ID);
                 _wrappedConnection.DisplayName = name;
@@ -225,6 +237,7 @@ namespace Dev2.Network
                 Dev2Logger.Log.Error(err);
                 throw;
             }
+            return false;
         }
         public Guid ID { get { return _wrappedConnection.ID; } }
         public void Disconnect()

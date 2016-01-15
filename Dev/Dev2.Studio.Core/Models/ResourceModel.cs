@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -535,34 +535,37 @@ namespace Dev2.Studio.Core.Models
         /// <param name="resourceModel">The resource model to update from.</param>
         public void Update(IResourceModel resourceModel)
         {
-            AllowCategoryEditing = resourceModel.AllowCategoryEditing;
-            Category = resourceModel.Category;
-            Comment = resourceModel.Comment;
-            DataTags = resourceModel.DataTags;
-            DisplayName = resourceModel.DisplayName;
-            VersionInfo = resourceModel.VersionInfo;
-            HelpLink = resourceModel.HelpLink;
-            IsDebugMode = resourceModel.IsDebugMode;
-            RequiresSignOff = resourceModel.RequiresSignOff;
-            ResourceName = resourceModel.ResourceName;
-            ResourceType = resourceModel.ResourceType;
-            Tags = resourceModel.Tags;
-            DataList = resourceModel.DataList;
-            UpdateIconPath(resourceModel.IconPath);
-            Version = resourceModel.Version;
-            ConnectionString = resourceModel.ConnectionString;
-            ID = resourceModel.ID;
-            ServerResourceType = resourceModel.ServerResourceType;
-            UserPermissions = resourceModel.UserPermissions;
-            Inputs = resourceModel.Inputs;
-            Outputs = resourceModel.Outputs;
-            WorkflowXaml = resourceModel.WorkflowXaml;
-            _errors.Clear();
-            if (resourceModel.Errors != null)
+            if (resourceModel != null)
             {
-                foreach (var error in resourceModel.Errors)
+                AllowCategoryEditing = resourceModel.AllowCategoryEditing;
+                Category = resourceModel.Category;
+                Comment = resourceModel.Comment;
+                DataTags = resourceModel.DataTags;
+                DisplayName = resourceModel.DisplayName;
+                VersionInfo = resourceModel.VersionInfo;
+                HelpLink = resourceModel.HelpLink;
+                IsDebugMode = resourceModel.IsDebugMode;
+                RequiresSignOff = resourceModel.RequiresSignOff;
+                ResourceName = resourceModel.ResourceName;
+                ResourceType = resourceModel.ResourceType;
+                Tags = resourceModel.Tags;
+                DataList = resourceModel.DataList;
+                UpdateIconPath(resourceModel.IconPath);
+                Version = resourceModel.Version;
+                ConnectionString = resourceModel.ConnectionString;
+                ID = resourceModel.ID;
+                ServerResourceType = resourceModel.ServerResourceType;
+                UserPermissions = resourceModel.UserPermissions;
+                Inputs = resourceModel.Inputs;
+                Outputs = resourceModel.Outputs;
+                WorkflowXaml = resourceModel.WorkflowXaml;
+                _errors.Clear();
+                if (resourceModel.Errors != null)
                 {
-                    _errors.Add(error);
+                    foreach (var error in resourceModel.Errors)
+                    {
+                        _errors.Add(error);
+                    }
                 }
             }
         }
@@ -600,7 +603,7 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
             }
-            else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service || ResourceType == ResourceType.Server)
             {
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 result = msg.Message;

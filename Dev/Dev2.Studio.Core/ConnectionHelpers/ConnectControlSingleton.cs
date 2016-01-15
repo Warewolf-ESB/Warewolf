@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Network;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -32,7 +34,7 @@ namespace Dev2.ConnectionHelpers
         public const string NewServerText = "New Remote Server...";
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
-
+        public event EventHandler<ConnectedServerChangedEvent> AfterReload; 
         public static IConnectControlSingleton Instance
         {
             get
@@ -44,7 +46,7 @@ namespace Dev2.ConnectionHelpers
             }
         }
 
-        internal ConnectControlSingleton(IStudioResourceRepository studioResourceRepository,
+        public ConnectControlSingleton(IStudioResourceRepository studioResourceRepository,
                                          IAsyncWorker asyncWorker,
                                          IEnvironmentModelProvider serverProvider,
                                          IEnvironmentRepository environmentRepository)
@@ -84,6 +86,12 @@ namespace Dev2.ConnectionHelpers
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
+        }
+
+        public void AddServerAndConnect(IServerSource serverSource)
+        {
+            ReloadServer();
+            ToggleConnection(serverSource.ID);
         }
 
         public void Refresh(Guid environmentId)
@@ -218,6 +226,26 @@ namespace Dev2.ConnectionHelpers
             };
         }
 
+        public void ReloadServer()
+        {
+            Servers.Clear();
+            Servers.Add(CreateNewRemoteServerEnvironment());
+
+            var servers = _serverProvider.ReloadServers();
+            foreach (var server in servers)
+            {
+                Servers.Add(new ConnectControlEnvironment
+                {
+                    EnvironmentModel = server,
+                    IsConnected = server.IsConnected,
+                    AllowEdit = !server.IsLocalHost
+                });
+            }
+            if(AfterReload != null)
+            {
+                AfterReload(this, new ConnectedServerChangedEvent(Guid.Empty));
+            }
+        }
         void LoadServers()
         {
             Servers.Clear();

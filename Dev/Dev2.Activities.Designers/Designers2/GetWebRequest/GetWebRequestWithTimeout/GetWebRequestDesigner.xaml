@@ -6,38 +6,32 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                       xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
                        xmlns:getWebRequestWithTimeout="clr-namespace:Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance getWebRequestWithTimeout:GetWebRequestWithTimeoutDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <!--<ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolGetWebRequest-32}"/>-->
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolGetWebRequest-32.png" />
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
+        <Binding Source="{StaticResource Utility-GetWebRequest-Icon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
-        <getWebRequestWithTimeout:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent"/>
-        <getWebRequestWithTimeout:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
+        <ResourceDictionary>
+            <getWebRequestWithTimeout:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent"/>
+            <getWebRequestWithTimeout:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
 
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}"
-                             Value="true">
-                    <Setter Property="Content"
-                            Value="{DynamicResource Large}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
+                        <Setter Property="Content" Value="{DynamicResource Large}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityDesigner>

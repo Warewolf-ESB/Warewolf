@@ -2,7 +2,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,9 @@
 
 
 using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -20,6 +23,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Reflection;
 using System.Runtime;
 using System.Security.Claims;
@@ -27,6 +31,7 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Xaml;
 using System.Xml;
 using System.Xml.Linq;
 using CommandLine;
@@ -34,19 +39,27 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Reflection;
 using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Util;
+using Dev2.Utilities;
 using Dev2.Workspaces;
 using log4net.Config;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2
@@ -1659,20 +1672,222 @@ namespace Dev2
         bool LoadResourceCatalog()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
-            ValidatResourceFolder();
             MigrateOldResources();
+            ValidatResourceFolder();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
             // ReSharper disable UnusedVariable
             var catalog = ResourceCatalog.Instance;
             WriteLine("done.");
+            SplitDatabaseActivityOnTypeOfSource();
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
             return true;
+        }
+
+        private void SplitDatabaseActivityOnTypeOfSource()
+        {
+            var resources = ResourceCatalog.Instance.GetResources(GlobalConstants.ServerWorkspaceID);
+            for(int index = resources.Count - 1; index >= 0; index--)
+            {
+                var resource = resources[index];
+                var resourceID = resource.ResourceID;
+                var workflowActivity = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceID, resource.ResourceName);
+                if(workflowActivity != null)
+                {
+                    var sa = workflowActivity.Actions.FirstOrDefault();
+                    ResourceCatalog.Instance.MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
+                    var activity = ResourceCatalog.Instance.GetActivity(sa);
+                    if(activity != null)
+                    {
+                        try
+                        {
+                            var chart = WorkflowInspectionServices.GetActivities(activity).FirstOrDefault() as Flowchart;
+                            if(chart != null)
+                            {
+                                if(chart.Nodes.Count > 0)
+                                {
+                                    var updated = false;
+                                    foreach(var flowNode in chart.Nodes)
+                                    {
+                                        var flowStep = flowNode as FlowStep;
+                                        if(flowStep != null)
+                                        {
+                                            var dbActivity = flowStep.Action as DsfDatabaseActivity;
+                                            DbService service = null;
+                                            if(dbActivity != null)
+                                            {
+                                                updated = true;
+                                                var dbId = dbActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivity.ResourceID.Expression.ToString());
+                                                service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId);                                                
+                                            }
+                                            else
+                                            {
+                                                var dbActivityAsActivity = flowStep.Action as DsfActivity;
+                                                if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
+                                                {
+                                                    updated = true;
+                                                    var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
+                                                    service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId) ??
+                                                              ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbActivityAsActivity.ServiceName);
+                                                }
+                                            }
+                                            if (service != null)
+                                            {
+                                                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                                                             ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                                                if (source != null)
+                                                {
+                                                    if (source.ServerType == enSourceType.MySqlDatabase)
+                                                    {
+                                                        var dsfMySqlDatabaseActivity = GetDsfMySqlDatabaseActivity(dbActivity, source, service);
+                                                        flowStep.Action = dsfMySqlDatabaseActivity;
+                                                    }
+                                                    else if (source.ServerType == enSourceType.SqlDatabase)
+                                                    {
+                                                        var dsfSqlServerDatabaseActivity = GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
+                                                        flowStep.Action = dsfSqlServerDatabaseActivity;
+                                                    }
+                                                }
+                                            }
+                                        }                                        
+                                    }
+                                    if(updated)
+                                    {
+                                        UpdateXaml(chart, resource);
+                                    }
+                                }
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            Dev2Logger.Log.Debug(ex.Message,ex);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void UpdateXaml(Flowchart chart, IResource resource)
+        {
+            var builder = new ActivityBuilder
+            {
+                Name = chart.DisplayName,
+                Implementation = chart
+            };
+
+            StringBuilder text;
+            var sb = new StringBuilder();
+            using(var sw = new StringWriter(sb))
+            {
+                var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
+                XamlServices.Save(xw, builder);
+
+                text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
+            }
+            text = new WorkflowHelper().SanitizeXaml(text);
+            var xml = ResourceCatalog.Instance.GetResourceContents(resource).ToXElement();
+            var actionElement = xml.Element("Action");
+            if(actionElement != null)
+            {
+                var xamlDef = actionElement.Element("XamlDefinition");
+                if(xamlDef != null)
+                {
+                    xamlDef.Value = text.ToString();
+                    var def = xml.ToStringBuilder();
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, def);
+                }
+            }
+        }
+
+        private DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
+        {
+            var dsfSqlServerDatabaseActivity = new DsfSqlServerDatabaseActivity
+            {
+                ResourceID = dbActivity.ResourceID,
+                ProcedureName = service.Method.ExecuteAction,
+                SourceId = source.ResourceID,
+                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                IconPath = dbActivity.IconPath,
+                ServiceName = dbActivity.ServiceName,
+                DataTags = dbActivity.DataTags,
+                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                ResultValidationExpression = dbActivity.ResultValidationExpression,
+                FriendlySourceName = dbActivity.FriendlySourceName,
+                EnvironmentID = dbActivity.EnvironmentID,
+                Type = dbActivity.Type,
+                ActionName = dbActivity.ActionName,
+                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                Category = dbActivity.Category,
+                ServiceUri = dbActivity.ServiceUri,
+                ServiceServer = dbActivity.ServiceServer,
+                UniqueID = dbActivity.UniqueID,
+                ParentServiceName = dbActivity.ParentServiceName,
+                ParentServiceID = dbActivity.ParentServiceID,
+                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                ParentInstanceID = dbActivity.ParentInstanceID,
+            };
+            return dsfSqlServerDatabaseActivity;
+        }
+
+        private DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
+        {
+            var dsfMySqlDatabaseActivity = new DsfMySqlDatabaseActivity
+            {
+                ResourceID = dbActivity.ResourceID,
+                SourceId = source.ResourceID,
+                ProcedureName = service.Method.ExecuteAction,
+                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                IconPath = dbActivity.IconPath,
+                ServiceName = dbActivity.ServiceName,
+                DataTags = dbActivity.DataTags,
+                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                ResultValidationExpression = dbActivity.ResultValidationExpression,
+                FriendlySourceName = dbActivity.FriendlySourceName,
+                EnvironmentID = dbActivity.EnvironmentID,
+                Type = dbActivity.Type,
+                ActionName = dbActivity.ActionName,
+                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                Category = dbActivity.Category,
+                ServiceUri = dbActivity.ServiceUri,
+                ServiceServer = dbActivity.ServiceServer,
+                UniqueID = dbActivity.UniqueID,
+                ParentServiceName = dbActivity.ParentServiceName,
+                ParentServiceID = dbActivity.ParentServiceID,
+                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                ParentInstanceID = dbActivity.ParentInstanceID,
+            };
+            return dsfMySqlDatabaseActivity;
+        }
+
+        private ICollection<IServiceOutputMapping> TranslateOutputMappingToOutputs(string outputMapping)
+        {
+            var outputDefs = DataListFactory.CreateOutputParser().Parse(outputMapping);
+            return outputDefs.Select(outputDef =>
+            {
+                if(DataListUtil.IsValueRecordset(outputDef.RawValue))
+                {
+                    return new ServiceOutputMapping(outputDef.Name, outputDef.RawValue, outputDef.RecordSetName);
+                }
+                return new ServiceOutputMapping(outputDef.Name, outputDef.RawValue, "");
+            }).Cast<IServiceOutputMapping>().ToList();
+        }
+
+        private ICollection<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
+        {
+            var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
+            return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
+            {
+                EmptyIsNull = inputDef.EmptyToNull, RequiredField = inputDef.IsRequired
+            }).Cast<IServiceInput>().ToList();
         }
 
         static void MigrateOldResources()
@@ -1696,8 +1911,8 @@ namespace Dev2
         static void ValidatResourceFolder()
         {
             var folder = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
+            if(!Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
         }
 
         static void MigrateResources(string oldResourceFolder)

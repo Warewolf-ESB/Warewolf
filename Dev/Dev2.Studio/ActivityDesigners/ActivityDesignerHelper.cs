@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,6 +38,7 @@ using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.MySqlDatabase;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
@@ -53,6 +54,7 @@ using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Designers2.SharepointListUpdate;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
+using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
@@ -111,7 +113,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfGatherSystemInformationActivity), typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfXPathActivity), typeof(XPathDesigner) },
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
-                { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
+                { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
+                { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
@@ -121,7 +124,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
-                { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) }
+                { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
+                //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
+                //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
+
+                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);

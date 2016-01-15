@@ -54,7 +54,7 @@ Scenario Outline: Move file at location
 	   | 28 | SFTP to FTP  PK  | [[sourcePath]] | sftp://localhost/movefile21.txt                              | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved41.txt          | ""                | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://localhost/movefile31.txt                              | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved41.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://localhost/movefile41.txt                              | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/moved41.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-																																																																														                     
+
 
 Scenario Outline: Move file at location Null
 	Given I have a source path '<source>' with value '<sourceLocation>' 
@@ -75,10 +75,33 @@ Scenario Outline: Move file at location Null
 #	   | 4  | Local to FTP   | [[sourcePath]] | c:\temp\movefile1.txt                                        | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved0.txt | ""                | ""           | True     | [[result]] | Failure | AN           |                      |                           |
 #	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                             | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved0.txt | integrationtester | I73573r0     | True     | [[result]] | Failure | AN           |                      |                           |
 #	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                          | ""       | ""       | [[destPath]] | sftp://localhost/moved0.txt                      | dev2              | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
-	   																																																																												                     
-																																																																														                     
-																																																																														                     
-#cenario Outline: Move file at location1
+	 
+@ignore
+#Complex Types
+Scenario Outline: Move file at location using complex types
+	Given I have a source path '<source>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+    And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And result as '<resultVar>'
+    When the Move file tool is executed
+	Then the result variable '<resultVar>' will be '<result>'
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name           | source                              | sourceLocation   | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result  | errorOccured |
+	   | 1  | Local to Local | [[file().resources().path]]         | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt       | ""           | ""           | True     | [[result]] | Success | NO           |
+	   | 2  | Local to Local | [[file(*).resources(1).path]]       | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt       | ""           | ""           | True     | [[result]] | Success | NO           |
+	   | 3  | Local to Local | [[file([[int]]).resources(1).path]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | C:\moved0.txt       | ""           | ""           | True     | [[result]] | Success | NO           |
+
+
+#cenario Outline: Move file Validation
 #   Given I have a variable "[[a]]" with a value '<Val1>'
 #	Given I have a variable "[[b]]" with a value '<Val2>'
 #	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'

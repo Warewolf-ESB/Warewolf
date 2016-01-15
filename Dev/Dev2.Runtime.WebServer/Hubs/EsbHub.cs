@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
@@ -89,7 +88,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
-                hubCallerConnectionContext.Others.ItemAddedMessage(item);
+                hubCallerConnectionContext.All.ItemAddedMessage(item);
             }
         }
 
@@ -97,9 +96,12 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ResourceSaved(IResource resource)
         {
-            var factory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance);
-            var resourceItem = factory.CreateResourceItem(resource);
-            AddItemMessage(resourceItem);
+            if (ServerExplorerRepository.Instance != null)
+            {
+                var resourceItem = ServerExplorerRepository.Instance.UpdateItem(resource);
+                AddItemMessage(resourceItem);
+            }
+            
         }
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,12 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
-using Dev2.CustomControls.Connections;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -32,7 +32,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.ViewModels;
-using Dev2.Threading;
 using Dev2.Webs;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -62,7 +61,7 @@ namespace Dev2.Core.Tests
         protected Mock<IResourceRepository> ResourceRepo;
         protected Mock<IContextualResourceModel> SecondResource;
         protected const string ServiceDefinition = "<x/>";
-        protected Mock<IWebController> WebController;
+
         protected Mock<IWindowManager> WindowManager;
         protected Mock<IAuthorizationService> AuthorizationService;
         protected Mock<IEnvironmentModel> ActiveEnvironment;
@@ -86,7 +85,6 @@ namespace Dev2.Core.Tests
 
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
-            WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
@@ -96,7 +94,7 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+                WindowManager.Object, MockStudioResourceRepository.Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -106,7 +104,6 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = EventAggregator.Object;
             PopupController = new Mock<IPopupController>();
-            WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
             CustomContainer.Register(WindowManager.Object);
             CustomContainer.Register(PopupController.Object);
@@ -117,10 +114,9 @@ namespace Dev2.Core.Tests
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
-            Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object
-                , WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);
+                , WindowManager.Object, MockStudioResourceRepository.Object,new Mock<IExplorerViewModel>().Object);
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
@@ -153,6 +149,7 @@ namespace Dev2.Core.Tests
             mock.Setup(s => s.All()).Returns(models);
             mock.Setup(c => c.ReadSession()).Returns(new[] { EnvironmentModel.Object.ID });
             mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
+            mock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);
             EnvironmentRepo = mock.Object;
             return EnvironmentRepo;
         }
@@ -279,7 +276,7 @@ namespace Dev2.Core.Tests
                 })
                 .Verifiable();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false, connectControlSingleton: new Mock<IConnectControlSingleton>().Object);
+            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false);
             SetupForDelete();
             FirstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
             FirstResource.Setup(r => r.ServerResourceType).Returns("Server");

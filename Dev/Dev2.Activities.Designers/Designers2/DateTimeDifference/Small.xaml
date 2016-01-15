@@ -10,19 +10,15 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="250"
                                MaxWidth="250"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:DateTimeDifferenceDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -35,10 +31,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
-               Grid.Row="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Input 1" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Input 1" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -53,8 +46,7 @@
                                 Text="{Binding Path=ModelItem.Input1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input1txt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDatetime1}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpDatetime1}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input1"
                                      SourcePropertyValue="{Binding ModelItem.Input1, UpdateSourceTrigger=PropertyChanged}"
@@ -62,16 +54,14 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="1"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Input 2" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Input 2" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
                                 MaxHeight="52"
+                                Margin="{StaticResource ControlBorderTop}"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
                                 FilterType="All"
@@ -81,26 +71,22 @@
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDatetime2}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input2txt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDatetime2}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpDatetime2}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input2"
                                      SourcePropertyValue="{Binding ModelItem.Input2, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="2"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Input Format" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Input Format" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
                                 MaxHeight="52"
+                                Margin="{StaticResource ControlBorderTop}"
                                 TextWrapping="Wrap"
                                 DefaultText="d MM yyyy 24h:min.ss sp"
                                 FilterType="All"
@@ -110,8 +96,7 @@
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipInputFormat}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpInputFormat}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpInputFormat}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputFormat"
                                      SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
@@ -125,21 +110,17 @@
             </ui:IntellisenseTextBox.IntellisenseProvider>
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="3"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Output In" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Output In" Margin="{StaticResource ControlBorderTop}"/>
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
-                  Style="{StaticResource ActivityComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                  Margin="{StaticResource ControlBorderTop}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                   SelectedValue="{Binding SelectedOutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding OutputTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputIncbx_AutoID}"
                   ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipOutputType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpOutputType}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpOutputType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputType"
                                      SourcePropertyValue="{Binding ModelItem.OutputType, UpdateSourceTrigger=PropertyChanged}"
@@ -147,13 +128,11 @@
             </i:Interaction.Behaviors>
         </ComboBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="4"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
                                 DefaultText="[[Difference]]"
+                                Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
                                 WrapInBrackets="True"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipResult}"
@@ -161,8 +140,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

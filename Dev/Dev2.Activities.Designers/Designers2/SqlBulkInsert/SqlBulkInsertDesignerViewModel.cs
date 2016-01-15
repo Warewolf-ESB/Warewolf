@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,9 +23,11 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -88,7 +90,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
-            AddTitleBarHelpToggle();
 
             dynamic mi = ModelItem;
             ModelItemCollection = mi.InputMappings;
@@ -142,7 +143,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             set
             {
                 SetValue(SelectedDatabaseProperty, value);
-
+                if (SelectedDatabase != null)
+                {
+                    IsSqlDatabase = SelectedDatabase.ServerType == enSourceType.SqlDatabase;
+                }
                 EditDatabaseCommand.RaiseCanExecuteChanged();
             }
         }
@@ -725,6 +729,15 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 var mi = ModelItemCollection[i];
                 mi.SetProperty("InputColumn", newMappings[i]);
+            }
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
 

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1311,7 +1311,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(new TestAsyncWorker());
+            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(new SynchronousAsyncWorker());
             connection.SetupProperty(c => c.DisplayName);
             if (sources != null && sources.Length > 0)
             {

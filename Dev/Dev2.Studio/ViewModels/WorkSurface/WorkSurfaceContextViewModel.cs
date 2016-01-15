@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities.Presentation.View;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -82,7 +81,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         readonly IEnvironmentModel _environmentModel;
         readonly IPopupController _popupController;
-        readonly Action<IContextualResourceModel, bool> _saveDialogAction;
+        readonly Action<IContextualResourceModel, bool,System.Action> _saveDialogAction;
         IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
 
@@ -177,11 +176,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #region ctors
 
         public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new PopupController(), (a, b) => RootWebSite.ShowNewWorkflowSaveDialog(a, null, b))
+            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new PopupController(), (a, b,c) => SaveDialogHelper.ShowNewWorkflowSaveDialog(a, null, b,c))
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool> saveDialogAction)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
             : base(eventPublisher)
         {
             if(workSurfaceKey == null)
@@ -232,6 +231,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 var showResourceChangedUtil = ResourceChangeHandlerFactory.Create(EventPublisher);
                 Execute.OnUIThread(() =>
                 {
+                    numberOfDependants = compileMessageList.MessageList.Select(to => to.ServiceID.ToString()).ToList();
                     showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, numberOfDependants);
                 });
             }
@@ -575,8 +575,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             else
             {
+                _popupController.Show(StringResources.Debugging_Error,
+                                      StringResources.Debugging_Error_Title,
+                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
 
-                _popupController.Show("Please resolve all variable errors, before debugging." + System.Environment.NewLine, "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "true");
                 SetDebugStatus(DebugStatus.Finished);
                 return;
             }
@@ -597,6 +599,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
+        private bool _waitingforDialog;
 
         private IStudioResourceRepository StudioResourceRepository
         {
@@ -609,16 +612,17 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
-            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
+            SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
-        public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
+        public bool Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
+            var saveResult = Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
+            return saveResult;
         }
 
         public bool IsEnvironmentConnected()
@@ -642,6 +646,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
         {
+            
             if(resource == null || !resource.UserPermissions.IsContributor())
             {
                 return false;
@@ -652,16 +657,20 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(DataListViewModel != null && DataListViewModel.HasErrors)
             {
-                PopupController.Show("Please resolve the variable(s) errors below, before saving." + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage, "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "true");
+                _popupController.Show(string.Format(StringResources.Saving_Error + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage),
+                                      StringResources.Saving_Error_Title,
+                                      MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
 
                 return false;
             }
 
-            if(resource.IsNewWorkflow && !isLocalSave)
+            if (resource.IsNewWorkflow && !isLocalSave && !_waitingforDialog)
             {
-                _saveDialogAction(resource, addToTabManager);
-                // ShowSaveDialog(resource, addToTabManager);
+                _waitingforDialog = true;
+                _saveDialogAction(resource, addToTabManager,()=>_waitingforDialog = false);
+              
                 return true;
+
             }
 
 
@@ -758,16 +767,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             base.OnActivate();
             DataListSingleton.SetDataList(DataListViewModel);
 
-            var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            if(workflowDesignerViewModel != null)
-            {
-                //workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-                //2013.07.03: Ashley Lewis for bug 9637 - set focus to allow ctrl+a
-                if(!workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any() || workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any(c => c.ItemType.Name == "StartNode" || c.ItemType.Name == "Flowchart" || c.ItemType.Name == "ActivityBuilder"))
-                {
-                    workflowDesignerViewModel.FocusActivityBuilder();
-                }
-            }
+
+
         }
 
         #region Overrides of BaseViewModel

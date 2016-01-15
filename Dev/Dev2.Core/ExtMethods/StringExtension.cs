@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -91,15 +91,24 @@ namespace Dev2
 
         public static bool IsJSON(this string payload)
         {
-            try
+            if ((payload.StartsWith("{") && payload.EndsWith("}")) || //For object
+                (payload.StartsWith("[") && payload.EndsWith("]"))) //For array
             {
-                JsonConvert.DeserializeObject(payload);
-                return true;
+                try
+                {
+
+
+                    JsonConvert.DeserializeObject(payload);
+                    return true;
+                }
+
+
+                catch
+                {
+                    return false;
+                }
             }
-            catch
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>

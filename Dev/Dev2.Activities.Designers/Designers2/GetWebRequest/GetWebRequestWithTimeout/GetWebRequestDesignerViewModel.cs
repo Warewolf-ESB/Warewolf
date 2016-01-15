@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,6 +21,7 @@ using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 
 namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
@@ -31,7 +32,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            AddTitleBarHelpToggle();
+            //AddTitleBarHelpToggle();
 
             PreviewViewModel = new PreviewViewModel
                 {
@@ -319,6 +320,15 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
 
             return result;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
     }
 }

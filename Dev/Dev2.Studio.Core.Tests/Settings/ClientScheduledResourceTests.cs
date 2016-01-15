@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
+            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
             var scheduledResources = clientScheduledResourceModel.GetScheduledResources();
             //------------Assert Results-------------------------
@@ -70,7 +70,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
+            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
             clientScheduledResourceModel.DeleteSchedule(scheduledResourceForTest);
             //------------Assert Results-------------------------
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
+            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
             string errorMessage;
             var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
@@ -123,7 +123,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializedReturnMessage);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
+            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
             string errorMessage;
             var saved = clientScheduledResourceModel.Save(scheduledResourceForTest, out errorMessage);
@@ -150,7 +150,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object);
+            var clientScheduledResourceModel = new ClientScheduledResourceModel(mockEnvironmentModel.Object, () => { });
             //------------Execute Test---------------------------
             var resourceHistories = clientScheduledResourceModel.CreateHistory(scheduledResourceForTest);
             //------------Assert Results-------------------------
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             // ReSharper disable AssignNullToNotNullAttribute
             // ReSharper disable ObjectCreationAsStatement
-            new ClientScheduledResourceModel(null);
+            new ClientScheduledResourceModel(null, () => { });
             // ReSharper restore ObjectCreationAsStatement
             // ReSharper restore AssignNullToNotNullAttribute
             //------------Assert Results-------------------------
@@ -191,6 +191,8 @@ namespace Dev2.Core.Tests.Settings
 
     internal class ScheduledResourceForTest : IScheduledResource
     {
+        bool _isNewItem;
+
         #region Implementation of IScheduledResource
 
         public ScheduledResourceForTest()
@@ -245,6 +247,18 @@ namespace Dev2.Core.Tests.Settings
         public string Password { get; set; }
         public IErrorResultTO Errors { get; set; }
         public bool IsNew { get; set; }
+        public bool IsNewItem
+        {
+            get
+            {
+                return _isNewItem;
+            }
+            set
+            {
+                _isNewItem = value;
+            }
+        }
+        public string NameForDisplay { get; private set; }
 
         #endregion
     }

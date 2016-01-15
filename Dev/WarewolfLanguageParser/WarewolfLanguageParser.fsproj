@@ -36,6 +36,9 @@
     <DocumentationFile>bin\Release\WarewolfLanguageParser.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.fs">
+      <Link>Properties\AssemblyCommonInfo.fs</Link>
+    </Compile>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -76,6 +79,7 @@
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
     <Compile Include="EvalTools.fs" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

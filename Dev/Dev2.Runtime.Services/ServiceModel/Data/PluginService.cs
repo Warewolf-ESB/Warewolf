@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,10 +44,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = ResourceType.PluginService;
-            var action = xml.Descendants("Action").FirstOrDefault();
+            var action = xml.Descendants("Action").FirstOrDefault(); ;
             if(action == null)
             {
-                return;
+                if (xml.HasAttributes && xml.Attribute("Type").Value == "Plugin")
+                {
+                    action = xml;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             // BUG 9500 - 2013.05.31 - TWR : added
@@ -58,15 +65,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             if(string.IsNullOrEmpty(Namespace))
             {
                 var mySource = action.AttributeSafe("SourceName");
-
-                // Now look up the old source and fetch namespace ;)
-                var services = ResourceCatalog.Instance.GetDynamicObjects<Source>(GlobalConstants.ServerWorkspaceID, mySource);
-
-                var tmp = services.FirstOrDefault();
-
-                if(tmp != null)
+                if (!string.IsNullOrEmpty(mySource))
                 {
-                    Namespace = tmp.AssemblyName;
+                    // Now look up the old source and fetch namespace ;)
+                    var services = ResourceCatalog.Instance.GetDynamicObjects<Source>(GlobalConstants.ServerWorkspaceID, mySource);
+
+                    var tmp = services.FirstOrDefault();
+
+                    if (tmp != null)
+                    {
+                        Namespace = tmp.AssemblyName;
+                    }
                 }
             }
 

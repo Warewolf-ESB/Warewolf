@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,10 +14,12 @@ using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
@@ -37,8 +39,21 @@ namespace Dev2.Activities.Designers2.Sequence
         public SequenceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            AddTitleBarHelpToggle();
             AddTitleBarLargeToggle();
+            dynamic mi = ModelItem;
+            ModelItemCollection activities = mi.Activities;
+            activities.CollectionChanged+=ActivitiesOnCollectionChanged;            
+        }
+
+        void ActivitiesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Remove)
+            {
+                dynamic mi = ModelItem;
+                ModelItemCollection activities = mi.Activities;
+                ModelItem.SetProperty("Activities",activities);
+                
+            }
         }
 
         public object SmallViewItem
@@ -169,6 +184,15 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public override void Validate()
         {
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
     }
 }

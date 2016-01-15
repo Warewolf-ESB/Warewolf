@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -108,7 +108,7 @@ namespace Dev2.Runtime.Hosting
         {
             Guid resourceId = resource.ResourceID;
             var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType == ResourceType.Server ? ResourceType.ServerSource : resource.ResourceType, null,
-                                                   _authService.GetResourcePermissions(resourceId), resource.ResourcePath);
+                                                   _authService.GetResourcePermissions(resourceId), resource.ResourcePath, "", "");
             return childNode;
         }
 
@@ -133,7 +133,7 @@ namespace Dev2.Runtime.Hosting
             {
                 var resourcePath = resource.Replace(rootPath, "").Substring(1);
 
-                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), ResourceType.Folder, null, _authService.GetResourcePermissions(Guid.Empty), resourcePath);
+                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), ResourceType.Folder, null, _authService.GetResourcePermissions(Guid.Empty), resourcePath, "", "");
                 children.Add(node);
                 node.Children = BuildStructureFromFilePath(directory, resource, rootPath);
             }
@@ -145,7 +145,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem BuildRoot()
         {
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, ResourceType.Server, new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "") { ServerId = HostSecurityProvider.Instance.ServerID, WebserverUri = EnvironmentVariables.WebServerUri };
+            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, ResourceType.Server, new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "", "", "") { ServerId = HostSecurityProvider.Instance.ServerID, WebserverUri = EnvironmentVariables.WebServerUri };
             return serverExplorerItem;
         }
 

@@ -9,14 +9,7 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>  
     
-    <Style x:Key="AuthExecuteIconStyle" TargetType="{x:Type Image}" BasedOn="{StaticResource AuthIconStyle}">
-        <Setter Property="Source" Value="pack://application:,,,/Warewolf Studio;component/images/AuthExecute-12.png"/>
-    </Style>
-    
-    <Style x:Key="AuthViewIconStyle" TargetType="{x:Type Image}" BasedOn="{StaticResource AuthIconStyle}">
-        <Setter Property="Source" Value="pack://application:,,,/Warewolf Studio;component/images/AuthView-12.png"/>
-    </Style>
-     
+  
     <Style x:Key="AuthNoneIconStyle" TargetType="{x:Type Image}" BasedOn="{StaticResource AuthIconStyle}">
         <Setter Property="Source" Value="pack://application:,,,/Warewolf Studio;component/images/AuthNone-16.png"/>
         <Setter Property="Margin" Value="3,0,0,0"/>

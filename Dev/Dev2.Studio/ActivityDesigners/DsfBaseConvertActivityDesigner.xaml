@@ -12,6 +12,7 @@
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                       xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
+                      xmlns:fa="http://schemas.fontawesome.io/icons/"
                       Name="BaseConvertDesigner"
                       MouseEnter="DsfBaseConvertActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfBaseConvertActivityDesigner_OnMouseLeave"
@@ -52,7 +53,7 @@
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove"
                                     IsChecked="{Binding IsAdornerOpen}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
-                                <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
+                                <fa:FontAwesome Icon="Pencil" FontSize="15"></fa:FontAwesome>
                             </adorners:AdornerToggleButton>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" 
@@ -84,7 +85,7 @@
                         <Rect Location="0,0" Size="16,16" />
                     </ImageDrawing.Rect>
                     <ImageDrawing.ImageSource>
-                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolBaseConversion-32.png" />
+                        <Binding Source="{StaticResource Data-BaseConversion-Icon}"/>
                     </ImageDrawing.ImageSource>
                 </ImageDrawing>
             </DrawingBrush.Drawing>
@@ -133,7 +134,7 @@
             <DataGridTemplateColumn Width="*"  IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Style="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
@@ -150,7 +151,7 @@
             <DataGridTemplateColumn Width="65"  IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Width="Auto" Style ="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Width="Auto" ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_ToTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />

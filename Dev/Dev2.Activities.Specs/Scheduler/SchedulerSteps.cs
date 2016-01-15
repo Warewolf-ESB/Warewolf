@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -27,7 +28,6 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
-using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
@@ -66,11 +66,11 @@ namespace Dev2.Activities.Specs.Scheduler
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<Dev2.Common.Interfaces.IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 
             environmentModel.Connect();
-            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel);
+            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel,()=>{});
             scheduler.CurrentEnvironment = environmentModel;
             scheduler.CreateNewTask();
             scheduler.SelectedTask.Name = ScenarioContext.Current["ScheduleName"].ToString();

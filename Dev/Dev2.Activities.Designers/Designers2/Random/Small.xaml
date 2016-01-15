@@ -9,19 +9,15 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Random"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="200"
                                MaxWidth="200"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:RandomDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -32,77 +28,63 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
-               Grid.Row="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Type" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Type" />
         <ComboBox x:Name="InitialFocusElement"
                   Grid.Column="1" 
                   Grid.Row="0"
-                  Style="{StaticResource ActivityComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                   SelectedValue="{Binding Path=SelectedRandomType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding RandomTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Wherecbx_AutoID}"
                   ToolTip="{x:Static help:HelpTextResources.RandomToolTipType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpType}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RandomType"
                                      SourcePropertyValue="{Binding ModelItem.RandomType, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ComboBox>
-        
-        <Label Grid.Column="0"
-               Grid.Row="1"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="{Binding Path=LengthContent}" />
-      
-        <Grid  Grid.Column="1"
-               Grid.Row="1">
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Path=LengthContent}" Margin="{StaticResource ControlBorderTop}"/>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-        <ui:IntellisenseTextBox Grid.Column="0"
+
+            <ui:IntellisenseTextBox Grid.Column="0"
                                 Visibility="{Binding Visibility}"
                                 AllowUserInsertLine="False"
                                 DefaultText="From" 
+                                    Margin="0,0,1,1"
                                 ToolTip="{x:Static help:HelpTextResources.RandomToolTipRangeFrom}"
                                 Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpRangeFrom}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpRangeFrom}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.From"
                                      SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
 
-            <Label Visibility="{Binding Visibility}"
-                   Content="-"
-                   Style="{StaticResource ActivityLabelStyle}"
-                   Grid.Column="1" />
+            <TextBlock Visibility="{Binding Visibility}" Text="-" Grid.Column="1" Margin="0,0,1,1"/>
 
             <ui:IntellisenseTextBox Grid.Column="2"
                                     AllowUserInsertLine="False"
                                     DefaultText="Length" 
+                                    Margin="0,0,1,1"
                                     IsEnabled="{Binding Path=IsLengthPath}"
                                     Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     ToolTip="{x:Static help:HelpTextResources.RandomToolTipLength}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpLength}"
-                                     DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpLength}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Length"
                                          SourcePropertyValue="{Binding ModelItem.Length, UpdateSourceTrigger=PropertyChanged}"
@@ -114,13 +96,13 @@
                                     Visibility="{Binding Visibility}"
                                     AllowUserInsertLine="False"
                                     DefaultText="To" 
+                                    Margin="0,0,1,1"
                                     Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}"
                                     ToolTip="{x:Static help:HelpTextResources.RandomToolTipRangeTo}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpRangeTo}"
-                                     DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpRangeTo}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.To"
                                          SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
@@ -128,23 +110,20 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        
-        <Label Grid.Column="0"
-               Grid.Row="2"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 AllowUserInsertLine="False"
                                 DefaultText="[[Result]]" 
                                 WrapInBrackets="True"
+                                Margin="{StaticResource ControlBorderTop}"
                                 ToolTip="{x:Static help:HelpTextResources.RandomToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

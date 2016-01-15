@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -50,14 +50,25 @@ namespace Dev2.Diagnostics.Debug
         {
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
-
+            DisconnectedID = Guid.NewGuid();
 
             IsDurationVisible = true;
             _disconnectedID = Guid.NewGuid();
         }
 
+        public Guid DisconnectedID
+        {
+            get
+            {
+                return _disconnectedID;
+            }
+            set
+            {
+                _disconnectedID = value;
+            }
+        }
 
-         static DebugState()
+        static DebugState()
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             if (!Directory.Exists(tempPath))
@@ -73,20 +84,7 @@ namespace Dev2.Diagnostics.Debug
         ///     Gets or sets the ID.
         /// </summary>
         public Guid ID { get; set; }
-        /// <summary>
-        ///     Gets or sets the ID.
-        /// </summary>
-        public Guid DisconnectedID
-        {
-            get
-            {
-                return _disconnectedID;
-            }
-            set
-            {
-                _disconnectedID = value;
-            }
-        }
+     
 
         /// <summary>
         ///     Gets or sets the parent ID.

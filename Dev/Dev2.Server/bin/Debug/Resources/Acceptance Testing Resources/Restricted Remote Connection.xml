@@ -1,0 +1,8 @@
+﻿ <Source ID="c171b9f3-6172-4f7d-9b62-623f0b3d3b26" Name="Restricted Remote Connection" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=http://TST-CI-REMOTE:3140;WebServerPort=3140;AuthenticationType=Public" Type="Dev2Server" ServerVersion="0.0.5856.15132" ServerID="51A58300-7E9D-4927-A57B-E5D700B11B55">
+	<DisplayName>Restricted Remote Connection</DisplayName>
+	<Category>Acceptance Testing Resources\Restricted Remote Connection</Category>
+	<AuthorRoles>   </AuthorRoles>
+	<ErrorMessages />
+	<TypeOf>Dev2Server</TypeOf>
+	<VersionInfo DateTimeStamp="2016-01-13T10:34:54.4469179+02:00" ResourceId="c171b9f3-6172-4f7d-9b62-623f0b3d3b26" VersionId="00000000-0000-0000-0000-000000000000" />
+</Source>

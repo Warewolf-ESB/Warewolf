@@ -6,31 +6,26 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-
                        xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox.Upload"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance upload:DropBoxUploadFileViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="{StaticResource ToolDropBoxPng-32}" />
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
+        <Binding Source="{StaticResource DropBoxLogoIcon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
-        <upload:Small x:Key="Small"
-                     AutomationProperties.AutomationId="SmallViewContent" />
+        <ResourceDictionary>
+            <upload:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
 
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
-        </Style>
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityDesigner>

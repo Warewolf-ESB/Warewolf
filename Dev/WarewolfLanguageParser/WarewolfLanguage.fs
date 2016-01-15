@@ -50,7 +50,7 @@ type nonTerminalId =
     | NONTERM_scalar
     | NONTERM_atom
 
-// This function maps tokens to integers indexes
+// This function maps tokens to integer indexes
 let tagOfToken (t:token) = 
   match t with
   | EOF  -> 0 
@@ -65,7 +65,7 @@ let tagOfToken (t:token) =
   | STAR  -> 9 
   | DOT  -> 10 
 
-// This function maps integers indexes to symbolic token ids
+// This function maps integer indexes to symbolic token ids
 let tokenTagToTokenId (tokenIdx:int) = 
   match tokenIdx with
   | 0 -> TOKEN_EOF 

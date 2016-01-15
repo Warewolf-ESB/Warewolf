@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -17,10 +18,14 @@ using Dev2.TO;
 using Dev2.Util;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Sharepoint
 {
+    [ToolDescriptorInfo("SharepointLogo", "Create List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class SharepointCreateListItemActivity : DsfActivityAbstract<string>
     {
         readonly SharepointUtils _sharepointUtils;
@@ -33,6 +38,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
         [FindMissing]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 

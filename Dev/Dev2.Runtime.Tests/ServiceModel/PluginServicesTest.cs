@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesNamespacesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
-            var result = services.Namespaces("xxxx", Guid.Empty, Guid.Empty);
+            var result = services.Namespaces(new PluginSource(), Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             EnvironmentVariables.GetWorkspacePath(workspaceID);
 
             var services = new PluginServices();
-            var result = services.Namespaces(args, workspaceID, Guid.Empty);
+            var result = services.Namespaces(source, workspaceID, Guid.Empty);
 
             // DO NOT assert equality on Count as this will 
             // change as new namespaces are added to this assembly!
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
-            var result = services.Methods("xxxx", Guid.Empty, Guid.Empty);
+            var result = services.Methods(new PluginService(), Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             EnvironmentVariables.GetWorkspacePath(workspaceID);
 
             var services = new PluginServices();
-            var result = services.Methods(args, workspaceID, Guid.Empty);
+            var result = services.Methods(service, workspaceID, Guid.Empty);
 
             Assert.AreEqual(9, result.Count);
         }

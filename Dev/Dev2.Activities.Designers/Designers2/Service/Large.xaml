@@ -14,20 +14,16 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                                xmlns:interfaces="clr-namespace:Dev2.Data.Interfaces;assembly=Dev2.Data"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
-    MinWidth="350"
+                               xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               MinWidth="350"
                                Width="350"
                                MinHeight="200"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">    
-    
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
+                               d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
@@ -40,7 +36,7 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -60,8 +56,7 @@
                        HorizontalAlignment="Center"
                        Margin="0">
                 <TextBlock.Visibility>
-                    <Binding Path="DataMappingViewModel.Inputs.Count"
-                             Converter="{StaticResource IntToVisibilityConverter}">
+                    <Binding Path="DataMappingViewModel.Inputs.Count" Converter="{StaticResource IntToVisibilityConverter}">
                         <Binding.ConverterParameter>
                             <system:Boolean>True</system:Boolean>
                         </Binding.ConverterParameter>
@@ -99,8 +94,7 @@
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpInput}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="MapsTo"
                                                              SourcePropertyValue="{Binding MapsTo, UpdateSourceTrigger=PropertyChanged}"
@@ -108,35 +102,25 @@
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_Row{1}_InputMapsTo_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                             <Binding Path="IndexNumber" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="KeyDown">
-                                            <ei:ChangePropertyAction TargetObject="{Binding}"
-                                                                     PropertyName="IsNew"
-                                                                     Value="False" />
+                                            <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="IsNew" Value="False" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ui:IntellisenseTextBox.Style>
-                                        <Style TargetType="ui:IntellisenseTextBox"
-                                               BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=IsNew}"
-                                                             Value="True">
-                                                    <Setter Property="Control.BorderThickness"
-                                                            Value="1" />
-                                                    <Setter Property="Control.Background"
-                                                            Value="{StaticResource WarningBrush}" />
+                                                <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                                                    <Setter Property="Control.BorderThickness" Value="1" />
+                                                    <Setter Property="Control.Background" Value="{StaticResource WarningBrush}" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=RequiredMissing, Mode=OneWay}"
-                                                             Value="True">
-                                                    <Setter Property="Control.BorderThickness"
-                                                            Value="1" />
-                                                    <Setter Property="Control.BorderBrush"
-                                                            Value="{StaticResource ErrorBrush}" />
+                                                <DataTrigger Binding="{Binding Path=RequiredMissing, Mode=OneWay}" Value="True">
+                                                    <Setter Property="Control.BorderThickness" Value="1" />
+                                                    <Setter Property="Control.BorderBrush" Value="{StaticResource ErrorBrush}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -186,8 +170,7 @@
                        HorizontalAlignment="Center"
                        Margin="0,5,0,0">
                 <TextBlock.Visibility>
-                    <Binding Path="DataMappingViewModel.Outputs.Count"
-                             Converter="{StaticResource IntToVisibilityConverter}">
+                    <Binding Path="DataMappingViewModel.Outputs.Count" Converter="{StaticResource IntToVisibilityConverter}">
                         <Binding.ConverterParameter>
                             <system:Boolean>True</system:Boolean>
                         </Binding.ConverterParameter>
@@ -208,11 +191,8 @@
                                    Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}"
                                    RowStyle="{StaticResource ActivityGridRowStyle}"
                                    LoadingRow="DataGrid_LoadingRow">
-
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-
                 <DataGrid.Columns>
-
                     <DataGridTemplateColumn Width="SizeToCells"
                                             MinWidth="90"
                                             Header="Output From Service"
@@ -249,8 +229,7 @@
                                                         Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                         Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpOutput}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpOutput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="Value"
                                                              SourcePropertyValue="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
@@ -258,8 +237,7 @@
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_Row{1}_OutputValue_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
-                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                             <Binding Path="IndexNumber" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
@@ -276,16 +254,14 @@
                   IsChecked="{Binding RunWorkflowAsync, NotifyOnTargetUpdated=True}">
             Execute workflow asynchronously
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpRunWorkflowAsync}"
-                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-
+                <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpRunWorkflowAsync}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
             </i:Interaction.Behaviors>
         </CheckBox>
-        
+
         <errors:OnError Grid.Row="2"
                         x:Name="OnErrorControl"
                         Height="128"
                         Margin="0" />
-        
+
     </Grid>
 </core:ActivityDesignerTemplate>

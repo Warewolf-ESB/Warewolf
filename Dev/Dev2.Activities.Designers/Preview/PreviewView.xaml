@@ -51,7 +51,7 @@
                       CanUserSortColumns="False"
                       HorizontalAlignment="Stretch"
                       BorderThickness="1"
-                      BorderBrush="{StaticResource ButtonBorderBrush}"
+                      
                       Visibility="{Binding InputsVisibility}">
                 <DataGrid.CellStyle>
                     <Style TargetType="{x:Type DataGridCell}">
@@ -107,7 +107,6 @@
                                 <TextBox Height="23"
                                          Margin="1"
                                          Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource ActivityTextBoxStyle}"
                                          HorizontalAlignment="Stretch"
                                          attachedProperties:FocusSetter.IsFocused="{Binding IsPreviewFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>

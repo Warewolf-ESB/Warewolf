@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,9 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Models;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels;
+using Warewolf.Studio.ViewModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -47,6 +49,12 @@ namespace Dev2.Studio.Views.Workflow
 
             //if it is a ReourceTreeViewModel, get the data for this string
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ExplorerItemModel", StringComparison.Ordinal) >= 0);
+
+            if (String.IsNullOrEmpty(modelItemString))
+            {
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
+            }
+
             if(String.IsNullOrEmpty(modelItemString))
             {
                 //else if it is a workflowItemType, get data for this
@@ -59,6 +67,7 @@ namespace Dev2.Studio.Views.Workflow
                 }
             }
 
+            
             if(string.IsNullOrEmpty(modelItemString))
             {
                 return false;
@@ -83,12 +92,34 @@ namespace Dev2.Studio.Views.Workflow
                     }
                     if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == ResourceType.WorkflowService)
                     {
-                        CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null);
+                        //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                         return true;
                     }
                     if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= ResourceType.WebService)
                     {
                         return false;
+                    }
+                }
+                else
+                {
+                    var explorerItemViewModel = objectData as ExplorerItemViewModel;
+                    if (explorerItemViewModel != null)
+                    {
+                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && explorerItemViewModel.ResourceType >= ResourceType.DbService)
+                        {
+                            return true;
+                        }
+                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.ResourceType == ResourceType.WorkflowService)
+                        {
+                            //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
+                            return true;
+                        }
+                        var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);
+                        var perms = env.AuthorizationService.GetResourcePermissions(explorerItemViewModel.ResourceId);
+                        if (perms >= Permissions.Execute && explorerItemViewModel.ResourceType <= ResourceType.WebService)
+                        {
+                            return false;
+                        }
                     }
                 }
             }

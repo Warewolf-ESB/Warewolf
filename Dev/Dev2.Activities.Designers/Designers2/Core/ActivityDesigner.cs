@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,26 +12,32 @@
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.View;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Sequence;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
+using FontAwesome.WPF;
 
 namespace Dev2.Activities.Designers2.Core
 {
     [ActivityDesignerOptions(AllowDrillIn = false, AlwaysCollapseChildren = true)]
-    public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable
+    public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable, IUpdatesHelp, IErrorsSource
         where TViewModel : ActivityDesignerViewModel
     {
         bool _isInitialFocusDone;
@@ -53,11 +59,33 @@ namespace Dev2.Activities.Designers2.Core
             //FocusManager.SetIsFocusScope(this , true);
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
-
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
         }
+
+        #region Overrides of WorkflowViewElement
+
+        /// <summary>
+        /// Invoked when the context menu is loaded. Implement this method in a derived class to handle this event.
+        /// </summary>
+        /// <param name="menu">The <see cref="T:System.Windows.Controls.ContextMenu"/> that is loaded.</param>
+        protected override void OnContextMenuLoaded(ContextMenu menu)
+        {
+            int indexOfOpenItem = -1;
+            foreach(var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
+            {
+                indexOfOpenItem = menu.Items.IndexOf(menuItem);
+                break;
+            }
+            if (indexOfOpenItem != -1)
+            {
+                menu.Items.RemoveAt(indexOfOpenItem);
+            }
+            base.OnContextMenuLoaded(menu);
+        }
+
+        #endregion
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }
 
@@ -73,6 +101,21 @@ namespace Dev2.Activities.Designers2.Core
             }
             base.OnPreviewMouseDoubleClick(e);
         }
+
+        #region Overrides of UIElement
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event. 
+        /// </summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+                e.Handled = true;
+           // base.OnPreviewMouseDoubleClick(e);
+        }
+
+        #endregion
 
         void ToggleView(MouseButtonEventArgs eventArgs)
         {
@@ -194,7 +237,8 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnSelectionChanged(Selection item)
         {
-            ViewModel.IsSelected = item.PrimarySelection == ModelItem;
+            ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
+             //item.PrimarySelection == ModelItem;
         }
 
         void OnDesignerManagementServiceChanged(IDesignerManagementService designerManagementService)
@@ -210,7 +254,7 @@ namespace Dev2.Activities.Designers2.Core
             if(designerManagementService != null)
             {
                 _designerManagementService = designerManagementService;
-
+                
                 _designerManagementService.CollapseAllRequested += OnDesignerManagementServiceCollapseAllRequested;
                 _designerManagementService.ExpandAllRequested += OnDesignerManagementServiceExpandAllRequested;
                 _designerManagementService.RestoreAllRequested += OnDesignerManagementServiceRestoreAllRequested;
@@ -250,6 +294,11 @@ namespace Dev2.Activities.Designers2.Core
             Dispose(false);
         }
 
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            ViewModel.UpdateHelpDescriptor(helpText);
+        }
+
         /// <summary>
         /// Child classes can override this method to perform 
         /// clean-up logic, such as removing event handlers.
@@ -266,11 +315,11 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _showCollapseLargeView.Click -= ShowCollapseFromContextMenu;
             }
-            if(Context != null)
-            {
-                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
-                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
-            }
+//            if(Context != null)
+//            {
+//                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
+//                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
+//            }
 
             if(_zIndexProperty != null)
             {
@@ -284,8 +333,8 @@ namespace Dev2.Activities.Designers2.Core
             Loaded -= OnRoutedEventHandler;
 
             Unloaded -= ActivityDesignerUnloaded;
-            CEventHelper.RemoveAllEventHandlers(this);
-            CEventHelper.RemoveAllEventHandlers(this);
+//            CEventHelper.RemoveAllEventHandlers(this);
+//            CEventHelper.RemoveAllEventHandlers(this);
            GC.SuppressFinalize(this);
         }
 
@@ -347,7 +396,7 @@ namespace Dev2.Activities.Designers2.Core
         protected void BuildInitialContextMenu()
         {
             ContextMenu = new ContextMenu();
-
+            
             if(ViewModel != null && ViewModel.HasLargeView)
             {
                 _showCollapseLargeView = new MenuItem { Header = "Show Large View" };
@@ -372,17 +421,35 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(ViewModel.ShowLarge)
                 {
-                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png")), Height = 16, Width = 16 };
+                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
+                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
                     _showCollapseLargeView.Header = "Collapse Large View";
                     _showCollapseLargeView.Icon = icon;
                 }
                 else if(ViewModel.ShowSmall)
                 {
-                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png")), Height = 16, Width = 16 };
+                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                    var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
                     _showCollapseLargeView.Header = "Show Large View";
                     _showCollapseLargeView.Icon = icon;
                 }
             }
         }
+
+        #region Implementation of IErrorsSource
+
+        public List<IActionableErrorInfo> Errors
+        {
+            get
+            {
+                return ViewModel.Errors;
+            }
+            set
+            {
+                ViewModel.Errors = value;
+            }
+        }
+
+        #endregion
     }
 }

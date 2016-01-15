@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -93,7 +93,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _resourceModel.Setup(model => model.Category).Returns("MyFolder\\Resource");
             _resourceModel.Setup(res => res.ID).Returns(_resourceGuid);
             _resourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder("OriginalXaml"));
-
+            _resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _environmentConnection.Setup(channel => channel.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder("<x><text>Im Happy</text></x>")).Verifiable();
             _environmentConnection.Setup(channel => channel.ServerID).Returns(_serverID);
             _environmentConnection.Setup(channel => channel.WorkspaceID).Returns(_workspaceID);
@@ -333,6 +333,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Load();
             int resources = _repo.All().Count;
@@ -390,6 +391,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
@@ -429,6 +431,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
@@ -486,6 +489,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             int resources = _repo.All().Count;
@@ -560,6 +564,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
 
@@ -617,6 +622,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Save(model.Object);
             _repo.Load();
@@ -681,6 +688,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Save(model.Object);
             _repo.Load();
@@ -742,6 +751,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF1");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Save(model.Object);
             _repo.Load();
@@ -793,6 +804,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
+            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(model.Object);
             _repo.Load();
             model.Setup(c => c.ResourceName).Returns("NewName");
@@ -832,7 +844,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
-
+            model.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
+            model2.Setup(p => p.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
 
             //Act
             _repo.Save(model.Object);
@@ -870,6 +883,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -903,6 +917,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -936,6 +951,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("Unsaved");
             resourceModel.SetupGet(p => p.Category).Returns("Unassigned");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             //------------Execute Test---------------------------
             repo.Save(resourceModel.Object);
             //------------Assert Results-------------------------
@@ -976,7 +992,6 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
             Assert.AreEqual(1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
 
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -1011,7 +1026,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(exp, mockEnvironmentModel.Object.ResourceRepository.All().Count);
             var retMsg = JsonConvert.DeserializeObject<ExecuteMessage>(retVal.ToString());
             Assert.IsNotNull(retMsg);
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
 
@@ -1165,7 +1179,6 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -1204,7 +1217,6 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -1243,7 +1255,6 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
         #endregion RemoveResource Tests
@@ -1523,37 +1534,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
             resRepo.GetUniqueDependencies(new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" });
             mockConnection.Verify(e => e.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        public void GetUniqueDependenciesWithModelReturnsUniqueItems()
-        {
-            var mockConnection = new Mock<IEnvironmentConnection>();
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-            msg.SetMessage(TestDependencyGraph.ToString());
-            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
-
-            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(payload).Verifiable();
-            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            mockConnection.Setup(c => c.IsConnected).Returns(true);
-
-            var environmentModel = new Mock<IEnvironmentModel>();
-            environmentModel.Setup(e => e.Connection).Returns(mockConnection.Object);
-
-            var resRepo = new ResourceRepository(environmentModel.Object);
-
-            var testExpectedResources = CreateResourceList(environmentModel.Object);
-            var resources = new List<IResourceModel>(testExpectedResources);
-            foreach (var resourceModel in resources)
-            {
-                resRepo.Add(resourceModel);
-            }
-
-            environmentModel.Setup(e => e.ResourceRepository).Returns(resRepo);
-
-            var result = resRepo.GetUniqueDependencies(new ResourceModel(environmentModel.Object) { ResourceName = "Button" });
-            Assert.IsTrue(result.SequenceEqual(testExpectedResources));
         }
 
         [TestMethod]
@@ -2180,6 +2160,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All().Cast<IContextualResourceModel>();
@@ -2252,6 +2233,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
             resourceModel.SetupGet(p => p.Category).Returns("Root");
+            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
             var resources = _repo.All();
@@ -2425,7 +2407,6 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
         }
 
         [TestMethod]
@@ -2512,7 +2493,6 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<Dev2.Studio.Core.AppResources.Enums.ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
 
         }
 
@@ -2993,7 +2973,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            conn.Setup(c => c.IsConnected).Returns(false);
+            conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -3014,8 +2994,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-
-            //int callCnt = 0;
             StringBuilder sentPayLoad = new StringBuilder();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid g1) =>
                 {

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,9 +16,11 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.ViewModels.Dialogs;
+using FontAwesome.WPF;
+using Warewolf.Studio.ViewModels;
+using Warewolf.Studio.Views;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Dialogs
@@ -381,40 +383,49 @@ namespace Dev2.Studio.ViewModels.Dialogs
             _dontShowAgainOptions = null;
         }
 
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey)
+        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey, bool isDependenciesButtonVisible,
+            bool isError, bool isInfo, bool isQuestion)
         {
             // Claculate the appropriate default result
-            MessageBoxResult defaultResult = MessageBoxResult.OK;
-            if(button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
+            var defaultResult = MessageBoxResult.OK;
+            switch(button)
             {
-                defaultResult = MessageBoxResult.OK;
-            }
-            else if(button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
-            {
-                defaultResult = MessageBoxResult.Yes;
+                case MessageBoxButton.OK:
+                case MessageBoxButton.OKCancel:
+                    defaultResult = MessageBoxResult.OK;
+                    break;
+                case MessageBoxButton.YesNo:
+                case MessageBoxButton.YesNoCancel:
+                    defaultResult = MessageBoxResult.Yes;
+                    break;
             }
 
-            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey);
+            return Show(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion);
         }
 
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
+        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, bool isDependenciesButtonVisible,
+            bool isError, bool isInfo, bool isQuestion)
         {
             // Claculate the appropriate default result
-            MessageBoxResult defaultResult = MessageBoxResult.OK;
-            if(button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
+            var defaultResult = MessageBoxResult.OK;
+            switch(button)
             {
-                defaultResult = MessageBoxResult.OK;
-            }
-            else if(button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
-            {
-                defaultResult = MessageBoxResult.Yes;
+                case MessageBoxButton.OK:
+                case MessageBoxButton.OKCancel:
+                    defaultResult = MessageBoxResult.OK;
+                    break;
+                case MessageBoxButton.YesNo:
+                case MessageBoxButton.YesNoCancel:
+                    defaultResult = MessageBoxResult.Yes;
+                    break;
             }
 
-            return Show(messageBoxText, caption, button, icon, defaultResult, null);
+            return Show(messageBoxText, caption, button, icon, defaultResult, null, isDependenciesButtonVisible, isError, isInfo, isQuestion);
         }
 
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon,
-                                            MessageBoxResult defaultResult, string dontShowAgainKey)
+                                            MessageBoxResult defaultResult, string dontShowAgainKey, bool isDependenciesButtonVisible,
+            bool isError, bool isInfo, bool isQuestion)
         {
             // Check for don't show again option
             Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
@@ -424,31 +435,15 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 return dontShowAgainOption.Item2;
             }
 
-            // Construct and show the message box
-            Dev2MessageBoxViewModel dev2MessageBoxViewModel = new Dev2MessageBoxViewModel(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey);
-            IWindowManager windowManager = CustomContainer.Get<IWindowManager>();
+            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion);
 
-            if(windowManager == null)
+            var msgBoxView = new MessageBoxView
             {
-                throw new Exception("Unable to locate an instance of the window manager.");
-            }
+                DataContext = msgBoxViewModel
+            };
+            msgBoxView.ShowDialog();
 
-            try
-            {
-                windowManager.ShowDialog(dev2MessageBoxViewModel);
-            }
-            catch(Exception e)
-            {
-                Dev2Logger.Log.Error("Showing popup",e);
-            }
-
-            // Save don't so again option
-            if(dev2MessageBoxViewModel.DontShowAgain)
-            {
-                SetDontShowAgainOption(dontShowAgainKey, dev2MessageBoxViewModel.Result);
-            }
-
-            return dev2MessageBoxViewModel.Result;
+            return msgBoxViewModel.Result;
         }
 
         ///<summary>

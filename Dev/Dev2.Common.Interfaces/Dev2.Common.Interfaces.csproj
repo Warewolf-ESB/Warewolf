@@ -35,45 +35,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.26050, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,13 +64,14 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -106,10 +86,11 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Activity\IWorkflowActivityMessage.cs" />
+    <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
+    <Compile Include="ComputerName.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConverter.cs" />
@@ -123,8 +104,10 @@
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeParser.cs" />
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
+    <Compile Include="Core\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
+    <Compile Include="Core\EmailServiceSourceDefinition.cs" />
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Graph\IDataBrowser.cs" />
     <Compile Include="Core\Graph\IDataSourceShape.cs" />
@@ -137,6 +120,10 @@
     <Compile Include="Core\Graph\IPath.cs" />
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
+    <Compile Include="Core\PluginSourceDefinition.cs" />
+    <Compile Include="Core\ServerSource.cs" />
+    <Compile Include="Core\SharePointServiceSourceDefinition.cs" />
+    <Compile Include="Core\WebServiceSourceDefinition.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
     <Compile Include="Data\IInputOutputViewModel.cs" />
@@ -147,8 +134,20 @@
     <Compile Include="Data\IUpgradePath.cs" />
     <Compile Include="Data\ResourceType.cs" />
     <Compile Include="Data\TO\IErrorResultTO.cs" />
+    <Compile Include="DB\IDatabaseService.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
+    <Compile Include="DB\IDbAction.cs" />
     <Compile Include="DB\IDBHelper.cs" />
+    <Compile Include="DB\IDbServiceModel.cs" />
+    <Compile Include="DB\IManageDbServiceViewModel.cs" />
+    <Compile Include="DB\IServiceInput.cs" />
+    <Compile Include="DB\IServiceMappings.cs" />
+    <Compile Include="DB\IServiceOutputMapping.cs" />
+    <Compile Include="DB\ISourceBase.cs" />
+    <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeploySourceExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeployStatsViewer.cs" />
+    <Compile Include="Deploy\IDeployViewModel.cs" />
     <Compile Include="Diagnostics\Debug\Enums.cs" />
     <Compile Include="Diagnostics\Debug\IDebugDispatcher.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
@@ -158,21 +157,61 @@
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
+    <Compile Include="DllListing.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
+    <Compile Include="FileListing.cs" />
+    <Compile Include="Help\IHelpDescriptor.cs" />
+    <Compile Include="Help\IHelpDescriptorViewModel.cs" />
+    <Compile Include="Help\IHelpWindowModel.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="IAdminManager.cs" />
     <Compile Include="IAssignValue.cs" />
+    <Compile Include="ICheckControlEnabledView.cs" />
+    <Compile Include="IComputerName.cs" />
+    <Compile Include="IComputerNameProvider.cs" />
+    <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="IDllListing.cs" />
+    <Compile Include="IEmailAttachmentModel.cs" />
+    <Compile Include="IEmailAttachmentView.cs" />
+    <Compile Include="IEmailAttachmentVm.cs" />
+    <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironment.cs" />
+    <Compile Include="IEnvironmentViewModel.cs" />
     <Compile Include="IExecutionToken.cs" />
+    <Compile Include="IExplorerHelpDescriptorBuilder.cs" />
+    <Compile Include="IExplorerItemNodeViewModel.cs" />
+    <Compile Include="IExplorerItemViewModel.cs" />
+    <Compile Include="IExplorerRepository.cs" />
+    <Compile Include="IExplorerTreeItem.cs" />
+    <Compile Include="IExplorerUpdateManager.cs" />
+    <Compile Include="IExplorerView.cs" />
+    <Compile Include="IExplorerViewModel.cs" />
+    <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IFrameworkRepository.cs" />
+    <Compile Include="IHelpView.cs" />
+    <Compile Include="IManageDatabaseSourceView.cs" />
+    <Compile Include="IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="IManageEmailSourceViewModel.cs" />
+    <Compile Include="IManageNewServerViewModel.cs" />
+    <Compile Include="IManagePluginSourceModel.cs" />
+    <Compile Include="IManagePluginSourceViewModel.cs" />
+    <Compile Include="IManageServiceInputViewModel.cs" />
+    <Compile Include="IManageSharePointSourceViewModel.cs" />
+    <Compile Include="IManageWebserviceSourceViewModel.cs" />
+    <Compile Include="IManageWebServiceViewModel.cs" />
+    <Compile Include="IMenuView.cs" />
+    <Compile Include="INamespaceItem.cs" />
+    <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
     <Compile Include="Infrastructure\Events\IEventPublisher.cs" />
     <Compile Include="Infrastructure\IExplorerRepositorySync.cs" />
     <Compile Include="Infrastructure\IExplorerResourceRepository.cs" />
     <Compile Include="Infrastructure\IExplorerServerResourceRepository.cs" />
+    <Compile Include="Infrastructure\IWindowsGroupPermission.cs" />
     <Compile Include="Infrastructure\Providers\Errors\ErrorType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\FixType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\IActionableErrorInfo.cs" />
@@ -189,18 +228,45 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
+    <Compile Include="IPasteView.cs" />
+    <Compile Include="IPluginAction.cs" />
+    <Compile Include="IPluginService.cs" />
+    <Compile Include="IPluginServiceModel.cs" />
+    <Compile Include="IPluginServiceViewModel.cs" />
+    <Compile Include="IPluginSource.cs" />
     <Compile Include="IPulseLogger.cs" />
+    <Compile Include="IQueryManager.cs" />
+    <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IServer.cs" />
+    <Compile Include="IServerSource.cs" />
+    <Compile Include="ISharepointServerSource.cs" />
+    <Compile Include="IShellViewModel.cs" />
+    <Compile Include="ISplashView.cs" />
+    <Compile Include="ISplashViewModel.cs" />
+    <Compile Include="IStudioUpdateManager.cs" />
+    <Compile Include="IToolboxView.cs" />
+    <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
     <Compile Include="ISharepointReadListTo.cs" />
     <Compile Include="ISharepointSource.cs" />
     <Compile Include="IVersionStrategy.cs" />
     <Compile Include="IWarewolfIterator.cs" />
     <Compile Include="IWarewolfListIterator.cs" />
+    <Compile Include="IWarewolfWebClient.cs" />
+    <Compile Include="IWebLatestVersionDialog.cs" />
+    <Compile Include="IWorksurfaceKey.cs" />
+    <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PluginServiceDefinition.cs" />
+    <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />
+    <Compile Include="PopupController\IMessage.cs" />
+    <Compile Include="PopupController\IPopupController.cs" />
+    <Compile Include="PopupController\IPopupMessageBoxFactory.cs" />
+    <Compile Include="PopupController\IPopupMessages.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
+    <Compile Include="SaveDialogue\IRequestServiceNameViewModel.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IDirectoryHelper.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
@@ -216,6 +282,11 @@
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Security\Permissions.cs" />
+    <Compile Include="ServerProxyLayer\IDbSource.cs" />
+    <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
+    <Compile Include="ServerProxyLayer\IUpdateManager.cs" />
+    <Compile Include="ServerProxyLayer\IVersionManager.cs" />
+    <Compile Include="ServerProxyLayer\IWebServiceSource.cs" />
     <Compile Include="ServerStats.cs" />
     <Compile Include="Services\Sql\IDbFactory.cs" />
     <Compile Include="Services\Sql\IDbServer.cs" />
@@ -223,14 +294,27 @@
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
     <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
+    <Compile Include="Studio\Core\Enums.cs" />
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
+    <Compile Include="Studio\IMenuViewModel.cs" />
+    <Compile Include="Threading\IAsyncWorker.cs" />
+    <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
+    <Compile Include="Toolbox\IToolboxModel.cs" />
+    <Compile Include="Toolbox\IToolboxViewModel.cs" />
+    <Compile Include="Toolbox\IToolDescriptor.cs" />
+    <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
+    <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />
     <Compile Include="UndoFramework\ITransaction.cs" />
     <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
+    <Compile Include="WarewolfException.cs" />
+    <Compile Include="WebRequestMethod.cs" />
+    <Compile Include="WebServices\IWebService.cs" />
+    <Compile Include="WebService\IWebServiceModel.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IAction.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IActionCollection.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IDev2Task.cs" />
@@ -259,9 +343,12 @@
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Activity\" />
     <Folder Include="Core\Convertors\DateTime\" />
     <Folder Include="Core\Data\" />
+    <Folder Include="Email\" />
     <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Runtime\ServiceModel\" />
     <Folder Include="Studio\Core\AppResources\Enums\" />
     <Folder Include="Studio\Core\DataList\" />
   </ItemGroup>

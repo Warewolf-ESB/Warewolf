@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -88,6 +88,19 @@ namespace Dev2.DataList
         /// </summary>
         /// <returns></returns>
         public static IList<IFindRecsetOptions> FindAll()
+        {
+            return _options.Values.Where(a=>a.ArgumentCount>0).ToList();
+        }
+        /// <summary>
+        /// Find all AbstractRecsetSearchValidation objects
+        /// </summary>
+        /// <returns></returns>
+        public static IList<IFindRecsetOptions> FindAllDecision()
+        {
+            return _options.Values.ToList();
+        }
+
+        public static IList<IFindRecsetOptions> FindAllWithErrors()
         {
             return _options.Values.ToList();
         }

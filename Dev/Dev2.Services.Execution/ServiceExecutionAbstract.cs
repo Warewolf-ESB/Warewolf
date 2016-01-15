@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,6 +18,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -98,6 +99,16 @@ namespace Dev2.Services.Execution
             }
         }
 
+        public void GetSource(Guid sourceId)
+        {
+            var catalog = ResourceCatalog.Instance;
+            Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
+            if (Source == null)
+            {
+                ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}",
+                    Service.Source.ResourceID, Service.Source.ResourceName));
+            }
+        }
         protected virtual bool GetService(ResourceCatalog catalog)
         {
             Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID) ??
@@ -110,12 +121,14 @@ namespace Dev2.Services.Execution
             return true;
         }
 
-        protected abstract object ExecuteService(List<MethodParameter> methodParameters, int update, out ErrorResultTO errors, IOutputFormatter formater);
+        protected abstract object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater);
 
         #region ExecuteImpl
 
         public TService Service { get; set; }
         public string InstanceInputDefinitions { get; set; }
+        public ICollection<IServiceInput> Inputs { get; set; }
+        public ICollection<IServiceOutputMapping> Outputs { get; set; }
 
         protected void ExecuteImpl(out ErrorResultTO errors, int update)
         {
@@ -129,7 +142,10 @@ namespace Dev2.Services.Execution
 
             try
             {
-                outputFormatter = GetOutputFormatter(Service);
+                if(!string.IsNullOrEmpty(InstanceOutputDefintions))
+                {
+                    outputFormatter = GetOutputFormatter(Service);
+                }
             }
             catch (Exception)
             {
@@ -142,7 +158,7 @@ namespace Dev2.Services.Execution
                 }
             }
 
-            if (HandlesOutputFormatting && outputFormatter == null)
+            if (HandlesOutputFormatting && outputFormatter == null && !string.IsNullOrEmpty(InstanceOutputDefintions))
             {
                 errors.AddError(string.Format("Output format in service action {0} is invalid.", Service.ResourceName));
                 return;
@@ -156,47 +172,40 @@ namespace Dev2.Services.Execution
 
                 var itrs = new List<IWarewolfIterator>(5);
                 IWarewolfListIterator itrCollection = new WarewolfListIterator();
+                if(string.IsNullOrEmpty(InstanceInputDefinitions) && string.IsNullOrEmpty(InstanceOutputDefintions))
+                {
+                    if(Inputs != null && Inputs.Count == 0)
+                    {
+                        ExecuteService(out invokeErrors, update, outputFormatter);
+                        errors.MergeErrors(invokeErrors);
+                        return;
+                    }
+                    else
+                    {
+                        BuildParameterIterators(update, null, itrCollection, itrs);
+
+                        while(itrCollection.HasMoreData())
+                        {
+                            ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
+                            errors.MergeErrors(invokeErrors);
+                        }
+                        return;
+                    }
+                }
                 ServiceMethod method = Service.Method;
                 var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteService(inputs, out invokeErrors, update, outputFormatter);
+                    ExecuteService(out invokeErrors, update, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
                 {
-                    #region Build iterators for each ServiceActionInput
-                    var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
-                    foreach (MethodParameter sai in inputs)
-                    {
-                        string val = sai.Name;
-                        string toInject = "NULL";
-
-                        if (val != null)
-                        {
-                            var sai1 = sai;
-                            var dev2Definitions = inputDefs.Where(definition => definition.Name == sai1.Name);
-                            var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
-                            if (definitions.Length == 1)
-                            {
-                                toInject = DataListUtil.IsEvaluated(definitions[0].RawValue) ? DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue) : definitions[0].RawValue;
-                            }
-
-                        }
-                        else if (!sai.EmptyToNull)
-                        {
-                            toInject = sai.DefaultValue;
-                        }
-                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
-                        itrCollection.AddVariableToIterateOn(paramIterator);
-                        itrs.Add(paramIterator);
-                    }
-
-                    #endregion
+                    BuildParameterIterators(update, inputs, itrCollection, itrs);
 
                     while (itrCollection.HasMoreData())
                     {
-                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, update, outputFormatter);
+                        ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
                         errors.MergeErrors(invokeErrors);
                     }
                 }
@@ -214,6 +223,58 @@ namespace Dev2.Services.Execution
             }
         }
 
+        private void BuildParameterIterators(int update, List<MethodParameter> inputs, IWarewolfListIterator itrCollection, List<IWarewolfIterator> itrs)
+        {
+            if(string.IsNullOrEmpty(InstanceInputDefinitions))
+            {
+                if(Inputs != null)
+                {
+                    foreach (var sai in Inputs)
+                    {
+                        string val = sai.Name;
+                        string toInject = null;
+
+                        if (val != null)
+                        {
+                            toInject = sai.Value;
+                        }
+                        else if (!sai.EmptyIsNull)
+                        {
+                            toInject = "";
+                        }
+                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
+                        itrCollection.AddVariableToIterateOn(paramIterator);
+                        itrs.Add(paramIterator);
+                    }
+                }
+                return;
+            }
+            var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
+            foreach(MethodParameter sai in inputs)
+            {
+                string val = sai.Name;
+                string toInject = "NULL";
+
+                if(val != null)
+                {
+                    var sai1 = sai;
+                    var dev2Definitions = inputDefs.Where(definition => definition.Name == sai1.Name);
+                    var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
+                    if(definitions.Length == 1)
+                    {
+                        toInject = DataListUtil.IsEvaluated(definitions[0].RawValue) ? DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue) : definitions[0].RawValue;
+                    }
+                }
+                else if(!sai.EmptyToNull)
+                {
+                    toInject = sai.DefaultValue;
+                }
+                var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
+                itrCollection.AddVariableToIterateOn(paramIterator);
+                itrs.Add(paramIterator);
+            }
+        }
+
         #endregion
 
         #region ExecuteServiceAndMergeResultIntoDataList
@@ -222,21 +283,21 @@ namespace Dev2.Services.Execution
 
         #region ExecuteService
 
-        private void ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
+        private void ExecuteService(IWarewolfListIterator itrCollection,
             IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors,int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
-            if (methodParameters.Any())
+            if (Inputs.Any())
             {
                 // Loop iterators 
                 int pos = 0;
                 foreach (var itr in itrs)
                 {
                     string injectVal = itrCollection.FetchNextValue(itr);
-                    MethodParameter param = methodParameters[pos];
+                    var param = Inputs.ToList()[pos];
 
 
-                    param.Value = param.EmptyToNull &&
+                    param.Value = param.EmptyIsNull &&
                                   (injectVal == null ||
                                    string.Compare(injectVal, string.Empty,
                                        StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -250,7 +311,7 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                ExecuteService(methodParameters, out invokeErrors, update, formater);
+                ExecuteService(out invokeErrors, update, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
@@ -259,12 +320,13 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors,int update, IOutputFormatter formater = null)
+
+        private void ExecuteService(out ErrorResultTO errors,int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             try
             {
-                var parameters = methodParameters as IList<MethodParameter> ?? methodParameters.ToList();
+                var parameters = new List<MethodParameter>();
                 if (Service is WebService)
                 {
                     var webService = Service as WebService;
@@ -286,12 +348,12 @@ namespace Dev2.Services.Execution
                 string result;
                 if (parameters.Any())
                 {
-                    result = ExecuteService(parameters.ToList(), update, out errors, formater).ToString();
+                    result = ExecuteService(update, out errors, formater).ToString();
                 }
                 else
                 {
                     ErrorResultTO invokeErrors;
-                    result = ExecuteService(new List<MethodParameter>(), update, out invokeErrors, formater).ToString();
+                    result = ExecuteService(update, out invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
                 if (!HandlesOutputFormatting)

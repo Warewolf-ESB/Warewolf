@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,9 +15,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -54,7 +56,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         static DataListConversionUtils _dataListConversionUtils;
         bool _canViewInBrowser;
         bool _canDebug;
-
+        readonly IPopupController _popupController;
         #endregion Fields
 
         public event Action DebugExecutionStart;
@@ -113,6 +115,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DisplayName = "Debug input data";
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             _dataListConversionUtils = new DataListConversionUtils();
+            _popupController = CustomContainer.Get<IPopupController>();
         }
         #endregion Ctor
 
@@ -253,6 +256,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
             }
         }
+        public bool IsInError { get; set; }
+
         #endregion Cammands
 
         #region Methods
@@ -263,9 +268,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Save()
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
-            DoSaveActions();
-            ExecuteWorkflow();
-            RequestClose();
+            if (!IsInError)
+            {
+                DoSaveActions();
+                ExecuteWorkflow();
+                RequestClose();
+            }
+            else
+            {
+                ShowInvalidDataPopupMessage();
+            }
         }
 
         public void DoSaveActions()
@@ -310,14 +322,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             WebServer.Send(_resourceModel, payload.ToString(), new AsyncWorker());
         }
 
+        public void ShowInvalidDataPopupMessage()
+        {
+            _popupController.Show(StringResources.DataInput_Error,
+                                  StringResources.DataInput_Error_Title,
+                                  MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+
+            IsInError = true;
+        }
+
         public void ViewInBrowser()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
-            DoSaveActions();
-            string payload = BuildWebPayLoad();
-            SendViewInBrowserRequest(payload);
-            SendFinishedMessage();
-            RequestClose();
+            if (!IsInError)
+            {
+                Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                DoSaveActions();
+                string payload = BuildWebPayLoad();
+                SendViewInBrowserRequest(payload);
+                SendFinishedMessage();
+                RequestClose();
+            }
+            else
+            {
+                ShowInvalidDataPopupMessage();
+            }
         }
 
         public string BuildWebPayLoad()
@@ -515,8 +543,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
                     if (recordSet==null)
                     {
-                        recordSet = new RecordSet{Name = item.Recordset};
-                        recordSet.Columns = new Dictionary<int, List<IScalar>>();
+                        recordSet = new RecordSet
+                        {
+                            Name = item.Recordset,
+                            Columns = new Dictionary<int, List<IScalar>>()
+                        };
                         recordSets.Add(recordSet);
                     }
                     recordSet.AddColumn(val, item.Field, Convert.ToInt32(item.RecordsetIndex));
@@ -647,6 +678,42 @@ namespace Dev2.Studio.ViewModels.Workflow
             return itemsAdded;
         }
 
+        public IDataListItem GetNextRow(IDataListItem selectedItem)
+        {
+            if(selectedItem != null)
+            {
+                int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
+                if(indexToInsertAt != -1)
+                {
+                    var indexOfItemToGet = indexToInsertAt+1;
+                    if(indexOfItemToGet == WorkflowInputs.Count)
+                    {
+                        return selectedItem;
+                    }
+                    return WorkflowInputs[indexOfItemToGet];
+                }
+            }
+            return null;
+        }
+
+        public IDataListItem GetPreviousRow(IDataListItem selectedItem)
+        {
+            if(selectedItem != null)
+            {
+                int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
+                if(indexToInsertAt != -1)
+                {
+                    var indexOfItemToGet = indexToInsertAt-1;
+                    if (indexOfItemToGet == WorkflowInputs.Count || indexOfItemToGet == -1)
+                    {
+                        return selectedItem;
+                    }
+                    return WorkflowInputs[indexOfItemToGet];
+                }
+            }
+            return null;
+        }
+
 
         protected override void OnDispose()
         {
@@ -663,7 +730,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
                 string colName = null;
-                foreach(var col in recsetCols)
+                foreach(var col in recsetCols.Distinct(new ScalarNameComparer()))
                 {
                     if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                     {
@@ -718,5 +785,43 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             return result;
         }
+    }
+
+    internal class ScalarNameComparer : IEqualityComparer<IScalar>
+    {
+        #region Implementation of IEqualityComparer<in IScalar>
+
+        /// <summary>
+        /// Determines whether the specified objects are equal.
+        /// </summary>
+        /// <returns>
+        /// true if the specified objects are equal; otherwise, false.
+        /// </returns>
+        /// <param name="x">The first object of type <paramref name="x"/> to compare.</param><param name="y">The second object of type <paramref name="y"/> to compare.</param>
+        public bool Equals(IScalar x, IScalar y)
+        {
+            if (x == null) return false;
+            if (y == null) return false;
+            if (x.Name == null && y.Name == null) return true;
+            if (x.Name != null)
+            {
+                return x.Name.Equals(y.Name, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns a hash code for the specified object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the specified object.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+        public int GetHashCode(IScalar obj)
+        {
+            return obj.Name.GetHashCode();
+        }
+
+        #endregion
     }
 }

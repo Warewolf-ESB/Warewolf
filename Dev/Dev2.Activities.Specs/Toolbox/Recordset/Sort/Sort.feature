@@ -224,45 +224,65 @@ Scenario: Sort a recordset backwards recordset  with one row
     |                          |
     | [[rs(1).row]] = Warewolf |	
 
-#This following 4 Scenarios should be passed after the bug 11838 is fixed	
-#Scenario: Sort 2 columns backwards
-#	Given I have the following recordset to sort
-#	| rs       | value     |
-#	| rs(1).a  | Zambia    |
-#	| rec(1).a | Mangolia  |
-#	| rs(2).a  | America   |
-#	| rec(2).a | Australia |
-#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
-#	And my sort order is "Backwards"
-#	When the sort records tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| Sort Field                         | Sort Order |
-#	| [[rs(*).a]],[[rec(*).a]] = America | Backwards  |
-#	|                                    |            |
-#	And the debug output as
-#	    |                                    |
-#	    | [[rs(*).a]],[[rec(*).a]] = America |
-#
-#
-#Scenario: Sort 2 columns Forwards
-#	Given I have the following recordset to sort
-#	| rs       | value     |
-#	| rs(1).a  | Zambia    |
-#	| rec(1).a | Mangolia  |
-#	| rs(2).a  | America   |
-#	| rec(2).a | Australia |
-#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
-#	And my sort order is "Forward"
-#	When the sort records tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| Sort Field                        | Sort Order |
-#	| [[rs(*).a]],[[rec(*).a]] = America | Forward   |
-#	And the debug output as
-#	    |                                    |
-#	    | [[rs(*).a]],[[rec(*).a]] = Zambia |
-#
+Scenario Outline: Sort 2 columns backwards
+	Given I have the following recordset to sort
+	| rs     | value     |
+	| rs().a | Zambia    |
+	| rs().a | Mangolia  |
+	| rs().a | America   |
+	| rs().a | Australia |
+	And I sort a record "<input>"
+	And my sort order is "<direction>"
+	When the sort records tool is executed
+	Then the execution has '<error>' error
+	Examples: 
+	| input                    | direction | error                                    |
+	| [[rs(*).a]],[[rs(*).a]] | Backwards | You can only sort on one field at a time |
+	| [[rs(*).a]],[[rs(*).a]] | Forward   | You can only sort on one field at a time |
+	| [[rs(*)]]                | Backwards | Please provide a field to sort on        |
+	| [[rs(*)]]                | Forward   | Please provide a field to sort on        |
+	| [[va]] = tree            | Forward   | Only recordsets can be sorted            |
+	| ""                       | Forward   | No recordset given                       |
+	| asdas                    | Forward   | Only recordsets can be sorted            |
+	| 99                       | Forward   | Only recordsets can be sorted            |
+	| [[a]]                    | Forward   | Only recordsets can be sorted            |
+
+#Audit
+@ignore
+Scenario Outline: Sort recordset
+	Given I have the following recordset to sort
+	| rs     | value     |
+	| rs().a | Zambia    |
+	| rs().a | Mangolia  |
+	| rs().a | America   |
+	| rs().a | Australia |
+	And I sort a record "<input>"
+	And my sort order is "<direction>"
+	When the sort records tool is executed
+	Then the execution has "No" error
+	Examples: 
+	| input                          | direction | result             |
+	| [[rs(1).a]]                    | Forward   | Mongolia,Zambia    |
+	| [[rs([[int]]).a]], [[int]] = 2 | Forward   | America, Australia |
+
+
+#Complex Types
+@ignore
+Scenario Outline: Sort recordset using complex types
+	Given I have the following recordset to sort
+	| rs           | value     |
+	| rs().rec().a | Zambia    |
+	| rs().rec().a | Mangolia  |
+	| rs().rec().a | America   |
+	| rs().rec().a | Australia |
+	And I sort a record "<input>"
+	And my sort order is "<direction>"
+	When the sort records tool is executed
+	Then the execution has "<error>" error
+	Examples: 
+	| input             | direction | error | result          |
+	| [[rs().rec(1).a]] | Forward   | No    | Mongolia,Zambia |
+
 Scenario: Sort Recordset without field Forwards
 	Given I have the following recordset to sort
 	| rs       | value     |

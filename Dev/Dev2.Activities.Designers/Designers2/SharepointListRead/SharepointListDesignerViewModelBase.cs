@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -18,7 +19,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using Dev2.TO;
 
 namespace Dev2.Activities.Designers2.SharepointListRead
@@ -50,7 +50,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             :base(modelItem)
         {
             AddTitleBarLargeToggle();
-            AddTitleBarHelpToggle();
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
@@ -453,12 +452,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void EditSharepointSource()
         {
-            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == SelectedSharepointServer.ResourceID);
-            if (resourceModel != null)
-            {
-                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
-                RefreshSharepointSources();
-            }
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSharepointServer.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
         }
 
 

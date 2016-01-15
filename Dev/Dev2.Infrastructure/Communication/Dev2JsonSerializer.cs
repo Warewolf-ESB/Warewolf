@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,11 +35,11 @@ namespace Dev2.Communication
             };
         readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Objects
+                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
             };
         public string Serialize<T>(T message)
         {
-            VerifyArgument.IsNotNull("message", message);
             return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
         }
 
@@ -79,7 +79,7 @@ namespace Dev2.Communication
         {
             if(message != null && message.Length > 0)
             {
-                JsonSerializer serializer = new JsonSerializer { TypeNameHandling = _deSerializerSettings.TypeNameHandling };
+                JsonSerializer serializer = new JsonSerializer { TypeNameHandling = _deSerializerSettings.TypeNameHandling, TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat };
                 using(MemoryStream ms = new MemoryStream(message.Length))
                 {
                     // now load the stream ;)

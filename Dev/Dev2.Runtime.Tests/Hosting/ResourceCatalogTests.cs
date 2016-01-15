@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -549,6 +549,34 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(nameAttribute);
             Assert.AreEqual(resourceName, nameAttribute.Value);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_WithDifferentResourcePath_ExpectedDeleteOfExisting()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            var path = Path.Combine(workspacePath, resourcePath);
+            const string resourceName = "CitiesDatabase";
+            var xml = XmlResource.Fetch(resourceName);
+            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            //------------Execute Test---------------------------
+            var resource2 = new DbSource(xml) { ResourcePath = "MyTest\\Folder1\\CitiesDatabase2" ,ResourceID = resource.ResourceID};
+            catalog.SaveResource(workspaceID, resource);
+            var pathToDelete = resource.FilePath;
+            resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
+            resource2.ResourceName = "CitiesDatabase2";
+            Assert.IsTrue(File.Exists(pathToDelete));
+            catalog.SaveResource(workspaceID, resource2);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(File.Exists(pathToDelete));
+        }
+
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -2569,7 +2597,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2599,7 +2627,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2770,7 +2798,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceFound = rc.GetResource<DbService>(workspaceID, oldResource.ResourceID);
             //------------Assert Results-------------------------        
             Assert.IsNotNull(resourceFound);
-            Assert.IsTrue(resourceFound.Method.ExecuteAction.ToLower().Contains("select * from dbo.bob"));
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
 
@@ -3475,8 +3502,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ResourceCatalog_GetResourceList_WhenUsingIdAndTypeNull_ExpectException()
+        public void ResourceCatalog_GetResourceList_WhenUsingIdAndTypeNull_ShouldStillReturn()
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
@@ -3494,8 +3520,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (Guid.NewGuid() + ","));
 
             //------------Execute Test---------------------------
-            ResourceCatalog.Instance.GetResourceList(workspaceID, searchString, null);
-
+            var resourceList = ResourceCatalog.Instance.GetResourceList(workspaceID, searchString, null);
+            Assert.IsNotNull(resourceList);
         }
 
         [TestMethod]

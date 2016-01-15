@@ -9,6 +9,14 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpIsNull : AbstractRecsetSearchValidation
     {
+    
+        public override int ArgumentCount
+        {
+            get
+            {
+                return 1;
+            }
+        }
 
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {

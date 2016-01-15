@@ -5,9 +5,10 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               mc:Ignorable="d"
               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+              Background="Transparent"
               d:DesignHeight="300"
               d:DesignWidth="300">
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
         <customControls:CircularProgressBar x:Name="CircularProgressBar"
                                             Grid.Column="1"
                                             Height="150"
@@ -21,6 +22,7 @@
                         Margin="3"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
+                        LoadCompleted="WebBrowserHost_OnLoadCompleted"
                         Visibility="Collapsed" />
         </ScrollViewer>
     </Grid>

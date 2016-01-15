@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,11 +11,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Dev2
 {
     public static class CustomContainer
     {
+        public static List<Type> LoadedTypes { get; set; }
+
         static readonly Dictionary<Type, object> RegisterdTypes = new Dictionary<Type, object>();
 
         public static int EntiresCount
@@ -68,6 +71,47 @@ namespace Dev2
             {
                 RegisterdTypes.Remove(typeof(T));
             }
+        }
+
+        public static T CreateInstance<T>(params object[] constructorParameters)
+        {
+            var typeToCreate = typeof(T);
+            var assemblyTypes = LoadedTypes;
+            foreach(var assemblyType in assemblyTypes)
+            {
+                if(assemblyType.IsPublic && !assemblyType.IsAbstract && assemblyType.IsClass && !assemblyType.IsGenericType && typeToCreate.IsAssignableFrom(assemblyType))
+                {
+                    var constructorInfos = assemblyType.GetConstructors();
+                    foreach(var constructorInfo in constructorInfos)
+                    {
+                        var constructorMatch = false;
+                        var parameterInfos = constructorInfo.GetParameters();
+                        var numberOfParameters = parameterInfos.Length;
+                        if(numberOfParameters == constructorParameters.Length)
+                        {
+                            for(int i = 0; i < numberOfParameters; i++)
+                            {
+                                var constructorParameterType = parameterInfos[i].ParameterType;
+                                var givenParameterType = constructorParameters[i].GetType();
+                                if ((givenParameterType == constructorParameterType) || constructorParameterType.IsAssignableFrom(givenParameterType))
+                                {
+                                    constructorMatch = true;
+                                }
+                                else
+                                {
+                                    constructorMatch = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if(constructorMatch)
+                        {
+                            return (T)constructorInfo.Invoke(constructorParameters);
+                        }
+                    }
+                }
+            }
+            return default(T);
         }
     }
 }

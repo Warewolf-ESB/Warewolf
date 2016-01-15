@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,42 +32,42 @@ namespace Dev2.Services.Security
             var px = x as WindowsGroupPermission;
             var py = y as WindowsGroupPermission;
 
-            if(px == null || py == null)
+            if (px == null || py == null)
             {
                 return 1;
             }
 
             // New items must be last
             //
-            if(px.IsNew)
+            if (px.IsNew)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
-            if(py.IsNew)
+            if (py.IsNew)
             {
                 // px is less than py
                 return int.MinValue;
             }
 
             // BuiltInAdministrators must be first
-            if(px.IsBuiltInAdministrators)
+            if (px.IsBuiltInAdministrators)
             {
                 // px is less than py
                 return int.MinValue;
             }
-            if(py.IsBuiltInAdministrators)
+            if (py.IsBuiltInAdministrators)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
 
-            if(px.IsBuiltInGuests)
+            if (px.IsBuiltInGuests)
             {
                 // px is less than py
                 return int.MinValue + 1;
             }
-            if(py.IsBuiltInGuests)
+            if (py.IsBuiltInGuests)
             {
                 // px is greater than py
                 return int.MaxValue - 1;
@@ -79,7 +79,7 @@ namespace Dev2.Services.Security
 
         int Compare(WindowsGroupPermission px, WindowsGroupPermission py)
         {
-            switch(_sortMemberPath)
+            switch (_sortMemberPath)
             {
                 case "ResourceName":
                     return String.Compare(px.ResourceName, py.ResourceName, StringComparison.InvariantCulture);
@@ -103,4 +103,6 @@ namespace Dev2.Services.Security
 
 
     }
+
 }
+

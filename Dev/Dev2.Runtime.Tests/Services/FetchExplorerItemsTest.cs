@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var fetchExplorerItems = new FetchExplorerItems();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.Load(It.IsAny<Guid>())).Returns(item).Verifiable();
@@ -79,7 +79,8 @@ namespace Dev2.Tests.Runtime.Services
             var ax = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.Load(It.IsAny<Guid>()));
-            Assert.AreEqual(serializer.Deserialize<IExplorerItem>(ax.ToString()).ResourceId, item.ResourceId);
+            var message = serializer.Deserialize<CompressedExecuteMessage>(ax);
+            Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
 
         [TestMethod]

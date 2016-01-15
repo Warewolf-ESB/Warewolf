@@ -3,6 +3,22 @@
 	As a Warewolf user
 	I want a tool that I can input a formula and will calculate and retun a result
 
+##Calculate using a given formula
+##Calculate using multiple scalars and recordset inputs
+##Calculate with new lines should concatenate values
+##Calculate using Recordset (*) input in an agregate function like SUM
+##Calculate using incorrect formula
+##Calculate using incorrect argument expression for formula 
+##Calculate using variable as full calculation
+##Calculate using a negative index recordset value
+##Calculate using isnumber and blank
+##Calculate Assign by evaluating a variable inside a variable
+##Calculate Assign by evaluating a variable inside a variable with function
+##Calculate Assign by evaluating variables with functions
+##Variable that does not exist
+##Calculate using Recordset ([[val]]) input in an agregate function like SUM
+
+
 Scenario: Calculate using a given formula
 	Given I have the formula "mod(sqrt(49), 7)"	
 	When the calculate tool is executed
@@ -57,7 +73,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	| fx =                             |
 	| SUM([[var(*).int]]) = SUM(1,2,3) |	
 	And the debug output as 
-	|                 |
+	|                |
 	| [[result]] = 6 |
 
 Scenario: Calculate using incorrect formula
@@ -180,7 +196,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 29                  | DATE(2000,[[y]],12)                                        | 2/12/2000 12:00:00.000 AM                |
 	| 30                  | DAY([[x]])                                                 | 1               |
 	| 31                  | DAYS360([[x]],[[y]])                                       | 1                |
-	| 32                  | DB([[e]],[[z]],12,12,12)                                   | 4.66024676978964                     |
+	| 32                  | DB([[e]],[[z]],12,12,12)                                   | 4.66024676978963                     |
 	| 33                  | DBNull()                                                   |                          |
 	| 34                  | DDB([[e]],[[z]],12,12,[[x]])                               | 31.9996025467397                   |
 	| 35                  | DEC2BIN([[x]],[[z]])                                       | 0000000001               |
@@ -227,7 +243,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 77                  | INT([[s]])                                                 | -1                       |
 	| 78                  | INTRATE(2015,2030,1000,1,4)                                | -23.976                  |
 	| 79                  | IPMT(5,12,100,1000,2000,1)                                 | -833.333358764648             |
-	| 80                  | IRR([[z]],[[rc(1).set]],2)                                 | -1.5                     |
+	#| 80                  | IRR([[z]],[[rc(1).set]],2)                                 | -1.5                     |
 	| 81                  | isdbnull([[x]])                                            | False                    |
 	| 82                  | ISBLANK(1)                                                 | False                    |
 	| 83                  | ISERR([[e]])                                               | False                    |
@@ -318,6 +334,42 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 #	| 168                 | FALSE                                                      | FALSE                    |
 #	| 169                 | TRUE                                                       | TRUE                     |
 
+@Ignore
+	#Audit
+Scenario: Calculate using Recordset ([[val]]) input in an agregate function like SUM
+	Given I have a calculate variable "[[var([[val]]).int]]" equal to 
+	| var().int	|
+	| 1			|
+	| 2			|
+	| 3			|
+	And I have a calculate variable "[[val]]" equal to "2"
+	And I have the formula "SUM([[var([[val]]).int]])"
+	When the calculate tool is executed
+	Then the calculate result should be "2"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| fx =                             |
+	| SUM([[var([[val]]).int]]) = SUM(2) |	
+	And the debug output as 
+	|                       |
+	| [[rs([[val]]).a]] = 2 |
+
+Scenario Outline: Calculate using Recordset () input in an agregate function like SUM
+	Given I have a calculate variable "[[var().int]]" equal to 
+	| var().int	|
+	| 1			|
+	| 2			|
+	| 3			|
+	And I have a calculate variable "[[val]]" equal to "3"
+	And I have the formula "<fx>"
+	When the calculate tool is executed
+	And the execution has "NO" error
+	Then the calculate "<result>" should be "<value>"
+	Examples: 
+		| No | fx                                             | result      | value |
+		| 1  | SUM([[var([[val]]).int]])                      | [[rs().a]]  | 3     |
+		| 2  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) | [[rs(*).a]] | 6     |
+		| 3  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) | [[rs(4).a]] | 6     |
 
 Scenario: Calculate using variables with a null value
 	Given I have a calculate variable "[[a]]" equal to "NULL"
@@ -329,6 +381,18 @@ Scenario: Calculate using variables with a null value
 	| fx =                       |
 	| SUM([[a]],[[b]]) = SUM(,) |
 
+Scenario: Variable that does not exist
+	Given I have a calculate variable "[[a]]" equal to "1"
+	And I have a calculate variable "[[b]]" equal to "20"
+	And I have the formula "Sum([[a]],[[b]],[[c]])"
+	When the calculate tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| fx =                             |
+	| SUM([[var().int]]) = SUM(3) |	
+		And the debug output as 
+	|                |
+	| [[rs().a]] = 3 |
 Scenario: Calculate using variables with a no existent value
 	Given I have the formula "SUM([[a]],[[b]])"
 	When the calculate tool is executed
@@ -338,3 +402,21 @@ Scenario: Calculate using variables with a no existent value
 	| SUM([[a]],[[b]]) =  |
 
 
+#Complex Types
+@ignore
+Scenario Outline: Calculate using complex types () input in an agregate function like SUM
+	Given I have a calculate variable "[[var().int().value]]" equal to 
+	| var().int().value | value |
+	| var().int().value | 1     |
+	| var().int().value | 2     |
+	| var().int().value | 3     |
+	And I have the formula "<fx>"
+	When the calculate tool is executed
+	Then the calculate result should be "3"
+	And the execution has "NO" error
+	Then the calculate "<result>" should be "<value>"
+	Examples: 
+	| No | fx                                 | result               | value |
+	| 1  | SUM([[var().int().value]])         | [[rs().set().value]] | 3     |
+	| 1  | SUM([[var(1).int([[val]]).value]]) | [[rs().set().value]] | 10000 |
+	| 1  | SUM([[var().int(*).value]])        | [[rs().set().value]] | 10007 |

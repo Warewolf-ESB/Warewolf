@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.DropBox.Upload;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
@@ -148,12 +149,16 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
+            CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
             var fileOps = new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File", SelectedSource = sources[2] };
             fileOps.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            agg.Verify(a => a.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
+            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(),It.IsAny<IServer>()));
+            CustomContainer.DeRegister<IShellViewModel>();
         }
 
         [TestMethod]

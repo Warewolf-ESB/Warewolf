@@ -14,112 +14,108 @@
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="250"
                                MaxWidth="250"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:CaseConvertDesignerViewModel}">
-    
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
 
-    <controls:Dev2DataGrid x:Name="SmallDataGrid"
+    <Grid Margin="{StaticResource ElementBorder}">
+        <controls:Dev2DataGrid x:Name="SmallDataGrid"
                            ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource SpacedActivityDataGridStyle}"
                            MinHeight="56">
 
-        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-        <i:Interaction.Behaviors>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>[[Text]]</system:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                    <system:Int32>0</system:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
-        </i:Interaction.Behaviors>
+            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+            <i:Interaction.Behaviors>
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <system:String>[[Text]]</system:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <system:Int32>0</system:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+            </i:Interaction.Behaviors>
 
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="25"
                                     d:DataContext="{d:DesignInstance Type=dev2:CaseConvertTO}"
                                     IsReadOnly="True">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding ModelItem, 
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
                                               Converter={converters:RowToIndexConverter}}"/>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
+                <DataGridTemplateColumn Width="*"
                                     d:DataContext="{d:DesignInstance Type=dev2:CaseConvertTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <ui:IntellisenseTextBox AllowMultilinePaste="True"
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox AllowMultilinePaste="True"
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
                                                 TextWrapping="Wrap"
                                                 Padding="3"
+                                                Margin="0,0,1,1"
                                                 DefaultText="{Binding WatermarkTextVariable}"
                                                 WrapInBrackets="False"
                                                 Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 ToolTip="{x:Static help:HelpTextResources.CaseConversionToolTipTextInput}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                            <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.CaseConversionHelpTextInput}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
+                                <i:Interaction.Behaviors>
+                                    <core1:HelpSetter Text="{x:Static languages:Core.CaseConversionHelpTextInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="StringToConvert"
                                                      SourcePropertyValue="{Binding StringToConvert, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ui:IntellisenseTextBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
+                <DataGridTemplateColumn Width="*"
                                     d:DataContext="{d:DesignInstance Type=dev2:CaseConvertTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
-                                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                  Margin="0"
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                  Margin="0,0,1,1"
                                   ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                   SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                   ToolTip="{x:Static help:HelpTextResources.CaseConversionToolTipConvertToCasetype}">
-                            <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.CaseConversionHelpConvertToCaseType}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
+                                <i:Interaction.Behaviors>
+                                    <core1:HelpSetter Text="{x:Static languages:Core.CaseConversionHelpConvertToCaseType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="ConvertType"
                                                      SourcePropertyValue="{Binding ConvertType, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ComboBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
-    </controls:Dev2DataGrid>
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </controls:Dev2DataGrid>
+    </Grid>
 </core:ActivityDesignerTemplate>

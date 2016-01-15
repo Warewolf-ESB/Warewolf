@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,7 +56,7 @@ namespace Dev2.Scheduler.Test
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object,a=>a.WorkflowName);
             Assert.AreEqual(_convertorFactory.Object, model.ConvertorFactory);
             Assert.AreEqual(_folderId, model.WarewolfFolderPath);
             Assert.AreEqual(_agentPath, model.WarewolfAgentPath);
@@ -75,7 +75,7 @@ namespace Dev2.Scheduler.Test
             try
             {
                 // ReSharper disable ObjectCreationAsStatement
-                new ScheduledResourceModel(null, null, null, null, null, null);
+                new ScheduledResourceModel(null, null, null, null, null, null,null);
                 // ReSharper restore ObjectCreationAsStatement
             }
             catch(Exception e)
@@ -102,11 +102,27 @@ securityWrapper
             SetupSingleTask();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object);
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object,a=>a.WorkflowName);
 
             Assert.AreEqual(1,
                             model.ScheduledResources.Count);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResourcesWithId()
+        {
+            //setup
+            SetupSingleTaskWithId();;
+            //create
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
+
+            Assert.AreEqual(1,
+                            model.ScheduledResources.Count);
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -117,7 +133,7 @@ securityWrapper
             SetupSingleTask();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object);
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
 
             Assert.AreEqual(1,
                             model.ScheduledResources.Count);
@@ -132,7 +148,7 @@ securityWrapper
             SetupSingleTask();
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, d => d.WorkflowName);
             IScheduledResource a = model.ScheduledResources.First();
             Assert.AreEqual("bob", a.Name);
             Assert.AreEqual("a", a.WorkflowName);
@@ -146,7 +162,7 @@ securityWrapper
             SetupSingleTask();
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var mockFolder = new Mock<ITaskFolder>();
@@ -168,7 +184,7 @@ securityWrapper
             //setup
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             var mockFolder = new Mock<ITaskFolder>();
             var resource = new Mock<IScheduledResource>();
 
@@ -210,7 +226,7 @@ securityWrapper
 
             //construct
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
 
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
             Assert.AreEqual(2, history.Count);
@@ -248,7 +264,7 @@ securityWrapper
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                 // ReSharper restore UseObjectOrCollectionInitializer
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
@@ -292,7 +308,7 @@ securityWrapper
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                 // ReSharper restore UseObjectOrCollectionInitializer
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
@@ -335,7 +351,7 @@ securityWrapper
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                 // ReSharper restore UseObjectOrCollectionInitializer
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
@@ -376,7 +392,7 @@ securityWrapper
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                 // ReSharper restore UseObjectOrCollectionInitializer
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
@@ -399,7 +415,7 @@ securityWrapper
             //create objects
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object);
+                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();
             var action = new Mock<IExecAction>();
@@ -443,7 +459,7 @@ securityWrapper
             //create objects
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object);
+                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
@@ -467,7 +483,7 @@ Please contact your Windows System Administrator.", errorMessage);
             //create objects
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object);
+                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
@@ -491,7 +507,7 @@ Please contact your Warewolf System Administrator.", errorMessage);
             //create objects
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object);
+                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
@@ -513,7 +529,7 @@ Please contact your Warewolf System Administrator.", errorMessage);
         {
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
 
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();
@@ -568,6 +584,29 @@ Please contact your Warewolf System Administrator.", errorMessage);
             task1.Setup(a => a.Action).Returns(action1.Object);
             task1.Setup(a => a.Trigger).Returns(trigger1.Object);
             action1.Setup(a => a.Arguments).Returns("\"Workflow:a\" \"TaskName:b\"");
+            _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
+        }
+
+        private void SetupSingleTaskWithId()
+        {
+            _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
+            var task1 = new Mock<IDev2Task>();
+            var task2 = new Mock<IDev2Task>();
+            var action1 = new Mock<IExecAction>();
+            var trigger1 = new Mock<ITrigger>();
+            var definition = new Mock<IDev2TaskDefinition>();
+            var settings = new Mock<ITaskSettings>();
+            definition.Setup(a => a.Data).Returns("bob");
+            definition.Setup(a => a.Settings).Returns(settings.Object);
+            settings.Setup(a => a.Enabled).Returns(true);
+
+            _convertorFactory.Setup(a => a.CreateExecAction(action1.Object)).Returns(action1.Object);
+            task1.Setup(a => a.IsValidDev2Task()).Returns(true);
+            task1.Setup(a => a.Definition).Returns(definition.Object);
+            task2.Setup(a => a.IsValidDev2Task()).Returns(false);
+            task1.Setup(a => a.Action).Returns(action1.Object);
+            task1.Setup(a => a.Trigger).Returns(trigger1.Object);
+            action1.Setup(a => a.Arguments).Returns("\"Workflow:a\" \"TaskName:b\" \"ResourceId:"+Guid.NewGuid()+"\"");
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
     }

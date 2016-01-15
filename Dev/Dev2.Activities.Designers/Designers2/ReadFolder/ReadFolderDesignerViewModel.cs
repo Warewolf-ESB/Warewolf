@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers2.ReadFolder
 {
@@ -20,7 +21,6 @@ namespace Dev2.Activities.Designers2.ReadFolder
             : base(modelItem, "Directory", string.Empty)
         {
             AddTitleBarLargeToggle();
-            AddTitleBarHelpToggle();
 
             if (!IsFilesAndFoldersSelected && !IsFoldersSelected && !IsFilesSelected)
             {
@@ -38,5 +38,14 @@ namespace Dev2.Activities.Designers2.ReadFolder
         bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
     }
 }

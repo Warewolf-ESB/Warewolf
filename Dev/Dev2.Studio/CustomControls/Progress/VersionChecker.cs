@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,15 +12,17 @@
 using System;
 using System.Configuration;
 using System.Net;
-using Dev2.Helpers;
+using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Utils;
+using Warewolf.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Helpers
 {
     public class VersionChecker : IVersionChecker
     {
-        readonly IDev2WebClient _webClient;
+        readonly IWarewolfWebClient _webClient;
         readonly Func<Version> _versionGetter;
 
         bool _isDone;
@@ -29,11 +31,11 @@ namespace Dev2.Studio.Core.Helpers
         private string _latestVersionCheckSum;
 
         public VersionChecker()
-            : this(new Dev2WebClient(new WebClient()), VersionInfo.FetchVersionInfoAsVersion)
+            : this(new WarewolfWebClient(new WebClient()), VersionInfo.FetchVersionInfoAsVersion)
         {
         }
 
-        public VersionChecker(IDev2WebClient webClient, Func<Version> versionGetter)
+        public VersionChecker(IWarewolfWebClient webClient, Func<Version> versionGetter)
         {
             VerifyArgument.IsNotNull("webClient", webClient);
             VerifyArgument.IsNotNull("versionGetter", versionGetter);
@@ -106,6 +108,12 @@ namespace Dev2.Studio.Core.Helpers
             return Latest > Current;
         }
 
+        public async Task<bool> GetNewerVersionAsync()
+        {
+            var latest = await GetLatestVersionAsync();
+            return latest > Current;
+        }
+
         #endregion
 
         #region Check
@@ -137,6 +145,20 @@ namespace Dev2.Studio.Core.Helpers
         #endregion
 
         #region GetLatestVersion
+
+        async Task<Version> GetLatestVersionAsync()
+        {
+
+            try
+            {
+                var version = await _webClient.DownloadStringAsync(InstallerResources.WarewolfVersion);
+                return new Version(version);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         Version GetLatestVersion()
         {

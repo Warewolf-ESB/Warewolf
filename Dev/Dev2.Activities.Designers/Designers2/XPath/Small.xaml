@@ -16,17 +16,11 @@
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="200"
                                MaxWidth="200"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:XPathDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -37,10 +31,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label  Content="XML"
+            <TextBlock  Text="XML"
                     Grid.Row="0"
-                    Grid.Column="0"
-                    Style="{StaticResource ActivityLabelStyle}" />
+                    Grid.Column="0" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                     Grid.Column="1"
                                     Grid.Row="0"
@@ -69,7 +62,7 @@
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                Grid.Row="1"
                                Grid.Column="0"
-                               Grid.ColumnSpan="2"
+                               Margin="{StaticResource ControlBorderTop}"
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
@@ -90,7 +83,7 @@
                                     IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding ModelItem, 
+                        <TextBlock Text="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
                                               Converter={converters:RowToIndexConverter}}"/>
                     </DataTemplate>
@@ -104,6 +97,7 @@
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                     MaxHeight="52"
                                                     Padding="3"
+                                                    Margin="0,0,2,1"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -135,7 +129,7 @@
                     <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
-                                                    Margin="0"
+                                                    Margin="0,0,1,1"
                                                     WrapInBrackets="False"
                                                     DefaultText="XPath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

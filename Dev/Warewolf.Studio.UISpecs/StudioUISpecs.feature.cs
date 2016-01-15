@@ -1,0 +1,1 @@
+﻿#error Feature file already contains a scenario with name 'Drag toolbox MySql Tool onto a new workflow'

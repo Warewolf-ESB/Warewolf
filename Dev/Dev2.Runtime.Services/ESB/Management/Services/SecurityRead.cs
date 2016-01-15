@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -32,6 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SecurityRead : IEsbManagementEndpoint
     {
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
+        private IResourceCatalog _resourceCatalog;
 
         public static List<WindowsGroupPermission> DefaultPermissions
         {
@@ -64,6 +66,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
                     Dev2Logger.Log.Debug(decryptData);
                     var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
+                    if(currentSecuritySettingsTo.WindowsGroupPermissions.Any(a=>a.ResourceID!= Guid.Empty))
+                    {
+                        foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
+                        {
+                            perm.ResourceName = Catalog.GetResourcePath(perm.ResourceID);
+                        }
+                    }
+                    decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                     var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
 
                     // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
@@ -176,6 +186,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "SecurityReadService";
+        }
+
+        public IResourceCatalog Catalog
+        {
+            get { return _resourceCatalog ?? ResourceCatalog.Instance; }
+            set { _resourceCatalog = value; }
         }
     }
 }

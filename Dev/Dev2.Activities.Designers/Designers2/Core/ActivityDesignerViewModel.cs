@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,6 +22,7 @@ using System.Windows.Input;
 using Dev2.Activities.Designers2.Core.Converters;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Service;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -37,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core
     /// Rather bind to <see cref="ModelItem"/>.PropertyName - this will ensure that the built-in undo/redo framework just works.
     /// </remarks>
     /// </summary>
-    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource,IDisposable
+    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource,IDisposable,IUpdatesHelp
     {
         static Action<Type> CreateShowExampleWorkflowAction()
         {
@@ -270,25 +271,42 @@ namespace Dev2.Activities.Designers2.Core
         public void Expand()
         {
             ShowLarge = true;
+            ShowLargeChanged = ShowLarge;
         }
+
+        public bool ShowLargeChanged { get; set; }
 
         public virtual void Collapse()
         {
             ShowLarge = false;
+            ShowLargeChanged = ShowLarge;
         }
 
         public virtual void Restore()
         {
-            ShowLarge = PreviousView == ShowLargeProperty.Name;
+            ShowLarge = PreviousView == ShowLargeProperty.Name && ShowLargeChanged != ShowLarge;
         }
 
         protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            var item = sender as ModelItem;
+            if (item != null)
+            {
+                switch (e.PropertyName)
+                {
+                    case "IsSelection":
+
+                        break;
+                    case "IsPrimarySelection":
+
+                        break;
+                }
+            }
         }
 
         protected void AddTitleBarHelpToggle()
         {
-            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Close Help", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Open Help", "HelpToggle", this, ShowHelpProperty
+            var toggle = ActivityDesignerToggle.Create("Question", "Close Help", "Question", "Open Help", "HelpToggle", this, ShowHelpProperty
                 );
             TitleBarToggles.Add(toggle);
         }
@@ -320,7 +338,7 @@ namespace Dev2.Activities.Designers2.Core
                     ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
                     if(activityDesignerToggle == null)
                     {
-                        AddTitleBarHelpToggle();
+                        //AddTitleBarHelpToggle();
                     }
                 }
                 else
@@ -397,15 +415,21 @@ namespace Dev2.Activities.Designers2.Core
         {
             TitleBarToggles.Clear();
 
-            _modelItem.PropertyChanged -= OnModelItemPropertyChanged;
+            //_modelItem.PropertyChanged -= OnModelItemPropertyChanged;
            
             OnDispose();
-            CEventHelper.RemoveAllEventHandlers(this);
-            CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
-            CEventHelper.RemoveAllEventHandlers(ModelItem);
+//            CEventHelper.RemoveAllEventHandlers(this);
+//            CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
+//            CEventHelper.RemoveAllEventHandlers(ModelItem);
            GC.SuppressFinalize(this);
         }
 
         protected virtual void OnDispose(){}
+
+        #region Implementation of IUpdatesHelp
+
+        public abstract void UpdateHelpDescriptor(string helpText);
+
+        #endregion
     }
 }

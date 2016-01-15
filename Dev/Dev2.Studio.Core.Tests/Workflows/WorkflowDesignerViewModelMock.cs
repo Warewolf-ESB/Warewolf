@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,8 +20,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
@@ -36,13 +36,13 @@ namespace Dev2.Core.Tests.Workflows
     {
         readonly Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper,IExternalProcessExecutor processExecutor, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                new TestAsyncWorker(),
-                createDesigner,false,false)
+                new SynchronousAsyncWorker(),processExecutor,
+                createDesigner,false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -52,17 +52,17 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new TestAsyncWorker(), createDesigner, false, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(),new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
         }
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IExternalProcessExecutor processExecutor ,bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, new TestAsyncWorker(), createDesigner, false, false)
+                popupController, new SynchronousAsyncWorker(),processExecutor, createDesigner, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;

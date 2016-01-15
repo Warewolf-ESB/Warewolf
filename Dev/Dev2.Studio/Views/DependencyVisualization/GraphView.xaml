@@ -3,12 +3,11 @@
   x:Class="Dev2.Views.DependencyVisualization.GraphView"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:local="clr-namespace:CircularDependencyTool">
+  xmlns:local="clr-namespace:CircularDependencyTool"
+  xmlns:circularDependencyTool="clr-namespace:CircularDependencyTool;assembly=Dev2.Common">
     <UserControl.Resources>
         <Style x:Key="NodeBorderStyle" TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorderBrush}" />
             <Setter Property="CornerRadius" Value="0" />
             <Setter Property="Height" Value="{Binding Path=NodeHeight}" />
             <Setter Property="Padding" Value="4" />
@@ -28,8 +27,8 @@
 
     <ScrollViewer AutomationProperties.AutomationId="UI_BottomScrollView_AutoID">
         <DockPanel >
-            <Border DockPanel.Dock="Top" Background="{StaticResource ButtonBackgroundBrush}"  
-                    Padding="2,8,2,8" BorderBrush="{StaticResource ButtonBorderBrush}"
+            <Border DockPanel.Dock="Top" 
+                    Padding="2,8,2,8" 
                     Margin="4"
                     BorderThickness="1">
                 <StackPanel Orientation="Vertical">
@@ -43,17 +42,17 @@
                 </StackPanel>
             </Border>
 
-            <local:NodeConnectionAdornerDecorator Graph="{Binding Path=.}" 
+            <circularDependencyTool:NodeConnectionAdornerDecorator Graph="{Binding Path=.}" 
                                                   Margin="17"
                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"  
                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" >
 
-                <ItemsControl Background="{StaticResource BrushBackground}" ItemsSource="{Binding Path=Nodes}">
+                <ItemsControl ItemsSource="{Binding Path=Nodes}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
 
                             <!--<jas:DragCanvas />-->
-                            <local:BDSDependencyCanvas />
+                            <circularDependencyTool:BDSDependencyCanvas />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
@@ -89,7 +88,7 @@
                     </ItemsControl.ItemContainerStyle>
                 </ItemsControl>
             
-            </local:NodeConnectionAdornerDecorator>
+            </circularDependencyTool:NodeConnectionAdornerDecorator>
 
         </DockPanel>
     </ScrollViewer>

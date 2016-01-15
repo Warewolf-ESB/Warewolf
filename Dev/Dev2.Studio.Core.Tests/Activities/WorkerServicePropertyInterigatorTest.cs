@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -84,11 +84,10 @@ namespace Dev2.Core.Tests.Activities
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
-            Mock<IStudioResourceRepository> exp = new Mock<IStudioResourceRepository>();
             var resRepo = new Mock<IResourceRepository>();
-            var srcRes = new Mock<IResourceModel>();
+            var srcRes = new Mock<IContextualResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
-            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(srcRes.Object);
 
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\" SourceID=\"123456\"></Action>") };

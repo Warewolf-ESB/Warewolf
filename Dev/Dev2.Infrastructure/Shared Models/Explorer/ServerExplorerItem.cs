@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ namespace Dev2.Explorer
             Children = new List<IExplorerItem>();
         }
         public ServerExplorerItem(string displayName, Guid resourceId, ResourceType resourceType,
-                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath)
+                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath, string inputs, string outputs)
         {
             DisplayName = displayName;
             ResourceId = resourceId;
@@ -35,11 +35,26 @@ namespace Dev2.Explorer
             Children = children;
             Permissions = permissions;
             ResourcePath = resourcePath;
+            Inputs = inputs;
+            Outputs = outputs;
         }
         public string DisplayName { get; set; }
         public Guid ResourceId { get; set; }
         public Guid ServerId { get; set; }
         public string WebserverUri { get; set; }
+
+        public string Inputs
+        {
+            get;
+            set;
+        }
+
+        public string Outputs
+        {
+            get;
+            set;
+        }
+
         [JsonConverter(typeof(ResourceTypeConvertor))]
         public ResourceType ResourceType { get; set; }
 
@@ -51,9 +66,9 @@ namespace Dev2.Explorer
 
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj)) return false;
-            if(ReferenceEquals(this, obj)) return true;
-            if(obj.GetType() != GetType()) return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ServerExplorerItem)obj);
         }
 

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,8 +29,10 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -77,7 +79,10 @@ namespace Dev2.Activities.Designers2.Service
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
             : base(modelItem)
         {
-            AddTitleBarEditToggle();
+            if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity) && modelItem.ItemType != typeof(DsfWebserviceActivity))
+            {
+                AddTitleBarEditToggle();
+            }
             AddTitleBarMappingToggle();
 
             // PBI 6690 - 2013.07.04 - TWR : added
@@ -407,7 +412,7 @@ namespace Dev2.Activities.Designers2.Service
                 
             }
         }
-        string Type { get { return GetProperty<string>(); } }
+        public string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
         Guid EnvironmentID { get { return GetProperty<Guid>(); } }
 
@@ -660,31 +665,13 @@ namespace Dev2.Activities.Designers2.Service
             }
             if (resourceId != Guid.Empty) // if we have a GUID then get the model
             {
-                ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
+                ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             }
-            else
+            if(!CheckSourceMissing())
             {
-                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
-                {
-                    ResourceModel =
-                        environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName, true) as
-                        IContextualResourceModel;
-
-                }
-                // else return;
+                return false;
             }
-            if (ResourceModel == null && environmentModel.IsConnected) // if we have no name, guid and no resource, then set deleted
-            {
-
-                UpdateLastValidationMemoWithDeleteError();
-            }
-            else
-            {
-                if (!CheckSourceMissing())
-                    return false;
-            }
-
             return true;
 
 
@@ -717,7 +704,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (ResourceModel != null && ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null)
             {
-                var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
+                var resourceModel = ResourceModel;
                 if (resourceModel != null)
                 {
                     string srcId;
@@ -738,7 +725,7 @@ namespace Dev2.Activities.Designers2.Service
                     if (Guid.TryParse(srcId, out sourceId))
                     {
                         SourceId = sourceId;
-                        var sourceResource = _environment.ResourceRepository.FindSingle(c => c.ID == sourceId);
+                        var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
                         if (sourceResource == null)
                         {
                             UpdateLastValidationMemoWithSourceNotFoundError();
@@ -785,25 +772,40 @@ namespace Dev2.Activities.Designers2.Service
             ImageSource = GetIconPath(actionType);
         }
 
+
+        public string ResourceType
+        {
+            get;
+            set;
+        }
+
         string GetIconPath(Common.Interfaces.Core.DynamicServices.enActionType actionType)
         {
             switch (actionType)
             {
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
+                    ResourceType = Common.Interfaces.Data.ResourceType.DbService.ToString();
                     return "DatabaseService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
+                    ResourceType = Common.Interfaces.Data.ResourceType.WebService.ToString();
                     return "WebService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
+                    ResourceType = Common.Interfaces.Data.ResourceType.PluginService.ToString();
                     return "PluginService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
-                    return string.IsNullOrEmpty(ServiceUri)
-                        ? "Workflow-32"
-                        : "RemoteWarewolf-32";
+                    if(string.IsNullOrEmpty(ServiceUri))
+                    {
+                        ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService.ToString();
+                        return "Workflow-32";
+                    }
+                    ResourceType = Common.Interfaces.Data.ResourceType.Server.ToString();
+                    return "RemoteWarewolf-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
+                    ResourceType = Common.Interfaces.Data.ResourceType.Server.ToString();
                     return "RemoteWarewolf-32";
 
             }
@@ -813,7 +815,7 @@ namespace Dev2.Activities.Designers2.Service
         void AddTitleBarEditToggle()
         {
             // ReSharper disable RedundantArgumentName
-            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png", "Edit", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png", "Edit", "ShowParentToggle",
+            var toggle = ActivityDesignerToggle.Create("ServicePropertyEdit", "Edit", "ServicePropertyEdit", "Edit", "ShowParentToggle",
                 autoReset: true,
                 target: this,
                 dp: ShowParentProperty
@@ -1313,5 +1315,14 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
         #endregion
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
     }
 }

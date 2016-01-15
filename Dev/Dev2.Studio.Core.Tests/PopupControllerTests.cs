@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
                 {
-                    ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                    ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                         {
                             description = desc;
                             header = hdr;
@@ -68,7 +68,8 @@ namespace Dev2.Core.Tests
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             string expectedDescription = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
                           " Would you like to save the new name?" + Environment.NewLine +
-                          "-------------------------------------------------------------------" +
+                          "-----------------------------------------------------------------" +
+                              Environment.NewLine +
                           "Yes - Save with the new name." + Environment.NewLine +
                           "No - Save with the old name." + Environment.NewLine +
                           "Cancel - Returns you to Scheduler.";
@@ -77,7 +78,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -113,7 +114,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -150,7 +151,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -183,15 +184,16 @@ namespace Dev2.Core.Tests
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             MessageBoxImage imageType = MessageBoxImage.Error;
             var expectedDesc = "Scheduler Task has not been saved." + Environment.NewLine
-                            + "Would you like to save the Task? " + Environment.NewLine +
-                            "-------------------------------------------------------------------" +
-                            "Yes - Save the Task." + Environment.NewLine +
-                            "No - Discard your changes." + Environment.NewLine +
-                            "Cancel - Returns you to Scheduler.";
+                              + "Would you like to save the Task? " + Environment.NewLine +
+                              "-----------------------------------------------------------------" +
+                              Environment.NewLine +
+                              "Yes - Save the Task." + Environment.NewLine +
+                              "No - Discard your changes." + Environment.NewLine +
+                              "Cancel - Returns you to Scheduler.";
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -225,14 +227,15 @@ namespace Dev2.Core.Tests
             MessageBoxImage imageType = MessageBoxImage.Error;
             var expectedDesc = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
-                              "-------------------------------------------------------------------" +
+                              "-----------------------------------------------------------------" +
+                              Environment.NewLine +
                               "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
                               "Cancel - Returns you to settings.";
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -271,7 +274,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;
@@ -310,7 +313,7 @@ namespace Dev2.Core.Tests
 
             var popupController = new PopupController
             {
-                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
                 {
                     description = desc;
                     header = hdr;

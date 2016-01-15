@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Data.TO;
 
 namespace Dev2.Common.Interfaces.Scheduler.Interfaces
@@ -83,5 +84,15 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
         IErrorResultTO Errors { get; set; }
 
         bool IsNew { get; set; }
+
+        bool IsNewItem { get; set; }
+        string NameForDisplay { get; }
     }
+
+    public interface INewScheduledResource
+    {
+        ICommand NewCommand { get; set; }
+    }
+
+   
 }

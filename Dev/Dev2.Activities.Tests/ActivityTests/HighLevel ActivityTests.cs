@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -340,22 +340,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             MemberInfo[] RecordsetName = GetMembers(type, "RecordsetName");
             MemberInfo[] CountNumber = GetMembers(type, "CountNumber");
             Assert.IsTrue(RecordsetName != null && CountNumber != null && RecordsetName.Length == 1 && CountNumber.Length == 1, "This will fail on designer binding, please update this before proceeding");
-        }
-
-
-
-        [TestMethod]
-        public void DsfAssignActivity_Property_Name_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfAssignActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfAssignActivity.");
-            }
-
-            MemberInfo[] FieldName = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "FieldName");
-            MemberInfo[] FieldValue = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "FieldValue");
-            Assert.IsTrue(FieldName != null && FieldValue != null && FieldName.Length == 1 && FieldValue.Length == 1, "This will fail on designer binding, please update this before proceeding");
         }
 
 

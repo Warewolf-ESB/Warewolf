@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,11 +19,11 @@ using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.Core.Tests.Utils;
-using Dev2.CustomControls.Connections;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
 using Dev2.Services.Security;
@@ -51,6 +51,13 @@ namespace Dev2.Core.Tests.Settings
         public void SetupForTest()
         {
             AppSettings.LocalHost = "http://localhost:3142";
+            var shell = new Mock<IShellViewModel>();
+            var lcl = new Mock<IServer>();
+            lcl.Setup(a => a.ResourceName).Returns("Localhost");
+            shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            CustomContainer.Register<IShellViewModel>(shell.Object);
+            CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
         }
 
         [TestMethod]
@@ -62,7 +69,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IEnvironmentModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -76,7 +83,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object,a=> new Mock<IEnvironmentModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -90,7 +97,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -103,7 +110,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IConnectControlViewModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -116,7 +123,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schdulerViewModel = new SchedulerViewModel();
+            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(schdulerViewModel);
             Assert.IsNotNull(schdulerViewModel.Errors);
@@ -131,7 +138,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(@"To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
@@ -144,7 +151,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ShowError_WithSaveError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
 
             //------------Execute Test---------------------------
             schedulerViewModel.ShowError("Error while saving: test error");
@@ -158,13 +165,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ShowError_WithNormalError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "HasErrors":
                         _hasErrorChange = true;
@@ -189,7 +196,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ClearError_WithNormalError_HasErrorsSet()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -199,7 +206,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "HasErrors":
                         _hasErrorChange = true;
@@ -224,7 +231,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -241,7 +248,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_RunAsapIfScheduleMissed_SetRunAsapIfScheduleMissed_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -257,7 +264,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_Status_SetStatus_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -273,7 +280,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeep_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -289,7 +296,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToBlank_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -304,7 +311,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToNoNumeric_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -321,7 +328,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             //------------Setup for test--------------------------
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest; //Fires DebugOutMessage for null SelectedHistory
             //------------Execute Test---------------------------
@@ -339,11 +346,11 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             var _accountNameChanged = false;
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "AccountName")
+                if (args.PropertyName == "AccountName")
                 {
                     _accountNameChanged = true;
                 }
@@ -369,7 +376,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             var _accountNameChanged = false;
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
@@ -377,7 +384,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             schedulerViewModel.AccountName = "someAccountName";
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "AccountName")
+                if (args.PropertyName == "AccountName")
                 {
                     _accountNameChanged = true;
                 }
@@ -405,7 +412,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             //------------Setup for test--------------------------
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
@@ -426,7 +433,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
-            var schedulerViewModel = new SchedulerViewModelForTest();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -455,13 +462,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -491,13 +498,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -520,7 +527,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "Errors":
                         _errorsChanged = true;
@@ -557,13 +564,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "New Task 1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -594,13 +601,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "New Task 1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(c => c.IsConnected).Returns(false);
@@ -627,13 +634,13 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "New Task 1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "New Task 1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -650,8 +657,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             //------------Assert Results-------------------------
             auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
             Assert.AreEqual(schedulerViewModel.Errors.FetchErrors().Count, 1);
-            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server.
-You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().FirstOrDefault());
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().FirstOrDefault());
         }
 
         [TestMethod]
@@ -661,13 +667,13 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.No).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -684,7 +690,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "Name":
                         _nameChanged = true;
@@ -710,13 +716,13 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -745,13 +751,13 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -777,13 +783,13 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task1", IsDirty = true };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
-            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -817,13 +823,15 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
-            var schedulerViewModel = new SchedulerViewModelForTest();
+
             var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModelForTest(env.Object);
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
+            schedulerViewModel.ToEnvironmentModel = a => env.Object;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
             mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
@@ -849,7 +857,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
-            var schedulerViewModel = new SchedulerViewModelForTest();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -893,12 +901,12 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             var agg = new Mock<IEventAggregator>();
             agg.Setup(a => a.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
 
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "SelectedTask":
                         _selectedTaskChanged = true;
@@ -955,7 +963,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Assert.IsTrue(_runasapChange);
             Assert.IsTrue(_numRecordsChange);
             Assert.IsTrue(_triggerTextChange);
-            Assert.IsFalse(_historyMustChange);
+            Assert.IsTrue(_historyMustChange);
             Assert.IsTrue(_accountNameChange);
             Assert.IsTrue(_passwordChange);
             Assert.IsTrue(_errorsChange);
@@ -984,12 +992,12 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var _errorsChange = false;
             var _errorChange = false;
             var _selectedHistoryChange = false;
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "SelectedTask":
                         _selectedTaskChanged = true;
@@ -1060,8 +1068,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_EmptyString_AddsErrorMessage()
         {
             //------------Setup for test--------------------------
-        
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1085,7 +1093,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_WasEmptyStringValidString_ClearsErrorMessage()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1114,7 +1122,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { WorkflowName = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1141,7 +1149,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1169,7 +1177,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1205,7 +1213,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             scheduledResourceForTest.IsDirty = false;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1225,7 +1233,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_History_Get_ShouldCallCreateHistoryOnScheduledResourceModel()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
@@ -1247,11 +1255,11 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var _historyMustChange = false;
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "Settings" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "History")
+                if (args.PropertyName == "History")
                 {
                     _historyMustChange = true;
                 }
@@ -1271,12 +1279,18 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_ActiveItem_HeaderHistory_ShouldFirePropertyChangeOnHistory()
         {
             //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register<IShellViewModel>(shell.Object);
+            shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+            shell.Setup(a => a.ActiveServer).Returns(server.Object);
             var _historyMustChange = false;
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "History")
+                if (args.PropertyName == "History")
                 {
                     _historyMustChange = true;
                 }
@@ -1293,10 +1307,10 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_NoErrorsWhenNothingSelected()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
             {
                 ScheduledResourceModel = resourceModel.Object
             };
@@ -1309,10 +1323,10 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_NoErrorOnSelected()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
                 {
                     ScheduledResourceModel = resourceModel.Object,
                     SelectedTask = resources[0],
@@ -1329,10 +1343,10 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_IfDuplicateNames()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
                 {
                     ScheduledResourceModel = resourceModel.Object,
                     SelectedTask = resources[0],
@@ -1350,37 +1364,38 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_CreateNewTask")]
-        public void SchedulerViewModel_CreateNewTask_ShouldAddTaskToListWithDefaultSettings()
+        public void SchedulerViewModel_CreateNewTask_ShouldAddTaskToListWithDefaultSettings_OnlyAllowOneDirtyTask()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var popupController = new Mock<IPopupController>();
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            var svr = new Mock<IServer>();
+            svr.Setup(a => a.IsConnected).Returns(true);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popupController.Object, new SynchronousAsyncWorker(), svr.Object, a => env.Object);
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
             schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
+            schedulerViewModel.Server = svr.Object;
             //------------Execute Test---------------------------
 
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
 
             schedulerViewModel.NewCommand.Execute(null);
             Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
-            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[2].Name);
-            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[2].OldName);
-            Assert.IsTrue(schedulerViewModel.TaskList[2].IsDirty);
-            Assert.AreEqual(SchedulerStatus.Enabled, schedulerViewModel.TaskList[2].Status);
-            Assert.AreEqual(string.Empty, schedulerViewModel.TaskList[2].WorkflowName);
-            Assert.AreEqual(schedulerViewModel.SelectedTask, schedulerViewModel.TaskList[2]);
+            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[1].Name);
+            Assert.AreEqual("New Task1", schedulerViewModel.TaskList[1].OldName);
+            Assert.IsTrue(schedulerViewModel.TaskList[1].IsDirty);
+            Assert.AreEqual(SchedulerStatus.Enabled, schedulerViewModel.TaskList[1].Status);
+            Assert.AreEqual(string.Empty, schedulerViewModel.TaskList[1].WorkflowName);
+            Assert.AreEqual(schedulerViewModel.SelectedTask, schedulerViewModel.TaskList[1]);
 
             schedulerViewModel.NewCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(4, schedulerViewModel.TaskList.Count);
-            Assert.AreEqual("New Task2", schedulerViewModel.TaskList[3].Name);
-            Assert.AreEqual("New Task2", schedulerViewModel.TaskList[3].OldName);
-            Assert.IsTrue(schedulerViewModel.TaskList[3].IsDirty);
-            Assert.AreEqual(SchedulerStatus.Enabled, schedulerViewModel.TaskList[3].Status);
-            Assert.AreEqual(string.Empty, schedulerViewModel.TaskList[3].WorkflowName);
-            Assert.AreEqual(schedulerViewModel.SelectedTask, schedulerViewModel.TaskList[3]);
+            Assert.AreEqual(3, schedulerViewModel.TaskList.Count);
+            popupController.Verify(a => a.Show("Please save currently edited Task(s) before creating a new one.", "Save before continuing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false));
         }
 
         [TestMethod]
@@ -1392,14 +1407,14 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1414,7 +1429,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
           {
-              switch(args.PropertyName)
+              switch (args.PropertyName)
               {
                   case "TaskList":
                       _taskListChange = true;
@@ -1425,7 +1440,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
               }
           };
 
-            schedulerViewModel.DeleteCommand.Execute(null);
+            schedulerViewModel.DeleteCommand.Execute(resources[1]);
             //------------Assert Results-------------------------
             Assert.IsTrue(_taskListChange);
             Assert.IsTrue(_historyChange);
@@ -1445,14 +1460,14 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1462,7 +1477,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
             schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
 
-            schedulerViewModel.DeleteCommand.Execute(null);
+            schedulerViewModel.DeleteCommand.Execute(resources[0]);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, schedulerViewModel.TaskList.Count);
             Assert.AreEqual(schedulerViewModel.SelectedTask, schedulerViewModel.TaskList[0]);
@@ -1480,14 +1495,14 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1497,10 +1512,9 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
             schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
 
-            schedulerViewModel.DeleteCommand.Execute(null);
+            schedulerViewModel.DeleteCommand.Execute(resources[0]);
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server.
-You need Administrator permission.", schedulerViewModel.Error);
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.", schedulerViewModel.Error);
         }
 
         [TestMethod]
@@ -1512,14 +1526,14 @@ You need Administrator permission.", schedulerViewModel.Error);
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(false);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1529,7 +1543,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
             schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
 
-            schedulerViewModel.DeleteCommand.Execute(null);
+            schedulerViewModel.DeleteCommand.Execute(resources[0]);
             //------------Assert Results-------------------------
             Assert.AreEqual("Error while saving: Server unreachable.", schedulerViewModel.Error);
         }
@@ -1541,12 +1555,12 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModelForTest();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
             var resources = new ObservableCollection<IScheduledResource>();
             Mock<IScheduleTrigger> mockScheduleTrigger = new Mock<IScheduleTrigger>();
             mockScheduleTrigger.Setup(c => c.Trigger.Instance).Returns(new DailyTrigger());
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, mockScheduleTrigger.Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, mockScheduleTrigger.Object, "c"));
+            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, mockScheduleTrigger.Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 });
+            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, mockScheduleTrigger.Object, "c", Guid.NewGuid().ToString()));
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1559,7 +1573,7 @@ You need Administrator permission.", schedulerViewModel.Error);
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "TriggerText":
                         _triggerTextChange = true;
@@ -1584,7 +1598,8 @@ You need Administrator permission.", schedulerViewModel.Error);
         public void SchedulerViewModel_AddWorkflow_WithNewTaskNameSet_WorkflowNameChangedAndNameChanged()
         {
             //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("New Task1", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { NumberOfHistoryToKeep = 1 } };
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("New Task1", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1",Guid.NewGuid().ToString()
+                ) { NumberOfHistoryToKeep = 1 } };
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
@@ -1600,12 +1615,16 @@ You need Administrator permission.", schedulerViewModel.Error);
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
             Mock<IResourcePickerDialog> mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
             mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
-            mockResourcePickerDialog.Setup(c => c.SelectedResource).Returns(setupResourceModelMock.Object);
+            var treeItem = new Mock<IExplorerTreeItem>();
+            treeItem.Setup(a => a.ResourceName).Returns("TestFlow2");
+            treeItem.Setup(a => a.ResourceId).Returns(resId);
+            treeItem.Setup(a => a.ResourcePath).Returns("Category\\Testing");
+            mockResourcePickerDialog.Setup(c => c.SelectedResource).Returns(treeItem.Object);
 
-            schedulerViewModel.ResourcePickerDialog = mockResourcePickerDialog.Object;
+            schedulerViewModel.CurrentResourcePickerDialog = mockResourcePickerDialog.Object;
 
             Mock<IScheduledResourceModel> scheduledResourceModelMock = new Mock<IScheduledResourceModel>();
             scheduledResourceModelMock.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1620,7 +1639,7 @@ You need Administrator permission.", schedulerViewModel.Error);
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
-                switch(args.PropertyName)
+                switch (args.PropertyName)
                 {
                     case "TaskList":
                         _taskListChange = true;
@@ -1671,9 +1690,9 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.No);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
-            Assert.IsTrue(schedulerViewModel.DoDeactivate());
+            Assert.IsTrue(schedulerViewModel.DoDeactivate(true));
             //------------Assert Results-------------------------
 
         }
@@ -1685,13 +1704,13 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
 
-// ReSharper disable UseObjectOrCollectionInitializer
+            // ReSharper disable UseObjectOrCollectionInitializer
             DailyTrigger t = new DailyTrigger();
 
             t.StartBoundary = new DateTime(2014, 01, 01);
             DailyTrigger t2 = new DailyTrigger();
             t2.StartBoundary = new DateTime(2014, 01, 01);
-// ReSharper restore UseObjectOrCollectionInitializer           
+            // ReSharper restore UseObjectOrCollectionInitializer           
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -1745,9 +1764,9 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
-            Assert.IsFalse(schedulerViewModel.DoDeactivate());
+            Assert.IsFalse(schedulerViewModel.DoDeactivate(true));
             //------------Assert Results-------------------------
 
         }
@@ -1779,18 +1798,17 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = scheduledResourceForTest };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest };
 
             var auth = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
             schedulerViewModel.CurrentEnvironment = mockEnvironmentModel.Object;
             //------------Execute Test---------------------------
-            schedulerViewModel.DoDeactivate();
+            schedulerViewModel.DoDeactivate(true);
             //------------Assert Results-------------------------
             auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
-            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server.
-You need Administrator permission.", schedulerViewModel.Error);
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.", schedulerViewModel.Error);
 
 
 
@@ -1805,8 +1823,13 @@ You need Administrator permission.", schedulerViewModel.Error);
 
         }
 
+        public SchedulerViewModelForTest(IEnvironmentModel env) : base( a => env)
+        {
+            
+        }
+
         public SchedulerViewModelForTest(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
-            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IConnectControlViewModel>().Object)
+            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object)
         {
 
         }
@@ -1831,7 +1854,7 @@ You need Administrator permission.", schedulerViewModel.Error);
 
         public override void GetCredentials(IScheduledResource scheduledResource)
         {
-            if(string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.Password))
+            if (string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.Password))
             {
                 GetCredentialsCalled = true;
                 scheduledResource.UserName = "some username";

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,42 +20,42 @@ namespace Dev2.Studio.Webs
     {
         //readonly IPropertyEditorWizard _layoutObjectModel;
 
-        #region CTOR
+        //#region CTOR
 
-        // DO NOT USE THIS CONSTRUCTOR DIRECTLY! 
-        // USE WebSites.ShowWebPageDialog() INSTEAD!
-        public WebBrowserWindow()
-        {
-            InitializeComponent();
-            Owner = Application.Current.MainWindow;
-            Closed += OnClosed;
-            Loaded += (s, e) => Browser.Focus();
-        }
-
-        //[Obsolete("use WebSites.ShowWebPageDialog() or WebSites.CreateWebPageDialog() instead")]
-        //public WebBrowserWindow(IPropertyEditorWizard layoutObject, string homeUrl = null)
-        //    : this()
+        //// DO NOT USE THIS CONSTRUCTOR DIRECTLY! 
+        //// USE WebSites.ShowWebPageDialog() INSTEAD!
+        //public WebBrowserWindow()
         //{
-        //    Browser.Initialize(homeUrl, layoutObject);
-
-        //    _layoutObjectModel = layoutObject;
-        //    _layoutObjectModel.NavigateRequested += NavigateRequested;
+        //    InitializeComponent();
+        //    Owner = Application.Current.MainWindow;
+        //    Closed += OnClosed;
+        //    Loaded += (s, e) => Browser.Focus();
         //}
 
-        #endregion
+        ////[Obsolete("use WebSites.ShowWebPageDialog() or WebSites.CreateWebPageDialog() instead")]
+        ////public WebBrowserWindow(IPropertyEditorWizard layoutObject, string homeUrl = null)
+        ////    : this()
+        ////{
+        ////    Browser.Initialize(homeUrl, layoutObject);
 
-        #region OnClosed
+        ////    _layoutObjectModel = layoutObject;
+        ////    _layoutObjectModel.NavigateRequested += NavigateRequested;
+        ////}
 
-        private void OnClosed(object sender, EventArgs eventArgs)
-        {
-            Browser.Dispose();
-        }
+        //#endregion
 
-        #endregion
+        //#region OnClosed
 
-        void WebBrowserWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
+        //private void OnClosed(object sender, EventArgs eventArgs)
+        //{
+        //    Browser.Dispose();
+        //}
+
+        //#endregion
+
+        //void WebBrowserWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    DragMove();
+        //}
     }
 }

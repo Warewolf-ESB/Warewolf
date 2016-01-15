@@ -138,6 +138,68 @@ Scenario: Recordset length for invalid recordset
 	And the debug output as 
 	|                |
 
+@ignore
+#Audit
+Scenario Outline: Ensure Recordset length inputs work as expected 
+	Given I get  the length from a recordset that looks like with this shape
+	| rs        |   |
+	| rs().row  | 1 |
+	| rs().row  | 2 |
+	| rs().row  | 3 |
+	| rs().row  | 4 |
+	| rs().row2 | 5 |
+	| rs().row2 | 6 |
+	| rs().row2 | 7 |
+	And get length on record "<variable>"	
+	When the length tool is executed
+	Then the length result should be "<val>"
+	And the result variable '<result>' will be "<value>"
+	And the execution has "<Error>" error
+	And the debug inputs as "<message>"
+Examples: 
+| variable         | val  | error | message                                           | result             | value           |
+| [[a]]            | The  | An    | Scalar not allowed                                | [[b]]              | [[b]] = failure |
+| ""               | ""   | No    |                                                   | [[rec(1).a]]       | 0               |
+| dfsd             | dfsd | No    | Invalid characters have been entered as Recordset | [[rec(*).a]]       | Failure         |
+| 12               | 12   | No    | Invalid characters have been entered as Recordset | [[rec([[int]]).a]] | Failure         |
+| [[rec(1)]]       | ""   | No    |                                                   | [[rs().a]]         | [[rs(1).a]] = 3 |
+| [[rec(*)]]       | ""   | An    | Blank result variable                             | ""                 | ""              |
+| [[rec([[int]])]] | ""   | No    |                                                   | [[sdasd]]          | 3               |
+| [[c]]            | ""   | No    | Scalar not allowed                                | [[d]]              | Failure         |
+
+
+
+@ignore
+#Complex Types
+Scenario Outline: Ensure the Complex type length inputs work as expected 
+	Given I get  the length from a object that looks like with this shape
+	| rs             |   |
+	| rs().row().set | 1 |
+	| rs().row().set | 2 |
+	| rs().row().set | 3 |
+	| rs().row().set | 4 |
+	| rs().row().set | 5 |
+	| rs().row().set | 6 |
+	| rs().row().set | 7 |
+	And get length on record "<variable>"	
+	When the length tool is executed
+	Then the length result should be "<val>"
+	And the result variable '<result>' will be "<value>"
+	And the execution has "<Error>" error
+	And the debug inputs as "<message>"
+Examples: 
+| variable                   | val | error | message | result                | value |
+| [[rs(1).row().set]]        | 1   | No    |         | [[rec(1).row().val]]  | 1     |
+| [[rs(*).row([[int]]).set]] | 4   | No    |         | [[rec(1).row(3).val]] | 4     |
+
+
+
+
+
+
+
+
+
 Scenario: Length of an null recordset
 	Given I get  the length from a recordset that looks like with this shape
 	| rs ||

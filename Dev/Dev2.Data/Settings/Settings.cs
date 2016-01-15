@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,18 @@ namespace Dev2.Data.Settings
 {
     public class Settings
     {
-        public SecuritySettingsTO Security { get; set; }
+        private SecuritySettingsTO _security;
+        public SecuritySettingsTO Security
+        {
+            get
+            {
+                return _security;
+            }
+            set
+            {
+                _security = value;
+            }
+        }
         public LoggingSettingsTo Logging { get; set; }
 
         public bool HasError { get; set; }

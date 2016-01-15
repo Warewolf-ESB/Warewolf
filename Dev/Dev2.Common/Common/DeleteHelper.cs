@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,7 @@ using System.IO;
 
 namespace Dev2.Common.Common
 {
-    public class DeleteHelper
+    public static class DeleteHelper
     {
         public static bool Delete(string path)
         {
@@ -34,7 +34,7 @@ namespace Dev2.Common.Common
             // wild-card char
             if (path.IndexOf("*", StringComparison.Ordinal) >= 0)
             {
-                if (pattern != null && dirRoot != null)
+                if (dirRoot != null)
                 {
                     string[] fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
                     foreach (string file in fileList)

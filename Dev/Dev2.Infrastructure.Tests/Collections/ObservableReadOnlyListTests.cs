@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -174,7 +174,9 @@ namespace Dev2.Infrastructure.Tests.Collections
             // MUST bind to CollectionView!!
             //
             var observableReadOnlyList = new ObservableReadOnlyList<string> { "item1", "item2" };
-            observableReadOnlyList.TestDispatcherFrame = new DispatcherFrame();
+            PrivateObject px = new PrivateObject(observableReadOnlyList);
+            px.SetProperty("TestDispatcherFrame", new DispatcherFrame());
+
             var collectionView = CollectionViewSource.GetDefaultView(observableReadOnlyList);
 
             //
@@ -201,9 +203,10 @@ namespace Dev2.Infrastructure.Tests.Collections
 
             //------------Execute Test---------------------------
             otherThread.Start();
-
+       
+            
             // Wait for thread to finish
-            Dispatcher.PushFrame(observableReadOnlyList.TestDispatcherFrame);
+            Dispatcher.PushFrame((DispatcherFrame)px.GetProperty("TestDispatcherFrame"));
 
             otherDone.Wait();
 

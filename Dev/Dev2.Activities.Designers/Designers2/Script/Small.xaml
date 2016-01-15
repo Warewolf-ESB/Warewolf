@@ -9,19 +9,15 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Script"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="230"
                                MaxWidth="230"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -32,22 +28,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
+        <TextBlock Grid.Column="0"
                Grid.Row="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Langauge" />
+               Text="Langauge" />
          <ComboBox x:Name="InitialFocusElement"
                    Grid.Column="1"
                    Grid.Row="0"
-                   Style="{StaticResource ActivityComboBoxStyle}"
-                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                   ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                    SelectedValue="{Binding SelectedScriptType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    ItemsSource="{Binding ScriptTypes}"
                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ScriptTypecbx_AutoID}"
                    ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipLanguageType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpLanguageType}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpLanguageType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedTimeModifierType"
                                      SourcePropertyValue="{Binding SelectedTimeModifierType, UpdateSourceTrigger=PropertyChanged}"
@@ -59,10 +52,10 @@
                                  Grid.Column="0"
                                  Grid.Row="1" 
                                  DefaultText="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="53"
+                                 AllowMultilinePaste="True"
+                                 AcceptsReturn="True"
+                                 AllowUserInsertLine="True"
+                                 MaxHeight="53"
                                  TextWrapping="Wrap"
                                  Height="53"
                                  MinHeight="53"
@@ -70,13 +63,12 @@
                                  ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipScript}"
                                  AllowUserCalculateMode="False"
                                  IsInCalculateMode="True"
-                                 Margin="0,2"
+                                 Margin="{StaticResource ControlBorderTop}"
                                  VerticalContentAlignment="Top"
                                  Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpScript}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpScript}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Script"
                                      SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
@@ -84,22 +76,22 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
        
-        <Label Grid.Column="0"
+        <TextBlock Grid.Column="0"
                Grid.Row="2"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+               Margin="{StaticResource ControlBorderTop}"
+               Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 WrapInBrackets="True"
                                 DefaultText="[[Result]]"
+                                Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ScriptingHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

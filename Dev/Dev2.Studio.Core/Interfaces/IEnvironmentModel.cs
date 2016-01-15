@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,12 +44,19 @@ namespace Dev2.Studio.Core.Interfaces
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         string Category { get; set; }
-        string DisplayName { get; }
+        string DisplayName { get;  }
+
         void RaiseResourcesLoaded();
 
         event EventHandler AuthorizationServiceSet;
 
         Task<bool> ForceLoadResourcesAsync();
+
+        void FireWorkflowSaved();
+
+        event EventHandler WorkflowSaved;
+
+     
     }
 
     public class ConnectedEventArgs : EventArgs

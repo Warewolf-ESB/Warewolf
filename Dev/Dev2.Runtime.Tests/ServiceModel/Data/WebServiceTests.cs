@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,25 +30,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     {
         #region CTOR
 
-        [TestMethod]
-        public void WebServiceConstructorWithXmlWithoutActionElementExpectedDoesNotThrowException()
-        {
-            //------------Setup for test--------------------------
-            const string XmlDataString = @"<Service Name=""Test WebService"" ID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-	<Actions>
-	</Actions>
-	<Category>System</Category>
-</Service>";
-            //------------Execute Test---------------------------
-            var testElm = XElement.Parse(XmlDataString);
-            var webService = new WebService(testElm);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test WebService", webService.ResourceName);
-            Assert.AreEqual(ResourceType.WebService, webService.ResourceType);
-            Assert.AreEqual("51a58300-7e9d-4927-a57b-e5d700b11b55", webService.ResourceID.ToString());
-            Assert.AreEqual("System", webService.ResourcePath);
-            Assert.IsNull(webService.Source);
-        }
 
         [TestMethod]
         public void WebServiceConstructorExpectedCorrectWebService()

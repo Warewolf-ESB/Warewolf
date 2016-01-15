@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,14 +19,15 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -225,10 +226,10 @@ namespace Dev2.Activities.Designers.Tests.Email
             var modelItem = CreateModelItem();
             modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
 
-            ShowEditResourceWizardMessage message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>())).Callback((object m) => message = m as ShowEditResourceWizardMessage).Verifiable();
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.OpenResource(selectedEmailSource.ResourceID,null)).Verifiable();
+            CustomContainer.Register(mockShellViewModel.Object);
             var resourceModel = new Mock<IResourceModel>();
 
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
@@ -238,8 +239,8 @@ namespace Dev2.Activities.Designers.Tests.Email
 
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
-            Assert.AreSame(resourceModel.Object, message.ResourceModel);
+            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), null));
+            CustomContainer.DeRegister<IShellViewModel>();
         }
 
         [TestMethod]

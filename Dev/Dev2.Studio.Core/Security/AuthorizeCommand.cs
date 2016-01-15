@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 
@@ -68,6 +67,7 @@ namespace Dev2.Security
             {
                 if(Equals(value, _authorizationService))
                 {
+                    OnPermissionsChanged(this, EventArgs.Empty);
                     return;
                 }
                 if(_authorizationService != null)
@@ -117,11 +117,9 @@ namespace Dev2.Security
         {
             if (AuthorizationService == null)
             {
-                Dev2Logger.Log.Error("Null AuthorizationService");
+                return true;
             }
-            var isAuthorized = !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
-            Dev2Logger.Log.Info(string.Format("AuthorizeCommand for {0} is:{1}", AuthorizationContext, isAuthorized));
-            return isAuthorized;
+            return !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
         }
 
         static void OnPermissionsChanged(object sender, EventArgs eventArgs)
@@ -135,6 +133,11 @@ namespace Dev2.Security
         public AuthorizeCommand(AuthorizationContext authorizationContext, Action<object> action, Predicate<object> canExecute)
             : base(authorizationContext, action, canExecute)
         {
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+             CommandManager.InvalidateRequerySuggested();
         }
     }
 }

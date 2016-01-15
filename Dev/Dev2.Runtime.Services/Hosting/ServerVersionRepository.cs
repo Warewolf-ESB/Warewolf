@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -130,7 +131,7 @@ namespace Dev2.Runtime.Hosting
 
         IExplorerItem CreateVersionFromFilePath(string path, IResource resource)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, ResourceType.Version, new List<IExplorerItem>(), Permissions.View, resource.ResourcePath)
+            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, ResourceType.Version, new List<IExplorerItem>(), Permissions.View, resource.ResourcePath, "", "")
                 {
                     VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID)
                 };
@@ -231,7 +232,8 @@ namespace Dev2.Runtime.Hosting
         {
             if (workSpaceId == Guid.Empty)
             {
-
+                if (String.IsNullOrEmpty(userName))
+                    userName = Thread.CurrentPrincipal.Identity.Name;
 
                 lock (LockObject)
                 {

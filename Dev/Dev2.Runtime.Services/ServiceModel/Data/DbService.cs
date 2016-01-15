@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,12 +36,18 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             ResourceType = ResourceType.DbService;
             var action = xml.Descendants("Action").FirstOrDefault();
-            if(action == null)
+            if (action == null)
             {
-                return;
+                if (xml.HasAttributes && xml.Attribute("Type").Value == "InvokeStoredProc")
+                {
+                    action = xml;
+                }
+                else
+                {
+                    return;
+                }
             }
-
-            Source = CreateSource<WebSource>(action);
+            Source = CreateSource<DbSource>(action);
             Method = CreateInputsMethod(action);
 
             var recordSets = CreateOutputsRecordsetList(action);

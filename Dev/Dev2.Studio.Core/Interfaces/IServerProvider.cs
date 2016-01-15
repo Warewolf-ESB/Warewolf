@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,8 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IEnvironmentModelProvider
     {
         List<IEnvironmentModel> Load();
+        List<IEnvironmentModel> ReloadServers();
         List<IEnvironmentModel> Load(IEnvironmentRepository environmentRepository);
+        List<IEnvironmentModel> ReloadServers(IEnvironmentRepository environmentRepository);
     }
 }

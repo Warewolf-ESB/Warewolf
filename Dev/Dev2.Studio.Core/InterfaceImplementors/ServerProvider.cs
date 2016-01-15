@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -77,6 +77,26 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             }
 
             var environments = environmentRepository.All();
+
+            return environments.ToList();
+        }
+
+        public List<IEnvironmentModel> ReloadServers()
+        {
+            return ReloadServers(EnvironmentRepository.Instance);
+        }
+
+        public List<IEnvironmentModel> ReloadServers(IEnvironmentRepository environmentRepository)
+        {
+            // PBI 6597 : TWR
+            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+
+            if (environmentRepository == null)
+            {
+                throw new ArgumentNullException("environmentRepository");
+            }
+
+            var environments = environmentRepository.ReloadServers();
 
             return environments.ToList();
         }

@@ -9,19 +9,15 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DateTime"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="270"
                                MaxWidth="270"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="270"
                                d:DataContext="{d:DesignInstance local:DateTimeDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition MinWidth="80" />
@@ -36,10 +32,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
-               Grid.Row="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Input" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Input" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.ColumnSpan="2"
                                 Grid.Column="1"
@@ -56,8 +49,7 @@
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipDatetime}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpDatetime}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpDatetime}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="DateTime"
                                      SourcePropertyValue="{Binding ModelItem.DateTime, UpdateSourceTrigger=PropertyChanged}"
@@ -66,13 +58,11 @@
 
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="1"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Input Format" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Input Format" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
                                 Grid.Row="1"
+                                Margin="{StaticResource ControlBorderTop}"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
@@ -85,41 +75,35 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipInputformat}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpInputformat}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpInputformat}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="InputFormat"
                                      SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="2"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Add Time" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Add Time" Margin="{StaticResource ControlBorderTop}"/>
         <ComboBox Grid.Column="1"
                   Grid.Row="2"
-                  Style="{StaticResource ActivityComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                  Margin="{StaticResource ControlBorderTop}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                   SelectedValue="{Binding SelectedTimeModifierType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding TimeModifierTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeTypecbx_AutoID}"
                   ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipTimeType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpTimeType}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpTimeType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedTimeModifierType"
                                      SourcePropertyValue="{Binding SelectedTimeModifierType, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ComboBox>
 
         <ui:IntellisenseTextBox Grid.Column="2"
                                 Grid.Row="2"
+                                Margin="{StaticResource ControlBorderTopLeft}"
                                 DefaultText="+/- time"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsEnabled="{Binding SelectedTimeModifierType, Converter={StaticResource EmptyStringToBoolConverter}}"
@@ -127,23 +111,19 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeAmounttxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipAddtime}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpAddtime}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpAddtime}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="TimeModifierAmountDisplay"
                                      SourcePropertyValue="{Binding ModelItem.TimeModifierAmountDisplay, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="3"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Output Format" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Output Format" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
                                 Grid.Row="3"
+                                Margin="{StaticResource ControlBorderTop}"
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
@@ -156,23 +136,19 @@
                                 IntellisenseProvider="{StaticResource DateTimeCompositeIntellisenseProvider}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipOutputformat}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpOutputformat}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpOutputformat}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="OutputFormat"
                                      SourcePropertyValue="{Binding ModelItem.OutputFormat, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-               Grid.Row="4"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
                                 Grid.Row="4"
+                                Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[NewDateTime]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -180,14 +156,12 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipResult}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DateTimeHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
     </Grid>

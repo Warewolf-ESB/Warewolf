@@ -19,4 +19,36 @@ Scenario: Ensure that a negative index throws an error
 	Then the execution has "AN" error
 
 
+@ignore
+#Audit
+Scenario Outline: Ensure that a variable/recordset evaluates to the value on the datalist
+	Given I need to switch on variable "<variable>" with the value "<val>"		
+	When the switch tool is executed
+	Then the variable "<variable>" will evaluate to "<val>"
+	Then the execution has "NO" error
+	And the debug inputs as "<switch>"
+Examples: 
+| variable                        | val | switch          |
+| " "                             |     |                 |
+| [[a]]                           |     |                 |
+| [[rec().a]]                     | 3   | [[rec().a]] = 3 |
+| [[rec(1).a]]                    | 3   | [[rec().a]] = 3 |
+| [[rec(*).a]]                    | 3   | [[rec().a]] = 3 |
+| [[rec([[int]]).a]] ,[[int]] = 1 | 3   | [[rec().a]] = 3 |
 
+#error on [[rec(*).a]] - unable to varify tool not working
+
+@ignore
+#Complex Types
+Scenario Outline: Ensure that an object evaluates to the value on the datalist
+	Given I need to switch on variable "<object>" with the value "<val>"		
+	When the switch tool is executed
+	Then the variable "<object>" will evaluate to "<val>"
+	Then the execution has "NO" error
+	And the debug inputs as "<switch>"
+Examples: 
+| variable                                       | val                                      | switch                                       |
+| [[Granparent().parent().child().pet]]          | 4                                        | [[Granparent().parent().child().pet]] = 4    |
+| [[Granparent(1).parent([[int]]).child(5).pet]] | 7                                        | [[Granparent(1).parent(2).child(5).pet]] = 7 |
+
+# | [[Granparent(*).parent(*).child(*).pet]] | 10                                           |  |
