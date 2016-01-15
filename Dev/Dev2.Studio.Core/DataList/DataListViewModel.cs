@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,11 +20,13 @@ using System.Windows.Input;
 using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -39,7 +41,7 @@ using ServiceStack.Common.Extensions;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
-    public class DataListViewModel : BaseViewModel, IDataListViewModel
+    public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
     {
         #region Fields
 
@@ -50,6 +52,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private ObservableCollection<IDataListItemModel> _scalarCollection;
         private string _searchText;
         private RelayCommand _sortCommand;
+        private bool _viewSortDelete;
 
         #endregion Fields
 
@@ -81,6 +84,16 @@ namespace Dev2.Studio.ViewModels.DataList
                 _searchText = value;
                 FilterItems();
                 NotifyOfPropertyChange(() => SearchText);
+            }
+        }
+
+        public bool ViewSortDelete
+        {
+            get { return _viewSortDelete; }
+            set
+            {
+                _viewSortDelete = value;
+                NotifyOfPropertyChange(() => ViewSortDelete);
             }
         }
 
@@ -182,6 +195,8 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         bool _toggleSortOrder = true;
+        ObservableCollection<IDataListItemModel> _backupScalars;
+        ObservableCollection<IDataListItemModel> _backupRecsets;
 
         #endregion Properties
 
@@ -195,11 +210,27 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
+            DeleteCommand = new RelayCommand(item =>
+            {
+                RemoveDataListItem(item as IDataListItemModel);
+                WriteToResourceModel();
+            }, CanDelete);
+            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            ViewSortDelete = true;
+        }
+
+        bool CanDelete(Object itemx)
+        {
+
+           var item =itemx as IDataListItemModel;
+            return item != null && !item.IsUsed;
         }
 
         #endregion
 
         #region Commands
+
+        public ICommand ClearSearchTextCommand { get; private set; }
 
         public ICommand AddRecordsetCommand
         {
@@ -228,6 +259,8 @@ namespace Dev2.Studio.ViewModels.DataList
                        new RelayCommand(method => RemoveUnusedDataListItems(), o => HasAnyUnusedItems()));
             }
         }
+
+        public RelayCommand DeleteCommand { get; set; }
 
         #endregion Commands
 
@@ -345,7 +378,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     if(ScalarCollection.FirstOrDefault(c => c.Name == part.Field) == null)
                     {
                         IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field,part.Description,enDev2ColumnArgumentDirection.None);
-                        if(ScalarCollection.Count > ScalarCollection.Count - 1)
+                        if(ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
                         {
                             ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
                         }
@@ -447,31 +480,59 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FilterItems()
         {
-            if(SearchText == null) return;
-
-            foreach(var item in ScalarCollection)
+            //ConvertDataListStringToCollections(Resource.DataList);
+            if (_backupScalars != null)
             {
-                item.IsVisable = item.Name.Contains(SearchText);
-            }
-
-            foreach(var item in RecsetCollection)
-            {
-                bool parentVis = false;
-                foreach(var child in item.Children)
+                ScalarCollection.Clear();
+                foreach (var dataListItemModel in _backupScalars)
                 {
-                    if(child.Name.Contains(SearchText))
-                    {
-                        child.IsVisable = true;
-                        parentVis = true;
-                    }
-                    else
-                    {
-                        child.IsVisable = false;
-                    }
+                    ScalarCollection.Add(dataListItemModel);
                 }
-
-                item.IsVisable = parentVis || item.Name.Contains(SearchText);
             }
+            if (_backupRecsets != null)
+            {
+                RecsetCollection.Clear();
+                foreach (var dataListItemModel in _backupRecsets)
+                {
+                    RecsetCollection.Add(dataListItemModel);
+                }
+            }
+
+
+            if (SearchText == null)
+            {
+
+                return;
+            }
+            _backupScalars = new ObservableCollection<IDataListItemModel>();
+            _backupRecsets = new ObservableCollection<IDataListItemModel>();
+            foreach (var dataListItemModel in ScalarCollection)
+            {
+                _backupScalars.Add(dataListItemModel);
+            }
+            foreach (var dataListItemModel in RecsetCollection)
+            {
+                _backupRecsets.Add(dataListItemModel);
+            }
+            
+            for(int index = 0; index < ScalarCollection.Count; index++)
+            {
+                var item = ScalarCollection[index];
+                if (!item.Name.ToUpper().Contains(SearchText.ToUpper()))
+                    ScalarCollection.Remove(item);
+                
+            }
+
+            for (int index = 0; index < RecsetCollection.Count; index++)
+            {
+                var item = RecsetCollection[index];
+                item.Filter(SearchText);
+                if (!item.FilterText.ToUpper().Contains(SearchText.ToUpper()))
+                    RecsetCollection.Remove(item);
+               
+            }
+
+         
         }
 
         public void AddBlankRow(IDataListItemModel item)
@@ -782,6 +843,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 hasUnused = ScalarCollection.Any(sc => !sc.IsUsed);
                 if(hasUnused)
                 {
+                    DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
             }
@@ -791,6 +853,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
                 if(hasUnused)
                 {
+                    DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
 
@@ -835,10 +898,19 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void SortItems()
         {
-            SortScalars(_toggleSortOrder);
-            SortRecset(_toggleSortOrder);
-            _toggleSortOrder = !_toggleSortOrder;
+            try
+            {
+                IsSorting = true;
+                SortScalars(_toggleSortOrder);
+                SortRecset(_toggleSortOrder);
+                _toggleSortOrder = !_toggleSortOrder;
+            }
+            finally { IsSorting = false; }
+
+        
         }
+
+        public bool IsSorting  { get; set; }
 
         /// <summary>
         ///     Sorts the scalars.
@@ -848,20 +920,19 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IDataListItemModel> newScalarCollection;
             if(ascending)
             {
-                newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName)
-                                                                                .Where(c => !c.IsBlank).ToList();
+                newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
             }
             else
             {
-                newScalarCollection = ScalarCollection.OrderByDescending(c => c.DisplayName)
-                                                                                .Where(c => !c.IsBlank).ToList();
+                newScalarCollection = ScalarCollection.OrderByDescending(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
             }
             ScalarCollection.Clear();
-            foreach(var item in newScalarCollection)
+            foreach (var item in newScalarCollection)
             {
                 ScalarCollection.Add(item);
             }
             ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel(string.Empty));
+
         }
 
         /// <summary>
@@ -896,7 +967,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 catch(Exception)
                 {
-                    errors.AddError("Invalid variable list. Please insure that your variable list has valid entries");
+                    errors.AddError("Invalid variable list. Please ensure that your variable list has valid entries");
                 }
             }
             else
@@ -931,6 +1002,14 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection.Clear();
         }
 
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
 
         public void ConvertDataListStringToCollections(string dataList)
         {
@@ -977,13 +1056,23 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 var scalar = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
                 scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
+                if(String.IsNullOrEmpty(_searchText))
                 ScalarCollection.Add(scalar);
+                else if(scalar.Name.ToUpper().StartsWith(_searchText.ToUpper()))
+                {
+                    ScalarCollection.Add(scalar);
+                }
             }
             else
             {
                 var scalar = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
                 scalar.IsEditable = ParseIsEditable(null);
-                ScalarCollection.Add(scalar);
+                if (String.IsNullOrEmpty(_searchText))
+                    ScalarCollection.Add(scalar);
+                else if (scalar.Name.ToUpper().StartsWith(_searchText.ToUpper()))
+                {
+                    ScalarCollection.Add(scalar);
+                }
             }
         }
 

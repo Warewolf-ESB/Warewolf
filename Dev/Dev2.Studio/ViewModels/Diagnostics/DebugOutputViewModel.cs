@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,12 +19,14 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
@@ -46,7 +48,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     ///     for the TreeView (the RootItems property), a bindable
     ///     SearchText property, and the SearchCommand to perform a search.
     /// </summary>
-    public class DebugOutputViewModel : SimpleBaseViewModel
+    public class DebugOutputViewModel : SimpleBaseViewModel, IUpdatesHelp
     {
         #region Fields
 
@@ -110,6 +112,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
+            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
         }
 
         #endregion
@@ -414,6 +417,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             get { return _rootItems ?? (_rootItems = new ObservableCollection<IDebugTreeViewItemViewModel>()); }
         }
 
+        public ICommand ClearSearchTextCommand { get; private set; }
+
         /// <summary>
         ///     Gets/sets a fragment of the name to search for.
         /// </summary>
@@ -534,7 +539,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     Dev2Logger.Log.Error(ex);
                     if (ex.Message.Contains("The remote name could not be resolved"))
-                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please insure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "");
+                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
                     else
                         throw;
                 }
@@ -681,20 +686,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
-                var environment = EnvironmentRepository.All().FirstOrDefault(e => e.ID == debugState.EnvironmentID);
-
-                if(environment == null || !environment.IsConnected)
-                {
-                    return;
-                }
-
-                var resource = environment.ResourceRepository.FindSingle(r => r.ResourceName == debugState.DisplayName);
-
-                if(resource == null)
-                {
-                    return;
-                }
-                EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resource));
+                CustomContainer.Get<IShellViewModel>().OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
             }
         }
 
@@ -729,6 +721,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         // BUG 9735 - 2013.06.22 - TWR : refactored
         void AddItemToTree(IDebugState content)
         {
+            if(_contentItems.Any(a=>a.DisconnectedID==content.DisconnectedID))
+            {
+                return;
+            }
             if (content.StateType == StateType.Duration)
             {
                 var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
@@ -741,6 +737,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             else
             {
+                if(content.DisplayName != null && content.DisplayName.Contains("Assign"))
+                {
+                    Dev2Logger.Log.Error("sd");
+                }
                 var environmentId = content.EnvironmentID;
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
@@ -930,6 +930,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
 
         static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
             where T : IDebugTreeViewItemViewModel

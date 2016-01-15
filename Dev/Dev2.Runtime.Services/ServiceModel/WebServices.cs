@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,12 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.20 - TWR - Created
-    public class WebServices : Services
+    public interface IWebServices
+    {
+        void TestWebService(WebService service);
+    }
+
+    public class WebServices : Services,IWebServices
     {
         static readonly WebExecuteString DefaultWebExecute = WebSources.Execute;
         readonly WebExecuteString _webExecute = DefaultWebExecute;
@@ -194,6 +199,52 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        public void TestWebService(WebService service)
+        {
+            if (string.IsNullOrEmpty(service.RequestResponse))
+            {
+                ErrorResultTO errors;
+                ExecuteRequest(service, true, out errors, _webExecute);
+                ((WebSource)service.Source).DisposeClient();
+            }
+
+            var preTestRsData = service.Recordsets;
+            service.RequestMessage = string.Empty;
+            service.JsonPathResult = string.Empty;
+
+            if (service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
+            {
+                service.ApplyPath();
+                // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
+                Thread jsonMapTaskThread = null;
+                var jsonMapTask = new Task(() =>
+                {
+                    jsonMapTaskThread = Thread.CurrentThread;
+                    service.Recordsets = FetchRecordset(service, true);
+                });
+
+                jsonMapTask.Start();
+                jsonMapTask.Wait(10000);
+
+                if (!jsonMapTask.IsCompleted)
+                {
+                    if (jsonMapTaskThread != null)
+                    {
+                        jsonMapTaskThread.Abort();
+                    }
+
+                    service.Recordsets = preTestRsData;
+                    service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
+                }
+
+                jsonMapTask.Dispose();
+            }
+            else
+            {
+                service.Recordsets = FetchRecordset(service, true);
+            }
+        }
 
     }
 

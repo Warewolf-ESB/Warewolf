@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -246,7 +246,7 @@ namespace Dev2.Core.Tests
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {
             Mock<IPopupController> result = new Mock<IPopupController>();
-            result.Setup(moq => moq.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(returningResult).Verifiable();
+            result.Setup(moq => moq.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(returningResult).Verifiable();
 
             return result;
         }

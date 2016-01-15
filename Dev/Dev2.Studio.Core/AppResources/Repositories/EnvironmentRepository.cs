@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -134,6 +134,12 @@ namespace Dev2.Studio.Core
         public virtual ICollection<IEnvironmentModel> All()
         {
             LoadInternal();
+            return Environments;
+        }
+
+        public virtual ICollection<IEnvironmentModel> ReloadServers()
+        {
+            LoadInternal(true);
             return Environments;
         }
 
@@ -347,11 +353,11 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region LoadInternal
-        protected virtual void LoadInternal()
+        protected virtual void LoadInternal(bool force = false)
         {
             lock (RestoreLock)
             {
-                if (IsLoaded)
+                if (IsLoaded && !force)
                 {
                     return;
                 }
@@ -362,7 +368,14 @@ namespace Dev2.Studio.Core
                 {
                     Environments.Add(newEnv);
                 }
-
+                foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
+                {
+                    var res = Environments.FirstOrDefault(a => a.ID == newEnv.ID);
+                    if (res != null)
+                    {
+                        res.Name = newEnv.Name;
+                    }
+                }
 
                 var toBeRemoved = Environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
                 foreach (var environment in toBeRemoved)
@@ -519,13 +532,7 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if (servers != null)
                 {
-                    foreach(var connection in servers)
-                    {
-                        if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
-                        {
-                            result.Add(CreateEnvironmentModel(connection));
-                        }
-                    }
+                    result.AddRange(from connection in servers where !string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress) select CreateEnvironmentModel(connection));
                 }
             }
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -169,6 +169,7 @@ namespace Dev2
         ///     An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
         // ReSharper disable UnusedAutoPropertyAccessor.Local
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local

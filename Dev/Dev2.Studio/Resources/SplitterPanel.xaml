@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
     >
-    <ResourceDictionary.MergedDictionaries>
+    <!--<ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>-->
     
-    <Style TargetType="{x:Type customControls:SplitterPanel}">
+    <!--<Style TargetType="{x:Type customControls:SplitterPanel}">
         <Setter Property="HeaderBackground" Value="{StaticResource BrushAccentColor}"/>
         <Setter Property="HeaderForeground" Value="{StaticResource LightForegroundBrush}"/>
         <Setter Property="HeaderCollapsedForeground" Value="{StaticResource ForegroundBrush}"/>
@@ -70,7 +70,7 @@
                             </Grid.Resources>                          
 
                             <Grid.ColumnDefinitions>
-                                <!-- Change SplitterCollapsedSize in class if you change TheCollapsibleColumn.Width here ! -->
+                                --><!-- Change SplitterCollapsedSize in class if you change TheCollapsibleColumn.Width here ! --><!--
                                 <ColumnDefinition x:Name="TheCollapsibleColumn" Width="15" MaxWidth="400"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -127,6 +127,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
     
 </ResourceDictionary>

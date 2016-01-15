@@ -46,39 +46,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\Release\</OutputPath>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -201,6 +168,7 @@
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
@@ -229,11 +197,11 @@
     <Compile Include="Activities\DsfReplaceActivity.cs" />
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfSequenceActivity.cs" />
-    <Compile Include="Activities\DsfServiceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
     <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
+    <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />
     <Compile Include="Activities\DsfSwitch.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
@@ -279,7 +247,9 @@
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
     <Compile Include="BussinessLogic\RsOpIsBinary.cs" />
+    <Compile Include="BussinessLogic\RsOpIsError.cs" />
     <Compile Include="BussinessLogic\RsOpIsHex.cs" />
+    <Compile Include="BussinessLogic\RsOpIsNoError.cs" />
     <Compile Include="BussinessLogic\RsOpIsNotNull.cs" />
     <Compile Include="BussinessLogic\RsOpIsNull.cs" />
     <Compile Include="BussinessLogic\RsOpNotBase64.cs" />
@@ -330,20 +300,20 @@
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
     <Compile Include="Interfaces\IWizardEditable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />
-    <Compile Include="Activities\DsfAssignActivity.cs" />
     <Compile Include="Activities\DsfForEachActivity.cs" />
     <Compile Include="TO\DataMergeDTO.cs" />
     <Compile Include="TO\DataSplitDTO.cs" />
     <Compile Include="ImageConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="TO\DataColumnMapping.cs" />
+    <Compile Include="TO\DecisionTO.cs" />
     <Compile Include="TO\JsonMappingCompoundTo.cs" />
     <Compile Include="TO\JsonMappingTo.cs" />
     <Compile Include="TO\SharepointReadListTo.cs" />
@@ -381,14 +351,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Rename.png" />
-    <Resource Include="Images\viewinbrowser.png" />
-    <Resource Include="Images\transform.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\plus.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -440,8 +402,12 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
-      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
       <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>

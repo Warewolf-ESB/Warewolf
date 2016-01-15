@@ -838,8 +838,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 1 | [[b]] = warewolf    | Index | "8"   | ""  | Left  |
 	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
-	  | # |                           |
-	  | 1 | [[result]] = warewolftest |
+	  |                           |
+	  | [[result]] = warewolftest |
 
 Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandFindIndex"
@@ -4230,6 +4230,67 @@ Scenario: ForEach Acceptance Tests
 	  And the 'Testing/For Each/MasterTest' in Workflow 'ForEachMasterTest' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
+#show dependacies
+@ignore
+Scenario: View Dependancies on a workflow with no dependancies
+	Given I have a workflow "Hello World"
+	When I select "Show all dependancies" 
+	Then the "Dependancies - Hello World" tab is opened
+	And "Show what depends on Hello World" is checked by default
+	And "Show what Hello World depends on" is visible
+	And Nesting Levels equals "0" equals "All levels"
+	And "Refresh" is enabled
+	And "Hello World" is visible
+	And "Hello World" has no dependancies
+
+	@ignore
+Scenario: View workflow with multiple dependancies
+	Given I have a workflow "11365_WebService"	
+	And I select "Show All Dependancies"
+	Then the "Dependancies - 11365_WebService" tab is opened
+	And "Show what depends on 11365_WebService" is checked by default
+	And "Show what Hello World depends on" is visible
+	And Nesting Levels equals "0" equals "All levels"
+	And Nothing depends on "11365_WebService"
+	When I select "Show what 11365_WebService depends on"
+	Then "FetchCities" is shown as the first level of dependancy
+	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
+
+	@ignore
+Scenario: View workflow based on nested levels
+	Given I have a workflow "11365_WebService"	
+	And I select "Show All Dependancies"
+	Then the "Dependancies - 11365_WebService" tab is opened
+	And "Show what depends on 11365_WebService" is checked by default
+	And "Show what Hello World depends on" is visible
+	And Nothing depends on "11365_WebService"
+	When I select "Show what 11365_WebService depends on"
+	And Nesting Levels "1" equals "First level" only
+	Then "FetchCities" is shown as the first level of dependancy
+	And "Dev2GetCountriesWebService" is invisible
+	And Nesting Levels "2" equals "Second level" 
+	Then "FetchCities" is shown as the first level of dependancy
+	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
+
+	@ignore
+Scenario: Viewing Depenancies
+	Given I have a workflow "11365_WebService"	
+	And I select "Show All Dependancies"
+	Then the "Dependancies - 11365_WebService" tab is opened
+	When I select "Show what 11365_WebService depends on"
+	And Nesting Levels equals "0" equals "All levels"
+	And I double click "Dev2GetCountriesWebService"
+	Then the "Edit - Dev2GetCountriesWebService" tab is opened
+
+	@ignore
+Scenario: Studio persistence 
+	Given I  have the Warewolf studio opened
+	And an option to "Lock/Unlock" the side menu is visible
+	And I "Lock" the side menu
+	And I Dock the tool Box window in the right panel in the studio
+	When I close and re-open the studio
+	Then the studio side menu is "Locked"
+	And the Tool Box window is in the right panel in the studio 
 
 
 #Wolf-1102
@@ -4266,6 +4327,16 @@ Scenario: Xml Serialisation bug when returning xml
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	When "XmlSerialisation" is executed
+	Then the workflow execution has "NO" error
+
+#Wolf-860
+@ignore
+Scenario: Mixing Scalar And Recordset bug 
+	Given I have a workflow "MixingScalarAndRecordset"
+	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	When "MixingScalarAndRecordset" is executed
 	Then the workflow execution has "NO" error
 
 Scenario: ForEach using * and web get request with error

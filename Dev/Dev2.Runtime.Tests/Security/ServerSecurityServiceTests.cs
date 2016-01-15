@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Security
 {
@@ -22,29 +23,6 @@ namespace Dev2.Tests.Runtime.Security
         static void WaitForEvents()
         {
             Thread.Sleep(2000); // wait for event to fire
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerSecurityService_Constructor")]
-        public void ServerSecurityService_Constructor_FileSystemWatcher_ChangedEventWiredUp()
-        {
-            //------------Setup for test--------------------------
-            var fileName = string.Format("secure_{0}.config", Guid.NewGuid());
-            File.WriteAllText(fileName, @"xxx");
-
-            var serverSecurityService = new TestServerSecurityService(fileName);
-
-            //------------Execute Test---------------------------
-            File.WriteAllText(fileName, @"ssss");
-            WaitForEvents();
-
-            //------------Assert Results-------------------------
-
-            // FileSystemWatcher may raise this event twice if we don't disable RaisingEvents!!
-            Assert.IsTrue(serverSecurityService.OnFileChangedHitCount > 0);
-
-            serverSecurityService.Dispose();
         }
 
 
@@ -71,27 +49,6 @@ namespace Dev2.Tests.Runtime.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerSecurityService_Constructor")]
-        public void ServerSecurityService_Constructor_FileSystemWatcher_DeletedEventWiredUp()
-        {
-            //------------Setup for test--------------------------
-            var fileName = string.Format("secure_{0}.config", Guid.NewGuid());
-            File.WriteAllText(fileName, @"xxx");
-
-            var serverSecurityService = new TestServerSecurityService(fileName);
-
-            //------------Execute Test---------------------------
-            File.Delete(fileName);
-            WaitForEvents();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, serverSecurityService.OnFileChangedHitCount);
-
-            serverSecurityService.Dispose();
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerSecurityService_Constructor")]
         public void ServerSecurityService_Constructor_FileSystemWatcher_RenamedEventWiredUp()
         {
             //------------Setup for test--------------------------
@@ -111,28 +68,6 @@ namespace Dev2.Tests.Runtime.Security
             serverSecurityService.Dispose();
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerSecurityService_OnFileChanged")]
-        [Ignore]
-        public void ServerSecurityService_OnFileChanged_RaisingEvents_DisabledAndEnabled()
-        {
-            //------------Setup for test--------------------------
-            var fileName = string.Format("secure_{0}.config", Guid.NewGuid());
-            File.WriteAllText(fileName, @"xxx");
-
-            var serverSecurityService = new TestServerSecurityService(fileName);
-
-            //------------Execute Test---------------------------
-            File.WriteAllText(fileName, @"ssss");
-            WaitForEvents();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, serverSecurityService.OnFileChangedEnableRaisingEventsEnabled.Count);
-            Assert.IsFalse(serverSecurityService.OnFileChangedEnableRaisingEventsEnabled[0]);
-            Assert.IsTrue(serverSecurityService.OnFileChangedEnableRaisingEventsEnabled[1]);
-
-            serverSecurityService.Dispose();
-        }
+        
     }
 }

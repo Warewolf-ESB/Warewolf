@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         [DataMember]
         public string ExecuteAction { get; set; }
 
-        public List<MethodOutput> Outputs { get; private set; }
+        public List<MethodOutput> Outputs { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
 

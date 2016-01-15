@@ -14,19 +14,15 @@
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="300"
                                MaxWidth="300"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance local:GatherSystemInformationDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.SystemInformationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
@@ -49,15 +45,14 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding ModelItem, 
+                            <TextBlock Text="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
                                               Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
@@ -65,12 +60,12 @@
                                                     AllowUserInsertLine="False"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
+                                                    Margin="0,0,1,1"
                                                     Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.SystemInformationToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SystemInformationHelpResult}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:Core.SystemInformationHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Result"
                                                          SourcePropertyValue="{Binding Result, UpdateSourceTrigger=PropertyChanged}"
@@ -88,33 +83,25 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header=""
-                                        Width="20"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Header="" Width="20" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-
-                            <Label Content="=" />
-
+                            <TextBlock Text="=" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="1.5*"
-                                        d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}">
+                <DataGridTemplateColumn Width="1.5*" d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
-                                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                      Margin="0"
+                            <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                      Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="{x:Static help:HelpTextResources.SystemInformationToolTipSysInfoType}">
-                                      
-                                    <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SystemInformationHelpSysInfoType}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                <i:Interaction.Behaviors>
+                                    <core1:HelpSetter Text="{x:Static languages:Core.SystemInformationHelpSysInfoType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="EnTypeOfSystemInformation"
                                                          SourcePropertyValue="{Binding EnTypeOfSystemInformation, UpdateSourceTrigger=PropertyChanged}"

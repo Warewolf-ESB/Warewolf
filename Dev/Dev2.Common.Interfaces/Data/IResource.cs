@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Newtonsoft.Json;
 
@@ -86,6 +87,7 @@ namespace Dev2.Common.Interfaces.Data
 
         [JsonIgnore]
         string Outputs { get; set; }
+        Permissions UserPermissions { get; set; }
 
         /// <summary>
         ///     Gets the XML representation of this resource.

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -189,6 +189,10 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         {
             var modelData = ScenarioContext.Current.Get<string>("modelData");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            if (result.DataListID== Guid.Empty)
+            {
+                result.DataListID = Guid.NewGuid();
+            }
             try
             {
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(result.DataListID);

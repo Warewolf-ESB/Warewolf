@@ -17,7 +17,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", ""));
             
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));
@@ -31,7 +31,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", ""));
             
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));
@@ -49,7 +49,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", ""));
 
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));

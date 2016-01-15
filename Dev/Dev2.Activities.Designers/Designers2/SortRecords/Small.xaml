@@ -9,19 +9,15 @@
     xmlns:local="clr-namespace:Dev2.Activities.Designers2.SortRecords"
     xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
     xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+    xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
     Width="200"
     MaxWidth="200"
-    Padding="7"
     mc:Ignorable="d"
     d:DesignWidth="200"
     d:DataContext="{d:DesignInstance local:SortRecordsDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -31,51 +27,43 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
-            Grid.Row="0"
-            Style="{StaticResource ActivityLabelStyle}"
-            Content="Sort Field" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Sort Field" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-            Grid.Column="1"
-            Grid.Row="0"
-            DefaultText="[[Recordset().Field]]"
-            FilterType="RecordsetFields"
-            WrapInBrackets="True"
-            ToolTip="{x:Static help:HelpTextResources.SortToolTipSortField}"
-            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-            Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                DefaultText="[[Recordset().Field]]"
+                                FilterType="RecordsetFields"
+                                WrapInBrackets="True"
+                                ToolTip="{x:Static help:HelpTextResources.SortToolTipSortField}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
             AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortFieldtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortHelpSortField}"
-                    DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SortHelpSortField}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                    SourcePropertyName="SortField"
-                    SourcePropertyValue="{Binding ModelItem.SortField, UpdateSourceTrigger=PropertyChanged}"
-                    Target="{Binding}" />
+                                     SourcePropertyName="SortField"
+                                     SourcePropertyValue="{Binding ModelItem.SortField, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
-            Grid.Row="1"
-            Style="{StaticResource ActivityLabelStyle}"
-            Content="Sort Order" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Text="Sort Order" />
 
         <ComboBox Grid.Column="1"
-            Grid.Row="1"
-            Style="{StaticResource ActivityComboBoxStyle}"
-            ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-            SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding SortOrderTypes}"
-            AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}"
-            ToolTip="{x:Static help:HelpTextResources.SortToolTipSortOrderType}">
+                  Grid.Row="1"
+                  Margin="{StaticResource ControlBorderTop}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                  SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding SortOrderTypes}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}"
+                  ToolTip="{x:Static help:HelpTextResources.SortToolTipSortOrderType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortHelpSortOrderType}"
-                    DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SortHelpSortOrderType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                    SourcePropertyName="SelectedSelectedSort"
-                    SourcePropertyValue="{Binding SelectedSelectedSort, UpdateSourceTrigger=PropertyChanged}"
-                    Target="{Binding}" />
+                                     SourcePropertyName="SelectedSelectedSort"
+                                     SourcePropertyValue="{Binding SelectedSelectedSort, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
             </i:Interaction.Behaviors>
 
         </ComboBox>

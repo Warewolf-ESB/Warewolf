@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,10 +16,10 @@ using System.Windows.Input;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Threading;
 
 namespace Dev2.Models
 {

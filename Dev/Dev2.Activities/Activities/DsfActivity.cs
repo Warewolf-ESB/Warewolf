@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,6 +21,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -28,6 +29,8 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Storage;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -38,6 +41,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Fields
         private InArgument<string> _iconPath = string.Empty;
         string _previousInstanceId;
+        private ICollection<IServiceInput> _inputs;
+        private ICollection<IServiceOutputMapping> _outputs;
         #endregion
 
         #region Constructors
@@ -58,6 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DataTags = dataTags;
             ResultValidationRequiredTags = resultValidationRequiredTags;
             ResultValidationExpression = resultValidationExpression;
+            IsService = false;
         }
         #endregion
 
@@ -394,6 +400,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _authorizationService = value;
             }
         }
+        public Guid SourceId { get; set; }
+        public ICollection<IServiceInput> Inputs
+        {
+            get
+            {
+                return _inputs;
+            }
+            set
+            {
+                if(value != null)
+                {
+                    _inputs = value;
+                }
+            }
+        }
+        public ICollection<IServiceOutputMapping> Outputs
+        {
+            get
+            {
+                return _outputs;
+            }
+            set
+            {
+                if(value != null)
+                {
+                    _outputs = value;
+                }
+            }
+        }
 
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
@@ -602,56 +637,107 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser, int update)
         {
-            IList<IDev2Definition> inputs = parser.Parse(InputMapping);
-
             var results = new List<IDebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            if(Inputs != null && Inputs.Count > 0)
             {
-                if (string.IsNullOrEmpty(dev2Definition.RawValue))
+                foreach(var serviceInput in Inputs)
                 {
-                    continue;
-                }
-                var tmpEntry = env.Eval( dev2Definition.RawValue, update);
-
-                DebugItem itemToAdd = new DebugItem();
-                if (tmpEntry.IsWarewolfAtomResult)
-                {
-        
-                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                    if (warewolfAtomResult != null)
+                    if(string.IsNullOrEmpty(serviceInput.Value))
                     {
-                        var variableName = dev2Definition.Name;
-                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
-                        {
-                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
-                        }
-                        AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName),""), itemToAdd);
+                        continue;
                     }
-                    results.Add(itemToAdd);
-                }
-                else
-                {
-                   
-                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                    if (warewolfAtomListResult != null)
+                    var tmpEntry = env.Eval(serviceInput.Value, update);
+                    DebugItem itemToAdd = new DebugItem();
+                    if(tmpEntry.IsWarewolfAtomResult)
                     {
-                        var variableName = dev2Definition.Name;
-                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if(warewolfAtomResult != null)
                         {
-                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
-                            AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                            var variableName = serviceInput.Value;
+                            if(DataListUtil.IsEvaluated(variableName))
+                            {
+                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                            }
+                            else
+                            {
+                                AddDebugItem(new DebugItemStaticDataParams(warewolfAtomResult.Item.ToString(),""), itemToAdd);
+                            }
                         }
-                        else
-                        {
-                            var warewolfAtom = warewolfAtomListResult.Item.Last();
-                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
-                        }
+                        results.Add(itemToAdd);
                     }
-                    results.Add(itemToAdd);
+                    else
+                    {
+                        var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        if(warewolfAtomListResult != null)
+                        {
+                            var variableName = serviceInput.Value;
+                            if(DataListUtil.IsValueRecordset(variableName))
+                            {
+                                //variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                                AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                            }
+                            else
+                            {
+                                var warewolfAtom = warewolfAtomListResult.Item.Last();
+                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                            }
+                        }
+                        results.Add(itemToAdd);
+                    }
                 }
-
             }
+            else
+            {
+                IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
+                
+                foreach(IDev2Definition dev2Definition in inputs)
+                {
+                    if(string.IsNullOrEmpty(dev2Definition.RawValue))
+                    {
+                        continue;
+                    }
+                    var tmpEntry = env.Eval(dev2Definition.RawValue, update);
+
+                    DebugItem itemToAdd = new DebugItem();
+                    if(tmpEntry.IsWarewolfAtomResult)
+                    {
+
+                        var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if(warewolfAtomResult != null)
+                        {
+                            var variableName = dev2Definition.Name;
+                            if(!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                            {
+                                variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
+                            }
+                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                        }
+                        results.Add(itemToAdd);
+                    }
+                    else
+                    {
+
+                        var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        if(warewolfAtomListResult != null)
+                        {
+                            var variableName = dev2Definition.Name;
+                            if(!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                            {
+                                variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                                AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                            }
+                            else
+                            {
+                                var warewolfAtom = warewolfAtomListResult.Item.Last();
+                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                            }
+                        }
+                        results.Add(itemToAdd);
+                    }
+
+                }
+            }
             foreach(IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
@@ -672,23 +758,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment, int update)
         {
-            IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-            IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in outputs)
+            if(Outputs != null && Outputs.Count > 0)
             {
-                try
+                foreach(var serviceOutputMapping in Outputs)
                 {
-                    DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
-                    results.Add(itemToAdd);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Log.Error(e.Message,e);
+                    try
+                    {
+                        DebugItem itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
+                        results.Add(itemToAdd);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message, e);
+                    }
                 }
             }
-
+            else
+            {
+                IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
+                IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                foreach(IDev2Definition dev2Definition in outputs)
+                {
+                    try
+                    {
+                        DebugItem itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
+                        results.Add(itemToAdd);
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message, e);
+                    }
+                }
+            }
             foreach(IDebugItem debugOutput in results)
             {
                 debugOutput.FlushStringBuilder();

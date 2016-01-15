@@ -4,7 +4,7 @@
 	I want a tool that assigns data to variables
 
 Scenario: Assign a value to a variable
-	Given I assign the value 10 to a variable "[[var]]"	
+	Given I assign the value "10" to a variable "[[var]]"	
 	When the assign tool is executed
 	Then the value of "[[var]]" equals 10
 	And the execution has "NO" error
@@ -16,7 +16,7 @@ Scenario: Assign a value to a variable
 	| 1 | [[var]] = 10 |
 	
 Scenario: Assign a value with plus in it to a variable
-	Given I assign the value +10 to a variable "[[var]]"	
+	Given I assign the value "+10" to a variable "[[var]]"	
 	When the assign tool is executed
 	Then the value of "[[var]]" equals +10
 	And the execution has "NO" error
@@ -613,82 +613,81 @@ Scenario: Assign addition of all variables to scalar2
 	| 12 | [[new(1).a]]      = 12345678910Warewolf |
 	| 13 | [[var]]      = 10                       |
 
-
-#Scenario Outline: Assign multiple variables to the end of a recordset1
-#    Given I have a variable "[[a]]" with a value '<Val1>'
-#   Given I have a variable "[[b]]" with a value '<Val2>'
-#   Given I have a variable "[[z]]" with a value "1"
-#   Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-#   Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
-#   Given I have a variable "[[index]]" with a value "1"
-#	And I assign the value '<Value>' to a variable '<Variable>'	
-#	When validating the tool
-#	Then validation is '<Validation>'
-#	And validation message is '<DesignValidation>'
-#	When the assign tool is executed
-#	And the execution has "<errorOccured>" error
-#	And execution error message will be '<ExecutionError>'	
-#Examples:
-#      | No | Variable             | Value                               | Val1      | Val2     | Validation | DesignValidation                                                                                  | errorOccured | ExecutionError                                                                                       |
-#      | 1  | [[a]]                | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 2  | [[rec().a]]          | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 3  | [[rec([[index]]).a]] | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 4  | [[rec().[[z]]]]      | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 5  | [[[[Mr().a]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
-#      | 6  | [[a]][[b]]           | Test                                | Te        | st       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
-#      | 7  | [[mr().[[z]]]]       | Test                                | Test      | a        | True       | 'Variable'-[[mr()]] does not exist in your variable list                                          | AN           | 1.'Variable'-[[mr()]] does not exist in your variable list                                           |
-#      | 8  | ""                   | Test                                | ""        | ""       | True       | 'Variable' cannot be empty                                                                        | AN           | 1.'Variable' cannot be empty                                                                         |
-#      | 9  | [[rec().a b]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name a b contains invalid character(s)                                 | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
-#      | 10 | [[rec(**).a]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name (**) contains invalid character(s)                                | AN           | 1.'Variable'-Recordset field name (**) contains invalid character(s)                                 |
-#      | 11 | [[=[[a]]+[[b]]]]     | Test                                | Tes       | t        | True       | 'Variable'-Recordset field name [[=+]] contains invalid character(s)                              | AN           | 1.'Variable'-Recordset field name [[=+]] contains invalid character(s)                               |
-#      | 12 | [[[[a]]]]            | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 13 | [[[[rec(1).a]]]]     | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 14 | [[[[rec(1).a]]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-#      | 15 | [[[[a]]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-#      | 16 | [[[[[a]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-#      | 17 | [[[[[rec(1).a]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-#      | 18 | [[a[[b]]]]           | Test                                | rec(      | ).a      | False      | ""                                                                                                | AN           | 1.Invalid Region [[a[[b]]]]                                                                          |
-#      | 19 | [[[[a]][[b]]]]       | Test                                | rec()     | .a       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 20 | [[[[c]][[d]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.No Value assigned for:[[d]]                                                                        |
-#      | 21 | [[]]                 | Test                                | ""        | ""       | True       | 'Variable'-Variable [[]] is missing name                                                          | AN           | 1.[[]]-Variable [[]] is missing a name                                                               |
-#      | 22 | [[a1]]               | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 23 | [[a@]]               | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a@]] contains invalid character(s)                                     | AN           | 1.'Variable'-Variable name [[a@]] contains invalid character(s)                                      |
-#      | 24 | [[a b]]              | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a b]] contains invalid character(s)                                    | AN           | 1.'Variable'-Variable name [[a b]] contains invalid character(s)                                     |
-#      | 25 | [[rec().a1]]         | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 26 | [[rec().a!]]         | Test                                | ""        | ""       | False      | 'Variable'-Recordset field name a! contains invalid character(s)                                  | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
-#      | 27 | [[rec().a]]]]        | Test                                | ""        | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable'-Invalid expression: opening and closing brackets don't match                            |
-#      | 28 | [[a]][[b]]]          | Test                                | ""        | ""       | True       | Invalid Region [[a]][[b]]]                                                                        | AN           | 1.Invalid Region [[a]][[b]]]                                                                         |
-#      | 29 | [[a]]                | [[rec(1).a]]                        | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 30 | [[a]]                | [[rec(1).a]]Warewolf                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 31 | [[a]]                | [[rec(1).a]]Warewolf.#$%#%6         | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 32 | [[a]]                | [[a]][[b]]                          | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 33 | [[a]]                | [[a]]&[[b]]                         | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 34 | [[a]]                | [[rec(1).a]]#$                      | Test      |          | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 35 | [[a]]                | [[mr().a]]                          | Test      |          | False      | ""                                                                                                | AN           | 1.No Value assigned for: [[mr(1).a]]                                                                 |
-#      | 36 | [[a]]                | =[[a]]+[[b]]*1                      | 1         | 2        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 37 | [[a]]                | =[[a]]+[[b]]*                       | 1         | 2        | True       | Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed            | AN           | 1.Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed             |
-#      | 38 | [[a]]                | =cos(30)+sin(60)                    | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 39 | [[d]]                | =cos([[a]])+sin([[b]])              | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 40 | [[d]]                | =cos([[a]]])+sin([[b]])             | 0         | 0        | True       | Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed | AN           | 1. Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed |
-#      | 41 | [[d]]                | =cos([[a]])+sin([[b%]])             | 0         | 0        | True       | The-Variable name [[b%]] contains invalid character(s)                                            | AN           | 1. The-Variable name [[b%]] contains invalid character(s)                                            |
-#      | 42 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a])         | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 43 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a.]])       | 45        | 0        | True       | The-Recordset name [[rec().a]] contains invalid character(s)                                      | AN           | 1.The-Recordset name [[rec().a]] contains invalid character(s)                                       |
-#      | 44 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]]]])   | 45        | 0        | True       | Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                     | AN           | 1.Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                      |
-#      | 45 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]])     | 45        | 0        | True       | The-Recordset field name ])!~~calculation~! contains invalid character(s)                         | AN           | 1.The-Recordset field name ])!~~calculation~! contains invalid character(s)                          |
-#      | 46 | [[a]]                | =[[rec().a]]++[[a]]                 | 45        | 0        | True       | Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed       | AN           | 1.Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed        |
-#      | 47 | [[a]]                | =[[rec().a]]+[[a]]                  | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 48 | [[rec().a]]+[[a]]    | 10                                  | 0         | 0        | True       | 'Variable'-Invalid Region [[rec().a]]+[[a]]                                                       | AN           | 1.'Variable'-Invalid Region [[rec().a]]+[[a]]                                                        |
-#      | 49 | [[rec().a]]          | =(2+3)&                             | 0         | 0        | True       | Syntax Error An error occured while parsing(2+3)& it appears to be malformed                      | AN           | 1. Syntax Error An error occured while parsing (2+3)& it appears to be malformed                     |
-#      | 50 | [[z]]                | =[[a]]+[[b]]/([[rec().[[a]]]]+123)  | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-#      | 51 | [[z]]                | =[[a]]+[[b]]/([[[rec().[[a]]]]+123) | 0         | 0        | True       | The-Recordset name [[[rec]] contains invalid character(s)                                         | AN           | 1.The-Recordset name [[[rec]] contains invalid character(s)                                          |
+Scenario Outline: Assign multiple variables to the end of a recordset1
+    Given I have a variable "[[a]]" with a value '<Val1>'
+   Given I have a variable "[[b]]" with a value '<Val2>'
+   Given I have a variable "[[z]]" with a value "1"
+   Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
+   Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+   Given I have a variable "[[index]]" with a value "1"
+	And I assign the value '<Value>' to a variable '<Variable>'	
+	When validating the tool
+	Then validation is '<Validation>'
+	And validation message is '<DesignValidation>'
+	When the assign tool is executed
+	And the execution has "<errorOccured>" error
+	And execution error message will be '<ExecutionError>'	
+Examples:
+      | No | Variable             | Value                               | Val1      | Val2     | Validation | DesignValidation                                                                                  | errorOccured | ExecutionError                                                                                       |
+      | 1  | [[a]]                | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 2  | [[rec().a]]          | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 3  | [[rec([[index]]).a]] | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 4  | [[rec().[[z]]]]      | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 5  | [[[[Mr().a]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
+      | 6  | [[a]][[b]]           | Test                                | Te        | st       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
+      | 7  | [[mr().[[z]]]]       | Test                                | Test      | a        | True       | 'Variable'-[[mr()]] does not exist in your variable list                                          | AN           | 1.'Variable'-[[mr()]] does not exist in your variable list                                           |
+      | 8  | ""                   | Test                                | ""        | ""       | True       | 'Variable' cannot be empty                                                                        | AN           | 1.'Variable' cannot be empty                                                                         |
+      | 9  | [[rec().a b]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name a b contains invalid character(s)                                 | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
+      | 10 | [[rec(**).a]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name (**) contains invalid character(s)                                | AN           | 1.'Variable'-Recordset field name (**) contains invalid character(s)                                 |
+      | 11 | [[=[[a]]+[[b]]]]     | Test                                | Tes       | t        | True       | 'Variable'-Recordset field name [[=+]] contains invalid character(s)                              | AN           | 1.'Variable'-Recordset field name [[=+]] contains invalid character(s)                               |
+      | 12 | [[[[a]]]]            | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 13 | [[[[rec(1).a]]]]     | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 14 | [[[[rec(1).a]]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
+      | 15 | [[[[a]]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
+      | 16 | [[[[[a]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
+      | 17 | [[[[[rec(1).a]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
+      | 18 | [[a[[b]]]]           | Test                                | rec(      | ).a      | False      | ""                                                                                                | AN           | 1.Invalid Region [[a[[b]]]]                                                                          |
+      | 19 | [[[[a]][[b]]]]       | Test                                | rec()     | .a       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 20 | [[[[c]][[d]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.No Value assigned for:[[d]]                                                                        |
+      | 21 | [[]]                 | Test                                | ""        | ""       | True       | 'Variable'-Variable [[]] is missing name                                                          | AN           | 1.[[]]-Variable [[]] is missing a name                                                               |
+      | 22 | [[a1]]               | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 23 | [[a@]]               | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a@]] contains invalid character(s)                                     | AN           | 1.'Variable'-Variable name [[a@]] contains invalid character(s)                                      |
+      | 24 | [[a b]]              | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a b]] contains invalid character(s)                                    | AN           | 1.'Variable'-Variable name [[a b]] contains invalid character(s)                                     |
+      | 25 | [[rec().a1]]         | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 26 | [[rec().a!]]         | Test                                | ""        | ""       | False      | 'Variable'-Recordset field name a! contains invalid character(s)                                  | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
+      | 27 | [[rec().a]]]]        | Test                                | ""        | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable'-Invalid expression: opening and closing brackets don't match                            |
+      | 28 | [[a]][[b]]]          | Test                                | ""        | ""       | True       | Invalid Region [[a]][[b]]]                                                                        | AN           | 1.Invalid Region [[a]][[b]]]                                                                         |
+      | 29 | [[a]]                | [[rec(1).a]]                        | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 30 | [[a]]                | [[rec(1).a]]Warewolf                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 31 | [[a]]                | [[rec(1).a]]Warewolf.#$%#%6         | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 32 | [[a]]                | [[a]][[b]]                          | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 33 | [[a]]                | [[a]]&[[b]]                         | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 34 | [[a]]                | [[rec(1).a]]#$                      | Test      |          | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 35 | [[a]]                | [[mr().a]]                          | Test      |          | False      | ""                                                                                                | AN           | 1.No Value assigned for: [[mr(1).a]]                                                                 |
+      | 36 | [[a]]                | =[[a]]+[[b]]*1                      | 1         | 2        | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 37 | [[a]]                | =[[a]]+[[b]]*                       | 1         | 2        | True       | Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed            | AN           | 1.Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed             |
+      | 38 | [[a]]                | =cos(30)+sin(60)                    | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 39 | [[d]]                | =cos([[a]])+sin([[b]])              | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 40 | [[d]]                | =cos([[a]]])+sin([[b]])             | 0         | 0        | True       | Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed | AN           | 1. Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed |
+      | 41 | [[d]]                | =cos([[a]])+sin([[b%]])             | 0         | 0        | True       | The-Variable name [[b%]] contains invalid character(s)                                            | AN           | 1. The-Variable name [[b%]] contains invalid character(s)                                            |
+      | 42 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a])         | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 43 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a.]])       | 45        | 0        | True       | The-Recordset name [[rec().a]] contains invalid character(s)                                      | AN           | 1.The-Recordset name [[rec().a]] contains invalid character(s)                                       |
+      | 44 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]]]])   | 45        | 0        | True       | Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                     | AN           | 1.Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                      |
+      | 45 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]])     | 45        | 0        | True       | The-Recordset field name ])!~~calculation~! contains invalid character(s)                         | AN           | 1.The-Recordset field name ])!~~calculation~! contains invalid character(s)                          |
+      | 46 | [[a]]                | =[[rec().a]]++[[a]]                 | 45        | 0        | True       | Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed       | AN           | 1.Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed        |
+      | 47 | [[a]]                | =[[rec().a]]+[[a]]                  | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 48 | [[rec().a]]+[[a]]    | 10                                  | 0         | 0        | True       | 'Variable'-Invalid Region [[rec().a]]+[[a]]                                                       | AN           | 1.'Variable'-Invalid Region [[rec().a]]+[[a]]                                                        |
+      | 49 | [[rec().a]]          | =(2+3)&                             | 0         | 0        | True       | Syntax Error An error occured while parsing(2+3)& it appears to be malformed                      | AN           | 1. Syntax Error An error occured while parsing (2+3)& it appears to be malformed                     |
+      | 50 | [[z]]                | =[[a]]+[[b]]/([[rec().[[a]]]]+123)  | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
+      | 51 | [[z]]                | =[[a]]+[[b]]/([[[rec().[[a]]]]+123) | 0         | 0        | True       | The-Recordset name [[[rec]] contains invalid character(s)                                         | AN           | 1.The-Recordset name [[[rec]] contains invalid character(s)                                          |
 
 
 Scenario: Assign a variable to another variable
-	Given I assign the value a to a variable "[[x]]"	
-	And I assign the value x to a variable "[[b]]"
-	And I assign the value [[[[b]]]] to a variable "[[var]]"
+	Given I assign the value "a" to a variable "[[x]]"	
+	And I assign the value "x" to a variable "[[b]]"
+	And I assign the value [[b]] to a variable "[[var]]"
 	When the assign tool is executed
-	Then the value of "[[var]]" equals a
+	Then the value of "[[var]]" equals "x"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable   | New Value |
@@ -699,7 +698,7 @@ Scenario: Assign a variable to another variable
     | # |             |
     | 1 | [[x]] = a   |
     | 2 | [[b]] = x   |
-    | 3 | [[var]] = a |
+    | 3 | [[var]] = x |
 
 
 #Wolf - 485
@@ -732,6 +731,42 @@ Scenario: Assign a Variable That Does Not Exist
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
 
+Scenario: Assigning variables with space after closing brace
+	Given I assign the value "10" to a variable "[[x]]"
+	And I add " " after the closing bracket 
+	Then additional closing brackets are added to the variable "[[x]] ]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the execution has "Variable - Invalid expression: opening and closing brackets don't match" error
+
+@ignore
+Scenario: Removing variable and value from assign 
+	Given I assign the value "10" to a variable "[[x]]"
+	And I assign the value "20" to a variable "[[var]]" 
+	And I assign the value "30" to a variable "[[variable]]"
+	When I remove "[[var]]" equals "20"
+	Then the assign tool row index is update
+
+
+#Complex types
+@ignore
+Scenario Outline:  Assigning value to a complex type
+	Given I assign the value "<value>" to a variable "<object>"	
+	When the assign tool is executed
+	And the execution has "NO" error
+	And the debug output as 
+	| # |                                                |
+	| 1 | <result> |
+	Examples: 
+	| Object                                                         | Value | result                                           |
+	| [[granparent().parent().NumberOfChildren]]                     | 4     | [[granparent().parent().NumberOfChildren]] = 4   |
+	| [[granparent().parent(1).NumberOfChildren]]                    | 6     | [[granparent().parent(1).NumberOfChildren]] = 6  |
+	| [[granparent().parent(*).NumberOfChildren]]                    | 10    | [[granparent().parent(1).NumberOfChildren]] = 10 |
+	| [[granparent().parent([[int]]).NumberOfChildren]],[[int]] = 2  | 4     | [[granparent().parent(2).NumberOfChildren]] = 4  |
+	| [[granparent(*).parent(1).NumberOfChildren]]                   | 7     | [[granparent(*).parent(1).NumberOfChildren]] = 7 |
+	| [[granparent(*).parent(*).NumberOfChildren]]                   | 14    | [[granparent().parent(1).NumberOfChildren]] = 14 |
+	| [[granparent([[rec().var]]).parent(*).NumberOfChildren]]       | 4     | [[granparent(2).parent().NumberOfChildren]] = 4  |
+	| [[granparent([[rec().var().set]]).parent(*).NumberOfChildren]] | 4     | [[granparent(2).parent().NumberOfChildren]] = 4  |	
 Scenario: Assign a Variable That is Null to another variable
 	Given I have a variable "[[b]]" with a value of "NULL"
 	And I assign the value "[[b]]" to a variable "[[var]]"
@@ -739,11 +774,24 @@ Scenario: Assign a Variable That is Null to another variable
 	Then the execution has "No" error
 
 
-Scenario: Assign a Variable That is Null with conatenation
-	Given I assign the value "[[var]] abc" to a variable "[[a]]"
+@ignore
+Scenario Outline:  Assigning value to a complex type that is incorrectly formatted
+	Given I assign the value "<value>" to a variable "<object>"	
 	When the assign tool is executed
-	Then the execution has "AN" error
-	And the execution has "Scalar value { var } is NULL" error
+	And the execution has "An" error
+	And the debug output as 
+	| # |                                                |
+	| 1 | <result> |
+	Examples: 
+	| Object                                                        | Value | result                                           |
+	| [[granparent.parent().NumberOfChildren]]                      | 4     | [[granparent.parent().NumberOfChildren]] = Error |
+	| [[granparent().parent(1).NumberOfChildren()]]                 | 6     | [[granparent().parent(1).NumberOfChildren()]] = Error  |
+	| [[granparent(Test).parent(*).NumberOfChildren]]               | 10    | [[granparent(Test).parent(1).NumberOfChildren]] = Error |
+	
+
+	#| [[granparent().parent([[int]]).NumberOfChildren]]| 4     | [[granparent().parent(2).NumberOfChildren]] = 4  |
+	#| [[granparent(*).parent(1).NumberOfChildren]]                  | 7     | [[granparent(*).parent(1).NumberOfChildren]] = 7 |
+	#| [[granparent(*).parent(*).NumberOfChildren]]                  | 14    | [[granparent().parent(1).NumberOfChildren]] = 14 |
 
 
 

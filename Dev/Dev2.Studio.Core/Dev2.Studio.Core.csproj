@@ -44,36 +44,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
@@ -81,19 +51,16 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp, Version=0.12.4596.50, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="FontAwesome.WPF">
+      <HintPath>..\packages\FontAwesome.WPF.4.3.0.3\lib\FontAwesome.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.Wpf, Version=0.12.4596.54, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,8 +82,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Composition">
+      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\packages\Prism.UnityExtensions.5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -155,6 +158,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
@@ -185,11 +189,8 @@
     <Compile Include="Activities\Services\DesignerManagementService.cs" />
     <Compile Include="Activities\Services\IDesignerManagementService.cs" />
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
-    <Compile Include="AppResources\Administration\BDSAdminChannel.cs" />
     <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
-    <Compile Include="AppResources\Browsers\Browser.cs" />
-    <Compile Include="AppResources\Browsers\BrowserHandler.cs" />
     <Compile Include="AppResources\Browsers\InternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
@@ -198,7 +199,6 @@
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />
     <Compile Include="AppResources\Attributes\TreeCategory.cs" />
-    <Compile Include="AppResources\Browsers\Dev2RequestHandler.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
@@ -252,8 +252,6 @@
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
-    <Compile Include="AppResources\Exceptions\WebResourceRemoveFailedException.cs" />
-    <Compile Include="AppResources\Exceptions\WebResourceUploadFailedException.cs" />
     <Compile Include="AppResources\Expression\ExpressionEvaluator.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />
@@ -268,7 +266,6 @@
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
     <Compile Include="AppResources\Repositories\IStudioResourceRepository.cs" />
     <Compile Include="AppResources\Repositories\StudioResourceRepository.cs" />
-    <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -284,12 +281,14 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
+    <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
+    <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
-    <Compile Include="Network\ServerProxyWithChunking.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
       <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -318,20 +317,14 @@
     <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
     <Compile Include="Interfaces\IDataMappingViewModelFactory.cs" />
     <Compile Include="Interfaces\IDataMappingViewModel.cs" />
-    <Compile Include="Interfaces\IDirectoryPersistenceProvider.cs" />
-    <Compile Include="InterfaceImplementors\DirectoryPersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
     <Compile Include="Interfaces\IDeployService.cs" />
     <Compile Include="Interfaces\IDeployDTO.cs" />
     <Compile Include="Interfaces\IContextualResourceModel.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
-    <Compile Include="Factories\WebCommunicationResponseFactory.cs" />
-    <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\ObjectCloner.cs" />
     <Compile Include="InterfaceImplementors\WebActivity.cs" />
-    <Compile Include="InterfaceImplementors\WebCommunication.cs" />
-    <Compile Include="InterfaceImplementors\WebCommunicationResponse.cs" />
     <Compile Include="Interfaces\DataList\IDataListViewModel.cs" />
     <Compile Include="Interfaces\IDataMappingOutputs.cs" />
     <Compile Include="Interfaces\IEnvironmentConnection.cs" />
@@ -341,25 +334,20 @@
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
-    <Compile Include="AppResources\Browsers\WebPropertyEditorScriptableClass.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingEventArgs.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingParticipant.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
     <Compile Include="Interfaces\IDecisionType.cs" />
     <Compile Include="Interfaces\IDev2StudioView.cs" />
     <Compile Include="Interfaces\IEnvironmentModel.cs" />
-    <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\ILayoutObjectViewModel.cs" />
     <Compile Include="Interfaces\IResourceModel.cs" />
     <Compile Include="Interfaces\IResourceRepository.cs" />
-    <Compile Include="Interfaces\IScriptableClassDataHandler.cs" />
     <Compile Include="Interfaces\IServerProvider.cs" />
     <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
     <Compile Include="Interfaces\IStudioTab.cs" />
     <Compile Include="Interfaces\IUserMessageProvider.cs" />
     <Compile Include="Interfaces\IWebActivity.cs" />
-    <Compile Include="Interfaces\IWebCommunication.cs" />
-    <Compile Include="Interfaces\IWebCommunicationResponse.cs" />
     <Compile Include="Interfaces\IPropertyEditorWizard.cs" />
     <Compile Include="Interfaces\IWorkflowDesignerViewModel.cs" />
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
@@ -425,25 +413,20 @@
     <Compile Include="Models\DataMapping\TransferObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\ITagModel.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
     <Compile Include="Models\ExplorerItemModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
-    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
-    <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
-    <Compile Include="Models\WorkflowActivityMessage.cs" />
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveExampleResource.Designer.cs">
       <DependentUpon>ResolveExampleResource.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -452,6 +435,7 @@
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
+    <Compile Include="SelectModelItemMessage.cs" />
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\IAsynCommService.cs" />
@@ -472,15 +456,15 @@
     <Compile Include="Services\System\SystemInfoTO.cs" />
     <Compile Include="Services\WindowsServiceManager.cs" />
     <Compile Include="SortableObservableCollection.cs" />
-    <Compile Include="StringResources.Designer.cs" />
+    <Compile Include="StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="StringResources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
-    <Compile Include="TO\IWebBrowserNavigateRequestTO.cs" />
-    <Compile Include="TO\WebBrowserNavigateRequestTO.cs" />
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
@@ -500,16 +484,12 @@
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
-    <Compile Include="ViewModels\Navigation\INavigationContext.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
     <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
-    <Compile Include="Interfaces\IWebResourceViewModel.cs" />
-    <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
-    <Compile Include="Wizards\Interfaces\IWizardCallbackHandler.cs" />
-    <Compile Include="Wizards\WizardInvocationTO.cs" />
+    <Compile Include="ViewModelUtils.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
   </ItemGroup>
@@ -602,13 +582,13 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CalculateParser\" />
-    <Folder Include="Configuration\" />
+    <Folder Include="AppResources\Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

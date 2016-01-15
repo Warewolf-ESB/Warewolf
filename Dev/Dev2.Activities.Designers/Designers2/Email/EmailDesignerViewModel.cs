@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,12 +19,15 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.Util;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -69,7 +72,6 @@ namespace Dev2.Activities.Designers2.Email
             _eventPublisher.Subscribe(this);
 
             AddTitleBarLargeToggle();
-            AddTitleBarHelpToggle();
 
             EmailSources = new ObservableCollection<EmailSource>();
             Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
@@ -193,12 +195,8 @@ namespace Dev2.Activities.Designers2.Email
 
         public void EditEmailSource()
         {
-            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
-            if(resourceModel != null)
-            {
-                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
-                RefreshSources();
-            }
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedEmailSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+
         }
 
         string GetTestEmailAccount()
@@ -263,9 +261,11 @@ namespace Dev2.Activities.Designers2.Email
             }
             if(hasVariable)
             {
-                var validationResult = new ValidationResult();
-                validationResult.ErrorMessage = postResult;
-                validationResult.IsValid = false;
+                var validationResult = new ValidationResult
+                {
+                    ErrorMessage = postResult,
+                    IsValid = false
+                };
                 OnTestCompleted(new Dev2JsonSerializer().Serialize(validationResult));
                 return true;
             }
@@ -368,15 +368,24 @@ namespace Dev2.Activities.Designers2.Email
 
         void ChooseAttachments()
         {
+
             const string Separator = ";";
             var message = new FileChooserMessage();
+            message.SelectedFiles = Attachments.Split(Separator.ToCharArray());
             message.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "SelectedFiles")
+                if (args.PropertyName == "SelectedFiles")
                 {
-                    if(message.SelectedFiles != null)
+                    if (message.SelectedFiles != null)
                     {
-                        Attachments = string.Join(Separator, Attachments, string.Join(Separator, message.SelectedFiles));
+                        if(string.IsNullOrEmpty(Attachments))
+                        {
+                            Attachments = string.Join(Separator, message.SelectedFiles);
+                        }
+                        else
+                        {
+                            Attachments +=Separator+string.Join(Separator, message.SelectedFiles);
+                        }
                     }
                 }
             };
@@ -491,6 +500,15 @@ namespace Dev2.Activities.Designers2.Email
                     EmailSource = null;
                     EmailSource = selectedSource;
                 }
+            }
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
     }

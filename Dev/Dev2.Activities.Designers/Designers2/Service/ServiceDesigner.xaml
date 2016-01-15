@@ -8,24 +8,22 @@
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                        xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+                       xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}"
-                       Style="{DynamicResource ContentViewStyle}"><sap:ActivityDesigner.Resources>
+                       Style="{DynamicResource ContentViewStyle}">
+    <sap:ActivityDesigner.Resources>
         <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
+        <core1:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
         <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
-        
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
+
+        <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+            <Setter Property="Content" Value="{DynamicResource Small}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}"
-                             Value="true">
-                    <Setter Property="Content"
-                            Value="{DynamicResource Large}" />
-                </DataTrigger> 
+                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
+                    <Setter Property="Content" Value="{DynamicResource Large}" />
+                </DataTrigger>
             </Style.Triggers>
         </Style>
     </sap:ActivityDesigner.Resources>
@@ -33,8 +31,8 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}" />
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{Binding ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}" />
             </DrawingBrush.Drawing>
-        </DrawingBrush>    
+        </DrawingBrush>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

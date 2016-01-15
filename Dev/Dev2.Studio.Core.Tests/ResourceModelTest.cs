@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -446,7 +446,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
-        [ExpectedException(typeof(Exception))]
         public void ResourceModel_ToServiceDefinition_InvalidResourceType_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -455,6 +454,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
+            repo.Setup(repository => repository.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var instanceID = Guid.NewGuid();
@@ -469,7 +469,7 @@ namespace Dev2.Core.Tests
             var serviceDefinition = model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, serviceDefinition);
+            Assert.AreEqual(string.Empty, serviceDefinition.ToString());
         }
 
         [TestMethod]

@@ -15,20 +15,16 @@
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
                                xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="280"
                                MaxWidth="280"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:BaseConvertDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
-      <controls:Dev2DataGrid x:Name="SmallDataGrid"
+    <Grid Margin="{StaticResource ElementBorder}">
+        <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
@@ -50,7 +46,7 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                           <Label Content="{Binding ModelItem, 
+                            <TextBlock Text="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
                                               Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
@@ -63,19 +59,19 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
                                                     TextWrapping="Wrap"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Padding="3"
+                                                    Margin="0,0,1,1"
                                                     Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipBaseInput}"
                                                     MaxHeight="52">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpBaseInput}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <core1:HelpSetter Text="{x:Static languages:Core.BaseConversionHelpBaseInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromExpression"
                                                          SourcePropertyValue="{Binding FromExpression, UpdateSourceTrigger=PropertyChanged}"
@@ -96,9 +92,8 @@
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
-                                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                      Margin="0,0,2,0"
+                            <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                      Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipFromtype}">
@@ -126,11 +121,9 @@
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox
-                                      Margin="0,0,2,0"
+                            <ComboBox Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      Style="{StaticResource ActivityComboBoxStyle}"
-                                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                                       SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipTotype}">
                                 <i:Interaction.Behaviors>

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.ConnectionHelpers
 {
@@ -25,5 +26,11 @@ namespace Dev2.ConnectionHelpers
         event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         ObservableCollection<IConnectControlEnvironment> Servers { get; set; }
         void Remove(Guid environmentId);
+
+        void AddServerAndConnect(IServerSource serverSource);
+
+        void ReloadServer();
+
+        event EventHandler<ConnectedServerChangedEvent> AfterReload;
     }
 }

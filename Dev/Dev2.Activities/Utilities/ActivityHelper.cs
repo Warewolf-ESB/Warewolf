@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -82,7 +82,7 @@ namespace Dev2.Utilities
 
                 if(keyProperty != null)
                 {
-                    keyProperty.SetValue(ds.SwitchVariable);
+                    keyProperty.SetValue(ds.SwitchExpression);
 
                 }
             }
@@ -90,12 +90,12 @@ namespace Dev2.Utilities
 
         public static void SetArmTextDefaults(Dev2DecisionStack dds)
         {
-            if(String.IsNullOrEmpty(dds.TrueArmText.Trim()))
+            if(String.IsNullOrEmpty(dds.TrueArmText) || String.IsNullOrEmpty(dds.TrueArmText.Trim()))
             {
                 dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
             }
 
-            if(String.IsNullOrEmpty(dds.FalseArmText.Trim()))
+            if (String.IsNullOrEmpty(dds.FalseArmText) || String.IsNullOrEmpty(dds.FalseArmText.Trim()))
             {
                 dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
             }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -118,6 +118,19 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
+        public ValidationResult Test(WebSource source)
+        {
+            try
+            {
+                return CanConnectServer(source);
+            }
+            catch (Exception ex)
+            {
+                RaiseError(ex);
+                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
+            }
+        }
+
         #endregion
 
         #region CanConnectServer
@@ -162,13 +175,30 @@ namespace Dev2.Runtime.ServiceModel
         public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
+            return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
+        }
+
+        private static string GetAddress(WebSource source, string relativeUri)
+        {
+            if(source == null)
+            {
+                if(string.IsNullOrEmpty(relativeUri))
+                {
+                    return "";
+                }
+                return relativeUri;
+            }
+            if(!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
+            {
+                return relativeUri;
+            }
+            return string.Format("{0}{1}", source.Address, relativeUri);
         }
 
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
+            return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
         }
 
         #endregion

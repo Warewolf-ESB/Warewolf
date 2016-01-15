@@ -8,7 +8,6 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -40,6 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             string serializedSource = null;
             StringBuilder tmp;
+            ExecuteMessage msg = new ExecuteMessage();
             values.TryGetValue("SharepointServer", out tmp);
             if(tmp != null)
             {
@@ -58,21 +58,30 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             try
             {
+                msg.HasError = false;
                 var sharepointSource = serializer.Deserialize<SharepointSource>(serializedSource);
                 var result = sharepointSource.TestConnection();
+
+                if (result.Contains("Failed"))
+                {
+                    msg.HasError = true;
+                }
+                msg.Message = serializer.SerializeToBuilder(result);
+
                 var sharepointSourceTo = new SharepointSourceTo
                 {
                     TestMessage = result,
                     IsSharepointOnline = sharepointSource.IsSharepointOnline
                 };
                 return serializer.SerializeToBuilder(sharepointSourceTo);
+
             }
             catch(Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
-                var res = new DbColumnList(ex);
-                return serializer.SerializeToBuilder(res);
+                msg.Message = serializer.SerializeToBuilder(ex.Message);
             }
+            return serializer.SerializeToBuilder(msg);
         }
 
         /// <summary>

@@ -32,9 +32,8 @@
                     Key="Escape" />      
     </core:ActivityDesignerTemplate.InputBindings>
 
-    <Grid x:Name="ParentContext">
-        <Grid Margin="7,0,10,15"
-              DataContext="{Binding QuickVariableInputViewModel, Mode=TwoWay}">
+    <Grid x:Name="ParentContext" Margin="{StaticResource ElementBorder}">
+        <Grid DataContext="{Binding QuickVariableInputViewModel, Mode=TwoWay}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -50,32 +49,28 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="2">
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="6" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
                        Text="Quick Variable Input"
-                       Style="{StaticResource Dev2HeadingTextBlockStyle}" Margin="0,3,0,0" />
+                       Style="{StaticResource Dev2HeadingTextBlockStyle}" />
                 <Rectangle Grid.Row="1"
                            Fill="LightGray"
                            Margin="1"
                            Height="1" />
             </Grid>
 
-            <Label Grid.Row="1"
-                   Grid.Column="0"
-                   Content="Variable List :" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Variable List " Margin="{StaticResource ControlBorderTop}"/>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
                      x:Name="InitialFocusElement"
                      Text="{Binding VariableListString}"
-                     Style="{StaticResource ActivityTextBoxStyle}"
                      Height="Auto"
                      AcceptsReturn="True"
+                     Margin="{StaticResource ControlBorderTop}"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Top"
@@ -90,20 +85,16 @@
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <Label Grid.Row="2"
-                   Grid.Column="0"
-                   Content="Split List On :" />
-            <Grid Grid.Row="2"
-                  Grid.Column="1">
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Split List On " Margin="{StaticResource ControlBorderTop}"/>
+            <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0"
                           IsTabStop="False"
-                          Margin="2"
-                          Style="{StaticResource ActivityComboBoxStyle}"
-                          ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
+                          Margin="{StaticResource ControlBorderRight}"
+                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
                           ItemsSource="{Binding SplitTypeList}"
                           SelectedValue="{Binding SplitType}"
                           AutomationProperties.AutomationId="QviSplitOnCombobox"
@@ -114,7 +105,6 @@
                     </i:Interaction.Behaviors>
                 </ComboBox>
                 <TextBox Grid.Column="1"
-                         Style="{StaticResource ActivityTextBoxStyle}"
                          Text="{Binding SplitToken, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsSplitTokenEnabled}"
                          AutomationProperties.AutomationId="QviSplitOnCharacter"
@@ -126,12 +116,10 @@
                 </TextBox>
             </Grid>
 
-            <Label Grid.Row="3"
-                   Grid.Column="0"
-                   Content="Prefix  With:" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Prefix  With " Margin="{StaticResource ControlBorderTop}"/>
             <TextBox Grid.Row="3"
                      Grid.Column="1"
-                     Style="{StaticResource ActivityTextBoxStyle}"
+                     Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
                      attached:FocusSetter.IsFocused="{Binding IsPrefixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -141,12 +129,10 @@
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <Label Grid.Row="4"
-                   Grid.Column="0"
-                   Content="Suffix With :" />
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Suffix With " Margin="{StaticResource ControlBorderTop}"/>
             <TextBox Grid.Row="4"
                      Grid.Column="1"
-                     Style="{StaticResource ActivityTextBoxStyle}"
+                     Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
                      attached:FocusSetter.IsFocused="{Binding IsSuffixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -158,12 +144,13 @@
 
             <StackPanel Grid.Row="5"
                         Grid.Column="1"
-                        Margin="3,-1,0,-5"
+                        Margin="{StaticResource ControlBorderTop}"
                         Orientation="Horizontal"
                         HorizontalAlignment="Left"
                         IsEnabled="{Binding IsOverwriteEnabled}">
                 <RadioButton Content="Append"
                              IsChecked="True"
+                             Margin="{StaticResource ControlBorderRight}"
                              VerticalAlignment="Center"
                              AutomationProperties.AutomationId="AppendOption"
                              GroupName="AppendGroup">
@@ -172,7 +159,7 @@
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
-                <RadioButton Margin="15,0,0,0"
+                <RadioButton Margin="{StaticResource ControlBorderLeft}"
                              Content="Replace"
                              IsChecked="{Binding Overwrite}"
                              AutomationProperties.AutomationId="ReplaceOption"

@@ -21,18 +21,17 @@
                    Margin="2"
                    Height="16"
                    Width="16" />
-            <TextBlock Grid.Column="1"
-                       Margin="2"
-                       Text="{Binding Path=Message}" />
+            <TextBlock Grid.Column="1" Margin="2" Text="{Binding Path=Message}" />
         </Grid>
     </DataTemplate>    
 
     <DataTemplate DataType="{x:Type explorer:ExplorerItemModel}">
         <StackPanel Orientation="Horizontal">
-            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
-                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
-                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                     AutomationProperties.AutomationId="UI_RenameTexbox_AutoID">
+            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" 
+                     Padding="3,0,0,0" 
+                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
+                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                     AutomationProperties.AutomationId="UI_RenameTexbox_AutoID">
                 <i:Interaction.Behaviors>
                     <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
                     <local:TextboxSelectAllOnFocusBehavior/>
@@ -42,8 +41,7 @@
             </TextBox>
             <TextBlock Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <TextBlock.ToolTip>
-                        <ItemsControl ItemsSource="{Binding Path=DataContext.Errors}"
-                                  ItemTemplate="{StaticResource ErrorListTemplate}" />
+                        <ItemsControl ItemsSource="{Binding Path=DataContext.Errors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
                 </TextBlock.ToolTip>
                 <TextBlock.Text>                    
                     <Binding Path="DisplayName" ValidatesOnNotifyDataErrors="True">
@@ -55,8 +53,8 @@
             </TextBlock>
             <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
             <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
-                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
             <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
         </StackPanel>
-    </DataTemplate>   
+    </DataTemplate>
 </ResourceDictionary>

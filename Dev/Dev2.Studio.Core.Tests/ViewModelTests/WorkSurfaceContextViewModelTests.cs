@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -116,7 +117,9 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            CustomContainer.Register<IShellViewModel>(new Mock<IShellViewModel>().Object);
             var mockWorkSurfaceViewModel = new SchedulerViewModel();
+        
             //------------Execute Test---------------------------
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, mockWorkSurfaceViewModel);
             //------------Assert Results-------------------------
@@ -739,7 +742,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { });
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -749,7 +752,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
-            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "true"));
+            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false));
         }
 
 
@@ -779,7 +782,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var popup = new Mock<IPopupController>();
             bool called = false;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { called = true; });
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { called = true; });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -821,7 +824,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { called = true; });
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { called = true; });
 
             mockWorkSurfaceViewModel.Setup(a => a.ResourceModel).Returns(mockResourceModel.Object);
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
@@ -862,7 +865,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             //  bool called = false;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { });
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -1074,7 +1077,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.QuickDebug();
 
-            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "true"));
+            popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false));
 
         }
 
@@ -1090,7 +1093,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         public TestWorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel, new Mock<IPopupController>().Object, (a, b) => { })
+            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel, new Mock<IPopupController>().Object, (a, b,c) => { })
         {
         }
 

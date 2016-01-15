@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -76,7 +76,7 @@ namespace Dev2.PathOperations
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
                 if(!Path.IsPathRooted(path))
-                    throw  new IOException("Invalid Path. Please insure that the path provided is an absolute path, if you intended to access the local file system.");
+                    throw  new IOException("Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.");
             }
 
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);

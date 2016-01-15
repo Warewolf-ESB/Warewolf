@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers2.Core
         }
         protected void AddTitleBarQuickVariableInputToggle()
         {
-            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Close Quick Variable Input", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Open Quick Variable Input", "QuickVariableInputToggle", this, ShowQuickVariableInputProperty
+            var toggle = ActivityDesignerToggle.Create("ServiceQuickVariableInput", "Close Quick Variable Input", "ServiceQuickVariableInput", "Open Quick Variable Input", "QuickVariableInputToggle", this, ShowQuickVariableInputProperty
                 );
             TitleBarToggles.Add(toggle);
         }

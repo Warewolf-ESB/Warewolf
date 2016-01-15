@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -36,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            IExplorerRepositoryResult item;
+            IExplorerRepositoryResult item = null;
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -45,13 +47,31 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException("values");
                 }               
                 StringBuilder itemBeingDeleted;
-                if(!values.TryGetValue("itemToDelete", out itemBeingDeleted))
+                StringBuilder pathBeingDeleted=null;
+                if (!values.TryGetValue("itemToDelete", out itemBeingDeleted))
                 {
-                    throw new ArgumentException("itemToDelete value not supplied.");
+                    if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
+                    {
+                        throw new ArgumentException("itemToDelete value not supplied.");
+                    }
                 }
-                var itemToDelete = serializer.Deserialize<ServerExplorerItem>(itemBeingDeleted);
-                Dev2Logger.Log.Info("Delete Item Service."+itemToDelete);
-                item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                IExplorerItem itemToDelete;
+                if (itemBeingDeleted != null)
+                {
+                    itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                    Dev2Logger.Log.Info("Delete Item Service." + itemToDelete);
+                    item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                }
+                else if(pathBeingDeleted != null)
+                {
+                    itemToDelete = new ServerExplorerItem()
+                    {
+                        ResourceType =  ResourceType.Folder,
+                        ResourcePath = pathBeingDeleted.ToString()
+                        
+                    };
+                    item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                }
             }
             catch(Exception e)
             {

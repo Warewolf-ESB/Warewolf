@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -273,7 +273,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ConnectControlViewModel_UpdateActiveEnvironment")]
-        public void ConnectControlViewModel_UpdateActiveEnvironment_ActiveServerHasChangedToAServerOnTheList_SelectedIndexIsChanged()
+        public void ConnectControlViewModel_UpdateActiveEnvironment_ActiveServerHasChangedToAServerOnTheList_Maintainscurrent()
         {
             //------------Setup for test--------------------------
             var mainViewModel = new Mock<IMainViewModel>();
@@ -302,6 +302,8 @@ namespace Dev2.Core.Tests.ViewModelTests
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true);
+            PrivateObject p = new PrivateObject(viewModel);
+            p.SetField("_activeAction", new Action<int>(a => { }));
             Mock<IEnvironmentModel> selectedEnv = new Mock<IEnvironmentModel>();
             selectedEnv.Setup(e => e.ID).Returns(env2Id);
             var indexBefore = viewModel.SelectedServerIndex;
@@ -309,7 +311,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             viewModel.UpdateActiveEnvironment(selectedEnv.Object, false);
             //------------Assert----------------------------------
             Assert.AreEqual(1, indexBefore);
-            Assert.AreEqual(0, viewModel.SelectedServerIndex);
+            Assert.AreEqual(1, viewModel.SelectedServerIndex);
             mainViewModel.Verify(m => m.SetActiveEnvironment(It.IsAny<IEnvironmentModel>()), Times.Exactly(1));
         }
 
@@ -344,6 +346,8 @@ namespace Dev2.Core.Tests.ViewModelTests
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true);
+            PrivateObject  p = new PrivateObject(viewModel);
+            p.SetField("_activeAction",new Action<int>(a=>{}));
             Mock<IEnvironmentModel> selectedEnv = new Mock<IEnvironmentModel>();
             selectedEnv.Setup(e => e.ID).Returns(Guid.NewGuid);
             var indexBefore = viewModel.SelectedServerIndex;
@@ -588,44 +592,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             connectControlSingleton.Verify(c => c.ToggleConnection(It.IsAny<int>()), Times.Once());
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ConnectControlViewModel_EditCommand")]
-        public void ConnectControlViewModel_EditCommand_Execute_CallsEditConnection()
-        {
-            //------------Setup for test--------------------------
-            var mainViewModel = new Mock<IMainViewModel>();
-            var activeEnvironment = new Mock<IEnvironmentModel>();
-            var env1Id = Guid.NewGuid();
-            var env2Id = Guid.NewGuid();
-            activeEnvironment.Setup(a => a.ID).Returns(env1Id);
-            mainViewModel.Setup(m => m.ActiveEnvironment).Returns(activeEnvironment.Object);
-            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(true, false).Object, new Mock<IResourceRepository>().Object, false);
-            var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env2Id, CreateConnection(true, false).Object, new Mock<IResourceRepository>().Object, false);
-            var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
-            var controEnv1 = new Mock<IConnectControlEnvironment>();
-            var controEnv2 = new Mock<IConnectControlEnvironment>();
-            controEnv1.Setup(c => c.EnvironmentModel).Returns(env1);
-            controEnv2.Setup(c => c.EnvironmentModel).Returns(env2);
-            controEnv1.Setup(c => c.IsConnected).Returns(false);
-            connectControlEnvironments.Add(controEnv2.Object);
-            connectControlEnvironments.Add(controEnv1.Object);
-            connectControlSingleton.Setup(c => c.Servers).Returns(connectControlEnvironments);
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            ICollection<IEnvironmentModel> environments = new Collection<IEnvironmentModel>
-                {   
-                    env1    
-                };
-            environmentRepository.Setup(e => e.All()).Returns(environments);
-            connectControlSingleton.Setup(c => c.EditConnection(It.IsAny<int>(), It.IsAny<Action<int>>())).Verifiable();
-            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true);
-            //------------Execution-------------------------------
-            viewModel.EditCommand.Execute(null);
-            //------------Assert------------------------------
-            Assert.IsNotNull(viewModel);
-            connectControlSingleton.Verify(c => c.EditConnection(It.IsAny<int>(), It.IsAny<Action<int>>()), Times.Once());
-        }
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -635,141 +602,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             TestSelectedIndex(-1, 0);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ConnectControlViewModel_SelectedIndex")]
-        public void ConnectControlViewModel_SelectedIndex_SetToNewServerAndNewServerWasAdded_SelectedIndexSetToNewServerIndex()
-        {
-            //------------Setup for test--------------------------
-            var mainViewModel = new Mock<IMainViewModel>();
-            var activeEnvironment = new Mock<IEnvironmentModel>();
-            var env1Id = Guid.NewGuid();
-            var env2Id = Guid.NewGuid();
-            activeEnvironment.Setup(a => a.ID).Returns(env1Id);
-            mainViewModel.Setup(m => m.ActiveEnvironment).Returns(activeEnvironment.Object);
-            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(false, false, ConnectControlSingleton.NewServerText).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = ConnectControlSingleton.NewServerText
-            };
-            var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env2Id, CreateConnection(true, true).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = "AzureOnFire"
-            };
-            var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
-            var controEnv1 = new Mock<IConnectControlEnvironment>();
-            var controEnv2 = new Mock<IConnectControlEnvironment>();
-            controEnv1.Setup(c => c.EnvironmentModel).Returns(env1);
-            controEnv2.Setup(c => c.EnvironmentModel).Returns(env2);
-            controEnv1.Setup(c => c.IsConnected).Returns(false);
-            connectControlEnvironments.Add(controEnv1.Object);
-            connectControlEnvironments.Add(controEnv2.Object);
-            connectControlSingleton.Setup(c => c.Servers).Returns(connectControlEnvironments);
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            ICollection<IEnvironmentModel> environments = new Collection<IEnvironmentModel>
-                {   
-                     new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid() , CreateConnection(false, false).Object, new Mock<IResourceRepository>().Object, false)
-                        {
-                            Name = "New One"
-                        }
-                };
-            environmentRepository.Setup(e => e.All()).Returns(environments);
-            //------------Execution-------------------------------
-            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true, (model, type, arg3, arg4, arg5, arg6, arg7) => { }) { SelectedServerIndex = 0 };
-            //------------Assert------------------------------
-            Assert.IsNotNull(viewModel);
-            Assert.AreEqual(2, viewModel.SelectedServerIndex);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ConnectControlViewModel_OpenConnectionWizard")]
-        public void ConnectControlViewModel_OpenConnectionWizard_IndexIsNegative_OpensWizardForNewConnection()
-        {
-            //------------Setup for test--------------------------
-            var mainViewModel = new Mock<IMainViewModel>();
-            var activeEnvironment = new Mock<IEnvironmentModel>();
-            var env1Id = Guid.NewGuid();
-            var env2Id = Guid.NewGuid();
-            activeEnvironment.Setup(a => a.ID).Returns(env1Id);
-            mainViewModel.Setup(m => m.ActiveEnvironment).Returns(activeEnvironment.Object);
-            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(false, false, ConnectControlSingleton.NewServerText).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = ConnectControlSingleton.NewServerText
-            };
-            var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env2Id, CreateConnection(true, true).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = "AzureOnFire"
-            };
-            var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
-            var controEnv1 = new Mock<IConnectControlEnvironment>();
-            var controEnv2 = new Mock<IConnectControlEnvironment>();
-            controEnv1.Setup(c => c.EnvironmentModel).Returns(env1);
-            controEnv2.Setup(c => c.EnvironmentModel).Returns(env2);
-            controEnv1.Setup(c => c.IsConnected).Returns(false);
-            connectControlEnvironments.Add(controEnv1.Object);
-            connectControlEnvironments.Add(controEnv2.Object);
-            connectControlSingleton.Setup(c => c.Servers).Returns(connectControlEnvironments);
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            ICollection<IEnvironmentModel> environments = new Collection<IEnvironmentModel>();
-            environmentRepository.Setup(e => e.All()).Returns(environments);
-            var actualEnvironmentId = Guid.Empty.ToString();
-            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true, (model, type, arg3, arg4, environmentId, arg6, arg7) =>
-                {
-                    actualEnvironmentId = environmentId;
-                });
-            //------------Execution-------------------------------
-            viewModel.OpenConnectionWizard(-1);
-            //------------Assert------------------------------
-            Assert.IsNotNull(viewModel);
-            Assert.AreEqual(null, actualEnvironmentId);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ConnectControlViewModel_OpenConnectionWizard")]
-        public void ConnectControlViewModel_OpenConnectionWizard_IndexPositive_OpensWizardForEditConnection()
-        {
-            //------------Setup for test--------------------------
-            var mainViewModel = new Mock<IMainViewModel>();
-            var activeEnvironment = new Mock<IEnvironmentModel>();
-            var env1Id = Guid.NewGuid();
-            var env2Id = Guid.NewGuid();
-            activeEnvironment.Setup(a => a.ID).Returns(env1Id);
-            mainViewModel.Setup(m => m.ActiveEnvironment).Returns(activeEnvironment.Object);
-            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(false, false, ConnectControlSingleton.NewServerText).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = ConnectControlSingleton.NewServerText
-            };
-            var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env2Id, CreateConnection(true, true).Object, new Mock<IResourceRepository>().Object, false)
-            {
-                Name = "AzureOnFire"
-            };
-            var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
-            var controEnv1 = new Mock<IConnectControlEnvironment>();
-            var controEnv2 = new Mock<IConnectControlEnvironment>();
-            controEnv1.Setup(c => c.EnvironmentModel).Returns(env1);
-            controEnv2.Setup(c => c.EnvironmentModel).Returns(env2);
-            controEnv1.Setup(c => c.IsConnected).Returns(false);
-            connectControlEnvironments.Add(controEnv1.Object);
-            connectControlEnvironments.Add(controEnv2.Object);
-            connectControlSingleton.Setup(c => c.Servers).Returns(connectControlEnvironments);
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            ICollection<IEnvironmentModel> environments = new Collection<IEnvironmentModel>();
-            environmentRepository.Setup(e => e.All()).Returns(environments);
-            var actualEnvironmentId = Guid.Empty.ToString();
-            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true, (model, type, arg3, arg4, environmentId, arg6, arg7) =>
-            {
-                actualEnvironmentId = environmentId;
-            });
-            //------------Execution-------------------------------
-            viewModel.OpenConnectionWizard(1);
-            //------------Assert------------------------------
-            Assert.IsNotNull(viewModel);
-            Assert.AreNotEqual(Guid.Empty.ToString(), actualEnvironmentId);
-        }
+        
+        
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]

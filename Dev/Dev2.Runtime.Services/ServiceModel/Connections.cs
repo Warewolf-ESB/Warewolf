@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.SignalR.Wrappers.Old;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Old;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -137,6 +137,10 @@ namespace Dev2.Runtime.ServiceModel
             return JsonConvert.SerializeObject(results);
         }
 
+        public List<string> GetNames()
+        {
+            return _fetchComputers.Invoke();
+        } 
         #endregion
 
         #region Test
@@ -170,7 +174,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+        public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             var result = new ValidationResult
             {
@@ -274,7 +278,7 @@ namespace Dev2.Runtime.ServiceModel
                         var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
 #pragma warning restore 168
                         hub.Start().Wait();
-
+                  
                         Dev2Logger.Log.Debug("Hub State : " + hub.State);
 
                         return "Success";
@@ -288,7 +292,7 @@ namespace Dev2.Runtime.ServiceModel
                             var proxy = hub2.CreateHubProxy("esb"); // this is the magic line that causes proper validation
 #pragma warning restore 168
                             hub2.Start().Wait();
-
+                            
                             Dev2Logger.Log.Debug("Hub State : " + hub2.State);
 
                             return "Success";

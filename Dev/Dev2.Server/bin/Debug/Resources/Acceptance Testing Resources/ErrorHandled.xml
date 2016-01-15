@@ -1,5 +1,5 @@
 
-<Service ID="acdce7cf-c381-4b17-a760-6add19b89343" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorHandled" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5806.16682">
+<Service ID="acdce7cf-c381-4b17-a760-6add19b89343" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorHandled" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5854.28948">
   <DisplayName>ErrorHandled</DisplayName>
   <Category>Acceptance Testing Resources\ErrorHandled</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

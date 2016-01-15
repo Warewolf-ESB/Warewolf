@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,9 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
+using System.Xml;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.UI;
@@ -24,6 +26,9 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Indentation;
+using Infragistics.Controls.Grids;
+using Infragistics.Controls.Grids.Primitives;
+using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -37,22 +42,30 @@ namespace Dev2.Studio.Views.Workflow
         {
             InitializeComponent();
             SetUpTextEditor();
+            AddBlackOutEffect();
+            _currentTab = InputTab.Grid;
         }
 
         private TextEditor _editor;
+        private TextEditor _jsonEditor;
         private AbstractFoldingStrategy _foldingStrategy;
         private FoldingManager _foldingManager;
         DispatcherTimer _foldingUpdateTimer;
+        Grid _blackoutGrid;
+        InputTab _currentTab;
 
         private void SetUpTextEditor()
         {
             _editor = new TextEditor { SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML"), ShowLineNumbers = true, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
             _editor.SetValue(AutomationProperties.AutomationIdProperty, "UI_XMLEditor_AutoID");
 
+            _jsonEditor = new TextEditor { SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript"), ShowLineNumbers = true, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
+            _jsonEditor.SetValue(AutomationProperties.AutomationIdProperty, "UI_JsonEditor_AutoID");
+
             _foldingStrategy = new XmlFoldingStrategy();
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
-
+            _jsonEditor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
             _foldingUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
             _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
@@ -60,9 +73,9 @@ namespace Dev2.Studio.Views.Workflow
 
         void OnFoldingUpdateTimerOnTick(object sender, EventArgs e)
         {
-            if(_foldingStrategy != null && _foldingManager != null)
+            if (_foldingStrategy != null && _foldingManager != null)
             {
-                if(!String.IsNullOrEmpty(_editor.Document.Text))
+                if (!string.IsNullOrEmpty(_editor.Document.Text))
                 {
                     _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
                 }
@@ -78,11 +91,11 @@ namespace Dev2.Studio.Views.Workflow
         private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             var tb = e.OriginalSource as TextBox;
-            if(tb != null)
+            if (tb != null)
             {
                 var dli = tb.DataContext as IDataListItem;
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null)
+                if (vm != null)
                 {
                     vm.AddRow(dli);
                 }
@@ -91,27 +104,119 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
-            if(e.Source is TabControl)
+            var ctrl = e.Source as TabControl;
+            if (ctrl != null)
             {
-                var tabCtrl = e.Source as TabControl;
+                var tabCtrl = ctrl;
                 var tabItem = tabCtrl.SelectedItem as TabItem;
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null)
+                if (vm != null)
                 {
-                    if(tabItem != null && tabItem.Header.ToString() == "XML")
+                    vm.IsInError = false;
+                    if (tabItem != null && tabItem.Header.ToString() == "XML")
                     {
-                        vm.SetXmlData();
-                        ShowDataInOutputWindow(vm.XmlData);
+                        switch (_currentTab)
+                        {
+                            case InputTab.Grid:
+                                try
+                                {
+                                    vm.SetXmlData();
+                                    ShowDataInOutputWindow(vm.XmlData);
+                                }
+                                catch
+                                {
+                                    vm.ShowInvalidDataPopupMessage();
+                                }
+                                break;
+                            case InputTab.Json:
+                                try
+                                {
+                                    vm.XmlData = GetXmlDataFromJson();
+                                    vm.SetWorkflowInputData();
+                                    vm.SetXmlData();
+                                    ShowDataInOutputWindow(vm.XmlData);
+                                }
+                                catch
+                                {
+                                    vm.ShowInvalidDataPopupMessage();
+                                }
+                                break;
+                        }
+                        _currentTab = InputTab.Xml;
+                    }
+                    else if (tabItem != null && tabItem.Header.ToString() == "JSON")
+                    {
+                        var xml = new XmlDocument();
+                        switch (_currentTab)
+                        {
+                            case InputTab.Grid:
+                                vm.SetXmlData();
+                                if (vm.XmlData != null)
+                                {
+                                    xml.LoadXml(vm.XmlData);
+                                }
+                                break;
+                            case InputTab.Xml:
+                                if (!string.IsNullOrEmpty(_editor.Text))
+                                {
+                                    try
+                                    {
+                                        xml.LoadXml(_editor.Text);
+                                    }
+                                    catch
+                                    {
+                                        vm.ShowInvalidDataPopupMessage();
+                                    }
+                                }
+                                break;
+                        }
+
+                        if (xml.FirstChild != null)
+                        {
+                            var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                            _jsonEditor.Text = json;
+                        }
+                        JsonOutput.Content = _jsonEditor;
+                        _currentTab = InputTab.Json;
                     }
                     else
                     {
-                        vm.XmlData = _editor.Text;
-                        vm.SetWorkflowInputData();
+                        try
+                        {
+                            var xmlData = _editor.Text;
+                            if (_currentTab == InputTab.Json)
+                            {
+                                xmlData = GetXmlDataFromJson();
+                            }
+                            vm.XmlData = xmlData;
+                            vm.SetWorkflowInputData();
+                            _currentTab = InputTab.Grid;
+                        }
+                        catch
+                        {
+                            vm.IsInError = true;
+                        }
                     }
                 }
             }
+        }
+
+        string GetXmlDataFromJson()
+        {
+            try
+            {
+                var xmlDocument = JsonConvert.DeserializeXmlNode(_jsonEditor.Text == "\"\"" ? "" : _jsonEditor.Text, "DataList");
+                return xmlDocument == null ? String.Empty : xmlDocument.InnerXml;
+            }
+            catch (Exception)
+            {
+                var vm = DataContext as WorkflowInputDataViewModel;
+                if (vm != null)
+                {
+                    vm.ShowInvalidDataPopupMessage();
+                }
+            }
+            return _editor.Text;
         }
 
         private void MenuItemAddRow(object sender, RoutedEventArgs e)
@@ -119,23 +224,30 @@ namespace Dev2.Studio.Views.Workflow
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
 
-            if(vm != null && vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
+            if (vm != null && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect))
             {
-                DataListInputs.SelectedIndex = indexToSelect;
+                DataListInputs.ActiveItem = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
             }
         }
 
         private void FocusOnAddition()
         {
-            var row = GetSelectedRow(DataListInputs);
-            if(row != null)
+            try
             {
-                var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-                if(intelbox != null)
+                var row = GetSelectedRow(DataListInputs);
+                if(row != null)
                 {
-                    intelbox.Focus();
+                    var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
+                    if(intelbox != null)
+                    {
+                        intelbox.Focus();
+                    }
                 }
+            }
+            catch(Exception)
+            {
+                //
             }
         }
 
@@ -143,77 +255,107 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if(vm != null && vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
+            if (vm != null && (vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
             {
-                DataListInputs.SelectedIndex = indexToSelect;
-            }
-        }
-
-        private void TextBoxGotFocus(object sender, RoutedEventArgs e)
-        {
-            var tb = e.OriginalSource as TextBox;
-            if(tb != null)
-            {
-                tb.SelectAll();
+                DataListInputs.ActiveItem = indexToSelect;
             }
         }
 
         private void IntellisenseTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            int indexToSelect;
-            if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            var vm = DataContext as WorkflowInputDataViewModel;
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.KeyboardDevice.IsKeyDown(Key.Insert))
             {
-                var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null && vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
-                {
-                    DataListInputs.SelectedIndex = indexToSelect;
-                    Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
-                }
+                InsertEmptyRow();
                 e.Handled = true;
             }
-            else if(e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.Delete)
             {
-                var vm = DataContext as WorkflowInputDataViewModel;
-                if(vm != null && vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect))
-                {
-                    DataListInputs.SelectedIndex = indexToSelect;
-                }
-
+                DeleteLastRow();
+                e.Handled = true;
+            }
+            if ((e.KeyboardDevice.Modifiers == ModifierKeys.Shift && (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.Key == Key.Tab)) || e.KeyboardDevice.IsKeyDown(Key.Up))
+            {
+                MoveToPreviousRow(vm);
+                e.Handled = true;
+            }
+            else if (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.KeyboardDevice.IsKeyDown(Key.Down))
+            {
+                MoveToNextRow(vm);
                 e.Handled = true;
             }
         }
 
-        private void DataListInputsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void MoveToNextRow(WorkflowInputDataViewModel vm)
         {
-            var row = GetSelectedRow(DataListInputs);
-            if(row != null)
+            if(vm != null)
             {
-                var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-                if(intelbox != null)
+                var itemToSelect = vm.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
+                if(itemToSelect != null)
                 {
-                    intelbox.Focus();
+                    DataListInputs.ActiveItem = itemToSelect;
+                    FocusOnAddition();
                 }
             }
         }
 
-        private FrameworkElement FindByName(string name, FrameworkElement root)
+        void MoveToPreviousRow(WorkflowInputDataViewModel vm)
         {
-            if(root != null)
+            if(vm != null)
+            {
+                var itemToSelect = vm.GetPreviousRow(DataListInputs.ActiveItem as IDataListItem);
+                if(itemToSelect != null)
+                {
+                    DataListInputs.ActiveItem = itemToSelect;
+                    FocusOnAddition();
+                }
+            }
+        }
+
+        private void GridPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            UIElement keyboardFocus = Keyboard.FocusedElement as TextBox;
+            if (e.KeyboardDevice.IsKeyDown(Key.LeftShift) && e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));                    
+                }
+            }
+            if (e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                var vm = DataContext as WorkflowInputDataViewModel;
+                if (vm != null)
+                {
+                    var itemToSelect = vm.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
+                    if (itemToSelect != null)
+                    {
+                        DataListInputs.ActiveItem = itemToSelect;
+                        FocusOnAddition();
+                    }
+                }
+            }
+        }
+
+        private static FrameworkElement FindByName(string name, FrameworkElement root)
+        {
+            if (root != null)
             {
                 var tree = new Stack<FrameworkElement>();
                 tree.Push(root);
-                while(tree.Count > 0)
+                while (tree.Count > 0)
                 {
-                    FrameworkElement current = tree.Pop();
-                    if(current.Name == name)
+                    var current = tree.Pop();
+                    if (current.Name == name)
                         return current;
 
-                    int count = VisualTreeHelper.GetChildrenCount(current);
-                    for(int supplierCounter = 0; supplierCounter < count; ++supplierCounter)
+                    var count = VisualTreeHelper.GetChildrenCount(current);
+                    for (var supplierCounter = 0; supplierCounter < count; ++supplierCounter)
                     {
-                        DependencyObject child = VisualTreeHelper.GetChild(current, supplierCounter);
-                        FrameworkElement item = child as FrameworkElement;
-                        if(item != null)
+                        var child = VisualTreeHelper.GetChild(current, supplierCounter);
+                        var item = child as FrameworkElement;
+                        if (item != null)
                             tree.Push(item);
                     }
                 }
@@ -221,22 +363,42 @@ namespace Dev2.Studio.Views.Workflow
             return null;
         }
 
-        public static DataGridRow GetSelectedRow(DataGrid grid)
+        static CellsPanel GetSelectedRow(XamGrid grid)
         {
-            var row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem);
-            return row;
+            if(grid.ActiveCell == null)
+            {
+                return null;
+            }
+            var row = grid.ActiveCell.Row;
+            return row.Control;
         }
 
         private void ExecuteClicked(object sender, RoutedEventArgs e)
         {
             var tabItem = TabItems.SelectedItem as TabItem;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if(vm != null)
+            if (vm != null)
             {
-                if(tabItem != null && tabItem.Header.ToString() == "XML")
+                vm.IsInError = false;
+                if (tabItem != null)
                 {
-                    vm.XmlData = _editor.Text;
-                    vm.SetWorkflowInputData();
+                    if (tabItem.Header.ToString() == "XML")
+                    {
+                        try
+                        {
+                            vm.XmlData = _editor.Text;
+                            vm.SetWorkflowInputData();
+                        }
+                        catch
+                        {
+                            vm.IsInError = true;
+                        }
+                    }
+                    else if (tabItem.Header.ToString() == "JSON")
+                    {
+                        vm.XmlData = GetXmlDataFromJson();
+                        vm.SetWorkflowInputData();
+                    }
                 }
             }
             DestroyTimer();
@@ -244,7 +406,7 @@ namespace Dev2.Studio.Views.Workflow
 
         void DestroyTimer()
         {
-            if(_foldingUpdateTimer != null)
+            if (_foldingUpdateTimer != null)
             {
                 _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
                 _foldingUpdateTimer.Stop();
@@ -257,9 +419,92 @@ namespace Dev2.Studio.Views.Workflow
             DestroyTimer();
         }
 
-        void DataListInputs_OnLoadingRow(object sender, DataGridRowEventArgs e)
+        void WorkflowInputDataView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Row.Tag = e.Row.GetIndex();
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
+
+        void WorkflowInputDataView_OnClosed(object sender, EventArgs e)
+        {
+            RemoveBlackOutEffect();
+        }
+        void RemoveBlackOutEffect()
+        {
+            Application.Current.MainWindow.Effect = null;
+            var content = Application.Current.MainWindow.Content as Grid;
+            if (content != null)
+            {
+                content.Children.Remove(_blackoutGrid);
+            }
+        }
+        void AddBlackOutEffect()
+        {
+            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
+            var content = Application.Current.MainWindow.Content as Grid;
+            _blackoutGrid = new Grid
+            {
+                Background = new SolidColorBrush(Colors.DarkGray),
+                Opacity = 0.5
+            };
+            if (content != null)
+            {
+                content.Children.Add(_blackoutGrid);
+            }
+            Application.Current.MainWindow.Effect = effect;
+        }
+
+        void WorkflowInputDataView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        void InsertEmptyRow()
+        {
+            int indexToSelect;
+            var vm = DataContext as WorkflowInputDataViewModel;
+            if (vm != null && (vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
+            {
+                DataListInputs.ActiveItem = indexToSelect;
+                Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
+            }
+        }
+        void DeleteLastRow()
+        {
+            int indexToSelect;
+            var vm = DataContext as WorkflowInputDataViewModel;
+            if (vm != null && (vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
+            {
+                DataListInputs.ActiveItem = indexToSelect;
+            }
+        }
+
+        void WorkflowInputDataView_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            //FocusOnAddition();
+        }
+
+        void DataListInputs_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if(DataListInputs != null)
+            {
+                if(DataListInputs.Rows != null && DataListInputs.Rows.Count > 0)
+                {
+                    var cellBaseCollection = DataListInputs.Rows[0].Cells;
+                    if(cellBaseCollection != null)
+                    {
+                        var selectedCell = (Cell)cellBaseCollection[1];
+                        DataListInputs.ActiveCell = selectedCell;
+                    }
+                }
+            }
+            FocusOnAddition();
+        }
+    }
+
+    public enum InputTab
+    {
+        Grid,
+        Xml,
+        Json
     }
 }

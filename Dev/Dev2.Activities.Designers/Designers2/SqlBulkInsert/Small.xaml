@@ -12,20 +12,17 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:fa="http://schemas.fontawesome.io/icons/"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                Width="260"
                                MaxWidth="260"
-                               Padding="10,7,10,10"
                                mc:Ignorable="d"
                                d:DesignHeight="260"
                                d:DesignWidth="260"
                                d:DataContext="{d:DesignInstance local:SqlBulkInsertDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -38,64 +35,65 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0"
+        <TextBlock Grid.Column="0"
                Grid.Row="0"
-               Content="DB"
-               Style="{StaticResource ActivityMapppingLabelStyle}" />
+               Text="DB" />
         <ComboBox Grid.Column="1"
                   Grid.Row="0"
                   x:Name="InitialFocusElement"
-                  Style="{StaticResource ActivityMapppingComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                   ItemsSource="{Binding Databases}"
+                  Margin="{StaticResource ControlBorderRight}"
                   DisplayMemberPath="ResourceName"
                   SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpDatabase}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpDatabase}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
                 Grid.Row="0"
                 Content="..."
                 Command="{Binding EditDatabaseCommand}"
-                Style="{StaticResource ActivityEditButtonStyle}"
                 ToolTip="Edit Database Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
-        <Label Grid.Column="0"
+        <TextBlock Grid.Column="0"
                Grid.Row="1"
-               Content="Table"
-               Style="{StaticResource ActivityMapppingLabelStyle}" />
+               Text="Table"
+               Margin="{StaticResource ControlBorderTop}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
-                  Style="{StaticResource ActivityMapppingComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                   ItemsSource="{Binding Tables}"
                   DisplayMemberPath="FullName"
+                  Margin="{StaticResource ControlBorderTopRight}"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
                   ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipTable}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpTable}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpTable}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
                 Grid.Row="1"
                 Command="{Binding RefreshTablesCommand}"
-                Style="{StaticResource ActivityRefreshButtonStyle}"
+                Margin="{StaticResource ControlBorderTop}"
                 ToolTip="Refresh tables"
-                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
+                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" >
+            <Button.Content>
+                <fa:FontAwesome Icon="Refresh"></fa:FontAwesome>
+            </Button.Content>
+        </Button>
 
         <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
                                x:Name="SmallDataGrid"
+                               Margin="{StaticResource ControlBorderTop}"
                                HeadersVisibility="None"
                                Height="78"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -116,13 +114,14 @@
                                                     AcceptsReturn="True"
                                                     AllowUserInsertLine="True"
                                                     MaxHeight="52"
+                                                    Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertToolTipInputData}"
+                                    <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertToolTipInputData}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="InputColumn"
@@ -131,8 +130,7 @@
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -156,8 +154,7 @@
                                            ToolTip="{Binding OutputColumn.ColumnName}">                               
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -169,22 +166,22 @@
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-        <Label Grid.Row="3"
+        <TextBlock Grid.Row="3"
                Grid.Column="0"
-               Content="Result"
-               Style="{StaticResource ActivityMapppingLabelStyle}" />
+               Text="Result"
+               Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Row="3"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[InsertSuccess]]"
+                                Margin="{StaticResource ControlBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

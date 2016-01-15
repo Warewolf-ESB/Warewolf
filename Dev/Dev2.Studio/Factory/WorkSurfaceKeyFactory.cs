@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
@@ -33,7 +34,7 @@ namespace Dev2.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context)
+        public static IWorkSurfaceKey CreateKey(WorkSurfaceContext context)
         {
             return new WorkSurfaceKey
                 {
@@ -42,7 +43,22 @@ namespace Dev2.Factory
                     ServerID = Guid.Empty
                 };
         }
-
+        /// <summary>
+        /// Create a key which are unique to the entire studio
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2/28/2013</date>
+        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context,Guid Environemt)
+        {
+            return new WorkSurfaceKey
+            {
+                WorkSurfaceContext = context,
+                ResourceID = Environemt,
+                ServerID = Environemt
+            };
+        }
         /// <summary>
         /// Creates a key for a worksurface that identifies a unique resource
         /// </summary>

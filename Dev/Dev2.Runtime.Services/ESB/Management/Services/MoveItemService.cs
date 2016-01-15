@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,15 +11,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
@@ -40,6 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
+                StringBuilder itemToBeRenamedPath;
                 if (values == null)
                 {
                     throw new ArgumentNullException("values");
@@ -54,10 +56,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException("newName value not supplied.");
                 }
+                if (!values.TryGetValue("itemToBeRenamedPath", out itemToBeRenamedPath))
+                {
+                    throw new ArgumentException("newName value not supplied.");
+                }
 
-                var itemToMove = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
+
+                var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
                 Dev2Logger.Log.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
                 item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);
+                if(item.Status==ExecStatus.Success && itemToMove.ResourceType==ResourceType.Folder)
+                {
+                    if (Directory.Exists(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath)))
+                          Directory.Delete(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath),true);
+                    //ServerExplorerRepo.Reload(Guid.Empty);
+                }
             }
             catch (Exception e)
             {
@@ -69,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><itemToBeRenamedPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 

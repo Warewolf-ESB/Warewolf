@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -143,33 +143,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             const string expected = "2013/02/07 08:38:57.280 PM";
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void DateTimeComplexDateTimeInputsWithTrailingSpacesExpectedDateTimeReturnedCorrectly()
-        {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
-                         , "Years"
-                         , 327
-                         , "[[MyTestResult]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            const string expected = "Year 71 week 42 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 289 | Saturday | Sat | 6 |16 | 22 | 2371/10/16 10:25:36.953 PM AD ";
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-            // remove test datalist ;)
-
-            //Ashley: Windows 8 and above say AD and BC instead of A.D. and B.C. for the 'Era' datepart
-            actual = actual.Replace("A.D.", "AD").Replace("B.C.", "BC");
-            
             Assert.AreEqual(expected, actual);
         }
 

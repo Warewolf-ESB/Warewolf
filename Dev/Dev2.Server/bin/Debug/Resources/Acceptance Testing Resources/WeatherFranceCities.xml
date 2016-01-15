@@ -1,22 +1,8 @@
 
-<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAABDoAHFwPoRt+rqATPyf/lAAAAAAASAAACgAAAAEAAAANFmB36A+ye3hfos/SFgDLQQAQAAwRuRXJyzZEeRiAi9Gn77QSHbh3tCMDbEYohfLbXYrpeHhNo2MMj4CHL7AoTOvaYB7DNBBPb54cDNdEWfGj5iRQYlT++ClTGStKfh4qpKHkldPwiUxPZ5DlFjS9mbropnWQf4zLhI7Wj5vh5q8omzRLtGRpFPQP8W3d8Jyvq/08umhX9ICBz7ZYMi/a95N8uwH7efiOHYtYgEVyNNX3w07ITB1/9gYKbxXGR96y3uLtwkuUmsjQsfhM5KTmCYepxi4X+WFNv5y6iPyiQfDGuKkQHdgeZ2kUMNcst/Qn/51ZIqbBSStm6AQibcWC1dtMNI7fLY718CbQnQLpwvmXYFVaZganvLae4WaW2XG9pNtY8UAAAAdiz7A50xWtp0lhCXDpOjF0hafqo=" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5777.29405">
+<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2Ao7aA7YqUqgRUw4XiXmhgQAAAACAAAAAAADZgAAwAAAABAAAABySm5/Xz8aT/BGhgTLttREAAAAAASAAACgAAAAEAAAAF0QEmgbIDtYuVyUc674flwQAQAApAELWQiQqhZ5Uw5CbwyQZs1czeww7/FbTOjrJCg1109iKalweyC1jAAwAq6MCpU+TmG0KhkJGlBncWR8pQJhqrTpyQ+Rpnkbm6Y8+VVGH6kveogr/5nj4BkUJnzgYiFR6/I+uLDcWnsoRCUmMXpSNmXLBqF/aqFvLCeiDkj51DiiRq1TAN7f/B7uc+6Ep3v1CYWyFFjr8dbhVI/9szeWjMxuegUit3jbjNSGGDsikAUJ8hHifa7WeRtZZFKMaXp2Aq7lnhciAQWrgG3xQb+mf6VWkG6XJYWawhHG3Mm1/IH89PA1pmOoycabsohgDqsTUBm5QANzWtu0LSLmaLiVgNTuPZ1Dx3pDFlvRDto+3rQUAAAAkYE4btPBUhsbSjcaP5uaA3ZQDY8=" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5854.28948">
   <DisplayName>WeatherFranceCities</DisplayName>
   <Category>Acceptance Testing Resources\WeatherFranceCities</Category>
   <AuthorRoles>
   </AuthorRoles>
   <TypeOf>EmailSource</TypeOf>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>p5NYADgSPNycqTG5kwoCkL3d/5M=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>XB/n/W5NCmFlQBfsl03KUsuJ8nP+wXKGKD38gtndZp7bj6iXxPaEwJB8NUwKAUn0mBsMZm1dAVBimsrbKuyIPWujgB3Pw9rPU8U2M5o0tcxxLj/z+O1Xs99mStzvUPe5Xh5z7vZJIspbn8sSiC5DqecFgxwhKlmlIPGS8W4gJ1c=</SignatureValue>
-  </Signature>
 </Source>

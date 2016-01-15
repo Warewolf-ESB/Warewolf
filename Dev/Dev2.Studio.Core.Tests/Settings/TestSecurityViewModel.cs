@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,13 +21,13 @@ namespace Dev2.Core.Tests.Settings
 {
     public class TestSecurityViewModel : SecurityViewModel
     {
-        public TestSecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
-            : base(securitySettings, resourcePicker, directoryObjectPicker, parentWindow, environment)
+        public TestSecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
+            : base(securitySettings, directoryObjectPicker, parentWindow, environment, (() => new Mock<IResourcePickerDialog>().Object))
         {
         }
 
         public TestSecurityViewModel()
-            : base(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object)
+            : base(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object,(() => new Mock<IResourcePickerDialog>().Object))
         {
         }
 

@@ -297,7 +297,7 @@ Sofware development by: www.dev2.co.za
     <value>About Server and Studio</value>
   </data>
   <data name="Warewolf_Logo" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png</value>
+    <value>pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg</value>
   </data>
   <data name="SplashImage" xml:space="preserve">
     <value>Images\SplashImage_New_2015.jpg</value>
@@ -341,13 +341,66 @@ Sofware development by: www.dev2.co.za
   <data name="NewWorkflowBaseName" xml:space="preserve">
     <value>Unsaved</value>
   </data>
+  <data name="VariablesInput_Information_Title" xml:space="preserve">
+    <value>Did you know?</value>
+  </data>
+  <data name="VariablesInput_Information" xml:space="preserve">
+    <value>You can pass variables into your workflow by selecting the Input checkbox in the Variables window.</value>
+  </data>
+  <data name="DataInput_Error_Title" xml:space="preserve">
+    <value>Did you know?</value>
+  </data>
+  <data name="DataInput_Error" xml:space="preserve">
+    <value>The data you have entered is invalid. Please correct the data.</value>
+  </data>
+  <data name="Debugging_Error_Title" xml:space="preserve">
+    <value>Error Debugging</value>
+  </data>
+  <data name="Debugging_Error" xml:space="preserve">
+    <value>Please resolve all variable errors, before debugging.</value>
+  </data>
+  <data name="Saving_Error_Title" xml:space="preserve">
+    <value>Error Saving</value>
+  </data>
+  <data name="Saving_Error" xml:space="preserve">
+    <value>Please resolve the variable(s) errors below, before saving.</value>
+  </data>
+  <data name="Delete_Error_Title" xml:space="preserve">
+    <value>Delete Error</value>
+  </data>
+  <data name="Delete_Error" xml:space="preserve">
+    <value>The resource {0} cannot be deleted because something depends on it.</value>
+  </data>
+  <data name="DestinationPermission_Error" xml:space="preserve">
+    <value>Destination server permission Deploy To not allowed.</value>
+  </data>
+  <data name="SourcePermission_Error" xml:space="preserve">
+    <value>Source server permission Deploy From not allowed.</value>
+  </data>
+  
+  <data name="DialogBody_DisconnectedItemNotSaved" xml:space="preserve">
+    <value>The workflow '{0}' that you are closing is not saved.
+The workflow is linked to a disconnected server. 
+To save the workflow, select Cancel and reconnect the server, or select Ok to discard your changes.
+-----------------------------------------------------------------
+Ok - Discard your changes.
+Cancel - Returns you to the workflow.</value>
+  </data>
   <data name="DialogBody_NotSaved" xml:space="preserve">
     <value>The workflow '{0}' that you are closing is not saved.
 Would you like to save the workflow?
--------------------------------------------------------------------
+-----------------------------------------------------------------
 Yes - Save the workflow.
 No - Discard your changes.
 Cancel - Returns you to the workflow.</value>
+  </data>
+  <data name="ItemSource_NotSaved" xml:space="preserve">
+    <value>Your changes have not been saved.
+Would you like to save? 
+-----------------------------------------------------------------
+Yes - Save your changes.
+No - Discard your changes.
+Cancel - Returns you to the tab.</value>
   </data>
   <data name="DialogBody_UpdateAvailable" xml:space="preserve">
     <value>A new version of Warewolf is available:
@@ -367,7 +420,7 @@ Would you like to start the setup now?</value>
     <value>Workflow not saved...</value>
   </data>
   <data name="DialogBody_ConfirmDelete" xml:space="preserve">
-    <value>Are you sure you wish to delete the {0} {1}?
+    <value>Are you sure you wish to delete {0} {1}?
 
 Version History will also be deleted.</value>
   </data>

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -55,6 +55,8 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Moq;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -78,6 +80,13 @@ namespace Dev2.Activities.Specs.Composition
                 _debugWriterSubscriptionService.Unsubscribe();
                 _debugWriterSubscriptionService.Dispose();
             }
+           
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register<IServer>(mockServer.Object);
+            CustomContainer.Register<IShellViewModel>(mockshell.Object);
         }
 
         [Given(@"All environments disconnected")]
@@ -219,6 +228,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (Timeout <= 0)
             {
+                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
             environmentModel.Connect();
@@ -1207,7 +1217,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
-                WebServer.Send(resourceModel, dataList.ToString(), new TestAsyncWorker());
+                WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
                 _resetEvt.WaitOne(120000);
             }
         }
@@ -1286,7 +1296,7 @@ namespace Dev2.Activities.Specs.Composition
             IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
             var versions = rep.GetVersions(id);
             ScenarioContext.Current["Versions"] = versions;
-            Assert.AreEqual(versions.Count, numberOfVersions);
+            Assert.AreEqual(numberOfVersions, versions.Count);
         }
 
         [Then(@"explorer as")]

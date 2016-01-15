@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1774,7 +1774,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
         }
-
+         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1791,6 +1791,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(dataListViewModel.ScalarCollection[0].IsVisable);
         }
 
+        [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1807,7 +1808,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsVisable);
         }
 
-
+         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1827,7 +1828,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].IsVisable);
         }
-
+         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1847,7 +1848,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListViewModel.RecsetCollection[0].IsVisable);
         }
-
+         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1868,7 +1869,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
         }
-
+         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]

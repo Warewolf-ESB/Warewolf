@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -352,7 +352,6 @@ or type_desc LIKE '%Procedure%'";
 
         // Resource Picker
         public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
-        public static string ResourcePickerServiceString = "DsfServiceActivity";
 
         public static string SerializableResourceQuote = "__QUOTE__";
         public static string SerializableResourceSingleQuote = "__SQUOTE__";
@@ -403,7 +402,9 @@ or type_desc LIKE '%Procedure%'";
             "Not Numeric",
             "Not Regex",
             "Not Text",
-            "Not XML"
+            "Not XML",
+            "There is No Error",
+            "There is An Error"
         };
 
 
@@ -469,6 +470,34 @@ or type_desc LIKE '%Procedure%'";
                 var tempPath = Path.Combine(appDataFolder, "Warewolf", "Temp");
                 return tempPath;
             }
+        }
+public static int MinCompressVersionMinor
+        {
+            get
+            {
+//#if DEBUG
+//                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
+//#endif
+                // ReSharper disable once HeuristicUnreachableCode
+#pragma warning disable 162
+                return 7;
+#pragma warning restore 162
+            }
+    
+        }
+        public static int MinCompressVersionMajor
+        {
+            get
+            {
+//#if DEBUG
+//                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
+//#endif
+                // ReSharper disable once HeuristicUnreachableCode
+#pragma warning disable 162
+                return 0;
+#pragma warning restore 162
+            }
+   
         }
         // ReSharper restore InconsistentNaming
     }

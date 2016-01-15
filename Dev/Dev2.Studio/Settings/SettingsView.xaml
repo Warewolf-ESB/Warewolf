@@ -7,132 +7,78 @@
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             xmlns:ui="clr-namespace:Dev2.UI" xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
     Padding="10"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance settings:SettingsViewModel}"
              AutomationProperties.AutomationId="UI_SettingsView_AutoID">
-    
+
     <UserControl.Resources>
         <logging:LoggingView x:Key="LogSettingsView"
                              AutomationProperties.AutomationId="LogSettingsViewContent" DataContext="{Binding LogSettingsViewModel, Mode=OneWay}"/>
         <security:SecurityView x:Key="SecurityView"
                                AutomationProperties.AutomationId="SecurityViewContent" DataContext="{Binding SecurityViewModel, Mode=OneWay}" />
-
-        <Style x:Key="ContentViewStyle"
-               TargetType="{x:Type ContentControl}">
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Style.Triggers>                
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=IsLoading, Mode=OneWay}"
-                                   Value="False" />
-                        <Condition Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
-                                   Value="True" />
-                        <Condition Binding="{Binding Path=ShowLogging, Mode=TwoWay}"
-                                   Value="False" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Content"
-                            Value="{StaticResource SecurityView}" />
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=IsLoading, Mode=OneWay}"
-                                   Value="False" />
-                        <Condition Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
-                                   Value="False" />
-                        <Condition Binding="{Binding Path=ShowLogging, Mode=TwoWay}"
-                                   Value="True" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Content"
-                            Value="{StaticResource LogSettingsView}" />
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SettingsToggleButtonStyle"
-               BasedOn="{StaticResource ToggleButtonStyle}"
-               TargetType="{x:Type ToggleButton}">
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-        
     </UserControl.Resources>
-    
-    <Grid>       
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="100" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <connections:ConnectControl  DataContext="{Binding ConnectControlViewModel}"
-                           Grid.Row="0"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
-                           Width="400"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Left"
-                           ConnectButtonAutomationID="UI_SettingsServerConnectButton_AutoID"
-                           EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
-                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"/>
 
-        <customControls:CircularProgressBar Grid.Row="1"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Height="30"
-                                            Width="30"
-                                            VerticalAlignment="Top"
-                                            HorizontalAlignment="Center"
-                                            Margin="0,10,0,0"
-                                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                            AutomationProperties.AutomationId="UI_SettingsProgress_Indicator" />
-        
-        <Border Grid.Row="1" Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{StaticResource ButtonBorderBrush}">
 
-            <StackPanel
-                        Orientation="Vertical"
-                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
-                <ToggleButton Content="{Binding SecurityHeader}"
-                              IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
-                              Style="{StaticResource SettingsToggleButtonStyle}"
-                              AutomationProperties.AutomationId="UI_SecuritySettings_AutoID"/>
-
-                <ToggleButton Content="{Binding LogHeader}"
-                              Visibility="{Binding HasLogSettings, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                              IsChecked="{Binding ShowLogging, Mode=TwoWay}"
-                              Style="{StaticResource SettingsToggleButtonStyle}" />
-
-            </StackPanel>
-
+        <Border Grid.Row="1" BorderThickness="0,0,0,0" Margin="{StaticResource ElementBorderTop}">
+            <Grid>
+                <TabControl Style="{StaticResource TabControlStyle}">
+                    <TabItem Style="{StaticResource TabItemStyle}" BorderThickness="0">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Lock" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding SecurityHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="SecurityView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Table" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding LogHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="LogSettingsView" />
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+            </Grid>
         </Border>
-        <Grid  Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ContentControl Grid.Row="0" Style="{StaticResource ContentViewStyle}" Margin="0,0,0,10" />
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal"
+        <Grid Grid.Row="2" >
+            <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right">
 
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Visibility="{Binding IsSavedSuccessVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                    <TextBlock Text="Settings saved successfully"
-                               VerticalAlignment="Center" 
-                               AutomationProperties.AutomationId="UI_SettingsSaveMessageStackPanel_AutoID"/>
-                    <Image Style="{StaticResource ImageTickStyle}"
-                           VerticalAlignment="Center"
-                           Margin="3,0,0,0" />
+                    <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Margin="{StaticResource ControlBorderLeft}" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
                 </StackPanel>
 
                 <TextBlock Foreground="{StaticResource ValidationErrorElement}"
@@ -141,14 +87,13 @@
                            Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                            AutomationProperties.AutomationId="UI_Errors_AutoID" />
 
-                <Button Content="Save"
+                <!--<Button Content="Save"
                         Command="{Binding SaveCommand}"
                         Margin="5,0,0,0"
                         Width="90"
                         Height="28" 
-                        AutomationProperties.AutomationId="UI_SaveSettingsbtn_AutoID"/>
+                        AutomationProperties.AutomationId="UI_SaveSettingsbtn_AutoID"/>-->
             </StackPanel>
-
         </Grid>
     </Grid>
 </UserControl>

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,8 @@
 */
 
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
@@ -32,6 +34,8 @@ namespace Dev2.Studio.Core.Models.DataList
         private string _lastIndexedName;
         private bool _isUsed;
         private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
+        string _filterText;
+        ObservableCollection<IDataListItemModel> _backupChildren    ;
 
         #endregion Fields
 
@@ -55,6 +59,7 @@ namespace Dev2.Studio.Core.Models.DataList
             LastIndexedName = Name;
             IsUsed = true;
             ColumnIODirection = dev2ColumnArgumentDirection;
+            
         }
 
         #endregion Ctor
@@ -254,6 +259,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 return Parent != null;
             }
         }
+       
 
         #endregion Properties
 
@@ -263,6 +269,49 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             HasError = false;
             ErrorMessage = string.Empty;
+        }
+
+        public void Filter(string searchText)
+        {
+            Children.Clear();
+            if(_backupChildren != null)
+            {
+                foreach(var dataListItemModel in _backupChildren)
+                {
+                    Children.Add(dataListItemModel);
+                }
+            }
+            if(string.IsNullOrEmpty(searchText))
+            {
+                return;
+            }
+
+            if(!String.IsNullOrEmpty(searchText))
+            {
+                
+                _backupChildren = _backupChildren?? new ObservableCollection<IDataListItemModel>();
+                foreach(var dataListItemModel in Children)
+                {
+                    _backupChildren.Add(dataListItemModel);
+                }
+            }
+            _backupChildren = Children;
+            Children = new ObservableCollection<IDataListItemModel>(Children.Where(a=>a.Name.ToUpper().Contains(searchText.ToUpper())));
+        }
+
+        public string FilterText
+        {
+            get
+            {
+                string child ="";
+                if(Children!= null)
+                    child = String.Join("",Children.Select(a=>a.FilterText));
+                return Name + child;
+            }
+            set
+            {
+                _filterText = value;
+            }
         }
 
         public void SetError(string errorMessage)
@@ -323,10 +372,13 @@ namespace Dev2.Studio.Core.Models.DataList
                 foreach(var dataListItemModel in Children)
                 {
                     var child = (DataListItemModel)dataListItemModel;
-                    child.UpdatingChildren = true;
-                    child.Input = value;
-                    child.UpdatingChildren = false;
-                    updatedChildren.Add(child);
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.UpdatingChildren = true;
+                        child.Input = value;
+                        child.UpdatingChildren = false;
+                        updatedChildren.Add(child);
+                    }
                 }
             }
             UpdatingChildren = false;
@@ -349,10 +401,13 @@ namespace Dev2.Studio.Core.Models.DataList
                 foreach(var dataListItemModel in Children)
                 {
                     var child = (DataListItemModel)dataListItemModel;
-                    child.UpdatingChildren = true;
-                    child.Output = value;
-                    child.UpdatingChildren = false;
-                    updatedChildren.Add(child);
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.UpdatingChildren = true;
+                        child.Output = value;
+                        child.UpdatingChildren = false;
+                        updatedChildren.Add(child);
+                    }
                 }
             }
             UpdatingChildren = false;

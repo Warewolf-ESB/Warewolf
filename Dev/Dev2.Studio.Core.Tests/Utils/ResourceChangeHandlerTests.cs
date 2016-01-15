@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
@@ -78,6 +79,12 @@ namespace Dev2.Core.Tests.Utils
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
+            var server = new Mock<IServer>();
+            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register<IShellViewModel>(shell.Object);
+            shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+            shell.Setup(a => a.ActiveServer).Returns(server.Object);
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
             mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -85,9 +92,9 @@ namespace Dev2.Core.Tests.Utils
             //------------Execute Test---------------------------
             var mock = new Mock<IResourceChangedDialog>();
             mock.Setup(dialog => dialog.OpenDependencyGraph).Returns(true);
-            showResourceChangedUtil.ShowResourceChanged(mockResource.Object, new List<string> { "MyResource" }, mock.Object);
+            showResourceChangedUtil.ShowResourceChanged(mockResource.Object, new List<string> { mockResourceModelDependant.Object.ID.ToString() }, mock.Object);
             //------------Assert Results-------------------------
-            mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
+            shell.Verify(model => model.OpenResourceAsync(It.IsAny<Guid>(), server.Object));
         }
 
 

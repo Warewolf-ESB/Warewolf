@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Scheduler;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Settings.Scheduler
@@ -22,22 +23,29 @@ namespace Dev2.Settings.Scheduler
     public class ClientScheduledResourceModel : IScheduledResourceModel
     {
         private readonly IEnvironmentModel _model;
+        readonly Action _createNewTask;
         ObservableCollection<IScheduledResource> _scheduledResources;
 
-        public ClientScheduledResourceModel([Annotations.NotNull] IEnvironmentModel model)
+        public ClientScheduledResourceModel([Annotations.NotNull] IEnvironmentModel model, Action createNewTask)
         {
             if(model == null)
             {
                 throw new ArgumentNullException("model");
             }
             _model = model;
+            _createNewTask = createNewTask;
         }
 
         public ObservableCollection<IScheduledResource> ScheduledResources
         {
             get
             {
-                return _scheduledResources ?? (_scheduledResources = GetScheduledResources());
+                if(_scheduledResources == null)
+                {
+                      _scheduledResources = GetScheduledResources();
+                     _scheduledResources.Add(new DummyResource(_createNewTask) { Name = "Schedule a new task." });
+                }
+                return _scheduledResources;
             }
             set
             {
@@ -48,7 +56,12 @@ namespace Dev2.Settings.Scheduler
         public ObservableCollection<IScheduledResource> GetScheduledResources()
         {
             var controller = new CommunicationController { ServiceName = "GetScheduledResources" };
-            return controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
+            var resources =controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
+            foreach(var scheduledResource in resources)
+            {
+                scheduledResource.IsDirty = false;
+            }
+            return resources;
         }
 
         public void DeleteSchedule(IScheduledResource resource)

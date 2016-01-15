@@ -279,9 +279,9 @@
 	</ControlTemplate>
 
 
-    <!-- ========== ButtonStyleBase ========== -->
+    <!-- ========== ButtonStyle ========== -->
 	<!-- Base style for the buttons in the PaneHeaderPresenter and document TabGroupPane -->
-	<Style x:Key="ButtonStyleBase" TargetType="{x:Type Button}">
+    <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
 		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
 		<Setter Property="Focusable" Value="False" />
 		<Setter Property="Background" Value="Transparent" />
@@ -293,7 +293,7 @@
 
 	<!-- ========== CaptionButtonStyleBase ========== -->
 	<!-- Base style for the buttons in the PaneHeaderPresenter -->
-	<Style x:Key="CaptionButtonStyleBase" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyleBase}">
+    <Style x:Key="CaptionButtonStyleBase" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
 		<Style.Triggers>
 
 			<!-- HotTracked Button in an Active ContentPane -->
@@ -1954,7 +1954,7 @@
 	</Style>
 
 	<!-- ========== TabGroupPane.DocumentCloseButtonStyleKey ========== -->
-	<Style x:Key="{x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyleBase}">
+    <Style x:Key="{x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
 		<Setter Property="ToolTip" Value="{StaticResource closeToolTip}" />
 		<Setter Property="Width" Value="14" />
 		<Setter Property="Height" Value="13" />
@@ -2012,7 +2012,7 @@
 	</Style>
 
 	<!-- ========== TabGroupPane.DocumentPaneNavigatorButtonStyleKey ========== -->
-	<Style x:Key="{x:Static igDock:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyleBase}">
+    <Style x:Key="{x:Static igDock:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
 		<Setter Property="ToolTip" Value="{StaticResource showNavigatorToolTip}" />
 		<Setter Property="Width" Value="16" />
 		<Setter Property="Height" Value="15" />

@@ -128,10 +128,20 @@ Scenario Outline: Recset only has no errors for valid variable indexes
 	And the provider used is 'Default'	
 	Then the result has '<expectError>' errors
 Examples: 	
-	| testName | varlist                            | expectError | input             |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true       | [[sum([[x]])]]    |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false        | [[sum([[assc]])]] |
-	
+	| testName | varlist                            | expectError | input                |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[x]])]]       |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
+	#Newly Added
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123().1234]]       |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123(a).1234]]      |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[*]])]].set]] |
+
 Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
 	Given I have the following variable list '<varlist>'
 	And the filter type is '<filterType>'

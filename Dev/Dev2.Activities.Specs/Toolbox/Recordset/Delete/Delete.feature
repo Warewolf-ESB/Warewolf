@@ -227,3 +227,46 @@ Scenario: Delete two specific recordset data.
 	| [[result]] = Failure  |
 
 
+	@ignore
+	# Audit
+Scenario Outline: Ensure delete variables of different types produce desired results
+	Given I have a delete variable "<variable>" equal to "<value>"
+	And I delete a record "<variable>"
+	When the delete tool is executed
+	Then the delete result should be "<Message>"
+	And the execution has "<Error>" error
+	Examples: 
+	| variable             | value | Error | Message                                      |
+	| ""                   | ""    | An    | Only recordsets can be deleted               |
+	| 99                   | 99    | An    | Only recordsets can be deleted               |
+	| [[q]]                |       | An    | Only recordsets can be deleted               |
+	| Test                 | Test  | An    | Only recordsets can be deleted               |
+	| [[Rec([[var]]).set]] |       | An    | Invalid Recordset Index Value cannot be null |
+	And the debug inputs as  	
+	| Records |	
+	And the debug output as  
+	|                      |
+	| [[result]] = Failure |
+
+#Complex Types
+@ignore
+Scenario Outline: Delete a complex types 
+	Given I have the following recordset
+	| rs             | val |
+	| rs().row().set | 1   |
+	| rs().row().set | 2   |
+	| rs().row().set | 3   |
+	And I delete a record "[[rs().row(2).set]]"
+	When the delete tool is executed
+	Then the delete result should be "Success"
+	And the recordset "[[rs(*).row]]" will be as follows
+	| rs             | val |
+	| rs().row().set | 1   |
+	| rs().row().set | 3   |
+	And the execution has "NO" error
+	And the debug output as  
+	| result               |
+	| <result> = <Success> |	
+	Examples: 
+	| result               | Success |
+	| [[rj().set().value]] | Success |

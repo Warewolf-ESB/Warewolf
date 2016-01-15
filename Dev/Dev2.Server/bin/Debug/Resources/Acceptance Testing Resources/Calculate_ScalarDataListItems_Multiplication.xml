@@ -1,5 +1,5 @@
 
-<Service ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_ScalarDataListItems_Multiplication" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5777.29405">
+<Service ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_ScalarDataListItems_Multiplication" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.5854.28948">
   <DisplayName>Calculate_ScalarDataListItems_Multiplication</DisplayName>
   <Category>Acceptance Testing Resources\Calculate_ScalarDataListItems_Multiplication</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -27,18 +27,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2014-08-22T14:25:30.4201048+02:00" Reason="Save" User="" VersionNumber="2" ResourceId="cd78f3ba-281a-4a67-a863-1bf615ae7d71" VersionId="0941d2c7-140a-4494-9031-047490e4a7ad" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>SgKjIvr2tZ8NqV7ZXjWFXx29h9Q=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>Egx+leRpV9qKjzyXMh6Mo5blqSYFu6lc+Cocqis2ckxeQJsZ201Gb5K+MFrYDg7Ob1pEFf1eZ8yakZcMMkGiv54ZqinPcOG5qrNWjZybfS+LzaqernGq2YlMHQTO4n+eC8+Lps9o5mnPuj63UrNbohTrvCGvvL/AAWFfz6CDLZw=</SignatureValue>
-  </Signature>
 </Service>

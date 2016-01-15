@@ -9,9 +9,9 @@
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/MetroTheme.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ActivityStyles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
                 <!--<ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.NormalColor.xaml"/>-->

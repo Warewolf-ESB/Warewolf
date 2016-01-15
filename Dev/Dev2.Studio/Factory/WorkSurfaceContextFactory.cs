@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,8 +11,11 @@
 
 using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Factory;
 using Dev2.Helpers;
+using Dev2.Settings;
+using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -38,14 +41,16 @@ namespace Dev2.Studio.Factory
                 };
 
             return contextVm;
-        }
+        }       
 
-        public static WorkSurfaceContextViewModel CreateDeployViewModel(object input)
-        {
-            var vm = DeployViewModelFactory.GetDeployViewModel(input);
-            var context = CreateUniqueWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
-            return context;
-        }
+        //public static WorkSurfaceContextViewModel CreateSingleEnvironmentDeployViewModel(object input)
+        //{
+        //    var vm = DeployViewModelFactory.GetDeployViewModel(CustomContainer.Get<IEventAggregator>(),CustomContainer.Get<IShellViewModel>(),new List<IExplorerTreeItem>());
+       
+        //    var context = CreateUniqueWorkSurfaceContextViewModel(vm, WorkSurfaceContext.DeployResources);
+        //    return context;
+        //}
+
 
         /// <summary>
         /// Creates the work surface context view model, only use for surfaces that are unique per context.
@@ -60,7 +65,10 @@ namespace Dev2.Studio.Factory
             (T vm, WorkSurfaceContext workSurfaceContext)
             where T : IWorkSurfaceViewModel
         {
-            var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext);
+
+            var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext) as WorkSurfaceKey;
+            if (vm is SchedulerViewModel || vm is SettingsViewModel)
+                key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey; ;
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
@@ -90,18 +98,22 @@ namespace Dev2.Studio.Factory
             where T : IWorkSurfaceViewModel
         {
             var context = new WorkSurfaceContextViewModel(key, vm);
-            vm.DisplayName = workSurfaceContext.GetDescription();
+           
+            if (!(vm is SchedulerViewModel)&& !(vm is SettingsViewModel))
+                vm.DisplayName = workSurfaceContext.GetDescription();
             vm.IconPath = workSurfaceContext.GetIconLocation();
             vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }
 
-        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceContext workSurfaceContext, Tuple<string, object>[] initParms)
+        public static WorkSurfaceContextViewModel Create<T>(WorkSurfaceContext workSurfaceContext, Tuple<string, object>[] initParms, out T vmr)
             where T : IWorkSurfaceViewModel
         {
             var vm = Activator.CreateInstance<T>();
             PropertyHelper.SetValues(vm, initParms);
             var context = CreateUniqueWorkSurfaceContextViewModel(vm, workSurfaceContext);
+
+            vmr = vm;
             return context;
         }
 

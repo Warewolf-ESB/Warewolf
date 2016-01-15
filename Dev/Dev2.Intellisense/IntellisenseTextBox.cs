@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1038,7 +1038,7 @@ namespace Dev2.UI
                             context.CaretPosition = CaretIndex - 1;
                         }
 
-                        if(!string.IsNullOrEmpty(_textOnPopup) && _textOnPopup.Length > 0 && _textOnPopup[0] == '=')
+                        if( !string.IsNullOrEmpty(_textOnPopup) && _textOnPopup[0] == '=')
                         {
                             context.TextOnPopup = _textOnPopup.Substring(1);
 
@@ -1446,14 +1446,14 @@ namespace Dev2.UI
 
         public string AddBracketsToExpression(string expression)
         {
-            string result = expression;
+            string result = expression.Trim();
 
             if(!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);
             }
 
-            if(!expression.EndsWith("]]"))
+            if (!result.EndsWith("]]"))
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
             }
@@ -1576,9 +1576,6 @@ namespace Dev2.UI
                     IsOpen = false;
                 }
             }
-
-            double lineHeight = FontSize * FontFamily.LineSpacing;
-            Height += lineHeight;
 
             UpdateErrorState();
             EnsureErrorStatus();
@@ -1735,7 +1732,6 @@ namespace Dev2.UI
             }
             catch(Exception)
             {
-                //bleh.
                 e.Handled = true;
             }
         }

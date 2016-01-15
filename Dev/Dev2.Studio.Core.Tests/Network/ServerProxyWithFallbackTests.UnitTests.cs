@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxyWithFallback()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new TestAsyncWorker())
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new SynchronousAsyncWorker())
         {
 
         }

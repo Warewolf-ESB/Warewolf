@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -219,6 +219,21 @@ namespace Dev2.Common.Common
             return sb;
         }
 
+        public static string EscapeString(this string sb)
+        {
+            if (sb != null)
+            {
+                sb = sb.Replace("&", "&amp;");
+                sb = sb.Replace("\"", "&quot;");
+                sb = sb.Replace("'", "&apos;");
+                sb = sb.Replace("<", "&lt;");
+                sb = sb.Replace(">", "&gt;");
+            }
+
+
+            return sb;
+        }
+
         /// <summary>
         ///     Unescapes the specified string builder
         /// </summary>
@@ -238,6 +253,25 @@ namespace Dev2.Common.Common
             return sb;
         }
 
+
+        /// <summary>
+        ///     Unescapes the specified string builder
+        /// </summary>
+        /// <param name="sb">The sb.</param>
+        /// <returns></returns>
+        public static string UnescapeString(this string sb)
+        {
+            if (sb != null)
+            {
+                sb = sb.Replace("&quot;", "\"");
+                sb = sb.Replace("&apos;", "'");
+                sb = sb.Replace("&lt;", "<");
+                sb = sb.Replace("&gt;", ">");
+                sb = sb.Replace("&amp;", "&");
+            }
+
+            return sb;
+        }
         /// <summary>
         ///     Determines whether [contains] [the specified string builder].
         /// </summary>

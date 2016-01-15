@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@
 // ReSharper disable CheckNamespace
 
 using System.Windows;
+using Dev2.Common.Interfaces.PopupController;
 
 namespace Dev2.Common.Interfaces.Studio.Controller
 // ReSharper restore CheckNamespace
@@ -24,14 +25,19 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxImage ImageType { get; set; }
         MessageBoxButton Buttons { get; set; }
         string DontShowAgainKey { get; set; }
+        MessageBoxResult Show(IPopupMessage popupMessage);
         MessageBoxResult Show();
 
         MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image,
-            string dontShowAgainKey);
+            string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion);
 
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
+        MessageBoxResult ShowDeployConflict(int conflictCount);
+        MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion);
+        MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion);
+        MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);
         MessageBoxResult ShowSettingsCloseConfirmation();
         MessageBoxResult ShowSchedulerCloseConfirmation();
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
@@ -41,5 +47,14 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
 
         void ShowInvalidCharacterMessage(string invalidText);
+
+        MessageBoxResult ShowItemCloseCloseConfirmation(string nameOfItem);
+        MessageBoxResult ShowItemSourceCloseConfirmation(string nameOfItem);
+
+        MessageBoxResult ShowDeployNameConflict(string message);
+
+        MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);
+
+        MessageBoxResult ShowServerNotConnected(string server);
     }
 }

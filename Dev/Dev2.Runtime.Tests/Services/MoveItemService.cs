@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -118,27 +118,30 @@ namespace Dev2.Tests.Runtime.Services
         public void MoveItem_Execute_ExpectRename()
         {
             //------------Setup for test--------------------------
-            var MoveItemService = new MoveItemService();
+            var moveItemService = new MoveItemService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
 
-            var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>
                 {
                     {
-                        "itemToMove", serializer.SerializeToBuilder(item)
+                        "itemToMove", new StringBuilder(item.ResourceId.ToString())
                     },
                     {
                         "newPath", new StringBuilder("bob")
+                    },
+                    {
+                        "itemToBeRenamedPath",new StringBuilder(item.ResourcePath)
                     }
                 };
             ws.Setup(a => a.ID).Returns(Guid.Empty);
-            MoveItemService.ServerExplorerRepo = repo.Object;
+            repo.Setup(repository => repository.Find(It.IsAny<Guid>())).Returns(item);
+            moveItemService.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------
-            MoveItemService.Execute(inputs, ws.Object);
+            moveItemService.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()));
         }
@@ -156,7 +159,7 @@ namespace Dev2.Tests.Runtime.Services
             var a = MoveItem.CreateServiceEntry();
             //------------Assert Results-------------------------
             var b = a.DataListSpecification.ToString();
-            Assert.AreEqual("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
+            Assert.AreEqual("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><itemToBeRenamedPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }
 }

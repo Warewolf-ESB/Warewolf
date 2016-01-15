@@ -345,6 +345,58 @@ Scenario: Merge a variable inside the invalid varaible
 	|              |
 	| [[result]] = |
 
+@ignore
+#Audit
+Scenario: Merge a scalar to a scalar using merge type none 2
+	Given a merge variable "[[a]]" equal to "Warewolf " 
+	And a merge variable "[[b]]" equal to "Rocks"		
+	And a merge variable "[[c]]" equal to "10"		
+	And an Input "[[a]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"	
+	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is "Warewolf  Rocks"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| # |                  | With | Using | Pad       | Align |
+	| 1 | [[a]] = Warewolf | None | ""    | [[c]]= 10 | Left  |
+	| 2 | [[b]] = Rocks    | None | ""    | [[c]]= 10 | Left  |
+	
+	And the debug output as 
+	|                              |
+	| [[result]] = Warewolf Rocks  |
+
+Scenario Outline: Merge a variable that does not exist
+	Given an Input "[[a]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the execution has "AN" error
+	And the execution has "Scalar value { a } is NULL" error
+Examples: 
+	| No | Type     |
+	| 1  | None     |
+	| 2  | Index    |
+	| 3  | Chars    |
+	| 4  | New Line |
+	| 5  | Tab      | 
+
+
+Scenario Outline: Merging data using recordsets
+	Given a merge variable '<Input>' equals '<Inputvalue>'
+	And a merge variable '<Input2>' equals '<Inputvalue2>'
+	And merge type '<Type>' 
+	And using '<Using>' equals '<UsingValue>'
+	And padding '<Padding>' equals '<Paddingvalue>'
+	And Align '<Align>'
+	When the data merge tool is executed
+	Then the merged result is '<Result>' equals '<Resultvalue>'
+	And the execution has "No" error
+	Examples: 
+	| Input        | InputValue | Input2      | InputValue2 | Type  | Using                            | Usingvalue | Padding                           | Paddingvalue | Align | Result                       | ResultValue              |
+	| [[rec().a]]  | This       | [[rs().a]]  | is a Test   | Index | [[rec(*).count]]                 | 4,4        | [[rj().padding]]                  | 10           | Left  | [[rj().a]]                   | This10Test               |
+	| [[rec(*).a]] | This,Is,A  | [[rs(1).a]] | workflow    | Index | [[rec(1).count]]                 | 4          | [[rj(1).padding]]                 | 5            | Left  | [[rj(1).a]]                  | ThisIsAWorkflow          |
+	| [[rec().a]]  | This       | [[rs(1).a]] | workflow    | Index | [[rec().count]]                  | 4          | [[rj(*).padding]]                 | 5,10         | Left  | [[rj([[int]]).a]],[[int]] =1 | ThisWorkflowThisWorkflow |
+	| [[rec().a]]  | This       | [[rs(1).a]] | workflow    | Index | [[rec([[int]]).count]],[[int]]=1 | 4          | [[rj([[int]]).padding]],[[int]]=1 | 5            | Left  | [[rj(*).a]]                  | ThisWorkflow             |
+
 
 Scenario Outline: Merge a variable that does not exist
 	Given an Input "[[rec([[a]]).set]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
@@ -401,7 +453,7 @@ Examples:
 #	|   |                    | Tab  | ""           | ""         | Left  |
 #	| 2 | <-                 | None | ""           | ""         | Left  |
 #	And the debug output as 
-#	|                                           |
+#	|                                          |
 #	| [[result]] = 1tab->	<-2tab->	<-3tab->	<- |
 
 

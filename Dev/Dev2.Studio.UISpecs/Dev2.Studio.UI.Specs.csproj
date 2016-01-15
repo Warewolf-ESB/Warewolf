@@ -232,7 +232,9 @@
     </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="ContextForTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio.UISpecs\Workflow.feature">
@@ -366,10 +368,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.UI.Tests\Dev2.Studio.UI.Tests\Dev2.Studio.UI.Tests.csproj">
       <Project>{9c452452-634e-4a21-ab9e-681d3f05df52}</Project>
       <Name>Dev2.Studio.UI.Tests</Name>

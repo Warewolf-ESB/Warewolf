@@ -40,6 +40,7 @@ namespace Dev2.ScheduleExecutor
 
         private static void Main(string[] args)
         {
+        
             try
             {
 
@@ -65,7 +66,13 @@ namespace Dev2.ScheduleExecutor
                 Log("Info", string.Format("Start execution of {0}", paramters["Workflow"]));
                 try
                 {
-                    PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
+                    if (paramters.ContainsKey("ResourceId"))
+                    PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(),paramters["ResourceId"]);
+                    else
+                    {
+                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
+  
+                    }
                 }
                 catch
                 {
@@ -86,7 +93,62 @@ namespace Dev2.ScheduleExecutor
             string postUrl = string.Format("http://localhost:3142/services/{0}", workflowName);
             Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
             int len = postUrl.Split('?').Count();
-            if(len == 1)
+            if (len == 1)
+            {
+                string result = string.Empty;
+
+                WebRequest req = WebRequest.Create(postUrl);
+                req.Credentials = CredentialCache.DefaultNetworkCredentials;
+                req.Method = "GET";
+
+                try
+                {
+                    using (var response = req.GetResponse() as HttpWebResponse)
+                    {
+                        if (response != null)
+                        {
+                            // ReSharper disable AssignNullToNotNullAttribute
+                            using (var reader = new StreamReader(response.GetResponseStream()))
+                            // ReSharper restore AssignNullToNotNullAttribute
+                            {
+                                result = reader.ReadToEnd();
+                            }
+
+                            if (response.StatusCode != HttpStatusCode.OK)
+                            {
+                                Log("Error", string.Format("Error from execution: {0}", result));
+                            }
+                            else
+                            {
+                                Log("Info", string.Format("Completed execution. Output: {0}", result));
+
+                                WriteDebugItems(workflowName, taskName, result);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
+                    Console.Write(e.Message);
+                    Console.WriteLine(e.StackTrace);
+                    Log("Error",
+                        string.Format(
+                            "Error executing request. Exception: {0}" + Environment.NewLine + "StackTrace: {1}",
+                            e.Message, e.StackTrace));
+                    Environment.Exit(1);
+                }
+                return result;
+            }
+            return string.Empty;
+        }
+
+        public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId)
+        {
+            string postUrl = string.Format("http://localhost:3142/services/{0}.xml?Name=&wid={1}", workflowName, resourceId);
+            Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
+            int len = postUrl.Split('?').Count();
+            if(len == 2)
             {
                 string result = string.Empty;
 
@@ -204,7 +266,7 @@ namespace Dev2.ScheduleExecutor
 
             var state = new DebugState
             {
-                HasError = false,
+                HasError = result.Contains("Exception"),
                 ID = Guid.NewGuid(),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,

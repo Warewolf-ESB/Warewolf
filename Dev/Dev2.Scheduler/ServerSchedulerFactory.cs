@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,8 +28,9 @@ namespace Dev2.Scheduler
         private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
   
         private readonly IDirectoryHelper _dir;
+        private Func<IScheduledResource, string> _pathResolve;
 
-        public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory)
+        public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory, Func<IScheduledResource, string> pathResolve)
         {
             var nullables = new Dictionary<string, object>
                 {
@@ -42,6 +43,7 @@ namespace Dev2.Scheduler
             _service = service;
             _factory = factory;
             _dir = directory;
+            _pathResolve = pathResolve;
             CreateDir();
         }
 
@@ -50,8 +52,9 @@ namespace Dev2.Scheduler
             _dir.CreateIfNotExists(_debugOutputPath);
         }
 
-        public ServerSchedulerFactory()
+        public ServerSchedulerFactory(Func<IScheduledResource, string> pathResolve)
         {
+            _pathResolve = pathResolve;
             _factory = new TaskServiceConvertorFactory();
             _service = new Dev2TaskService(ConvertorFactory);
             _dir = new DirectoryHelper();
@@ -71,7 +74,7 @@ namespace Dev2.Scheduler
         public IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper)
         {
 
-            return new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath, securityWrapper);
+            return new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath, securityWrapper,_pathResolve);
         }
 
         public IScheduleTrigger CreateTrigger(Trigger trigger)
@@ -107,9 +110,9 @@ namespace Dev2.Scheduler
         }
 
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
-                                                 string workflowName)
+                                                 string workflowName,string resourceId)
         {
-            return new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName);
+            return new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName,resourceId);
         }
 
         public void Dispose()

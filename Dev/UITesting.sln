@@ -1,8 +1,52 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40121.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}"
+	ProjectSection(SolutionItems) = preProject
+		Warewolf.Studio.UISpecs\Properties\Compile Run Server Studio.bat = Warewolf.Studio.UISpecs\Properties\Compile Run Server Studio.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UISpecs", "Warewolf.Studio.UISpecs\Warewolf.Studio.UISpecs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{86F22FF8-2B3F-491E-9B44-703381DBAAA5}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
+		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{929C168C-42D4-4555-B18E-E22DAAA27610}"
+	ProjectSection(SolutionItems) = preProject
+		BakeInVersion.ps1 = BakeInVersion.ps1
+		ReadOutVersion.ps1 = ReadOutVersion.ps1
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+		{86F22FF8-2B3F-491E-9B44-703381DBAAA5} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
+		{929C168C-42D4-4555-B18E-E22DAAA27610} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Dev2.UI.Tests.vsmdi
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
 	EndGlobalSection
 EndGlobal

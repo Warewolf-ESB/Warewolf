@@ -10,20 +10,16 @@
                                xmlns:activities="clr-namespace:System.Activities;assembly=System.Activities"
                                xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="200"
                                MinHeight="35"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
                                ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="35" />
@@ -42,24 +38,20 @@
                   SelectionMode="Single"
                   Height="Auto">
             <DataGrid.Columns>
-                <DataGridTemplateColumn IsReadOnly="True"
-                                        d:DataContext="{d:DesignInstance Type=activities:Activity}">
+                <DataGridTemplateColumn IsReadOnly="True" d:DataContext="{d:DesignInstance Type=activities:Activity}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label VerticalAlignment="Top"
+                            <TextBlock VerticalAlignment="Top"
                                    HorizontalAlignment="Left"
-                                   HorizontalContentAlignment="Left"
-                                   VerticalContentAlignment="Top"
                                    Margin="0"
                                    Padding="0"
-                                   Content="{Binding DisplayName}" />
+                                   Text="{Binding DisplayName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.SequenceHelpSequence}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </DataGrid>
         <Border BorderBrush="Black"

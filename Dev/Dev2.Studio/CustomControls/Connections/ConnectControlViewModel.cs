@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,13 +18,12 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Core;
 using Dev2.ConnectionHelpers;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Webs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.CustomControls.Connections
@@ -48,6 +47,8 @@ namespace Dev2.CustomControls.Connections
         readonly Action<IEnvironmentModel> _callbackHandler;
         readonly IConnectControlSingleton _connectControlSingleton;
         ObservableCollection<IConnectControlEnvironment> _servers;
+        int _previousSelectedIndex=1;
+        Action<int> _activeAction;
         #endregion
 
         public ConnectControlViewModel(IMainViewModel mainViewModel, Action<IEnvironmentModel> callbackHandler,
@@ -65,7 +66,7 @@ namespace Dev2.CustomControls.Connections
         public ConnectControlViewModel(Action<IEnvironmentModel> callbackHandler,
                                      string labelText,
                                      bool bindToActiveEnvironment)
-            : this(null, EnvironmentRepository.Instance,
+            : this(CustomContainer.Get<IMainViewModel>(), EnvironmentRepository.Instance,
               callbackHandler,
               ConnectControlSingleton.Instance,
               labelText,
@@ -75,18 +76,18 @@ namespace Dev2.CustomControls.Connections
 
 
 
-        internal ConnectControlViewModel(IMainViewModel mainViewModel,
+        public ConnectControlViewModel(IMainViewModel mainViewModel,
                                         IEnvironmentRepository environmentRepository,
                                         Action<IEnvironmentModel> callbackHandler,
                                         IConnectControlSingleton connectControlSingleton,
                                         string labelText,
-                                        bool bindToActiveEnvironment, Action<IEnvironmentModel, ResourceType, string, string, string, string, string> openWizard = null)
+                                        bool bindToActiveEnvironment)
         {
             VerifyArgument.IsNotNull("callbackHandler", callbackHandler);
             VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
             VerifyArgument.IsNotNull("labelText", labelText);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-
+            _activeAction = ActiveAction;
             if(Application.Current != null)
             {
                 _dispatcher = Application.Current.Dispatcher;
@@ -102,17 +103,13 @@ namespace Dev2.CustomControls.Connections
             _bindToActiveEnvironment = bindToActiveEnvironment;
             _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged;
             _connectControlSingleton.ConnectedServerChanged += ConnectedServerChanged;
-
-            if(openWizard == null)
-            {
-                _openWizard = (environmentModel, resourceType, resourcePath, category, resourceId, sourceId, resourceName) => RootWebSite.ShowDialog(environmentModel, resourceType, resourcePath, category, resourceId, sourceId, resourceName);
-            }
-            else
-            {
-                _openWizard = openWizard;
-            }
-
+            _connectControlSingleton.AfterReload += ConnectControlSingletonAfterReload; 
             SetSelectedEnvironment();
+        }
+
+        void ConnectControlSingletonAfterReload(object sender, ConnectedServerChangedEvent e)
+        {
+            SelectedServerIndex = _previousSelectedIndex;
         }
 
         public void ConnectedServerChanged(object sender, ConnectedServerChangedEvent e)
@@ -299,35 +296,15 @@ namespace Dev2.CustomControls.Connections
                     return;
                 }
 
-                var origValue = _selectedServerIndex;
+                _previousSelectedIndex = _selectedServerIndex;
                 _selectedServerIndex = value;
 
                 var selectedServer = Servers[value];
 
                 if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
                 {
-                    int newServerIndex;
-
-                    if(!AddNewServer(out newServerIndex, OpenConnectionWizard))
-                    {
-                        if(_dispatcher != null)
-                        {
-                            _dispatcher.BeginInvoke(
-                            new Action(() =>
-                            {
-                                _selectedServerIndex = origValue;
-                                OnPropertyChanged();
-                            }),
-                            DispatcherPriority.ContextIdle,
-                            null
-                        );
-                        }
-                        else
-                        {
-                            _selectedServerIndex = origValue;
-                            OnPropertyChanged();
-                        }
-                    }
+                    // ADD OPTION TO CREATE NEW SERVER
+                    _mainViewModel.NewResourceCommand.Execute("Server");
                 }
                 else
                 {
@@ -407,25 +384,6 @@ namespace Dev2.CustomControls.Connections
             return true;
         }
 
-        private readonly Action<IEnvironmentModel, ResourceType, string, string, string, string, string> _openWizard;
-
-        public void OpenConnectionWizard(int selectedIndex)
-        {
-            var localhost = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
-            if(localhost != null)
-            {
-                if(selectedIndex >= 0)
-                {
-                    var environmentModel = Get(selectedIndex);
-                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, environmentModel.ID.ToString(), null, environmentModel.Name);
-                }
-                else
-                {
-                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, null, null, null);
-                }
-            }
-        }
-
         IEnvironmentModel Get(int selectedIndex)
         {
             var selectedServer = Servers[selectedIndex];
@@ -446,8 +404,26 @@ namespace Dev2.CustomControls.Connections
             get
             {
                 return _editCommand ??
-                       (_editCommand = new RelayCommand(param => _connectControlSingleton.EditConnection(SelectedServerIndex, OpenConnectionWizard)));
+                       (_editCommand = new RelayCommand(GetServerToEdit));
             }
+        }
+
+        void GetServerToEdit(object param)
+        {
+
+            var path = (SelectedServer.EnvironmentModel.Category)??"";
+            _mainViewModel.EditServer(new ServerSource()
+            {
+                Address = SelectedServer.EnvironmentModel.Connection.AppServerUri.ToString(), 
+                ID = SelectedServer.EnvironmentModel.ID, 
+                AuthenticationType = SelectedServer.EnvironmentModel.Connection.AuthenticationType,
+                UserName = SelectedServer.EnvironmentModel.Connection.UserName, 
+                Password = SelectedServer.EnvironmentModel.Connection.Password,
+                Name = SelectedServer.DisplayName, 
+                ResourcePath = path,
+                ServerName = SelectedServer.EnvironmentModel.Connection.WebServerUri.Host,
+      
+            });
         }
 
         #endregion
@@ -473,18 +449,33 @@ namespace Dev2.CustomControls.Connections
                 return;
             }
 
-            if(environmentModel != null && _bindToActiveEnvironment)
+            if(environmentModel != null)
             {
                 var index = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == environmentModel.ID);
                 if(index >= 0)
                 {
-                    _selectedServerIndex = index;
-                    SelectedServer = Servers[index];
-                    // ReSharper disable ExplicitCallerInfoArgument
-                    OnPropertyChanged("SelectedServerIndex");
-                    // ReSharper restore ExplicitCallerInfoArgument
+                    _activeAction(index);
+                   
+                   
+           
                 }
             }
+        }
+
+        void ActiveAction(int index)
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    _selectedServerIndex = index;
+                    SelectedServer = Servers[index];
+
+                    OnPropertyChanged("SelectedServer");
+                    OnPropertyChanged("SelectedServerIndex");
+                }),
+                DispatcherPriority.ContextIdle,
+                null
+                );
         }
     }
 }

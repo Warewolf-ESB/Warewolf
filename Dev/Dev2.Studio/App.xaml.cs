@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,13 +20,29 @@ using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
+using Dev2.Studio.Controller;
+using Dev2.Studio.Core;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Warewolf.Core;
+
+using Warewolf.Studio.Models.Help;
+using Warewolf.Studio.Models.Toolbox;
+using Warewolf.Studio.ViewModels.Help;
+using Warewolf.Studio.ViewModels.ToolBox;
+// ReSharper disable RedundantUsingDirective
+using Dev2.Interfaces;
 using Dev2.Utils;
 using log4net.Config;
-// ReSharper disable RedundantUsingDirective
+using Warewolf.Studio.ViewModels;
+using Warewolf.Studio.Views;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
@@ -106,21 +122,10 @@ namespace Dev2.Studio
                 Environment.Exit(Environment.ExitCode);
             }
 
-            Browser.Startup();
+         
 
-            new Bootstrapper().Start();
-
-            base.OnStartup(e);
-            var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            if (!File.Exists(settingsConfigFile))
-            {
-                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
-            }
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
-            _mainViewModel = MainWindow.DataContext as MainViewModel;
-            //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
-            _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
-
+            
+            InitializeShell(e);
 #if ! (DEBUG)
             var versionChecker = new VersionChecker();
             if(versionChecker.GetNewerVersion())
@@ -129,6 +134,72 @@ namespace Dev2.Studio
                 dialog.ShowDialog();
             }
 #endif
+        }
+
+        public static ISplashView SplashView;
+
+        private ManualResetEvent _resetSplashCreated;
+        private Thread _splashThread;
+        protected void InitializeShell(StartupEventArgs e)
+        {
+            _resetSplashCreated = new ManualResetEvent(false);
+
+            _splashThread = new Thread(ShowSplash);
+            _splashThread.SetApartmentState(ApartmentState.STA);
+            _splashThread.IsBackground = true;
+            _splashThread.Name = "Splash Screen";
+            _splashThread.Start();
+            _resetSplashCreated.WaitOne();
+            new Bootstrapper().Start();
+            
+            base.OnStartup(e);
+            _mainViewModel = MainWindow.DataContext as MainViewModel;
+            if(_mainViewModel != null)
+            {
+                SplashView.CloseSplash();
+                var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
+                if (!File.Exists(settingsConfigFile))
+                {
+                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
+                }
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+                _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
+            }
+            //MainWindow.Show();
+        }
+
+
+        private void ShowSplash()
+        {
+            // Create the window 
+            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+            server.Connect();
+            CustomContainer.Register<IServer>(server);
+            var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
+            CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
+
+            var textToDisplay = Warewolf.Studio.Resources.Languages.Core.StandardStyling.Replace("\r\n", "") +
+                                Warewolf.Studio.Resources.Languages.Core.WarewolfDefaultHelpDescription +
+                                Warewolf.Studio.Resources.Languages.Core.StandardBodyParagraphClosing;
+
+            var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));
+            CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
+            CustomContainer.Register<IEventAggregator>(new EventAggregator());
+            CustomContainer.Register<IPopupController>(new PopupController());
+            var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
+
+            var splashPage = new SplashPage { DataContext = splashViewModel };
+            SplashView = splashPage;
+            // Show it 
+            SplashView.Show(false);
+            
+            // Now that the window is created, allow the rest of the startup to run 
+            if (_resetSplashCreated != null)
+            {
+                _resetSplashCreated.Set();
+            }
+            splashViewModel.ShowServerVersion();
+            System.Windows.Threading.Dispatcher.Run();
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -143,7 +214,6 @@ namespace Dev2.Studio
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
-            Browser.Shutdown();
             try
             {
                 base.OnExit(e);

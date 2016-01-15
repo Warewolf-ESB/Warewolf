@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -47,7 +47,10 @@ namespace Dev2.Security
         {
             var serverPermissions = _securityService.Permissions;
             var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
-            
+            if (principal == null)
+            {
+                serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
+            }
             Guid resourceId;
             if (Guid.TryParse(resource, out resourceId))
             {
@@ -58,6 +61,10 @@ namespace Dev2.Security
                 var resourcePermissions = serverPermissions.Where(p => p.Matches(resource) && !p.IsServer).ToList();
                 if (resourcePermissions.Any())
                 {
+                    if (principal == null)
+                    {
+                        return resourcePermissions.Where(permission => permission.IsBuiltInGuestsForExecution);
+                    }
                     return resourcePermissions;
                 }
             }
@@ -66,7 +73,8 @@ namespace Dev2.Security
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {
-            return IsAuthorized(_environmentConnection.Principal, context, resource);
+            bool x =IsAuthorized(_environmentConnection.Principal, context, resource);
+            return x;
         }
 
         public override bool IsAuthorized(IAuthorizationRequest request)

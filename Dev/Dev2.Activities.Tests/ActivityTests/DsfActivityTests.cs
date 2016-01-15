@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -90,7 +90,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
-            act.AuthorizationService = mockAutorizationService.Object;
+
+            PrivateObject p = new PrivateObject(act);
+            p.SetProperty("AuthorizationService", mockAutorizationService.Object);
+
             List<DebugItem> inRes;
             List<DebugItem> outRes;
             //------------Execute Test---------------------------
@@ -117,7 +120,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
-            act.AuthorizationService = mockAutorizationService.Object;
+
+            PrivateObject p = new PrivateObject(act);
+            p.SetProperty("AuthorizationService", mockAutorizationService.Object);
 
             //------------Execute Test---------------------------
             TestStartNode = new FlowStep

@@ -20,7 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Server **
-taskkill /im "Warewolf Server.exe" /T /F
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
 
 REM  Wait 5 seconds ;)
 ping -n 5 127.0.0.1 > nul
@@ -35,7 +35,7 @@ IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirect
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 REM ** Start Warewolf server from deployed binaries **
-START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+IF EXIST %windir%\nircmd.exe nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe" else START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley

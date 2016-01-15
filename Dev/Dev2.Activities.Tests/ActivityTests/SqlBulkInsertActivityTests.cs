@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -58,7 +58,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
             //------------Execute Test---------------------------
-            var sqlBulkInserter = dsfSqlBulkInsertActivity.SqlBulkInserter;
+            PrivateObject px = new PrivateObject(dsfSqlBulkInsertActivity);
+
+            var sqlBulkInserter = px.GetProperty("SqlBulkInserter");
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(sqlBulkInserter, typeof(ISqlBulkInserter));
             Assert.IsInstanceOfType(sqlBulkInserter, typeof(SqlBulkInserter));
@@ -70,9 +72,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfSqlBulkInsertActivity_SqlBulkInserter_WhenSet_ReturnsSetValue()
         {
             //------------Setup for test--------------------------
-            var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity { SqlBulkInserter = new Mock<ISqlBulkInserter>().Object };
+            var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
+            PrivateObject p = new PrivateObject(dsfSqlBulkInsertActivity);
+            p.SetProperty("SqlBulkInserter",new Mock<ISqlBulkInserter>().Object);
+            
             //------------Execute Test---------------------------
-            var sqlBulkInserter = dsfSqlBulkInsertActivity.SqlBulkInserter;
+            var sqlBulkInserter = p.GetProperty("SqlBulkInserter"); ;
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(sqlBulkInserter, typeof(ISqlBulkInserter));
             Assert.IsNotInstanceOfType(sqlBulkInserter, typeof(SqlBulkInserter));
@@ -1957,18 +1962,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 destinationTableName = "SomeTestTable";
             }
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfSqlBulkInsertActivity
+            var x = new DsfSqlBulkInsertActivity
                 {
                     Database = dbSource,
                     TableName = destinationTableName,
                     InputMappings = inputMappings,
-                    SqlBulkInserter = sqlBulkInserter,
                     Result = resultString,
                     IgnoreBlankRows = ignoreBlankRows,
                     KeepIdentity = keepIdentity
-                }
+                };
+            PrivateObject p = new PrivateObject(x);
+            p.SetProperty("SqlBulkInserter", sqlBulkInserter);
+
+            TestStartNode = new FlowStep
+            {
+                Action = x
             };
 
             CurrentDl = testData;

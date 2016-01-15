@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -44,7 +43,7 @@ namespace Dev2.Services.Execution
             WebServices.ExecuteRequest(service, true, out errors);
         }
 
-        protected override object ExecuteService(List<MethodParameter> methodParameters,int update, out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);

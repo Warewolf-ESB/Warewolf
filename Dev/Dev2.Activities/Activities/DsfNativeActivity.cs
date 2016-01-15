@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
@@ -67,6 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string OutputMapping { get; set; }
 
         public bool IsWorkflow { get; set; }
+        public bool IsService { get; set; }
         public string ParentServiceName { get; set; }
         // ReSharper disable UnusedMember.Global
         public string ParentServiceID { get; set; }
@@ -303,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Version = string.Empty,
                     SessionID = dataObject.DebugSessionID,
                     EnvironmentID = dataObject.DebugEnvironmentId,
-                    Name = GetType().Name,
+                    Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription(),
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
                 };
@@ -441,7 +443,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? dt=null)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? dt=null,bool decision = false)
         {
             bool clearErrors = false;
             try
@@ -459,6 +461,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
+                    _debugState.StateType = stateType;
                     Dev2Logger.Log.Info("Debug Already Started");
                 }
 
@@ -470,8 +473,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var activity = instance as Activity;
                     if (activity != null)
                     {
-                        _debugState.Name = activity.DisplayName;
-
+                        _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
                     }
                     var act = instance as DsfActivity;
                     //End Bug 8595
@@ -556,7 +558,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          
             }
 
-            if (_debugState != null && _debugState.StateType != StateType.Duration && !(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity" || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty)
+            if (_debugState != null && _debugState.StateType != StateType.Duration && !(_debugState.ActivityType == ActivityType.Workflow || decision || _debugState.Name == "DsfDecision") && remoteID == Guid.Empty)
             {
                 _debugState.StateType = StateType.All;
 
@@ -679,6 +681,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 name = "localhost";
             }
+
+            switch (dataObject.RemoteServiceType)
+            {
+                case "DbService":
+                    IsService = true;
+                    break;
+                case "PluginService":
+                    IsService = true;
+                    break;
+                case "WebService":
+                    IsService = true;
+                    break;
+            }
+
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
@@ -696,7 +712,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 OriginalInstanceID = dataObject.OriginalInstanceID,
                 Server = name,
                 Version = string.Empty,
-                Name = GetType().Name,
+                Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription(),
                 HasError = hasError,
                 ErrorMessage = errorMessage,
                 EnvironmentID = dataObject.DebugEnvironmentId,

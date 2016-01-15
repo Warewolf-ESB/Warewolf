@@ -40,47 +40,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,8 +52,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client.Old">
+      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.Old.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,6 +79,17 @@
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
@@ -187,11 +161,23 @@
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
+    <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
+    <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
+    <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
+    <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
+    <Compile Include="ESB\Management\Services\GetDllListings.cs" />
+    <Compile Include="ESB\Management\Services\GetFiles.cs" />
+    <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
+    <Compile Include="ESB\Management\Services\FetchToolsService.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
@@ -200,6 +186,11 @@
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\RollbackTo.cs" />
+    <Compile Include="ESB\Management\Services\SaveEmailServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveDbService.cs" />
+    <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
+    <Compile Include="ESB\Management\Services\SavePluginService.cs" />
+    <Compile Include="ESB\Management\Services\SavePluginSource.cs" />
     <Compile Include="ESB\Management\Services\SaveScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
@@ -228,11 +219,22 @@
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
+    <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveWebService.cs" />
+    <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
     <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
+    <Compile Include="ESB\Management\Services\TestConnectionService.cs" />
+    <Compile Include="ESB\Management\Services\TestDbService.cs" />
+    <Compile Include="ESB\Management\Services\TestDbSourceService.cs" />
+    <Compile Include="ESB\Management\Services\TestPluginService.cs" />
+    <Compile Include="ESB\Management\Services\TestWebService.cs" />
+    <Compile Include="ESB\Management\Services\TestWebserviceSourceService.cs" />
+    <Compile Include="ESB\Management\Services\TestEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
     <Compile Include="ESB\Management\Services\TestNetworkService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Hosting\ResourceUpgrade.cs" />
     <Compile Include="Hosting\ResourceUpgrader.cs" />
     <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
+    <Compile Include="Hosting\ServerToolRepository.cs" />
     <Compile Include="Hosting\ServerVersionRepository.cs" />
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
@@ -283,6 +286,7 @@
     <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="ResourceUpgrades\EncryptionResourceUpgrader.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
@@ -306,7 +310,6 @@
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\HostSecureConfig.cs" />
     <Compile Include="Security\HostSecurityProvider.cs" />
     <Compile Include="Security\IHostSecurityProvider.cs" />
@@ -412,8 +415,12 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
-      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>

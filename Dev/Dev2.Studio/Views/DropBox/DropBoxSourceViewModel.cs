@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
@@ -79,12 +80,19 @@ namespace Dev2.Views.DropBox
         }
         void GetAuthTokens(NavigationEventArgs args)
         {
-            if (args.Uri.ToString().StartsWith("https://www.google"))
+            try
             {
-                var token = _client.GetAccessToken();
-                Key = token.Token;
-                Secret = token.Secret;
-                HasAuthenticated = true;
+                if (args.Uri.ToString().StartsWith("https://www.google"))
+                {
+                    var token = _client.GetAccessToken();
+                    Key = token.Token;
+                    Secret = token.Secret;
+                    HasAuthenticated = true;
+                    DropBoxHelper.CloseAndSave(this);
+                }
+            }
+            catch(Exception)
+            {
                 DropBoxHelper.CloseAndSave(this);
             }
 

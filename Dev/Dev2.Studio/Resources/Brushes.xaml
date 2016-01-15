@@ -2,7 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
+    <!--<LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientBrush.GradientStops>
             <GradientStopCollection>
                 <GradientStop Color="#FFF" Offset="0.0"/>
@@ -66,7 +66,7 @@
 
     <SolidColorBrush x:Key="WarningBrush" Color="#FFEEBB" />
 
-    <!-- Border Brushes -->
+    --><!-- Border Brushes --><!--
 
     <LinearGradientBrush x:Key="NormalBorderBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientBrush.GradientStops>
@@ -110,11 +110,11 @@
 
     <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
 
-    <!-- Miscellaneous Brushes -->
+    --><!-- Miscellaneous Brushes --><!--
     <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
 
     <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
 
-    <SolidColorBrush x:Key="ErrorBrush" Color="#7FFF0010"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#7FFF0010"/>-->
 
 </ResourceDictionary>

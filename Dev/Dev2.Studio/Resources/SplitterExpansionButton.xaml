@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:local="clr-namespace:Dev2.Studio.CustomControls"
     >
-    <ResourceDictionary.MergedDictionaries>
+    <!--<ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>-->
     
-    <Style BasedOn="{x:Null}" TargetType="{x:Type local:SplitterExpansionButton}">
+    <!--<Style BasedOn="{x:Null}" TargetType="{x:Type local:SplitterExpansionButton}">
         <Setter Property="Background" Value="{StaticResource BrushAccentColor}"/>
         <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
         <Setter Property="Template">
@@ -68,5 +68,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 </ResourceDictionary>

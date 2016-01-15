@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,12 +17,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
-using Dev2.Threading;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -51,10 +51,12 @@ namespace Dev2.Studio.Core.Interfaces
         IHubProxyWrapper EsbProxy { get; }
 
         bool IsConnected { get; }
+        bool IsConnecting { get; }
         string Alias { get; set; }
         string DisplayName { get; set; }
 
         void Connect(Guid id);
+        Task<bool> ConnectAsync(Guid id);
         void Disconnect();
         Guid ID { get; }
         // BUG 9634 - 2013.07.17 - TWR : added

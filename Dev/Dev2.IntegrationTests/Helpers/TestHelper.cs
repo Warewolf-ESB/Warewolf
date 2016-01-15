@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,16 +15,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Core.Tests.Utils;
 using Dev2.Integration.Tests.MEF.WebTester;
 using Dev2.Network;
-using Dev2.Threading;
-using Moq;
 
 namespace Dev2.Integration.Tests.Helpers
 {
@@ -67,7 +65,7 @@ namespace Dev2.Integration.Tests.Helpers
         {
             CommunicationControllerFactory fact = new CommunicationControllerFactory();
             var comm = fact.CreateController(serviceName);
-            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, new TestAsyncWorker());
+            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             prx.Connect(Guid.NewGuid());
             foreach (var payloadArgument in payloadArguments)
             {

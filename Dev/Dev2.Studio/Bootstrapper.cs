@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,13 +13,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Network;
 using Dev2.Services;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
@@ -28,20 +31,23 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Factory;
-using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
+using Dev2.Threading;
 
 namespace Dev2
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
 
+        
         protected override void PrepareApplication()
         {
             base.PrepareApplication();
+            CustomContainer.LoadedTypes = new List<Type>();
             PreloadReferences();
             CheckPath();
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -69,9 +75,15 @@ namespace Dev2
             CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
-            CustomContainer.Register<IMainViewModel>(new MainViewModel());
+            var mainViewModel = new MainViewModel();
+            CustomContainer.Register<IMainViewModel>(mainViewModel);
+            CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             CustomContainer.Register<IDialogViewModelFactory>(new DialogViewModelFactory());
+            var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
+            conn.Connect(Guid.NewGuid());
+            CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
+            
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
@@ -120,12 +132,12 @@ namespace Dev2
             }
             // ReSharper restore HeuristicUnreachableCode
         }
-
-        protected override void StartRuntime()
-        {
-            Dev2SplashScreen.Show();
-            base.StartRuntime();
-        }
+//
+//        protected override void StartRuntime()
+//        {
+//            //Dev2SplashScreen.Show();
+//            base.StartRuntime();
+//        }
 
         #region Overrides of BootstrapperBase
 
@@ -191,6 +203,14 @@ namespace Dev2
                     try
                     {
                         Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                        var types = loaded.GetTypes();
+                        foreach(var type in types)
+                        {
+                            if (!CustomContainer.LoadedTypes.Contains(type))
+                            {
+                                CustomContainer.LoadedTypes.Add(type);
+                            } 
+                        }
                         LoadReferences(loaded, inspected);
                     }
                     // ReSharper disable EmptyGeneralCatchClause

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -283,65 +283,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Paths And Names
 
-        [TestMethod]
-        [TestCategory("Resources_PathsAndNames")]
-        [Description("Correct list of folder names returned for workflow type service")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void Resources_UnitTest_PluginPathsAndNames_AllServicePathsExeptWorkflows()
-        // ReSharper restore InconsistentNaming
-        {
-            //Isolate PathsAndNames for workflows as a functional unit
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                const int Modulo = 3;
-                const int TotalResourceCount = 9;
-                for(var i = 0; i < TotalResourceCount; i++)
-                {
-                    var resource = new Resource
-                    {
-                        ResourceID = Guid.NewGuid(),
-                        ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}\\{1}", i, string.Format("My Name {0}", i))
-                    };
-
-                    switch(i % Modulo)
-                    {
-                        case 0:
-                            resource.ResourcePath = ResourceType.WorkflowService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.WorkflowService;
-                            break;
-                        case 1:
-                            resource.ResourcePath = ResourceType.DbService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.DbService;
-                            break;
-                        case 2:
-                            resource.ResourcePath = ResourceType.PluginService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.PluginService;
-                            break;
-                    }
-                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
-                }
-                var resources = new Resources();
-                const string ExpectedJson = "{\"Names\":[\"My Name 1\",\"My Name 4\",\"My Name 7\"],\"Paths\":[\"DbService\"]}";
-
-                //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("DbService", workspaceID, Guid.Empty);
-
-                //Assert CorrectListReturned
-                Assert.AreEqual(ExpectedJson, actualJson, "Incorrect list of names and paths for workflow services");
-            }
-            finally
-            {
-                if(Directory.Exists(workspacePath))
-                {
-                    DirectoryHelper.CleanUp(workspacePath);
-                }
-            }
-        }
-
 
         static void LoadActivitiesPresentationDll()
         {
@@ -356,68 +297,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
         }
 
-        [TestMethod]
-        [TestCategory("Resources_PathsAndNames")]
-        [Description("Correct list of folder names returned for workflow type service")]
-        [Owner("Leon Rajindrapersadh")]
-        // ReSharper disable InconsistentNaming
-        public void Resources_UnitTest_PluginPathsAndNames_WorkflowServicesAreIncluded()
-        // ReSharper restore InconsistentNaming
-        {
-            //Isolate PathsAndNames for workflows as a functional unit
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                const int Modulo = 4;
-                const int TotalResourceCount = 9;
-                for (var i = 0; i < TotalResourceCount; i++)
-                {
-                    var resource = new Resource
-                    {
-                        ResourceID = Guid.NewGuid(),
-                        ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}\\{1}", i, string.Format("My Name {0}", i))
-                    };
-
-                    switch (i % Modulo)
-                    {
-                        case 0:
-                            resource.ResourcePath = ResourceType.WorkflowService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.WorkflowService;
-                            break;
-                        case 1:
-                            resource.ResourcePath = ResourceType.DbService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.DbService;
-                            break;
-                        case 2:
-                            resource.ResourcePath = ResourceType.PluginService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.PluginService;
-                            break;
-                        case 3:
-                            resource.ResourcePath = ResourceType.ServerSource + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.ServerSource;
-                            break;
-                    }
-                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
-                }
-                var resources = new Resources();
-                const string ExpectedJson = "{\"Names\":[\"My Name 3\",\"My Name 7\"],\"Paths\":[\"ServerSource\"]}";
-
-                //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("ServerSource", workspaceID,Guid.Empty);
-
-                //Assert CorrectListReturned
-                Assert.AreEqual(ExpectedJson, actualJson, "Incorrect list of names and paths for workflow services");
-            }
-            finally
-            {
-                if (Directory.Exists(workspacePath))
-                {
-                    DirectoryHelper.CleanUp(workspacePath);
-                }
-            }
-        }
         #endregion
     }
 }

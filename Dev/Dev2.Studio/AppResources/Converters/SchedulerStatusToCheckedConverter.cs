@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,17 +24,9 @@ namespace Dev2.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string isEnabledRadioButton = parameter as string;
             SchedulerStatus schedulerStatus = (SchedulerStatus)value;
-            if(isEnabledRadioButton == "true")
-            {
-                if(schedulerStatus == SchedulerStatus.Enabled)
-                {
-                    return true;
-                }
-                return false;
-            }
-            if(schedulerStatus == SchedulerStatus.Disabled)
+
+            if (schedulerStatus == SchedulerStatus.Enabled)
             {
                 return true;
             }

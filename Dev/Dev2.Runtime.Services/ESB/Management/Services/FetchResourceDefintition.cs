@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -142,7 +143,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
                 }
                 if (prepairForDeployment)
-                    res.Message = DecryptAllPasswords(res.Message);
+                {
+                    try
+                    {
+                        res.Message = DecryptAllPasswords(res.Message);
+                    }
+                    catch(CryptographicException e)
+                    {
+                        Dev2Logger.Log.Error("Encryption had issues.",e);
+                    }
+                }
 
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(res);

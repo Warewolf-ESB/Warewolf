@@ -271,20 +271,21 @@ Scenario: Generate a Number between double min and double max
 	|                     |
 	| [[result]] = Double |
 
-	
-#Scenario: Generate a Number between double min and double max
-	#Given I have a type as "Numbers"
-	#And I have a range from "5.0E-324" to "1.7E+308" 
-	#When the random tool is executed 
-	#Then the result from the random tool should be of the same type as "System.Double" 
-	#And the random value will be between "5.0-E324" and "1.7+E308" inclusive 
-	#And the execution has "NO" error
-	#And the debug inputs as  
-	#| Random  | From | To |
-	#| Numbers | 5.E-324    | 1.7E+308  |
-	#And the debug output as 
-	#|                     |
-	#| [[result]] = Double |
+
+##This test seems to crash or timeout...	
+#Scenario: Generate a Number between double min and double max scientific
+#	Given I have a type as "Numbers"
+#	And I have a range from "5.0E-324" to "1.7E+308" 
+#	When the random tool is executed 
+#	Then the result from the random tool should be of the same type as "System.Double" 
+#	And the random value will be between "5.0E-324" and "1.7E+308" inclusive 
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| Random  | From | To |
+#	| Numbers | 5.E-324    | 1.7E+308  |
+#	And the debug output as 
+#	|                     |
+#	| [[result]] = Double |
 
 		
 Scenario: Generate a Number between double min and double max with no decimals
@@ -301,6 +302,59 @@ Scenario: Generate a Number between double min and double max with no decimals
 	|                     |
 	| [[result]] = Double |
 
+
+@ignore
+#Audit
+Scenario Outline: Generate numbers using variables and recordsets
+	Given I have a type as '<Type>'
+	And I have a range from '<From>' to '<To>' 
+	When the random tool is executed 
+	Then the result from the random tool should be of type "System.Int32" with a length of '<length>'
+	And the execution has "NO" error
+	And the result variable '<res>' will be '<result>'
+Examples: 
+	| Type    | From                                | To                                  | length               | res                           | result            |
+	| Numbers | [[a]] = 1                           | [[b]] = 9                           |                      | [[rec().a]]                   | [[rec(1).a]] = 4  |
+	| Numbers | [[rec(1).a]] = 10                   | [[rec([[int]]).b]] = 70, [[int]] =1 |                      | [[rec([[int]]).a]],[[int]]= 3 | [[rec(3).a]] = 35 |
+	| Numbers | [[rec([[int]]).a]] = 10, [[int]] =1 | [[rec(1).b]] = 70                   |                      | [[rs(*).b]]                   | [[rs(1).b]] = 55  |
+	| Numbers | [[rec().a]] = 10                    | [[rec().b]] = 100                   |                      | [[b]]                         | [[b]] = 55        |
+	| Numbers | [[rec(*).a]] = 1                    | [[rec(*).b]] = 700                  |                      | [[b]]                         | [[b]] = 423       |
+	| Letters |                                     |                                     | [[f]] = 1            | [[rec().a]]                   | [[rec(1).a]] = D  |
+	| Letters |                                     |                                     | [[rec([[f]]).b]] = 2 | [[rec([[int]]).a]],[[int]]= 3 | [[rec(3).a]] = zs |
+	| Letters |                                     |                                     | [[rj(*).set]] = 2    | [[rs(*).b]]                   | [[rs(1).b]] = ht  |
+	| Letters |                                     |                                     | [[rj(1).set]] = 2    | [[b]]                         | [[b]] = hy        |
+
+
+Scenario Outline: Generate error using variables and recordsets
+	Given I have a type as '<Type>'
+	And I have a range from '<From>' to '<To>' 
+	When the random tool is executed 
+	Then the result from the random tool should be of type "System.Int32" with a length of '<length>'
+	And the execution has "An" error
+	And the execution has '<Error>' error
+Examples: 
+	| Type    | From      | To        | length | res                           | Error                                                         |
+	| Numbers | dfsdf     | [[b]] = 9 |        | [[rec().a]]                   | Please ensure that the Start is an Integer or decimal from -1 |
+	| Numbers | [[b]] = 9 | dfsdf     |        | [[rec([[int]]).a]],[[int]]= 3 | Please ensure that the End is an Integer or decimal from -1   |
+	| Numbers | [[b]]     | 3         |        | [[rec([[int]]).a]],[[int]]= 3 | The expression [[b]] has no value assigned                    |
+	| Numbers | 1         | [[u]]     |        | [[rec([[int]]).a]],[[int]]= 3 | The expression [[u]] has no value assigned                    |
+	| Letters |           |           | sdf    | [[rec().a]]                   | Please ensure that the length is an integer value             |
+	| Letters |           |           | [[u]]  | [[rec().a]]                   | The expression [[u]] has no value assigned                    |
+	| Letters |           |           | [[q]]  | [[rec().a]]                   | The expression [[u]] has no value assigned                    |
+
+@ignore
+#Complex Types
+Scenario Outline: Generate numbers using complex types
+	Given I have a type as '<Type>'
+	And I have a range from '<From>' to '<To>' 
+	When the random tool is executed 
+	Then the result from the random tool should be of type "System.Int32" with a length of '<length>'
+	And the execution has "<Error>" error
+	And the execution has '<Message>' error
+Examples: 
+	| Type    | From                        | To                             | length | res                      | Error | Message                        |
+	| Numbers | [[rec(1).count(3).val]] = 9 | [[rec(1).count(1).val]] = 1000 |        | [[rec().result().value]] | An    | [[rec().result().value]] = 557 |
+	| Numbers | [[rec(1).count(*).val]] = 0 | [[rec(1).count(3).val]] = 9    |        | [[rec().result().value]] | No    | [[rec().result().value]] = 5   |
 
 Scenario: Generate a Number using a null variable
 	Given  I have a formatnumber variable "[[int]]" equal to NULL

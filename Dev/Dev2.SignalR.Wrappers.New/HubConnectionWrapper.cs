@@ -1,10 +1,8 @@
 ﻿// ReSharper disable RedundantUsingDirective
 //Disabled so that logging can easily be put back
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
-using Dev2.Providers.Logs;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
 

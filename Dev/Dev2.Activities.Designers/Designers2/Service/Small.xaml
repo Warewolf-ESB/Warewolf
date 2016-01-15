@@ -6,17 +6,11 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                                MinWidth="250"
-                               Padding="10"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
-
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -32,11 +26,8 @@
                             <ColumnDefinition SharedSizeGroup="A" />
                             <ColumnDefinition SharedSizeGroup="B" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0"
-                               Margin="0,0,-2,0"
-                               Content="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                        <Label Grid.Column="1"
-                               Content="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -61,8 +52,7 @@
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         AutomationProperties.AutomationId="UI_FixErrors_AutoID">
                     <Button.ToolTip>
-                        <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}"
-                                      ItemTemplate="{StaticResource ErrorListTemplate}" />
+                        <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
                     </Button.ToolTip>
                     <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
                            Height="16"
@@ -71,8 +61,7 @@
                 </Button>
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="[UI_{0}_FixBtn_AutoID]">
-                        <Binding Path="ModelItem.ServiceName"
-                                 RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="ModelItem.ServiceName" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
             </Grid>

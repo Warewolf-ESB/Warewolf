@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -77,6 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            connectionString = connectionString.UnescapeString();
             ParseProperties(connectionString, properties);
             Address = properties["Address"];
             DefaultQuery = properties["DefaultQuery"];
@@ -110,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             result.Add(
-                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

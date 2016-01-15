@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,8 +13,10 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using FontAwesome.WPF;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -138,7 +140,34 @@ namespace Dev2.Activities.Designers2.Core
 
         static Image CreateImage(string sourceUri)
         {
-            return new Image { Source = new BitmapImage(new Uri(sourceUri)) };
+            Image image = new Image();
+            image.Height = 14;
+            image.Width = 14;
+
+            if(Application.Current != null)
+            {
+                Brush brush = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
+
+                switch (sourceUri)
+                {
+                    case "Question":
+                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Question, brush);
+                        break;
+                    case "ServiceQuickVariableInput":
+                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.ListAlt, brush);
+                        break;
+                    case "ServicePropertyEdit":
+                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Pencil, brush);
+                        break;
+                    case "ServiceHelp":
+                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Gears, brush);
+                        break;
+                    default:
+                        image.Source = new BitmapImage(new Uri(sourceUri));
+                        break;
+                }
+            }
+            return image;
         }
     }
 }

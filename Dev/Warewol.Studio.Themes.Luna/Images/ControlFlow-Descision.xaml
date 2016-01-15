@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ControlFlow-Descision">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FFFDBE09" Geometry="M 40.3371,-728.269L 46.2544,-722.352C 46.8571,-721.744 46.8571,-720.764 46.2544,-720.157L 40.3371,-714.24C 39.7304,-713.637 38.7504,-713.637 38.1424,-714.24L 32.2251,-720.157C 31.6224,-720.764 31.6224,-721.744 32.2251,-722.352L 38.1424,-728.269C 38.7504,-728.871 39.7304,-728.871 40.3371,-728.269 Z " />
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+		</DrawingImage>
+</ResourceDictionary>

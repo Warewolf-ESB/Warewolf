@@ -4,12 +4,6 @@
                     xmlns:local="clr-namespace:Dev2.UI"
                     xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
     
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Brushes.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/TextBoxMetroBrushes.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ButtonMetroBrushes.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
-
     <Style TargetType="customControls:Dev2StatusBar">
         <Setter Property="StatusBarLabelText" Value="" />
         <Setter Property="ProgressBarVisiblity" Value="Visible" />
@@ -18,8 +12,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <StatusBar Width="Auto" Background="{StaticResource BrushBackground}" 
-                               BorderBrush="{StaticResource ButtonBorderBrush}"
+                    <StatusBar Width="Auto" 
+                               
                                BorderThickness="0,1,0,0" Padding="0" Margin="0" Height="Auto">                       
                         <StatusBarItem Grid.Column="0" Padding="0" Margin="0" Width="Auto">
                             <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
@@ -31,7 +25,7 @@
                                 <Label Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>
                         </StatusBarItem>
-                        <Separator Width="1" Background="{StaticResource ButtonBorderBrush}" />
+                        <Separator Width="1" />
                         <StatusBarItem />
                     </StatusBar>
                 </ControlTemplate>

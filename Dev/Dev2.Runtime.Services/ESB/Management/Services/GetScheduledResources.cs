@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Workspaces;
@@ -30,6 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
+        private IResourceCatalog _catalog;
 
         public string HandlesType()
         {
@@ -61,11 +63,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw;
             }
         }
-
         public IServerSchedulerFactory SchedulerFactory
         {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(a.ResourceId)); }
             set { _schedulerFactory = value; }
+        }
+
+        public IResourceCatalog ResourceCatalogue
+        {
+            get { return _catalog ?? ResourceCatalog.Instance; }
+            set { _catalog = value; }
         }
 
         public DynamicService CreateServiceEntry()

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,6 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Dev2Logger.Log.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
+              
                 string workspaceIdString = string.Empty;
 
                 values.TryGetValue("ResourceXml", out resourceDefinition);
@@ -58,7 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("Roles or ResourceXml is missing");
                 }
-
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                resourceDefinition = new StringBuilder( serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false };
 
                 List<DynamicServiceObjectBase> compiledResources = null;
@@ -104,7 +106,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     res.SetMessage(saveResult.Message + " " + DateTime.Now);
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+           
                 return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)

@@ -1,5 +1,5 @@
 
-<Service ID="b743e08f-6d2d-475d-a3ea-21bf22067825" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget_Error" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5777.29405">
+<Service ID="b743e08f-6d2d-475d-a3ea-21bf22067825" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget_Error" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5854.28948">
   <DisplayName>11536_FireForget_Error</DisplayName>
   <Category>Acceptance Testing Resources\11536_FireForget_Error</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -24,18 +24,4 @@
   <ErrorMessages>
     <ErrorMessage InstanceID="4961290e-2c2e-44be-99ff-c9a9dd46ed01" Message="Source was not found. This service will not execute." ErrorType="Critical" FixType="None" />
   </ErrorMessages>
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>n0CmUzxL/HVULT1c+jWknxmN81U=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>mBcQ7zx+kiymYy57Y/v/P4tXsZCm+NCJceKxzkOrS8vcRF9p5G9qQUMz8Pl6LyL+mUun9im+Pq8DIpqkwOy8b27S5lNgTo6jrWWaEDkQkBKFDKp8vhUPk7NfPLqUdKIJZ4oWRkMeC5h/HnQMvI3abY5W+NlYhrHyI8Ar3yOudnE=</SignatureValue>
-  </Signature>
 </Service>

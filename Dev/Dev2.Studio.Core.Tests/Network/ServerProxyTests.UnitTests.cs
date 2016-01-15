@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,11 +16,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
-using Dev2.Core.Tests.Utils;
-using Dev2.Explorer;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.SignalR.Wrappers;
@@ -123,39 +118,6 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var serverProxy = new TestServerProxy();
-            //------------Assert Results-------------------------
-            var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
-            Assert.IsNotNull(subscription);
-        }
-
-        [TestMethod, Timeout(5000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerProxy_Constructor")]
-        public void ServerProxy_HandleItemAdded()
-        {
-            //------------Setup for test--------------------------
-            var serverProxy = new ServerProxyWithChunking(new Uri("http://bob"));
-            var serverGuid = Guid.NewGuid();
-            var ItemGuid = Guid.Empty;
-            try
-            {
-                serverProxy.Connect(serverGuid);
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-
-
-            }
-            //------------Execute Test---------------------------
-            ServerExplorerItem item = new ServerExplorerItem("bob",Guid.Empty,ResourceType.DbService,null,Permissions.Administrator, "bob");
-            serverProxy.ItemAddedMessageAction += explorerItem => { ItemGuid = explorerItem.ServerId; };
-            Dev2JsonSerializer dev = new Dev2JsonSerializer();
-            var output = dev.SerializeToBuilder(item);
-            PrivateObject p = new PrivateObject(serverProxy);
-            p.Invoke("OnItemAddedMessageReceived", output.ToString());
-            Assert.AreEqual(ItemGuid,serverGuid);
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
@@ -307,7 +269,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxy()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new TestAsyncWorker())
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new SynchronousAsyncWorker())
         {
 
         }

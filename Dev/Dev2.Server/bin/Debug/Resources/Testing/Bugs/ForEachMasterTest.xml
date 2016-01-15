@@ -1,5 +1,5 @@
 
-<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5781.19507">
+<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5854.28948">
   <DisplayName>ForEachMasterTest</DisplayName>
   <Category>Testing\Bugs\ForEachMasterTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -24,18 +24,4 @@
   </Action>
   <ErrorMessages />
   <VersionInfo DateTimeStamp="2015-10-30T11:35:08.1451921+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="618947ec-aeb0-494a-8bd1-a7d2621e424a" VersionId="7295ea8f-d250-4e0b-9542-496cad76e549" />
-  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <Reference URI="">
-        <Transforms>
-          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-        </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ojZoggVb0uGHYqDfxEtEVOKlbVc=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>N+VjNij5J4ZSgWkSAHpjA/z12N7uPBHLhheA4w4ezCCk9e69GNua8ds03u07uN3RsLg2J7Hg7n4TGXCko7zz79ShQSQuZBG5RabdNt3Bg6J7XhVfIo6CPkD2h4sRZiVdii27eu2m34InRPFLnYOCYpAyeJ43eCoDUHpuuxNx/oE=</SignatureValue>
-  </Signature>
 </Service>

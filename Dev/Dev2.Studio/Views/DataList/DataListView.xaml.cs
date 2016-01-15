@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,14 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DataList
@@ -24,7 +27,7 @@ namespace Dev2.Studio.Views.DataList
     /// <summary>
     /// Interaction logic for DataListView.xaml
     /// </summary>
-    public partial class DataListView
+    public partial class DataListView : IView,ICheckControlEnabledView
     {
         readonly IEventAggregator _eventPublisher;
 
@@ -40,6 +43,7 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             DataContextChanged += OnDataContextChanged;
+            KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
 
@@ -100,6 +104,15 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            //var keyboardFocus = Keyboard.FocusedElement as UIElement;
+            //if (e.KeyboardDevice.IsKeyDown(Key.Tab))
+            //{
+            //    if (keyboardFocus != null)
+            //    {
+            //        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+            //        e.Handled = true;
+            //    }
+            //}
             WriteToResourceModel();
         }
 
@@ -110,8 +123,11 @@ namespace Dev2.Studio.Views.DataList
             {
                 return;
             }
-
-            WriteToResourceModel();
+            IDataListViewModel vm = DataContext as IDataListViewModel;
+            if (vm != null && !vm.IsSorting)
+            {
+                WriteToResourceModel();
+            }
         }
 
         private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
@@ -122,7 +138,11 @@ namespace Dev2.Studio.Views.DataList
                 return;
             }
 
-            WriteToResourceModel();
+            IDataListViewModel vm = DataContext as IDataListViewModel;
+            if (vm != null && !vm.IsSorting)
+            {
+                WriteToResourceModel();
+            }
         }
 
         #endregion Events
@@ -171,5 +191,42 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
+        #region Implementation of ICheckControlEnabledView
+
+        public bool GetControlEnabled(string controlName)
+        {
+            switch (controlName)
+            {
+                case "Delete Variables":
+                    return DeleteButton.Command.CanExecute(null);
+                case "Sort Variables":
+                    return SortButton.Command.CanExecute(null);
+                case "Variables":
+                    return ScalarExplorer.IsEnabled;
+            }
+            return false;
+        }
+
+        #endregion
+
+        public void ExecuteCommand(string command)
+        {
+            if (command.Equals("Delete Variables", StringComparison.OrdinalIgnoreCase))
+            {
+                DeleteButton.Command.Execute(null);
+            }
+            if (command.Equals("lr().a", StringComparison.OrdinalIgnoreCase))
+            {
+                DeleteButton.Command.Execute(null);
+            }
+            if (command.Equals("[[a]]", StringComparison.OrdinalIgnoreCase))
+            {
+                DeleteButton.Command.Execute(null);
+            }
+            if (command.Equals("mr()", StringComparison.OrdinalIgnoreCase))
+            {
+                DeleteButton.Command.Execute(null);
+            }
+        }
     }
 }

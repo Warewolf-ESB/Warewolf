@@ -211,48 +211,45 @@ Scenario: Assign Disk Available into a recordset
 	| 1 | [[my(1).disks]] =  String |
 
 # This Test should be passed after the bug 12236 is fixed 
-#Scenario:Wxecuting with Incorrect Recordsets 
-#	Given I have a variable "[[rec&^[a]]().a]]" and I selected "RAM Available(MB)"	
-#	When the gather system infomartion tool is executed
-#	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-#	And the execution has "AN" error
-#	And the debug output as 
-#	| # |                          |
-## This Test should be passed after the bug 12236 is fixed 
-#Scenario:Wxecuting with Incorrect Scalar variables 
-#	Given I have a variable "[[test&^]]" and I selected "RAM Available(MB)"	
-#	When the gather system infomartion tool is executed
-#	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-#	And the execution has "AN" error
-#	And the debug output as 
-#	| # |                          |
+@ignore
+Scenario Outline:Executing with Incorrect Recordsets 
+	Given I have a variable "<input>" and I selected "DiskAvailable"	
+	When the gather system infomartion tool is executed
+	Then the value of the variable "[[my(2).roles]]" is a valid "String"
+	And the execution has '<error>' error
+	Examples: 
+	| input                                      | error                                     |
+	| [[rec&^[a]]().a]]                          | [[rec&^[a]]().a]] is not a valid variable |
+	| [[]]                                       | [[]] is not a valid variable              |
+	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
 
+@ignore
+#Audit
+Scenario Outline: Assign a DateTime into a recordset
+	Given I have a variable '<variable>' and I selected '<Type>'	
+	When the gather system infomartion tool is executed
+	Then the value of the variable '<variable>' is a valid "DateTime"
+	And the execution has "NO" error
+	And the debug output as 
+	| # | Variable   | Type   | results  |
+	| 1 | <variable> | <Type> | <output> |
+	Examples: 
+	| variable                      | Type     | output                     |
+	| [[rec().a]]                   | DateTime | 2015/08/05 11:40:36.975 AM |
+	| [[rec(*).a]]                  | DateTime | 2015/08/05 11:41:40.775 AM |
+	| [[rec([[int]]).a]],[[int]] =2 | DateTime | 2015/08/05 11:42:36.934 AM |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@ignore
+#Complex Types
+Scenario Outline: Assign a DateTime into a complex types
+	Given I have a variable '<object>' and I selected '<Type>'	
+	When the gather system infomartion tool is executed
+	Then the value of the variable '<object>' is a valid "DateTime"
+	And the execution has "<error>" error
+	And the debug output as 
+	| # | Variable   | Type   | results  |
+	| 1 | <object> | <Type> | <output> |
+	Examples: 
+	| object                        | Type     | error | output                     |
+	| [[rec(1).set().value]]        | DateTime | NO    | 2015/08/05 11:40:36.975 AM |
+	| [[rec(*).set([[int]]).value]] | DateTime | No    | 2015/08/05 11:40:36.975 AM |

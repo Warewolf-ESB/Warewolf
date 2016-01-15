@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,25 +38,65 @@ namespace Dev2.Studio.AppResources.Behaviors
             UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
             if (e.Key == Key.Up)
             {
-                if (keyboardFocus != null)
+                if(keyboardFocus != null)
                 {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-                    e.Handled = true;
+                    try
+                    {
+                        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Up));
+
+                        UIElement newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                        while(newKeyboardFocusTreeItem != null)
+                        {
+                            newKeyboardFocusTreeItem.MoveFocus(new TraversalRequest(FocusNavigationDirection.Up));
+                            newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                        }
+                    }
+                    catch(StackOverflowException)
+                    {
+                        //
+                    }
+                    finally
+                    {
+                        e.Handled = true;
+                    }
                 }
             }
             else if (e.Key == Key.Down)
             {
                 if (keyboardFocus != null)
                 {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                    e.Handled = true;
+                    try
+                    {
+                        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+
+                        UIElement newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                        while(newKeyboardFocusTreeItem != null)
+                        {
+                            newKeyboardFocusTreeItem.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                            newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                        }
+                    }
+                    catch(StackOverflowException)
+                    {
+                        //
+                    }
+                    finally
+                    {
+                        e.Handled = true;
+                    }
                 }
             }
             else if (e.Key == Key.Enter)
             {
                 if (keyboardFocus != null)
                 {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                    UIElement newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                    while (newKeyboardFocusTreeItem != null)
+                    {
+                        newKeyboardFocusTreeItem.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                        newKeyboardFocusTreeItem = Keyboard.FocusedElement as TreeViewItem ?? (UIElement)(Keyboard.FocusedElement as CheckBox);
+                    }
                     e.Handled = true;
                 }
             }
@@ -65,6 +105,26 @@ namespace Dev2.Studio.AppResources.Behaviors
                 if (keyboardFocus != null)
                 {
                     keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+                    UIElement newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                    while(newKeyboardFocus != null)
+                    {
+                        newKeyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+                        newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                    }
+                    e.Handled = true;
+                }
+            }
+            else if(e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                    UIElement newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                    while(newKeyboardFocus != null)
+                    {
+                        newKeyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                        newKeyboardFocus = Keyboard.FocusedElement as TreeViewItem;
+                    }
                     e.Handled = true;
                 }
             }

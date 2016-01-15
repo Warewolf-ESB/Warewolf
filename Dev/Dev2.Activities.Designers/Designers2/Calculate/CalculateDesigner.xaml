@@ -12,24 +12,20 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="{StaticResource ToolCalculate-32}" />
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
+        <Binding Source="{StaticResource Utility-Calculate-Icon}"/>
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
-        <local:Small x:Key="Small"
-                     AutomationProperties.AutomationId="SmallViewContent" />
+        <ResourceDictionary>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
 
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
-        </Style>
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityDesigner>

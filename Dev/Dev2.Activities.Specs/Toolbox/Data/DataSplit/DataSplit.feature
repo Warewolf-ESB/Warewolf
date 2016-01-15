@@ -347,7 +347,7 @@ Scenario: Split text using Char and Escape character
 	And assign to variable "[[var]]" split type "Chars" at "," and Include "Unselected" and Escape '\'
 	When the data split tool is executed
 	Then the split recordset "[[var]]" will be
-	| rs         | value   |
+	| rs      | value   |
 	| [[var]] | 123\,45 |
 
 	And the execution has "NO" error
@@ -504,17 +504,17 @@ Examples:
 	 | 13 | [[var]]00]]                               |
 	 | 14 | [[var]]@]]                                |
 	 | 15 | [[var.()]]                                |
-	# | 16 | [[]]                                      |
-	 #| 17 | [[()]]                                    |
+	 | 16 | [[]]                                      |
+	 | 17 | [[()]]                                    |
 	 | 28 | [[var[[]]                                 |
 	 | 29 | [[var1.a]]                                |
 	 | 20 | [[rec()!a]]                               |
 	 | 21 | [[rec()         a]]                       |
-	 #| 22 | [[{{rec(_).a}}]]]                         |
+	| 22 | [[{{rec(_).a}}]]]                         |
 	 | 23 | [[rec(23).[[var*]]]]                      |
 	 | 24 | [[rec()                                   |
 	 | 25 | a[[rec([[[[b]]]]).a]]@                    |
-	 #| 26 | [[var  ]]                                 |
+	 | 26 | [[var  ]]                                 |
 	 | 27 | [[var@]]                                  |
 	 | 29 | [[var]]]]                                 |
 	 | 30 | [[(1var)]]                                |
@@ -575,6 +575,30 @@ Examples:
 	 | 86 | [[rec()*.a]]                              |	 
 	 | 89 | [[rec(-1).a                               |
 	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |
+
+
+@ignore
+#Audit
+Scenario Outline: Split data using scalars and recordsets
+	Given A string to split with value '<String>'	
+	And assign to variable '<Variable>' split type '<Type>' at '<Using>' and Include 'Selected' and Escape ''
+	When the data split tool is executed
+	Then the execution has '<ErrorOccured>' error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # | Result        | With  | Using   | Include | Escape   |
+	| <String>        | Forward           | No              | 1 | <Variable>  = | Index | <Using> | Yes     | <Escape> |
+	And the debug output as
+	| # |          |
+Examples: 
+	 | No | String                                             | Variable    | Type  | using                                               | Escape                          | ErrorOccured |
+	 | 1  | [[var]]                                            | ""          | Index | 1                                                   | [[rs([[int]]).a]] = ,[[int]] =1 | No           |
+	 | 2  | Warewolf                                           | [[var]]     |       | 1                                                   | [[var]]                         | No           |
+	 | 3  | Warewolf                                           | [[a]] = ""  |       | 1                                                   | [[var]] = "/"                   | No           |
+	 | 4  | [[rc().string]] = Dave Chappel                     | [[rec().p]] | Space |                                                     | 89                              | No           |
+	 | 5  | [[rc(*).string]] = Dave Chappel                    | [[rec().p]] | Index | [rec().n]]  =5                                      | [[rs(*).a]]                     | No           |
+	 | 6  | [[rc([[int]]).string]] = Dave Chappel, [[int]] = 1 | [[rec().p]] | Index | [rec(1).n]]      =5                                 | [[rs(1).a]] = t                 | No           |
+	 | 7  | Dave Chappel                                       | [[rec().p]] | Index | [rec([[int]]).n]] = 6, [[int]]=2                    | [[rs().a]] = "-"                | No           |
+	 | 8  | Dave Chappel                                       | [[rec().p]] | Index | [rec(*).n]], [[rec(1).n]] = 2, [[rec(2).n]] = 3 |                                 | No           |
 
 
 Scenario Outline: Debug output Validation errors x

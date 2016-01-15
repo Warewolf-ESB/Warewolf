@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Enums;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers2.Foreach
 {
@@ -25,7 +26,6 @@ namespace Dev2.Activities.Designers2.Foreach
         public ForeachDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            AddTitleBarHelpToggle();
             ForeachTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enForEachType>();
             SelectedForeachType = Dev2EnumConverter.ConvertEnumValueToString(ForEachType);
         }
@@ -184,6 +184,15 @@ namespace Dev2.Activities.Designers2.Foreach
 
         public override void Validate()
         {
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,8 @@
 */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -19,14 +21,15 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
-using Dev2.Core.Tests.Utils;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Models;
@@ -680,6 +683,12 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_ShowServerVersion")]
         public void ExplorerItemModel_ShowServerVersion_ShowVersionCallsStudioRepo()
         {
+            var server = new Mock<IServer>();
+            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            var shell = new Mock<IShellViewModel>();
+            CustomContainer.Register(shell.Object);
+            shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+            shell.Setup(a => a.ActiveServer).Returns(server.Object);
 
             var mockResourceRepository = new Mock<IResourceRepository>();
             var resourceId = Guid.NewGuid();
@@ -689,6 +698,7 @@ namespace Dev2.Core.Tests.ModelTests
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             GetEnvironmentRepository(mockEnvironment);
             var manager = new Mock<IWindowManager>();
+            manager.Setup(windowManager => windowManager.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()));
             const string displayName = "localhost";
             ExplorerItemModel resourceItem;
             var studioRepo = new Mock<IStudioResourceRepository>();
@@ -2337,7 +2347,7 @@ namespace Dev2.Core.Tests.ModelTests
             ExplorerItemModel resourceItem;
 #pragma warning disable 168
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
-            ExplorerItemModel childItem = new ExplorerItemModel(mockStudioRepository.Object, new TestAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { DisplayName = "bob" };
+            ExplorerItemModel childItem = new ExplorerItemModel(mockStudioRepository.Object, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { DisplayName = "bob" };
             resourceItem.Children.Add(childItem);
 #pragma warning restore 168
             //------------Execute Test---------------------------
@@ -4013,6 +4023,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
+                ResourcePath = "S111",
                 ResourceType = ResourceType.Folder,
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
@@ -4584,7 +4595,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(string displayName, Guid envID, Guid resourceId, IConnectControlSingleton connectControlSingleton, out ExplorerItemModel resourceItem, IStudioResourceRepository repo)
         {
-            var serverItem = new ExplorerItemModel(repo, new TestAsyncWorker(), connectControlSingleton)
+            var serverItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
                 ResourceType = ResourceType.Server,
                 DisplayName = displayName,
@@ -4592,7 +4603,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Permissions = Permissions.Administrator,
                 EnvironmentId = envID
             };
-            var folderItem = new ExplorerItemModel(repo, new TestAsyncWorker(), connectControlSingleton)
+            var folderItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
                 ResourceType = ResourceType.Folder,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -4601,7 +4612,7 @@ namespace Dev2.Core.Tests.ModelTests
                 EnvironmentId = envID
             };
 
-            resourceItem = new ExplorerItemModel(repo, new TestAsyncWorker(), connectControlSingleton)
+            resourceItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
                 ResourceType = ResourceType.WorkflowService,
                 DisplayName = Guid.NewGuid().ToString(),

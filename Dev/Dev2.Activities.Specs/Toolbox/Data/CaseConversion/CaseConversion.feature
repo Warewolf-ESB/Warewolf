@@ -259,24 +259,6 @@ Examples:
 	| 4  | TITLE CASE |
 
 
-#Bug 12177
-#Scenario Outline: Convert variables with data in one row
-#	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
-#	And I convert a variable "[[a]]test[[b]]" to '<Case>'		
-#	When the case conversion tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| #  | Convert                       | To     |
-#	| 1  | [[a]]test[[b]] = Warewolftest | <Case> |
-#	And the debug output as  
-#	| #  |                               |        |
-#Examples: 
-#	| no | Case                          |
-#	| 1  | UPPER                         |
-#	| 2  | Lower                         |
-#	| 3  | SENTENCE                      |
-#	| 4  | TITLE CASE                    |
-
 #Bug 12178
 Scenario Outline: Error messages when convert a Invalid variable
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
@@ -298,12 +280,12 @@ Examples:
 	| 6  | [[rec".a]]                                | UPPER | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 7  | [[rec.a]]                                 | UPPER | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
 	| 8  | [[rec()*.a]]                              | UPPER | Variable name [[rec()*.a]] contains invalid character(s)                                                                                                                                                                                                |
-	| 9 | [[rec().a]]*                              | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
+	| 9  | [[rec().a]]*                              | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
 	| 10 | [[1]]                                     | UPPER | Variable name [[1]] begins with a number                                                                                                                                                                                                                |
 	| 11 | [[@]]                                     | UPPER | Variable name [[@]] contains invalid character(s)                                                                                                                                                                                                       |
 	| 12 | [[var#]]                                  | UPPER | Variable name [[var#]] contains invalid character(s)                                                                                                                                                                                                    |
-	#| 13 | [[var]]00]]                               | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
-	#| 14 | [[var]]@]]                                | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+	| 13 | [[var]]00]]                               | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+	| 14 | [[var]]@]]                                | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
 	| 15 | [[var.()]]                                | UPPER | Variable name [[var.()]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 16 | [[]]                                      | UPPER | Variable [[]] is missing a name                                                                                                                                                                                                                         |
 	| 17 | [[()]]                                    | UPPER | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
@@ -320,6 +302,7 @@ Examples:
 	| 28 | [[rec()                                   | UPPER | Recordset variable that needs a field name(s)                                                                                                                                                                                                           |
 
 
+
 #Scenario: Convert a invalid variable valid text
 #	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
 #	And I convert a variable "[rec().a]]=]]" to "UPPER"		
@@ -333,7 +316,7 @@ Examples:
 #	| 1 | [rec().a]]=]] |
 
 
-Scenario: Convert a Variable That Does Not Exist
+	Scenario: Convert a Variable That Does Not Exist
 	Given I convert a variable "[[var]]" to "lower"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
@@ -344,6 +327,24 @@ Scenario: Convert a Variable That is NULL
 	When the case conversion tool is executed
 	Then the execution has "No" error
 
-
+@ignore
+#Complex Types
+Scenario Outline: Convert a sentence to uppercase using complex types
+	Given I have a case convert variable '<variable>' with a value of '<value>'
+	And I convert a variable '<variable>' to '<To>'	
+	When the case conversion tool is executed
+	Then the sentence will be '<result>'
+	And the execution has "NO" error
+	And the debug inputs as  
+	| # | Convert              | To   |
+	| 1 | <variable> = <value> | <To> |
+	And the debug output as  
+	| # |                        |
+	| 1 | <variable> = <results> | 
+	Examples: 
+	| variable                                    | value    | To         | Result   |
+	| [[granparent(1).parents(*).childName]]      | troy-ave | TITLE CASE | Troy-Ave |
+	| [[granparent().parents([[int]]).childName]] | Jesse    | LOWER      | jesse    |
+	| [[granparent(1).parents(1).childName]]      | Jesse    | UPPER      | JESSE    |
 
 

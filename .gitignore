@@ -46,3 +46,8 @@ obj
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/**
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Shared Resources Server.xml
+
+####################################################################################
+# For lack of SpecFlow.CodedUI nuget package. (I can't find it anywhere! - Ashley)
+####################################################################################
+!Dev/Warewolf.Studio.UISpecs/fnr.exe

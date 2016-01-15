@@ -13,30 +13,26 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolCaseConversion-32}"/>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
+        <Binding Source="{StaticResource Data-CaseConversion-Icon}"/>
     </sap:ActivityDesigner.Icon>
-   
+
     <sap:ActivityDesigner.Resources>
-        <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
-        <quickVariableInput:QuickVariableInputView x:Key="QuickVariableInput" AutomationProperties.AutomationId="QuickVariableInputContent" />
-        
-        <Style x:Key="ContentViewStyle"
-               BasedOn="{StaticResource ActivityDesignerStyle}"
-               TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content"
-                    Value="{DynamicResource Small}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=ShowQuickVariableInput, Mode=TwoWay}"
-                             Value="true">
-                    <Setter Property="Content"
-                            Value="{DynamicResource QuickVariableInput}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+            <quickVariableInput:QuickVariableInputView x:Key="QuickVariableInput" AutomationProperties.AutomationId="QuickVariableInputContent" />
+
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ShowQuickVariableInput, Mode=TwoWay}" Value="true">
+                        <Setter Property="Content" Value="{DynamicResource QuickVariableInput}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityCollectionDesigner>

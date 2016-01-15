@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -55,9 +55,11 @@ namespace Dev2.CustomControls
 
             _textBox = GetTemplateChild(PART_TextBox) as TextBox;
             _button = GetTemplateChild(PART_ButtonBase) as ButtonBase;
+            
 
             if (_button != null)
             {
+                _button.Margin = new Thickness(3, 0, 0, 0);
                 _button.Click += ButtonClick;
             }
         }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,14 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
@@ -35,6 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New 
     /// Purpose : To provide an activity that can zip the contents of a file/folder from FTP, FTPS and file system
     /// </summary>
+    [ToolDescriptorInfo("FileFolder-Zip", "Zip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File & Folder", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfZip : DsfAbstractMultipleFilesActivity, IZip, IPathInput, IPathOutput, IPathOverwrite,
                           IDestinationUsernamePassword
     {
