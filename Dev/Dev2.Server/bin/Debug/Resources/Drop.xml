@@ -1,0 +1,24 @@
+
+<Source ID="70171112-34c9-498a-87e4-eef9e423e85a" Name="Drop" ResourceType="OauthSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAu+OtSyXmrE+QRjpVXbV/kQQAAAACAAAAAAADZgAAwAAAABAAAAAS02p60sjmxf2PXOjFiDP1AAAAAASAAACgAAAAEAAAAE0DRZa9GN2m//7hBgNRKMhYAAAAgSrB4DELKE5jZDZgJdgwS/eCt8zN1GLWH5So1zx1eRK2IiOZppaGerw6EFOsg0r+sC3wLAyX17Hi9hj2m3GmddwDObEO1znUZhIrC6v6RZI3Z8kvOdxrKBQAAACOtR/GCzx6FYOTk3WD+QuF/nWZbg==" Type="OauthSource" ServerVersion="0.5.5708.26291" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Drop</DisplayName>
+  <Category>Drop</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>OauthSource</TypeOf>
+  <VersionInfo DateTimeStamp="2015-08-18T14:59:49.3465143+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="70171112-34c9-498a-87e4-eef9e423e85a" VersionId="45754bf8-e512-4e26-9f51-8f73652933b2" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>YZjtNIgjz2h7xAsPvyW5uEniI7o=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>XC4rulV0eEr09eOqqo/McfUWmeyI4o5iN3Oc+MbLlL467k/19euE+AeJ1ev+ry4G6/DFqJ8Z89yp7QkDdR+3TN3sosb8gHAHbp3SUzBzpaubTaE3GgVeDnMTMjLdJA5ZF1DzDUgzUqjpjbR0y0AaJzaody2f+/2NLo8dSmqsGv8=</SignatureValue>
+  </Signature>
+</Source>

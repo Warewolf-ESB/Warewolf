@@ -1,0 +1,152 @@
+﻿Feature: Settings Permissions
+	In order to Check Remote server permissions to my local server
+	As a Warewolf user
+	I want to setup a Server Permissions 
+
+Scenario Outline: Server Rights for Public
+          Given I have Warewolf running
+          And “RemoteServer” has permissions setup as
+          | Resource | Group  | Permissions     |
+          | Server   | Public | '<Permissions>' |
+          When I connect as a “Public” user to “RemoteServer” in “Explorer”
+		  Then connect control in "Explorer" is selected to "RemoteServer"
+          And “RemoteServer” resources "ALL" will have '<Resourceicon>'icon
+          And “New Workflow” in the ribbon is '<New Workflow>'
+          And “Save” in the ribbon is '<Save>'
+          And “Deploy” in the ribbon is '<Deploy>'
+          And “New Plugin Service” in the ribbon is '<Services>'
+          And “New Web Service” in the ribbon is '<Services>'
+          And “New Database Service” in the ribbon is '<Services>'
+          And “Execute” in the ribbon is '<Execute>'
+          And “Settings” in the ribbon is '<Settings>'
+		  And “Scheduler” in the ribbon is '<Scheduler>'
+Examples: 
+          | Permissions                                                      | Resourceicon   | New Workflow | Save     | Deploy   | Services | Execute  | Settings | Scheduler |
+          | View                                                             | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Execute                                                          | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          | Deploy To                                                        | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Deploy From                                                      | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Contribute, view, Execute                                        | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
+          | View, Execute                                                    | View, Execute  | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          | View, Deploy To                                                  | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | View, Deploy From                                                | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Deploy To, Deploy From                                           | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Deploy To, Execute                                               | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          | Deploy From, Execute                                             | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          | Deploy To, View, Execute, Contribute                             | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
+          | Deploy From, View, Execute, Contribute                           | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
+          | Deploy To, Deploy From, View, Execute, Contribute, Administrator | View, Executer | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Enabled  | Enabled   |
+          |                                                                  | None           | Disabled     | Disabled | Disabled | Disabled | Disabled | Disabled | Disabled  |
+
+
+Scenario Outline: Remote Server resource Rights for Public
+          Given I have Warewolf running
+          And “RemoteServer” has permissions setup as
+          | Resource | Group  | Permissions |
+          | Server   | Public | ""          |
+		  And “RemoteServer” has Resource permissions setup as
+		  | Resource                | Group  | Permissions     |
+		  | BARNEY\DECISION TESTING | Public | '<Permissions>' | 
+          When I connect as a “Public” user to “RemoteServer” in “Explorer”
+		  Then connect control in "Explorer" is selected to "RemoteServer"
+          And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<Resourceicon>'icon
+          And “New Workflow” in the ribbon is '<New Workflow>'
+          And “Save” in the ribbon is '<Save>'
+          And “Deploy” in the ribbon is '<Deploy>'
+          And “New Plugin Service” in the ribbon is '<Services>'
+          And “New Web Service” in the ribbon is '<Services>'
+          And “New Database Service” in the ribbon is '<Services>'
+          And “Execute” in the ribbon is '<Execute>'
+          And “Settings” in the ribbon is '<Settings>'
+		  And “Scheduler” in the ribbon is '<Scheduler>'
+Examples: 
+          | Permissions               | Resourceicon  | New Workflow | Save     | Deploy   | Services | Execute  | Settings | Scheduler |
+          | View                      | View          | Disabled     | Enabled  | Enabled  | Disabled | Disabled | Disabled | Disabled  |
+          | Execute                   | Execute       | Disabled     | Enabled  | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          | Contribute, View, Execute | View, Execute | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
+          | View, Execute             | View, Execute | Disabled     | Enabled  | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
+          |                           | None          | Disabled     | Disabled | Disabled | Disabled | Disabled | Disabled | Disabled  |
+         
+Scenario Outline: Server and resource Rights for Public
+          Given I have Warewolf running
+          And “RemoteServer” has permissions setup as
+          | Resource | Group  | Permissions           |
+          | Server   | Public | '<ServerPermissions>' |
+		  And “RemoteServer” has Resource permissions setup as
+		  | Resource                | Group  | Permissions     |
+		  | BARNEY\DECISION TESTING | Public | '<ResourcePermissions>' | 
+          When I connect as a “Public” user to “RemoteServer” in “Explorer”
+		  Then connect control in "Explorer" is selected to "RemoteServer"
+          And “RemoteServer” resources "ALL" will have '<AllResourceicon>'icon
+          And “New Workflow” in the ribbon is '<New Workflow>'
+          And “Save” in the ribbon is '<Save>'
+          And “Deploy” in the ribbon is '<Deploy>'
+          And “New Plugin Service” in the ribbon is '<Services>'
+          And “New Web Service” in the ribbon is '<Services>'
+          And “New Database Service” in the ribbon is '<Services>'
+          And “Execute” in the ribbon is '<Execute>'
+          And “Settings” in the ribbon is '<Settings>'
+		  And “Scheduler” in the ribbon is '<Settings/Sche>'
+		  And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<SelectedResourceicon>'icon
+		  And “New Workflow” in the ribbon for resource "BARNEY\DECISION TESTING" is '<New Workflow1>'
+          And “Save” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Save1>'
+          And “Execute” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Execute1>'
+Examples: 
+          | ServerPermissions                                                | New Workflow | Save     | Deploy  | Services | Execute  | Settings/Sche | AllResourceicon | ResourcePermissions | SelectedResourceicon | New Workflow1 | Save1    | Execute1 |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | View                | View                 | Disabled      | Disabled | Disabled |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | View                | View                 | Disabled      | Disabled | Disabled |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | Execute             | Execute              | Disabled      | Disabled | Enabled  |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | Execute             | Execute              | Disabled      | Disabled | Enabled  |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Enabled       | View            | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | Execute         | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Executer       | Enabled       | Enabled  | Enabled  |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+
+Scenario Outline: Server rights for Public and resource Rights for user 
+          Given I have Warewolf running
+          And “RemoteServer” has permissions setup as
+          | Resource | Group  | Permissions           |
+          | Server   | Public | '<ServerPermissions>' |
+		  And “RemoteServer” has Resource permissions setup as
+		  | Resource                | Group | Permissions             |
+		  | BARNEY\DECISION TESTING | User  | '<ResourcePermissions>' | 
+          When I connect as a “Public” and "User" user to “RemoteServer” in “Explorer” 
+		  Then connect control in "Explorer" is selected to "RemoteServer"
+          And “RemoteServer” resources "ALL" will have '<AllResourceicon>'icon
+          And “New Workflow” in the ribbon is '<New Workflow>'
+          And “Save” in the ribbon is '<Save>'
+          And “Deploy” in the ribbon is '<Deploy>'
+          And “New Plugin Service” in the ribbon is '<Services>'
+          And “New Web Service” in the ribbon is '<Services>'
+          And “New Database Service” in the ribbon is '<Services>'
+          And “Execute” in the ribbon is '<Execute>'
+          And “Settings” in the ribbon is '<Settings>'
+		  And “Scheduler” in the ribbon is '<Settings/Sche>'
+		  And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<SelectedResourceicon>'icon
+		  And “New Workflow” in the ribbon for resource "BARNEY\DECISION TESTING" is '<New Workflow1>'
+          And “Save” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Save1>'
+          And “Execute” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Execute1>'
+Examples: 
+          | ServerPermissions                                                | New Workflow | Save     | Deploy  | Services | Execute  | Settings/Sche | AllResourceicon | ResourcePermissions | SelectedResourceicon | New Workflow1 | Save1    | Execute1 |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | View                | View                 | Disabled      | Disabled | Disabled |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | View                | View, Execute        | Disabled      | Disabled | Disabled |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | View                | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | View                | View, Execute        | Enabled       | Disabled | Enabled  |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | View                | View, Execute        | Disabled      | Enabled  | Enabled  |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Execute             | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Execute             | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Enabled       | View            | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | Execute                                                          | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | Execute         | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+          | View, Execute                                                    | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Executer       | Enabled       | Enabled  | Enabled  |
+          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |

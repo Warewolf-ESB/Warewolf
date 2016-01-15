@@ -1,0 +1,1249 @@
+﻿Run the following scripts to setup the tables, relationships and triggers required to have a successful test run
+
+USE [Dev2TestingDB]
+GO
+
+/****** Object:  Table [dbo].[SqlBulkInsertSpecFlowTestTable]    Script Date: 11/27/2013 16:08:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_timeout_after_1_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS from SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_1_second]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_timeout_after_3_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_timeout_after_3_second]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_Batch_size_is_0 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0 set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_0]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_Batch_size_is_1 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1 set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_1]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_Batch_size_is_2 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2 set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2 ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_Batch_size_is_2]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_table_with_blank_data ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_blank_data]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_check_constraint_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_check_constraint_enabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_table_with_check_contraint_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_table_with_check_contraint_disabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_fire_triggers_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_fire_triggers_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_keep_identity_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_disabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_keep_identity_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_keep_identity_enabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_skip_blank_rows_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull_for_Import_data_into_Table_with_skip_blank_rows_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled
+    WHERE Col2 = ''
+    )
+END
+GO
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+GO
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled ON  [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_1_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_timeout_after_3_second]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_0]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_1]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_Batch_size_is_2]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_blank_data]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_check_constraint_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_table_with_check_contraint_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_fire_triggers_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_keep_identity_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_disabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('279C690E-3304-47A0-8BDE-5D3CA2520A34'
+           ,'First Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('BC7A9611-102E-4899-82B8-97FF1517D268'
+           ,'Second Row')
+GO
+
+INSERT INTO [dbo].[SqlBulkInsertSpecFlowTestTableForeign_for_Import_data_into_Table_with_skip_blank_rows_enabled]
+           ([Col1]
+           ,[Col2])
+     VALUES
+           ('23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+           ,'0')
+GO

@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!-- ********************************** THEME BRUSHES - For Color Tuner **********************************-->
+    <SolidColorBrush x:Key="Brush01b" Color="#FFF3700D"/>
+    <SolidColorBrush x:Key="Brush02b" Color="White"/>
+    <SolidColorBrush x:Key="Brush03b" Color="#FFC6C6C6"/>
+    <SolidColorBrush x:Key="Brush04b" Color="#FF565656"/>
+    <SolidColorBrush x:Key="Brush05b" Color="#FF333333"/>
+
+
+    <!-- ********************************** THEME BRUSHES - For Color Tuner **********************************-->
+    <SolidColorBrush x:Key="Brush01" Color="#FF00AADE"/>
+    <SolidColorBrush x:Key="Brush02" Color="White"/>
+    <SolidColorBrush x:Key="Brush03" Color="#FFC6C6C6"/>
+    <SolidColorBrush x:Key="Brush04" Color="#FF565656"/>
+    <SolidColorBrush x:Key="Brush05" Color="#FF333333"/>
+
+    <SolidColorBrush x:Key="BrushForeground" Color="{StaticResource Color_001}"/>
+    <SolidColorBrush x:Key="BrushDarkForeground" Color="{StaticResource Color_000}"/>
+    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource Color_014}" />
+    <SolidColorBrush x:Key="BrushNearTransparent" Color="{StaticResource Color_051}" />
+    <SolidColorBrush x:Key="BrushDisabledForeground" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="BrushLightForeground" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="BrushHighlightedForeground" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="BrushAccentColor" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="BrushSelected" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="BrushMouseOver" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="BrushSelectedBorder" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="BrushMouseOverBorder" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource Color_009}"/>
+
+    <!-- *********************************  BRUSHES  ********************************* -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Color_001b}" />
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_016b}" />
+    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource Color_012b}" />
+    <SolidColorBrush x:Key="ValidationErrorElement" Color="{StaticResource Color_028b}" />
+
+    <!-- Visual Glyphs brushes -->
+    <SolidColorBrush x:Key="GlyphBackgroundBrush" Color="{StaticResource Color_003b}" />
+    <SolidColorBrush x:Key="GlyphHoverBackgroundBrush" Color="{StaticResource Color_002b}" />
+    <SolidColorBrush x:Key="GlyphPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="GlyphDisabledBackgroundBrush" Color="{StaticResource Color_005b}" />
+
+    <!-- ValidationToolTip Brushes -->
+    <SolidColorBrush x:Key="ValidationToolTipTemplateShadowBrush" Color="{StaticResource Color_003b}" />
+</ResourceDictionary>
