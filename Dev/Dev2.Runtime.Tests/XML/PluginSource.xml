@@ -1,0 +1,5 @@
+﻿<Source ID="00746beb-46c1-48a8-9492-e2d20817fcd5" Version="1.0" Name="PluginTesterSource" ResourceType="PluginSource" AssemblyLocation="C:\Development\DEV2 SCRUM Project\Branches\BUG_9500_PluginNamespaces\BPM Resources\Plugins\Dev2.PluginTester.dll" AssemblyName="Dev2.PluginTester" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+    <DisplayName>PluginTesterSource</DisplayName>
+    <Category>TWR</Category>
+    <AuthorRoles></AuthorRoles>
+</Source>

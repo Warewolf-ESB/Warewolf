@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Scrollbar Brushes -->
+    <SolidColorBrush x:Key="HScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowDisabledBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource Color_007b}" />
+    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+
+</ResourceDictionary>

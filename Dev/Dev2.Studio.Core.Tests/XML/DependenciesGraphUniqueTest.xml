@@ -1,0 +1,45 @@
+<graph title="Dependency Graph Of Button">
+	<!-- 
+		!! DO NOT CHANGE !!		
+		Dependent Test: ResourceDependencyServiceTest
+		Expected unique nodes: 	Button, ReplacePartWithErrorMsg, Checkbox, Radio Button
+	-->
+	<node id="Button" x="" y="" broken="false">
+		<dependency id="ReplacePartWithErrorMsg"/>
+		<dependency id="TabIndexInject"/>
+		<dependency id="TooltipInject"/>
+		<dependency id="CssClassInject"/>
+		<dependency id="StyleInject"/>
+	</node>
+	<node id="Button" x="" y="" broken="false">
+		<dependency id="Button"/>
+	</node>
+	<node id="ReplacePartWithErrorMsg" x="" y="" broken="false"/>
+	<node id="ReplacePartWithErrorMsg" x="" y="" broken="false">
+		<dependency id="ReplacePartWithErrorMsg"/>
+	</node>
+	<node id="Button" x="" y="" broken="false">
+		<dependency id="ReplacePartWithErrorMsg"/>
+	</node>
+	<node id="Checkbox" x="" y="" broken="false">
+		<dependency id="ReplacePartWithErrorMsg"/>
+	</node>
+	<node id="Radio Button" x="" y="" broken="false">
+		<dependency id="TabIndexInject"/>
+	</node>
+	<node id="Button" x="" y="" broken="false">
+		<dependency id="TooltipInject"/>
+	</node>
+	<node id="Checkbox" x="" y="" broken="false">
+		<dependency id="TooltipInject"/>
+	</node>
+	<node id="Radio Button" x="" y="" broken="false">
+		<dependency id="TooltipInject"/>
+	</node>
+	<node id="Button" x="" y="" broken="false">
+		<dependency id="CssClassInject"/>
+	</node>
+	<node id="Checkbox" x="" y="" broken="false">
+		<dependency id="CssClassInject"/>
+	</node>
+</graph>

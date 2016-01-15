@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Instance InstanceId="713d7df9-2064-4e52-856f-8215ec4cf042">
+  <InstanceData>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">{urn:schemas-microsoft-com:System.Activities/4.0/properties}Bookmarks</name>
+        </XName>
+      </Key>
+      <Value>
+        <ReadOnlyCollectionOfBookmarkInfonF_PHLgmX z:Id="1" z:Type="System.Collections.ObjectModel.ReadOnlyCollection`1[[System.Activities.Hosting.BookmarkInfo, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]]" z:Assembly="0" xmlns="http://schemas.datacontract.org/2004/07/System.Collections.ObjectModel" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <list z:Id="2" z:Type="System.Collections.Generic.List`1[[System.Activities.Hosting.BookmarkInfo, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]]" z:Assembly="0" xmlns:a="http://schemas.datacontract.org/2004/07/System.Activities.Hosting">
+            <a:_items z:Id="3" z:Size="4">
+              <a:BookmarkInfo z:Id="4">
+                <a:BookmarkName z:Id="5">dsfResumption</a:BookmarkName>
+                <a:OwnerDisplayName z:Id="6">WebPage Output Mapping Test</a:OwnerDisplayName>
+              </a:BookmarkInfo>
+              <a:BookmarkInfo i:nil="true" />
+              <a:BookmarkInfo i:nil="true" />
+              <a:BookmarkInfo i:nil="true" />
+            </a:_items>
+            <a:_size>1</a:_size>
+            <a:_version>1</a:_version>
+          </list>
+        </ReadOnlyCollectionOfBookmarkInfonF_PHLgmX>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Optional WriteOnly</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">{urn:schemas-microsoft-com:System.Activities/4.0/properties}LastUpdate</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:dateTime z:Type="System.DateTime" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">2013-01-28T07:40:20.9967708Z</z:dateTime>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Optional WriteOnly</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">{urn:schemas-microsoft-com:System.Activities/4.0/properties}Workflow</name>
+        </XName>
+      </Key>
+      <Value>
+        <Executor z:Id="1" z:Type="System.Activities.Runtime.ActivityExecutor" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2010/02/System.Activities" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <WorkflowInstanceId>713d7df9-2064-4e52-856f-8215ec4cf042</WorkflowInstanceId>
+          <activities z:Id="2">
+            <SerializedInstanceLists z:Id="3" z:Size="3" xmlns:a="http://schemas.datacontract.org/2004/07/System.Activities.Runtime">
+              <a:ActivityInstanceMap.InstanceList z:Id="4">
+                <singleItem z:Id="5" z:Type="System.Activities.ActivityInstance" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Activities">
+                  <SerializedEnvironment z:Id="6" xmlns="http://schemas.datacontract.org/2010/02/System.Activities">
+                    <a:locations z:Id="7" z:Size="3" xmlns:b="http://schemas.datacontract.org/2004/07/System.Activities">
+                      <b:Location z:Id="8" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                      <b:Location z:Id="9" z:Type="System.Activities.Location`1[[System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                        <b:value z:Id="10" xmlns:c="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+                          <c:_items z:Id="11" z:Size="4">
+                            <c:string z:Id="12">8674fc8d-4baa-40a1-be07-09427a8dca9d</c:string>
+                            <c:string i:nil="true" />
+                            <c:string i:nil="true" />
+                            <c:string i:nil="true" />
+                          </c:_items>
+                          <c:_size>1</c:_size>
+                          <c:_version>1</c:_version>
+                        </b:value>
+                      </b:Location>
+                      <b:Location z:Id="13" z:Type="System.Activities.Location`1[[System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                    </a:locations>
+                  </SerializedEnvironment>
+                  <children z:Id="14" xmlns="http://schemas.datacontract.org/2010/02/System.Activities" xmlns:b="http://schemas.datacontract.org/2004/07/System.Activities">
+                    <b:singleItem z:Id="15">
+                      <SerializedEnvironment z:Id="16">
+                        <a:locations z:Id="17" z:Size="8">
+                          <b:Location z:Id="18" z:Type="System.Activities.Variable`1+VariableLocation[[System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="19" z:Type="System.Activities.Variable`1+VariableLocation[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="20" z:Type="System.Activities.Variable`1+VariableLocation[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="21" z:Type="System.Activities.Variable`1+VariableLocation[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="22" z:Type="System.Activities.Variable`1+VariableLocation[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="23" z:Type="System.Activities.Variable`1+VariableLocation[[Unlimited.Framework.UnlimitedObject, Dev2.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="24" z:Type="System.Activities.Variable`1+VariableLocation[[Unlimited.Applications.BusinessDesignStudio.Activities.Util, Dev2.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                          <b:Location z:Id="25" z:Type="System.Activities.Variable`1+VariableLocation[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                        </a:locations>
+                        <a:parent z:Ref="6" i:nil="true" />
+                      </SerializedEnvironment>
+                      <children z:Id="26">
+                        <b:singleItem z:Id="27">
+                          <CompletionBookmark z:Id="28">
+                            <a:callbackWrapper z:Id="29" z:Type="System.Activities.Runtime.ActivityCompletionCallbackWrapper" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <a:ActivityInstance z:Ref="15" i:nil="true" />
+                              <a:callbackName z:Id="30">OnStepCompleted</a:callbackName>
+                            </a:callbackWrapper>
+                          </CompletionBookmark>
+                          <SerializedEnvironment z:Id="31">
+                            <a:locations z:Id="32" z:Size="11">
+                              <b:Location z:Id="33" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="34" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="35" z:Type="System.Activities.Location`1+ReferenceLocation[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <b:bufferGets>true</b:bufferGets>
+                                <b:innerLocation z:Ref="22" i:nil="true" />
+                              </b:Location>
+                              <b:Location z:Id="36" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="37" z:Type="System.Activities.Location`1[[System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="38" z:Type="System.Activities.Location`1+ReferenceLocation[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <b:bufferGets>true</b:bufferGets>
+                                <b:innerLocation z:Ref="20" i:nil="true" />
+                              </b:Location>
+                              <b:Location z:Id="39" z:Type="System.Activities.Location`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Ref="18" i:nil="true" />
+                              <b:Location z:Id="40" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="41" z:Type="System.Activities.Location`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                              <b:Location z:Id="42" z:Type="System.Activities.Variable`1+VariableLocation[[System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <b:value>61290945-51ec-4bfc-87a6-46c06ec92de7</b:value>
+                              </b:Location>
+                            </a:locations>
+                            <a:parent z:Ref="16" i:nil="true" />
+                          </SerializedEnvironment>
+                          <busyCount>1</busyCount>
+                          <extendedData z:Id="43">
+                            <b:blockingBookmarkCount>1</b:blockingBookmarkCount>
+                            <b:bookmarks z:Id="44">
+                              <b:singleItem z:Id="45">
+                                <b:externalName z:Id="46">dsfResumption</b:externalName>
+                              </b:singleItem>
+                            </b:bookmarks>
+                          </extendedData>
+                          <id>3</id>
+                          <owner z:Id="47">DsfWebPageActivity</owner>
+                        </b:singleItem>
+                      </children>
+                      <id>2</id>
+                      <owner z:Id="48">Flowchart</owner>
+                    </b:singleItem>
+                  </children>
+                  <id xmlns="http://schemas.datacontract.org/2010/02/System.Activities">1</id>
+                  <owner z:Id="49" xmlns="http://schemas.datacontract.org/2010/02/System.Activities">DynamicActivity</owner>
+                </singleItem>
+                <a:ActivityId z:Id="50">AQ==</a:ActivityId>
+              </a:ActivityInstanceMap.InstanceList>
+              <a:ActivityInstanceMap.InstanceList z:Id="51">
+                <singleItem z:Ref="15" i:nil="true" xmlns="http://schemas.datacontract.org/2004/07/System.Activities" />
+                <a:ActivityId z:Id="52">AQE=</a:ActivityId>
+              </a:ActivityInstanceMap.InstanceList>
+              <a:ActivityInstanceMap.InstanceList z:Id="53">
+                <singleItem z:Ref="27" i:nil="true" xmlns="http://schemas.datacontract.org/2004/07/System.Activities" />
+                <a:ActivityId z:Id="54">AQI=</a:ActivityId>
+              </a:ActivityInstanceMap.InstanceList>
+            </SerializedInstanceLists>
+          </activities>
+          <bookmarkMgr z:Id="55">
+            <bookmarks z:Id="56" z:Type="System.Collections.Generic.Dictionary`2[[System.Activities.Bookmark, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35],[System.Activities.Runtime.BookmarkCallbackWrapper, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]]" z:Assembly="0" xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <Version z:Id="57" z:Type="System.Int32" z:Assembly="0" xmlns="">1</Version>
+              <Comparer z:Id="58" z:Type="System.Activities.Bookmark+BookmarkComparer" z:Assembly="System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="" />
+              <HashSize z:Id="59" z:Type="System.Int32" z:Assembly="0" xmlns="">3</HashSize>
+              <KeyValuePairs z:Id="60" z:Type="System.Collections.Generic.KeyValuePair`2[[System.Activities.Bookmark, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35],[System.Activities.Runtime.BookmarkCallbackWrapper, System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]][]" z:Assembly="0" z:Size="1" xmlns="">
+                <KeyValuePairOfBookmarkBookmarkCallbackWrapperp1xtHQ8Q xmlns="http://schemas.datacontract.org/2004/07/System.Collections.Generic">
+                  <key z:Ref="45" i:nil="true" xmlns:b="http://schemas.datacontract.org/2004/07/System.Activities" />
+                  <value z:Id="61" xmlns:b="http://schemas.datacontract.org/2004/07/System.Activities.Runtime">
+                    <b:ActivityInstance z:Ref="27" i:nil="true" xmlns:c="http://schemas.datacontract.org/2010/02/System.Activities" />
+                    <b:callbackName z:Id="62">Resumed</b:callbackName>
+                    <b:declaringTypeName z:Id="63">Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</b:declaringTypeName>
+                    <b:Bookmark z:Ref="45" i:nil="true" xmlns:c="http://schemas.datacontract.org/2004/07/System.Activities" />
+                  </value>
+                </KeyValuePairOfBookmarkBookmarkCallbackWrapperp1xtHQ8Q>
+              </KeyValuePairs>
+            </bookmarks>
+            <nextId>1</nextId>
+          </bookmarkMgr>
+          <lastInstanceId>3</lastInstanceId>
+          <rootInstance z:Ref="5" i:nil="true" />
+          <scheduler z:Id="64" />
+        </Executor>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">{urn:schemas-microsoft-com:System.Activities/4.0/properties}Status</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Idle</z:string>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">WriteOnly</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">CurrentBookmarkName</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:anyType i:nil="true" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" />
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">WorkflowInstanceId</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:anyType i:nil="true" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" />
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ServiceName</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">WebpageWithOutputMapping</z:string>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ParentWorkflowInstanceId</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ParentServiceName</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">WebpageWithOutputMapping</z:string>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DataList</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">&lt;DataList&gt;
+    &lt;field1 Description="" IsEditable="True" /&gt;
+    &lt;field2 Description="" IsEditable="True" /&gt;
+    &lt;inputRegion Description="" IsEditable="True" /&gt;
+    &lt;testValue Description="" IsEditable="True" /&gt;
+  &lt;/DataList&gt;</z:string>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">WorkflowResumeable</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:boolean z:Type="System.Boolean" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">true</z:boolean>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">IsDebug</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:boolean z:Type="System.Boolean" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">false</z:boolean>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">WorkspaceID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">00000000-0000-0000-0000-000000000000</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">IsOnDemandSimulation</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:boolean z:Type="System.Boolean" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">false</z:boolean>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistOutMergeID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">00000000-0000-0000-0000-000000000000</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistOutMergeType</name>
+        </XName>
+      </Key>
+      <Value>
+        <enDataListMergeTypes z:Type="Dev2.DataList.Contract.enDataListMergeTypes" z:Assembly="Dev2.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns="http://schemas.datacontract.org/2004/07/Dev2.DataList.Contract" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Intersection</enDataListMergeTypes>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistOutMergeDepth</name>
+        </XName>
+      </Key>
+      <Value>
+        <enTranslationDepth z:Type="Dev2.DataList.Contract.enTranslationDepth" z:Assembly="Dev2.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns="http://schemas.datacontract.org/2004/07/Dev2.DataList.Contract" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Data_With_Blank_OverWrite</enTranslationDepth>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistOutMergeFrequency</name>
+        </XName>
+      </Key>
+      <Value>
+        <DataListMergeFrequency z:Type="Dev2.DataList.Contract.DataListMergeFrequency" z:Assembly="Dev2.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns="http://schemas.datacontract.org/2004/07/Dev2.DataList.Contract" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">OnCompletion</DataListMergeFrequency>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistInMergeID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">00000000-0000-0000-0000-000000000000</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistInMergeType</name>
+        </XName>
+      </Key>
+      <Value>
+        <enDataListMergeTypes z:Type="Dev2.DataList.Contract.enDataListMergeTypes" z:Assembly="Dev2.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns="http://schemas.datacontract.org/2004/07/Dev2.DataList.Contract" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Intersection</enDataListMergeTypes>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DatalistInMergeDepth</name>
+        </XName>
+      </Key>
+      <Value>
+        <enTranslationDepth z:Type="Dev2.DataList.Contract.enTranslationDepth" z:Assembly="Dev2.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns="http://schemas.datacontract.org/2004/07/Dev2.DataList.Contract" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">Data_With_Blank_OverWrite</enTranslationDepth>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ExecutionCallbackID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">00000000-0000-0000-0000-000000000000</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">BookmarkExecutionCallbackID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">00000000-0000-0000-0000-000000000000</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ParentInstanceID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:string z:Type="System.String" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">DataListID</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:guid z:Type="System.Guid" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">8674fc8d-4baa-40a1-be07-09427a8dca9d</z:guid>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">IsDataListScoped</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:boolean z:Type="System.Boolean" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">false</z:boolean>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+    <Entry>
+      <Key>
+        <XName z:Id="1" z:FactoryType="NameSerializer" z:Type="System.Xml.Linq.NameSerializer" z:Assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns="http://schemas.datacontract.org/2004/07/System.Xml.Linq" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+          <name z:Id="2" z:Type="System.String" z:Assembly="0" xmlns="">ForceDeleteAtNextNativeActivityCleanup</name>
+        </XName>
+      </Key>
+      <Value>
+        <z:boolean z:Type="System.Boolean" z:Assembly="0" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">false</z:boolean>
+      </Value>
+      <Options>
+        <InstanceValueOptions z:Type="System.Runtime.DurableInstancing.InstanceValueOptions" z:Assembly="System.Runtime.DurableInstancing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns="http://schemas.datacontract.org/2004/07/System.Runtime.DurableInstancing" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">None</InstanceValueOptions>
+      </Options>
+    </Entry>
+  </InstanceData>
+</Instance>
