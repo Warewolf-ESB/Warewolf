@@ -22,7 +22,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             _errorsTo = new ErrorResultTO();
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
@@ -30,9 +30,8 @@ namespace Dev2.Activities
             pluginServiceExecution.InstanceOutputDefintions = outputs;
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
-            var result = ExecutePluginService(pluginServiceExecution, update);
+            ExecutePluginService(pluginServiceExecution, update);
             tmpErrors.MergeErrors(_errorsTo);
-            return result;
         }
 
         #endregion

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -22,7 +21,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             var execErrors = new ErrorResultTO();
 
@@ -35,8 +34,7 @@ namespace Dev2.Activities
                 databaseServiceExecution.InstanceInputDefinitions = inputs; // set the output mapping for the instance ;)
                 databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
             }
-            //ServiceExecution.DataObj = dataObject;
-            var result = ServiceExecution.Execute(out execErrors, update);
+            ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
             foreach(var error in fetchErrors)
             {
@@ -45,8 +43,6 @@ namespace Dev2.Activities
             
             errors.MergeErrors(execErrors);
 
-            // Adjust the remaining output mappings ;)
-            return result;
         }
 
         #region Overrides of DsfActivity
