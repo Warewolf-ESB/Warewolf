@@ -162,9 +162,9 @@ namespace Warewolf.Core
                 {
                     MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(newRecordsetName, fieldName, ""));
                 }
-                if(string.IsNullOrEmpty(newRecordsetName))
+                if (string.IsNullOrEmpty(newRecordsetName) && string.IsNullOrEmpty(DataListUtil.ExtractRecordsetNameFromValue(_mappedTo)))
                 {
-                    MappedTo = _mappedTo.Replace("().", "");
+                    MappedTo = DataListUtil.AddBracketsToValueIfNotExist(fieldName);
                 }
             }
             else
