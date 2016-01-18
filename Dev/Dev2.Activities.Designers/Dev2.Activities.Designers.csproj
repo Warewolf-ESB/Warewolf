@@ -131,7 +131,6 @@
     </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
     <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
-    <Compile Include="Designers2\.Net DLL\DllViewModel.cs" />
     <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
       <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
     </Compile>
