@@ -46,7 +46,7 @@ namespace Dev2.Services.Execution
             try
             {
                 _sqlServer = new SqlServer();
-                bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure,ProcedureName);
+                bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
@@ -79,7 +79,7 @@ namespace Dev2.Services.Execution
             var server = new MySqlServer();
             try
             {
-                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure,ProcedureName);
+                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
                     Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
@@ -133,63 +133,74 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            switch(Source.ServerType)
+            switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                {
-                    SqlExecution(invokeErrors, update);
-                    ErrorResult.MergeErrors(invokeErrors);
-                    return Guid.NewGuid();
-                }
+                    {
+                        SqlExecution(invokeErrors, update);
+                        ErrorResult.MergeErrors(invokeErrors);
+                        return Guid.NewGuid();
+                    }
                 case enSourceType.MySqlDatabase:
-                {
-                    object result = MySqlExecution(invokeErrors, update);
-                    ErrorResult.MergeErrors(invokeErrors);
-                    return result;
-                }                    
+                    {
+                        object result = MySqlExecution(invokeErrors, update);
+                        ErrorResult.MergeErrors(invokeErrors);
+                        return result;
+                    }
             }
             return null;
         }
 
         void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update)
         {
-            if(executeService != null && Outputs != null && Outputs.Count != 0)
+            bool started = true;
+            if (executeService != null && Outputs != null && Outputs.Count != 0)
             {
-                if(executeService.Rows != null)
+                if (executeService.Rows != null)
                 {
+
                     int rowIdx = 1;
-                    foreach(DataRow row in executeService.Rows)
+                    foreach (DataRow row in executeService.Rows)
                     {
-                        foreach(var serviceOutputMapping in Outputs)
+                        foreach (var serviceOutputMapping in Outputs)
                         {
                             var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
                             var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
                             var rs = serviceOutputMapping.RecordSetName;
-                            environment.AssignDataShape(serviceOutputMapping.MappedTo);
-                            if(environment.HasRecordSet(rs))
+
+                            if (environment.HasRecordSet(rs))
                             {
-                                rowIdx = environment.GetLength(rs);
+                                if (started)
+                                {
+                                    rowIdx = environment.GetLength(rs) + 1;
+                                    started = false;
+                                }
                             }
-                            if(rsType == enRecordsetIndexType.Star)
+                            else
+                            {
+                                environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                            }
+                            if (rsType == enRecordsetIndexType.Star && started)
                             {
                                 rowIdx = 1;
+                                started = false;
                             }
-                            if(rsType == enRecordsetIndexType.Numeric)
+                            if (rsType == enRecordsetIndexType.Numeric)
                             {
                                 rowIdx = int.Parse(rowIndex);
                             }
-                            if(!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+                            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
                             {
                                 continue;
                             }
                             var value = row[serviceOutputMapping.MappedFrom];
                             {
-                                if(update != 0)
+                                if (update != 0)
                                 {
                                     rowIdx = update;
                                 }
                                 var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
-                                if(rsType == enRecordsetIndexType.Star)
+                                if (rsType == enRecordsetIndexType.Star)
                                 {
                                     displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
                                 }
@@ -202,7 +213,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void SqlExecution(ErrorResultTO errors,int update)
+        private void SqlExecution(ErrorResultTO errors, int update)
         {
             try
             {
@@ -215,15 +226,15 @@ namespace Dev2.Services.Execution
                         using (DataTable dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
                         // ReSharper restore CoVariantArrayConversion
                         {
-                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment,update);
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error("Sql Error:",ex);
-                errors.AddError(string.Format("{0}{1}","Sql Error: ", ex.Message));
+                Dev2Logger.Log.Error("Sql Error:", ex);
+                errors.AddError(string.Format("{0}{1}", "Sql Error: ", ex.Message));
             }
         }
 
@@ -233,14 +244,14 @@ namespace Dev2.Services.Execution
             {
 
                 List<MySqlParameter> parameters = GetMySqlParameters(Inputs);
-                using(MySqlServer server = SetupMySqlServer(errors))
+                using (MySqlServer server = SetupMySqlServer(errors))
                 {
 
-                    if(parameters != null)
+                    if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using(DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-                            // ReSharper restore CoVariantArrayConversion
+                        using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+                        // ReSharper restore CoVariantArrayConversion
                         {
                             TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
                             return true;
@@ -248,7 +259,7 @@ namespace Dev2.Services.Execution
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
             }
