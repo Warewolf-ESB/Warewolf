@@ -1441,6 +1441,12 @@ Connected Servers will be Disconnected and vice versa. &lt;br/&gt;
   <data name="DatabaseServiceIncorrectVersion" xml:space="preserve">
     <value>Incorrect Version. The remote workflow has changed.Please refresh</value>
   </data>
+  <data name="PluginServiceMethodNotSelected" xml:space="preserve">
+    <value>Procedure not selected. This service will not execute.</value>
+  </data>
+  <data name="PluginServiceNamespaceNotSelected" xml:space="preserve">
+    <value>Procedure not selected. This service will not execute.</value>
+  </data>
   <data name="InputsHeader" xml:space="preserve">
     <value>Inputs</value>
   </data>

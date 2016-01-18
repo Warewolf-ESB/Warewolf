@@ -426,11 +426,6 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
                         break;
                     }
-                case "Drag_Toolbox_Data_Picker_Onto_DesignSurface":
-                    {
-                        Uimap.Drag_Toolbox_Data_Picker_Onto_DesignSurface();
-                        break;
-                    }
                 case "Drag_Toolbox_Data_Split_Onto_DesignSurface":
                     {
                         Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
@@ -1680,6 +1675,12 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
                         break;
                     }
+                case "Assert_Service_Picker_Exists_OnDesignSurface":
+                    {
+                        Uimap.Assert_Service_Picker_Exists_OnDesignSurface();
+                        break;
+                    }
+                
                 default:
                     {
                         Assert.Fail(p0 + " is not a recognized action recording.");
