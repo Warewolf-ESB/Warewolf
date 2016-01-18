@@ -689,6 +689,17 @@ Scenario: Drag toolbox Email onto a new workflow
 	When The 'Open_Email_Tool_Large_View' recorded action is performed
 	Then The 'Assert_Email_Large_View_Exists_OnDesignSurface' recorded action is performed
 
+Scenario: Drag toolbox Service Picker onto a new workflow
+	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
+	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
+	Then The 'Assert_StartNode_Exists' recorded action is performed
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When The 'Drag_Toolbox_Service_Picker_Onto_DesignSurface' recorded action is performed
+	Then The 'Assert_Service_Picker_Exists_OnDesignSurface' recorded action is performed
+
 Scenario: Drag toolbox Dropbox onto a new workflow
 	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
 	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
@@ -1078,3 +1089,6 @@ Scenario: Explorer
 	Given The 'Assert_Explorer_Exists' recorded action is performed
 	Then The 'Assert_Explorer_ServerName_Exists' recorded action is performed
 	Then The 'Right_Click_Context_Menu_InExplorer' recorded action is performed
+
+
+
