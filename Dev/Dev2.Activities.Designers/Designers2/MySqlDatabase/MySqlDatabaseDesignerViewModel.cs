@@ -843,6 +843,10 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                             OutputsExpanded = false;
                         }
                         ActionVisible = Procedures.Count != 0;
+                        if (Procedures.Count <= 0)
+                        {
+                            ErrorMessage(new Exception("The selected database does not contain actions to perform"));
+                        }
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
