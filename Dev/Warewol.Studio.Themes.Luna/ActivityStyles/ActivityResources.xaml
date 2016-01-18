@@ -9,8 +9,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ActivityStyles.xaml" />
-        <ResourceDictionary Source="/Common/Color.xaml" />
-        <ResourceDictionary Source="/Common/Brushes.xaml" />
+        <ResourceDictionary Source="../Common/Color.xaml" />
+        <ResourceDictionary Source="../Common/Brushes.xaml" />
         <ResourceDictionary Source="../Elements/DataGrid.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
