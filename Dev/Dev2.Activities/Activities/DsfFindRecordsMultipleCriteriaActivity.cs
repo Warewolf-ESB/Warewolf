@@ -114,23 +114,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IList<string> toSearch = FieldsToSearch.Split(',').Select(a => a.Trim()).ToList();
                 var scalarValues = toSearch.Where(DataListUtil.IsValueScalar).ToList();
-                if(scalarValues.Any())
+                if (scalarValues.Any())
                 {
-                    throw new Exception("Scalars are not allowed. Please check the following:"+Environment.NewLine+string.Join(Environment.NewLine,scalarValues));
+                    throw new Exception("Scalars are not allowed. Please check the following:" + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
                 }
                 List<int> results = new List<int>();
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputValues(dataObject, toSearch, ref allErrors, update);
                 }
 
                 bool hasEvaled = false;
-                foreach(var searchvar in toSearch)
+                foreach (var searchvar in toSearch)
                 {
                     Func<DataASTMutable.WarewolfAtom, bool> func = null;
-                    foreach(FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
+                    foreach (FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
                     {
-                        if(to.From.Length > 0 && String.IsNullOrEmpty(to.To)
+                        if (to.From.Length > 0 && String.IsNullOrEmpty(to.To)
                            || to.To.Length > 0 && String.IsNullOrEmpty(to.From))
                         {
                             throw new Exception("From and to Must be populated");
@@ -140,15 +140,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
                         IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>();
 
-                        if(!String.IsNullOrEmpty(to.From))
+                        if (!String.IsNullOrEmpty(to.From))
                         {
                             @from = env.EvalAsList(to.From, update);
                         }
-                        if(!String.IsNullOrEmpty(to.To))
+                        if (!String.IsNullOrEmpty(to.To))
                         {
                             tovalue = env.EvalAsList(to.To, update);
                         }
-                        if(func == null)
+                        if (func == null)
                         {
                             func = CreateFuncFromOperator(to.SearchType, right, @from, tovalue);
                         }
@@ -157,9 +157,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             func = RequireAllTrue ? CombineFuncAnd(func, to.SearchType, right, @from, tovalue) : CombineFuncOr(func, to.SearchType, right, @from, tovalue);
                         }
                     }
-                    var output = env.EnvalWhere(dataObject.Environment.ToStar(searchvar), func, update);
+                    var output = env.EvalWhere(dataObject.Environment.ToStar(searchvar), func, update);
 
-                    if(RequireAllFieldsToMatch && hasEvaled)
+                    if (RequireAllFieldsToMatch && hasEvaled)
                     {
                         results = results.Intersect(output).ToList();
                     }
@@ -169,18 +169,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     hasEvaled = true;
                 }
-                if(!results.Any())
+                if (!results.Any())
                 {
                     results.Add(-1);
                 }
                 var res = String.Join(",", results.Distinct());
                 env.Assign(Result, res, update);
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Dev2Logger.Log.Error("DSFRecordsMultipleCriteria", exception);
                 allErrors.AddError(exception.Message);
@@ -188,19 +188,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                     dataObject.Environment.Assign(Result, "-1", update);
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
                 }
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
@@ -208,42 +208,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to)
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
         {
-            var func2 = CreateFuncFromOperator(searchType, values,from,to);
-            return a=> func.Invoke(a) && func2.Invoke(a);
+            var func2 = CreateFuncFromOperator(searchType, values, from, to);
+            return a => func.Invoke(a) && func2.Invoke(a);
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to)
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
         {
-            var func2 = CreateFuncFromOperator(searchType, values,from,to);
+            var func2 = CreateFuncFromOperator(searchType, values, from, to);
             return a => func.Invoke(a) || func2.Invoke(a);
         }
 
 
-        Func<DataASTMutable.WarewolfAtom,bool> CreateFuncFromOperator(string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to )
+        Func<DataASTMutable.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
         {
 
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
-            return opt.GenerateFunc(values, from,to,RequireAllFieldsToMatch);
+            return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch);
         }
 
         private void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if(string.IsNullOrEmpty(searchTo.SearchType))
+            if (string.IsNullOrEmpty(searchTo.SearchType))
             {
                 errors.AddError("Search type is required");
             }
 
-            if(searchTo.SearchType.Equals("Is Between"))
+            if (searchTo.SearchType.Equals("Is Between"))
             {
-                if(string.IsNullOrEmpty(searchTo.From))
+                if (string.IsNullOrEmpty(searchTo.From))
                 {
                     errors.AddError("From is required");
                 }
 
-                if(string.IsNullOrEmpty(searchTo.To))
+                if (string.IsNullOrEmpty(searchTo.To))
                 {
                     errors.AddError("To is required");
                 }
@@ -257,27 +257,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
         {
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 try
                 {
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
-                    foreach(var s in toSearch)
+                    foreach (var s in toSearch)
                     {
                         var searchFields = s;
-                        if(DataListUtil.IsValueRecordset(s))
+                        if (DataListUtil.IsValueRecordset(s))
                         {
                             searchFields = searchFields.Replace("()", "(*)");
                         }
-                        AddDebugItem(new DebugEvalResult(searchFields, "",  dataObject.Environment, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(searchFields, "", dataObject.Environment, update), debugItem);
                     }
                     _debugInputs.Add(debugItem);
                     AddResultDebugInputs(ResultsCollection, dataObject.Environment, update);
                     AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
                     AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     errorTos.AddError(e.Message);
                 }
@@ -295,23 +295,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection,IExecutionEnvironment environment, int update)
+        void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection, IExecutionEnvironment environment, int update)
         {
             var indexCount = 1;
-            foreach(var findRecordsTo in resultsCollection)
+            foreach (var findRecordsTo in resultsCollection)
             {
                 DebugItem debugItem = new DebugItem();
-                if(!String.IsNullOrEmpty(findRecordsTo.SearchType))
+                if (!String.IsNullOrEmpty(findRecordsTo.SearchType))
                 {
                     AddDebugItem(new DebugItemStaticDataParams("", indexCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     AddDebugItem(new DebugItemStaticDataParams(findRecordsTo.SearchType, ""), debugItem);
 
-                    if(!string.IsNullOrEmpty(findRecordsTo.SearchCriteria))
+                    if (!string.IsNullOrEmpty(findRecordsTo.SearchCriteria))
                     {
                         AddDebugItem(new DebugEvalResult(findRecordsTo.SearchCriteria, "", environment, update), debugItem);
                     }
 
-                    if(findRecordsTo.SearchType == "Is Between" || findRecordsTo.SearchType == "Not Between")
+                    if (findRecordsTo.SearchType == "Is Between" || findRecordsTo.SearchType == "Not Between")
                     {
                         AddDebugItem(new DebugEvalResult(findRecordsTo.From, "", environment, update), debugItem);
 
@@ -327,22 +327,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
-            if(modelProperty == null)
+            if (modelProperty == null)
             {
                 return;
             }
             var mic = modelProperty.Collection;
 
-            if(mic == null)
+            if (mic == null)
             {
                 return;
             }
             var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
-            if(listOfValidRows.Count > 0)
+            if (listOfValidRows.Count > 0)
             {
                 FindRecordsTO findRecordsTo = ResultsCollection.Last(c => !c.CanRemove());
                 var startIndex = ResultsCollection.IndexOf(findRecordsTo) + 1;
-                foreach(var s in listToAdd)
+                foreach (var s in listToAdd)
                 {
                     mic.Insert(startIndex, new FindRecordsTO(s, ResultsCollection[startIndex - 1].SearchType, startIndex + 1));
                     startIndex++;
@@ -358,20 +358,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
-            if(modelProperty == null)
+            if (modelProperty == null)
             {
                 return;
             }
             var mic = modelProperty.Collection;
 
-            if(mic == null)
+            if (mic == null)
             {
                 return;
             }
             var startIndex = 0;
             var searchType = ResultsCollection[0].SearchType;
             mic.Clear();
-            foreach(var s in listToAdd)
+            foreach (var s in listToAdd)
             {
                 mic.Add(new FindRecordsTO(s, searchType, startIndex + 1));
                 startIndex++;
@@ -381,13 +381,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if(startIndex < mic.Count)
+            if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new XPathDTO(string.Empty, "", startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
             }
@@ -396,12 +396,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty == null)
+            if (modelProperty == null)
             {
                 return "";
             }
             var currentName = modelProperty.ComputedValue as string;
-            if(currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+            if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
             {
                 currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
             }
@@ -415,35 +415,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
             return _debugInputs;
         }
 
-        
+
         #endregion Get Inputs/Outputs
 
         #region Get ForEach Inputs/Ouputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
                     Tuple<string, string> t1 = t;
                     var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria) && c.SearchCriteria.Equals(t1.Item1));
 
                     // issues updates
-                    foreach(var a in items)
+                    foreach (var a in items)
                     {
                         a.SearchCriteria = t.Item2;
                     }
 
-                    if(FieldsToSearch == t.Item1)
+                    if (FieldsToSearch == t.Item1)
                     {
                         FieldsToSearch = t.Item2;
                     }
@@ -453,11 +453,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(var t in updates)
+                foreach (var t in updates)
                 {
-                    if(Result == t.Item1)
+                    if (Result == t.Item1)
                     {
                         Result = t.Item2;
                     }
@@ -494,7 +494,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
-            if(!overwrite)
+            if (!overwrite)
             {
                 InsertToCollection(listToAdd, modelItem);
             }
