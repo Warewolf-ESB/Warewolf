@@ -426,11 +426,6 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Drag_Toolbox_Data_Merge_Onto_DesignSurface();
                         break;
                     }
-                case "Drag_Toolbox_Data_Picker_Onto_DesignSurface":
-                    {
-                        Uimap.Drag_Toolbox_Data_Picker_Onto_DesignSurface();
-                        break;
-                    }
                 case "Drag_Toolbox_Data_Split_Onto_DesignSurface":
                     {
                         Uimap.Drag_Toolbox_Data_Split_Onto_DesignSurface();
