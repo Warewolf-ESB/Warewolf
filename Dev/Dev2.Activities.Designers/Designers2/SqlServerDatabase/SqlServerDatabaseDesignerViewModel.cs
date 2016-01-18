@@ -267,12 +267,20 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.TestAction= () =>
                 {
                     ManageServiceInputViewModel.IsTesting = true;
-                    ManageServiceInputViewModel.TestResults = _dbServiceModel.TestService(ManageServiceInputViewModel.Model);
-                    if (ManageServiceInputViewModel.TestResults != null)
+                    try
                     {
-                        ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults.Rows.Count!=0;
-                        TestSuccessful = true;
-                        ManageServiceInputViewModel.IsTesting = false;
+                        ManageServiceInputViewModel.TestResults = _dbServiceModel.TestService(ManageServiceInputViewModel.Model);
+                        if (ManageServiceInputViewModel.TestResults != null)
+                        {
+                            ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults.Rows.Count != 0;
+                            TestSuccessful = true;
+                            ManageServiceInputViewModel.IsTesting = false;
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        ErrorMessage(e);
+                        ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
                 ManageServiceInputViewModel.OkAction = () =>
@@ -288,19 +296,24 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             catch (Exception e)
             {
-                var errorInfo = new ErrorInfo
-                {
-                    ErrorType = ErrorType.Critical,
-                    Message = e.Message
-                };
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
-                CanEditMappings = false;
-                Inputs = null;
-                Outputs = null;
-                TestSuccessful = false;
-                IsTesting = false;
-                TestResults = null;
+                ErrorMessage(e);
             }
+        }
+
+        void ErrorMessage(Exception e)
+        {
+            var errorInfo = new ErrorInfo
+            {
+                ErrorType = ErrorType.Critical,
+                Message = e.Message
+            };
+            Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+            CanEditMappings = false;
+            Inputs = null;
+            Outputs = null;
+            TestSuccessful = false;
+            IsTesting = false;
+            TestResults = null;
         }
 
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
@@ -832,6 +845,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             OutputsExpanded = false;
                         }
                         ActionVisible = Procedures.Count != 0;
+                        if (Procedures.Count <= 0)
+                        {
+                            ErrorMessage(new Exception("The selected database does not contain actions to perform"));
+                        }
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {

@@ -62,7 +62,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -251,7 +251,7 @@
                 HorizontalAlignment="Right"
                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}"
                 IsEnabled="{Binding InputsVisible}"/>
-
+        
         <ig:XamGrid x:Name="OutputsMappingDataGrid" 
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
@@ -261,6 +261,9 @@
                     AutoGenerateColumns="False" 
                     Margin="{StaticResource ControlBorderTop}"
                     IsEnabled="{Binding OutputsVisible}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    MinHeight="60"
+                    MaxHeight="Infinity"
                     ColumnWidth="*">
             <ig:XamGrid.Columns>
                 <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">
