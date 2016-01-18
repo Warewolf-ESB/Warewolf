@@ -1680,6 +1680,12 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Drag_Toolbox_MySql_Database_Onto_DesignSurface();
                         break;
                     }
+                case "Assert_Service_Picker_Exists_OnDesignSurface":
+                    {
+                        Uimap.Assert_Service_Picker_Exists_OnDesignSurface();
+                        break;
+                    }
+                
                 default:
                     {
                         Assert.Fail(p0 + " is not a recognized action recording.");
