@@ -14,13 +14,13 @@
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:sqlServerDatabase="clr-namespace:Dev2.Activities.Designers2.SqlServerDatabase"
                                xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:ig="http://schemas.infragistics.com/xaml"
                                xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
                                xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:netDll="clr-namespace:Dev2.Activities.Designers2.Net_DLL"
                                MinWidth="350"
                                Width="350"
                                MinHeight="400"
@@ -30,7 +30,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance sqlServerDatabase:SqlServerDatabaseDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance netDll:DotNetDllViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -126,7 +126,6 @@
             <TextBlock x:Name="NamespaceLabel" Text="Namespace" Margin="{StaticResource ControlBorderRight}" />
             <ComboBox x:Name="NamespaceComboBox"
                       Grid.Column="1"
-                      Margin="{StaticResource ControlBorderRight}"
                       ItemsSource="{Binding Namespaces}"
                       DisplayMemberPath="Name" 
                       IsEnabled="{Binding NamespaceVisible}"
