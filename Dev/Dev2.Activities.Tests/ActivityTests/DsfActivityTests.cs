@@ -198,11 +198,10 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int undate)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int undate)
         {
             tmpErrors = new ErrorResultTO();
             tmpErrors.AddError("This is an error");
-            return Guid.NewGuid();
         }
 
         #endregion
