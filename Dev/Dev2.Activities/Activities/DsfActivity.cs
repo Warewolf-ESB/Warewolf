@@ -454,12 +454,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        protected virtual void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-
             esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, !String.IsNullOrEmpty(OnErrorVariable));
-
-            return Guid.NewGuid();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
