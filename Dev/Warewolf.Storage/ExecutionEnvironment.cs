@@ -46,7 +46,7 @@ namespace Warewolf.Storage
 
         IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update,bool throwsifnotexists = false);
 
-        IEnumerable<int> EnvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update);
+        IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update);
 
         void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update);
 
@@ -435,7 +435,7 @@ namespace Warewolf.Storage
             }
         }
 
-        public IEnumerable<int> EnvalWhere (string expression , Func<DataASTMutable.WarewolfAtom,bool> clause, int update)
+        public IEnumerable<int> EvalWhere (string expression , Func<DataASTMutable.WarewolfAtom,bool> clause, int update)
         {
             return PublicFunctions.EvalWhere(expression, _env,update, clause);
         }
