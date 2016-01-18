@@ -130,7 +130,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
-    <Compile Include="Designers2\.Net DLL\DllViewModel.cs" />
+    <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
     <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
     <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
       <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
