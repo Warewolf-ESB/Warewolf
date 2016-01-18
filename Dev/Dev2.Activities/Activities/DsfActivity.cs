@@ -559,7 +559,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
                             // Execute Request
-                    ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
 
                             allErrors.MergeErrors(tmpErrors);
 
@@ -582,6 +582,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
+                        foreach(var allError in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.Errors.Add(allError);
+                        }
                         //dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if (!String.IsNullOrEmpty(OnErrorVariable))
