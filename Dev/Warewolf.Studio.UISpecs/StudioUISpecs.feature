@@ -93,7 +93,7 @@ Scenario: Drag toolbox MySql Tool onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When The 'Open_MySql_Database_Tool_Small_View' recorded action is performed
 	
-Scenario: Drag toolbox MySql Tool onto a new workflow
+Scenario: Drag toolbox MySql Tool onto a new workflow2
 	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
 	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
 	Then The 'Assert_StartNode_Exists' recorded action is performed
