@@ -649,36 +649,43 @@ namespace Dev2.Studio.Views
         static extern bool GetCursorPos(out POINT lpPoint);
         void PART_TITLEBAR_OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (restoreIfMove)
+            try
             {
-                restoreIfMove = false;
-
-                double percentHorizontal = e.GetPosition(this).X / ActualWidth;
-                double targetHorizontal = RestoreBounds.Width * percentHorizontal;
-
-                double percentVertical = e.GetPosition(this).Y / ActualHeight;
-                double targetVertical = RestoreBounds.Height * percentVertical;
-
-                WindowState = WindowState.Normal;
-
-                POINT lMousePosition;
-                GetCursorPos(out lMousePosition);
-
-                Left = lMousePosition.x - targetHorizontal;
-                Top = lMousePosition.y - targetVertical;
-
-                DragMove();
-                allowMaximizeState = true;
-            }
-            if (allowMaximizeState)
-            {
-                POINT lMousePosition;
-                GetCursorPos(out lMousePosition);
-
-                if (lMousePosition.y <= 0)
+                if (restoreIfMove)
                 {
-                    WindowState = WindowState.Maximized;
+                    restoreIfMove = false;
+
+                    double percentHorizontal = e.GetPosition(this).X / ActualWidth;
+                    double targetHorizontal = RestoreBounds.Width * percentHorizontal;
+
+                    double percentVertical = e.GetPosition(this).Y / ActualHeight;
+                    double targetVertical = RestoreBounds.Height * percentVertical;
+
+                    WindowState = WindowState.Normal;
+
+                    POINT lMousePosition;
+                    GetCursorPos(out lMousePosition);
+
+                    Left = lMousePosition.x - targetHorizontal;
+                    Top = lMousePosition.y - targetVertical;
+
+                    DragMove();
+                    allowMaximizeState = true;
                 }
+                if (allowMaximizeState)
+                {
+                    POINT lMousePosition;
+                    GetCursorPos(out lMousePosition);
+
+                    if (lMousePosition.y <= 0)
+                    {
+                        WindowState = WindowState.Maximized;
+                    }
+                }
+            }
+            catch(Exception)
+            {
+                // ignored
             }
         }
     }
