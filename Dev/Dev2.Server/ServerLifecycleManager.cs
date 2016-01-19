@@ -1718,6 +1718,15 @@ namespace Dev2
                                         if(flowStep != null)
                                         {
                                             var dbActivity = flowStep.Action as DsfDatabaseActivity;
+                                            var forEachActivity = flowStep.Action as DsfForEachActivity;
+                                            if(dbActivity == null)
+                                            {
+                                                
+                                                if(forEachActivity != null)
+                                                {
+                                                    dbActivity = forEachActivity.DataFunc.Handler as DsfDatabaseActivity;
+                                                }
+                                            }
                                             DbService service = null;
                                             if(dbActivity != null)
                                             {
@@ -1728,6 +1737,14 @@ namespace Dev2
                                             else
                                             {
                                                 var dbActivityAsActivity = flowStep.Action as DsfActivity;
+                                                if (dbActivityAsActivity == null)
+                                                {
+                                                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                                                    if (forEachActivity != null)
+                                                    {
+                                                        dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
+                                                    }
+                                                }
                                                 if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
                                                 {
                                                     updated = true;
@@ -1745,12 +1762,26 @@ namespace Dev2
                                                     if (source.ServerType == enSourceType.MySqlDatabase)
                                                     {
                                                         var dsfMySqlDatabaseActivity = GetDsfMySqlDatabaseActivity(dbActivity, source, service);
-                                                        flowStep.Action = dsfMySqlDatabaseActivity;
+                                                        if(forEachActivity != null)
+                                                        {
+                                                            forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
+                                                        }
+                                                        else
+                                                        {
+                                                            flowStep.Action = dsfMySqlDatabaseActivity;
+                                                        }
                                                     }
                                                     else if (source.ServerType == enSourceType.SqlDatabase)
                                                     {
                                                         var dsfSqlServerDatabaseActivity = GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
-                                                        flowStep.Action = dsfSqlServerDatabaseActivity;
+                                                        if (forEachActivity != null)
+                                                        {
+                                                            forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
+                                                        }
+                                                        else
+                                                        {
+                                                            flowStep.Action = dsfSqlServerDatabaseActivity;
+                                                        }
                                                     }
                                                 }
                                             }
