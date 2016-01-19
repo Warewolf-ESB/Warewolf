@@ -9,6 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Studio.Core.Activities.Services;
+
 namespace Dev2.Activities.Designers2.Net_DLL
 {
     // Interaction logic for DotNetDllDesigner.xaml
@@ -17,6 +19,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
         public DotNetDllDesigner()
         {
             InitializeComponent();
+        }
+        protected override DotNetDllViewModel CreateViewModel()
+        {
+            var designerManagementService = Context.Services.GetService<IDesignerManagementService>();
+            return new DotNetDllViewModel(ModelItem, designerManagementService.GetRootResourceModel());
+
         }
     }
 }
