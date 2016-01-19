@@ -3890,7 +3890,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]    | <emailVariable> |
@@ -3906,7 +3906,7 @@ Examples:
 
 Scenario Outline: Database SqlDB  service using int indexes 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]      | <emailVariable> |
@@ -3922,7 +3922,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]    | <emailVariable> |
@@ -3938,7 +3938,7 @@ Examples:
 
  Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]      | <emailVariable> |
@@ -3954,7 +3954,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]    | <emailVariable> |
@@ -3970,7 +3970,7 @@ Examples:
        
   Scenario Outline: Database SqlDB  service using scalar outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]      | <emailVariable> |
@@ -3986,7 +3986,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service scalar outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]      | <emailVariable> |
@@ -4002,7 +4002,7 @@ Examples:
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]      | <emailVariable> |
@@ -4016,7 +4016,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable    |
 	  | name                | afg%      | [[countries(*).countryid]] | <nameVariable> |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
@@ -4034,7 +4034,7 @@ Examples:
 
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  | Prefix           | afg           | [[countries(*).countryid]]         | <nameVariable>  |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
@@ -4050,7 +4050,7 @@ Examples:
 
  Scenario Outline: Database SqlDB  service DBErrors
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
