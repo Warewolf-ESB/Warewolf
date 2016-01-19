@@ -294,6 +294,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                     catch (Exception e)
                     {
                         ErrorMessage(e);
+                        ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
