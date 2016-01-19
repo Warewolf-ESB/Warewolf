@@ -23,6 +23,8 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
@@ -57,6 +59,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.Hosting;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -406,7 +409,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName));
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true);
 
 
             var activity = GetServiceActivity(serviceType);
@@ -424,7 +427,22 @@ namespace Dev2.Activities.Specs.Composition
                 activity.DisplayName = serviceName;
                 activity.OutputMapping = outputMapping;
                 activity.InputMapping = inputMapping;
-                CommonSteps.AddActivityToActivityList(wf, serviceName, activity);
+
+                var service = new DbService(resource.WorkflowXaml.ToXElement());
+
+                var source = service.Source as DbSource;
+
+                Activity mysqlActivity = null;
+                switch(serviceType)
+                {
+                    case "mysql database":
+                        mysqlActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                        break;
+                    case "sqlserver database":
+                        mysqlActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                        break;
+                }
+                CommonSteps.AddActivityToActivityList(wf, serviceName, mysqlActivity);
             }
         }
 
@@ -451,15 +469,15 @@ namespace Dev2.Activities.Specs.Composition
 
                     var inputMapping = dataMappingViewModel.GetInputString(dataMappingViewModel.Inputs);
                     var outputMapping = dataMappingViewModel.GetOutputString(dataMappingViewModel.Outputs);
-
+                    
                     var activity = new DsfWorkflowActivity();
 
-                    
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
                     var remoteServerId = remoteEnvironment.ID;
                     activity.ServiceServer = remoteServerId;
                     activity.EnvironmentID = remoteServerId;
+                    
                     activity.IsWorkflow = true;
                     if (remoteServerId != Guid.Empty)
                     {
@@ -556,7 +574,10 @@ namespace Dev2.Activities.Specs.Composition
             DsfActivity activity = null;
             switch(serviceType)
             {
-                case "database":
+                case "mysql database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "sqlserver database":
                     activity = new DsfDatabaseActivity();
                     break;
                 case "plugin":
