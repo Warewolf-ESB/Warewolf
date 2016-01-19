@@ -2037,12 +2037,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
                 var idEnd = second.Substring(id + 12, 36);
-                IResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(a => a.ID == Guid.Parse(idEnd));
-                if (resource == null)
+                if(!(second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
                 {
-                    e.Handled = true;
-                    e.CanExecute = false;
+                    IResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(a => a.ID == Guid.Parse(idEnd));
+                    if (resource == null)
+                    {
+                        e.Handled = true;
+                        e.CanExecute = false;
+                    }
                 }
+                
             }
         }
 
