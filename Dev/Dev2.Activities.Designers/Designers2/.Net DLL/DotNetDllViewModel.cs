@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 },CanRefresh);
                 RefreshNamespaceCommand = new DelegateCommand(() =>
                 {
-                    IsRefreshing = true;
+                    IsNamespaceRefreshing = true;
                     if (_selectedMethod != null)
                     {
                         var keepSelectedProcedure = _selectedNamespace;
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             SelectedNamespace = Namespaces.FirstOrDefault(action => action.FullName == SelectedNamespace.FullName);
                         }
                     }
-                    IsRefreshing = false;
+                    IsNamespaceRefreshing = false;
                 }, CanRefresh);
 
                 var pluginSources = _dllModel.RetrieveSources();
@@ -306,6 +306,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     catch (Exception e)
                     {
                         ErrorMessage(e);
+                        ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
@@ -693,7 +694,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private INamespaceItem _selectedNamespace;
         private ICollection<INamespaceItem> _namespaces ;
         private bool _namespaceVisible;
-
+        bool _isNamespaceRefreshing;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -869,6 +870,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
+                if (!Equals(value, _selectedNamespace))
+                {
+                    IsRefreshing = true;
+                    Errors = new List<IActionableErrorInfo>();
                 _selectedNamespace = value;
                 Namespace = value;
                 try
@@ -891,7 +896,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                     }
                 }
-                catch(Exception e)
+                    catch (Exception e)
                 {
 
                     Methods = new List<IPluginAction>();
@@ -904,7 +909,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     };
                     Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                 }
-            }
+            IsRefreshing = false;
+                }
         }
         public INamespaceItem Namespace
         {
@@ -1078,6 +1084,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 _isRefreshing = value;
                 OnPropertyChanged("IsRefreshing");
+            }
+        }
+        public bool IsNamespaceRefreshing
+        {
+            get
+            {
+                return _isNamespaceRefreshing;
+            }
+            set
+            {
+                _isNamespaceRefreshing = value;
+                OnPropertyChanged("IsNamespaceRefreshing");
             }
         }
         public ICommand RefreshActionsCommand
