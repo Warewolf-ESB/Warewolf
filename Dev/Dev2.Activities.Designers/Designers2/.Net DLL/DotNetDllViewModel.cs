@@ -133,17 +133,32 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 RefreshActionsCommand = new DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if(_selectedProcedure != null)
+                    if(_selectedMethod != null)
                     {
-                        var keepSelectedProcedure = _selectedProcedure.Method;
+                        var keepSelectedProcedure = _selectedMethod.Method;
                         Methods = _dllModel.GetActions(_selectedSource,_selectedNamespace);
                         if(keepSelectedProcedure != null)
                         {
-                            SelectedProcedure = Methods.FirstOrDefault(action => action.Method == ProcedureName);
+                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
                         }
                     }
                     IsRefreshing = false;
                 },CanRefresh);
+                RefreshNamespaceCommand = new DelegateCommand(() =>
+                {
+                    IsRefreshing = true;
+                    if (_selectedMethod != null)
+                    {
+                        var keepSelectedProcedure = _selectedNamespace;
+                        Namespaces = _dllModel.GetNameSpaces(_selectedSource);
+                        if (keepSelectedProcedure != null)
+                        {
+                            SelectedNamespace = Namespaces.FirstOrDefault(action => action.FullName == SelectedNamespace.FullName);
+                        }
+                    }
+                    IsRefreshing = false;
+                }, CanRefresh);
+
                 var pluginSources = _dllModel.RetrieveSources();
                 Sources = pluginSources.ToObservableCollection();
                 SourceVisible = true;
@@ -155,8 +170,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         FriendlySourceNameValue = SelectedSource.Name;
                         if(!string.IsNullOrEmpty(ProcedureName))
                         {
-                            SelectedProcedure = Methods.FirstOrDefault(action => action.Method == ProcedureName);
-                            if(SelectedProcedure == null)
+                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
+                            if(SelectedMethod == null)
                             {
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
@@ -233,7 +248,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             var pluginServiceDefinition = new PluginServiceDefinition
             {
                 Source = SelectedSource,
-                Action = SelectedProcedure
+                Action = SelectedMethod
             };
             pluginServiceDefinition.Inputs = new List<IServiceInput>();
             foreach(var serviceInput in Inputs)
@@ -640,7 +655,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private IPluginSource _selectedSource;
         private bool _actionVisible;
         private ICollection<IPluginAction> _methods;
-        private IPluginAction _selectedProcedure;
+        private IPluginAction _selectedMethod;
         private ICollection<IServiceInput> _inputs;
         private bool _inputsVisible;
         private bool _inputsExpanded;
@@ -654,6 +669,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         bool _isRefreshing;
         private INamespaceItem _selectedNamespace;
         private ICollection<INamespaceItem> _namespaces ;
+        private bool _namespaceVisible;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -853,7 +869,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
 
                     Methods = new List<IPluginAction>();
-                    SelectedProcedure = null;
+                    SelectedMethod = null;
                     ActionVisible = false;
                     var errorInfo = new ErrorInfo
                     {
@@ -907,7 +923,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     catch(Exception e)
                     {
                         Methods = new List<IPluginAction>();
-                        SelectedProcedure = null;
+                        SelectedMethod = null;
                         ActionVisible = false;
                         var errorInfo = new ErrorInfo
                         {
@@ -922,7 +938,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
         }
-        public bool NamespaceVisible { get; set; }
+        public bool NamespaceVisible
+        {
+            get
+            {
+                return _namespaceVisible;
+            }
+            set
+            {
+                _namespaceVisible = value;
+                OnPropertyChanged("NamespaceVisible");
+            }
+        }
         public ICommand EditSourceCommand
         {
             get;
@@ -959,33 +986,33 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _methods = value;
-                OnPropertyChanged("Procedures");
+                OnPropertyChanged("Methods");
             }
         }
-        public IPluginAction SelectedProcedure
+        public IPluginAction SelectedMethod
         {
             get
             {
-                return _selectedProcedure;
+                return _selectedMethod;
             }
             set
             {
-                if(!Equals(value, _selectedProcedure))
+                if(!Equals(value, _selectedMethod))
                 {
-                    _selectedProcedure = value;
-                    if(_selectedProcedure != null)
+                    _selectedMethod = value;
+                    if(_selectedMethod != null)
                     {
                         if(!_isInitializing)
                         {
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            Inputs = _selectedProcedure.Inputs;
+                            Inputs = _selectedMethod.Inputs;
                         }                        
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
                     OutputsVisible = false;
                     OutputsExpanded = false;
-                    ProcedureName = _selectedProcedure!=null?_selectedProcedure.Method:"";
+                    ProcedureName = _selectedMethod!=null?_selectedMethod.Method:"";
                     InitializeProperties();
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedProcedure");
@@ -1009,6 +1036,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
             get;
             set;
         }
+        public ICommand RefreshNamespaceCommand
+        {
+            get;
+            set;
+        }
+
         public bool AdditionalInfoVisible
         {
             get;
@@ -1017,7 +1050,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         bool CanTestProcedure()
         {
-            return SelectedProcedure != null;
+            return SelectedMethod != null;
         }
 
         public bool InputsVisible
