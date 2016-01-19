@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         private void UpdateToolActualType(IToolDescriptor tool)
         {
-            var type = typeof (DsfNativeActivity<>);
+            var type = typeof(DsfNativeActivity<>);
             var assembly = type.Assembly;
             {
                 foreach (var exportedType in assembly.GetTypes())
