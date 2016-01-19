@@ -1744,12 +1744,12 @@ namespace Dev2
                                                 {
                                                     if (source.ServerType == enSourceType.MySqlDatabase)
                                                     {
-                                                        var dsfMySqlDatabaseActivity = GetDsfMySqlDatabaseActivity(dbActivity, source, service);
+                                                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
                                                         flowStep.Action = dsfMySqlDatabaseActivity;
                                                     }
                                                     else if (source.ServerType == enSourceType.SqlDatabase)
                                                     {
-                                                        var dsfSqlServerDatabaseActivity = GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
+                                                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
                                                         flowStep.Action = dsfSqlServerDatabaseActivity;
                                                     }
                                                 }
@@ -1802,92 +1802,6 @@ namespace Dev2
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, def);
                 }
             }
-        }
-
-        private DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
-        {
-            var dsfSqlServerDatabaseActivity = new DsfSqlServerDatabaseActivity
-            {
-                ResourceID = dbActivity.ResourceID,
-                ProcedureName = service.Method.ExecuteAction,
-                SourceId = source.ResourceID,
-                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
-                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
-                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
-                IconPath = dbActivity.IconPath,
-                ServiceName = dbActivity.ServiceName,
-                DataTags = dbActivity.DataTags,
-                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
-                ResultValidationExpression = dbActivity.ResultValidationExpression,
-                FriendlySourceName = dbActivity.FriendlySourceName,
-                EnvironmentID = dbActivity.EnvironmentID,
-                Type = dbActivity.Type,
-                ActionName = dbActivity.ActionName,
-                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
-                Category = dbActivity.Category,
-                ServiceUri = dbActivity.ServiceUri,
-                ServiceServer = dbActivity.ServiceServer,
-                UniqueID = dbActivity.UniqueID,
-                ParentServiceName = dbActivity.ParentServiceName,
-                ParentServiceID = dbActivity.ParentServiceID,
-                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
-                ParentInstanceID = dbActivity.ParentInstanceID,
-            };
-            return dsfSqlServerDatabaseActivity;
-        }
-
-        private DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
-        {
-            var dsfMySqlDatabaseActivity = new DsfMySqlDatabaseActivity
-            {
-                ResourceID = dbActivity.ResourceID,
-                SourceId = source.ResourceID,
-                ProcedureName = service.Method.ExecuteAction,
-                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
-                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
-                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
-                IconPath = dbActivity.IconPath,
-                ServiceName = dbActivity.ServiceName,
-                DataTags = dbActivity.DataTags,
-                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
-                ResultValidationExpression = dbActivity.ResultValidationExpression,
-                FriendlySourceName = dbActivity.FriendlySourceName,
-                EnvironmentID = dbActivity.EnvironmentID,
-                Type = dbActivity.Type,
-                ActionName = dbActivity.ActionName,
-                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
-                Category = dbActivity.Category,
-                ServiceUri = dbActivity.ServiceUri,
-                ServiceServer = dbActivity.ServiceServer,
-                UniqueID = dbActivity.UniqueID,
-                ParentServiceName = dbActivity.ParentServiceName,
-                ParentServiceID = dbActivity.ParentServiceID,
-                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
-                ParentInstanceID = dbActivity.ParentInstanceID,
-            };
-            return dsfMySqlDatabaseActivity;
-        }
-
-        private ICollection<IServiceOutputMapping> TranslateOutputMappingToOutputs(string outputMapping)
-        {
-            var outputDefs = DataListFactory.CreateOutputParser().Parse(outputMapping);
-            return outputDefs.Select(outputDef =>
-            {
-                if(DataListUtil.IsValueRecordset(outputDef.RawValue))
-                {
-                    return new ServiceOutputMapping(outputDef.Name, outputDef.RawValue, outputDef.RecordSetName);
-                }
-                return new ServiceOutputMapping(outputDef.Name, outputDef.RawValue, "");
-            }).Cast<IServiceOutputMapping>().ToList();
-        }
-
-        private ICollection<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
-        {
-            var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
-            return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
-            {
-                EmptyIsNull = inputDef.EmptyToNull, RequiredField = inputDef.IsRequired
-            }).Cast<IServiceInput>().ToList();
         }
 
         static void MigrateOldResources()
