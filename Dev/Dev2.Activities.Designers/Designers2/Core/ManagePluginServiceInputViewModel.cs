@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Core
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
-        private ManageServiceInputView _manageServiceInputView;
+        private ManagePluginServiceInputView _manageServiceInputView;
         private Action _testAction;
         private List<IServiceOutputMapping> _outputMappings;
 
@@ -132,7 +132,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ShowView()
         {
-            _manageServiceInputView = new ManageServiceInputView { DataContext = this };
+            _manageServiceInputView = new ManagePluginServiceInputView() { DataContext = this };
             _manageServiceInputView.ShowView();
         }
     }
