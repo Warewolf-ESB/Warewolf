@@ -669,6 +669,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         bool _isRefreshing;
         private INamespaceItem _selectedNamespace;
         private ICollection<INamespaceItem> _namespaces ;
+        private bool _namespaceVisible;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -937,7 +938,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
         }
-        public bool NamespaceVisible { get; set; }
+        public bool NamespaceVisible
+        {
+            get
+            {
+                return _namespaceVisible;
+            }
+            set
+            {
+                _namespaceVisible = value;
+                OnPropertyChanged("NamespaceVisible");
+            }
+        }
         public ICommand EditSourceCommand
         {
             get;
@@ -974,7 +986,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _methods = value;
-                OnPropertyChanged("Procedures");
+                OnPropertyChanged("Methods");
             }
         }
         public IPluginAction SelectedMethod
