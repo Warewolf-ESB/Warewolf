@@ -21,6 +21,7 @@ using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -56,17 +57,17 @@ namespace Dev2.Activities.Designers2.Net_DLL
         const string FixText = "Fix";
         bool _isInitializing;
         public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel())
+            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManagePluginServiceInputViewModel())
         {
         }
 
         public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
                                         IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel())
+            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManagePluginServiceInputViewModel())
         {
         }
 
-        public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManageServiceInputViewModel manageServiceInputViewModel)
+        public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManagePluginServiceInputViewModel manageServiceInputViewModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
@@ -240,7 +241,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         IPluginService ToModel()
@@ -253,54 +254,76 @@ namespace Dev2.Activities.Designers2.Net_DLL
             pluginServiceDefinition.Inputs = new List<IServiceInput>();
             foreach(var serviceInput in Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name,""));
+                pluginServiceDefinition.Inputs.Add(serviceInput);
             }
             return pluginServiceDefinition;
         }
 
         void TestAction()
         {
-            //try
-            //{
-            //    Errors = new List<IActionableErrorInfo>();
-            //    var databaseService = ToModel();
-            //    ManageServiceInputViewModel.Model = databaseService;
-            //    ManageServiceInputViewModel.Inputs = databaseService.Inputs;
-            //    ManageServiceInputViewModel.TestResults = null;
-            //    ManageServiceInputViewModel.TestAction= () =>
-            //    {
-            //        ManageServiceInputViewModel.IsTesting = true;
-            //        try
-            //        {
-            //            ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
-            //            if (ManageServiceInputViewModel.TestResults != null)
-            //            {
-            //                ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults.Rows.Count != 0;
-            //                TestSuccessful = true;
-            //                ManageServiceInputViewModel.IsTesting = false;
-            //            }
-            //        }
-            //        catch(Exception e)
-            //        {
-            //            ErrorMessage(e);
-            //            ManageServiceInputViewModel.CloseCommand.Execute(null);
-            //        }
-            //    };
-            //    ManageServiceInputViewModel.OkAction = () =>
-            //    {
-            //        Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(ManageServiceInputViewModel.TestResults));
-            //        if (Outputs!=null)
-            //        {
-            //            OutputsVisible = true;
-            //            OutputsExpanded = true;
-            //        }
-            //    };
-            //    ManageServiceInputViewModel.ShowView();
-            //}
-            //catch (Exception e)
-            //{
-            //    ErrorMessage(e);
-            //}
+            try
+            {
+                Errors = new List<IActionableErrorInfo>();
+                var service = ToModel();
+                ManageServiceInputViewModel.Model = service;
+                ManageServiceInputViewModel.Inputs = service.Inputs;
+                ManageServiceInputViewModel.TestResults = null;
+                ManageServiceInputViewModel.TestAction = () =>
+                {
+                    ManageServiceInputViewModel.IsTesting = true;
+                    try
+                    {
+                        ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
+                        var serializer = new Dev2JsonSerializer();
+                        var ResponseService = serializer.Deserialize<RecordsetList>(ManageServiceInputViewModel.TestResults);
+                        if (ResponseService.Any(recordset => recordset.HasErrors))
+                        {
+                            var errorMessage = string.Join(Environment.NewLine, ResponseService.Select(recordset => recordset.ErrorMessage));
+                            throw new Exception(errorMessage);
+                        }
+                        if (ResponseService != null)
+                        {
+                      
+                            // ReSharper disable MaximumChainedReferences
+                            var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                            {
+                                RecordsetName = recordset.Name;
+                                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
+                                return serviceOutputMapping;
+                            }).Cast<IServiceOutputMapping>().ToList();
+                            // ReSharper restore MaximumChainedReferences
+
+                            ManageServiceInputViewModel.OutputMappings = outputMapping;
+
+                        }
+                        if (ManageServiceInputViewModel.TestResults != null)
+                        {
+                            ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults!= null;
+                            TestSuccessful = true;
+                            ManageServiceInputViewModel.IsTesting = false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ErrorMessage(e);
+                        ManageServiceInputViewModel.CloseCommand.Execute(null);
+                    }
+                };
+                ManageServiceInputViewModel.OkAction = () =>
+                {
+                    Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
+                    if (Outputs != null)
+                    {
+                        OutputsVisible = true;
+                        OutputsExpanded = true;
+                    }
+                };
+                ManageServiceInputViewModel.ShowView();
+            }
+            catch (Exception e)
+            {
+                ErrorMessage(e);
+            }
         }
 
         void ErrorMessage(Exception e)
@@ -834,6 +857,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _namespaces = value;
+                OnPropertyChanged("Namespaces");
             }
         }
         public INamespaceItem SelectedNamespace
@@ -1015,7 +1039,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     ProcedureName = _selectedMethod!=null?_selectedMethod.Method:"";
                     InitializeProperties();
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
-                    OnPropertyChanged("SelectedProcedure");
+                    OnPropertyChanged("SelectedMethod");
                 }
             }
         }
