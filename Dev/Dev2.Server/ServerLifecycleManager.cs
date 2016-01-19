@@ -1761,7 +1761,7 @@ namespace Dev2
                                                 {
                                                     if (source.ServerType == enSourceType.MySqlDatabase)
                                                     {
-                                                        var dsfMySqlDatabaseActivity = GetDsfMySqlDatabaseActivity(dbActivity, source, service);
+                                                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
                                                         if(forEachActivity != null)
                                                         {
                                                             forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
@@ -1773,7 +1773,7 @@ namespace Dev2
                                                     }
                                                     else if (source.ServerType == enSourceType.SqlDatabase)
                                                     {
-                                                        var dsfSqlServerDatabaseActivity = GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
+                                                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
                                                         if (forEachActivity != null)
                                                         {
                                                             forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
