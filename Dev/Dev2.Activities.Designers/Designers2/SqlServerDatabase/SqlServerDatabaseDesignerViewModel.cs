@@ -55,13 +55,13 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
-        
+
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
-        readonly IEventAggregator _eventPublisher;
+        IEventAggregator _eventPublisher;
 
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
@@ -70,21 +70,35 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         const string FixText = "Fix";
         bool _isInitializing;
         public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel())
+            : base(modelItem)
         {
+            AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
         }
 
         public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
                                         IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel())
-        {
-        }
-
-        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManageServiceInputViewModel manageServiceInputViewModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+        }
 
+        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+            : base(modelItem)
+        {
+            AddTitleBarMappingToggle();
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, asyncWorker, manageServiceInputViewModel, dbServiceModel);
+        }
+
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+        {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -136,41 +150,41 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             InitializeValidationService(_environment);
             InitializeLastValidationMemo(_environment);
             ManageServiceInputViewModel = manageServiceInputViewModel;
-            if(_environment != null)
+            if (_environment != null)
             {
                 _isInitializing = true;
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var server = shellViewModel.ActiveServer;
-                _dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository,server.QueryProxy,shellViewModel,server);
+
+
+                _dbServiceModel = dbServiceModel;
                 NewSourceCommand = new DelegateCommand(_dbServiceModel.CreateNewSource);
-                EditSourceCommand = new DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource),CanEditSource);               
+                EditSourceCommand = new DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource), CanEditSource);
                 RefreshActionsCommand = new DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if(_selectedProcedure != null)
+                    if (_selectedProcedure != null)
                     {
                         var keepSelectedProcedure = _selectedProcedure.Name;
                         Procedures = _dbServiceModel.GetActions(_selectedSource);
-                        if(keepSelectedProcedure != null)
+                        if (keepSelectedProcedure != null)
                         {
                             SelectedProcedure = Procedures.FirstOrDefault(action => action.Name == ProcedureName);
                         }
                     }
                     IsRefreshing = false;
-                },CanRefresh);
+                }, CanRefresh);
                 var dbSources = _dbServiceModel.RetrieveSources();
-                Sources = dbSources.Where(source => source!=null && source.Type==enSourceType.SqlDatabase).ToObservableCollection();
+                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.SqlDatabase).ToObservableCollection();
                 SourceVisible = true;
-                if(SourceId != Guid.Empty)
+                if (SourceId != Guid.Empty)
                 {
                     SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
-                    if(SelectedSource != null)
+                    if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if(!string.IsNullOrEmpty(ProcedureName))
+                        if (!string.IsNullOrEmpty(ProcedureName))
                         {
                             SelectedProcedure = Procedures.FirstOrDefault(action => action.Name == ProcedureName);
-                            if(SelectedProcedure == null)
+                            if (SelectedProcedure == null)
                             {
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
@@ -198,12 +212,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 }
             }
             InitializeProperties();
-            if(IsItemDragged.Instance.IsDragged)
+            if (IsItemDragged.Instance.IsDragged)
             {
                 Expand();
                 IsItemDragged.Instance.IsDragged = false;
             }
-            
+
             if (_environment != null)
             {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
@@ -230,7 +244,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         private bool CanRefresh()
         {
-            return SelectedSource!=null;
+            return SelectedSource != null;
         }
 
         private bool CanEditSource()
@@ -238,7 +252,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             return SelectedSource != null;
         }
 
-        IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {
@@ -246,11 +260,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 Action = SelectedProcedure,
                 Source = SelectedSource,
+                Inputs = new List<IServiceInput>(),
             };
-            databaseService.Inputs = new List<IServiceInput>();
-            foreach(var serviceInput in Inputs)
+            foreach (var serviceInput in Inputs)
             {
-                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name,""));
+                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
             }
             return databaseService;
         }
@@ -264,7 +278,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.Model = databaseService;
                 ManageServiceInputViewModel.Inputs = databaseService.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
-                ManageServiceInputViewModel.TestAction= () =>
+                ManageServiceInputViewModel.TestAction = () =>
                 {
                     ManageServiceInputViewModel.IsTesting = true;
                     try
@@ -277,7 +291,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             ManageServiceInputViewModel.IsTesting = false;
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         ErrorMessage(e);
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
@@ -286,7 +300,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(ManageServiceInputViewModel.TestResults));
-                    if (Outputs!=null)
+                    if (Outputs != null)
                     {
                         OutputsVisible = true;
                         OutputsExpanded = true;
@@ -315,12 +329,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             IsTesting = false;
             TestResults = null;
         }
-
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            RecordsetName = ProcedureName.Replace(".","_");
+            RecordsetName = ProcedureName.Replace(".", "_");
             if (testResults != null && testResults.Columns != null)
             {
                 for (int i = 0; i < testResults.Columns.Count; i++)
@@ -342,11 +355,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             set
             {
-                if(Outputs != null)
+                if (Outputs != null)
                 {
-                    foreach(var serviceOutputMapping in Outputs)
+                    foreach (var serviceOutputMapping in Outputs)
                     {
-                        if(_recordsetName!=null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
+                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
                         {
                             serviceOutputMapping.RecordSetName = value;
                         }
@@ -475,7 +488,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             set { SetValue(IsFixedProperty, value); }
         }
 
-        public static readonly DependencyProperty IsFixedProperty = 
+        public static readonly DependencyProperty IsFixedProperty =
             DependencyProperty.Register("IsFixed", typeof(bool), typeof(SqlServerDatabaseDesignerViewModel), new PropertyMetadata(true));
 
         public ICommand FixErrorsCommand { get; private set; }
@@ -483,9 +496,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         public ICommand DoneCommand { get; private set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
-        
+
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-       
+
 
         public IContextualResourceModel RootModel { get; private set; }
 
@@ -521,12 +534,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         }
 
         public static readonly DependencyProperty FriendlySourceNameValueProperty =
-           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(SqlServerDatabaseDesignerViewModel), new PropertyMetadata(null,OnFriendlyNameChanged));
-        
+           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(SqlServerDatabaseDesignerViewModel), new PropertyMetadata(null, OnFriendlyNameChanged));
+
         private static void OnFriendlyNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (SqlServerDatabaseDesignerViewModel)d;
-            if(viewModel != null)
+            if (viewModel != null)
             {
                 viewModel.FriendlySourceName = e.NewValue as string;
                 viewModel.InitializeProperties();
@@ -606,7 +619,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         }
 
         public string ServiceName { get { return GetProperty<string>(); } }
-      
+
         string ProcedureName
         {
             get { return GetProperty<string>(); }
@@ -628,7 +641,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             set
             {
                 SetProperty(value);
-            }    
+            }
         }
 
         public string Type { get { return GetProperty<string>(); } }
@@ -718,9 +731,16 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel != null && (RootModel.Errors != null && RootModel.Errors.Count == 0)
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            if (RootModel != null)
+            {
+                var errorInfos = RootModel.GetErrors(uniqueId);
+                if (errorInfos != null)
+                {
+                    designValidationMemo.Errors.AddRange(errorInfos.Cast<ErrorInfo>());
+                }
+            }
 
             if (environmentModel == null)
             {
@@ -753,7 +773,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         // ReSharper disable InconsistentNaming
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
         // ReSharper restore InconsistentNaming
-        {            
+        {
         }
 
 
@@ -826,7 +846,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             set
             {
-                if(!Equals(value, _selectedSource))
+                if (!Equals(value, _selectedSource))
                 {
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
@@ -844,11 +864,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             OutputsVisible = false;
                             OutputsExpanded = false;
                         }
-                        ActionVisible = Procedures.Count != 0;
                         if (Procedures.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected database does not contain actions to perform"));
                         }
+                        ActionVisible = Procedures.Count != 0;
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
@@ -856,7 +876,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             FriendlySourceNameValue = _selectedSource.Name;
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Procedures = new List<IDbAction>();
                         SelectedProcedure = null;
@@ -921,22 +941,22 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             set
             {
-                if(!Equals(value, _selectedProcedure))
+                if (!Equals(value, _selectedProcedure))
                 {
                     _selectedProcedure = value;
-                    if(_selectedProcedure != null)
+                    if (_selectedProcedure != null)
                     {
-                        if(!_isInitializing)
+                        if (!_isInitializing)
                         {
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             Inputs = _selectedProcedure.Inputs;
-                        }                        
+                        }
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
                     }
                     OutputsVisible = false;
                     OutputsExpanded = false;
-                    ProcedureName = _selectedProcedure!=null?_selectedProcedure.Name:"";
+                    ProcedureName = _selectedProcedure != null ? _selectedProcedure.Name : "";
                     InitializeProperties();
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedProcedure");
@@ -1028,7 +1048,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             set
             {
-                if(!Equals(value, _inputs))
+                if (!Equals(value, _inputs))
                 {
                     _inputs = value;
                     InputsVisible = true;
@@ -1065,7 +1085,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             ResourceType = Common.Interfaces.Data.ResourceType.DbService.ToString();
             return "DatabaseService-32";
         }
-        
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -1091,7 +1111,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 if (checkSource && CheckSourceMissing())
                 {
                 }
-            }            
+            }
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -1110,7 +1130,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             });
             UpdateDesignValidationErrors(memo.Errors);
         }
-        
+
         void UpdateLastValidationMemoWithProcedureNotSelectedError()
         {
             var memo = new DesignValidationMemo

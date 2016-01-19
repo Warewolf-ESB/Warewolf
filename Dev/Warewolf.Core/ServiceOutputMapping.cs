@@ -91,17 +91,17 @@ namespace Warewolf.Core
             MappedFrom = mappedFrom;
             MappedTo = mapping;
             RecordSetName = recordsetName;
-            if(!string.IsNullOrEmpty(mapping))
-            {
-                if(!string.IsNullOrEmpty(recordsetName))
-                {
-                    MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recordsetName, mapping, ""));
-                }
-                else
-                {
-                    MappedTo = DataListUtil.AddBracketsToValueIfNotExist(mapping);
-                }
-            }
+//            if(!string.IsNullOrEmpty(mapping))
+//            {
+//                if(!string.IsNullOrEmpty(recordsetName))
+//                {
+//                    MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recordsetName, mapping, ""));
+//                }
+//                else
+//                {
+//                    MappedTo = DataListUtil.AddBracketsToValueIfNotExist(mapping);
+//                }
+//            }
         }
 
         public ServiceOutputMapping()
