@@ -6,63 +6,52 @@
 
 Scenario: Creating SQL Server Connector
 	Given I open New Workflow
-	Then "New Workflow" tab is opened
-	And "Source" is focused
-	And "Source" is "Enabled"
-	And "Action" is "Disabled"
-	And "Inputs/Outputs" is "Disabled" 
-	And "Mapping" is "Disabled" 
+	And I drag a Sql Server database connector
+	And Source is Enabled
+	And Action is Disabled
+	And Inputs is Disabled 
+	And Outputs is Disabled
+	And Validate is Disabled 
 	When I Select "GreenPoint" as Source
-	Then "Action" is "Enabled"
+	Then Action is Enabled
 	When I select "dbo.ImportOrder" as the action
-	Then "Inputs/Outputs" is "Enabled" 
-	And "Validate" is "Enabled"
-	And "Inputs/Outputs" appear as 
-	| Input     | Default Value | Empty is Null |
-	| ProductId |               | false         |
-	And "Mapping" is "Disabled" 
-	When I click "Validate"
-	Then the "Test Connector and Calculate Outputs" window is opened
-	And inputs appear as
+	Then Inputs is Enabled 
+	And Inputs appear as 
+	| Input     | Value | Empty is Null |
+	| ProductId |       | false         |
+	And Validate is Enabled
+	When I click Validate
+	Then the Test Connector and Calculate Outputs window is opened
+	And Test Inputs appear as
 	| ProductId |
 	| 1         |
-	When I click "Test"
-	Then "Test Connector and Calculate Outputs" outputs appear as
+	When I click Test
+	Then Test Connector and Calculate Outputs outputs appear as
 	| Column1 |
 	| 1       |
-	When I click "OK"
-	Then "Inputs/Outputs" appear as
-	| Inputs    | Default Value | Empty is Null |
-	| ProductId | 1             | false         |  
-	Then "Mapping" is "Enabled"
-	Then Mapping outputs appear as
+	When I click OK
+	Then Outputs appear as
 	| Mapped From | Mapped To                     | 
 	| Column1     | [[dbo_ImportOrder().Column1]] | 
-	And "Recordset Name" equals "dbo_ImportOrder"
-	When the SQL Server Connector tool is executed
-	And the execution has "No" error
-	Then the debug output as 
-	|                                   |
-	| [[dbo_ImportOrder().Column1]] = 1 |
+	And Recordset Name equals "dbo_ImportOrder"	
 
 Scenario: Opening Saved workflow with SQL Server tool
-   Given I open Wolf-860
-	Then "Wolf-860" tab is opened
-	And "Source" is "Enabled"
-	And "Source" equals "testingDBSrc"
-	And "Action" is "Enabled"
-	And "Action" equals "dbo.Pr_CitiesGetCountries"
-	And "Input/Output" is "Enabled"
-	And "Inputs/Outputs" mappings are
+   Given I open "Wolf-860"
+	And Source is Enabled
+	And Source is "testingDBSrc"
+	And Action is Enabled
+	And Action is dbo.Pr_CitiesGetCountries
+	And Inputs is Enabled
+	And Inputs appear as
 	| Inputs | Default Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And "Validate" is "Enabled"
-	And "Mapping" is "Enabled"
-	And mappings are
+	And Validate is Enabled
+	And Mapping is Enabled
+	Then Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And "Recordset Name" equals "dbo_Pr_CitiesGetCountries"
+	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change Source on Existing tool
 	Given I open Wolf-860
@@ -178,41 +167,3 @@ Scenario: Change Recordset Name
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |
 	
-Scenario: Invalid Recordset Name
-	Given I open New Workflow
-	Then "New Workflow" tab is opened
-	And "Source" is focused
-	And "Source" is "Enabled"
-	And "Action" is "Disabled"
-	And "Inputs/Outputs" is "Disabled" 
-	And "Mapping" is "Disabled" 
-	When I Select "GreenPoint" as Source
-	Then "Action" is "Enabled"
-	When I select "dbo.ImportOrder" as the action
-	Then "Inputs/Outputs" is "Enabled" 
-	And "Validate" is "Enabled"
-	And "Mapping" is "Disabled" 
-	When I click "Validate"
-	Then the "Test Connector and Calculate Outputs" window is opened
-	And inputs are
-	| ProductId |
-	| 1         |	
-	When I click "Test"
-	Then "Test Connector and Calculate Outputs" outputs appear as
-	| Column1 |
-	| 1       |
-	When I click "OK"
-	Then "Inputs/Outputs" mappings are
-	| Inputs    | Default Value | Empty is Null |
-	| ProductId | 1             | false         |  
-	And "Mapping" is "Enabled" 
-	And mapping are
-	| Mapped From | Mapped To                     | 
-	| Column1     | [[dbo_ImportOrder().Column1]] | 
-	And "Recordset Name" equals "dbo_ImportOrder"
-	When "Recordset Name" is changed from "dbo_ImportOrder" to "1"
-	When the SQL Server Connector tool is executed
-	And the execution has "AN" error
-	Then the debug output as 
-	|                                          |
-	| Error : input must be recordset or value |
