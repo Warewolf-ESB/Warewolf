@@ -197,6 +197,7 @@
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
+    <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />
     <Compile Include="IManagePluginSourceViewModel.cs" />
     <Compile Include="IManageServiceInputViewModel.cs" />
