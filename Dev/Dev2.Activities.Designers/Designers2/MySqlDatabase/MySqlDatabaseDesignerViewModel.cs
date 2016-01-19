@@ -282,6 +282,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                     catch(Exception e)
                     {
                         ErrorMessage(e);
+                        ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
