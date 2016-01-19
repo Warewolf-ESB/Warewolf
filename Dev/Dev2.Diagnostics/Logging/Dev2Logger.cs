@@ -27,7 +27,7 @@ namespace Dev2.Common
     public static class Dev2Logger
     {
         public static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        public static readonly ILog LogEvents = LogManager.GetLogger("EventLogLogger");
         public  static void SetLog(ILog log)
         {
             Log = log;
@@ -49,11 +49,21 @@ namespace Dev2.Common
             rootLogger.Level = h.LevelMap[level];
         }
 
-        public static string GetLogLevel()
+        public static string GetFileLogLevel()
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
             return rootLogger.Level.DisplayName;
+        }
+        public static string GetEventLogLevel()
+        {
+            var h = (Hierarchy)LogManager.GetRepository();
+            var rootLogger = h.GetLogger("EventLogLogger") as Logger;
+            if(rootLogger != null)
+            {
+                return rootLogger.Level.DisplayName;
+            }
+            return "";
         }
 
         public static int GetLogMaxSize()
@@ -69,16 +79,17 @@ namespace Dev2.Common
             return 0;
         }
 
-        public static void WriteLogSettings(string maxLogSize,string logLevel, string settingsConfigFile)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
             if (log4netElement != null)
             {
-                var appenderElement = log4netElement.Element("appender");
-                if (appenderElement != null)
+                var appenderElements = log4netElement.Elements("appender");
+                var fileAppender = appenderElements.FirstOrDefault(element => element.Attribute("type").Value=="Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
+                if (fileAppender != null)
                 {
-                    var maxFileSizeElement = appenderElement.Element("maximumFileSize");
+                    var maxFileSizeElement = fileAppender.Element("maximumFileSize");
                     if (maxFileSizeElement != null)
                     {
                         var maxFileSizeElementValueAttrib = maxFileSizeElement.Attribute("value");
@@ -98,9 +109,38 @@ namespace Dev2.Common
                         var levelElementValueAttrib = levelElement.Attribute("value");
                         if (levelElementValueAttrib != null)
                         {
-                            levelElementValueAttrib.Value = logLevel;
+                            levelElementValueAttrib.Value = fileLogLevel;
                         }
                     }
+                }
+                var eventLogElement = log4netElement.Element("logger");
+                if(eventLogElement != null)
+                {
+                    if(eventLogElement.Attribute("name").Value == "EventLogLogger")
+                    {
+                        var levelElement = eventLogElement.Element("level");
+                        if(levelElement != null)
+                        {
+                            var levelElementValueAttrib = levelElement.Attribute("value");
+                            if(levelElementValueAttrib != null)
+                            {
+                                levelElementValueAttrib.Value = eventLogLevel;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var loggerElement = new XElement("logger");
+                    loggerElement.SetAttributeValue("name", "EventLogLogger");
+                    loggerElement.SetAttributeValue("additivity", "false");
+                    var levelElement = new XElement("level");
+                    levelElement.SetAttributeValue("value", eventLogLevel);
+                    var refElement = new XElement("appender-ref");
+                    levelElement.SetAttributeValue("ref", "EventLogLogger");
+                    loggerElement.Add(levelElement);
+                    loggerElement.Add(refElement);
+                    log4netElement.Add(loggerElement);
                 }
                 settingsDocument.Save(settingsConfigFile);
             }

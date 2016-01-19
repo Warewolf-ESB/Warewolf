@@ -50,16 +50,16 @@ namespace Dev2.Core.Tests.Settings
             bool hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "ServerLogLevel")
+                if (args.PropertyName == "ServerEventLogLevel")
                 {
                     hasPropertyChanged = true;
                 }
             };
 
             //------------Execute Test---------------------------
-            logSettingsViewModel.ServerLogLevel = LogLevel.FATAL;
+            logSettingsViewModel.ServerEventLogLevel = LogLevel.FATAL;
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.FATAL,logSettingsViewModel.ServerLogLevel);
+            Assert.AreEqual(LogLevel.FATAL,logSettingsViewModel.ServerEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -74,16 +74,16 @@ namespace Dev2.Core.Tests.Settings
             bool hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "StudioLogLevel")
+                if (args.PropertyName == "StudioEventLogLevel")
                 {
                     hasPropertyChanged = true;
                 }
             };
 
             //------------Execute Test---------------------------
-            logSettingsViewModel.StudioLogLevel = LogLevel.INFO;
+            logSettingsViewModel.StudioEventLogLevel = LogLevel.INFO;
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioLogLevel);
+            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -186,7 +186,7 @@ namespace Dev2.Core.Tests.Settings
         static LogSettingsViewModel CreateLogSettingViewModel()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo { LogSize = 50, LogLevel = "TRACE" };
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, new Mock<IEnvironmentModel>().Object);
             return logSettingsViewModel;
         }

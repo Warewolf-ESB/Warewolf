@@ -74,6 +74,12 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<param name=\"ApplicationName\" value=\"Warewolf Server\" />"+
+                                             "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                              "</layout>"+
+                                             "</appender>"+
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
@@ -100,11 +106,16 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<param name=\"ApplicationName\" value=\"Warewolf Studio\" />" +
+                                             "<layout type=\"log4net.Layout.PatternLayout\">" +
+                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                              "</layout>" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +
-                                           
+                                             "<appender-ref ref=\"LogFileAppender\" />" +                                           
                                              "</root>" +
                                              "</log4net>";
 
