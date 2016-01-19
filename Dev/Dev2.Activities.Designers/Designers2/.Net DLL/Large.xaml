@@ -122,16 +122,31 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="NamespaceLabel" Text="Namespace" Margin="{StaticResource ControlBorderRight}" />
+            <TextBlock x:Name="NamespaceLabel" Text="Namespace" />
             <ComboBox x:Name="NamespaceComboBox"
                       Grid.Column="1"
+                      Margin="{StaticResource ControlBorderRight}"
                       ItemsSource="{Binding Namespaces}"
                       DisplayMemberPath="FullName" 
                       IsEnabled="{Binding NamespaceVisible}"
                       ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
                       IsEditable="False"
                       SelectedItem="{Binding SelectedNamespace}"/>
+            <Button x:Name="NamespaceRefreshButton" 
+                    Grid.Column="2"
+                    Command="{Binding Path=RefreshNamespaceCommand, Mode=TwoWay}"
+                    Visibility="{Binding Path=IsNamespaceRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                Grid.Column="2"
+                                                Width="25"
+                                                Height="25"
+                                                Visibility="{Binding Path=IsNamespaceRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
         
         <Grid x:Name="ActionsGrid" 
