@@ -30,6 +30,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Explorer-DLL}"/>
+        <Binding Source="{StaticResource Explorer-Dll}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>
