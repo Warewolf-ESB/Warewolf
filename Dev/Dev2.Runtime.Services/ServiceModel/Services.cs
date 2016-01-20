@@ -301,7 +301,38 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            return outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            if (recSet != null)
+            {
+                foreach (var recordset in recSet)
+                {
+                    foreach(var field in recordset.Fields)
+                    {
+                        if(String.IsNullOrEmpty(field.Name))
+                        {
+                            continue;
+                        }
+                        var path = field.Path;
+                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                        var value = string.Empty;
+                        if(!string.IsNullOrEmpty(field.Alias))
+                        {
+                            value = string.IsNullOrEmpty(rsAlias)
+                                        ? string.Format("[[{0}]]", field.Alias)
+                                        : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
+                        }
+
+                        if(path != null)
+                        {
+                            path.OutputExpression = value;
+                            dataSourceShape.Paths.Add(path);
+                        }
+                    }
+                }
+            }            
+            return recSet;
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
