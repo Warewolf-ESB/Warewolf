@@ -135,7 +135,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointReadListActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

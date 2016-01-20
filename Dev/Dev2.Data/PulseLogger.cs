@@ -36,7 +36,7 @@ namespace Dev2.Data
 
 
 
-                Dev2Logger.Log.Info(String.Format(@"
+                Dev2Logger.Info(String.Format(@"
     Process Memory Usage(mb): {0}
     Number of Requests: {1} 
     Time Taken(Ms): {2}   

@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ServiceModel
                         {
                             pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
                         }
-                        Dev2Logger.Log.Error(ex);
+                        Dev2Logger.Error(ex);
                     }
                 }
                 else

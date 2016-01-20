@@ -157,7 +157,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             catch (Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Log.Error(this, e);
+                Dev2Logger.Error(this, e);
                 // ReSharper restore InvokeAsExtensionMethod
             }
 
@@ -203,7 +203,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             // set correct principle ;)
                             userPrinciple = Context.User;
                             Thread.CurrentPrincipal = userPrinciple;
-                            Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                         }
                         StringBuilder processRequest = null;
                         Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
@@ -220,7 +220,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                         {
                             if (!ResultsCache.Instance.AddResult(future, value))
                             {
-                                Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                                Dev2Logger.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
                             }
                         }
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
@@ -228,7 +228,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Error(e);
+                        Dev2Logger.Error(e);
                     }
                     return null;
                 });
@@ -237,8 +237,8 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
-                Dev2Logger.Log.Info("Is End of Stream:"+endOfStream);
+                Dev2Logger.Error(e);
+                Dev2Logger.Info("Is End of Stream:"+endOfStream);
             }
             return null;
         }

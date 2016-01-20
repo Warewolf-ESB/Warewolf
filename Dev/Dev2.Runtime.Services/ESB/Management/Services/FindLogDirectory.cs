@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var result = new ExecuteMessage { HasError = false };
 
-            Dev2Logger.Log.Info("Find Log Directory");
+            Dev2Logger.Info("Find Log Directory");
             try
             {
                 var logdir = WorkflowLoggger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result.Message.Append(ex.Message);
                 result.HasError = true;
             }

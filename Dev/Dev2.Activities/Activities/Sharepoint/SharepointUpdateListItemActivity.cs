@@ -135,7 +135,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointUpdateListItemActivity", e);
+                Dev2Logger.Error("SharepointUpdateListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

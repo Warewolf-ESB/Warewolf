@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 settings.HasError = true;
                 settings.Error = "Error reading settings configuration : " + ex.Message;
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);

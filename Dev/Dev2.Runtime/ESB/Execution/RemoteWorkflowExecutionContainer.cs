@@ -92,14 +92,14 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            Dev2Logger.Log.Info(String.Format("Starting Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info(String.Format("Starting Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
 
             // get data in a format we can send ;)
-            Dev2Logger.Log.Debug("Creating DataList fragment for remote execute");
+            Dev2Logger.Debug("Creating DataList fragment for remote execute");
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString(), update);
 
             string result = string.Empty;
@@ -122,12 +122,12 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
                 DataObject.Environment.Errors.Add(errorMessage);
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString(), update);
-            Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;
         }
@@ -138,7 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
             var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Log.Debug("Executing the remote request.");
+            Dev2Logger.Debug("Executing the remote request.");
             if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.ESB.Execution
             var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
             var requestUri = serviceToExecute + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Log.Debug("Executing the remote request.");
+            Dev2Logger.Debug("Executing the remote request.");
             if(req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)

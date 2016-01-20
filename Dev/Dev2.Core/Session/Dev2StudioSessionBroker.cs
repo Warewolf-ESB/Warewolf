@@ -304,12 +304,12 @@ namespace Dev2.Session
                             }
                             catch (Exception e)
                             {
-                                Dev2Logger.Log.Error(e);
+                                Dev2Logger.Error(e);
                             }
                         }
                         else
                         {
-                            Dev2Logger.Log.Error("No debug data stream [ " + _debugPath + " ] ");
+                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ");
                         }
 
                         s.Close();

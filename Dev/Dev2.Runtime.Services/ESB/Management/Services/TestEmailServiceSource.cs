@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Log.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("EmailServiceSource", out resourceDefinition);
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
             }
 
             return serializer.SerializeToBuilder(msg);

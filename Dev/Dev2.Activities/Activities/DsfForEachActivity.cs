@@ -283,7 +283,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error("DSFForEach", e);
+                    Dev2Logger.Error("DSFForEach", e);
                     allErrors.AddError(e.Message);
                 }
                 finally
@@ -862,7 +862,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error("DSFForEach", e);
+                    Dev2Logger.Error("DSFForEach", e);
                     allErrors.AddError(e.Message);
                 }
                 finally

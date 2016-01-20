@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                Dev2Logger.Log.Info("Find Dependencies");
+                Dev2Logger.Info("Find Dependencies");
                 var result = new ExecuteMessage { HasError = false };
 
                 string resourceId = null;
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

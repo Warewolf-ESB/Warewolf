@@ -44,7 +44,7 @@ namespace Dev2
                     // ReSharper disable once RESP510241
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Debug("Null Variable",e);
+                        Dev2Logger.Debug("Null Variable",e);
                     }
                     var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
@@ -70,7 +70,7 @@ namespace Dev2
                         }
                         catch(Exception e)
                         {
-                            Dev2Logger.Log.Debug(e.Message,e);
+                            Dev2Logger.Debug(e.Message,e);
                         }
                     }
                     result.Append("</");
@@ -154,7 +154,7 @@ namespace Dev2
                         }
                         catch(Exception e)
                         {
-                            Dev2Logger.Log.Debug(e.Message,e);
+                            Dev2Logger.Debug(e.Message,e);
                             colIdx++;
                         }
                         

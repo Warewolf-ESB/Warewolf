@@ -75,7 +75,8 @@ namespace Dev2.Common
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
-                                             "<param name=\"ApplicationName\" value=\"Warewolf Server\" />"+
+                                             "<logName value=\"Warewolf\"/>" +
+                                             "<applicationName value=\"Warewolf Server\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">"+
                                                 "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                               "</layout>"+
@@ -107,7 +108,8 @@ namespace Dev2.Common
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
-                                             "<param name=\"ApplicationName\" value=\"Warewolf Studio\" />" +
+                                             "<logName value=\"Warewolf\"/>"+
+                                             "<applicationName value=\"Warewolf Studio\"/>"+
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
                                                 "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                               "</layout>" +
