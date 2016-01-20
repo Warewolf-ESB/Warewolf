@@ -678,44 +678,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(resourceId, actualResourceInvoked.ID);
         }
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ExplorerItemModel_ShowServerVersion")]
-        public void ExplorerItemModel_ShowServerVersion_ShowVersionCallsStudioRepo()
-        {
-            var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
-            var shell = new Mock<IShellViewModel>();
-            CustomContainer.Register(shell.Object);
-            shell.Setup(a => a.LocalhostServer).Returns(server.Object);
-            shell.Setup(a => a.ActiveServer).Returns(server.Object);
-
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            var resourceId = Guid.NewGuid();
-            var envID = Guid.Empty;
-
-            var mockResourceModel = new Mock<IResourceModel>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            GetEnvironmentRepository(mockEnvironment);
-            var manager = new Mock<IWindowManager>();
-            manager.Setup(windowManager => windowManager.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()));
-            const string displayName = "localhost";
-            ExplorerItemModel resourceItem;
-            var studioRepo = new Mock<IStudioResourceRepository>();
-
-            var serverItem = SetupExplorerItemModelWithFolderAndOneChild(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, studioRepo);
-            studioRepo.Setup(a => a.GetServerVersion(serverItem.EnvironmentId)).Returns("1.2.3.4");
-            serverItem.WindowManager = manager.Object;
-            var dialogFactory = new Mock<IDialogViewModelFactory>();
-            var dialog = new Mock<IDialogueViewModel>();
-            dialogFactory.Setup(a => a.CreateServerAboutDialog("1.2.3.4")).Returns(dialog.Object);
-            CustomContainer.Register(dialogFactory.Object);
-            serverItem.ServerVersionCommand.Execute(null);
-            manager.Verify(a => a.ShowDialog(dialog.Object, null, null));
-            dialogFactory.Verify(a => a.CreateServerAboutDialog("1.2.3.4"));
-
-        }
-
+       
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

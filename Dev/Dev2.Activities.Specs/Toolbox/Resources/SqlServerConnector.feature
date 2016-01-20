@@ -40,13 +40,12 @@ Scenario: Opening Saved workflow with SQL Server tool
 	And Source is Enabled
 	And Source is "testingDBSrc"
 	And Action is Enabled
-	And Action is dbo.Pr_CitiesGetCountries
+	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as
-	| Inputs | Default Value | Empty is Null |
-	| Prefix | [[Prefix]]    | false         | 
+	| Input | Value      | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
 	And Validate is Enabled
-	And Mapping is Enabled
 	Then Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
