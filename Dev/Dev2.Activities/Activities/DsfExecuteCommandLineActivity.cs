@@ -171,7 +171,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFCommandLine", e);
+                Dev2Logger.Error("DSFCommandLine", e);
                 allErrors.AddError(e.Message);
             }
             finally

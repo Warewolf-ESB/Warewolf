@@ -51,13 +51,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             var execMessage = new ExecuteMessage { HasError = false };
             if(!values.ContainsKey("resourceId"))
             {
-                Dev2Logger.Log.Info("Delete Version. Invalid Resource Id");
+                Dev2Logger.Info("Delete Version. Invalid Resource Id");
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder( "No resourceId sent to server");
             }
             else if(!values.ContainsKey("versionNumber") )
             {
-                Dev2Logger.Log.Info("Delete Version. Invalid Version number");
+                Dev2Logger.Info("Delete Version. Invalid Version number");
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder("No versionNumber sent to server");
             }
@@ -67,13 +67,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Log.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
+                    Dev2Logger.Info(String.Format("Delete Version. ResourceId:{0} VersionNumber{1}",guid,version));
                     var res = ServerVersionRepo.DeleteVersion(guid,version);
                     execMessage.Message = serializer.SerializeToBuilder(res); 
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(String.Format("Delete Version Error."),e);
+                    Dev2Logger.Error(String.Format("Delete Version Error."),e);
                     execMessage.HasError = true;
                     execMessage.Message = new StringBuilder( e.Message);
                 }

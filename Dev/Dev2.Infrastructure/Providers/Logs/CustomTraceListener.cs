@@ -65,7 +65,7 @@ namespace Dev2.Providers.Logs
         {
             try
             {
-                Dev2Logger.Log.Info(value);
+                Dev2Logger.Info(value);
             }
             catch(ObjectDisposedException)
             {
@@ -78,7 +78,7 @@ namespace Dev2.Providers.Logs
             try
             {
 
-                Dev2Logger.Log.Info(value);
+                Dev2Logger.Info(value);
 
             }
             catch(ObjectDisposedException)
@@ -108,7 +108,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The string to write. If the value is null, only a line terminator is written. </param><exception cref="T:System.ObjectDisposedException">The text writer is disposed.</exception><exception cref="T:System.InvalidOperationException">The text writer is currently in use by a previous write operation. </exception>
         public override Task WriteLineAsync(string value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
             return base.WriteLineAsync(value);
         }
 
@@ -121,7 +121,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The character to write to the text stream.</param><exception cref="T:System.ObjectDisposedException">The text writer is disposed.</exception><exception cref="T:System.InvalidOperationException">The text writer is currently in use by a previous write operation. </exception>
         public override Task WriteLineAsync(char value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
             return base.WriteLineAsync(value);
         }
 
@@ -134,7 +134,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The string to write. If <paramref name="value"/> is null, nothing is written to the text stream.</param><exception cref="T:System.ObjectDisposedException">The text writer is disposed.</exception><exception cref="T:System.InvalidOperationException">The text writer is currently in use by a previous write operation. </exception>
         public override Task WriteAsync(string value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
             return base.WriteAsync(value);
         }
 
@@ -147,7 +147,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The character to write to the text stream.</param><exception cref="T:System.ObjectDisposedException">The text writer is disposed.</exception><exception cref="T:System.InvalidOperationException">The text writer is currently in use by a previous write operation. </exception>
         public override Task WriteAsync(char value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
             return base.WriteAsync(value);
         }
 
@@ -157,7 +157,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks).</param><param name="arg">An object array that contains zero or more objects to format and write. </param><exception cref="T:System.ArgumentNullException">A string or object is passed in as null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the length of the <paramref name="arg"/> array. </exception>
         public override void WriteLine(string format, params object[] arg)
         {
-            Dev2Logger.Log.Error(arg);
+            Dev2Logger.Error(arg);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks).</param><param name="arg0">The first object to format and write. </param><param name="arg1">The second object to format and write. </param><param name="arg2">The third object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the number of objects to be formatted (which, for this method overload, is three). </exception>
         public override void WriteLine(string format, object arg0, object arg1, object arg2)
         {
-            Dev2Logger.Log.Error(string.Format(format,arg0,arg1,arg2));
+            Dev2Logger.Error(string.Format(format,arg0,arg1,arg2));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks).</param><param name="arg0">The first object to format and write. </param><param name="arg1">The second object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the number of objects to be formatted (which, for this method overload, is two). </exception>
         public override void WriteLine(string format, object arg0, object arg1)
         {
-            Dev2Logger.Log.Error(string.Format(format, arg0, arg1));
+            Dev2Logger.Error(string.Format(format, arg0, arg1));
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks).</param><param name="arg0">The object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the number of objects to be formatted (which, for this method overload, is one). </exception>
         public override void WriteLine(string format, object arg0)
         {
-            Dev2Logger.Log.Error(string.Format(format, arg0));
+            Dev2Logger.Error(string.Format(format, arg0));
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The object to write. If <paramref name="value"/> is null, only the line terminator is written. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(object value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The string to write. If <paramref name="value"/> is null, only the line terminator is written. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(string value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The decimal value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(decimal value)
         {
-               Dev2Logger.Log.Error(value);
+               Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte floating-point value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(double value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte floating-point value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(float value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte unsigned integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(ulong value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte signed integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(long value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte unsigned integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(uint value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte signed integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(int value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The Boolean value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(bool value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The character to write to the text stream. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine(char value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Dev2.Providers.Logs
         /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void WriteLine()
         {
-            Dev2Logger.Log.Error(Environment.NewLine);
+            Dev2Logger.Error(Environment.NewLine);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks). </param><param name="arg">An object array that contains zero or more objects to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> or <paramref name="arg"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the length of the <paramref name="arg"/> array. </exception>
         public override void Write(string format, params object[] arg)
         {
-            Dev2Logger.Log.Error(string.Format(format,arg));
+            Dev2Logger.Error(string.Format(format,arg));
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks). </param><param name="arg0">The first object to format and write. </param><param name="arg1">The second object to format and write. </param><param name="arg2">The third object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the number of objects to be formatted (which, for this method overload, is three). </exception>
         public override void Write(string format, object arg0, object arg1, object arg2)
         {
-            Dev2Logger.Log.Error(string.Format(format, arg0,arg1,arg2));
+            Dev2Logger.Error(string.Format(format, arg0,arg1,arg2));
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks). </param><param name="arg0">The first object to format and write. </param><param name="arg1">The second object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero) or greater than or equal to the number of objects to be formatted (which, for this method overload, is two). </exception>
         public override void Write(string format, object arg0, object arg1)
         {
-            Dev2Logger.Log.Error(string.Format(format, arg0,arg1));
+            Dev2Logger.Error(string.Format(format, arg0,arg1));
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace Dev2.Providers.Logs
         /// <param name="format">A composite format string (see Remarks). </param><param name="arg0">The object to format and write. </param><exception cref="T:System.ArgumentNullException"><paramref name="format"/> is null. </exception><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string.-or- The index of a format item is less than 0 (zero), or greater than or equal to the number of objects to be formatted (which, for this method overload, is one). </exception>
         public override void Write(string format, object arg0)
         {
-            Dev2Logger.Log.Error(string.Format(format, arg0));
+            Dev2Logger.Error(string.Format(format, arg0));
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The object to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(object value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The string to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(string value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The decimal value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(decimal value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte floating-point value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(double value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte floating-point value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(float value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte unsigned integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(ulong value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 8-byte signed integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(long value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -400,7 +400,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte unsigned integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(uint value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The 4-byte signed integer to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(int value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The Boolean value to write. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(bool value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
       
@@ -428,7 +428,7 @@ namespace Dev2.Providers.Logs
         /// <param name="value">The character to write to the text stream. </param><exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(char value)
         {
-            Dev2Logger.Log.Error(value);
+            Dev2Logger.Error(value);
         }
 
         #endregion

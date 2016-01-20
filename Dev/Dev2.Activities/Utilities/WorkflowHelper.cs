@@ -174,7 +174,7 @@ namespace Dev2.Utilities
             {
                 FixExpressions(chart, true);
             }
-            Dev2Logger.Log.Info("Fix Expressions");
+            Dev2Logger.Info("Fix Expressions");
            CompileExpressionsImpl(dynamicActivity,resourceID);
         }
 

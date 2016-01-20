@@ -27,7 +27,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("TaskExtensions", e);
+                Dev2Logger.Error("TaskExtensions", e);
             }
             return default(T);
         }

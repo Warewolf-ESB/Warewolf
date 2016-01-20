@@ -254,7 +254,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(DebugResourceMessage message)
         {
-            Dev2Logger.Log.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name);
             IContextualResourceModel contextualResourceModel = message.Resource;
             if(contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
             {
@@ -264,7 +264,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(DebugOutputMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             if(WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
             {
                 DebugOutputViewModel.Clear();
@@ -280,13 +280,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(ExecuteResourceMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             Debug(message.Resource, false);
         }
 
         public void Handle(SaveResourceMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             if(ContextualResourceModel != null)
             {
                 if(ContextualResourceModel.ID == message.Resource.ID)
@@ -306,7 +306,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceDisplayName message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
                 //tab title
@@ -317,7 +317,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             NotifyOfPropertyChange("ContextualResourceModel");
         }
 
@@ -357,7 +357,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                        (_editResourceCommand =
                            new AuthorizeCommand(AuthorizationContext.Contribute, param =>
                            {
-                               Dev2Logger.Log.Debug("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                               Dev2Logger.Debug("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                                EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
                            }
                             , param => CanExecute()));
@@ -529,7 +529,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void ViewInBrowser()
         {
             FindMissing();
-            Dev2Logger.Log.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
+            Dev2Logger.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
             EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if(ContextualResourceModel == null || ContextualResourceModel.Environment == null ||

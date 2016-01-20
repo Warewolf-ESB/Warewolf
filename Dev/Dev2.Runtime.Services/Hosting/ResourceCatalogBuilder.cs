@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Hosting
 
                         if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
-                            Dev2Logger.Log.Info("Removed READONLY Flag from [ " + file + " ]");
+                            Dev2Logger.Info("Removed READONLY Flag from [ " + file + " ]");
                             File.SetAttributes(file, FileAttributes.Normal);
                         }
 
@@ -119,7 +119,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
+                        Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
                     StringBuilder result = xml.ToStringBuilder();
@@ -161,7 +161,7 @@ namespace Dev2.Runtime.Hosting
                                     }
                                     catch (Exception err)
                                     {
-                                        Dev2Logger.Log.Error(err);
+                                        Dev2Logger.Error(err);
                                     }
                                     throw;
                                 }
@@ -205,7 +205,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     else
                     {
-                        Dev2Logger.Log.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
+                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
                 });
             }
@@ -238,14 +238,14 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
-                    Dev2Logger.Log.Debug(
+                    Dev2Logger.Debug(
                         string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.",
                             res.ResourceName, filePath, dupRes.ResourceName));
                 }
                 else
                 {
-                    Dev2Logger.Log.Debug(
+                    Dev2Logger.Debug(
                         string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
                             res.ResourceName, filePath));

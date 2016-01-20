@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("LoggingSettingsRead", e);
+                Dev2Logger.Error("LoggingSettingsRead", e);
             }
             return null;
         }

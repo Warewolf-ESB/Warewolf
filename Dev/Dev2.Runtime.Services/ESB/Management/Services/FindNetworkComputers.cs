@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             StringBuilder result = new StringBuilder();
-            Dev2Logger.Log.Info("Find Network Computers");
+            Dev2Logger.Info("Find Network Computers");
             string json = "[";
             try
             {
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result.Append(ex.Message);
             }
 

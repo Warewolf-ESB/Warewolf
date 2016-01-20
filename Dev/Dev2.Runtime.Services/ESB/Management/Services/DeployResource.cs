@@ -33,10 +33,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder resourceDefinition;
 
             values.TryGetValue("ResourceDefinition", out resourceDefinition);
-            Dev2Logger.Log.Info(String.Format("Deploy Resource."));
+            Dev2Logger.Info(String.Format("Deploy Resource."));
             if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
-                Dev2Logger.Log.Info(String.Format("Roles or ResourceDefinition missing"));
+                Dev2Logger.Info(String.Format("Roles or ResourceDefinition missing"));
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
 

@@ -57,7 +57,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
             finally
             {

@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management
                 }
                 else
                 {
-                    Dev2Logger.Log.Error("EsbManagementServiceLocator", new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
+                    Dev2Logger.Error("EsbManagementServiceLocator", new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
                 }
             }
 

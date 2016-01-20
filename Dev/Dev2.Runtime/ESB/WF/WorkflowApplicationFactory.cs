@@ -371,7 +371,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                     _instance.Abort();
                 }
 
@@ -392,7 +392,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                 }
                 finally
                 {
@@ -484,7 +484,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                     ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 }
                 finally
@@ -502,7 +502,7 @@ namespace Dev2.Runtime.ESB.WF
                     catch(Exception e)
                     {
                         // Best effort ;)
-                        Dev2Logger.Log.Error(e);
+                        Dev2Logger.Error(e);
                     }
                 }
 

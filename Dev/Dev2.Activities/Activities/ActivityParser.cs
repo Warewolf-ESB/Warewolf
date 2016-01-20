@@ -46,7 +46,7 @@ namespace Dev2.Activities
             catch (InvalidWorkflowException e)
             {
 
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

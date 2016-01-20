@@ -136,7 +136,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFWebGetRequest", e);
+                Dev2Logger.Error("DSFWebGetRequest", e);
                 allErrors.AddError(e.Message);
             }
             finally

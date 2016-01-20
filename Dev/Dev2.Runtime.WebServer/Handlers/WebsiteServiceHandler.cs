@@ -49,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 
                 Thread.CurrentPrincipal = userPrinciple;
-                Dev2Logger.Log.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
+                Dev2Logger.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid); });
                 
 

@@ -132,12 +132,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 }
                                 catch(Exception ex)
                                 {
-                                    Dev2Logger.Log.Error(ex);
+                                    Dev2Logger.Error(ex);
                                 }
                             }
                             catch(Exception ex)
                             {
-                                Dev2Logger.Log.Error(ex);
+                                Dev2Logger.Error(ex);
                                 pluginData.Append("<Dev2Plugin><Dev2PluginName>" + shortName + "</Dev2PluginName>");
                                 pluginData.Append(
                                     "<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Log.Error(ex);
+                        Dev2Logger.Error(ex);
                         pluginData.Append("<Dev2Plugin><Dev2PluginName>" + gacName.Name + "</Dev2PluginName>");
                         pluginData.Append("<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
                         pluginData.Append(ex.Message + "</Dev2PluginStatusMessage>");
@@ -190,7 +190,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

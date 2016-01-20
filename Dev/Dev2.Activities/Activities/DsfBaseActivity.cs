@@ -105,7 +105,7 @@ namespace Dev2.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(string.Format("{0} Exception", DisplayName), ex);
+                Dev2Logger.Error(string.Format("{0} Exception", DisplayName), ex);
                 allErrors.AddError(ex.Message);
             }
             finally
