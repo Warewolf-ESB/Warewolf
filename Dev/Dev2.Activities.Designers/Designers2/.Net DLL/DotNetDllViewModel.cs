@@ -13,6 +13,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -275,17 +276,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     {
                         ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
-                        var ResponseService = serializer.Deserialize<RecordsetList>(ManageServiceInputViewModel.TestResults);
-                        if (ResponseService.Any(recordset => recordset.HasErrors))
+                        var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
+                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
                         {
-                            var errorMessage = string.Join(Environment.NewLine, ResponseService.Select(recordset => recordset.ErrorMessage));
+                            var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-                        if (ResponseService != null)
+                        if (responseService != null)
                         {
                       
+                            ManageServiceInputViewModel.Description = responseService.Description;
                             // ReSharper disable MaximumChainedReferences
-                            var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                            var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                             {
                                 RecordsetName = recordset.Name;
                                 var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
@@ -318,12 +320,25 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         OutputsVisible = true;
                         OutputsExpanded = true;
                     }
+                    OutputDescription = ManageServiceInputViewModel.Description;
                 };
                 ManageServiceInputViewModel.ShowView();
             }
             catch (Exception e)
             {
                 ErrorMessage(e);
+            }
+        }
+
+        public IOutputDescription OutputDescription
+        {
+            get
+            {
+                return GetProperty<IOutputDescription>();
+            }
+            set
+            {
+               SetProperty(value);
             }
         }
 
@@ -859,6 +874,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _namespaces = value;
+                if(Namespace != null)
+                {
+                    SelectedNamespace = Namespaces.FirstOrDefault(a => a.FullName == Namespace.FullName);
+                }
                 OnPropertyChanged("Namespaces");
             }
         }
@@ -875,6 +894,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
+                    Namespace = value;
                     try
                     {
                         Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace);
@@ -908,8 +928,20 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
+                
                 }
                 IsRefreshing = false;
+            }
+        }
+        public INamespaceItem Namespace
+        {
+            get
+            {
+                return GetProperty<INamespaceItem>();
+            }
+            set
+            {
+                SetProperty(value);
             }
         }
 
@@ -1018,6 +1050,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _methods = value;
+                if(Method!= null)
+                 {
+                     SelectedMethod = _methods.FirstOrDefault(a => a.FullName == Method.FullName);
+                }
                 OnPropertyChanged("Methods");
             }
         }
@@ -1046,9 +1082,21 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     OutputsExpanded = false;
                     ProcedureName = _selectedMethod!=null?_selectedMethod.Method:"";
                     InitializeProperties();
+                    Method = _selectedMethod;
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
+            }
+        }
+        public IPluginAction Method
+        {
+            get
+            {
+                return GetProperty<IPluginAction>();
+            }
+            set
+            {
+                SetProperty<IPluginAction>(value);
             }
         }
         public bool IsRefreshing
