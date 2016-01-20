@@ -75,6 +75,23 @@ namespace Dev2.Common
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<threshold value=\"ERROR\" />" +
+                                              "<mapping>"+
+                                                "<level value=\"ERROR\" />"+
+                                                "<eventLogEntryType value=\"Error\" />"+
+                                              "</mapping>"+
+                                              "<mapping>"+
+                                                 "<level value=\"DEBUG\" />"+
+                                                 "<eventLogEntryType value=\"Information\" />"+
+                                               "</mapping>"+
+                                                "<mapping>" +
+                                                "<level value=\"INFO\" />" +
+                                                "<eventLogEntryType value=\"Information\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"WARN\" />" +
+                                                 "<eventLogEntryType value=\"Warning\" />" +
+                                               "</mapping>" +
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Server\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">"+
@@ -85,6 +102,7 @@ namespace Dev2.Common
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
                                              "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<appender-ref ref=\"EventLogLogger\"/>" +
                                              "</root>" +
                                              "</log4net>";
 
@@ -108,6 +126,23 @@ namespace Dev2.Common
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<threshold value=\"ERROR\" />"+
+                                             "<mapping>" +
+                                                "<level value=\"ERROR\" />" +
+                                                "<eventLogEntryType value=\"Error\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"DEBUG\" />" +
+                                                 "<eventLogEntryType value=\"Information\" />" +
+                                               "</mapping>" +
+                                                "<mapping>" +
+                                                "<level value=\"INFO\" />" +
+                                                "<eventLogEntryType value=\"Information\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"WARN\" />" +
+                                                 "<eventLogEntryType value=\"Warning\" />" +
+                                               "</mapping>" +
                                              "<logName value=\"Warewolf\"/>"+
                                              "<applicationName value=\"Warewolf Studio\"/>"+
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
@@ -118,6 +153,7 @@ namespace Dev2.Common
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
                                              "<appender-ref ref=\"LogFileAppender\" />" +                                           
+                                             "<appender-ref ref=\"EventLogLogger\"/>"+
                                              "</root>" +
                                              "</log4net>";
 
