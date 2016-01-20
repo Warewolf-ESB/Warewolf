@@ -162,6 +162,7 @@ namespace Dev2.Studio
                 {
                     File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
                 }
+                Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Studio");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
             }
