@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 catch(Exception ex)
                 {
                     AppendError(msg, directory, ex.Message);
-                    Dev2Logger.Log.Info(ex.StackTrace);
+                    Dev2Logger.Info(ex.StackTrace);
                 }
             }
 

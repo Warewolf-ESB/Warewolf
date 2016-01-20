@@ -707,8 +707,8 @@ You need Administrator permission.", viewModel.Errors);
             {
                 Logging = new LoggingSettingsTo
                 {
-                    LogLevel = "DEBUG",
-                    LogSize = 20
+                    FileLoggerLogLevel = "DEBUG",
+                    FileLoggerLogSize = 20
                 },
                 Security = new SecuritySettingsTO(new[]
                 {

@@ -39,7 +39,7 @@ namespace Dev2.Services.Sql
             _sqlConnection.StatisticsEnabled = true;
             _sqlConnection.InfoMessage += (sender, args) =>
             {
-                Dev2Logger.Log.Debug("Sql Server:" + args.Message + " Source:" + args.Source);
+                Dev2Logger.Debug("Sql Server:" + args.Message + " Source:" + args.Source);
                 foreach (SqlError error in args.Errors)
                 {
                     var errorMessages = new StringBuilder();
@@ -49,7 +49,7 @@ namespace Dev2.Services.Sql
                                         "Source: " + error.Source + Environment.NewLine +
                                         "Procedure: " + error.Procedure + Environment.NewLine);
 
-                    Dev2Logger.Log.Error("Sql Error:" + errorMessages.ToString());
+                    Dev2Logger.Error("Sql Error:" + errorMessages.ToString());
                 }
                 
             };
@@ -92,7 +92,7 @@ namespace Dev2.Services.Sql
             var retrieveStatistics = _sqlConnection.RetrieveStatistics();
             foreach (DictionaryEntry retrieveStatistic in retrieveStatistics)
             {
-                Dev2Logger.Log.Debug("Sql Stat:"+retrieveStatistic.Key+": "+retrieveStatistic.Value);
+                Dev2Logger.Debug("Sql Stat:"+retrieveStatistic.Key+": "+retrieveStatistic.Value);
             }
             return table;
         }

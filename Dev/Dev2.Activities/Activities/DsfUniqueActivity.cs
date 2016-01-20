@@ -117,7 +117,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFUnique", e);
+                Dev2Logger.Error("DSFUnique", e);
                 allErrors.AddError(e.Message);
             }
             finally

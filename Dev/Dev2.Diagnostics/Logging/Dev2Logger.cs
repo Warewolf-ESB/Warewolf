@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -26,13 +27,76 @@ namespace Dev2.Common
     /// </summary>
     public static class Dev2Logger
     {
-        public static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _logEvents = LogManager.GetLogger("EventLogLogger");
         public  static void SetLog(ILog log)
         {
-            Log = log;
+            _log = log;
         }
 
+        public static void Debug(object message)
+        {
+            _log.Debug(message);
+            _logEvents.Debug(message);
+        }
+        
+        public static void Debug(object message,Exception exception)
+        {
+            _log.Debug(message,exception);
+            _logEvents.Debug(message, exception);
+        }
+        
+        public static void Error(object message)
+        {
+            _log.Error(message);
+            _logEvents.Error(message);
+        }
+
+        public static void Error(object message, Exception exception)
+        {
+            _log.Error(message, exception);
+            _logEvents.Error(message, exception);
+
+        }
+
+        public static void Warn(object message)
+        {
+            _log.Warn(message);
+            _logEvents.Warn(message);
+        }
+
+        public static void Warn(object message, Exception exception)
+        {
+            _log.Warn(message, exception);
+            _logEvents.Warn(message, exception);
+
+        }
+
+        public static void Fatal(object message)
+        {
+            _log.Fatal(message);
+            _logEvents.Fatal(message);
+        }
+
+        public static void Fatal(object message, Exception exception)
+        {
+            _log.Fatal(message, exception);
+            _logEvents.Fatal(message, exception);
+
+        }
+
+        public static void Info(object message)
+        {
+            _log.Info(message);
+            _logEvents.Info(message);
+        }
+
+        public static void Info(object message, Exception exception)
+        {
+            _log.Info(message, exception);
+            _logEvents.Info(message, exception);
+
+        }
         public static void UpdateLoggingConfig(string level)
         {
 
@@ -49,11 +113,21 @@ namespace Dev2.Common
             rootLogger.Level = h.LevelMap[level];
         }
 
-        public static string GetLogLevel()
+        public static string GetFileLogLevel()
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
             return rootLogger.Level.DisplayName;
+        }
+        public static string GetEventLogLevel()
+        {
+            var h = (Hierarchy)LogManager.GetRepository();
+            var rootLogger = h.GetLogger("EventLogLogger") as Logger;
+            if(rootLogger != null)
+            {
+                return rootLogger.Level.DisplayName;
+            }
+            return "";
         }
 
         public static int GetLogMaxSize()
@@ -69,16 +143,18 @@ namespace Dev2.Common
             return 0;
         }
 
-        public static void WriteLogSettings(string maxLogSize,string logLevel, string settingsConfigFile)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
             if (log4netElement != null)
             {
-                var appenderElement = log4netElement.Element("appender");
-                if (appenderElement != null)
+                var appenderElements = log4netElement.Elements("appender");
+                var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
+                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value=="Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
+                if (fileAppender != null)
                 {
-                    var maxFileSizeElement = appenderElement.Element("maximumFileSize");
+                    var maxFileSizeElement = fileAppender.Element("maximumFileSize");
                     if (maxFileSizeElement != null)
                     {
                         var maxFileSizeElementValueAttrib = maxFileSizeElement.Attribute("value");
@@ -88,7 +164,26 @@ namespace Dev2.Common
                         }
                     }
                 }
-
+                var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
+                if(eventAppender == null)
+                {
+                    var eventAppenderElement = new XElement("appender");
+                    eventAppenderElement.SetAttributeValue("name","EventLogLogger");
+                    eventAppenderElement.SetAttributeValue("type", "log4net.Appender.EventLogAppender");
+                    var logNameElement = new XElement("logName");
+                    logNameElement.SetAttributeValue("value","Warewolf");
+                    eventAppenderElement.Add(logNameElement);
+                    var applicationNameElement = new XElement("applicationName");
+                    logNameElement.SetAttributeValue("value", applicationNameForEventLog);
+                    eventAppenderElement.Add(applicationNameElement);
+                    var layoutElement = new XElement("layout");
+                    layoutElement.SetAttributeValue("type", "log4net.Layout.PatternLayout");
+                    var conversionPattenElement = new XElement("conversionPattern");
+                    conversionPattenElement.SetAttributeValue("value", "%date [%thread] %-5level - %message%newline");
+                    layoutElement.Add(conversionPattenElement);
+                    eventAppenderElement.Add(layoutElement);
+                    log4netElement.Add(eventAppenderElement);
+                }
                 var rootElement = log4netElement.Element("root");
                 if (rootElement != null)
                 {
@@ -98,9 +193,38 @@ namespace Dev2.Common
                         var levelElementValueAttrib = levelElement.Attribute("value");
                         if (levelElementValueAttrib != null)
                         {
-                            levelElementValueAttrib.Value = logLevel;
+                            levelElementValueAttrib.Value = fileLogLevel;
                         }
                     }
+                }
+                var eventLogElement = log4netElement.Element("logger");
+                if(eventLogElement != null)
+                {
+                    if(eventLogElement.Attribute("name").Value == "EventLogLogger")
+                    {
+                        var levelElement = eventLogElement.Element("level");
+                        if(levelElement != null)
+                        {
+                            var levelElementValueAttrib = levelElement.Attribute("value");
+                            if(levelElementValueAttrib != null)
+                            {
+                                levelElementValueAttrib.Value = eventLogLevel;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var loggerElement = new XElement("logger");
+                    loggerElement.SetAttributeValue("name", "EventLogLogger");
+                    loggerElement.SetAttributeValue("additivity", "false");
+                    var levelElement = new XElement("level");
+                    levelElement.SetAttributeValue("value", eventLogLevel);
+                    var refElement = new XElement("appender-ref");
+                    levelElement.SetAttributeValue("ref", "EventLogLogger");
+                    loggerElement.Add(levelElement);
+                    loggerElement.Add(refElement);
+                    log4netElement.Add(loggerElement);
                 }
                 settingsDocument.Save(settingsConfigFile);
             }

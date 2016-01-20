@@ -49,7 +49,7 @@ namespace Dev2.Services.Execution
                 bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
                         Source.ConnectionString));
                 }
             }
@@ -65,12 +65,12 @@ namespace Dev2.Services.Execution
                                          "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
                 }
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Log.Error(errorMessages.ToString());
+                Dev2Logger.Error(errorMessages.ToString());
             }
             catch (Exception ex)
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Dev2.Services.Execution
                 bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
                         Source.ConnectionString));
                 }
                 return server;
@@ -92,12 +92,12 @@ namespace Dev2.Services.Execution
                 var errorMessages = new StringBuilder();
                 errorMessages.Append(sex.Message);
                 errors.AddError(errorMessages.ToString());
-                Dev2Logger.Log.Error(errorMessages.ToString());
+                Dev2Logger.Error(errorMessages.ToString());
             }
             catch (Exception ex)
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
             }
             return server;
         }
@@ -233,7 +233,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error("Sql Error:", ex);
+                Dev2Logger.Error("Sql Error:", ex);
                 errors.AddError(string.Format("{0}{1}", "Sql Error: ", ex.Message));
             }
         }

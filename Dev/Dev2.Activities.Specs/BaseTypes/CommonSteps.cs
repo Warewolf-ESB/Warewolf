@@ -164,7 +164,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             try
             {
-                Dev2Logger.Log.Debug(string.Format("Source File: {0}", ScenarioContext.Current.Get<string>(ActualSourceHolder)));
+                Dev2Logger.Debug(string.Format("Source File: {0}", ScenarioContext.Current.Get<string>(ActualSourceHolder)));
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
                     ScenarioContext.Current.Get<string>(SourceUsernameHolder),
@@ -182,7 +182,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         result = broker.PutRaw(sourceEndPoint, ops);
                         if (result != "Success")
                         {
-                            Dev2Logger.Log.Debug("Create Source File for file op test error");
+                            Dev2Logger.Debug("Create Source File for file op test error");
                         }
                     }
                 }
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Debug("Create Source File for file op test error", e);
+                Dev2Logger.Debug("Create Source File for file op test error", e);
             }
 
         }

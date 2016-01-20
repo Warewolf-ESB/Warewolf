@@ -170,7 +170,7 @@ namespace Dev2.Data.Parsers
                     throw new Exception("The XPath expression provided is not valid.");
                 }
 
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw;
             }
         }

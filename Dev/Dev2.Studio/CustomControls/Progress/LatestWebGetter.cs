@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Info(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
+                    Dev2Logger.Info(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }
             RaiseInvoked();

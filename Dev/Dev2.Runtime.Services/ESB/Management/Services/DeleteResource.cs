@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(!Guid.TryParse(tmp.ToString(), out resourceId))
                 {
-                    Dev2Logger.Log.Info("Delete Resource Service. Invalid Parameter Guid:");
+                    Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:");
                     var failureResult = new ExecuteMessage { HasError = true };
                     failureResult.SetMessage("Invalid guid passed for ResourceID");
                     return serializer.SerializeToBuilder(failureResult);
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 type = tmp.ToString();
             }
 
-            Dev2Logger.Log.Info("Delete Resource Service. Resource:" + resourceId);
+            Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
 

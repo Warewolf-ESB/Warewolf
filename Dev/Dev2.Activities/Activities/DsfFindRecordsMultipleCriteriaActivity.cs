@@ -182,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception exception)
             {
-                Dev2Logger.Log.Error("DSFRecordsMultipleCriteria", exception);
+                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception);
                 allErrors.AddError(exception.Message);
             }
             finally

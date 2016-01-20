@@ -210,7 +210,7 @@ namespace Dev2.Network
            
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }
@@ -224,7 +224,7 @@ namespace Dev2.Network
             }
              catch( FallbackException)
             {
-                Dev2Logger.Log.Info("Falling Back to previous signal r client");
+                Dev2Logger.Info("Falling Back to previous signal r client");
                 var name = _wrappedConnection.DisplayName;
                 
                
@@ -234,7 +234,7 @@ namespace Dev2.Network
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
             return false;
@@ -326,7 +326,7 @@ namespace Dev2.Network
         {
             if (PermissionsModified != null)
             {
-                Dev2Logger.Log.Debug("Permissions Modified: "+args);
+                Dev2Logger.Debug("Permissions Modified: "+args);
                 PermissionsModified(this, args);
             }
         }

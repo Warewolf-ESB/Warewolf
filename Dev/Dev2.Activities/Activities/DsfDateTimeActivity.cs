@@ -246,7 +246,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFDateTime", e);
+                Dev2Logger.Error("DSFDateTime", e);
                 allErrors.AddError(e.Message);
             }
             finally
