@@ -469,7 +469,7 @@ namespace Dev2.Core.Tests
             var serviceDefinition = model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, serviceDefinition.ToString());
+            Assert.IsTrue(serviceDefinition==null||string.IsNullOrEmpty(serviceDefinition.ToString()));
         }
 
         [TestMethod]
