@@ -26,6 +26,8 @@ namespace Dev2.Runtime.ServiceModel.Data
     // DO NOT override ToXml() here!
     public class Service : Resource
     {
+        private IOutputDescription _outputDescription;
+
         #region CTOR
 
         public Service()
@@ -41,7 +43,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public ServiceMethod Method { get; set; }
         [JsonIgnore]
-        public IOutputDescription OutputDescription { get; set; }
+        public IOutputDescription OutputDescription
+        {
+            get
+            {
+                return _outputDescription;
+            }
+            set
+            {
+                _outputDescription = value;
+            }
+        }
         [JsonIgnore]
         public string OutputSpecification { get; set; }
         public Resource Source { get; set; }

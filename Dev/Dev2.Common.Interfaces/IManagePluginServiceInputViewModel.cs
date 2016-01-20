@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces
@@ -20,6 +21,7 @@ namespace Dev2.Common.Interfaces
         IPluginService Model { get; set; }
         Action OkAction { get; set; }
         List<IServiceOutputMapping> OutputMappings { get; set; }
+        IOutputDescription Description { get; set; }
 
         void ShowView();
     }
