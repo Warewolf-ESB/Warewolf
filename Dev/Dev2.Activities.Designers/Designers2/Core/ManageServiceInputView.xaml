@@ -31,8 +31,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
         <Grid Grid.Row="1" Margin="0" >
@@ -102,8 +102,7 @@
         <ScrollViewer Grid.Row="3" 
                       Grid.Column="0" 
                       HorizontalScrollBarVisibility="Auto" 
-                      VerticalScrollBarVisibility="Auto"
-                      MaxHeight="264">
+                      VerticalScrollBarVisibility="Auto">
             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                 <ig:XamGrid x:Name="OutputsDataGrid" 
                             ItemsSource="{Binding TestResults}" 

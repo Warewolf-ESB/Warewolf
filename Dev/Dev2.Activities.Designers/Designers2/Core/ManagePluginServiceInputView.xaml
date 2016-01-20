@@ -31,8 +31,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
         <Grid Grid.Row="1" Margin="0" >
@@ -101,9 +101,9 @@
                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"/>
         <ScrollViewer Grid.Row="3" 
                       Grid.Column="0" 
+                      VerticalAlignment="Top"
                       HorizontalScrollBarVisibility="Auto" 
-                      VerticalScrollBarVisibility="Auto"
-                      MaxHeight="125">
+                      VerticalScrollBarVisibility="Auto">
             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                 <TextBlock Text="{Binding TestResults}" 
                            TextWrapping="Wrap"
