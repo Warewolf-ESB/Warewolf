@@ -47,19 +47,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no filename is passed.", filePath, directory));
-                Dev2Logger.Log.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString());
             }
             else if(String.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no directory is passed.", filePath, directory));
-                Dev2Logger.Log.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString());
             }
             else if(!Directory.Exists(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("No such directory exists on the server.", filePath, directory));
-                Dev2Logger.Log.Info(msg.Message.ToString());
+                Dev2Logger.Info(msg.Message.ToString());
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     msg.HasError = true;
                     msg.SetMessage(FormatMessage("No such file exists on the server.", filePath, directory));
-                    Dev2Logger.Log.Info(msg.Message.ToString());
+                    Dev2Logger.Info(msg.Message.ToString());
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         msg.HasError = true;
                         msg.SetMessage(FormatMessage(ex.Message, filePath, directory));
-                        Dev2Logger.Log.Error(ex);
+                        Dev2Logger.Error(ex);
                     }
                 }
             }

@@ -284,7 +284,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFEmail", e);
+                Dev2Logger.Error("DSFEmail", e);
                 allErrors.AddError(e.Message);
             }
 

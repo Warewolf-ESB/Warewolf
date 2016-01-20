@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Get Scheduled Resources");
+                Dev2Logger.Info("Get Scheduled Resources");
                 ObservableCollection<IScheduledResource> resources;
                 using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }

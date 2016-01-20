@@ -143,7 +143,7 @@ namespace Dev2.Runtime.Security
                 }
 
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Log.Error( "AUTH ERROR FOR USER : " + user);
+                Dev2Logger.Error( "AUTH ERROR FOR USER : " + user);
                 // ReSharper restore InvokeAsExtensionMethod
 
             }

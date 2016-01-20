@@ -67,7 +67,7 @@ namespace Dev2.Data.Util
                 }
                 catch (InvalidOperationException ioex)
                 {
-                    Dev2Logger.Log.Error("XmlHelper", ioex);
+                    Dev2Logger.Error("XmlHelper", ioex);
                     result.Clear();
                     result.Append(tag);
                 }
@@ -87,7 +87,7 @@ namespace Dev2.Data.Util
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("XmlHelper", ex);
+                Dev2Logger.Error("XmlHelper", ex);
                 return false;
             }
         }

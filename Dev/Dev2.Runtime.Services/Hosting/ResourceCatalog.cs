@@ -703,7 +703,7 @@ namespace Dev2.Runtime.Hosting
               
                     var resource = new Resource(xml);
                     GlobalConstants.InvalidateCache(resource.ResourceID);
-                    Dev2Logger.Log.Info("Save Resource." + resource);
+                    Dev2Logger.Info("Save Resource." + resource);
                     _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
                     resource.UpgradeXml(xml, resource);
@@ -715,7 +715,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Save Error", err);
+                Dev2Logger.Error("Save Error", err);
                 throw;
             }
         }
@@ -866,7 +866,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Delete Error", err);
+                Dev2Logger.Error("Delete Error", err);
                 throw;
             }
         }
@@ -1120,7 +1120,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("Error getting resources",e);
+                Dev2Logger.Error("Error getting resources",e);
                 throw;
             }
         }
@@ -1149,7 +1149,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("Error getting resource",e);
+                Dev2Logger.Error("Error getting resource",e);
             }
             return foundResource;
         }
@@ -1705,7 +1705,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 else
                 {
-                    Dev2Logger.Log.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
+                    Dev2Logger.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {
@@ -1808,7 +1808,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
@@ -1972,7 +1972,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Rename Category error", err);
+                Dev2Logger.Error("Rename Category error", err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
@@ -2021,7 +2021,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Rename Category error", err);
+                Dev2Logger.Error("Rename Category error", err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,

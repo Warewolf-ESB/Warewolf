@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (itemToBeRenamed != null)
                 {
                     explorerItem = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString()));
-                    Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", explorerItem.ResourcePath, newName));
+                    Dev2Logger.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", explorerItem.ResourcePath, newName));
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
                 else if (folderToBeRenamed != null)
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

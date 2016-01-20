@@ -716,7 +716,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     catch (XmlException xe)
                     {
-                        Dev2Logger.Log.Error(xe);
+                        Dev2Logger.Error(xe);
                         // invalid xml, we need to extract the sourceID another way ;)
                         srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
@@ -1108,7 +1108,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                 }
             }
 
@@ -1157,7 +1157,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
 
             return new List<IInputOutputViewModel>();

@@ -53,13 +53,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder( "No resourceId sent to server");
-                Dev2Logger.Log.Debug("No resourceId sent to server");
+                Dev2Logger.Debug("No resourceId sent to server");
             }
             else if(!values.ContainsKey("versionNumber") )
             {
                 execMessage.HasError = true;
                 execMessage.Message = new StringBuilder("No versionNumber sent to server");
-                Dev2Logger.Log.Debug("No versionNumber sent to server");
+                Dev2Logger.Debug("No versionNumber sent to server");
             }
             else
             {
@@ -67,13 +67,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
-                    Dev2Logger.Log.Info(String.Format("Rollback to. ResourceId:{0} Version:{1}",guid,version));
+                    Dev2Logger.Info(String.Format("Rollback to. ResourceId:{0} Version:{1}",guid,version));
                     var res = ServerVersionRepo.RollbackTo(guid,version);
                     execMessage.Message = serializer.SerializeToBuilder(res); 
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                     execMessage.HasError = true;
                     execMessage.Message = new StringBuilder( e.Message);
                 }
