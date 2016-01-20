@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -129,6 +130,7 @@ namespace Dev2.Activities.Designers2.Core
                 _outputMappings = value;
             }
         }
+        public IOutputDescription Description { get; set; }
 
         public void ShowView()
         {
