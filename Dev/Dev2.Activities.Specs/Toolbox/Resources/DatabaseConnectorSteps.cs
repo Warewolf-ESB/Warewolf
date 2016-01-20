@@ -26,6 +26,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     {
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
+        private DbSourceDefinition _testingDbSource;
+        private DbAction _getCountriesAction;
 
         [Given(@"I open New Workflow")]
         public void GivenIOpenNewWorkflow()
@@ -126,6 +128,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.ActionVisible);
         }
 
+        [Given(@"Inputs is Enabled")]
+        [When(@"Inputs is Enabled")]
         [Then(@"Inputs is Enabled")]
         public void ThenInputsIsEnabled()
         {
@@ -134,6 +138,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasInputs);
         }
 
+        [Given(@"Validate is Enabled")]
+        [When(@"Validate is Enabled")]
         [Then(@"Validate is Enabled")]
         public void ThenValidateIsEnabled()
         {
@@ -141,6 +147,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
 
+        [Given(@"Inputs appear as")]
+        [When(@"Inputs appear as")]
         [Then(@"Inputs appear as")]
         public void ThenInputsAppearAs(Table table)
         {
@@ -159,22 +167,71 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Given(@"I open ""(.*)""")]
-        public void GivenIOpenWolf(string p0)
+        public void GivenIOpenWolf(string resourceName)
         {
-            ScenarioContext.Current.Pending();
+            var sourceId = Guid.NewGuid();
+            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            var outputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"), 
+                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
+            };
+            var sqlServerActivity = new DsfSqlServerDatabaseActivity
+            {
+                SourceId = sourceId,
+                ProcedureName = "dbo.Pr_CitiesGetCountries",
+                Inputs = inputs,
+                Outputs = outputs
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
+            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            _testingDbSource = new DbSourceDefinition
+            {
+                Name = "testingDBSrc",
+                Type = enSourceType.SqlDatabase,
+                Id = sourceId
+            };
+
+            _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
+            _getCountriesAction.Inputs = inputs;
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction });
+            mockServiceInputViewModel.SetupAllProperties();
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
+                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-        
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
+
+        [Given(@"Source is ""(.*)""")]
+        public void GivenSourceIs(string sourceName)
         {
-            ScenarioContext.Current.Pending();
+            var selectedSource = GetViewModel().SelectedSource;
+            Assert.IsNotNull(selectedSource);
+            Assert.AreEqual(sourceName,selectedSource.Name);
         }
-        
-        [Given(@"""(.*)"" tab is opened")]
-        public void GivenTabIsOpened(string p0)
+
+        [Given(@"Action is ""(.*)""")]
+        public void GivenActionIs(string actionName)
         {
-            ScenarioContext.Current.Pending();
+            var selectedProcedure = GetViewModel().SelectedProcedure;
+            Assert.IsNotNull(selectedProcedure);
+            Assert.AreEqual(actionName,selectedProcedure.Name);
         }
+
         
         [When(@"I Select ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -290,6 +347,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var outputMapping = outputMappings.ToList()[rowIdx];
                 Assert.AreEqual(mappedFrom,outputMapping.MappedFrom);
                 Assert.AreEqual(mappedTo,outputMapping.MappedTo);
+                rowIdx++;
             }
         }
 

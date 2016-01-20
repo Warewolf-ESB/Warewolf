@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -256,7 +257,9 @@ namespace Dev2.Core.Tests
 
             const string ResourceName = "TestResource";
             var environmentID = Guid.NewGuid();
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(),It.IsAny<Guid>())).Verifiable();
+            CustomContainer.Register(mockShellViewModel.Object);
             var envList = new List<IEnvironmentModel>();
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(e => e.All()).Returns(envList);
@@ -281,7 +284,7 @@ namespace Dev2.Core.Tests
 
             model.OpenItemCommand.Execute(debugState);
 
-            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false));
+            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(),It.IsAny<Guid>()));
         }
 
         [TestMethod]
