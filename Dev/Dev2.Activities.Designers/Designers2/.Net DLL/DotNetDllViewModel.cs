@@ -874,6 +874,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _namespaces = value;
+                if(Namespace != null)
+                {
+                    SelectedNamespace = Namespaces.FirstOrDefault(a => a.FullName == Namespace.FullName);
+                }
                 OnPropertyChanged("Namespaces");
             }
         }
@@ -1046,6 +1050,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _methods = value;
+                if(Method!= null)
+                 {
+                     SelectedMethod = _methods.FirstOrDefault(a => a.FullName == Method.FullName);
+                }
                 OnPropertyChanged("Methods");
             }
         }

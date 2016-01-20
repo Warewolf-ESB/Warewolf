@@ -88,12 +88,12 @@ namespace Dev2.Activities
                         this.Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, ""));
                         // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
                         var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache,  update,DataObj,1);
+                        TryConvert(children, outputDefs, indexCache,  update,DataObj,0);
                     }
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
-                    Dev2Logger.Log.Error(e.Message, e);
+                 //   Dev2Logger.l.Error(e.Message, e);
                     // if use passed in empty input they only wanted the shape ;)
                     if (input.Length > 0)
                     {
@@ -142,7 +142,7 @@ namespace Dev2.Activities
                             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
                             if (scalarName != null)
                             {
-                                dataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml), update);
+                                dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml)), update);
                             }
                         }
                     }

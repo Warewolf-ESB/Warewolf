@@ -103,7 +103,7 @@
                       Grid.Column="0" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto"
-                      MaxHeight="264">
+                      MaxHeight="125">
             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                 <TextBlock Text="{Binding TestResults}" 
                            TextWrapping="Wrap"
