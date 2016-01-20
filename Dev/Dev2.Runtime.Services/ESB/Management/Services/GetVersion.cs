@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
-                Dev2Logger.Log.Info("Get Version. " + version);
+                Dev2Logger.Info("Get Version. " + version);
                 var result = ServerVersionRepo.GetVersion(version);
                 res.Message.Append(result);
                 Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

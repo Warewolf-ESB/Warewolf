@@ -67,7 +67,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     isSuccessfulEvaluation = false;
                 }
@@ -127,7 +127,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error("Function evaluation Error",ex);
+                    Dev2Logger.Error("Function evaluation Error",ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
@@ -175,7 +175,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
@@ -208,7 +208,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     evaluationState = false;
                 }

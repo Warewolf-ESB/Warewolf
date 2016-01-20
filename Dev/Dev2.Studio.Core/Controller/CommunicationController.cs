@@ -140,7 +140,7 @@ namespace Dev2.Controller
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Error("Error popup", e);
+                        Dev2Logger.Error("Error popup", e);
                     }
                 }
             }
@@ -255,7 +255,7 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Log.Debug("fallback to non compressed", e);
+                    Dev2Logger.Debug("fallback to non compressed", e);
                 return serializer.Deserialize<T>(payload);
 
                 }
@@ -303,7 +303,7 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Log.Debug("fallback to non compressed", e);
+                    Dev2Logger.Debug("fallback to non compressed", e);
                     return serializer.Deserialize<T>(payload);
 
                 }

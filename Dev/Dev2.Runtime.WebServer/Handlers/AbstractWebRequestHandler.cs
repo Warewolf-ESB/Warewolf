@@ -73,7 +73,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // now process headers ;)
                 if(headers != null)
                 {
-                    Dev2Logger.Log.Debug("Remote Invoke");
+                    Dev2Logger.Debug("Remote Invoke");
 
                     var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
                     var remoteId = headers.Get(HttpRequestHeader.From.ToString());
@@ -191,7 +191,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
                 }
-                Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+                Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
                 if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
@@ -287,7 +287,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
 
-                Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
+                Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
 
 
                 // JSON Data ;)
@@ -406,7 +406,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Log.Error("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex);
                     }
                 }
             }
@@ -465,7 +465,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             ErrorResultTO errors = new ErrorResultTO();
 
 
-            Dev2Logger.Log.Error(errors.MakeDisplayReady());
+            Dev2Logger.Error(errors.MakeDisplayReady());
 
             return string.Empty;
         }

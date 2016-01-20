@@ -632,7 +632,7 @@ namespace Dev2.PathOperations
             {
                 result = PerformTransfer(src, dst, args, origDstPath, p, result);
             }
-            Dev2Logger.Log.Debug(string.Format("Transfered: {0}", src.IOPath.Path));
+            Dev2Logger.Debug(string.Format("Transfered: {0}", src.IOPath.Path));
             return result;
         }
 
@@ -660,7 +660,7 @@ namespace Dev2.PathOperations
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
             }
             return result;
         }
@@ -807,7 +807,7 @@ namespace Dev2.PathOperations
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
 
@@ -825,7 +825,7 @@ namespace Dev2.PathOperations
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
 
@@ -842,7 +842,7 @@ namespace Dev2.PathOperations
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
 
@@ -967,7 +967,7 @@ namespace Dev2.PathOperations
                 {
                     if(eventArgs.CurrentEntry != null)
                     {
-                        Dev2Logger.Log.Debug(string.Format("Event Type: {0} Total Entries: {1} Entries Saved: {2} Current Entry: {3}", eventArgs.EventType, eventArgs.EntriesTotal, eventArgs.EntriesSaved,  eventArgs.CurrentEntry.FileName));
+                        Dev2Logger.Debug(string.Format("Event Type: {0} Total Entries: {1} Entries Saved: {2} Current Entry: {3}", eventArgs.EventType, eventArgs.EntriesTotal, eventArgs.EntriesSaved,  eventArgs.CurrentEntry.FileName));
                     }
                 };
                 // set password if exist

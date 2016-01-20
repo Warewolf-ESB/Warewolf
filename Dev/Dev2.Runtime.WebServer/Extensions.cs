@@ -24,7 +24,7 @@ namespace Dev2.Runtime.WebServer
         {
             if(user == null)
             {
-                Dev2Logger.Log.Debug("Null User");
+                Dev2Logger.Debug("Null User");
             }
 
             return user != null && user.Identity.IsAuthenticated;
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error("Dev2.Runtime.WebServer.Extensions", ex);
+                    Dev2Logger.Error("Dev2.Runtime.WebServer.Extensions", ex);
                 }
             }
             return Encoding.UTF8;

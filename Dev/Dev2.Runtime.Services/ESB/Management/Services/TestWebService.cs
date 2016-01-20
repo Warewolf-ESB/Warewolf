@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Test DB Connection Service");
+                Dev2Logger.Info("Test DB Connection Service");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("WebService", out resourceDefinition);
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
 
             }
 

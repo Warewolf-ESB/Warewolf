@@ -502,7 +502,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelProperty modelProperty = mi.Properties["Key"];
                     if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
                     {
-                        Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
+                        Dev2Logger.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
                         FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                     }
                 }
@@ -655,13 +655,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
             FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
         }
 
         protected void InitializeFlowDecision(ModelItem mi)
         {
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
@@ -990,7 +990,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddStringListToDataListMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             IDataListViewModel dlvm = DataListSingleton.ActiveDataList;
             if (dlvm != null)
             {
@@ -1012,7 +1012,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="message">The message.</param>
         public void Handle(UpdateResourceMessage message)
         {
-            Dev2Logger.Log.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name);
             if (ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
             {
                 IObservableReadOnlyList<IErrorInfo> currentErrors = null;
@@ -1412,7 +1412,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workspace = GlobalConstants.ServerWorkspaceID;
 
                 // log the trace for fetch ;)
-                Dev2Logger.Log.Info(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
+                Dev2Logger.Info(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
                 var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
@@ -1428,7 +1428,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Dev2Logger.Log.Info(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
+                    Dev2Logger.Info(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
                     // BUG 9304 - 2013.05.08 - TWR 
                     _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
                     BindToModel();
@@ -2182,7 +2182,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(EditActivityMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
             EditActivity(message.ModelItem, message.ParentEnvironmentID, message.EnvironmentRepository);
         }
 
@@ -2202,7 +2202,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
             EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel, false));
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
@@ -2213,7 +2213,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             PublishMessages(resourceModel);
             if (message.KeepTabOpen)
             {
-                Dev2Logger.Log.Debug("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                Dev2Logger.Debug("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                 EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
             }
             NewWorkflowNames.Instance.Remove(unsavedName);
@@ -2221,7 +2221,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void PublishMessages(IContextualResourceModel resourceModel)
         {
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateResourceMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 

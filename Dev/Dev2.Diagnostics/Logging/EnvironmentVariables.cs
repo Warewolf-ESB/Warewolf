@@ -47,7 +47,7 @@ namespace Dev2.Common
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Info("ApplicationPath Error -> " + e.Message);
+                        Dev2Logger.Info("ApplicationPath Error -> " + e.Message);
                         _appPath = Directory.GetCurrentDirectory(); // fail safe ;)
                     }
 

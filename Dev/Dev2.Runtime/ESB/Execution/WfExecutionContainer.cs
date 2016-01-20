@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
             Guid result = GlobalConstants.NullDataListID;
 
 
-            Dev2Logger.Log.Debug("Entered Wf Container");
+            Dev2Logger.Debug("Entered Wf Container");
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Execution
             // Set original instance ID, only if not set yet - original resource;
             if(DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
-            Dev2Logger.Log.Info(String.Format("Started Execution for Service Name:{0} Resource Id:{1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
+            Dev2Logger.Info(String.Format("Started Execution for Service Name:{0} Resource Id:{1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             //Set execution origin
             if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Execution
             ErrorResultTO to = errors;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple,()=>{result = ExecuteWf(to);});
             
-            Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
+            Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 
@@ -123,7 +123,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(InvalidWorkflowException iwe)
             {
-                Dev2Logger.Log.Error(iwe);
+                Dev2Logger.Error(iwe);
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
@@ -133,7 +133,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 to.AddError(ex.Message);
             }
             return result;
@@ -141,9 +141,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            Dev2Logger.Log.Debug("Getting Resource to Execute");
+            Dev2Logger.Debug("Getting Resource to Execute");
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            Dev2Logger.Log.Debug("Got Resource to Execute");
+            Dev2Logger.Debug("Got Resource to Execute");
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
         }

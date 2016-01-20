@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            Dev2Logger.Log.Info("Find Directory");
+            Dev2Logger.Info("Find Directory");
             string username = string.Empty;
             string domain = string.Empty;
             string password = string.Empty;
@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result.AppendFormat("Error: {0}", ex.Message);
             }
 
@@ -226,7 +226,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
             }
             json += "]";
             return json;
