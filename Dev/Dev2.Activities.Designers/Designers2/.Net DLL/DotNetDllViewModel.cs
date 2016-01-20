@@ -13,6 +13,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -275,17 +276,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     {
                         ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
-                        var ResponseService = serializer.Deserialize<RecordsetList>(ManageServiceInputViewModel.TestResults);
-                        if (ResponseService.Any(recordset => recordset.HasErrors))
+                        var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
+                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
                         {
-                            var errorMessage = string.Join(Environment.NewLine, ResponseService.Select(recordset => recordset.ErrorMessage));
+                            var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-                        if (ResponseService != null)
+                        if (responseService != null)
                         {
-                      
+
+                            ManageServiceInputViewModel.Description = responseService.Description;
                             // ReSharper disable MaximumChainedReferences
-                            var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                            var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                             {
                                 RecordsetName = recordset.Name;
                                 var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
@@ -318,12 +320,25 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         OutputsVisible = true;
                         OutputsExpanded = true;
                     }
+                    OutputDescription = ManageServiceInputViewModel.Description;
                 };
                 ManageServiceInputViewModel.ShowView();
             }
             catch (Exception e)
             {
                 ErrorMessage(e);
+            }
+        }
+
+        public IOutputDescription OutputDescription
+        {
+            get
+            {
+                return GetProperty<IOutputDescription>();
+            }
+            set
+            {
+               SetProperty(value);
             }
         }
 
@@ -874,43 +889,45 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
-                _selectedNamespace = value;
-                Namespace = value;
-                try
-                {
-                    Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace);
-                    if (!_isInitializing)
+                    _selectedNamespace = value;
+                    Namespace = value;
+                    try
                     {
-                        Inputs = new List<IServiceInput>();
-                        Outputs = new List<IServiceOutputMapping>();
-                        RecordsetName = "";
-                        InputsVisible = false;
-                        InputsExpanded = false;
-                        OutputsVisible = false;
-                        OutputsExpanded = false;
-                    }
-                    ActionVisible = Methods.Count != 0;
+                        Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace);
+                        if (!_isInitializing)
+                        {
+                            Inputs = new List<IServiceInput>();
+                            Outputs = new List<IServiceOutputMapping>();
+                            RecordsetName = "";
+                            InputsVisible = false;
+                            InputsExpanded = false;
+                            OutputsVisible = false;
+                            OutputsExpanded = false;
+                        }
+                        ActionVisible = Methods.Count != 0;
 
-                    if (Methods.Count <= 0)
-                    {
-                        ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
+                        if (Methods.Count <= 0)
+                        {
+                            ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
+                        }
                     }
-                }
                     catch (Exception e)
-                {
-
-                    Methods = new List<IPluginAction>();
-                    SelectedMethod = null;
-                    ActionVisible = false;
-                    var errorInfo = new ErrorInfo
                     {
-                        ErrorType = ErrorType.Critical,
-                        Message = e.Message
-                    };
-                    Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+
+                        Methods = new List<IPluginAction>();
+                        SelectedMethod = null;
+                        ActionVisible = false;
+                        var errorInfo = new ErrorInfo
+                        {
+                            ErrorType = ErrorType.Critical,
+                            Message = e.Message
+                        };
+                        Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+                    }
+                
                 }
-            IsRefreshing = false;
-                }
+                IsRefreshing = false;
+            }
         }
         public INamespaceItem Namespace
         {
