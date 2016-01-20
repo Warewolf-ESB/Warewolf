@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void DeployResources(IEnvironmentModel sourceEnviroment, IEnvironmentModel targetEnviroment, IDeployDto dto, IEventAggregator eventPublisher)
         {
 
-            Dev2Logger.Log.Info(String.Format("Deploy Resources. Source:{0} Destination:{1}", sourceEnviroment.DisplayName, targetEnviroment.Name));
+            Dev2Logger.Info(String.Format("Deploy Resources. Source:{0} Destination:{1}", sourceEnviroment.DisplayName, targetEnviroment.Name));
             _deployService.Deploy(dto, targetEnviroment);
 
 
@@ -437,7 +437,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Log.Error("Multiple Resources found for Resource ID: "+resourceID);
+            Dev2Logger.Error("Multiple Resources found for Resource ID: "+resourceID);
             return null;
         }
         
@@ -456,7 +456,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Log.Error("Multiple Resources found for Resource ID: "+resourceID);
+            Dev2Logger.Error("Multiple Resources found for Resource ID: "+resourceID);
             return null;
         }
 
@@ -519,7 +519,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory)
         {
-            Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
 
             if(workflow == null)
@@ -553,7 +553,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage SaveToServer(IResourceModel instanceObj)
         {
-            Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if(workflow == null)
@@ -603,7 +603,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentNullException("resource");
             }
-            Dev2Logger.Log.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if(theResource != null)
@@ -656,7 +656,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
-            Dev2Logger.Log.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, _environmentModel.Name));
             IResourceModel res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if(res == null)
@@ -822,7 +822,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected virtual void LoadResources()
         {
-            Dev2Logger.Log.Warn("Loading Resources - Start");
+            Dev2Logger.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
@@ -837,12 +837,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
-            Dev2Logger.Log.Warn("Loading Resources - End");
+            Dev2Logger.Warn("Loading Resources - End");
         }
 
         protected virtual async Task<bool> LoadResourcesAsync()
         {
-            Dev2Logger.Log.Warn("Loading Resources - Start");
+            Dev2Logger.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
@@ -909,7 +909,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 catch
                     // ReSharper restore EmptyGeneralCatchClause
                 {
-                    Dev2Logger.Log.Warn(string.Format("Resource Not Loaded - {0} - {1}", item.ResourceName, item.ResourceID));
+                    Dev2Logger.Warn(string.Format("Resource Not Loaded - {0} - {1}", item.ResourceName, item.ResourceID));
                     // Ignore malformed resource
                 }
             }
@@ -1366,7 +1366,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
 
             // log the trace for fetch ;)
-            Dev2Logger.Log.Debug(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));
+            Dev2Logger.Debug(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));
 
             return result;
         }

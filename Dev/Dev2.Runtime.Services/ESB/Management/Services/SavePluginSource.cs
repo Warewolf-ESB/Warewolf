@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Save Plugin Source");
+                Dev2Logger.Info("Save Plugin Source");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("PluginSource", out resourceDefinition);
@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
 
             }
 

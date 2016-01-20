@@ -267,7 +267,7 @@ public class SecurityWrapper : ISecurityWrapper
                     }
                     catch (Exception err)
                     {
-                        Dev2Logger.Log.Error(String.Format("Scheduler Error Enumerating Groups:{0}", grp), err);
+                        Dev2Logger.Error(String.Format("Scheduler Error Enumerating Groups:{0}", grp), err);
                     }
                 }
 

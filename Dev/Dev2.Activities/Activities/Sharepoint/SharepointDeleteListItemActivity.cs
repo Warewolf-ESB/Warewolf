@@ -133,7 +133,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointDeleteListItemActivity", e);
+                Dev2Logger.Error("SharepointDeleteListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

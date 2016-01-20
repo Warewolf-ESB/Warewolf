@@ -121,7 +121,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         }
                         catch(Exception)
                         {
-                            Dev2Logger.Log.Error(string.Format("User {0} does not exist on the machine.", currentUser));
+                            Dev2Logger.Error(string.Format("User {0} does not exist on the machine.", currentUser));
                         }
                     }
                 }

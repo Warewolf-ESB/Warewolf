@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void Handle(DataListItemSelectedMessage message)
         {
-            Dev2Logger.Log.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name);
         }
 
         public void Dispose()

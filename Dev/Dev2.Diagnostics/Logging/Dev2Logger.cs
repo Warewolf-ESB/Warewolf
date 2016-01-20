@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -26,13 +27,76 @@ namespace Dev2.Common
     /// </summary>
     public static class Dev2Logger
     {
-        public static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public static readonly ILog LogEvents = LogManager.GetLogger("EventLogLogger");
+        private static ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _logEvents = LogManager.GetLogger("EventLogLogger");
         public  static void SetLog(ILog log)
         {
-            Log = log;
+            _log = log;
         }
 
+        public static void Debug(object message)
+        {
+            _log.Debug(message);
+            _logEvents.Debug(message);
+        }
+        
+        public static void Debug(object message,Exception exception)
+        {
+            _log.Debug(message,exception);
+            _logEvents.Debug(message, exception);
+        }
+        
+        public static void Error(object message)
+        {
+            _log.Error(message);
+            _logEvents.Error(message);
+        }
+
+        public static void Error(object message, Exception exception)
+        {
+            _log.Error(message, exception);
+            _logEvents.Error(message, exception);
+
+        }
+
+        public static void Warn(object message)
+        {
+            _log.Warn(message);
+            _logEvents.Warn(message);
+        }
+
+        public static void Warn(object message, Exception exception)
+        {
+            _log.Warn(message, exception);
+            _logEvents.Warn(message, exception);
+
+        }
+
+        public static void Fatal(object message)
+        {
+            _log.Fatal(message);
+            _logEvents.Fatal(message);
+        }
+
+        public static void Fatal(object message, Exception exception)
+        {
+            _log.Fatal(message, exception);
+            _logEvents.Fatal(message, exception);
+
+        }
+
+        public static void Info(object message)
+        {
+            _log.Info(message);
+            _logEvents.Info(message);
+        }
+
+        public static void Info(object message, Exception exception)
+        {
+            _log.Info(message, exception);
+            _logEvents.Info(message, exception);
+
+        }
         public static void UpdateLoggingConfig(string level)
         {
 
@@ -79,14 +143,15 @@ namespace Dev2.Common
             return 0;
         }
 
-        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
             if (log4netElement != null)
             {
                 var appenderElements = log4netElement.Elements("appender");
-                var fileAppender = appenderElements.FirstOrDefault(element => element.Attribute("type").Value=="Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
+                var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
+                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value=="Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
                 if (fileAppender != null)
                 {
                     var maxFileSizeElement = fileAppender.Element("maximumFileSize");
@@ -99,7 +164,26 @@ namespace Dev2.Common
                         }
                     }
                 }
-
+                var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
+                if(eventAppender == null)
+                {
+                    var eventAppenderElement = new XElement("appender");
+                    eventAppenderElement.SetAttributeValue("name","EventLogLogger");
+                    eventAppenderElement.SetAttributeValue("type", "log4net.Appender.EventLogAppender");
+                    var logNameElement = new XElement("logName");
+                    logNameElement.SetAttributeValue("value","Warewolf");
+                    eventAppenderElement.Add(logNameElement);
+                    var applicationNameElement = new XElement("applicationName");
+                    logNameElement.SetAttributeValue("value", applicationNameForEventLog);
+                    eventAppenderElement.Add(applicationNameElement);
+                    var layoutElement = new XElement("layout");
+                    layoutElement.SetAttributeValue("type", "log4net.Layout.PatternLayout");
+                    var conversionPattenElement = new XElement("conversionPattern");
+                    conversionPattenElement.SetAttributeValue("value", "%date [%thread] %-5level - %message%newline");
+                    layoutElement.Add(conversionPattenElement);
+                    eventAppenderElement.Add(layoutElement);
+                    log4netElement.Add(eventAppenderElement);
+                }
                 var rootElement = log4netElement.Element("root");
                 if (rootElement != null)
                 {

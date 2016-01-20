@@ -1452,7 +1452,7 @@ namespace Dev2.Activities.Specs.Composition
                 !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
                 return;
 
-            var loggingSettingsTo = new LoggingSettingsTo() { FileLoggerLogLevel = logLevel, LogSize = 200};
+            var loggingSettingsTo = new LoggingSettingsTo() { FileLoggerLogLevel = logLevel, FileLoggerLogSize = 200};
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());

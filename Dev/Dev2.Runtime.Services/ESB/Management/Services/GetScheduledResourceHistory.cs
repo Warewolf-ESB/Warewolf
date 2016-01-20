@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (tmp != null)
                 {
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Log.Info("Get Scheduled History. " +tmp);
+                    Dev2Logger.Info("Get Scheduled History. " +tmp);
                     IList<IResourceHistory> resources;
                     using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
@@ -52,12 +52,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     return serializer.SerializeToBuilder(resources);
                 }
-                Dev2Logger.Log.Debug("No resource Provided");
+                Dev2Logger.Debug("No resource Provided");
                 return serializer.SerializeToBuilder(new List<IResourceHistory>());
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

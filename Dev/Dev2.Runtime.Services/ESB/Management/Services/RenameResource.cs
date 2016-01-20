@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid id;
                 Guid.TryParse(resourceId, out id);
-                Dev2Logger.Log.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
+                Dev2Logger.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
                 var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)
                 {
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }
