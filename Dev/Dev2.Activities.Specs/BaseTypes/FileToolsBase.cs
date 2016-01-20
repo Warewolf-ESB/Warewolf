@@ -39,7 +39,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         /// </summary>
         protected static void StartSftpServer()
         {
-            Dev2Logger.Log.Debug("ServerStartup");
+            Dev2Logger.Debug("ServerStartup");
             lock (ServerLock)
             {
                 if (Server == null)
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             // ReSharper disable EmptyGeneralCatchClause
 
 
-            Dev2Logger.Log.Debug("Cleanup");
+            Dev2Logger.Debug("Cleanup");
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
-                    Dev2Logger.Log.Debug("Cleanup Error");
+                    Dev2Logger.Debug("Cleanup Error");
                 //    throw;
                 }
             }
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
-                    Dev2Logger.Log.Debug("Cleanup Error");
+                    Dev2Logger.Debug("Cleanup Error");
                     //The file may already be deleted
                 }
             }
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (Server != null)
                 {
-                    Dev2Logger.Log.Debug("Server Shutdown");
+                    Dev2Logger.Debug("Server Shutdown");
                     Server.Bindings.Clear();
                     Server.Stop();
 

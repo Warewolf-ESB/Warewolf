@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
 
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
 
             }
 

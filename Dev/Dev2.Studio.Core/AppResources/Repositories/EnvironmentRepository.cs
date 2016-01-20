@@ -455,7 +455,7 @@ namespace Dev2.Studio.Core
             catch (Exception err)
             // ReSharper restore EmptyGeneralCatchClause
             {
-                Dev2Logger.Log.Info((err));
+                Dev2Logger.Info((err));
                 //Swallow exception for localhost connection
             }
             if (!defaultEnvironment.IsConnected)

@@ -103,7 +103,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result = false;
             }
 
@@ -120,7 +120,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result = false;
             }
 

@@ -37,7 +37,7 @@
                 try
                 {
 
-                    Dev2Logger.Log.Info("Test connection Service");
+                    Dev2Logger.Info("Test connection Service");
                     StringBuilder resourceDefinition;
                     string workspaceIdString = string.Empty;
 
@@ -63,7 +63,7 @@
                 {
                     msg.HasError = true;
                     msg.Message = new StringBuilder(err.Message);
-                    Dev2Logger.Log.Error(err);
+                    Dev2Logger.Error(err);
                   
                 }
 

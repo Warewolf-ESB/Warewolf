@@ -49,14 +49,14 @@ namespace Dev2.Security
         {
             if(args.ToState == NetworkState.Online)
             {
-                Dev2Logger.Log.Debug("Reading Permissions from Server after online");
+                Dev2Logger.Debug("Reading Permissions from Server after online");
                 Read();
             }
         }
 
         public override async void Read()
         {
-            Dev2Logger.Log.Debug("Reading Permissions from Server");
+            Dev2Logger.Debug("Reading Permissions from Server");
             await ReadAsync();
         }
 
@@ -66,14 +66,14 @@ namespace Dev2.Security
             {
                 ServiceName = "SecurityReadService"
             };
-            Dev2Logger.Log.Debug("Getting Permissions from Server");
+            Dev2Logger.Debug("Getting Permissions from Server");
             SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID);
             List<WindowsGroupPermission> newPermissions = null;
             if (securitySettingsTo != null)
             {
                 Permissions = securitySettingsTo.WindowsGroupPermissions;
                 newPermissions = securitySettingsTo.WindowsGroupPermissions;
-                Dev2Logger.Log.Debug("Permissions from Server:" + Permissions);
+                Dev2Logger.Debug("Permissions from Server:" + Permissions);
             }
             if (newPermissions != null)
             {
@@ -84,7 +84,7 @@ namespace Dev2.Security
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
-//            Dev2Logger.Log.Debug("Reading Permissions from Server");
+//            Dev2Logger.Debug("Reading Permissions from Server");
 //            var communicationController = new CommunicationController
 //            {
 //                ServiceName = "SecurityReadService"

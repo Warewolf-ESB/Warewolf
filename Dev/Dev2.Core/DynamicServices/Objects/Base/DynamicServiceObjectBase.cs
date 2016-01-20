@@ -170,7 +170,7 @@ namespace Dev2.DynamicServices.Objects.Base
 
         private void WriteOutput(string traceMsg)
         {
-            Dev2Logger.Log.Info(traceMsg);
+            Dev2Logger.Info(traceMsg);
             Console.WriteLine(traceMsg);
         }
 

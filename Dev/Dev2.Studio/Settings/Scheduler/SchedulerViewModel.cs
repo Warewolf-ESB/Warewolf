@@ -882,7 +882,7 @@ namespace Dev2.Settings.Scheduler
                         ShowError(errorMessage);
                         return false;
                     }
-                    Dev2Logger.Log.Info(String.Format("Save Schedule. Environment: {0} Name:{1} ", CurrentEnvironment.Name, SelectedTask != null ? SelectedTask.Name : ""));
+                    Dev2Logger.Info(String.Format("Save Schedule. Environment: {0} Name:{1} ", CurrentEnvironment.Name, SelectedTask != null ? SelectedTask.Name : ""));
                     if (SelectedTask != null)
                     {
                         SelectedTask.Errors.ClearErrors();
@@ -947,7 +947,7 @@ namespace Dev2.Settings.Scheduler
                             int indexInFilteredList = TaskList.IndexOf(SelectedTask);
                             if (index != -1)
                             {
-                                Dev2Logger.Log.Info(String.Format("Delete Schedule Name: {0} Resource:{1} Env:{2}", SelectedTask.Name, SelectedTask.ResourceId, CurrentEnvironment.Name));
+                                Dev2Logger.Info(String.Format("Delete Schedule Name: {0} Resource:{1} Env:{2}", SelectedTask.Name, SelectedTask.ResourceId, CurrentEnvironment.Name));
 
                                 ScheduledResourceModel.DeleteSchedule(SelectedTask);
                                 //if delete is successfull then do the code below

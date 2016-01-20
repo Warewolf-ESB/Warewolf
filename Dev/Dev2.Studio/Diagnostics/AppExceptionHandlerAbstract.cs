@@ -36,10 +36,10 @@ namespace Dev2.Studio.Diagnostics
             }
             try
             {
-                Dev2Logger.Log.Error("Unhandled Exception" ,e);
+                Dev2Logger.Error("Unhandled Exception" ,e);
                 _exception = e;
                 _busy = true;                
-                Dev2Logger.Log.Error(_exception);
+                Dev2Logger.Error(_exception);
                 var popupController = CreatePopupController();
                 var exceptionString = ToErrorString(_exception);
                 var lastExceptionSignature = _lastExceptionSignature;

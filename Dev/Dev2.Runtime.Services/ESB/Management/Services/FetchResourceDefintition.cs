@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
-                Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:" + resourceId);
+                Dev2Logger.Info("Fetch Resource definition. ResourceId:" + resourceId);
                 try
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
@@ -132,7 +132,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
+                    Dev2Logger.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
                 }
             
 
@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch(CryptographicException e)
                     {
-                        Dev2Logger.Log.Error("Encryption had issues.",e);
+                        Dev2Logger.Error("Encryption had issues.",e);
                     }
                 }
 
@@ -159,7 +159,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }

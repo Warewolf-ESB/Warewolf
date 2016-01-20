@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             IEnumerable<Guid> resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
-            Dev2Logger.Log.Info("Get Dependencies On List. " + resourceIdsString);
+            Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

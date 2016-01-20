@@ -171,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFNumberFormatActivity", e);
+                Dev2Logger.Error("DSFNumberFormatActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

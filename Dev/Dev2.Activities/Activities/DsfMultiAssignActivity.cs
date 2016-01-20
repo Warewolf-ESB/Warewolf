@@ -182,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         catch(Exception e)
                         {
-                            Dev2Logger.Log.Error(e);
+                            Dev2Logger.Error(e);
                             allErrors.AddError(e.Message);
                         }
                     }
@@ -192,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -244,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         catch(Exception err)
                         {
 
-                            Dev2Logger.Log.Warn(err);
+                            Dev2Logger.Warn(err);
                         } 
                     }
                     if(!res) throw  new Exception("Invalid Calculate");
