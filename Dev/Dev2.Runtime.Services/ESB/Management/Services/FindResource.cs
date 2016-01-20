@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
             }
-            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
+            Dev2Logger.Info("Find Resource. ResourceName: "+resourceName);
           
                
                 IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }

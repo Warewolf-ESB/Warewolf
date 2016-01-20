@@ -22,16 +22,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                var logLevel = Dev2Logger.GetLogLevel();
+                var fileLogLevel = Dev2Logger.GetFileLogLevel();
+                var eventLogLevel = Dev2Logger.GetEventLogLevel();
                 var logMaxSize= Dev2Logger.GetLogMaxSize();
-                var loggingSettings = new LoggingSettingsTo {LogLevel = logLevel,LogSize = logMaxSize};
+
+                var loggingSettings = new LoggingSettingsTo { FileLoggerLogLevel = fileLogLevel,EventLogLoggerLogLevel = eventLogLevel, FileLoggerLogSize = logMaxSize };
                 var serializer = new Dev2JsonSerializer();
                 var serializeToBuilder = serializer.SerializeToBuilder(loggingSettings);
                 return serializeToBuilder;
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("LoggingSettingsRead", e);
+                Dev2Logger.Error("LoggingSettingsRead", e);
             }
             return null;
         }

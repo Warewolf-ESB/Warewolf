@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ExecuteMessage message = new ExecuteMessage();
                 message.HasError = true;
                 message.SetMessage("No sharepoint server set.");
-                Dev2Logger.Log.Debug("No sharepoint server set.");
+                Dev2Logger.Debug("No sharepoint server set.");
                 return serializer.SerializeToBuilder(message);
             }
 
@@ -77,26 +77,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 var res = new DbTableList("Invalid JSON data for sharepoint server parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
             if(runtimeSource == null)
             {
                 var res = new DbTableList("Invalid sharepoint server source");
-                Dev2Logger.Log.Debug("Invalid sharepoint server source");
+                Dev2Logger.Debug("Invalid sharepoint server source");
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeSource.Server))
             {
                 var res = new DbTableList("Invalid sharepoint server sent {0}.", serializedSource);
-                Dev2Logger.Log.Debug(String.Format("Invalid sharepoint server sent {0}.", serializedSource));
+                Dev2Logger.Debug(String.Format("Invalid sharepoint server sent {0}.", serializedSource));
                 return serializer.SerializeToBuilder(res);
             }
 
             try
             {
-                Dev2Logger.Log.Info("Get Sharepoint Server Lists. " + source.Server);
+                Dev2Logger.Info("Get Sharepoint Server Lists. " + source.Server);
                 List<SharepointListTo> lists = runtimeSource.LoadLists();
                 return serializer.SerializeToBuilder(lists);
             }

@@ -162,7 +162,7 @@ namespace Dev2
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Log.Error("DataListUtil", ex);
+                            Dev2Logger.Error("DataListUtil", ex);
                             tr.Close();
                             reader.Close();
                             isFragment = false;

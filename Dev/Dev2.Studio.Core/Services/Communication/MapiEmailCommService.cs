@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Services.Communication
         /// <datetime>2013/01/14-09:10 AM</datetime>
         public void SendCommunication(T message)
         {
-            //Dev2Logger.Log.Debug();
+            //Dev2Logger.Debug();
             MAPI mapi = new MAPI();
             mapi.AddRecipientTo(message.To);
 

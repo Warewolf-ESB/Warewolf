@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for ResourceType parameter.");
             }
-            Dev2Logger.Log.Info(String.Format( "Rename Category. Old {0} New {1} Type{2}",oldCategory,newCategory,resourceType));
+            Dev2Logger.Info(String.Format( "Rename Category. Old {0} New {1} Type{2}",oldCategory,newCategory,resourceType));
             var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory);
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };

@@ -46,11 +46,13 @@ namespace Dev2.Settings.Logging
         }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
-        LogLevel _serverLogLevel;
-        LogLevel _studioLogLevel;
+        LogLevel _serverEventLogLevel;
+        LogLevel _studioEventLogLevel;
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
         IEnvironmentModel _currentEnvironment;
+        private LogLevel _serverFileLogLevel;
+        private LogLevel _studioFileLogLevel;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -59,17 +61,27 @@ namespace Dev2.Settings.Logging
             CurrentEnvironment = currentEnvironment;
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
-            LogLevel serverLogLevel;
-            if (Enum.TryParse(logging.LogLevel,out serverLogLevel))
+            LogLevel serverFileLogLevel;
+            LogLevel serverEventLogLevel;
+            if (Enum.TryParse(logging.FileLoggerLogLevel,out serverFileLogLevel))
             {
-                _serverLogLevel = serverLogLevel;
+                _serverFileLogLevel = serverFileLogLevel;
             }
-            _serverLogMaxSize = logging.LogSize.ToString(CultureInfo.InvariantCulture);
-
-            LogLevel studioLogLevel;
-            if (Enum.TryParse(Dev2Logger.GetLogLevel(), out studioLogLevel))
+            if (Enum.TryParse(logging.EventLogLoggerLogLevel, out serverEventLogLevel))
             {
-                _studioLogLevel = studioLogLevel;
+                _serverEventLogLevel = serverEventLogLevel;
+            }
+            _serverLogMaxSize = logging.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture);
+
+            LogLevel studioFileLogLevel;
+            LogLevel studioEventLogLevel;
+            if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out studioFileLogLevel))
+            {
+                _studioFileLogLevel = studioFileLogLevel;
+            }
+            if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out studioEventLogLevel))
+            {
+                _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
         }
@@ -135,10 +147,11 @@ namespace Dev2.Settings.Logging
 
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.LogLevel = ServerLogLevel.ToString();
-            logSettings.LogSize = int.Parse(ServerLogMaxSize);
+            logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
+            logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
+            logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioLogLevel.ToString(), settingsConfigFile);
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(),StudioEventLogLevel.ToString(), settingsConfigFile,"Warewolf Studio");
         }
 
         protected override void CloseHelp()
@@ -148,28 +161,55 @@ namespace Dev2.Settings.Logging
 
         public ICommand GetServerLogFileCommand { get; private set; }
         public ICommand GetStudioLogFileCommand { get; private set; }
-        public LogLevel ServerLogLevel
+        public LogLevel ServerEventLogLevel
         {
             get
             {
-                return _serverLogLevel;
+                return _serverEventLogLevel;
             }
             set
             {
-                _serverLogLevel = value;
+                _serverEventLogLevel = value;
                 IsDirty = true;
                 OnPropertyChanged();
             }
         }
-        public LogLevel StudioLogLevel
+        public LogLevel StudioEventLogLevel
         {
             get
             {
-                return _studioLogLevel;
+                return _studioEventLogLevel;
             }
             set
             {
-                _studioLogLevel = value;
+                _studioEventLogLevel = value;
+                IsDirty = true;
+                OnPropertyChanged();
+            }
+        }
+
+        public LogLevel ServerFileLogLevel
+        {
+            get
+            {
+                return _serverFileLogLevel;
+            }
+            set
+            {
+                _serverFileLogLevel = value;
+                IsDirty = true;
+                OnPropertyChanged();
+            }
+        }
+        public LogLevel StudioFileLogLevel
+        {
+            get
+            {
+                return _studioFileLogLevel;
+            }
+            set
+            {
+                _studioFileLogLevel = value;
                 IsDirty = true;
                 OnPropertyChanged();
             }
@@ -226,11 +266,13 @@ namespace Dev2.Settings.Logging
     {
         ICommand GetServerLogFileCommand { get; }
         ICommand GetStudioLogFileCommand { get; }
-        LogLevel ServerLogLevel { get; set; }
-        LogLevel StudioLogLevel { get; set; }
+        LogLevel ServerEventLogLevel { get; set; }
+        LogLevel StudioEventLogLevel { get; set; }
         string StudioLogMaxSize { get; }
         string ServerLogMaxSize { get; }
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
+        LogLevel ServerFileLogLevel { get; }
+        LogLevel StudioFileLogLevel { get; }
     }
 }

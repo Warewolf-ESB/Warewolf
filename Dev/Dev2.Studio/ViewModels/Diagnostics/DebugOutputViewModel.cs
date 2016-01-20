@@ -519,25 +519,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if(item == null)
             {
-                Dev2Logger.Log.Debug("Debug line item is null, did not proceed");
+                Dev2Logger.Debug("Debug line item is null, did not proceed");
                 return;
             }
 
             if(string.IsNullOrEmpty(item.MoreLink))
             {
-                Dev2Logger.Log.Debug("Link is empty");
+                Dev2Logger.Debug("Link is empty");
             }
             else
             {
                 try
                 {
                     string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    Dev2Logger.Log.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
+                    Dev2Logger.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                     if (ex.Message.Contains("The remote name could not be resolved"))
                         _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
                     else
@@ -739,7 +739,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 if(content.DisplayName != null && content.DisplayName.Contains("Assign"))
                 {
-                    Dev2Logger.Log.Error("sd");
+                    Dev2Logger.Error("sd");
                 }
                 var environmentId = content.EnvironmentID;
                 var isRemote = environmentId != Guid.Empty;
@@ -812,7 +812,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-            Dev2Logger.Log.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
+            Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
             if(_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;

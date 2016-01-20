@@ -164,7 +164,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // 4423 : TWR - sealed so that this cannot be overridden
         protected override sealed void Execute(NativeActivityContext context)
         {
-            Dev2Logger.Log.Debug(String.Format("Start {0}", GetType().Name));
+            Dev2Logger.Debug(String.Format("Start {0}", GetType().Name));
             _tmpErrors = new ErrorResultTO();
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -205,7 +205,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch(Exception ex)
             {
 
-                Dev2Logger.Log.Error("OnExecute", ex);
+                Dev2Logger.Error("OnExecute", ex);
                 errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
@@ -462,7 +462,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     _debugState.StateType = stateType;
-                    Dev2Logger.Log.Info("Debug Already Started");
+                    Dev2Logger.Info("Debug Already Started");
                 }
 
                 if (_debugState != null)
@@ -483,7 +483,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch (Exception err)
                     {
-                        Dev2Logger.Log.Error("DispatchDebugState", err);
+                        Dev2Logger.Error("DispatchDebugState", err);
                         AddErrorToDataList(err, dataObject);
                         var errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
@@ -521,7 +521,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    Dev2Logger.Log.Debug("Debug already initialised");
+                    Dev2Logger.Debug("Debug already initialised");
                 }
 
                 if(_debugState != null)
@@ -548,7 +548,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error("Debug Dispatch Error", e);
+                        Dev2Logger.Error("Debug Dispatch Error", e);
                         AddErrorToDataList(e,dataObject);
                         errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
@@ -750,7 +750,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 errorBuilder.AppendLine(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
             }
-            Dev2Logger.Log.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()));
+            Dev2Logger.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()));
         }
 
         #endregion
@@ -807,7 +807,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch (Exception ex)
             {
                 data.Environment.AddError(ex.Message);
-                Dev2Logger.Log.Error("OnExecute", ex);
+                Dev2Logger.Error("OnExecute", ex);
             
             }
             finally
@@ -866,7 +866,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
         }
 

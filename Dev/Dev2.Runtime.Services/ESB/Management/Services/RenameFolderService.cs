@@ -54,12 +54,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException("newPath value not supplied.");
                 }
-                Dev2Logger.Log.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
+                Dev2Logger.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             var serializer = new Dev2JsonSerializer();

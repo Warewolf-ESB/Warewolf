@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error("Error writing settings.", ex);
+                Dev2Logger.Error("Error writing settings.", ex);
                 result.HasError = true;
                 result.Message.AppendLine("Error writing settings.");
             }
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Error writing logging configuration.", ex);
+                Dev2Logger.Error("Error writing logging configuration.", ex);
                 result.HasError = true;
                 result.Message.AppendLine("Error writing logging configuration.");
             }
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Error writing settings configuration.", ex);
+                Dev2Logger.Error("Error writing settings configuration.", ex);
                 result.HasError = true;
                 result.Message.AppendLine("Error writing settings configuration.");
             }

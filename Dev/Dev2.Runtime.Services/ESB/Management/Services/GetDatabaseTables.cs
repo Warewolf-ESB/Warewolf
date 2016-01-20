@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbTableList("No database set.");
-                Dev2Logger.Log.Debug("No database set.");
+                Dev2Logger.Debug("No database set.");
                 return serializer.SerializeToBuilder(res);
             }
 
@@ -84,26 +84,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
             if(runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
-                Dev2Logger.Log.Debug("Invalid Database source");
+                Dev2Logger.Debug("Invalid Database source");
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
-                Dev2Logger.Log.Debug(String.Format("Invalid database sent {0}.", database));
+                Dev2Logger.Debug(String.Format("Invalid database sent {0}.", database));
                 return serializer.SerializeToBuilder(res);
             }
 
             try
             {
-                Dev2Logger.Log.Info("Get Database Tables. " + dbSource.DatabaseName);
+                Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName);
                 var tables = new DbTableList();
                 DataTable columnInfo;
                 switch(dbSource.ServerType)

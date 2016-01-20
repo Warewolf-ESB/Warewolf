@@ -145,7 +145,7 @@ namespace Dev2.Activities
                     allErrors.AddError(e.Message);
                 }
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Log.Error(this, e);
+                Dev2Logger.Error(this, e);
                 // ReSharper restore InvokeAsExtensionMethod
             }
             finally

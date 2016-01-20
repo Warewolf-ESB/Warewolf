@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error("DSFBaseConvert", e);
+                        Dev2Logger.Error("DSFBaseConvert", e);
                         allErrors.AddError(e.Message);
                         if(dataObject.IsDebugMode())
                         {
@@ -146,7 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFBaseConvert", e);
+                Dev2Logger.Error("DSFBaseConvert", e);
                 allErrors.AddError(e.Message);
             }
             finally

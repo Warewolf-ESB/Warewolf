@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Log.Info("Save Sharepoint Source");
+                Dev2Logger.Info("Save Sharepoint Source");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("SharepointServer", out resourceDefinition);
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
             }
 
             return serializer.SerializeToBuilder(msg);

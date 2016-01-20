@@ -174,7 +174,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFGatherSystemInformationTool", e);
+                Dev2Logger.Error("DSFGatherSystemInformationTool", e);
                 allErrors.AddError(e.Message);
             }
             finally
