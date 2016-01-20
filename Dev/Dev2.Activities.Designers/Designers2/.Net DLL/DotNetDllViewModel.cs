@@ -923,7 +923,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if(!Equals(value, _selectedSource))
                 {
-                    IsRefreshing = true;
+                    IsNamespaceRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
                     _selectedSource = value;
                     try
@@ -965,7 +965,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
                 }
-                IsRefreshing = false;
+                IsNamespaceRefreshing = false;
                 ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
