@@ -83,6 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     }
                 }
             }
+            result.Description = outputDescription;
             return result;
         }
 
