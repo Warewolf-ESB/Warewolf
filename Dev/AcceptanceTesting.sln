@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40121.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -179,8 +179,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Old", "Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj", "{CA1EC490-5138-4714-8188-15D4BF6334DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.DatabaseService", "Warewolf.AcceptanceTesting.DatabaseService\Warewolf.AcceptanceTesting.DatabaseService.csproj", "{3CD8F730-F6E5-4642-9927-6F6665D92021}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Core", "Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj", "{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}"
 	ProjectSection(ProjectDependencies) = postProject
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {87AEFD04-29F3-45B6-A7C6-4161F9190876}
@@ -232,15 +230,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Variables", "Warewolf.AcceptanceTesting.Variables\Warewolf.AcceptanceTesting.Variables.csproj", "{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.WebService", "Warewolf.AcceptanceTesting.WebService\Warewolf.AcceptanceTesting.WebService.csproj", "{FCD5E320-6E0E-4650-97F4-297027E0536D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.WebSource", "Warewolf.AcceptanceTesting.WebSource\Warewolf.AcceptanceTesting.WebSource.csproj", "{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Settings", "Warewolf.AcceptanceTesting.Settings\Warewolf.AcceptanceTesting.Settings.csproj", "{9F5B231B-8C58-4630-8A09-5CB6049C44C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.DatabaseSource", "Warewolf.AcceptanceTesting.DatabaseSource\Warewolf.AcceptanceTesting.DatabaseSource.csproj", "{2406B584-C85C-4676-8186-5523618EEB5B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.PluginService", "Warewolf.AcceptanceTesting.PluginService\Warewolf.AcceptanceTesting.PluginService.csproj", "{42133203-3100-4809-8EA8-CEA0B3CF2F89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.PluginSource", "Warewolf.AcceptanceTesting.PluginSource\Warewolf.AcceptanceTesting.PluginSource.csproj", "{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}"
 EndProject
@@ -576,10 +570,6 @@ Global
 		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CD8F730-F6E5-4642-9927-6F6665D92021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CD8F730-F6E5-4642-9927-6F6665D92021}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CD8F730-F6E5-4642-9927-6F6665D92021}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CD8F730-F6E5-4642-9927-6F6665D92021}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -620,10 +610,6 @@ Global
 		{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D6080FD-9C9A-4A93-A5B3-55C701CD6BEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE8CC5D9-95D5-4497-910F-E077D4B15FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -636,10 +622,6 @@ Global
 		{2406B584-C85C-4676-8186-5523618EEB5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2406B584-C85C-4676-8186-5523618EEB5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2406B584-C85C-4676-8186-5523618EEB5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42133203-3100-4809-8EA8-CEA0B3CF2F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42133203-3100-4809-8EA8-CEA0B3CF2F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42133203-3100-4809-8EA8-CEA0B3CF2F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42133203-3100-4809-8EA8-CEA0B3CF2F89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE8DF7ED-7B50-4FC9-B107-CC76A4920D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU

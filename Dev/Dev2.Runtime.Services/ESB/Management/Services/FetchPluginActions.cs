@@ -38,21 +38,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 //src.AssemblyName = ns.FullName;
                 if(ns != null)
                 {
-                    PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
+                PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
 
-                    var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction()
-                    {
-                        FullName = ns.FullName,
-                        Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),
-                        Method = a.Name,
-                        Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
-                    } as IPluginAction
-                        ).ToList();
-                    return serializer.SerializeToBuilder(new ExecuteMessage()
-                    {
-                        HasError = false,
-                        Message = serializer.SerializeToBuilder(methods)
-                    });
+                var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction
+                {
+                    FullName = ns.FullName,
+                    Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),
+                    Method = a.Name,
+                    Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
+                } as IPluginAction
+                    ).ToList();
+                return serializer.SerializeToBuilder(new ExecuteMessage()
+                {
+                    HasError = false,
+                    Message = serializer.SerializeToBuilder(methods)
+                });
                 }
                 // ReSharper disable once RedundantIfElseBlock
                 else

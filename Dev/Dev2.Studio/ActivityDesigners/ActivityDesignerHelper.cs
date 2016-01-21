@@ -119,7 +119,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
-                { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
@@ -129,8 +128,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
                 //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
                 //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
-
-                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);
