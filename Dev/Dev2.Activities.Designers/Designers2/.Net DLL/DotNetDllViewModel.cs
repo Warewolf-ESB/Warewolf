@@ -39,7 +39,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
         readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
-        readonly string _namespaceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceNamespaceNotSelected;
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
@@ -262,9 +261,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             var pluginServiceDefinition = new PluginServiceDefinition
             {
                 Source = SelectedSource,
-                Action = SelectedMethod
+                Action = SelectedMethod,
+                Inputs = new List<IServiceInput>()
             };
-            pluginServiceDefinition.Inputs = new List<IServiceInput>();
             foreach (var serviceInput in Inputs)
             {
                 pluginServiceDefinition.Inputs.Add(serviceInput);
@@ -289,13 +288,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
                         var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
-                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                        if(responseService.RecordsetList.Any(recordset => recordset.HasErrors))
                         {
                             var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-                        if (responseService != null)
-                        {
 
                             ManageServiceInputViewModel.Description = responseService.Description;
                             // ReSharper disable MaximumChainedReferences
@@ -308,9 +305,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             // ReSharper restore MaximumChainedReferences
 
                             ManageServiceInputViewModel.OutputMappings = outputMapping;
-
-                        }
-                        if (ManageServiceInputViewModel.TestResults != null)
+                        if(ManageServiceInputViewModel.TestResults != null)
                         {
                             ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
                             TestSuccessful = true;
@@ -368,23 +363,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             TestSuccessful = false;
             IsTesting = false;
             TestResults = null;
-        }
-        List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
-        {
-            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            RecordsetName = MethodName.Replace(".", "_");
-            if (testResults != null && testResults.Columns != null)
-            {
-                for (int i = 0; i < testResults.Columns.Count; i++)
-                {
-                    var column = testResults.Columns[i];
-                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), RecordsetName);
-                    mappings.Add(dbOutputMapping);
-                }
-                return mappings;
-            }
-            return new List<IServiceOutputMapping>();
         }
 
         public string RecordsetName
@@ -932,7 +910,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     catch (Exception e)
                     {
-
                         Methods = new List<IPluginAction>();
                         SelectedMethod = null;
                         ActionVisible = false;
@@ -943,7 +920,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
-
                 }
                 IsRefreshing = false;
             }
@@ -1117,7 +1093,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                SetProperty<IPluginAction>(value);
+                SetProperty(value);
             }
         }
         public bool IsRefreshing
