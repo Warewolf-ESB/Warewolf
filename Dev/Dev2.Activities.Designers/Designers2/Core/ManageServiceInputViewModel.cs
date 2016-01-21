@@ -85,6 +85,10 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResultsAvailable = value;
+                if (_testResultsAvailable)
+                {
+                    _manageServiceInputView.OutputDataGridResize();
+                }
                 OnPropertyChanged(()=>TestResultsAvailable);
             }
         }
