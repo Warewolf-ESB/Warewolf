@@ -85,8 +85,6 @@ namespace Dev2.Activities.Designers2.Service
             }
             AddTitleBarMappingToggle();
 
-            // PBI 6690 - 2013.07.04 - TWR : added
-            // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
