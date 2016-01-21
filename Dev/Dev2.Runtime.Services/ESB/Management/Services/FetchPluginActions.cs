@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 //src.AssemblyName = ns.FullName;
                 PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
 
-                var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction()
+                var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction
                 {
                     FullName = ns.FullName,
                     Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),

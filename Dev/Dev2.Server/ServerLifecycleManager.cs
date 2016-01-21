@@ -1712,83 +1712,20 @@ namespace Dev2
                             {
                                 if(chart.Nodes.Count > 0)
                                 {
-                                    var updated = false;
+                                    var mustUpdate = false;
                                     foreach(var flowNode in chart.Nodes)
                                     {
                                         var flowStep = flowNode as FlowStep;
                                         if(flowStep != null)
                                         {
-                                            var dbActivity = flowStep.Action as DsfDatabaseActivity;
-                                            var forEachActivity = flowStep.Action as DsfForEachActivity;
-                                            if(dbActivity == null)
+                                            var updated = MigrateDatabaseActivity(flowStep) || MigratePluginActivity(flowStep);
+                                            if(updated)
                                             {
-                                                
-                                                if(forEachActivity != null)
-                                                {
-                                                    dbActivity = forEachActivity.DataFunc.Handler as DsfDatabaseActivity;
-                                                }
+                                                mustUpdate = true;
                                             }
-                                            DbService service = null;
-                                            if(dbActivity != null)
-                                            {
-                                                updated = true;
-                                                var dbId = dbActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivity.ResourceID.Expression.ToString());
-                                                service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId);                                                
-                                            }
-                                            else
-                                            {
-                                                var dbActivityAsActivity = flowStep.Action as DsfActivity;
-                                                if (dbActivityAsActivity == null)
-                                                {
-                                                    forEachActivity = flowStep.Action as DsfForEachActivity;
-                                                    if (forEachActivity != null)
-                                                    {
-                                                        dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
-                                                    }
-                                                }
-                                                if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
-                                                {
-                                                    updated = true;
-                                                    var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
-                                                    service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId) ??
-                                                              ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbActivityAsActivity.ServiceName);
-                                                }
-                                            }
-                                            if (service != null)
-                                            {
-                                                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
-                                                             ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
-                                                if (source != null)
-                                                {
-                                                    if (source.ServerType == enSourceType.MySqlDatabase)
-                                                    {
-                                                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
-                                                        if(forEachActivity != null)
-                                                        {
-                                                            forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
-                                                        }
-                                                        else
-                                                        {
-                                                        flowStep.Action = dsfMySqlDatabaseActivity;
-                                                    }
-                                                    }
-                                                    else if (source.ServerType == enSourceType.SqlDatabase)
-                                                    {
-                                                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
-                                                        if (forEachActivity != null)
-                                                        {
-                                                            forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
-                                                        }
-                                                        else
-                                                        {
-                                                        flowStep.Action = dsfSqlServerDatabaseActivity;
-                                                    }
-                                                }
-                                            }
-                                        }                                        
+                                        }
                                     }
-                                    }
-                                    if(updated)
+                                    if (mustUpdate)
                                     {
                                         UpdateXaml(chart, resource);
                                     }
@@ -1802,6 +1739,212 @@ namespace Dev2
                     }
                 }
             }
+        }
+
+        private bool MigratePluginActivity(FlowStep flowStep)
+        {
+            var pluginActivity = flowStep.Action as DsfPluginActivity;
+            var forEachActivity = flowStep.Action as DsfForEachActivity;
+            DsfActivity pluginActivityAsActivity = null;
+            var updated = false;
+            if (pluginActivity == null)
+            {
+                if (forEachActivity != null)
+                {
+                    pluginActivity = forEachActivity.DataFunc.Handler as DsfPluginActivity;
+                }
+            }
+            PluginService service = null;
+             if (pluginActivity != null)
+            {
+                updated = true;
+                var dbId = pluginActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(pluginActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, dbId);
+            }
+            else
+            {
+                pluginActivityAsActivity = flowStep.Action as DsfActivity;
+                if(pluginActivityAsActivity == null)
+                {
+                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                    if(forEachActivity != null)
+                    {
+                        pluginActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if (pluginActivityAsActivity != null && pluginActivityAsActivity.Type.Expression.ToString() == "Plugin")
+                {
+                    updated = true;
+                    var dbId = pluginActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(pluginActivityAsActivity.ResourceID.Expression.ToString());
+                    service = ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, dbId) ??
+                              ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, pluginActivityAsActivity.ServiceName);
+                }
+            }
+            if(service != null)
+            {
+                var source = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                             ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                if(source != null)
+                {
+                    string inputMapping;
+                    string outputMapping;
+                    DsfDotNetDllActivity dotNetActivity;
+                    var pluginAction = new PluginAction
+                    {
+                        FullName = service.Method.FullName,
+                        Method = service.Method.ExecuteAction,
+                        Inputs = service.Method.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),
+                        Variables = service.Method.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList()
+                    };
+                    var namespaceItem = new NamespaceItem
+                    {
+                        FullName = service.Namespace,
+                        AssemblyLocation = source.AssemblyLocation,
+                        AssemblyName = source.AssemblyName,
+                        MethodName = service.Method.Name
+                    };
+                    if(pluginActivity != null)
+                    {
+                        inputMapping = pluginActivity.InputMapping;
+                        outputMapping = pluginActivity.OutputMapping;
+                        dotNetActivity = new DsfDotNetDllActivity
+                        {
+                            UniqueID = pluginActivity.UniqueID,
+                            ToolboxFriendlyName = pluginActivity.ToolboxFriendlyName,
+                            IconPath = pluginActivity.IconPath,
+                            ServiceName = pluginActivity.ServiceName,
+                            DataTags = pluginActivity.DataTags,
+                            ResultValidationRequiredTags = pluginActivity.ResultValidationRequiredTags,
+                            ResultValidationExpression = pluginActivity.ResultValidationExpression,
+                            FriendlySourceName = pluginActivity.FriendlySourceName,
+                            EnvironmentID = pluginActivity.EnvironmentID,
+                            Type = pluginActivity.Type,
+                            RunWorkflowAsync = pluginActivity.RunWorkflowAsync,
+                            Category = pluginActivity.Category,
+                            ServiceUri = pluginActivity.ServiceUri,
+                            ServiceServer = pluginActivity.ServiceServer,
+                            ParentServiceName = pluginActivity.ParentServiceName,
+                            ParentServiceID = pluginActivity.ParentServiceID,
+                            ParentWorkflowInstanceId = pluginActivity.ParentWorkflowInstanceId,
+                            ParentInstanceID = pluginActivity.ParentInstanceID,
+                        };
+                    }
+                    else
+                    {
+                        inputMapping = pluginActivityAsActivity.InputMapping;
+                        outputMapping = pluginActivityAsActivity.OutputMapping;
+                        dotNetActivity = new DsfDotNetDllActivity
+                        {
+                            UniqueID = pluginActivityAsActivity.UniqueID,
+                            ToolboxFriendlyName = pluginActivityAsActivity.ToolboxFriendlyName,
+                            IconPath = pluginActivityAsActivity.IconPath,
+                            ServiceName = pluginActivityAsActivity.ServiceName,
+                            DataTags = pluginActivityAsActivity.DataTags,
+                            ResultValidationRequiredTags = pluginActivityAsActivity.ResultValidationRequiredTags,
+                            ResultValidationExpression = pluginActivityAsActivity.ResultValidationExpression,
+                            FriendlySourceName = pluginActivityAsActivity.FriendlySourceName,
+                            EnvironmentID = pluginActivityAsActivity.EnvironmentID,
+                            Type = pluginActivityAsActivity.Type,
+                            RunWorkflowAsync = pluginActivityAsActivity.RunWorkflowAsync,
+                            Category = pluginActivityAsActivity.Category,
+                            ServiceUri = pluginActivityAsActivity.ServiceUri,
+                            ServiceServer = pluginActivityAsActivity.ServiceServer,
+                            ParentServiceName = pluginActivityAsActivity.ParentServiceName,
+                            ParentServiceID = pluginActivityAsActivity.ParentServiceID,
+                            ParentWorkflowInstanceId = pluginActivityAsActivity.ParentWorkflowInstanceId,
+                            ParentInstanceID = pluginActivityAsActivity.ParentInstanceID,
+                        };
+                    }
+                    dotNetActivity.ActionName = service.Method.ExecuteAction;
+                    dotNetActivity.Method = pluginAction;
+                    dotNetActivity.Namespace = namespaceItem;
+                    dotNetActivity.SourceId = source.ResourceID;
+                    dotNetActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                    dotNetActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    if(forEachActivity != null)
+                    {
+                        forEachActivity.DataFunc.Handler = dotNetActivity;
+                    }
+                    else
+                    {
+                        flowStep.Action = dotNetActivity;
+                    }
+                }
+            }
+            return updated;
+        }
+
+        private static bool MigrateDatabaseActivity(FlowStep flowStep)
+        {
+            var dbActivity = flowStep.Action as DsfDatabaseActivity;
+            var forEachActivity = flowStep.Action as DsfForEachActivity;
+            var updated = false;
+            if(dbActivity == null)
+            {
+                if(forEachActivity != null)
+                {
+                    dbActivity = forEachActivity.DataFunc.Handler as DsfDatabaseActivity;
+                }
+            }
+            DbService service = null;
+            if(dbActivity != null)
+            {
+                updated = true;
+                var dbId = dbActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId);
+            }
+            else
+            {
+                var dbActivityAsActivity = flowStep.Action as DsfActivity;
+                if(dbActivityAsActivity == null)
+                {
+                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                    if(forEachActivity != null)
+                    {
+                        dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if(dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
+                {
+                    updated = true;
+                    var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
+                    service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId) ??
+                              ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbActivityAsActivity.ServiceName);
+                }
+            }
+            if(service != null)
+            {
+                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                             ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                if(source != null)
+                {
+                    if(source.ServerType == enSourceType.MySqlDatabase)
+                    {
+                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
+                        if(forEachActivity != null)
+                        {
+                            forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
+                        }
+                        else
+                        {
+                            flowStep.Action = dsfMySqlDatabaseActivity;
+                        }
+                    }
+                    else if(source.ServerType == enSourceType.SqlDatabase)
+                    {
+                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
+                        if(forEachActivity != null)
+                        {
+                            forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
+                        }
+                        else
+                        {
+                            flowStep.Action = dsfSqlServerDatabaseActivity;
+                        }
+                    }
+                }
+            }
+            return updated;
         }
 
         private static void UpdateXaml(Flowchart chart, IResource resource)
