@@ -36,6 +36,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 PluginServices services = new PluginServices();
                 var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 //src.AssemblyName = ns.FullName;
+                if(ns != null)
+                {
                 PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
 
                 var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction
@@ -51,6 +53,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                     HasError = false,
                     Message = serializer.SerializeToBuilder(methods)
                 });
+                }
+                // ReSharper disable once RedundantIfElseBlock
+                else
+                {
+                    return serializer.SerializeToBuilder(new ExecuteMessage()
+                    {
+                        HasError = false,
+                        Message = serializer.SerializeToBuilder(new List<IPluginAction>())
+                    });
+                }
+
                 // ReSharper restore MaximumChainedReferences
             }
             catch (Exception e)

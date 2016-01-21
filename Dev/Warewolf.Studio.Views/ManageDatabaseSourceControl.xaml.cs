@@ -6,8 +6,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Infragistics.Controls.Editors.Primitives;
-using Infragistics.Windows;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -176,7 +174,7 @@ namespace Warewolf.Studio.Views
 
         public string GetSelectedDbOption()
         {
-            return ServerTypeComboBox.SelectedValue.ToString();
+            return ServerTypeComboBox.SelectedItem.ToString();
         }
 
         public void Test()
