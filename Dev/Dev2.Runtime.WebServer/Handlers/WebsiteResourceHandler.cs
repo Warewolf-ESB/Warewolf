@@ -75,7 +75,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         IResponseWriter GetFileFromPath(Uri uri)
         {
-            var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
+            var filePath = string.Format("{0}{1}\\{2}", Location,
                 Path.GetDirectoryName(uri.LocalPath),
                 Path.GetFileName(uri.LocalPath));
             return GetFileFromPath(filePath);
