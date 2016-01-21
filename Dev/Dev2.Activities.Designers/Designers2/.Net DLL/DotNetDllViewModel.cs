@@ -294,17 +294,17 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             throw new Exception(errorMessage);
                         }
 
-                        ManageServiceInputViewModel.Description = responseService.Description;
-                        // ReSharper disable MaximumChainedReferences
-                        var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
-                        {
-                            RecordsetName = recordset.Name;
-                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
-                            return serviceOutputMapping;
-                        }).Cast<IServiceOutputMapping>().ToList();
-                        // ReSharper restore MaximumChainedReferences
+                            ManageServiceInputViewModel.Description = responseService.Description;
+                            // ReSharper disable MaximumChainedReferences
+                            var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                            {
+                                RecordsetName = recordset.Name;
+                                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
+                                return serviceOutputMapping;
+                            }).Cast<IServiceOutputMapping>().ToList();
+                            // ReSharper restore MaximumChainedReferences
 
-                        ManageServiceInputViewModel.OutputMappings = outputMapping;
+                            ManageServiceInputViewModel.OutputMappings = outputMapping;
                         if(ManageServiceInputViewModel.TestResults != null)
                         {
                             ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
@@ -756,9 +756,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel.Errors == null || RootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            var errors = RootModel.GetErrors(uniqueId).Cast<ErrorInfo>();
+            designValidationMemo.Errors.AddRange(errors);
 
             if (environmentModel == null)
             {
@@ -961,8 +962,15 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             OutputsVisible = false;
                             OutputsExpanded = false;
                         }
-                        NamespaceVisible = Namespaces.Count != 0 && Namespaces != null;
-                        ActionVisible = Methods.Count != 0 && Methods != null;
+                        NamespaceVisible = Namespaces.Count != 0;
+                        if(Methods != null)
+                        {
+                            ActionVisible = Methods.Count != 0;
+                        }
+                        else
+                        {
+                            ActionVisible = false;
+                        }
                         if (Namespaces.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
