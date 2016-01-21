@@ -165,7 +165,7 @@ namespace Dev2.Common
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 if (eventAppender == null)
                 {
-                    var fileAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
+                    var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
                     ConfigureEventLoggerAppender(applicationNameForEventLog,"ERROR", fileAppender);
                     var rootElement = log4netElement.Element("root");
                     AddEventLogLogger(rootElement);
@@ -177,7 +177,7 @@ namespace Dev2.Common
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
-            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async");
+            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
             if(fileAppender != null)
             {
                 var maxFileSizeElement = fileAppender.Element("maximumFileSize");
