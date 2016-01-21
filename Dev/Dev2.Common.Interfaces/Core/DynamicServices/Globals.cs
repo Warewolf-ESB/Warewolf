@@ -110,6 +110,10 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         MySqlDatabase,
 
         /// <summary>
+        ///     A Oracle database
+        /// </summary>
+        Oracle,
+        /// <summary>
         ///     A SOAP based Web Service: REST web services are not supported
         /// </summary>
         WebService,

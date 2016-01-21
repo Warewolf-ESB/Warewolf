@@ -86,6 +86,38 @@ namespace Dev2.Utilities
             return dsfMySqlDatabaseActivity;
         }
 
+        public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
+        {
+            var DsfOracleDatabaseActivity = new DsfOracleDatabaseActivity
+            {
+                ResourceID = dbActivity.ResourceID,
+                SourceId = source.ResourceID,
+                ProcedureName = service.Method.ExecuteAction,
+                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                IconPath = dbActivity.IconPath,
+                ServiceName = dbActivity.ServiceName,
+                DataTags = dbActivity.DataTags,
+                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                ResultValidationExpression = dbActivity.ResultValidationExpression,
+                FriendlySourceName = dbActivity.FriendlySourceName,
+                EnvironmentID = dbActivity.EnvironmentID,
+                Type = dbActivity.Type,
+                ActionName = dbActivity.ActionName,
+                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                Category = dbActivity.Category,
+                ServiceUri = dbActivity.ServiceUri,
+                ServiceServer = dbActivity.ServiceServer,
+                UniqueID = dbActivity.UniqueID,
+                ParentServiceName = dbActivity.ParentServiceName,
+                ParentServiceID = dbActivity.ParentServiceID,
+                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                ParentInstanceID = dbActivity.ParentInstanceID,
+            };
+            return DsfOracleDatabaseActivity;
+        }
+
         public static ICollection<IServiceOutputMapping> TranslateOutputMappingToOutputs(string outputMapping)
         {
             var outputDefs = DataListFactory.CreateOutputParser().Parse(outputMapping);

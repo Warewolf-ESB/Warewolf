@@ -170,6 +170,7 @@
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfOracleDatabaseActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />

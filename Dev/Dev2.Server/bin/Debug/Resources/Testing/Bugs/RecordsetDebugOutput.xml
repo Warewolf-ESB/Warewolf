@@ -1,5 +1,5 @@
 
-<Service ID="30646a03-91c9-4e5d-a4d3-b4a042a21f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RecordsetDebugOutput" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5854.28948">
+<Service ID="30646a03-91c9-4e5d-a4d3-b4a042a21f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RecordsetDebugOutput" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5864.27579">
   <DisplayName>RecordsetDebugOutput</DisplayName>
   <Category>Testing\Bugs\RecordsetDebugOutput</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

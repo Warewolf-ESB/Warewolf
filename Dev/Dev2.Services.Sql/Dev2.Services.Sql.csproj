@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +62,8 @@
     <Compile Include="DbFactory.cs" />
     <Compile Include="MySqlDbFactory.cs" />
     <Compile Include="MySqlServer.cs" />
+    <Compile Include="OracleServer.cs" />
+    <Compile Include="OracleSqlFactory.cs" />
     <Compile Include="SqlServer.cs" />
   </ItemGroup>
   <ItemGroup>

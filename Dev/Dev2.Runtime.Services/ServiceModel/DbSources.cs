@@ -167,5 +167,10 @@ namespace Dev2.Runtime.ServiceModel
 
             return new MySqlDatabaseBroker();
         }
+        protected virtual OracleDatabaseBroker CreateOracleDatabaseBroker(enSourceType type)
+        {
+
+            return new OracleDatabaseBroker();
+        }
     }
 }

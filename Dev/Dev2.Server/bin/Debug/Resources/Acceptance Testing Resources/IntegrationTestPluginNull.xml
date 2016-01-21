@@ -1,5 +1,5 @@
 
-<Service ID="b767fc64-7816-46a9-9a61-f7412a168e97" Version="1.0" Name="IntegrationTestPluginNull" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5854.28948">
+<Service ID="b767fc64-7816-46a9-9a61-f7412a168e97" Version="1.0" Name="IntegrationTestPluginNull" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.0.5864.27579">
   <Actions>
     <Action Name="IntegrationTestPluginNull" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
