@@ -1111,26 +1111,13 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>
-      xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-      xcopy /Y /Q /R "$(TargetName).pdb" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-    </PostBuildEvent>
+  <PropertyGroup>
+    <PreBuildEvent>if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)BakeInVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)BakeInVersion.ps1"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
-REM Visual Studio expects 0 when successful
-set rce=%25errorlevel%25
-if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-copy "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
+copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
+if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)ReadOutVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)ReadOutVersion.ps1"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
