@@ -240,3 +240,68 @@ Scenario: Invalid Recordset name
 	Then the debug output as 
 	|                                          |
 	| Error : input must be recordset or value |
+
+
+
+@ignore
+Scenario: No Action to be loaded Error
+	Given I have a workflow "NoStoredProceedure"
+	And "NoStoredProceedure" contains "Testing/MySql/MySQLEmpty" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "NoStoredProceedure" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySQLEmpty' in Workflow 'NoStoredProceedure' debug outputs as
+	  |                                                                  |
+	  | Error: The selected database does not contain actions to perform |
+
+@ignore
+Scenario: Passing Null Input value
+	Given I have a workflow "PassingNullValue"
+	And "PassingNullValue" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | [[value]]                  | a         | True          |
+	When "PassingNullValue" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'PassingNullValue' debug outputs as
+	  |                                       |
+	  | Error: Scalar value { value } is NULL |
+
+@ignore
+Scenario: Mapped To Recordsets incorrect
+	Given I have a workflow "WillAlwaysError"
+	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	And And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with Mapping To as
+	| Mapped From | Mapped To               |
+	| 1           | [[willalwayserror().1]] |
+	When "WillAlwaysError" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'WillAlwaysError' debug outputs as
+	  |                                                                    |
+	  | [[willalwayserror()]]: Recordset must contain one or more field(s) |
+
+
+@ignore
+Scenario: Parameter not found in the collection
+	Given I have a workflow "BadMySqlParameterName"
+	And "BadMySqlParameterName" contains "Testing/MySql/MySqlParameters" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
+	     |                            | `p_startswith` | false         |
+	When "BadMySqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	  |                                                      |
+	  | Parameter 'p_startswith' not found in the collection |
+
+
+@ignore
+Scenario: Recordset has invalid character
+	Given I have a workflow "RenameRecordsetIncorrectly"
+	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "RenameRecordsetIncorrectly" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'RenameRecordsetIncorrectly' debug outputs as
+	  |                                                              |
+	  | [[getCountrie.s().id]] : Recordset name has invalid format   |
+	  | [[getCountrie.s().value]]: Recordset name has invalid format |

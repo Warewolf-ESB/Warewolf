@@ -186,25 +186,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         #endregion
-
-        #region FindRecords Activity Tests
-
-        [TestMethod]
-        public void GetActivityFieldsOffDsfFindRecordsActivityExpectedAllFindMissingFieldsToBeReturned()
-        {
-            DsfFindRecordsActivity activity = new DsfFindRecordsActivity();
-            activity.FieldsToSearch = "[[FieldsToSearch]]";
-            activity.SearchCriteria = "[[SearchCriteria]]";
-            activity.Result = "[[Result]]";
-            activity.StartIndex = "[[StartIndex]]";
-            Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
-            IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
-            List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[FieldsToSearch]]", "[[SearchCriteria]]", "[[Result]]", "[[StartIndex]]" };
-            CollectionAssert.AreEqual(expected, actual);
-        }
-
-        #endregion
+        
 
         #region ForEach Activity Tests
 

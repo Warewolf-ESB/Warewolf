@@ -57,6 +57,14 @@ namespace Dev2.Activities.Designers2.Core
             _window.Close();
         }
 
+        public void OutputDataGridResize()
+        {
+            if (OutputsDataGrid != null && (OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10))
+            {
+                OutputsDataGrid.ColumnWidth = ColumnWidth.SizeToHeader;
+            }
+        }
+
         #region Implementation of IComponentConnector
 
         /// <summary>
@@ -72,19 +80,6 @@ namespace Dev2.Activities.Designers2.Core
         void TestActionButton_OnClick(object sender, RoutedEventArgs e)
         {
             DoneButton.IsEnabled = true;
-        }
-
-        void OutputsDataGrid_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var grid = sender as XamGrid;
-
-            if (grid != null)
-            {
-                if (grid.Columns != null && grid.Columns.Count > 10)
-                {
-                    grid.ColumnWidth = ColumnWidth.SizeToHeader;
-                }
-            }
         }
     }
 }

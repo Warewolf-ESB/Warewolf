@@ -109,7 +109,6 @@
                             AutoGenerateColumns="True" 
                             RowHover="Row"
                             IsAlternateRowsEnabled="False" 
-                            SizeChanged="OutputsDataGrid_OnSizeChanged"
                             Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
                             DeleteKeyAction="DeleteRowOfActiveCell"
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
