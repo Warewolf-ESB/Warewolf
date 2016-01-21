@@ -248,8 +248,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             {
                 Action = SelectedProcedure,
                 Source = SelectedSource,
+                Inputs = new List<IServiceInput>()
             };
-            databaseService.Inputs = new List<IServiceInput>();
             foreach(var serviceInput in Inputs)
             {
                 databaseService.Inputs.Add(new ServiceInput(serviceInput.Name,""));
