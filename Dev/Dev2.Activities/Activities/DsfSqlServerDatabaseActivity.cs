@@ -8,7 +8,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Sql Server Connector", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "SQL Server Connector", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfSqlServerDatabaseActivity : DsfActivity
     {
 
@@ -18,8 +18,8 @@ namespace Dev2.Activities
 
         public DsfSqlServerDatabaseActivity()
         {
-            Type = "Sql Server Database Connector";
-            DisplayName = "Sql Server Database Connector";
+            Type = "SQL Server Database Connector";
+            DisplayName = "SQL Server Database Connector";
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
