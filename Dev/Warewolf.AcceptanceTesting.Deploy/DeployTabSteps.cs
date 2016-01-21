@@ -160,6 +160,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
             });
             server.Setup(a => a.EnvironmentID).Returns(Guid.NewGuid());
             server.Setup(a => a.IsConnected).Returns(true);
+            server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             FeatureContext.Current["DestinationServer"] = server;
             return new List<IServer>
             {
