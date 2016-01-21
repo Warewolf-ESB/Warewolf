@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
                 ConflictItems = _stats.Conflicts;
                 NewItems = _stats.New;
                 ShowConflicts = false;
-                if (_stats.RenameErrors.Length > 0)
+                if (!string.IsNullOrEmpty(_stats.RenameErrors))
                 {
                     _popupController.ShowDeployNameConflict(_stats.RenameErrors);
                 }
