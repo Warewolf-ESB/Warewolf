@@ -34,16 +34,16 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
-    public class DotNetDllViewModel :ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
+    public class DotNetDllViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
-         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
         readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
         readonly string _namespaceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceNamespaceNotSelected;
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
-        
+
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
@@ -155,7 +155,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Methods = _dllModel.GetActions(_selectedSource, _selectedNamespace);
                         if (keepSelectedProcedure != null)
                         {
-                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
+                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == MethodName);
                         }
                     }
                     IsRefreshing = false;
@@ -183,9 +183,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if (!string.IsNullOrEmpty(ProcedureName))
+                        if (!string.IsNullOrEmpty(MethodName))
                         {
-                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
+                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == MethodName);
                             if (SelectedMethod == null)
                             {
                                 Inputs = new List<IServiceInput>();
@@ -194,7 +194,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                 InputsExpanded = false;
                                 OutputsVisible = false;
                                 OutputsExpanded = false;
-                                ProcedureName = "";
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
                             }
                         }
@@ -246,7 +245,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         private bool CanRefresh()
         {
-            return SelectedSource!=null;
+            return SelectedSource != null;
         }
 
         private bool CanEditSource()
@@ -266,7 +265,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 Action = SelectedMethod
             };
             pluginServiceDefinition.Inputs = new List<IServiceInput>();
-            foreach(var serviceInput in Inputs)
+            foreach (var serviceInput in Inputs)
             {
                 pluginServiceDefinition.Inputs.Add(serviceInput);
             }
@@ -297,7 +296,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         if (responseService != null)
                         {
-                      
+
                             ManageServiceInputViewModel.Description = responseService.Description;
                             // ReSharper disable MaximumChainedReferences
                             var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
@@ -313,7 +312,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         if (ManageServiceInputViewModel.TestResults != null)
                         {
-                            ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults!= null;
+                            ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
                             TestSuccessful = true;
                             ManageServiceInputViewModel.IsTesting = false;
                         }
@@ -351,7 +350,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-               SetProperty(value);
+                SetProperty(value);
             }
         }
 
@@ -370,12 +369,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IsTesting = false;
             TestResults = null;
         }
-
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            RecordsetName = ProcedureName.Replace(".","_");
+            RecordsetName = MethodName.Replace(".", "_");
             if (testResults != null && testResults.Columns != null)
             {
                 for (int i = 0; i < testResults.Columns.Count; i++)
@@ -397,11 +395,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if(Outputs != null)
+                if (Outputs != null)
                 {
-                    foreach(var serviceOutputMapping in Outputs)
+                    foreach (var serviceOutputMapping in Outputs)
                     {
-                        if(_recordsetName!=null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
+                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
                         {
                             serviceOutputMapping.RecordSetName = value;
                         }
@@ -530,7 +528,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set { SetValue(IsFixedProperty, value); }
         }
 
-        public static readonly DependencyProperty IsFixedProperty = 
+        public static readonly DependencyProperty IsFixedProperty =
             DependencyProperty.Register("IsFixed", typeof(bool), typeof(DotNetDllViewModel), new PropertyMetadata(true));
 
         public ICommand FixErrorsCommand { get; private set; }
@@ -538,9 +536,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
         public ICommand DoneCommand { get; private set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
-        
+
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-       
+
 
         public IContextualResourceModel RootModel { get; private set; }
 
@@ -576,12 +574,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
         }
 
         public static readonly DependencyProperty FriendlySourceNameValueProperty =
-           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(DotNetDllViewModel), new PropertyMetadata(null,OnFriendlyNameChanged));
-        
+           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(DotNetDllViewModel), new PropertyMetadata(null, OnFriendlyNameChanged));
+
         private static void OnFriendlyNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (DotNetDllViewModel)d;
-            if(viewModel != null)
+            if (viewModel != null)
             {
                 viewModel.FriendlySourceName = e.NewValue as string;
                 viewModel.InitializeProperties();
@@ -661,14 +659,17 @@ namespace Dev2.Activities.Designers2.Net_DLL
         }
 
         public string ServiceName { get { return GetProperty<string>(); } }
-      
-        string ProcedureName
+
+        string MethodName
         {
-            get { return GetProperty<string>(); }
-            set
+            get
             {
-                SetProperty(value);
-            }
+                if (_selectedMethod != null)
+                {
+                    return _selectedMethod.Method;
+                }
+                return "";
+            }            
         }
 
         public string FriendlySourceNameValue
@@ -683,7 +684,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 SetProperty(value);
-            }    
+            }
         }
 
         public string Type { get { return GetProperty<string>(); } }
@@ -720,7 +721,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private string _recordsetName;
         bool _isRefreshing;
         private INamespaceItem _selectedNamespace;
-        private ICollection<INamespaceItem> _namespaces ;
+        private ICollection<INamespaceItem> _namespaces;
         private bool _namespaceVisible;
         bool _isNamespaceRefreshing;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
@@ -812,7 +813,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         // ReSharper disable InconsistentNaming
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
         // ReSharper restore InconsistentNaming
-        {            
+        {
         }
 
 
@@ -856,7 +857,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", FriendlySourceName);
             AddProperty("Type :", Type);
-            AddProperty("Procedure :", ProcedureName);
+            AddProperty("Method :", MethodName);
         }
 
         void AddProperty(string key, string value)
@@ -887,7 +888,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _namespaces = value;
-                if(Namespace != null)
+                if (Namespace != null)
                 {
                     SelectedNamespace = Namespaces.FirstOrDefault(a => a.FullName == Namespace.FullName);
                 }
@@ -941,7 +942,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
-                
+
                 }
                 IsRefreshing = false;
             }
@@ -966,7 +967,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if(!Equals(value, _selectedSource))
+                if (!Equals(value, _selectedSource))
                 {
                     IsNamespaceRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
@@ -985,7 +986,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             OutputsExpanded = false;
                         }
                         NamespaceVisible = Namespaces.Count != 0;
-                        ActionVisible = false;
+                        ActionVisible = Methods.Count != 0;
                         if (Namespaces.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
@@ -997,7 +998,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             FriendlySourceNameValue = _selectedSource.Name;
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Methods = new List<IPluginAction>();
                         SelectedMethod = null;
@@ -1063,9 +1064,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 _methods = value;
-                if(Method!= null)
-                 {
-                     SelectedMethod = _methods.FirstOrDefault(a => a.FullName == Method.FullName);
+                if (Method != null)
+                {
+                    SelectedMethod = _methods.FirstOrDefault(a => a.FullName == Method.FullName);
                 }
                 OnPropertyChanged("Methods");
             }
@@ -1078,22 +1079,21 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if(!Equals(value, _selectedMethod))
+                if (!Equals(value, _selectedMethod))
                 {
                     _selectedMethod = value;
-                    if(_selectedMethod != null)
+                    if (_selectedMethod != null)
                     {
-                        if(!_isInitializing)
+                        if (!_isInitializing)
                         {
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             Inputs = _selectedMethod.Inputs;
-                        }                        
+                        }
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
                     OutputsVisible = false;
                     OutputsExpanded = false;
-                    ProcedureName = _selectedMethod!=null?_selectedMethod.Method:"";
                     InitializeProperties();
                     Method = _selectedMethod;
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
@@ -1215,7 +1215,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if(!Equals(value, _inputs))
+                if (!Equals(value, _inputs))
                 {
                     _inputs = value;
                     InputsVisible = true;
@@ -1253,7 +1253,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             ResourceType = Common.Interfaces.Data.ResourceType.PluginService.ToString();
             return "PluginService-32";
         }
-        
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -1279,7 +1279,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (checkSource && CheckSourceMissing())
                 {
                 }
-            }            
+            }
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -1298,7 +1298,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             });
             UpdateDesignValidationErrors(memo.Errors);
         }
-        
+
         void UpdateLastValidationMemoWithProcedureNotSelectedError()
         {
             var memo = new DesignValidationMemo
