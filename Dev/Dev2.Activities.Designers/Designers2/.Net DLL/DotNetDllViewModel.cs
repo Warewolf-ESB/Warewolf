@@ -985,8 +985,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             OutputsVisible = false;
                             OutputsExpanded = false;
                         }
-                        NamespaceVisible = Namespaces.Count != 0;
-                        ActionVisible = Methods.Count != 0;
+                        NamespaceVisible = Namespaces.Count != 0 && Namespaces != null;
+                        ActionVisible = Methods.Count != 0 && Methods != null;
                         if (Namespaces.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
