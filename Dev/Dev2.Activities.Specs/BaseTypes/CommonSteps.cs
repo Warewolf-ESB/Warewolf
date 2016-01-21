@@ -787,6 +787,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     actualValue = actualValue.Replace("A.D.", "AD");
                 }
+                else
+                {
+                    actualValue = actualValue.Replace("AD", "A.D.");
+                }
             }
             if (expectedValue.Contains("B.C."))
             {
@@ -794,6 +798,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 if (eraValue == -1) //The Era value does not use punctuation
                 {
                     actualValue = actualValue.Replace("B.C.", "BC");
+                }
+                else
+                {
+                    actualValue = actualValue.Replace("BC", "B.C.");
                 }
             }
             if (string.IsNullOrEmpty(type) && actualValue != null)
