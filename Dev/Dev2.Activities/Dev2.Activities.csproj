@@ -185,7 +185,6 @@
     <Compile Include="Activities\DsfDateTimeActivity.cs" />
     <Compile Include="Activities\DsfDateTimeDifferenceActivity.cs" />
     <Compile Include="Activities\DsfExecuteCommandLineActivity.cs" />
-    <Compile Include="Activities\DsfFindRecordsActivity.cs" />
     <Compile Include="Activities\DsfFlowDecisionActivity.cs" />
     <Compile Include="Activities\DsfFlowNodeActivity.cs" />
     <Compile Include="Activities\DsfFlowSwitchActivity.cs" />
