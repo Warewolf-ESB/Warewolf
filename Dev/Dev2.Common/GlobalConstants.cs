@@ -300,6 +300,10 @@ FROM sys.objects
 WHERE type_desc LIKE '%FUNCTION%'
 or type_desc LIKE '%Procedure%'";
         public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
+        public const string SchemaQueryOracle = @"SELECT OBJECT_NAME AS ROUTINE_NAME
+,OWNER AS SPECIFIC_SCHEMA
+,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE  OWNER = 'HR' AND OBJECT_TYPE IN
+('FUNCTION','PROCEDURE');";
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";

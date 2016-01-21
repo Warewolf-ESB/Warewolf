@@ -101,6 +101,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -298,6 +301,7 @@
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />

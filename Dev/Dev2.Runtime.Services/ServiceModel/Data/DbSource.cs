@@ -45,6 +45,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "MySqlDatabase":
                     ServerType = enSourceType.MySqlDatabase;
                     break;
+                case "OracleDatabase":
+                    ServerType = enSourceType.Oracle;
+                    Port = 5121;
+                    break;
                 default:
                     ServerType = enSourceType.Unknown;
                     break;
