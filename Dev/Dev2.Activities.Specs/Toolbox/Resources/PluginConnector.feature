@@ -23,13 +23,17 @@ Scenario: Opening Plugin Service Connector tab
 
 @ignore
 Scenario: Create new Plugin Source
-	Given I open New Plugin Service Connector
-	And "New Plugin Connector" tab is opened
-	And Select a source is focused
-	And all other steps are "Disabled"
-	And the "New" button is clicked
-	Then "New Plugin Source" isopened in another tab
-
+	Given I open New Plugin Tool
+	Then  "Sources" combobox is enabled
+	And  Selected Source is null
+	And Selected Namespace is Null
+	And Selected Method is Null
+	And Inputs are
+	| Input   | Default Value | Required Field | Empty Null |
+	And Outputs are
+	| Output | Output Alias |
+	And aa
+	And there are "no" validation errors of "" 
 @ignore
 Scenario: Creating Plugin Service by selecting existing source
 	Given I open New Plugin Service Connector
