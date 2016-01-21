@@ -335,7 +335,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             RecordsetName = ProcedureName.Replace(".", "_");
-            if (testResults != null && testResults.Columns != null)
+            if (testResults != null)
             {
                 for (int i = 0; i < testResults.Columns.Count; i++)
                 {
@@ -869,7 +869,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                         {
                             ErrorMessage(new Exception("The selected database does not contain actions to perform"));
                         }
-                        ActionVisible = Procedures.Count != 0;
+                        ActionVisible = Procedures.Count != 0 && Procedures != null;
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
