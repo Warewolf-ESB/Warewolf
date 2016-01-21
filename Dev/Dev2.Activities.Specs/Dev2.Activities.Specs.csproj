@@ -751,6 +751,10 @@
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
+      <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
+      <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
       <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
       <Name>Warewolf.Sharepoint</Name>

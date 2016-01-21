@@ -49,7 +49,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
-        readonly IEventAggregator _eventPublisher;
+        IEventAggregator _eventPublisher;
 
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
@@ -58,21 +58,35 @@ namespace Dev2.Activities.Designers2.Net_DLL
         const string FixText = "Fix";
         bool _isInitializing;
         public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManagePluginServiceInputViewModel())
+            : base(modelItem)
         {
+            AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var pluginServiceModel = CustomContainer.CreateInstance<IPluginServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManagePluginServiceInputViewModel(), pluginServiceModel);
         }
 
         public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
                                         IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManagePluginServiceInputViewModel())
-        {
-        }
-
-        public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManagePluginServiceInputViewModel manageServiceInputViewModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var pluginServiceModel = CustomContainer.CreateInstance<IPluginServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManagePluginServiceInputViewModel(), pluginServiceModel);
+        }
 
+        public DotNetDllViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManagePluginServiceInputViewModel manageServiceInputViewModel, IPluginServiceModel pluginServiceModel)
+            : base(modelItem)
+        {
+            AddTitleBarMappingToggle();
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, asyncWorker, manageServiceInputViewModel, pluginServiceModel);
+        }
+
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManagePluginServiceInputViewModel manageServiceInputViewModel, IPluginServiceModel pluginServiceModel)
+        {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -124,28 +138,28 @@ namespace Dev2.Activities.Designers2.Net_DLL
             InitializeValidationService(_environment);
             InitializeLastValidationMemo(_environment);
             ManageServiceInputViewModel = manageServiceInputViewModel;
-            if(_environment != null)
+            if (_environment != null)
             {
                 _isInitializing = true;
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var server = shellViewModel.ActiveServer;
-                _dllModel = CustomContainer.CreateInstance<IPluginServiceModel>(server.UpdateRepository,server.QueryProxy,shellViewModel,server);
+
+
+                _dllModel = pluginServiceModel;
                 NewSourceCommand = new DelegateCommand(_dllModel.CreateNewSource);
-                EditSourceCommand = new DelegateCommand(() => _dllModel.EditSource(SelectedSource),CanEditSource);               
+                EditSourceCommand = new DelegateCommand(() => _dllModel.EditSource(SelectedSource), CanEditSource);
                 RefreshActionsCommand = new DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if(_selectedMethod != null)
+                    if (_selectedMethod != null)
                     {
                         var keepSelectedProcedure = _selectedMethod.Method;
-                        Methods = _dllModel.GetActions(_selectedSource,_selectedNamespace);
-                        if(keepSelectedProcedure != null)
+                        Methods = _dllModel.GetActions(_selectedSource, _selectedNamespace);
+                        if (keepSelectedProcedure != null)
                         {
                             SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
                         }
                     }
                     IsRefreshing = false;
-                },CanRefresh);
+                }, CanRefresh);
                 RefreshNamespaceCommand = new DelegateCommand(() =>
                 {
                     IsNamespaceRefreshing = true;
@@ -160,20 +174,19 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     IsNamespaceRefreshing = false;
                 }, CanRefresh);
-
                 var pluginSources = _dllModel.RetrieveSources();
                 Sources = pluginSources.ToObservableCollection();
                 SourceVisible = true;
-                if(SourceId != Guid.Empty)
+                if (SourceId != Guid.Empty)
                 {
                     SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
-                    if(SelectedSource != null)
+                    if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if(!string.IsNullOrEmpty(ProcedureName))
+                        if (!string.IsNullOrEmpty(ProcedureName))
                         {
                             SelectedMethod = Methods.FirstOrDefault(action => action.Method == ProcedureName);
-                            if(SelectedMethod == null)
+                            if (SelectedMethod == null)
                             {
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
@@ -201,12 +214,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
             }
             InitializeProperties();
-            if(IsItemDragged.Instance.IsDragged)
+            if (IsItemDragged.Instance.IsDragged)
             {
                 Expand();
                 IsItemDragged.Instance.IsDragged = false;
             }
-            
+
             if (_environment != null)
             {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
