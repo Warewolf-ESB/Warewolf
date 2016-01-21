@@ -148,6 +148,10 @@ namespace Dev2.Runtime.ServiceModel
                     var mybroker = CreateMySqlDatabaseBroker(dbSourceDetails.ServerType);
                     result.DatabaseList = mybroker.GetDatabases(dbSourceDetails);
                     break;
+                case enSourceType.Oracle:
+                    var obroker = CreateOracleDatabaseBroker(dbSourceDetails.ServerType);
+                    result.DatabaseList = obroker.GetDatabases(dbSourceDetails);
+                    break;
                 default:
                     result.IsValid = false;
                     break;
