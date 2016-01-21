@@ -224,17 +224,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(properties.Length == 2);
         }
 
-        [TestMethod]
-        public void DsfFindRecordsActivity_Property_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfFindRecordsActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfFindRecordsActivity.");
-            }
-            PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.AreEqual(9, properties.Length);
-        }
 
         [TestMethod]
         public void DsfCaseConvertActivity_Property_Check_Expected_No_Change_To_Properties()
@@ -385,36 +374,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
 
-
-        [TestMethod]
-        public void DsfFindRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfFindRecordsActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfFindRecordsActivity.");
-            }
-
-            MemberInfo[] FieldsToSearch = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "FieldsToSearch");
-            MemberInfo[] SearchType = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SearchType");
-            MemberInfo[] SearchCriteria = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SearchCriteria");
-            MemberInfo[] StartIndex = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "StartIndex");
-            MemberInfo[] MatchCase = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "MatchCase");
-            MemberInfo[] Result = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "Result");
-
-
-            Assert.IsTrue(FieldsToSearch != null && FieldsToSearch.Length == 1
-                          && SearchType != null && SearchType.Length == 1
-                          && SearchCriteria != null && SearchCriteria.Length == 1
-                          && StartIndex != null && StartIndex.Length == 1
-                          && StartIndex != null && StartIndex.Length == 1
-                          && MatchCase != null && MatchCase.Length == 1
-                          && Result != null, "This will fail on designer binding, please update this before proceeding");
-        }
-
-
-
-
+        
 
         [TestMethod]
         public void DsfSortRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
