@@ -869,7 +869,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                         {
                             ErrorMessage(new Exception("The selected database does not contain actions to perform"));
                         }
-                        ActionVisible = Procedures.Count != 0;
+                        ActionVisible = Procedures.Count != 0 && Procedures != null;
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
