@@ -166,6 +166,10 @@ namespace Dev2.Activities
             }
             return innerXml;
         }
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
+        }
 
     }
 }
