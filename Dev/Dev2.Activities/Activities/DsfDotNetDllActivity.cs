@@ -29,6 +29,12 @@ namespace Dev2.Activities
         public IOutputDescription OutputDescription { get; set; }
         public string InstanceOutputDefintions { get; set; }
 
+        public DsfDotNetDllActivity()
+        {
+            Type = "DotNet DLL Connector";
+            DisplayName = "DotNet DLL Connector";
+        }
+
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
@@ -165,6 +171,10 @@ namespace Dev2.Activities
                 return new StringBuilder(innerXml).Unescape().ToString();
             }
             return innerXml;
+        }
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
         }
 
     }
