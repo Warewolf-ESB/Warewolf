@@ -351,13 +351,18 @@ namespace Warewolf.Studio.ViewModels
                     if (connected)
                     {
                         var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                        mainViewModel.SetActiveEnvironment(connection.EnvironmentID);
+                        if(mainViewModel != null)
+                        {
+                            mainViewModel.SetActiveEnvironment(connection.EnvironmentID);
+                        }
                     }
                     else
                     {
-                         var popupController = CustomContainer.Get<IPopupController>();
-                         popupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
-   
+                        var popupController = CustomContainer.Get<IPopupController>();
+                        if(popupController != null)
+                        {
+                            popupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                        }
                     }
                     OnPropertyChanged(() => connection.IsConnected);
                     if (ServerConnected != null && connected)
