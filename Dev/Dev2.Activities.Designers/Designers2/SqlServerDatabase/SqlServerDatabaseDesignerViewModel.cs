@@ -335,7 +335,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             RecordsetName = ProcedureName.Replace(".", "_");
-            if (testResults != null && testResults.Columns != null)
+            if (testResults != null)
             {
                 for (int i = 0; i < testResults.Columns.Count; i++)
                 {
