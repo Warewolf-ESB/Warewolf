@@ -778,9 +778,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel.Errors == null || RootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            var errors = RootModel.GetErrors(uniqueId).Cast<ErrorInfo>();
+            designValidationMemo.Errors.AddRange(errors);
 
             if (environmentModel == null)
             {
@@ -986,7 +987,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             OutputsExpanded = false;
                         }
                         NamespaceVisible = Namespaces.Count != 0;
-                        ActionVisible = Methods.Count != 0;
+                        if(Methods != null)
+                        {
+                            ActionVisible = Methods.Count != 0;
+                        }
+                        else
+                        {
+                            ActionVisible = false;
+                        }
                         if (Namespaces.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
