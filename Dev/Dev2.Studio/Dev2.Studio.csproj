@@ -1053,7 +1053,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)ReadOutVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)ReadOutVersion.ps1"</PostBuildEvent>
+REM if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)ReadOutVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)ReadOutVersion.ps1"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
