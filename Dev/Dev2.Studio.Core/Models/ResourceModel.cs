@@ -480,7 +480,6 @@ namespace Dev2.Studio.Core.Models
             NotifyOfPropertyChange(() => IsValid);
         }
 
-        public event EventHandler<DesignValidationMemo> OnEnvironmentValidationReceived;
 
         // BUG 9634 - 2013.07.17 - TWR : added
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
@@ -488,11 +487,7 @@ namespace Dev2.Studio.Core.Models
             foreach (var error in memo.Errors)
             {
                 _errors.Add(error);
-            }
-            if (OnEnvironmentValidationReceived != null)
-            {
-                OnEnvironmentValidationReceived(this, memo);
-            }
+            }            
         }
 
         public IList<IErrorInfo> GetErrors(Guid instanceId)
@@ -619,16 +614,18 @@ namespace Dev2.Studio.Core.Models
                     result = completeDefintion.ToStringBuilder();
                 }
 
-                //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
-                var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
-                var endNode = result.IndexOf("</Category>", 0, true);
-                if(endNode > startNode)
+                if(result != null)
                 {
-                    var len = (endNode - startNode);
-                    var oldCategory = result.Substring(startNode, len);
-                    if(oldCategory != Category)
+                    var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
+                    var endNode = result.IndexOf("</Category>", 0, true);
+                    if(endNode > startNode)
                     {
-                        result = result.Replace(oldCategory, Category);
+                        var len = (endNode - startNode);
+                        var oldCategory = result.Substring(startNode, len);
+                        if(oldCategory != Category)
+                        {
+                            result = result.Replace(oldCategory, Category);
+                        }
                     }
                 }
             }
