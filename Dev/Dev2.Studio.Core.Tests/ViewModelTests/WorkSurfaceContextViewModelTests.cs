@@ -110,22 +110,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.IsNotNull(workSurfaceContextViewModel.DebugOutputViewModel);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkSurfaceContextViewModel_Constructor")]
-        public void WorkSurfaceContextViewModel_Constructor_SchedularWorksurfaceContext_DebugOutputViewModelNotNull()
-        {
-            //------------Setup for test--------------------------
-            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
-            CustomContainer.Register<IShellViewModel>(new Mock<IShellViewModel>().Object);
-            var mockWorkSurfaceViewModel = new SchedulerViewModel();
-        
-            //------------Execute Test---------------------------
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, mockWorkSurfaceViewModel);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(workSurfaceContextViewModel);
-            Assert.IsNotNull(workSurfaceContextViewModel.DebugOutputViewModel);
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
