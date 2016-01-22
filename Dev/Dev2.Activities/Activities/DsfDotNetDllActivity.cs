@@ -38,12 +38,11 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
-          //  OutputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-            var result = ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
+            //  OutputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
 
             errors = new ErrorResultTO();
         }
-
 
         protected object ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
         {
