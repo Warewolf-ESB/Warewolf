@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 try
                 {
-                    Directory.Delete(workspacePath, true);
+                    DirectoryHelper.CleanUp(workspacePath);
                 }
                 catch(UnauthorizedAccessException)
                 {
