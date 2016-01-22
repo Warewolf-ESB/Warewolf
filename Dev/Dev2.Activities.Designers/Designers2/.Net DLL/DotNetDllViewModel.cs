@@ -702,6 +702,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<INamespaceItem> _namespaces;
         private bool _namespaceVisible;
         bool _isNamespaceRefreshing;
+        private IPluginAction _previousMethod;
+        private ICollection<IServiceInput> _previousInputs;
+        private string _previousRecset;
+        private ICollection<IServiceOutputMapping> _previousOutputs;
+        private INamespaceItem _previosNamespace;
+        private ICollection<IPluginAction> _previousMethods;
+        private IPluginSource _previousSource;
+        private ICollection<INamespaceItem> _previosNamespaces;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -882,10 +890,26 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if (!Equals(value, _selectedNamespace))
+                if (value != null && value == _previosNamespace)
+                {
+                    _selectedNamespace = value;
+                    Methods = _previousMethods;
+                    Namespaces = _previosNamespaces;
+                    SelectedMethod = _previousMethod;
+                    ActionVisible = Methods.Count != 0;
+
+                }
+                else if (!Equals(value, _selectedNamespace))
                 {
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
+                    _previousMethod = _selectedMethod;
+                    _previousInputs = _inputs;
+                    _previousRecset = _recordsetName;
+                    _previousOutputs = Outputs;
+                    _previosNamespace = _selectedNamespace;
+                    _previosNamespaces = Namespaces;
+                    _previousMethods = Methods; 
                     _selectedNamespace = value;
                     Namespace = value;
                     try
@@ -946,6 +970,27 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedSource))
                 {
+                    if (value != null && Equals(value, _previousSource))
+                    {
+                        _selectedSource = value;
+                        Methods = _previousMethods;
+                        SelectedMethod = _previousMethod;
+                        ActionVisible = Methods.Count != 0;
+
+                    }
+
+                    else
+                    {
+
+
+                        _previousMethod = _selectedMethod;
+                        _previousInputs = _inputs;
+                        _previousRecset = _recordsetName;
+                        _previousOutputs = Outputs;
+                        _previosNamespace = _selectedNamespace;
+                        _previousMethods = Methods;
+                        _previousSource = _selectedSource;
+                    }
                     IsNamespaceRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
                     _selectedSource = value;
@@ -1063,8 +1108,22 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if (!Equals(value, _selectedMethod))
+                if (value != null && value == _previousMethod)
                 {
+                    _selectedMethod = value;
+                    Inputs = _previousInputs;
+                    RecordsetName = _previousRecset;
+                    Outputs = _previousOutputs;
+                    OnPropertyChanged("SelectedMethod");
+                }
+
+                else if (!Equals(value, _selectedMethod))
+                {
+
+                    _previousMethod = _selectedMethod;
+                    _previousInputs = _inputs;
+                    _previousRecset = _recordsetName;
+                    _previousOutputs = Outputs;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
                     {
