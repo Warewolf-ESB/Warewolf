@@ -28,6 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find resources in the service catalog
     /// </summary>
+    // ReSharper disable once UnusedMember.Global
     public class FindResource : IEsbManagementEndpoint
     {
 
@@ -35,44 +36,44 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
+                string resourceName = null;
+                string type = null;
+                string resourceId = null;
+                StringBuilder tmp;
+                values.TryGetValue("ResourceName", out tmp);
+                if(tmp != null)
+                {
+                    resourceName = tmp.ToString();
+                }
+                values.TryGetValue("ResourceType", out tmp);
+                if(tmp != null)
+                {
+                    type = tmp.ToString();
+                }
+                values.TryGetValue("ResourceId", out tmp);
+                if(tmp != null)
+                {
+                    resourceId = tmp.ToString();
+                }
 
-   
-            string resourceName = null;
-            string type = null;
-            string resourceId=null;
-            StringBuilder tmp;
-            values.TryGetValue("ResourceName", out tmp);
-            if(tmp != null)
-            {
-                resourceName = tmp.ToString();
-            }
-            values.TryGetValue("ResourceType", out tmp);
-            if(tmp != null)
-            {
-                type = tmp.ToString();
-            }
-            values.TryGetValue("ResourceId", out tmp);
-            if (tmp != null)
-            {
-                resourceId = tmp.ToString();
-            }
+                IList<Resource> resources;
+                if(resourceId == null || resourceId == "*")
+                {
+                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, "");
+                }
+                else
+                {
+                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
+                }
+                Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);
 
-            IList<Resource> resources;
-            if(resourceId ==null || resourceId == "*" )
-                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type);
-            else
-            {
-                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
-            }
-            Dev2Logger.Info("Find Resource. ResourceName: "+resourceName);
-          
-               
+
                 IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
-            var serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(resourceList);
+                var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(resourceList);
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Dev2Logger.Error(err);
                 throw;

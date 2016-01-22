@@ -94,7 +94,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
             byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-
             using(var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {
                 outStream.SetLength(0);
