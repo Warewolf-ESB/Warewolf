@@ -363,7 +363,7 @@
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y /E /F /D "$(SolutionDir)Resources - Debug" "$(TargetDir)"
-REM if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)ReadOutVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)ReadOutVersion.ps1"</PostBuildEvent>
+if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)ReadOutVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)ReadOutVersion.ps1"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if exist "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" if exist "$(SolutionDir)BakeInVersion.ps1" "%25WINDIR%25\System32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -executionpolicy Unrestricted -command "$(SolutionDir)BakeInVersion.ps1"</PreBuildEvent>
