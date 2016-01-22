@@ -335,7 +335,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             errorValue = errorValue.Replace('"', ' ').Trim();
 
             var retryCount = 0;
-            var webCallResult = "";
+            string webCallResult;
 
             do
             {
