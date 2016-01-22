@@ -274,7 +274,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             return pluginServiceDefinition;
         }
 
-        void TestAction()
+     public   void TestAction()
         {
             try
             {
@@ -336,7 +336,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (ManageServiceInputViewModel.OkSelected)
                 {
                     ValidateTestComplete();
-                }
+            }
             }
             catch (Exception e)
             {
@@ -768,9 +768,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel.Errors == null || RootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            var errors = RootModel.GetErrors(uniqueId).Cast<ErrorInfo>();
+            designValidationMemo.Errors.AddRange(errors);
 
             if (environmentModel == null)
             {
@@ -975,14 +976,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                         }
-                        NamespaceVisible = Namespaces.Count != 0 && Namespaces != null;
-                        if (Methods == null)
+                        NamespaceVisible = Namespaces.Count != 0;
+                        if(Methods != null)
                         {
-                            ActionVisible = false;
+                            ActionVisible = Methods.Count != 0;
                         }
                         else
                         {
-                            ActionVisible = Methods.Count != 0;
+                            ActionVisible = false;
                         }
                         if (Namespaces.Count <= 0)
                         {

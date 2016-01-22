@@ -401,6 +401,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Resources\PluginConnectorToolSteps.cs" />
     <Compile Include="Toolbox\Resources\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

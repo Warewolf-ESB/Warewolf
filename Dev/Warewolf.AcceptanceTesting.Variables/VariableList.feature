@@ -145,7 +145,7 @@ Scenario: Variable Errors
 	 | b@       | YES         | Variables contains invalid character              |
 	 | b1       |             |                                                   |
 	And the Recordset Names are
-	 | Variable | Error State | Error Tooltip                                            |
+	 | Recordset Name | Error State | Error Tooltip                                            |
 	 | 1r()     | YES         | Recordset names must begin with alphabetical characters  |
 	 | 1r().a   |             |                                                          |
 	 | rec()    |             |                                                          |
