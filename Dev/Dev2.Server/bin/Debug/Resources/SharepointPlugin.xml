@@ -1,5 +1,5 @@
 
-<Source ID="de51798e-cbc3-41f4-b928-1f44cb1755cc" Name="SharepointPlugin" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\sharepointdll\SharepointLibrary\ClassLibrary1\bin\Debug\Warewolf.Sharepoint.dll" AssemblyName="Warewolf.Sharepoint" Type="Plugin" ServerVersion="0.0.5864.27579" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="de51798e-cbc3-41f4-b928-1f44cb1755cc" Name="SharepointPlugin" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\sharepointdll\SharepointLibrary\ClassLibrary1\bin\Debug\Warewolf.Sharepoint.dll" AssemblyName="Warewolf.Sharepoint" Type="Plugin" ServerVersion="0.0.5865.17379" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>SharepointPlugin</DisplayName>
   <Category>SharepointPlugin</Category>
   <AuthorRoles>

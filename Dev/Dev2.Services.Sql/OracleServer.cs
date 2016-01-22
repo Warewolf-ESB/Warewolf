@@ -105,7 +105,7 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             OracleDataReader reader = null;
             List<string> result = new List<string>();
-            OracleCommand cmd = new OracleCommand("SELECT DISTINCT DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", _connection);
+            OracleCommand cmd = new OracleCommand("SELECT DISTINCT(OWNER) AS DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", _connection);
             try
             {
                 reader = cmd.ExecuteReader();

@@ -1,5 +1,5 @@
 
-<Service ID="e5316bcc-3662-4015-8654-e2eeee727b06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5864.27579">
+<Service ID="e5316bcc-3662-4015-8654-e2eeee727b06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5865.17379">
   <DisplayName>11536_FireForget</DisplayName>
   <Category>Acceptance Testing Resources\11536_FireForget</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
