@@ -61,9 +61,53 @@ namespace Dev2.Common
         {
             get
             {
+                return Path.Combine(AppDataPath, "Resources");
+            }
+        }
+        private static string AppDataPath
+        {
+            get
+            {
+                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create),"Warewolf");
+                if(!Directory.Exists(appDataPath))
+                {
+                    Directory.CreateDirectory(appDataPath);
+                }
+                return appDataPath;
+            }
+        }
 
-                return Path.Combine(ApplicationPath, "Resources");
-              
+        public static string ServerSettingsFolder
+        {
+            get
+            {
+                return Path.Combine(AppDataPath, "Server Settings");
+            }
+        }
+
+        public static string ServerLogSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "Settings.config");
+                return serverLogSettings;
+            }
+        }
+
+        public static string ServerSecuritySettingsFile
+        {
+            get
+            {
+                var severSecurityFile = Path.Combine(ServerSettingsFolder, "secure.config");
+                return severSecurityFile;
+            }
+        }
+
+        public static string ServerLogFile
+        {
+            get
+            {
+                return Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
             }
         }
 
@@ -77,7 +121,7 @@ namespace Dev2.Common
         {
             get
             {
-                return Path.Combine(ApplicationPath, "Workspaces");
+                return Path.Combine(AppDataPath, "Workspaces");
             }
         }
 
@@ -89,7 +133,7 @@ namespace Dev2.Common
         public static string GetWorkspacePath(Guid workspaceID)
         {
             return workspaceID == Guid.Empty
-                       ? Path.Combine(ApplicationPath, "Resources")
+                       ? Path.Combine(AppDataPath, "Resources")
                        : Path.Combine( Path.Combine(WorkspacePath, workspaceID.ToString()),"Resources");
         }
 

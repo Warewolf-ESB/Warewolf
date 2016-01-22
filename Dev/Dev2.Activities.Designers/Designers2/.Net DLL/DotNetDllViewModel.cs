@@ -705,6 +705,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<INamespaceItem> _namespaces;
         private bool _namespaceVisible;
         bool _isNamespaceRefreshing;
+        private IPluginAction _previousMethod;
+        private ICollection<IServiceInput> _previousInputs;
+        private string _previousRecset;
+        private ICollection<IServiceOutputMapping> _previousOutputs;
+        private INamespaceItem _previosNamespace;
+        private ICollection<IPluginAction> _previousMethods;
+        private IPluginSource _previousSource;
+        private ICollection<INamespaceItem> _previosNamespaces;
         bool _testComplete;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
@@ -886,11 +894,28 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if (!Equals(value, _selectedNamespace))
+
+                if (value != null && value == _previosNamespace)
+                {
+                    _selectedNamespace = value;
+                    Methods = _previousMethods;
+              
+                    SelectedMethod = _previousMethod;
+                    ActionVisible = Methods.Count != 0;
+
+                }
+                else if (!Equals(value, _selectedNamespace))
                 {
                     TestComplete = false;
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
+                    _previousMethod = _selectedMethod;
+                    _previousInputs = _inputs;
+                    _previousRecset = _recordsetName;
+                    _previousOutputs = Outputs;
+                    _previosNamespace = _selectedNamespace;
+       
+                    _previousMethods = Methods; 
                     _selectedNamespace = value;
                     Namespace = value;
                     try
@@ -927,6 +952,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                 }
                 IsRefreshing = false;
+                OnPropertyChanged("SelectedNamespace");
             }
         }
         public INamespaceItem Namespace
@@ -951,6 +977,29 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedSource))
                 {
+                    if (value != null && Equals(value, _previousSource))
+                    {
+                        _selectedSource = value;
+                        Methods = _previousMethods;
+                        SelectedMethod = _previousMethod;
+                        Namespaces = _previosNamespaces;
+                        SelectedNamespace = _previosNamespace;
+                        ActionVisible = Methods.Count != 0;
+
+                    }
+
+                    else
+                    {
+
+
+                        _previousMethod = _selectedMethod;
+                        _previousInputs = _inputs;
+                        _previousRecset = _recordsetName;
+                        _previousOutputs = Outputs;
+                        _previosNamespace = _selectedNamespace;
+                        _previousMethods = Methods;
+                        _previousSource = _selectedSource;
+                        _previosNamespaces = Namespaces;
                     TestComplete = false;
                     IsNamespaceRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
@@ -967,7 +1016,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             Outputs = new List<IServiceOutputMapping>();
                         }
                         NamespaceVisible = Namespaces.Count != 0;
-                        if(Methods != null)
+                            if (Methods != null)
                         {
                             ActionVisible = Methods.Count != 0;
                         }
@@ -979,6 +1028,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
                         }
+                            if (_selectedSource != null)
+                            {
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
@@ -987,6 +1038,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         InputsVisible = false;
                     }
+                        }
                     catch (Exception e)
                     {
                         Methods = new List<IPluginAction>();
@@ -1004,6 +1056,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
+        }
         }
 
         void ValidateTestComplete()
@@ -1074,9 +1127,22 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                if (!Equals(value, _selectedMethod))
+                if (value != null && value == _previousMethod)
                 {
-                    OutputsVisible = false;
+                    _selectedMethod = value;
+                    Inputs = _previousInputs;
+                    RecordsetName = _previousRecset;
+                    Outputs = _previousOutputs;
+                    OnPropertyChanged("SelectedMethod");
+                }
+
+                else if (!Equals(value, _selectedMethod))
+                {
+
+                    _previousMethod = _selectedMethod;
+                    _previousInputs = _inputs;
+                    _previousRecset = _recordsetName;
+                    _previousOutputs = Outputs;
                     TestComplete = false;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
