@@ -1680,6 +1680,26 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Assert_Service_Picker_Exists_OnDesignSurface();
                         break;
                     }
+                case "Assert_MainStudioWindow_Exists":
+                    {
+                        Uimap.Assert_MainStudioWindow_Exists();
+                        break;
+                    }
+                case "DoubleClick_MainStudioWindow_Taskbar":
+                    {
+                        Uimap.DoubleClick_MainStudioWindow_Taskbar();
+                        break;
+                    }
+                case "PressF11_EnterFullScreen":
+                    {
+                        Uimap.PressF11_EnterFullScreen();
+                        break;
+                    }
+                case "PressF11_EnterFullScreen_FromStartPage":
+                    {
+                        Uimap.PressF11_EnterFullScreen_FromStartPage();
+                        break;
+                    }
                 
                 default:
                     {
