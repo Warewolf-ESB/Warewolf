@@ -271,7 +271,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             return pluginServiceDefinition;
         }
 
-        void TestAction()
+     public   void TestAction()
         {
             try
             {
