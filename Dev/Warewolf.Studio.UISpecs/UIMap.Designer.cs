@@ -18,6 +18,8 @@ namespace Warewolf.Studio.UISpecs
     using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
@@ -25,7 +27,7 @@ namespace Warewolf.Studio.UISpecs
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public partial class UIMap
     {
         
@@ -547,6 +549,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfRecordsetLengthActivity' custom control equals 'True'
             Assert.AreEqual(this.Assert_Length_Exists_OnDesignSurfaceExpectedValues.LengthExists, length.Exists, "Length tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_MainStudioWindow_Exists - Use 'Assert_MainStudioWindow_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_MainStudioWindow_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf (DEV2\ASHLEY.LEWIS)' window equals 'True'
+            Assert.AreEqual(this.Assert_MainStudioWindow_ExistsExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
         }
         
         /// <summary>
@@ -1254,6 +1269,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'No' button
             Mouse.Click(nOButton, new Point(32, 5));
+        }
+        
+        /// <summary>
+        /// DoubleClick_MainStudioWindow_Taskbar
+        /// </summary>
+        public void DoubleClick_MainStudioWindow_Taskbar()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Double-Click 'Warewolf (DEV2\ASHLEY.LEWIS)' window
+            Mouse.DoubleClick(mainStudioWindow, new Point(575, 14));
         }
         
         /// <summary>
@@ -2702,6 +2730,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// PressF11_EnterFullScreen - Use 'PressF11_EnterFullScreenParams' to pass parameters into this method.
+        /// </summary>
+        public void PressF11_EnterFullScreen()
+        {
+            #region Variable Declarations
+            WpfButton maximiseStudioButton = this.MainStudioWindow.MaximiseStudioButton;
+            #endregion
+
+            // Type '{F11}' in 'PART_MAXIMIZE_RESTORE' button
+            Keyboard.SendKeys(maximiseStudioButton, this.PressF11_EnterFullScreenParams.MaximiseStudioButtonSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
+        /// PressF11_EnterFullScreen_FromStartPage - Use 'PressF11_EnterFullScreen_FromStartPageParams' to pass parameters into this method.
+        /// </summary>
+        public void PressF11_EnterFullScreen_FromStartPage()
+        {
+            #region Variable Declarations
+            HtmlDiv knowledgebasePane = this.MainStudioWindow.SplitPane.TabMan.StartPage.WorksurfaceContext.BrowserHostPane.ItemClient.CommunityPage.WrapPane.KnowledgebasePane;
+            #endregion
+
+            // Type '{F11}' in 'Warewolf Knowledge base function' pane
+            Keyboard.SendKeys(knowledgebasePane, this.PressF11_EnterFullScreen_FromStartPageParams.KnowledgebasePaneSendKeys, ModifierKeys.None);
+        }
+        
+        /// <summary>
         /// Select_Action_Droplist
         /// </summary>
         public void Select_Action_Droplist()
@@ -3298,6 +3352,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Length_Exists_OnDesignSurfaceExpectedValues = new Assert_Length_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Length_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_MainStudioWindow_ExistsExpectedValues Assert_MainStudioWindow_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_MainStudioWindow_ExistsExpectedValues == null))
+                {
+                    this.mAssert_MainStudioWindow_ExistsExpectedValues = new Assert_MainStudioWindow_ExistsExpectedValues();
+                }
+                return this.mAssert_MainStudioWindow_ExistsExpectedValues;
             }
         }
         
@@ -4033,6 +4099,30 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual PressF11_EnterFullScreenParams PressF11_EnterFullScreenParams
+        {
+            get
+            {
+                if ((this.mPressF11_EnterFullScreenParams == null))
+                {
+                    this.mPressF11_EnterFullScreenParams = new PressF11_EnterFullScreenParams();
+                }
+                return this.mPressF11_EnterFullScreenParams;
+            }
+        }
+        
+        public virtual PressF11_EnterFullScreen_FromStartPageParams PressF11_EnterFullScreen_FromStartPageParams
+        {
+            get
+            {
+                if ((this.mPressF11_EnterFullScreen_FromStartPageParams == null))
+                {
+                    this.mPressF11_EnterFullScreen_FromStartPageParams = new PressF11_EnterFullScreen_FromStartPageParams();
+                }
+                return this.mPressF11_EnterFullScreen_FromStartPageParams;
+            }
+        }
+        
         public virtual Test_Connector_Calculate_OutputsParams Test_Connector_Calculate_OutputsParams
         {
             get
@@ -4114,6 +4204,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mSplashPageWindow = new SplashPageWindow();
                 }
                 return this.mSplashPageWindow;
+            }
+        }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -4198,6 +4300,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Json_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Json_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Length_Exists_OnDesignSurfaceExpectedValues mAssert_Length_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_MainStudioWindow_ExistsExpectedValues mAssert_MainStudioWindow_ExistsExpectedValues;
         
         private Assert_Move_Exists_OnDesignSurfaceExpectedValues mAssert_Move_Exists_OnDesignSurfaceExpectedValues;
         
@@ -4321,6 +4425,10 @@ namespace Warewolf.Studio.UISpecs
         
         private Plugin_Connectot_Test_Connector_Calculate_OutputsParams mPlugin_Connectot_Test_Connector_Calculate_OutputsParams;
         
+        private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
+        
+        private PressF11_EnterFullScreen_FromStartPageParams mPressF11_EnterFullScreen_FromStartPageParams;
+        
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
         
         private MainStudioWindow mMainStudioWindow;
@@ -4334,13 +4442,15 @@ namespace Warewolf.Studio.UISpecs
         private ServicePickerWindow mServicePickerWindow;
         
         private SplashPageWindow mSplashPageWindow;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
     /// <summary>
     /// Parameters to be passed into 'Assert_Assign_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4355,7 +4465,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Assign_QVI_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4370,7 +4480,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Base_Conversion_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4385,7 +4495,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Base_Conversion_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Base_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4400,7 +4510,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Calculate_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Calculate_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4415,7 +4525,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Case_Conversion_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Case_Conversion_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4430,7 +4540,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4445,7 +4555,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_CMD_Line_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4460,7 +4570,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_CMD_Line_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_CMD_Line_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4475,7 +4585,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Comment_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Comment_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4490,7 +4600,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Copy_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Copy_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4505,7 +4615,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Copy_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Copy_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4520,7 +4630,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Count_Records_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Count_Records_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4535,7 +4645,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Create_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Create_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4550,7 +4660,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Create_JSON_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Create_JSON_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4565,7 +4675,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Create_Path_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Create_Path_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4580,7 +4690,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Connector_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Connector_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4595,7 +4705,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Merge_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Merge_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4610,7 +4720,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Merge_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Merge_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4625,7 +4735,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Merge_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Merge_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4640,7 +4750,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Split_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Split_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4655,7 +4765,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Split_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Split_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4670,7 +4780,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4685,7 +4795,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Date_And_Time_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Date_And_Time_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4700,7 +4810,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_DateTime_Difference_Conversion_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4715,7 +4825,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Decision_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Decision_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4730,7 +4840,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Decision_Window_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4745,7 +4855,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Delete_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Delete_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4760,7 +4870,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Delete_Record_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4775,7 +4885,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Dropbox_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4790,7 +4900,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Email_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Email_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4805,7 +4915,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Email_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Email_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4820,7 +4930,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Find_Index_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Find_Index_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4835,7 +4945,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Find_Record_Index_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Find_Record_Index_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4850,7 +4960,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Find_Record_index_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Find_Record_index_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4865,7 +4975,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_For_Each_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_For_Each_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4880,7 +4990,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Format_Number_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Format_Number_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4895,7 +5005,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Json_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Json_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4910,7 +5020,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Json_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Json_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4925,7 +5035,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Length_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Length_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4938,9 +5048,24 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_MainStudioWindow_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_MainStudioWindow_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf (DEV2\ASHLEY.LEWIS)' window equals 'True'
+        /// </summary>
+        public bool MainStudioWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Move_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Move_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4955,7 +5080,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Move_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Move_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4970,7 +5095,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_MultiAssign_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_MultiAssign_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -4985,7 +5110,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Mysql_Database_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5000,7 +5125,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_NewWorkFlow_RibbonButton_Exists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues
     {
         
@@ -5015,7 +5140,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Plugin_Connector_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5030,7 +5155,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Random_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Random_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5045,7 +5170,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Read_File_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Read_File_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5060,7 +5185,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Read_File_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Read_File_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5075,7 +5200,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Read_Folder_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Read_Folder_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5090,7 +5215,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Read_Folder_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5105,7 +5230,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Rename_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Rename_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5120,7 +5245,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Rename_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Rename_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5135,7 +5260,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Replace_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Replace_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5150,7 +5275,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Script_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Script_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5165,7 +5290,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sequence_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sequence_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5180,7 +5305,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Server_Version_Exists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Server_Version_ExistsExpectedValues
     {
         
@@ -5195,7 +5320,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Service_Picker_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5210,7 +5335,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Create_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Create_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5225,7 +5350,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Create_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Create_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5240,7 +5365,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Delete_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Delete_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5255,7 +5380,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Delete_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Delete_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5270,7 +5395,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Read_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Read_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5285,7 +5410,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Read_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Read_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5300,7 +5425,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Update_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Update_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5315,7 +5440,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sharepoint_Update_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sharepoint_Update_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5330,7 +5455,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sort_Records_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5345,7 +5470,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sql_Bulk_insert_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sql_Bulk_insert_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5360,7 +5485,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_SQL_Bulk_Insert_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_SQL_Bulk_Insert_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5375,7 +5500,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Sql_Bulk_insert_Qvi_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Sql_Bulk_insert_Qvi_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5390,7 +5515,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_SQL_Server_Database_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_SQL_Server_Database_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5405,7 +5530,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_StartNode_Exists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_StartNode_ExistsExpectedValues
     {
         
@@ -5420,7 +5545,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Switch_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Switch_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5435,7 +5560,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Switch_Window_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5450,7 +5575,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5465,7 +5590,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_System_information_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_System_information_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5480,7 +5605,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Unique_Records_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Unique_Records_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5495,7 +5620,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Unzip_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Unzip_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5510,7 +5635,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Unzip_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Unzip_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5525,7 +5650,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Web_Connectors_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5540,7 +5665,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Web_Request_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5555,7 +5680,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Web_Request_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5570,7 +5695,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_WebSource_ReqTypeComboBox_Exists'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues
     {
         
@@ -5585,7 +5710,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Workflow_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Workflow_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5600,7 +5725,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Write_File_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Write_File_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5615,7 +5740,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Write_File_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Write_File_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5630,7 +5755,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_XPath_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_XPath_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5645,7 +5770,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Xpath_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Xpath_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5660,7 +5785,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5675,7 +5800,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Zip_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Zip_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5690,7 +5815,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Assert_Zip_Large_View_Exists_OnDesignSurface'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Assert_Zip_Large_View_Exists_OnDesignSurfaceExpectedValues
     {
         
@@ -5705,7 +5830,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Assign_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Assign_Tool_Qvi_Large_ViewParams
     {
         
@@ -5720,7 +5845,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Base_Conversion_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Base_Conversion_Tool_Qvi_Large_ViewParams
     {
         
@@ -5735,7 +5860,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Case_Conversion_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Case_Conversion_Tool_Qvi_Large_ViewParams
     {
         
@@ -5750,7 +5875,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Data_Merge_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Data_Merge_Tool_Qvi_Large_ViewParams
     {
         
@@ -5765,7 +5890,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Data_Split_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Data_Split_Tool_Qvi_Large_ViewParams
     {
         
@@ -5780,7 +5905,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Json_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Json_Tool_Qvi_Large_ViewParams
     {
         
@@ -5795,7 +5920,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_SQL_Bulk_Insert_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_SQL_Bulk_Insert_Tool_Qvi_Large_ViewParams
     {
         
@@ -5810,7 +5935,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_System_Information_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_System_Information_Tool_Qvi_Large_ViewParams
     {
         
@@ -5825,7 +5950,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Open_Xpath_Tool_Qvi_Large_View'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Open_Xpath_Tool_Qvi_Large_ViewParams
     {
         
@@ -5840,7 +5965,7 @@ namespace Warewolf.Studio.UISpecs
     /// <summary>
     /// Parameters to be passed into 'Plugin_Connectot_Test_Connector_Calculate_Outputs'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Plugin_Connectot_Test_Connector_Calculate_OutputsParams
     {
         
@@ -5853,9 +5978,39 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'PressF11_EnterFullScreen'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class PressF11_EnterFullScreenParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{F11}' in 'PART_MAXIMIZE_RESTORE' button
+        /// </summary>
+        public string MaximiseStudioButtonSendKeys = "{F11}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'PressF11_EnterFullScreen_FromStartPage'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class PressF11_EnterFullScreen_FromStartPageParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '{F11}' in 'Warewolf Knowledge base function' pane
+        /// </summary>
+        public string KnowledgebasePaneSendKeys = "{F11}";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Test_Connector_Calculate_Outputs'
     /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Test_Connector_Calculate_OutputsParams
     {
         
@@ -5867,7 +6022,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MainStudioWindow : WpfWindow
     {
         
@@ -5969,6 +6124,22 @@ namespace Warewolf.Studio.UISpecs
                 return this.mToolBox;
             }
         }
+        
+        public WpfButton MaximiseStudioButton
+        {
+            get
+            {
+                if ((this.mMaximiseStudioButton == null))
+                {
+                    this.mMaximiseStudioButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mMaximiseStudioButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "PART_MAXIMIZE_RESTORE";
+                    this.mMaximiseStudioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mMaximiseStudioButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5985,10 +6156,12 @@ namespace Warewolf.Studio.UISpecs
         private Explorer mExplorer;
         
         private ToolBox mToolBox;
+        
+        private WpfButton mMaximiseStudioButton;
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SideMenuBar : WpfCustom
     {
         
@@ -6092,7 +6265,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class CollapsedSideMenu : WpfText
     {
         
@@ -6254,7 +6427,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SplitPane : WpfCustom
     {
         
@@ -6288,7 +6461,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class TabMan : WpfTabList
     {
         
@@ -6303,6 +6476,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public StartPage StartPage
+        {
+            get
+            {
+                if ((this.mStartPage == null))
+                {
+                    this.mStartPage = new StartPage(this);
+                }
+                return this.mStartPage;
+            }
+        }
+        
         public NewWebConnectorTab NewWebConnectorTab
         {
             get
@@ -6397,6 +6582,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private StartPage mStartPage;
+        
         private NewWebConnectorTab mNewWebConnectorTab;
         
         private NewServerSourceTab mNewServerSourceTab;
@@ -6413,7 +6600,225 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class StartPage : WpfTabPage
+    {
+        
+        public StartPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WorksurfaceContext WorksurfaceContext
+        {
+            get
+            {
+                if ((this.mWorksurfaceContext == null))
+                {
+                    this.mWorksurfaceContext = new WorksurfaceContext(this);
+                }
+                return this.mWorksurfaceContext;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WorksurfaceContext mWorksurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorksurfaceContext : WpfCustom
+    {
+        
+        public WorksurfaceContext(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public BrowserHostPane BrowserHostPane
+        {
+            get
+            {
+                if ((this.mBrowserHostPane == null))
+                {
+                    this.mBrowserHostPane = new BrowserHostPane(this);
+                }
+                return this.mBrowserHostPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private BrowserHostPane mBrowserHostPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class BrowserHostPane : WpfPane
+    {
+        
+        public BrowserHostPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.HwndHost";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "WebBrowserHost";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemClient ItemClient
+        {
+            get
+            {
+                if ((this.mItemClient == null))
+                {
+                    this.mItemClient = new ItemClient(this);
+                }
+                return this.mItemClient;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemClient mItemClient;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ItemClient : WinClient
+    {
+        
+        public ItemClient(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinControl.PropertyNames.ClassName] = "Internet Explorer_Server";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public CommunityPage CommunityPage
+        {
+            get
+            {
+                if ((this.mCommunityPage == null))
+                {
+                    this.mCommunityPage = new CommunityPage(this);
+                }
+                return this.mCommunityPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private CommunityPage mCommunityPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class CommunityPage : HtmlDocument
+    {
+        
+        public CommunityPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[HtmlDocument.PropertyNames.Id] = null;
+            this.SearchProperties[HtmlDocument.PropertyNames.RedirectingPage] = "False";
+            this.SearchProperties[HtmlDocument.PropertyNames.FrameDocument] = "False";
+            this.FilterProperties[HtmlDocument.PropertyNames.Title] = "Community / Warewolf";
+            this.FilterProperties[HtmlDocument.PropertyNames.AbsolutePath] = "/";
+            this.FilterProperties[HtmlDocument.PropertyNames.PageUrl] = "http://community.warewolf.io/";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WrapPane WrapPane
+        {
+            get
+            {
+                if ((this.mWrapPane == null))
+                {
+                    this.mWrapPane = new WrapPane(this);
+                }
+                return this.mWrapPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WrapPane mWrapPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WrapPane : HtmlDiv
+    {
+        
+        public WrapPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[HtmlDiv.PropertyNames.Id] = "wrap";
+            this.SearchProperties[HtmlDiv.PropertyNames.Name] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.InnerText] = "function showSigninPanel(locResult){ par";
+            this.FilterProperties[HtmlDiv.PropertyNames.Title] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.Class] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.ControlDefinition] = "id=\"wrap\"";
+            this.FilterProperties[HtmlDiv.PropertyNames.TagInstance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public HtmlDiv KnowledgebasePane
+        {
+            get
+            {
+                if ((this.mKnowledgebasePane == null))
+                {
+                    this.mKnowledgebasePane = new HtmlDiv(this);
+                    #region Search Criteria
+                    this.mKnowledgebasePane.SearchProperties[HtmlDiv.PropertyNames.Id] = null;
+                    this.mKnowledgebasePane.SearchProperties[HtmlDiv.PropertyNames.Name] = null;
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.InnerText] = "\r\n                                                    Warewolf\r\n\r\n               " +
+                        "                                     Knowledge base\r\n\r\n                         " +
+                        "                           function\r\n                                           " +
+                        "       ";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.Title] = null;
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.Class] = "container";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.ControlDefinition] = "class=\"container\"";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.TagInstance] = "6";
+                    this.mKnowledgebasePane.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mKnowledgebasePane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private HtmlDiv mKnowledgebasePane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewWebConnectorTab : WpfTabPage
     {
         
@@ -6428,13 +6833,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext WorkSurfaceContext
+        public WorkSurfaceContext1 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext1(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -6442,15 +6847,15 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext mWorkSurfaceContext;
+        private WorkSurfaceContext1 mWorkSurfaceContext;
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class WorkSurfaceContext : WpfCustom
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorkSurfaceContext1 : WpfCustom
     {
         
-        public WorkSurfaceContext(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -6483,7 +6888,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewServerSourceTab : WpfTabPage
     {
         
@@ -6497,13 +6902,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext1 WorkSurfaceContext
+        public WorkSurfaceContext2 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext1(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -6641,7 +7046,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext1 mWorkSurfaceContext;
+        private WorkSurfaceContext2 mWorkSurfaceContext;
         
         private WpfButton mTabCloseButton;
         
@@ -6661,11 +7066,11 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class WorkSurfaceContext1 : WpfCustom
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorkSurfaceContext2 : WpfCustom
     {
         
-        public WorkSurfaceContext1(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -6694,7 +7099,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewServerSourceWizard : WpfCustom
     {
         
@@ -6740,7 +7145,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class AuthTypeOptions : WpfCustom
     {
         
@@ -6777,7 +7182,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class AddressComboBox : WpfComboBox
     {
         
@@ -6813,7 +7218,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class WorkflowTab : WpfTabPage
     {
         
@@ -6827,13 +7232,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext2 WorkSurfaceContext
+        public WorkSurfaceContext3 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -6857,17 +7262,17 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext2 mWorkSurfaceContext;
+        private WorkSurfaceContext3 mWorkSurfaceContext;
         
         private WpfButton mUIItemButton;
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class WorkSurfaceContext2 : WpfCustom
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorkSurfaceContext3 : WpfCustom
     {
         
-        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -6896,7 +7301,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class WorkflowDesignerView : WpfCustom
     {
         
@@ -6929,7 +7334,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ScrollViewerPane : WpfPane
     {
         
@@ -6962,7 +7367,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ActivityTypeDesigner : WpfCustom
     {
         
@@ -6995,7 +7400,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class WorkflowItemPresenter : WpfCustom
     {
         
@@ -7028,7 +7433,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Flowchart : WpfCustom
     {
         
@@ -8009,7 +8414,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DataMerge : WpfCustom
     {
         
@@ -8046,7 +8451,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DataSplit : WpfCustom
     {
         
@@ -8083,7 +8488,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class BaseConvert : WpfCustom
     {
         
@@ -8120,7 +8525,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class CaseConvert : WpfCustom
     {
         
@@ -8157,7 +8562,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SqlBulkInsert : WpfCustom
     {
         
@@ -8194,7 +8599,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class CreateJson : WpfCustom
     {
         
@@ -8231,7 +8636,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class GatherSystemInfo : WpfCustom
     {
         
@@ -8268,7 +8673,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class XPath : WpfCustom
     {
         
@@ -8305,7 +8710,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MultiAssign : WpfCustom
     {
         
@@ -8342,7 +8747,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewDBConnectorTab : WpfTabPage
     {
         
@@ -8356,13 +8761,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext3 WorkSurfaceContext
+        public WorkSurfaceContext4 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -8402,7 +8807,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext3 mWorkSurfaceContext;
+        private WorkSurfaceContext4 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -8410,11 +8815,11 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class WorkSurfaceContext3 : WpfCustom
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorkSurfaceContext4 : WpfCustom
     {
         
-        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -8830,7 +9235,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewDBConnectorWizard : WpfCustom
     {
         
@@ -8918,7 +9323,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SourcesComboBox : WpfCustom
     {
         
@@ -8973,7 +9378,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class EditButton : WpfButton
     {
         
@@ -9009,7 +9414,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewButton : WpfButton
     {
         
@@ -9045,7 +9450,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ActionsComboBox : WpfCustom
     {
         
@@ -9100,7 +9505,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MappingsView : WpfCustom
     {
         
@@ -9202,7 +9607,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NoneText : WpfText
     {
         
@@ -9239,7 +9644,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RecordsetNameText : WpfText
     {
         
@@ -9275,7 +9680,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RefreshButton : WpfButton
     {
         
@@ -9330,7 +9735,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class TestActionButton : WpfButton
     {
         
@@ -9385,7 +9790,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class OutputsTitleText : WpfText
     {
         
@@ -9422,7 +9827,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewPluginConnectorTab : WpfTabPage
     {
         
@@ -9566,13 +9971,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WorkSurfaceContext4 WorkSurfaceContext
+        public WorkSurfaceContext5 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext5(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -9628,7 +10033,7 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mNewPluginConnectorTabCloseButton;
         
-        private WorkSurfaceContext4 mWorkSurfaceContext;
+        private WorkSurfaceContext5 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -9636,11 +10041,11 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class WorkSurfaceContext4 : WpfCustom
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorkSurfaceContext5 : WpfCustom
     {
         
-        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -10119,7 +10524,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewPluginConnectorWizard : WpfCustom
     {
         
@@ -10249,7 +10654,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SourcesComboBox1 : WpfCustom
     {
         
@@ -10304,7 +10709,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SourcesEditButton : WpfButton
     {
         
@@ -10340,7 +10745,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NewButton1 : WpfButton
     {
         
@@ -10376,7 +10781,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ActionsComboBox1 : WpfCustom
     {
         
@@ -10431,7 +10836,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RefreshButton1 : WpfButton
     {
         
@@ -10486,7 +10891,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class TestActionButton1 : WpfButton
     {
         
@@ -10560,7 +10965,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class InputTable : WpfTable
     {
         
@@ -10625,7 +11030,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DataCell : WpfCell
     {
         
@@ -10662,7 +11067,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ValueCell : WpfCell
     {
         
@@ -10734,7 +11139,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MappingsView1 : WpfCustom
     {
         
@@ -10864,7 +11269,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class InputMappingTable : WpfTable
     {
         
@@ -10957,7 +11362,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DataCell1 : WpfCell
     {
         
@@ -10994,7 +11399,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DefaultValueCell : WpfCell
     {
         
@@ -11065,7 +11470,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RequiredCell : WpfCell
     {
         
@@ -11101,7 +11506,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class EmptyIsNullCell : WpfCell
     {
         
@@ -11137,7 +11542,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NoneText1 : WpfText
     {
         
@@ -11174,7 +11579,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class OutputsMappingTable : WpfTable
     {
         
@@ -11225,7 +11630,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class TextCell : WpfCell
     {
         
@@ -11298,7 +11703,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RecordsetNameText1 : WpfText
     {
         
@@ -11334,7 +11739,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class TestResultsText : WpfText
     {
         
@@ -11371,7 +11776,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DockManager : WpfCustom
     {
         
@@ -11476,7 +11881,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SideMenus : WpfCustom
     {
         
@@ -11586,7 +11991,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Help : WpfCustom
     {
         
@@ -11624,7 +12029,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ConnectControl : WpfCustom
     {
         
@@ -11693,7 +12098,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UITheServerComboBoxCustom : WpfCustom
     {
         
@@ -11766,7 +12171,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class Explorer : WpfCustom
     {
         
@@ -11831,7 +12236,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UISearchTextBoxEdit : WpfEdit
     {
         
@@ -11867,7 +12272,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIExplorerTreeTree : WpfTree
     {
         
@@ -11899,7 +12304,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInfragisticsControlsTreeItem : WpfTreeItem
     {
         
@@ -12057,7 +12462,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ToolBox : WpfCustom
     {
         
@@ -12090,7 +12495,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ToolListBox : WpfList
     {
         
@@ -12248,7 +12653,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DataTools : WpfGroup
     {
         
@@ -12398,7 +12803,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class FlowTools : WpfGroup
     {
         
@@ -12472,7 +12877,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class FileAndFolderTools : WpfGroup
     {
         
@@ -12679,7 +13084,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class LoopTools : WpfGroup
     {
         
@@ -12715,7 +13120,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class RecordsetTools : WpfGroup
     {
         
@@ -12865,7 +13270,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ResourceTools : WpfGroup
     {
         
@@ -12920,7 +13325,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ScriptingTools : WpfGroup
     {
         
@@ -12994,7 +13399,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SharepointTools : WpfGroup
     {
         
@@ -13087,7 +13492,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UtilityTools : WpfGroup
     {
         
@@ -13294,7 +13699,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ConnectorTools : WpfGroup
     {
         
@@ -13330,7 +13735,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MessageBoxWindow : WpfWindow
     {
         
@@ -13390,7 +13795,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class YesButton : WpfButton
     {
         
@@ -13426,7 +13831,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class NOButton : WpfButton
     {
         
@@ -13462,7 +13867,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class CancelButton : WpfButton
     {
         
@@ -13498,7 +13903,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIWarewolfDEV2LEROYWARWindow : WpfWindow
     {
         
@@ -13796,7 +14201,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIItemCustom : WpfCustom
     {
         
@@ -13850,7 +14255,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIItemCustom1 : WpfCustom
     {
         
@@ -13910,7 +14315,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UISourcesComboBoxCustom : WpfCustom
     {
         
@@ -13947,7 +14352,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIActionsComboBoxCustom : WpfCustom
     {
         
@@ -13984,7 +14389,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInputsListList : WpfList
     {
         
@@ -14016,7 +14421,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIWarewolfCoreServiceIListItem : WpfListItem
     {
         
@@ -14052,7 +14457,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUI_SplitPane_AutoIDCustom : WpfCustom
     {
         
@@ -14085,7 +14490,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
         
@@ -14131,7 +14536,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDev2ViewModelsSourceTabPage : WpfTabPage
     {
         
@@ -14163,7 +14568,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDev2StudioViewModelsCustom : WpfCustom
     {
         
@@ -14236,7 +14641,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDev2ViewModelsSourceTabPage1 : WpfTabPage
     {
         
@@ -14268,7 +14673,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDev2StudioViewModelsCustom1 : WpfCustom
     {
         
@@ -14305,7 +14710,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIItemCustom2 : WpfCustom
     {
         
@@ -14337,7 +14742,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInputGridTable : WpfTable
     {
         
@@ -14373,7 +14778,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUnlimitedFrameworkPlCustom : WpfCustom
     {
         
@@ -14410,7 +14815,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUI_ToolboxControl_AuCustom : WpfCustom
     {
         
@@ -14443,7 +14848,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIToolListBoxList : WpfList
     {
         
@@ -14605,7 +15010,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIControlFlowGroup : WpfGroup
     {
         
@@ -14679,7 +15084,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIFileFolderGroup : WpfGroup
     {
         
@@ -14811,7 +15216,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UILoopConstructsGroup : WpfGroup
     {
         
@@ -14847,7 +15252,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIRecordsetGroup : WpfGroup
     {
         
@@ -14903,7 +15308,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIScriptingGroup : WpfGroup
     {
         
@@ -14996,7 +15401,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UISharepointGroup : WpfGroup
     {
         
@@ -15033,7 +15438,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUtilityGroup : WpfGroup
     {
         
@@ -15107,7 +15512,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIResourcesGroup : WpfGroup
     {
         
@@ -15144,7 +15549,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDataGroup : WpfGroup
     {
         
@@ -15199,7 +15604,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIActivityBuilderCustom : WpfCustom
     {
         
@@ -15232,7 +15637,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIWorkflowItemPresenteCustom : WpfCustom
     {
         
@@ -15303,7 +15708,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIFlowchartCustom : WpfCustom
     {
         
@@ -15341,7 +15746,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUI_ExplorerControl_ACustom : WpfCustom
     {
         
@@ -15374,7 +15779,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIExplorerTreeTree1 : WpfTree
     {
         
@@ -15406,7 +15811,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
     {
         
@@ -15472,7 +15877,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInfragisticsControlsTreeItem13 : WpfTreeItem
     {
         
@@ -15512,7 +15917,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIInfragisticsControlsTreeItem14 : WpfTreeItem
     {
         
@@ -15552,7 +15957,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDebugOutputCustom : WpfCustom
     {
         
@@ -15585,7 +15990,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDebugOutputTreeTree : WpfTree
     {
         
@@ -15617,7 +16022,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIHelloWorldTreeItem : WpfTreeItem
     {
         
@@ -15649,7 +16054,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIHelloWorldTreeItem1 : WpfTreeItem
     {
         
@@ -15725,7 +16130,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIFlowchartCustom1 : WpfCustom
     {
         
@@ -15772,7 +16177,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDsfMultiAssignActiviCustom : WpfCustom
     {
         
@@ -15809,7 +16214,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIDsfDataMergeActivityCustom : WpfCustom
     {
         
@@ -15846,7 +16251,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIExplorerEnvironmentMMenu : WpfMenu
     {
         
@@ -15882,7 +16287,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIEXPLORERCustom : WpfCustom
     {
         
@@ -15915,7 +16320,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIUI_ExplorerControl_ACustom1 : WpfCustom
     {
         
@@ -15952,7 +16357,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIWpfWindow : WpfWindow
     {
         
@@ -15985,7 +16390,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class ServicePickerWindow : WpfWindow
     {
         
@@ -15999,7 +16404,7 @@ namespace Warewolf.Studio.UISpecs
         }
     }
     
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SplashPageWindow : WpfWindow
     {
         
@@ -16011,5 +16416,74 @@ namespace Warewolf.Studio.UISpecs
             this.WindowTitles.Add("SplashPage");
             #endregion
         }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WinWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
+                    #region Search Criteria
+                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
     }
 }
