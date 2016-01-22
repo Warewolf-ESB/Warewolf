@@ -190,9 +190,12 @@
                                Grid.ColumnSpan="3"
                                Grid.Row="3"
                                ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               DataContextChanged="LargeDataGrid_OnDataContextChanged"
+                               Visibility="{Binding SelectionComplete, Converter={StaticResource BoolToVisibilityConverter}}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                Margin="{StaticResource ControlBorderTop}"
-                               IsEnabled="{Binding InputsVisible}">
+                               IsEnabled="{Binding InputsVisible}"
+                               IsEnabledChanged="LargeDataGrid_OnIsEnabledChanged">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -285,6 +288,7 @@
                 Width="Auto" 
                 Margin="{StaticResource ControlBorderTop}"
                 ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                Visibility="{Binding SelectionComplete, Converter={StaticResource BoolToVisibilityConverter}}"
                 HorizontalAlignment="Right"
                 Click="TestInputButton_OnClick"
                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}"
@@ -298,7 +302,8 @@
                     IsAlternateRowsEnabled="False"
                     AutoGenerateColumns="False" 
                     Margin="{StaticResource ControlBorderTop}"
-                    IsEnabled="{Binding TestComplete}" IsEnabledChanged="OutputsMappingDataGrid_OnIsEnabledChanged"
+                    IsEnabled="{Binding TestComplete}" 
+                    IsEnabledChanged="OutputsMappingDataGrid_OnIsEnabledChanged"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}"
                     MinHeight="60"
