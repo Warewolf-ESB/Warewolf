@@ -1,5 +1,5 @@
 
-<Service ID="c3f1cba2-75ea-4f99-bad7-5f44662c5b11" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DBConnInForEach" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5864.27579">
+<Service ID="c3f1cba2-75ea-4f99-bad7-5f44662c5b11" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DBConnInForEach" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5865.17379">
   <DisplayName>DBConnInForEach</DisplayName>
   <Category>Testing\Bugs\DBConnInForEach</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

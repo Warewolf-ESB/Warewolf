@@ -1,5 +1,5 @@
 
-<Service ID="7c928096-42b2-4717-826a-55a47d4596be" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorBubbleUp" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5864.27579">
+<Service ID="7c928096-42b2-4717-826a-55a47d4596be" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorBubbleUp" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5865.17379">
   <DisplayName>ErrorBubbleUp</DisplayName>
   <Category>Acceptance Testing Resources\ErrorBubbleUp</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
