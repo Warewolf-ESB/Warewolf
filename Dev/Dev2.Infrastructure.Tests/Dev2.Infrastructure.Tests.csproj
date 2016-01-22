@@ -144,6 +144,7 @@
     <Compile Include="DbTableTests.cs" />
     <Compile Include="SharedModels\ServerExplorerItemTest.cs" />
     <Compile Include="SharedModels\DbColumnTest.cs" />
+    <Compile Include="TestEnvironmentVariables.cs" />
     <Compile Include="VerifyArgumentsTest.cs" />
   </ItemGroup>
   <ItemGroup>

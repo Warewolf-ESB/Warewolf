@@ -591,7 +591,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
             var explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object, mockEventAggregator.Object);
             var view = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
-            view.DataContext = explorerViewModel;
+            try
+            {
+                view.DataContext = explorerViewModel;
+            }
+            catch(Exception e)
+            {
+                view.DataContext = null;
+                view.DataContext = explorerViewModel;
+            }
             ScenarioContext.Current.Remove(Utils.ViewModelNameKey);
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, explorerViewModel);
         }
