@@ -38,10 +38,21 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
+              errors = new ErrorResultTO();
+            if(Method == null)
+            {
+                errors.AddError("Invalid Method");
+                return;
+            }
+            if (Namespace == null)
+            {
+                errors.AddError("Invalid Namespace invoked");
+                return;
+            }
             //  OutputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
 
-            errors = new ErrorResultTO();
+          
         }
 
         protected object ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
@@ -62,6 +73,7 @@ namespace Dev2.Activities
 
             try
             {
+    
                 result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
                 PushXmlIntoEnvironment(result,update,dataObject);
             }
