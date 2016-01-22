@@ -311,12 +311,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.When("I select the Source \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100
- testRunner.And("I select the NameSpace \"EchoMe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
- testRunner.And("I select the Method \"GetPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
  testRunner.Then("\"Sources\" combobox is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 101
  testRunner.And("Selected Source is \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -325,50 +321,67 @@ this.ScenarioSetup(scenarioInfo);
                         "Echo Me"});
             table16.AddRow(new string[] {
                         "Person"});
-#line 104
+#line 102
  testRunner.And("the Namespaces are", ((string)(null)), table16, "And ");
+#line 106
+ testRunner.When("I select the NameSpace \"Echo Me\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
+ testRunner.And("I select the Method \"GetPeople\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
- testRunner.And("Selected Namespace is \"EchoMe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"Sources\" combobox is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 109
- testRunner.And("Selected Method is \"GetPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Selected Source is \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
             table17.AddRow(new string[] {
-                        "Echome"});
+                        "Echo Me"});
             table17.AddRow(new string[] {
-                        "GetPeople"});
+                        "Person"});
 #line 110
- testRunner.And("the available methods in the dropdown are", ((string)(null)), table17, "And ");
+ testRunner.And("the Namespaces are", ((string)(null)), table17, "And ");
+#line 114
+ testRunner.And("Selected Namespace is \"Echo Me\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
+ testRunner.And("Selected Method is \"GetPeople\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table18.AddRow(new string[] {
+                        "Echome"});
+            table18.AddRow(new string[] {
+                        "GetPeople"});
+#line 116
+ testRunner.And("the available methods in the dropdown are", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "Name",
                         "",
                         "False",
                         "False"});
-            table18.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "Value",
                         "Value",
                         "False",
                         "false"});
-#line 114
- testRunner.And("Inputs are", ((string)(null)), table18, "And ");
+#line 120
+ testRunner.And("Inputs are", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 118
- testRunner.And("Outputs are", ((string)(null)), table19, "And ");
-#line 120
+#line 124
+ testRunner.And("Outputs are", ((string)(null)), table20, "And ");
+#line 126
  testRunner.And("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 127
  testRunner.And("there are \"no\" validation errors of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 128
  testRunner.And("Validate is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -380,90 +393,119 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateNewPluginToolAndSelectANamespaceAndActionAndTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create new Plugin Tool and Select a Namespace and Action and test", ((string[])(null)));
-#line 125
+#line 131
 this.ScenarioSetup(scenarioInfo);
-#line 126
- testRunner.Given("I open Saved Plugin Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 127
- testRunner.When("I refresh the namespaces and there is no change", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 128
+#line 132
+ testRunner.Given("I open New Plugin Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 133
  testRunner.Then("\"Sources\" combobox is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 129
- testRunner.And("Selected Source is \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table20.AddRow(new string[] {
-                        "Echo Me"});
-            table20.AddRow(new string[] {
-                        "Person"});
-#line 130
- testRunner.And("the Namespaces are", ((string)(null)), table20, "And ");
 #line 134
- testRunner.And("Selected Namespace is \"EchoMe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Selected Source is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
- testRunner.And("Selected Method is \"GetPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Selected Namespace is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 136
+ testRunner.And("Selected Method is Null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table21.AddRow(new string[] {
-                        "Echo Me"});
-            table21.AddRow(new string[] {
-                        "GetPerson"});
-            table21.AddRow(new string[] {
-                        "GetPeople"});
-#line 136
- testRunner.And("The available methods are", ((string)(null)), table21, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Default Value",
                         "Required Field",
                         "Empty Null"});
-            table22.AddRow(new string[] {
+#line 137
+ testRunner.And("Inputs are", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias"});
+#line 139
+ testRunner.And("Outputs are", ((string)(null)), table22, "And ");
+#line 141
+ testRunner.And("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+ testRunner.And("there are \"no\" validation errors of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+ testRunner.When("I select the Source \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 144
+ testRunner.Then("\"Sources\" combobox is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 145
+ testRunner.And("Selected Source is \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table23.AddRow(new string[] {
+                        "Echo Me"});
+            table23.AddRow(new string[] {
+                        "Person"});
+#line 146
+ testRunner.And("the Namespaces are", ((string)(null)), table23, "And ");
+#line 150
+ testRunner.When("I select the NameSpace \"Echo Me\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 151
+ testRunner.And("I select the Method \"GetPeople\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 152
+ testRunner.Then("\"Sources\" combobox is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
+ testRunner.And("Selected Source is \"Echo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table24.AddRow(new string[] {
+                        "Echo Me"});
+            table24.AddRow(new string[] {
+                        "Person"});
+#line 154
+ testRunner.And("the Namespaces are", ((string)(null)), table24, "And ");
+#line 158
+ testRunner.And("Selected Namespace is \"Echo Me\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+ testRunner.And("Selected Method is \"GetPeople\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table25.AddRow(new string[] {
+                        "Echome"});
+            table25.AddRow(new string[] {
+                        "GetPeople"});
+#line 160
+ testRunner.And("the available methods in the dropdown are", ((string)(null)), table25, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input",
+                        "Default Value",
+                        "Required Field",
+                        "Empty Null"});
+            table26.AddRow(new string[] {
                         "Name",
                         "",
                         "False",
                         "False"});
-            table22.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "Value",
                         "Value",
                         "False",
                         "false"});
-#line 141
- testRunner.And("Inputs are", ((string)(null)), table22, "And ");
+#line 164
+ testRunner.And("Inputs are", ((string)(null)), table26, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table23.AddRow(new string[] {
+#line 168
+ testRunner.And("Outputs are", ((string)(null)), table27, "And ");
+#line 170
+ testRunner.When("I validate Sucessfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias"});
+            table28.AddRow(new string[] {
                         "Name",
                         "Name"});
-            table23.AddRow(new string[] {
-                        "Value",
-                        "Value"});
-#line 145
- testRunner.And("Outputs are", ((string)(null)), table23, "And ");
-#line 149
- testRunner.And("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
- testRunner.And("there are \"no\" validation errors of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
- testRunner.And("Validate is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
- testRunner.When("I set the RecordSet to \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Output",
-                        "Output Alias"});
-            table24.AddRow(new string[] {
-                        "Name",
-                        "[[rec().Name]]"});
-            table24.AddRow(new string[] {
-                        "Value",
-                        "[[rec().Value]]"});
-#line 153
- testRunner.Then("Outputs are", ((string)(null)), table24, "Then ");
+            table28.AddRow(new string[] {
+                        "Age",
+                        "Age"});
+#line 171
+ testRunner.Then("Outputs are", ((string)(null)), table28, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
