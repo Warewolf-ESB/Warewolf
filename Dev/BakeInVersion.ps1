@@ -1,10 +1,12 @@
+$WarewolfGitRepoDirectory = "$PSScriptRoot"
 Write-Host Writing C# and F# versioning files...
-$FullVersionString = git tag --points-at HEAD
-$GitCommitID = git rev-parse HEAD
+git -C "$WarewolfGitRepoDirectory" fetch --tags
+$FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
+$GitCommitID = git -C "$WarewolfGitRepoDirectory" rev-parse HEAD
 if ([string]::IsNullOrEmpty($FullVersionString)) {
 
     Write-Host This version is not tagged, generating new tag...
-    $FullVersionString = git describe --abbrev=0 --tags
+    $FullVersionString = git -C "$WarewolfGitRepoDirectory" describe --abbrev=0 --tags
     $FullVersionString = $FullVersionString.Trim()
     if ([string]::IsNullOrEmpty($FullVersionString)) {
         Write-Host No local tags found in git history. Setting version to 0.0.0.0
@@ -17,7 +19,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
     	$NewBuildNumber++
     	$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
         Write-Host Next local tag would be $FullVersionString. Checking against origin...
-        $originTag = git ls-remote --tags origin $FullVersionString
+        $originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags origin $FullVersionString
         if ($originTag.length -ne 0) {
             Write-Host Origin has tag $originTag
         }
@@ -32,7 +34,7 @@ $FullVersionString = $SeperateVersions[-1]
 if ([string]::IsNullOrEmpty($FullVersionString)) {
 	Write-Host Cannot resolve version string from repo from commit $GitCommitID
 } else {
-	$CSharpVersionFile = "$PSScriptRoot\AssemblyCommonInfo.cs"
+	$CSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.cs"
 	Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
 	$Line1 = "using System.Reflection;"
 	$Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
@@ -54,7 +56,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
 	Write-Host C Sharp version file written to $CSharpVersionFile
 	
-	$FSharpVersionFile = "$PSScriptRoot\AssemblyCommonInfo.fs"
+	$FSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.fs"
 	Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
 	$Line1 = "namespace Warewolf.FSharp"
 	$Line2 = "open System.Reflection;"
@@ -82,3 +84,4 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
 	Write-Host F Sharp version file written to $FSharpVersionFile
 }
+Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
