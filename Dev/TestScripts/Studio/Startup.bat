@@ -53,7 +53,7 @@ IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDir
 REM ** Start Warewolf studio from deployed binaries **
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 
-REM  Wait 1 minute ;)
-ping -n 60 127.0.0.1 > nul
+REM  Wait 2 minutes ;)
+ping -n 120 127.0.0.1 > nul
 
 exit 0
