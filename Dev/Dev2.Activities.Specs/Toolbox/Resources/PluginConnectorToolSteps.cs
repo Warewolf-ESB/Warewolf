@@ -216,13 +216,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I select the Method ""(.*)""")]
         public void WhenISelectTheMethod(string p0)
         {
-            ScenarioContext.Current.Pending();
+            var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
+            vm.SelectedMethod = vm.Methods.FirstOrDefault(a => a.FullName == p0);
         }
 
         [Then(@"Selected Method is ""(.*)""")]
         public void ThenSelectedMethodIs(string p0)
         {
-            ScenarioContext.Current.Pending();
+            var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
+            Assert.AreEqual(vm.SelectedMethod.FullName, p0);
         }
 
         [Then(@"The available methods are")]
@@ -234,7 +236,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Validate is ""(.*)""")]
         public void ThenValidateIs(string p0)
         {
-            ScenarioContext.Current.Pending();
+            var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
+            Assert.AreEqual(vm.InputsVisible, p0.ToLower()=="enabled");
         }
 
         [Given(@"I open Saved Plugin Tool")]
@@ -254,6 +257,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
+
+        [When(@"I validate Sucessfully")]
+        public void WhenIValidateSucessfully()
+        {
+            var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
+            vm.TestAction();
+         
+        }
+
 
     }
 }

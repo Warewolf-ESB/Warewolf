@@ -20,8 +20,8 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Warewolf ;) **
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (elevate taskkill /im "Warewolf Studio.exe" /T /F)
-IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /im "Warewolf Studio.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
 
 REM  Wait 5 seconds ;)
 ping -n 5 127.0.0.1 > nul
@@ -33,7 +33,7 @@ IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirect
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
-IF EXIST %windir%\nircmd.exe nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe" else START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 rem using the "ping" command as make-shift wait or sleep command, wait for server started file to appear
@@ -51,7 +51,7 @@ REM Init paths to Warewolf studio under test
 IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 REM ** Start Warewolf studio from deployed binaries **
-IF EXIST %windir%\nircmd.exe nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe" else START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 
 REM  Wait 1 minute ;)
 ping -n 60 127.0.0.1 > nul
