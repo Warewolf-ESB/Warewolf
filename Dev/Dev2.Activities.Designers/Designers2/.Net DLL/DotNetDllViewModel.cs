@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -17,13 +16,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -31,7 +30,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
-using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_DLL
@@ -103,13 +101,13 @@ namespace Dev2.Activities.Designers2.Net_DLL
             ShowExampleWorkflowLink = Visibility.Collapsed;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
+            FixErrorsCommand = new DelegateCommand(o =>
             {
                 FixErrors();
                 IsFixed = IsWorstErrorReadOnly;
             });
-            DoneCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o => Done());
-            DoneCompletedCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o => DoneCompleted());
+            DoneCommand = new DelegateCommand(o => Done());
+            DoneCompletedCommand = new DelegateCommand(o => DoneCompleted());
 
             InitializeDisplayName();
 
@@ -136,7 +134,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
                 _environment = environment;
             }
-            TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
+            TestInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestAction, CanTestProcedure);
             InitializeValidationService(_environment);
             InitializeLastValidationMemo(_environment);
             ManageServiceInputViewModel = manageServiceInputViewModel;
@@ -146,9 +144,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
 
                 _dllModel = pluginServiceModel;
-                NewSourceCommand = new DelegateCommand(_dllModel.CreateNewSource);
-                EditSourceCommand = new DelegateCommand(() => _dllModel.EditSource(SelectedSource), CanEditSource);
-                RefreshActionsCommand = new DelegateCommand(() =>
+                NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(_dllModel.CreateNewSource);
+                EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => _dllModel.EditSource(SelectedSource), CanEditSource);
+                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
                     if (_selectedMethod != null)
@@ -162,7 +160,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     IsRefreshing = false;
                 }, CanRefresh);
-                RefreshNamespaceCommand = new DelegateCommand(() =>
+                RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsNamespaceRefreshing = true;
                     if (_selectedMethod != null)
@@ -193,9 +191,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
                                 InputsVisible = false;
-                                InputsExpanded = false;
                                 OutputsVisible = false;
-                                OutputsExpanded = false;
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
                             }
                         }
@@ -230,12 +226,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             if (Inputs != null)
             {
                 InputsVisible = true;
-                InputsExpanded = true;
             }
             if (Outputs != null)
             {
                 OutputsVisible = true;
-                OutputsExpanded = true;
+                TestComplete = true;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -328,7 +323,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     if (Outputs != null)
                     {
                         OutputsVisible = true;
-                        OutputsExpanded = true;
                     }
                     OutputDescription = ManageServiceInputViewModel.Description;
                 };
@@ -700,9 +694,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private IPluginAction _selectedMethod;
         private ICollection<IServiceInput> _inputs;
         private bool _inputsVisible;
-        private bool _inputsExpanded;
         private bool _outputsVisible;
-        private bool _outputsExpanded;
         private bool _isTesting;
         private bool _canEditMappings;
         private bool _testSuccessful;
@@ -910,9 +902,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             InputsVisible = false;
-                            InputsExpanded = false;
                             OutputsVisible = false;
-                            OutputsExpanded = false;
                         }
                         ActionVisible = Methods.Count != 0;
 
@@ -920,6 +910,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         {
                             ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                         }
+                        InputsVisible = false;
+                        OutputsVisible = false;
                     }
                     catch (Exception e)
                     {
@@ -970,9 +962,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         {
                             RecordsetName = "";
                             InputsVisible = false;
-                            InputsExpanded = false;
                             OutputsVisible = false;
-                            OutputsExpanded = false;
                             Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                         }
@@ -995,6 +985,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
                             FriendlySourceNameValue = _selectedSource.Name;
                         }
+                        InputsVisible = false;
                     }
                     catch (Exception e)
                     {
@@ -1085,6 +1076,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedMethod))
                 {
+                    OutputsVisible = false;
                     TestComplete = false;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
@@ -1097,10 +1089,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
-                    OutputsVisible = false;
-                    OutputsExpanded = false;
                     InitializeProperties();
                     Method = _selectedMethod;
+                    InputsVisible = true;
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
@@ -1187,18 +1178,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged("InputsVisible");
             }
         }
-        public bool InputsExpanded
-        {
-            get
-            {
-                return _inputsExpanded;
-            }
-            set
-            {
-                _inputsExpanded = value;
-                OnPropertyChanged("InputsExpanded");
-            }
-        }
         public bool OutputsVisible
         {
             get
@@ -1209,18 +1188,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 _outputsVisible = value;
                 OnPropertyChanged("OutputsVisible");
-            }
-        }
-        public bool OutputsExpanded
-        {
-            get
-            {
-                return _outputsExpanded;
-            }
-            set
-            {
-                _outputsExpanded = value;
-                OnPropertyChanged("OutputsExpanded");
             }
         }
         public ICollection<IServiceInput> Inputs
@@ -1235,8 +1202,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (!Equals(value, _inputs))
                 {
                     _inputs = value;
-                    InputsVisible = true;
-                    InputsExpanded = true;
                     SetProperty(value);
                     OnPropertyChanged("Inputs");
                 }
@@ -1257,8 +1222,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-                OutputsVisible = true;
-                OutputsExpanded = true;
                 SetProperty(value);
                 OnPropertyChanged("Outputs");
             }
