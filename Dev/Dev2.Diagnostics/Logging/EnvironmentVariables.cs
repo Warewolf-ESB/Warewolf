@@ -63,11 +63,7 @@ namespace Dev2.Common
         {
             get
             {
-                var resourcePath = Path.Combine(AppDataPath, "Resources");
-                if (!Directory.Exists(resourcePath))
-                {
-                    Directory.CreateDirectory(resourcePath);
-                }
+                var resourcePath = Path.Combine(AppDataPath, "Resources");                
                 return resourcePath;
             }
         }
