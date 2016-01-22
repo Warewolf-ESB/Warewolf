@@ -43,6 +43,8 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.ResourceManagement;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
@@ -50,6 +52,7 @@ using Warewolf.ResourceManagement;
 namespace Dev2.Runtime.Hosting
 {
 
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ResourceCatalog : IResourceCatalog
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
@@ -822,7 +825,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, string userRoles = null, bool deleteVersions = true)
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true)
         {
             try
             {
@@ -1307,7 +1310,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         var resources = GetResources(workspaceID);
                         var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
-                        if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
+                        if(conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                         {
                             saveResult = new ResourceCatalogResult
                             {
@@ -1316,15 +1319,15 @@ namespace Dev2.Runtime.Hosting
                             };
                             return;
                         }
-                    if (resource.ResourcePath.EndsWith("\\"))
-                    {
-                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
-                    }
+                        if(resource.ResourcePath.EndsWith("\\"))
+                        {
+                            resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                        }
                         var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                         var originalRes = resource.ResourcePath ?? "";
                         int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
                         var resPath = resource.ResourcePath;
-                        if (indexOfName >= 0)
+                        if(indexOfName >= 0)
                             resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
                         var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
 
@@ -1332,18 +1335,18 @@ namespace Dev2.Runtime.Hosting
 
                         #region Save to disk
 
-                        if (!Directory.Exists(directoryName))
+                        if(!Directory.Exists(directoryName))
                         {
                             Directory.CreateDirectory(directoryName);
                         }
 
 
 
-                        if (File.Exists(resource.FilePath))
+                        if(File.Exists(resource.FilePath))
                         {
                             // Remove readonly attribute if it is set
                             var attributes = File.GetAttributes(resource.FilePath);
-                            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                            if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                             {
                                 File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
                             }
@@ -1351,7 +1354,7 @@ namespace Dev2.Runtime.Hosting
 
                         XElement xml = contents.ToXElement();
                         xml = resource.UpgradeXml(xml, resource);
-                        if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+                        if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
                         {
                             var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
                             resource.ResourcePath = resourcePath;
@@ -1362,7 +1365,7 @@ namespace Dev2.Runtime.Hosting
 
                         var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-                        lock (GetFileLock(resource.FilePath))
+                        lock(GetFileLock(resource.FilePath))
                         {
 
                             signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
@@ -1372,26 +1375,27 @@ namespace Dev2.Runtime.Hosting
 
                         #region Add to catalog
 
-                    var index = resources.IndexOf(resource);
-                    var updated = false;
-                    if (index != -1)
-                    {
-                        var existing = resources[index];
-                        if(existing.FilePath!= resource.FilePath)
+                        var index = resources.IndexOf(resource);
+                        var updated = false;
+                        if(index != -1)
                         {
-                            fileManager.Delete(existing.FilePath);
+                            var existing = resources[index];
+                            if(existing.FilePath != resource.FilePath)
+                            {
+                                fileManager.Delete(existing.FilePath);
+                            }
+                            resources.RemoveAt(index);
+                            updated = true;
                         }
-                        resources.RemoveAt(index);
-                        updated = true;
-                    }
-                    resource.GetInputsOutputs(xml);
-                    resource.ReadDataList(xml);
-                    resource.SetIsNew(xml);
-                    resource.UpdateErrorsBasedOnXML(xml);
+                        resource.GetInputsOutputs(xml);
+                        resource.ReadDataList(xml);
+                        resource.SetIsNew(xml);
+                        resource.UpdateErrorsBasedOnXML(xml);
 
                         resources.Add(resource);
 
                         #endregion
+
                         RemoveFromResourceActivityCache(workspaceID, resource);
                         AddOrUpdateToResourceActivityCache(workspaceID, resource);
                         tx.Complete();
@@ -1401,7 +1405,7 @@ namespace Dev2.Runtime.Hosting
                             Message = string.Format("{0} {1} '{2}'", updated ? "Updated" : "Added", resource.ResourceType, resource.ResourceName)
                         };
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         Transaction.Current.Rollback();
                         throw;
@@ -1963,10 +1967,7 @@ namespace Dev2.Runtime.Hosting
             VerifyArguments(oldCategory, newCategory);
             try
             {
-                var resourcesToUpdate = Instance.GetResources(workspaceID, resource =>
-                {
-                    return resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase);
-                }).ToList();
+                var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
 
                 return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
             }

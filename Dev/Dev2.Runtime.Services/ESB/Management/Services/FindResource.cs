@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             IList<Resource> resources;
             if(resourceId ==null || resourceId == "*" )
-                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
+                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type);
             else
             {
                 resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);

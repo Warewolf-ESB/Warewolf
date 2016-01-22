@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -81,9 +82,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 DoFileEncryption(securitySettings.ToString());
-
-                // Deny ACL was causing "Access to the path is denied." errors 
-                // so Barney decided it was OK not to do it.
             }
             catch(Exception e)
             {
@@ -97,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var encryptedData = SecurityEncryption.Encrypt(permissions);
             byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
 
-            using(var outStream = new FileStream(ServerSecurityService.FileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+            using(var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {
                 outStream.SetLength(0);
                 outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);

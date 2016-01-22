@@ -157,6 +157,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups")]
+        [NUnit.Framework.CategoryAttribute("Security")]
         [NUnit.Framework.TestCaseAttribute("1", "Public", "View", "Acceptance Testing Resources\\DECISION TESTING", "View", "Users", "All", "View", "Acceptance Testing Resources\\DECISION TESTING", "View", null)]
         [NUnit.Framework.TestCaseAttribute("2", "Public", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "View", "Users", "All", "Execute", "Acceptance Testing Resources\\DECISION TESTING", "View", null)]
         [NUnit.Framework.TestCaseAttribute("3", "Public", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View", "Users", "All", "Contribute, View, Execute", "Acceptance Testing Resources\\DECISION TESTING", "View", null)]
@@ -185,7 +186,13 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("26", "Public", "None", "Acceptance Testing Resources\\DECISION TESTING", "Contribute, View, Execute", "Users", "Users", "None", "Acceptance Testing Resources\\DECISION TESTING", "Contribute, View, Execute", null)]
         public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups(string no, string group, string givenRights, string resourceName, string resourceRights, string userGroup, string resources, string rights, string resource, string permissions, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users overlapping groups", exampleTags);
+            string[] @__tags = new string[] {
+                    "Security"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users overlapping groups", @__tags);
 #line 60
 this.ScenarioSetup(scenarioInfo);
 #line 61
