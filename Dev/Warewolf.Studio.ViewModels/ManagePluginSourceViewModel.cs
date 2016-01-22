@@ -418,6 +418,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = _pluginSource.Path, 
                 SelectedDll = SelectedDll
             };
+            AssemblyName = _pluginSource.SelectedDll.FullName;
         }
 
         void Save(IPluginSource source)
