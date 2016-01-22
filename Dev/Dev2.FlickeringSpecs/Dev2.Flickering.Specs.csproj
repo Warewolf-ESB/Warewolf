@@ -80,8 +80,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Dev2.Integration.Tests\Activities\FileSystemTests.cs" />
-    <Compile Include="Dev2.Integration.Tests\AppTests.cs" />
     <Compile Include="Dev2.Activities.Specs\Composition\WorkflowExecution2.feature.cs">
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -150,6 +148,9 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dev2.Integration.Tests\Activities\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
