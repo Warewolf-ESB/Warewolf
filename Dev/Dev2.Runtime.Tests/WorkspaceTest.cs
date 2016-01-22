@@ -119,7 +119,7 @@ namespace Dev2.DynamicServices.Test
                 data["IsLocalSave"] = new StringBuilder("true");
 
                 // Now remove the 
-                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, _serviceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
+                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, _serviceID, "WorkflowService");
 
                 endpoint.Execute(data, workspace);
 
