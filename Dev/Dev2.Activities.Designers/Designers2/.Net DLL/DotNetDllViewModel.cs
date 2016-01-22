@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -16,6 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
@@ -95,6 +97,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
+            TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -266,7 +269,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             };
             foreach (var serviceInput in Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(serviceInput);
+                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
             }
             return pluginServiceDefinition;
         }
@@ -330,6 +333,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     OutputDescription = ManageServiceInputViewModel.Description;
                 };
                 ManageServiceInputViewModel.ShowView();
+                if (ManageServiceInputViewModel.OkSelected)
+                {
+                    ValidateTestComplete();
+                }
             }
             catch (Exception e)
             {
@@ -494,7 +501,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         void Done()
         {
-            if (!IsWorstErrorReadOnly)
+            if (!TestComplete && string.IsNullOrWhiteSpace(RecordsetName))
+            {
+                ErrorMessage(new Exception("There are incomplete fields. Please select all relevant fields and validate before selecting the Done button."));
+            }
+            else if (!IsWorstErrorReadOnly)
             {
                 FixErrors();
             }
@@ -702,6 +713,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<INamespaceItem> _namespaces;
         private bool _namespaceVisible;
         bool _isNamespaceRefreshing;
+        bool _testComplete;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -883,6 +895,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedNamespace))
                 {
+                    TestComplete = false;
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
@@ -945,6 +958,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedSource))
                 {
+                    TestComplete = false;
                     IsNamespaceRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
                     _selectedSource = value;
@@ -953,16 +967,23 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Namespaces = _dllModel.GetNameSpaces(_selectedSource);
                         if (!_isInitializing)
                         {
-                            Inputs = new List<IServiceInput>();
-                            Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             InputsVisible = false;
                             InputsExpanded = false;
                             OutputsVisible = false;
                             OutputsExpanded = false;
+                            Inputs = new List<IServiceInput>();
+                            Outputs = new List<IServiceOutputMapping>();
                         }
                         NamespaceVisible = Namespaces.Count != 0 && Namespaces != null;
-                        ActionVisible = Methods.Count != 0 && Methods != null;
+                        if (Methods == null)
+                        {
+                            ActionVisible = false;
+                        }
+                        else
+                        {
+                            ActionVisible = Methods.Count != 0;
+                        }
                         if (Namespaces.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
@@ -992,6 +1013,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
         }
+
+        void ValidateTestComplete()
+        {
+            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null;
+        }
+
         public bool NamespaceVisible
         {
             get
@@ -1057,6 +1084,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (!Equals(value, _selectedMethod))
                 {
+                    TestComplete = false;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
                     {
@@ -1134,6 +1162,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
             return SelectedMethod != null;
         }
 
+        public bool TestComplete
+        {
+            get
+            {
+                return _testComplete;
+            }
+            set
+            {
+                _testComplete = value;
+                OnPropertyChanged("TestComplete");
+            }
+        }
         public bool InputsVisible
         {
             get

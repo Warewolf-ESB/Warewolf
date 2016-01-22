@@ -51,7 +51,7 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid Margin="{StaticResource ElementBorder}">
+    <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -61,9 +61,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -286,6 +286,7 @@
                 Margin="{StaticResource ControlBorderTop}"
                 ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                 HorizontalAlignment="Right"
+                Click="TestInputButton_OnClick"
                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}"
                 IsEnabled="{Binding InputsVisible}"/>
 
@@ -297,8 +298,9 @@
                     IsAlternateRowsEnabled="False"
                     AutoGenerateColumns="False" 
                     Margin="{StaticResource ControlBorderTop}"
-                    IsEnabled="{Binding OutputsVisible}"
+                    IsEnabled="{Binding TestComplete}" IsEnabledChanged="OutputsMappingDataGrid_OnIsEnabledChanged"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}"
                     MinHeight="60"
                     MaxHeight="Infinity"
                     ColumnWidth="*">
@@ -338,13 +340,15 @@
                 <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
             </ig:XamGrid.ConditionalFormattingSettings>
         </ig:XamGrid>
-        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource ControlBorderTop}">
+        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" 
+              Margin="{StaticResource ControlBorderTop}" 
+              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Recordset Name" ></TextBlock>
-            <TextBox Grid.Column="1" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+            <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
