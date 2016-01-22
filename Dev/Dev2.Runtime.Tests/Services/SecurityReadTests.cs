@@ -15,6 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
@@ -52,29 +53,26 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenOldSecureConfigExist_MigratesAdministratorsToWarewolfAdministrators_ExpectSuccessfulMigration()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
-            {
-                File.Delete("secure.config");
-            }
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            File.Delete(serverSecuritySettingsFile);
 
-            var myConfig = SecurityConfigFetcher.Fetch("secure.config");
-            File.WriteAllText("secure.config", myConfig);
+            var myConfig = SecurityConfigFetcher.Fetch(serverSecuritySettingsFile);
+            File.WriteAllText(serverSecuritySettingsFile, myConfig);
 
             //------------Assert Preconditions-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
             // ensure the contents are what we expect ;)
-            StringAssert.Contains(myConfig, "RQ4pIorv9CrH9j7QSj+h7SpkLO1bEXCnuzh7hcQOh1vP2LunCgC7jJNqyTQMLA6YNcl5mqdHnF9JFFU7STCYTneLCWNx2qb7GOE3Ne0Ilo8DQfcRT/3O9rutV/AXez0CgHmrDYJwB2GoC1pbgIMRrJoqbYp+rcB5Ee2sYo8ZkbaKAs3oEbUSj/Xr3GO0Y6AncMJKjW0bsfWP6Ga+dpov2KDILfJPLbSAaW8XKaOJw6U+ZuyeAos3BY93EzGHJvHCX8ZYt6x/pOr4z2crl6+FeeEjrn6QDML/Uv8A0HkNv62EikJCBuPlpytsMmaxE2Al7jrptHblWylEwCKdSNpW7IOwFuQyXQAAa2eBO4/+fmyMRV0MDkdOTRarXr4GYYD9fojqZ0v1zU3J2+zJy2grhpzjchGtVfH6il0B5Bqx4SXR1GxzsoyIVK/EEd2VKV0xve7wIcDqNgtWwq5ytWJVuR413h0+azNk7H3gT4YwNC5NuX4CqyrvdKaHVMQfDbnQqtvNYGPPdGcBAHg8Pvh3+xb8erJiPsNUXQ89qBcrdRU7VT+9WdIeS0jaFwdpCybfwa0SKCaNwPrPHXEg9MjVCUCEiruJwCRyvbnYqUOH50VVLtfaVwJaa707sQHjWIZ3vRPF1yoT3NUBiPQoxuRKn1vchuP4y+D31cm+mxrk+GhjFd+bfLX10ywhkiNLCl4hTOFhIUH3JnnVcOQ0IVaV1wA5EUW+t3lk4n4o1uZzwxtrdFd/5H6zkgQMh62I3mWzWZYJoIwZ9QT/zNpnb1Raiz7nTEFqwSozKOADbuxocmdabJLOWXZTk119gf5131i2ChEN7pLvGx3m3wQx+ngTOhkrFwzO5cPBAPhTn8GityV3iB1YF/hst5uiEgf119q7gs74LNE0k0uc+3ushPAztEpp2YKDChU6n9Y4s43KASKCkzjMYWMJeOsnatcrDbkA8Dj1akaopJpFkvySUJXXXjGg3XBXfD4hGsbjKva86isMgw94DmAV7W6pZqKo7SsUiLpmIgphqis+1wmzZYXqbPaE+y3xiA3csdver7ijCeH3q+W20UpyE2be+shBvBSbt34YNss3fP8cLNZsKLaNt1GgA9E28LkW5su5zjCNAS86YDO1Hy6/DG+aAE3HRyeNQMl06Y6sVA3lENfUc5hNFXYvCFaFABeVZNkef/LWGOMjTEqYooyPY3f4tGilRoZwLR96IkfxJZh7gSbA2TGQpsRBsjyliSgozEkSR+YYdUfo47idNg6Tu3SZ5zgqJOXzfTV+5e/29K79jSVSiWxh3AVVmrItqXrVcA1gY63+yFuOkQBtufYqWNNfAAdoXdoj5EEEHQw1InTMJIcj1LnbAopgiKW5fj0t7myvoQUkXdT4a9fc5rBsoI98cWp4cFAn+6xFIloH12APNadpttkFTEIVqWShKZXqmY1JZSDMJJcZ9cB2vOnBsBCFQraiuzyl");
 
             var mockCatalog = new Mock<IResourceCatalog>();
             mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
-            var securityRead = new SecurityRead()
+            var securityRead = new SecurityRead
             {
                 Catalog = mockCatalog.Object
             };
             var jsonPermissions = securityRead.Execute(null, null);
 
-            File.Delete("secure.config");
+            File.Delete(serverSecuritySettingsFile);
             var readSecuritySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, readSecuritySettings.WindowsGroupPermissions.Count);
@@ -104,10 +102,8 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithNoGuestPermission_ShouldHaveExistingPermissionsAndGuest()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
-            {
-                File.Delete("secure.config");
-            }
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            File.Delete(serverSecuritySettingsFile);
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
@@ -117,10 +113,10 @@ namespace Dev2.Tests.Runtime.Services
             var securityRead = new SecurityRead();
             securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Preconditions-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
-            File.Delete("secure.config");
+            File.Delete(serverSecuritySettingsFile);
             var readSecuritySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.AreEqual(4, readSecuritySettings.WindowsGroupPermissions.Count);
@@ -163,10 +159,8 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithGuestPermission_ShouldHaveExistingPermissions()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
-            {
-                File.Delete("secure.config");
-            }
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            File.Delete(serverSecuritySettingsFile);
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
             var guests = WindowsGroupPermission.CreateGuests();
@@ -179,7 +173,7 @@ namespace Dev2.Tests.Runtime.Services
             var securityRead = new SecurityRead();
             securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Preconditions-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
             File.Delete("secure.config");
@@ -235,6 +229,8 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_ReturnsDefaultPermissions()
         {
             //------------Setup for test--------------------------
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            File.Delete(serverSecuritySettingsFile);
             var securityRead = new SecurityRead();
 
             //------------Execute Test---------------------------
@@ -262,14 +258,16 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_DecryptThrowsException_ReturnsDefaultPermissions()
         {
             //------------Setup for test--------------------------
-            File.WriteAllText("secure.config", @"Invalid content.");
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            File.Delete(serverSecuritySettingsFile);
+            File.WriteAllText(serverSecuritySettingsFile, @"Invalid content.");
             var securityRead = new SecurityRead();
 
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
             var securitySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
 
-            File.Delete("secure.config");
+            File.Delete(serverSecuritySettingsFile);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(securitySettings.WindowsGroupPermissions.Count == 2);

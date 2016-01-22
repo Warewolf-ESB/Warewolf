@@ -118,29 +118,6 @@ namespace Dev2.Tests.Runtime.Services
 
 
         [TestMethod]
-        public void DeleteLogExecuteWithValidPathExpectedReturnsSuccess()
-        {
-            //Lock because of access to file system
-            lock(SyncRoot)
-            {
-                var fileName = Guid.NewGuid().ToString() + "_Test.log";
-                var path = Path.Combine(_testDir, fileName);
-                File.WriteAllText(path, "hello test");
-
-                Assert.IsTrue(File.Exists(path));
-
-                var workspace = new Mock<IWorkspace>();
-
-                var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
-                var esb = new DeleteLog();
-                var result = esb.Execute(values, workspace.Object);
-                var msg = ConvertToMsg(result);
-                Assert.IsTrue(msg.Message.ToString().StartsWith("Success"));
-                Assert.IsFalse(File.Exists(path));
-            }
-        }
-
-        [TestMethod]
         public void DeleteLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
             //Lock because of access to file system
