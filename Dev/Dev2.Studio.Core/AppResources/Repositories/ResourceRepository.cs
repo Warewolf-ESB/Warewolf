@@ -413,6 +413,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
+           
             Func<IResourceModel, bool> func = expression.Compile();
             return ResourceModels.FindAll(func.Invoke);
         }
