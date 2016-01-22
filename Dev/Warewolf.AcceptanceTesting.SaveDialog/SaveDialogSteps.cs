@@ -25,7 +25,7 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             Utils.SetupResourceDictionary();
             var explorerRepository = new Mock<IExplorerRepository>();
             explorerRepository.Setup(repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
-            var view = new RequestServiceNameView();
+            IRequestServiceNameView view = new RequestServiceNameView();
             var viewModel = await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new ServerForTesting(explorerRepository), new Mock<IShellViewModel>().Object), view, "", "");
             view.DataContext = viewModel;
             var window = new Window {Content = view};

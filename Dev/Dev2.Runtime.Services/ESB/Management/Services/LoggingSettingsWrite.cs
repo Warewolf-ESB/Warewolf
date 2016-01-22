@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public static void Write(LoggingSettingsTo loggingSettingsTo)
         {
             VerifyArgument.IsNotNull("loggingSettingsTo", loggingSettingsTo);
-            Dev2Logger.WriteLogSettings(loggingSettingsTo.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.FileLoggerLogLevel,loggingSettingsTo.EventLogLoggerLogLevel, "Settings.config","Warewolf Server");
+            Dev2Logger.WriteLogSettings(loggingSettingsTo.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.FileLoggerLogLevel,loggingSettingsTo.EventLogLoggerLogLevel, EnvironmentVariables.ServerLogSettingsFile,"Warewolf Server");
         }
 
         public DynamicService CreateServiceEntry()
