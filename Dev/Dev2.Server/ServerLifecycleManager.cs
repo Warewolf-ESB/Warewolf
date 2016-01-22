@@ -60,6 +60,9 @@ using Dev2.Workspaces;
 using log4net.Config;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable InconsistentNaming
 namespace Dev2
@@ -326,7 +329,8 @@ namespace Dev2
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
             SetWorkingDirectory();
-            const string settingsConfigFile = "Settings.config";
+            MoveSettingsFiles();
+            var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
             if (!File.Exists(settingsConfigFile))
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
@@ -344,6 +348,33 @@ namespace Dev2
             SetupTempCleanupSetting();
             InitializeCommandLineArguments();
         }
+
+        private static void MoveSettingsFiles()
+        {
+            if(File.Exists("Settings.config"))
+            {
+                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                {
+                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
+                }
+                if(!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
+                {
+                    File.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
+                }
+            }
+            if(File.Exists("secure.config"))
+            {
+                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                {
+                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
+                }
+                if(!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
+                {
+                    File.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
+                }
+            }
+        }
+
         private void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
@@ -731,14 +762,10 @@ namespace Dev2
             return result;
         }
 
-        internal bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
+        internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
-            bool output = false;
-
             if(String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
             {
-                output = true;
-
                 if(!String.IsNullOrEmpty(section.InnerText))
                 {
                     if(String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
@@ -761,8 +788,6 @@ namespace Dev2
                     result = false;
                 }
             }
-
-            return output;
         }
 
 
@@ -1422,10 +1447,8 @@ namespace Dev2
         /// workflow execution.
         /// </summary>
         /// <returns>false if the cleanup failed, otherwise true</returns>
-        internal bool CleanupServer()
+        internal void CleanupServer()
         {
-            bool result = true;
-
             try
             {
                 if(_owinServer != null)
@@ -1437,9 +1460,7 @@ namespace Dev2
             catch(Exception ex)
             {
                 LogException(ex);
-                result = false;
             }
-
             try
             {
                 DebugDispatcher.Instance.Shutdown();
@@ -1447,22 +1468,8 @@ namespace Dev2
             catch(Exception ex)
             {
                 LogException(ex);
-                result = false;
             }
-
-            // shutdown the storage layer ;)
-            try
-            {
-   
-            }
-            catch(Exception e)
-            {
-                LogException(e);
-            }
-
             TerminateGcManager();
-
-            return result;
         }
 
         #endregion
@@ -1995,11 +2002,15 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
+            if(!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                DirectoryHelper.Copy(Path.Combine(EnvironmentVariables.ApplicationPath,"Resources"),EnvironmentVariables.ResourcePath,true);
+            }
         }
 
         static void ValidatResourceFolder()
         {
-            var folder = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            var folder = EnvironmentVariables.ResourcePath;
             if(!Directory.Exists(folder))
             Directory.CreateDirectory(folder);
         }
