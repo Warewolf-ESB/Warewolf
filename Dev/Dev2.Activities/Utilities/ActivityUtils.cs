@@ -27,6 +27,7 @@ namespace Dev2.Utilities
             var dsfSqlServerDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
                 ResourceID = dbActivity.ResourceID,
+                DisplayName = dbActivity.DisplayName,
                 ProcedureName = service.Method.ExecuteAction,
                 SourceId = source.ResourceID,
                 Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
@@ -59,6 +60,7 @@ namespace Dev2.Utilities
             var dsfMySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
                 ResourceID = dbActivity.ResourceID,
+                DisplayName = dbActivity.DisplayName,
                 SourceId = source.ResourceID,
                 ProcedureName = service.Method.ExecuteAction,
                 Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
