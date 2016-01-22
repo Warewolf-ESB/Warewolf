@@ -96,17 +96,23 @@ Scenario: Create new Plugin Tool and Select a Namespace and Action
 	| Output | Output Alias |
 	And Recordset is ""
 	And there are "no" validation errors of "" 
-	When I select the Source "Echo"
-	And I select the NameSpace "EchoMe" 
-	And I select the Method "GetPerson" 
+	When I select the Source "Echo"	
 	Then  "Sources" combobox is enabled
 	And  Selected Source is "Echo"
 	And the Namespaces are 
 	| Name    |
 	| Echo Me |
 	| Person  |
-	And Selected Namespace is "EchoMe"
-	And Selected Method is "GetPerson" 
+	When I select the NameSpace "Echo Me" 
+	And I select the Method "GetPeople" 
+	Then  "Sources" combobox is enabled
+	And  Selected Source is "Echo"
+	And the Namespaces are 
+	| Name    |
+	| Echo Me |
+	| Person  |
+	And Selected Namespace is "Echo Me"
+	And Selected Method is "GetPeople" 
 	And the available methods in the dropdown are
 	| Name    |
 	| Echome |
@@ -123,20 +129,37 @@ Scenario: Create new Plugin Tool and Select a Namespace and Action
 
 
 Scenario: Create new Plugin Tool and Select a Namespace and Action and test
-	Given I open Saved Plugin Tool
-	When I refresh the namespaces and there is no change
+	Given I open New Plugin Tool
+	Then  "Sources" combobox is enabled
+	And  Selected Source is null
+	And Selected Namespace is Null
+	And Selected Method is Null
+	And Inputs are
+	| Input   | Default Value | Required Field | Empty Null |
+	And Outputs are
+	| Output | Output Alias |
+	And Recordset is ""
+	And there are "no" validation errors of "" 
+	When I select the Source "Echo"	
 	Then  "Sources" combobox is enabled
 	And  Selected Source is "Echo"
 	And the Namespaces are 
 	| Name    |
 	| Echo Me |
 	| Person  |
-	And Selected Namespace is "EchoMe"
-	And Selected Method is "GetPerson" 
-	And The available methods are
+	When I select the NameSpace "Echo Me" 
+	And I select the Method "GetPeople" 
+	Then  "Sources" combobox is enabled
+	And  Selected Source is "Echo"
+	And the Namespaces are 
 	| Name    |
 	| Echo Me |
-	| GetPerson  |
+	| Person  |
+	And Selected Namespace is "Echo Me"
+	And Selected Method is "GetPeople" 
+	And the available methods in the dropdown are
+	| Name    |
+	| Echome |
 	| GetPeople  |
 	And Inputs are
 	| Input | Default Value | Required Field | Empty Null |
@@ -144,14 +167,8 @@ Scenario: Create new Plugin Tool and Select a Namespace and Action and test
 	| Value | Value         | False          | false      |
 	And Outputs are
 	| Output | Output Alias |
-	| Name | Name |
-	| Value | Value |
-	And Recordset is ""
-	And there are "no" validation errors of "" 
-	And Validate is "Enabled"
-	When I set the RecordSet to "rec"
+	When I validate Sucessfully
 	Then Outputs are
-	| Output | Output Alias    |
-	| Name   | [[rec().Name]]  |
-	| Value  | [[rec().Value]] |
-
+	| Output | Output Alias |
+	| Name   | Name         |
+	| Age    | Age          |

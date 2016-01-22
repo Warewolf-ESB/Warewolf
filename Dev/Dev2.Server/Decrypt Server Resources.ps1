@@ -4,7 +4,7 @@ $CurrentDirectory = Split-Path $Invocation.MyCommand.Path
 Write-Host Got script path as "$CurrentDirectory".
 
 Write-Host Starting compile using compiler at "$env:vs120comntools..\IDE\devenv.com".
-[System.Diagnostics.Process]::Start("""" + $env:vs120comntools + "..\IDE\devenv.com""", """" + $CurrentDirectory + "\..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj"" /Build ""Debug|Any CPU""")
+[System.Diagnostics.Process]::Start("""" + $env:vs120comntools + "..\IDE\devenv.com""", """" + $CurrentDirectory + "\..\Server.sln"" /Build ""Debug""")
 Write-Host Compile finished.
 
 Write-Host Loading assembly at "$CurrentDirectory\..\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll".

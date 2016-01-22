@@ -13,6 +13,7 @@ namespace Dev2.Common.Interfaces
         string TestResults { get; set; }
         Action TestAction { get; set; }
         ICommand TestCommand { get; }
+        bool OkSelected { get; set; }
         bool TestResultsAvailable { get; set; }
         bool IsTestResultsEmptyRows { get; set; }
         bool IsTesting { get; set; }
