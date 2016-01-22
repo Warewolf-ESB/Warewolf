@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.Settings;
@@ -102,8 +103,9 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             StringBuilder execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
-            File.Delete("secure.config");
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
+            File.Delete(serverSecuritySettingsFile);
 
             var msg = ToMsg(execute);
 

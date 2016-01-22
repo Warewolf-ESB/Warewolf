@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         readonly string _serverLogPath;
 
         public FetchCurrentServerLog()
-            : this(Path.Combine(EnvironmentVariables.ApplicationPath, "WareWolf-Server.log"))
+            : this(EnvironmentVariables.ServerLogFile)
         {
         }
 

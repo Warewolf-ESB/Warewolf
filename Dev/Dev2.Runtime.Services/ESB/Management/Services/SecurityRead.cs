@@ -20,7 +20,6 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -50,10 +49,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Debug("Start Security Read");
-            if(File.Exists(ServerSecurityService.FileName))
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            if(File.Exists(serverSecuritySettingsFile))
             {
                 string encryptedData;
-                using(var inStream = new FileStream(ServerSecurityService.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var inStream = new FileStream(serverSecuritySettingsFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     using(var reader = new StreamReader(inStream))
                     {
