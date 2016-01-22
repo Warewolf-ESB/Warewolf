@@ -22,12 +22,11 @@ namespace Dev2.Runtime.Security
 {
     public class ServerSecurityService : SecurityServiceBase
     {
-        public const string FileName = "secure.config";
         private bool _disposing;
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
-            : this(FileName)
+            : this(EnvironmentVariables.ServerSecuritySettingsFile)
         {
         }
 

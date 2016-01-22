@@ -81,7 +81,6 @@ namespace Dev2.Workspaces
 
             #region TODO: Fix Map ResourceType from workspaceItem.ServiceType
 
-            // TODO: FIX mapping ResourceType from workspaceItem.ServiceType
             switch(serviceType)
             {
                 case enDynamicServiceObjectType.BizRule:
