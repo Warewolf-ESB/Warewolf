@@ -57,7 +57,7 @@ namespace Dev2.Common
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
-                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log\" />" +
     "<!-- Example using environment variables in params -->" +
     "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
     "<appendToFile value=\"true\" />" +

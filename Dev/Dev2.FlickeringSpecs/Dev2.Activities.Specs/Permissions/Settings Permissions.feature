@@ -56,7 +56,7 @@ Examples:
         | 14 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
         | 15 | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View, Execute             | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View, Execute             |
 
-#@Security
+@Security
 Scenario Outline: Setting Selected Resource Permissions for users overlapping groups
         Given I have a server "localhost"
         And it has '<Group>' with '<Given rights>' 
