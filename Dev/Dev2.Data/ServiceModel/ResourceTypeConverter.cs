@@ -123,7 +123,9 @@ namespace Dev2.Data.ServiceModel
                 case enSourceType.MySqlDatabase:
                     resourceType = ResourceType.DbSource;
                     break;
-
+                case enSourceType.Oracle:
+                    resourceType = ResourceType.DbSource;
+                    break;
                 case enSourceType.Plugin:
                     resourceType = ResourceType.PluginSource;
                     break;
