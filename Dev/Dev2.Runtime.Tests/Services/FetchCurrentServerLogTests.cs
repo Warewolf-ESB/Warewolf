@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void FetchCurrentServerLogConstructorWithDefaultExpectedInitializesServerLogPath()
         {
-            var serverLogPath = Path.Combine(EnvironmentVariables.ApplicationPath, "WareWolf-Server.log");
+            var serverLogPath = EnvironmentVariables.ServerLogFile;
 
             var esb = new FetchCurrentServerLog();
             Assert.AreEqual(serverLogPath, esb.ServerLogPath);

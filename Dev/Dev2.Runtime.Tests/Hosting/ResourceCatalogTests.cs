@@ -2636,7 +2636,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            var resourceCatalogResult = rc.DeleteResource(workspaceID, oldResource.ResourceID, "WorkflowService", null, false);
+            var resourceCatalogResult = rc.DeleteResource(workspaceID, oldResource.ResourceID, "WorkflowService", false);
             //------------Assert Results-------------------------        
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
@@ -3362,9 +3362,9 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
             //------------Execute Test---------------------------
-            var workflow = rc.GetResourceList(workspaceID, resourceName, "*", "*");
+            var workflow = rc.GetResourceList(workspaceID, resourceName, "*","");
             //------------Assert Results-------------------------
             Assert.IsNotNull(workflow);
             Assert.AreEqual(1, workflow.Count);
@@ -3386,9 +3386,9 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, resourceName, null, "*");
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, resourceName, null,"");
             //------------Assert Results-------------------------
             Assert.IsNotNull(workflow);
             Assert.AreEqual(1, workflow.Count);
@@ -3412,7 +3412,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, "Bob", "*", "*");
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, "Bob", "*");
             //------------Assert Results-------------------------
             Assert.AreEqual(0, workflow.Count);
 
@@ -3433,9 +3433,9 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
             //------------Execute Test---------------------------
-            ResourceCatalog.Instance.GetResourceList(workspaceID, null, null, "*");
+            ResourceCatalog.Instance.GetResourceList(workspaceID, null, null,"");
 
         }
 
