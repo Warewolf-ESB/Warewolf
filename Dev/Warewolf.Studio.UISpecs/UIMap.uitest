@@ -721,6 +721,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Main Studio Window Does not Exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_MainStudioWindow_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -1643,6 +1660,24 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Close_New_Workflow_Tab_Without_Saving">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="575" Y="14" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>DoubleClick</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="DoubleClick_MainStudioWindow_Taskbar">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -3375,6 +3410,36 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.MaximiseStudioButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{F11}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="PressF11_EnterFullScreen">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.StartPage.WorksurfaceContext.BrowserHostPane.ItemClient.CommunityPage.WrapPane.KnowledgebasePane">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Text Encoded="false">{F11}</Text>
+    </SendKeysAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="PressF11_EnterFullScreen_FromStartPage">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3791,6 +3856,139 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
+                    <UIObject ControlType="TabPage" Id="StartPage" FriendlyName="Dev2.Studio.ViewModels.Help.HelpViewModel" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Help.HelpViewModel</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="WorksurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Pane" Id="BrowserHostPane" FriendlyName="WebBrowserHost" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.HwndHost</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">WebBrowserHost</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Client" Id="ItemClient" FriendlyName="" SpecialControlType="None">
+                                  <TechnologyName>MSAA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition Id="SearchCondition">
+                                    <PropertyCondition Name="ClassName">Internet Explorer_Server</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Client</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Document" Id="CommunityPage" FriendlyName="Community / Warewolf" SpecialControlType="None">
+                                      <TechnologyName>Web</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition Id="SearchCondition">
+                                        <AndCondition Id="Primary">
+                                          <PropertyCondition Name="ControlType">Document</PropertyCondition>
+                                          <PropertyCondition Name="TagName">BODY</PropertyCondition>
+                                          <PropertyCondition Name="Id" />
+                                          <PropertyCondition Name="RedirectingPage">False</PropertyCondition>
+                                          <PropertyCondition Name="FrameDocument">False</PropertyCondition>
+                                        </AndCondition>
+                                        <FilterCondition Id="Secondary">
+                                          <PropertyCondition Name="Title">Community / Warewolf</PropertyCondition>
+                                          <PropertyCondition Name="AbsolutePath">/</PropertyCondition>
+                                          <PropertyCondition Name="PageUrl">http://community.warewolf.io/</PropertyCondition>
+                                        </FilterCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="WrapPane" FriendlyName="wrap" SpecialControlType="None">
+                                          <TechnologyName>Web</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition Id="SearchCondition">
+                                            <AndCondition Id="Primary">
+                                              <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                              <PropertyCondition Name="TagName">DIV</PropertyCondition>
+                                              <PropertyCondition Name="Id">wrap</PropertyCondition>
+                                              <PropertyCondition Name="Name" />
+                                            </AndCondition>
+                                            <FilterCondition Id="Secondary">
+                                              <PropertyCondition Name="InnerText">function showSigninPanel(locResult){ par</PropertyCondition>
+                                              <PropertyCondition Name="Title" />
+                                              <PropertyCondition Name="Class" />
+                                              <PropertyCondition Name="ControlDefinition">id="wrap"</PropertyCondition>
+                                              <PropertyCondition Name="TagInstance">1</PropertyCondition>
+                                            </FilterCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="KnowledgebasePane" FriendlyName="Warewolf Knowledge base function" SpecialControlType="None">
+                                              <TechnologyName>Web</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition Id="SearchCondition">
+                                                <AndCondition Id="Primary">
+                                                  <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                  <PropertyCondition Name="TagName">DIV</PropertyCondition>
+                                                  <PropertyCondition Name="Id" />
+                                                  <PropertyCondition Name="Name" />
+                                                </AndCondition>
+                                                <FilterCondition Id="Secondary">
+                                                  <PropertyCondition Name="InnerText">
+                                                    Warewolf
+
+                                                    Knowledge base
+
+                                                    function
+                                                  </PropertyCondition>
+                                                  <PropertyCondition Name="Title" />
+                                                  <PropertyCondition Name="Class">container</PropertyCondition>
+                                                  <PropertyCondition Name="ControlDefinition">class="container"</PropertyCondition>
+                                                  <PropertyCondition Name="TagInstance">6</PropertyCondition>
+                                                </FilterCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
                     <UIObject ControlType="TabPage" Id="NewWebConnectorTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -8281,6 +8479,19 @@
                 </UIObject>
               </Descendants>
             </UIObject>
+            <UIObject ControlType="Button" Id="MaximiseStudioButton" FriendlyName="PART_MAXIMIZE_RESTORE" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                <PropertyCondition Name="AutomationId">PART_MAXIMIZE_RESTORE</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
           </Descendants>
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="MessageBoxWindow" FriendlyName="WarewolfMessageBox" SpecialControlType="None" SessionId="1116676">
@@ -9839,6 +10050,51 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants />
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2ASHLEYLEWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="331500">
+          <TechnologyName>MSAA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+          </WindowTitles>
+          <SearchConfigurations>
+            <SearchConfiguration>VisibleOnly</SearchConfiguration>
+          </SearchConfigurations>
+          <AndCondition Id="SearchCondition">
+            <PropertyCondition Name="Name">Warewolf (DEV2\ASHLEY.LEWIS)</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
         </TopLevelWindow>
       </TopLevelWindows>
     </UIMap>

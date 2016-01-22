@@ -12,6 +12,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 
 // ReSharper disable CheckNamespace
@@ -61,7 +63,8 @@ namespace Dev2.Common
         {
             get
             {
-                return Path.Combine(AppDataPath, "Resources");
+                var resourcePath = Path.Combine(AppDataPath, "Resources");                
+                return resourcePath;
             }
         }
         private static string AppDataPath
@@ -73,6 +76,22 @@ namespace Dev2.Common
                 {
                     Directory.CreateDirectory(appDataPath);
                 }
+                var directoryInfo = new DirectoryInfo(appDataPath);
+                SecurityIdentifier securityIdentifier = new SecurityIdentifier
+                    (WellKnownSidType.WorldSid, null);
+                bool modified;
+                var directorySecurity = directoryInfo.GetAccessControl();
+                AccessRule rule = new FileSystemAccessRule(
+                    securityIdentifier,
+                    FileSystemRights.Write |
+                    FileSystemRights.ReadAndExecute |
+                    FileSystemRights.Modify,
+                    InheritanceFlags.ContainerInherit |
+                    InheritanceFlags.ObjectInherit,
+                    PropagationFlags.InheritOnly,
+                    AccessControlType.Allow);
+                directorySecurity.ModifyAccessRule(AccessControlModification.Add, rule, out modified);
+                directoryInfo.SetAccessControl(directorySecurity);
                 return appDataPath;
             }
         }
@@ -81,7 +100,12 @@ namespace Dev2.Common
         {
             get
             {
-                return Path.Combine(AppDataPath, "Server Settings");
+                var serverSettingsFolder = Path.Combine(AppDataPath, "Server Settings");
+                if (!Directory.Exists(serverSettingsFolder))
+                {
+                    Directory.CreateDirectory(serverSettingsFolder);
+                }
+                return serverSettingsFolder;
             }
         }
 
@@ -121,7 +145,12 @@ namespace Dev2.Common
         {
             get
             {
-                return Path.Combine(AppDataPath, "Workspaces");
+                var workspacePath = Path.Combine(AppDataPath, "Workspaces");
+                if (!Directory.Exists(workspacePath))
+                {
+                    Directory.CreateDirectory(workspacePath);
+                }
+                return workspacePath;
             }
         }
 
