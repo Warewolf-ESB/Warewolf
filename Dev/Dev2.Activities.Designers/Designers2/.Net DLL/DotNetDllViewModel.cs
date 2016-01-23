@@ -266,7 +266,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             return pluginServiceDefinition;
         }
 
-     public   void TestAction()
+        public void TestAction()
         {
             try
             {
@@ -283,7 +283,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
                         var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
-                        if(responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
                         {
                             var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
@@ -300,7 +300,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         // ReSharper restore MaximumChainedReferences
 
                         ManageServiceInputViewModel.OutputMappings = outputMapping;
-                        if(ManageServiceInputViewModel.TestResults != null)
+                        if (ManageServiceInputViewModel.TestResults != null)
                         {
                             ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
                             TestSuccessful = true;
@@ -327,7 +327,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (ManageServiceInputViewModel.OkSelected)
                 {
                     ValidateTestComplete();
-            }
+                }
             }
             catch (Exception e)
             {
@@ -484,7 +484,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
             return hasNoPermission;
         }
-        
+
         public ICommand FixErrorsCommand { get; private set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
@@ -618,7 +618,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     return _selectedMethod.Method;
                 }
                 return "";
-            }            
+            }
         }
 
         public string FriendlySourceNameValue
@@ -869,7 +869,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
                     Methods = _previousMethods;
-              
+
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
 
@@ -885,8 +885,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
                     _previosNamespace = _selectedNamespace;
-       
-                    _previousMethods = Methods; 
+
+                    _previousMethods = Methods;
                     _selectedNamespace = value;
                     Namespace = value;
                     try
@@ -902,7 +902,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         ActionVisible = Methods.Count != 0;
 
-                        if (Methods.Count <= 0)
+                        if (Methods.Count <= 0 && SelectedNamespace != null)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                         }
@@ -970,63 +970,63 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         _previousMethods = Methods;
                         _previousSource = _selectedSource;
                         _previosNamespaces = Namespaces;
-                    TestComplete = false;
-                    IsNamespaceRefreshing = true;
-                    Errors = new List<IActionableErrorInfo>();
-                    _selectedSource = value;
-                    try
-                    {
-                        Namespaces = _dllModel.GetNameSpaces(_selectedSource);
-                        if (!_isInitializing)
+                        TestComplete = false;
+                        IsNamespaceRefreshing = true;
+                        Errors = new List<IActionableErrorInfo>();
+                        _selectedSource = value;
+                        try
                         {
-                            RecordsetName = "";
-                            InputsVisible = false;
-                            OutputsVisible = false;
-                            Inputs = new List<IServiceInput>();
-                            Outputs = new List<IServiceOutputMapping>();
-                        }
-                        NamespaceVisible = Namespaces.Count != 0;
+                            Namespaces = _dllModel.GetNameSpaces(_selectedSource);
+                            if (!_isInitializing)
+                            {
+                                RecordsetName = "";
+                                InputsVisible = false;
+                                OutputsVisible = false;
+                                Inputs = new List<IServiceInput>();
+                                Outputs = new List<IServiceOutputMapping>();
+                            }
+                            NamespaceVisible = Namespaces.Count != 0;
                             if (Methods != null)
-                        {
-                            ActionVisible = Methods.Count != 0;
-                        }
-                        else
-                        {
-                            ActionVisible = false;
-                        }
-                        if (Namespaces.Count <= 0)
-                        {
-                            ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
-                        }
+                            {
+                                ActionVisible = Methods.Count != 0;
+                            }
+                            else
+                            {
+                                ActionVisible = false;
+                            }
+                            if (Namespaces.Count <= 0)
+                            {
+                                ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
+                            }
                             if (_selectedSource != null)
                             {
-                        SourceId = _selectedSource.Id;
-                        if (SourceId != Guid.Empty)
-                        {
-                            RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
-                            FriendlySourceNameValue = _selectedSource.Name;
+                                SourceId = _selectedSource.Id;
+                                if (SourceId != Guid.Empty)
+                                {
+                                    RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
+                                    FriendlySourceNameValue = _selectedSource.Name;
+                                }
+                                InputsVisible = false;
+                            }
                         }
-                        InputsVisible = false;
-                    }
-                        }
-                    catch (Exception e)
-                    {
-                        Methods = new List<IPluginAction>();
-                        SelectedMethod = null;
-                        ActionVisible = false;
-                        var errorInfo = new ErrorInfo
+                        catch (Exception e)
                         {
-                            ErrorType = ErrorType.Critical,
-                            Message = e.Message
-                        };
-                        Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+                            Methods = new List<IPluginAction>();
+                            SelectedMethod = null;
+                            ActionVisible = false;
+                            var errorInfo = new ErrorInfo
+                            {
+                                ErrorType = ErrorType.Critical,
+                                Message = e.Message
+                            };
+                            Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+                        }
                     }
+                    IsNamespaceRefreshing = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
                 }
-                IsNamespaceRefreshing = false;
-                ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
-        }
         }
 
         void ValidateTestComplete()
