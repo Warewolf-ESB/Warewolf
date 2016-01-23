@@ -18,6 +18,14 @@
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:FormatNumberDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -36,7 +44,6 @@
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 Grid.ColumnSpan="2"
-                                AllowUserInsertLine="False"
                                 DefaultText="Whole or decimal"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipNumber}"
@@ -73,8 +80,7 @@
             </i:Interaction.Behaviors>
         </ComboBox>
 
-        <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                Grid.Column="2"
+        <ui:IntellisenseTextBox Grid.Column="2"
                                 Grid.Row="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
@@ -104,7 +110,6 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AllowUserInsertLine="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DecimalsToShow_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpDecimalsToShow}" DataContext="{Binding}" />
@@ -126,8 +131,6 @@
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AllowUserInsertLine="False"
-                                AllowMultilinePaste="False"
                                 HorizontalAlignment="Stretch"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
