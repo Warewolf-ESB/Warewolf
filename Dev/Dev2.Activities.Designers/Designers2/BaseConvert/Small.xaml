@@ -23,6 +23,14 @@
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:BaseConvertDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -41,14 +49,10 @@
                 </behaviors:DataGridWatermarkModifier>
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -88,8 +92,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -116,9 +119,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="65"
-                                        IsReadOnly="True"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
+                <DataGridTemplateColumn Width="65" IsReadOnly="True" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Margin="0,0,1,1"

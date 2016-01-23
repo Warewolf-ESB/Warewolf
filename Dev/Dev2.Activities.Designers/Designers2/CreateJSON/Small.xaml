@@ -22,6 +22,14 @@
                                d:DesignHeight="230"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:CreateJsonDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
     
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
@@ -42,9 +50,7 @@
                 <DataGridTemplateColumn Width="27" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -53,18 +59,18 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="Key Name"
-                                                Padding="3"
-                                                IsTabStop="False"
-                                                Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    Padding="3"
+                                                    IsTabStop="False"
+                                                    Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     Margin="0,0,1,1"
-                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipName}">
+                                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipName}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CreateJSONHelpName}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="DestinationName"
-                                                     SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyName="DestinationName"
+                                                         SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <ui:IntellisenseTextBox.IntellisenseProvider>
                                     <interfaceImplementors:CompositeIntellisenseProvider>
@@ -74,7 +80,7 @@
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_DestinationName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -99,14 +105,14 @@
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CreateJSONHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="SourceName"
-                                                     SourcePropertyValue="{Binding SourceName, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyName="SourceName"
+                                                         SourcePropertyValue="{Binding SourceName, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_SourceName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -140,7 +146,7 @@
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_JsonString_AutoID">
                         <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
             </ui:IntellisenseTextBox>

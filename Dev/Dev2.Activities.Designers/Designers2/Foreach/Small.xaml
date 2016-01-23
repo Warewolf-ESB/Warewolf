@@ -18,6 +18,14 @@
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ForeachDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <StackPanel>
         <Grid Margin="{StaticResource ElementBorder}">
             <Grid.ColumnDefinitions>
@@ -31,39 +39,39 @@
             </Grid.RowDefinitions>
 
             <ComboBox x:Name="InitialFocusElement"
-                  Grid.Column="0" 
-                  Width="125"
-                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                  IsEditable="False"
+                      Grid.Column="0" 
+                      Width="125"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      IsEditable="False"
                       Margin="{StaticResource ControlBorderRight}"
-                  SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding ForeachTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+                      SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ForeachTypes}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}"
+                      ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.ForEachType"
-                                     SourcePropertyValue="{Binding ModelItem.ForEachType, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="ModelItem.ForEachType"
+                                         SourcePropertyValue="{Binding ModelItem.ForEachType, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
 
             <ui:IntellisenseTextBox Grid.Column="1"
-                                Visibility="{Binding FromVisibility}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                DefaultText="From" 
-                                AcceptsReturn="True"
-                                WrapInBrackets="False" 
-                                Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachFromTextbox_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+                                    Visibility="{Binding FromVisibility}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    DefaultText="From" 
+                                    AcceptsReturn="True"
+                                    WrapInBrackets="False" 
+                                    Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachFromTextbox_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.From"
-                                     SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="ModelItem.From"
+                                         SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
@@ -85,16 +93,16 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <ui:IntellisenseTextBox  DefaultText="CSV Indexes" 
-                                  WrapInBrackets="False" 
-                                  Grid.Column="1" 
-                                  Grid.ColumnSpan="3"
-                                  Visibility="{Binding CsvIndexesVisibility}"
-                                  Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  MinWidth="100"
-                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachCSVIndexesTextbox_AutoID}"
-                                  ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+            <ui:IntellisenseTextBox DefaultText="CSV Indexes" 
+                                    WrapInBrackets="False" 
+                                    Grid.Column="1" 
+                                    Grid.ColumnSpan="3"
+                                    Visibility="{Binding CsvIndexesVisibility}"
+                                    Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    MinWidth="100"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachCSVIndexesTextbox_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -104,16 +112,16 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <ui:IntellisenseTextBox  DefaultText="Number" 
-                                 WrapInBrackets="False" 
-                                 Grid.Column="1" 
-                                 Grid.ColumnSpan="3"
-                                 Visibility="{Binding NumberVisibility}"
-                                 Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 MinWidth="106"
-                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
-                                 ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+            <ui:IntellisenseTextBox DefaultText="Number" 
+                                    WrapInBrackets="False" 
+                                    Grid.Column="1" 
+                                    Grid.ColumnSpan="3"
+                                    Visibility="{Binding NumberVisibility}"
+                                    Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    MinWidth="106"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -124,17 +132,17 @@
             </ui:IntellisenseTextBox>
 
             <ui:IntellisenseTextBox DefaultText="Recordset" 
-                                WrapInBrackets="False" 
-                                Grid.Column="1" 
-                                Grid.ColumnSpan="3"
-                                Visibility="{Binding RecordsetVisibility}"
-                                Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                MinWidth="106"
-                                FilterType="RecordsetsOnly"
-                                attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+                                    WrapInBrackets="False" 
+                                    Grid.Column="1" 
+                                    Grid.ColumnSpan="3"
+                                    Visibility="{Binding RecordsetVisibility}"
+                                    Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    MinWidth="106"
+                                    FilterType="RecordsetsOnly"
+                                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.ForEachHelpForEachType}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
