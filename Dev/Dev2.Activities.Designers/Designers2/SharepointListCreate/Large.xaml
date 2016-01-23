@@ -26,6 +26,14 @@
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance sharepointListCreate:SharepointListCreateDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -51,9 +59,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="Server" />
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
             <ComboBox Grid.Column="1"
                       Grid.Row="0"
                       x:Name="InitialFocusElement"
@@ -77,10 +84,7 @@
                     ToolTip="Edit Sharepoint Server Source"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
-            <TextBlock Grid.Column="0"
-                       Grid.Row="1"
-                       Text="List"
-                       Margin="{StaticResource ControlBorderTop}" />
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
             <ComboBox Grid.Column="1"
                       Grid.Row="1"
                       Margin="{StaticResource ControlBorderTopRight}"
@@ -108,13 +112,13 @@
                 </Button.Content>
             </Button>
             <customControls:CircularProgressBar Grid.Column="2" 
-                                            Grid.Row="1"
-                                            Height="22" 
-                                            Width="22"
-                                            Margin="0,0,2,0"
-                                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                            AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+                                                Grid.Row="1"
+                                                Height="22" 
+                                                Width="22"
+                                                Margin="0,0,2,0"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
             <Grid Grid.Row="2"
                   Grid.Column="0"
                   Margin="{StaticResource ControlBorderTop}"
@@ -199,24 +203,24 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="65"
-                                        Header="Type"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                                                MinWidth="65"
+                                                Header="Type"
+                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
                                         <TextBlock Text="{Binding Type}"
-                                           TextTrimming="CharacterEllipsis"
-                                           VerticalAlignment="Center"
-                                           Padding="3,0"
-                                           ToolTip="{Binding Type}">                               
-                                <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                        <Binding Path="IndexNumber" />
-                                    </MultiBinding>
-                                </AutomationProperties.AutomationId>
+                                                   TextTrimming="CharacterEllipsis"
+                                                   VerticalAlignment="Center"
+                                                   Padding="3,0"
+                                                   ToolTip="{Binding Type}">
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                    <Binding Path="IndexNumber" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
                                         </TextBlock>
                                     </Grid>
                                 </DataTemplate>
@@ -244,9 +248,9 @@
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SharepointInsertHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>

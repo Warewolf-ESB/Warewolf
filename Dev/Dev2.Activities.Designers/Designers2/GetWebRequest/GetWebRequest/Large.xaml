@@ -21,8 +21,16 @@
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:GetWebRequestDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
-          <core:ActivityDesignerButton x:Name="DoneButton"
+        <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"
