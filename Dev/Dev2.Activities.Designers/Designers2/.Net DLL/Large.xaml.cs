@@ -27,6 +27,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             SetInitialHeight();
         }
 
+        void Large_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ReloadToolHeight(false);
+        }
+
         void SetInitialHeight()
         {
             MinHeight = 220;
@@ -67,54 +72,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 SetOutputGridHeight(context, grid, true);
             }
         }
-
-        void SetOutputGridHeight(object context, XamGrid grid, bool method)
-        {
-            var items = context as DotNetDllViewModel;
-            if(items != null)
-            {
-                if (method)
-                {
-                    SetToolHeight(290);
-                }
-                MainGrid.RowDefinitions[5].Height = GridLength.Auto;
-
-                if(items.Outputs != null && items.OutputsVisible)
-                {
-                    if(items.Outputs.Count == 0)
-                    {
-                        if (items.TestComplete)
-                        {
-                            SetToolHeight(350);
-                            SetOutputGridHeight(grid, 60);
-                        }
-                    }
-                    else if(items.Outputs.Count > 0 && items.Outputs.Count < 5)
-                    {
-                        double gridHeight = 30 * (items.Outputs.Count + 1);
-                        SetToolHeight(290 + gridHeight);
-                        SetOutputGridHeight(grid, gridHeight);
-                    }
-                    else
-                    {
-                        const double GridHeight = 30 * 6;
-                        SetToolHeight(290 + GridHeight);
-                        SetOutputGridHeight(grid, GridHeight);
-                        SetOutputNewHeight();
-                    }
-                }
-            }
-        }
-
-        void SetOutputNewHeight()
-        {
-            MainGrid.RowDefinitions[5].Height = new GridLength(10, GridUnitType.Star);
-        }
-        void SetInputNewHeight()
-        {
-            MainGrid.RowDefinitions[3].Height = new GridLength(10, GridUnitType.Star);
-        }
-
         void LargeDataGrid_OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             SetInitialHeight();
@@ -152,18 +109,48 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         const double GridHeight = 30 * 6;
                         SetToolHeight(230 + GridHeight);
                         SetInputGridHeight(grid, GridHeight);
-                        SetInputNewHeight();
+                        MainGrid.RowDefinitions[3].Height = new GridLength(10, GridUnitType.Star);
                     }
                 }
             }
         }
-
-        void SetToolHeight(double height)
+        void SetOutputGridHeight(object context, XamGrid grid, bool method)
         {
-            Height = height;
-            MinHeight = height;
-        }
+            var items = context as DotNetDllViewModel;
+            if (items != null)
+            {
+                if (method)
+                {
+                    SetToolHeight(290);
+                }
+                MainGrid.RowDefinitions[5].Height = GridLength.Auto;
 
+                if (items.Outputs != null && items.OutputsVisible)
+                {
+                    if (items.Outputs.Count == 0)
+                    {
+                        if (items.TestComplete)
+                        {
+                            SetToolHeight(350);
+                            SetOutputGridHeight(grid, 60);
+                        }
+                    }
+                    else if (items.Outputs.Count > 0 && items.Outputs.Count < 5)
+                    {
+                        double gridHeight = 30 * (items.Outputs.Count + 1);
+                        SetToolHeight(290 + gridHeight);
+                        SetOutputGridHeight(grid, gridHeight);
+                    }
+                    else
+                    {
+                        const double GridHeight = 30 * 6;
+                        SetToolHeight(290 + GridHeight);
+                        SetOutputGridHeight(grid, GridHeight);
+                        MainGrid.RowDefinitions[5].Height = new GridLength(10, GridUnitType.Star);
+                    }
+                }
+            }
+        }
         static void SetInputGridHeight(Dev2DataGrid grid, double height)
         {
             grid.MinHeight = height;
@@ -173,11 +160,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             grid.MinHeight = height;
         }
 
-        void Large_OnLoaded(object sender, RoutedEventArgs e)
+        void SetToolHeight(double height)
         {
-            ReloadToolHeight(true);
+            Height = height;
+            MinHeight = height;
         }
-
         void ReloadToolHeight(bool method)
         {
             var inputContext = LargeDataGrid.DataContext;
@@ -197,12 +184,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
         {
             ReloadToolHeight(false);
         }
-
         void NamespaceComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ReloadToolHeight(false);
         }
-
         void ActionsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ReloadToolHeight(true);
