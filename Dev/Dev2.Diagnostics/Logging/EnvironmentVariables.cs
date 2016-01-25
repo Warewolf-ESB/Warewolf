@@ -85,7 +85,8 @@ namespace Dev2.Common
                     securityIdentifier,
                     FileSystemRights.Write |
                     FileSystemRights.ReadAndExecute |
-                    FileSystemRights.Modify,
+                    FileSystemRights.Modify |
+                    FileSystemRights.FullControl,
                     InheritanceFlags.ContainerInherit |
                     InheritanceFlags.ObjectInherit,
                     PropagationFlags.InheritOnly,
