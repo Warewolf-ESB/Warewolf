@@ -104,10 +104,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             FixErrorsCommand = new DelegateCommand(o =>
             {
                 FixErrors();
-                IsFixed = IsWorstErrorReadOnly;
             });
-            DoneCommand = new DelegateCommand(o => Done());
-            DoneCompletedCommand = new DelegateCommand(o => DoneCompleted());
 
             InitializeDisplayName();
 
@@ -264,12 +261,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
             };
             foreach (var serviceInput in Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
+                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, ""){TypeName = serviceInput.TypeName});
             }
             return pluginServiceDefinition;
         }
 
-     public   void TestAction()
+        public void TestAction()
         {
             try
             {
@@ -286,7 +283,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ManageServiceInputViewModel.TestResults = _dllModel.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
                         var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
-                        if(responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
                         {
                             var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
@@ -303,7 +300,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         // ReSharper restore MaximumChainedReferences
 
                         ManageServiceInputViewModel.OutputMappings = outputMapping;
-                        if(ManageServiceInputViewModel.TestResults != null)
+                        if (ManageServiceInputViewModel.TestResults != null)
                         {
                             ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
                             TestSuccessful = true;
@@ -330,7 +327,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (ManageServiceInputViewModel.OkSelected)
                 {
                     ValidateTestComplete();
-            }
+                }
             }
             catch (Exception e)
             {
@@ -488,37 +485,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             return hasNoPermission;
         }
 
-        void DoneCompleted()
-        {
-            IsFixed = true;
-        }
-
-        void Done()
-        {
-            if (!TestComplete && string.IsNullOrWhiteSpace(RecordsetName))
-            {
-                ErrorMessage(new Exception("There are incomplete fields. Please select all relevant fields and validate before selecting the Done button."));
-            }
-            else if (!IsWorstErrorReadOnly)
-            {
-                FixErrors();
-            }
-        }
-
-        public bool IsFixed
-        {
-            get { return (bool)GetValue(IsFixedProperty); }
-            set { SetValue(IsFixedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsFixedProperty =
-            DependencyProperty.Register("IsFixed", typeof(bool), typeof(DotNetDllViewModel), new PropertyMetadata(true));
-
         public ICommand FixErrorsCommand { get; private set; }
-
-        public ICommand DoneCommand { get; private set; }
-
-        public ICommand DoneCompletedCommand { get; private set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
 
@@ -550,7 +517,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 else
                 {
                     ButtonDisplayValue = FixText;
-                    IsFixed = false;
                 }
                 SetValue(IsWorstErrorReadOnlyProperty, value);
             }
@@ -652,7 +618,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     return _selectedMethod.Method;
                 }
                 return "";
-            }            
+            }
         }
 
         public string FriendlySourceNameValue
@@ -727,6 +693,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
             else
             {
                 RemovePermissionsError();
+            }
+            if (!TestComplete)
+            {
+                ErrorMessage(new Exception("Please select all relevant fields and validate before selecting the Done button."));
             }
         }
 
@@ -894,15 +864,16 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
-
                 if (value != null && value == _previosNamespace)
                 {
+                    Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
                     Methods = _previousMethods;
-              
+
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
 
+                    InputsVisible = true;
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
@@ -914,8 +885,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
                     _previosNamespace = _selectedNamespace;
-       
-                    _previousMethods = Methods; 
+
+                    _previousMethods = Methods;
                     _selectedNamespace = value;
                     Namespace = value;
                     try
@@ -931,7 +902,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         ActionVisible = Methods.Count != 0;
 
-                        if (Methods.Count <= 0)
+                        if (Methods.Count <= 0 && SelectedNamespace != null)
                         {
                             ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                         }
@@ -979,19 +950,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     if (value != null && Equals(value, _previousSource))
                     {
+                        Errors = new List<IActionableErrorInfo>();
                         _selectedSource = value;
                         Methods = _previousMethods;
                         SelectedMethod = _previousMethod;
                         Namespaces = _previosNamespaces;
                         SelectedNamespace = _previosNamespace;
+                        NamespaceVisible = Namespaces.Count != 0;
                         ActionVisible = Methods.Count != 0;
-
+                        InputsVisible = true;
                     }
-
                     else
                     {
-
-
                         _previousMethod = _selectedMethod;
                         _previousInputs = _inputs;
                         _previousRecset = _recordsetName;
@@ -1000,63 +970,63 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         _previousMethods = Methods;
                         _previousSource = _selectedSource;
                         _previosNamespaces = Namespaces;
-                    TestComplete = false;
-                    IsNamespaceRefreshing = true;
-                    Errors = new List<IActionableErrorInfo>();
-                    _selectedSource = value;
-                    try
-                    {
-                        Namespaces = _dllModel.GetNameSpaces(_selectedSource);
-                        if (!_isInitializing)
+                        TestComplete = false;
+                        IsNamespaceRefreshing = true;
+                        Errors = new List<IActionableErrorInfo>();
+                        _selectedSource = value;
+                        try
                         {
-                            RecordsetName = "";
-                            InputsVisible = false;
-                            OutputsVisible = false;
-                            Inputs = new List<IServiceInput>();
-                            Outputs = new List<IServiceOutputMapping>();
-                        }
-                        NamespaceVisible = Namespaces.Count != 0;
+                            Namespaces = _dllModel.GetNameSpaces(_selectedSource);
+                            if (!_isInitializing)
+                            {
+                                RecordsetName = "";
+                                InputsVisible = false;
+                                OutputsVisible = false;
+                                Inputs = new List<IServiceInput>();
+                                Outputs = new List<IServiceOutputMapping>();
+                            }
+                            NamespaceVisible = Namespaces.Count != 0;
                             if (Methods != null)
-                        {
-                            ActionVisible = Methods.Count != 0;
-                        }
-                        else
-                        {
-                            ActionVisible = false;
-                        }
-                        if (Namespaces.Count <= 0)
-                        {
-                            ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
-                        }
+                            {
+                                ActionVisible = Methods.Count != 0;
+                            }
+                            else
+                            {
+                                ActionVisible = false;
+                            }
+                            if (Namespaces.Count <= 0)
+                            {
+                                ErrorMessage(new Exception("The selected dll does not contain Namespaces"));
+                            }
                             if (_selectedSource != null)
                             {
-                        SourceId = _selectedSource.Id;
-                        if (SourceId != Guid.Empty)
-                        {
-                            RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
-                            FriendlySourceNameValue = _selectedSource.Name;
+                                SourceId = _selectedSource.Id;
+                                if (SourceId != Guid.Empty)
+                                {
+                                    RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
+                                    FriendlySourceNameValue = _selectedSource.Name;
+                                }
+                                InputsVisible = false;
+                            }
                         }
-                        InputsVisible = false;
-                    }
-                        }
-                    catch (Exception e)
-                    {
-                        Methods = new List<IPluginAction>();
-                        SelectedMethod = null;
-                        ActionVisible = false;
-                        var errorInfo = new ErrorInfo
+                        catch (Exception e)
                         {
-                            ErrorType = ErrorType.Critical,
-                            Message = e.Message
-                        };
-                        Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+                            Methods = new List<IPluginAction>();
+                            SelectedMethod = null;
+                            ActionVisible = false;
+                            var errorInfo = new ErrorInfo
+                            {
+                                ErrorType = ErrorType.Critical,
+                                Message = e.Message
+                            };
+                            Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
+                        }
                     }
+                    IsNamespaceRefreshing = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
                 }
-                IsNamespaceRefreshing = false;
-                ViewModelUtils.RaiseCanExecuteChanged(EditSourceCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
-        }
         }
 
         void ValidateTestComplete()
@@ -1129,16 +1099,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 if (value != null && value == _previousMethod)
                 {
+                    Errors = new List<IActionableErrorInfo>();
                     _selectedMethod = value;
                     Inputs = _previousInputs;
                     RecordsetName = _previousRecset;
                     Outputs = _previousOutputs;
+                    InputsVisible = true;
+                    OutputsVisible = true;
+                    TestComplete = true;
                     OnPropertyChanged("SelectedMethod");
                 }
-
                 else if (!Equals(value, _selectedMethod))
                 {
-
                     _previousMethod = _selectedMethod;
                     _previousInputs = _inputs;
                     _previousRecset = _recordsetName;

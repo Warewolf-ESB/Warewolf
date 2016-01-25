@@ -17,6 +17,14 @@
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -28,10 +36,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="Langauge" />
-         <ComboBox x:Name="InitialFocusElement"
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Langauge" />
+        <ComboBox x:Name="InitialFocusElement"
                    Grid.Column="1"
                    Grid.Row="0"
                    ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -75,11 +81,8 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-       
-        <TextBlock Grid.Column="0"
-               Grid.Row="2"
-               Margin="{StaticResource ControlBorderTop}"
-               Text="Result" />
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
