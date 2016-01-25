@@ -6,7 +6,6 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:getWebRequestWithTimeout="clr-namespace:Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout"
@@ -16,6 +15,14 @@
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance getWebRequestWithTimeout:GetWebRequestWithTimeoutDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -36,8 +43,7 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipURL}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestHelpURL}"
-                                 DataContext="{Binding}" />
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestHelpURL}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Url"
                                      SourcePropertyValue="{Binding ModelItem.Url, UpdateSourceTrigger=PropertyChanged}"
@@ -56,8 +62,7 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipResult}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestHelpResult}"
-                                 DataContext="{Binding}" />
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
