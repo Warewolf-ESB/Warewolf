@@ -19,6 +19,14 @@
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:WriteFileDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -46,7 +54,7 @@
             <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />
-                     <provider:FileSystemIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
@@ -85,7 +93,7 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
         <TextBlock Grid.Column="0"
                Grid.Row="2"
                Margin="{StaticResource ControlBorderTop}"

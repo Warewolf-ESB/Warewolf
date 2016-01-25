@@ -15,6 +15,11 @@
              Height="Auto" Width="Auto"
              d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance switch:SwitchDesignerViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+    </UserControl.Resources>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,7 +45,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Variable to Switch on:" />
-       
+
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Grid.Row="0"
                                     Margin="{StaticResource ControlBorderTop}"
@@ -64,7 +69,7 @@
             </ui:IntellisenseTextBox>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Display text:" Margin="{StaticResource ControlBorderTop}" />
             <TextBox Grid.Column="1" x:Name="DisplayText" Grid.Row="1" MinWidth="200" MaxWidth="200" HorizontalAlignment="Left" Margin="{StaticResource ControlBorderTop}" Text="{Binding DisplayText}"/>
-        </Grid>      
-        
+        </Grid>
+
     </Grid>
 </UserControl>
