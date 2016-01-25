@@ -18,6 +18,7 @@ namespace Dev2.Services.Sql
         private IDbCommand _command;
         private OracleConnection _connection;
         private IDbTransaction _transaction;
+        private string Owner;
 
         public bool IsConnected
         {
@@ -34,7 +35,7 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
-
+            Owner = dbName;
             DataTable proceduresDataTable = GetSchema(_connection);
 
 
@@ -43,7 +44,7 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 string fullProcedureName = row["Name"].ToString();
-                if (row["Db"].ToString() == dbName)
+                if (row["Db"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
@@ -175,7 +176,7 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
-
+            Owner = dbName;
             DataTable proceduresDataTable = GetSchema(_connection);
 
 
@@ -183,8 +184,8 @@ namespace Dev2.Services.Sql
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
-                if (row["Db"].ToString() == dbName)
+                string fullProcedureName = row["NAME"].ToString();
+                if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
@@ -248,6 +249,9 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString)
         {
+            if (connectionString.Contains("Database")) {
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")),"");
+                 }
             _connection = (OracleConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
             return true;
@@ -310,7 +314,7 @@ namespace Dev2.Services.Sql
         private DataTable GetSchema(IDbConnection connection)
         {
             const string CommandText = GlobalConstants.SchemaQueryOracle;
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, string.Format(CommandText,Owner)))
             {
                 return FetchDataTable(command);
             }
@@ -360,55 +364,47 @@ namespace Dev2.Services.Sql
             command.CommandType = CommandType.Text;
             command.CommandText =
                 string.Format(
-                    "SELECT param_list FROM mysql.proc WHERE db='{0}' AND name='{1}'",
+                    "SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
                     dbName, procedureName);
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                if(row != null)
-                {
-                    var bytes = row[0] as byte[];
-                    if(bytes != null)
+                var parameterName = row["ARGUMENT_NAME"] as string;
+                var InOut = row["IN_OUT"] as string;
+
+
+                bool isout = false;
+                    const ParameterDirection direction = ParameterDirection.Input;
+                    if (InOut.Contains("OUT"))
+                        isout = true;
+                    if (InOut.Contains("IN/OUT"))
+                        isout = false;
+                    var parameterx = InOut.Replace("IN ", "").Replace("OUT ", "");
+                    if (!String.IsNullOrEmpty(parameterName))
                     {
-                        var parameterName = Encoding.Default.GetString(bytes);
-                        parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
-                        var parameternames = parameterName.Split(',');
-                        foreach(var parameter in parameternames)
+                       
+
+                        OracleDbType OracleType;
+                    Enum.TryParse((row["DATA_TYPE"] as string).Replace(" ",""), true, out OracleType);
+                    var OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                        if (!isout)
                         {
-                            bool isout = false;
-                            const ParameterDirection direction = ParameterDirection.Input;
-                            if(parameter.Contains("OUT "))
-                                isout = true;
-                            if (parameter.Contains("INOUT"))
-                                isout = false;
-                            var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
-                            if (!String.IsNullOrEmpty(parameterName))
-                            {
-                                var split = parameterx.Split(' ');
-
-                                OracleDbType sqlType;
-                                Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
-
-                                var sqlParameter = new OracleParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction};
-                                if (!isout)
-                                {
-                                    command.Parameters.Add(sqlParameter);
-                                    parameters.Add(sqlParameter);
-                                }
-                                else
-                                {
-                                    sqlParameter.Direction = ParameterDirection.Output; 
-                                    outParams.Add(sqlParameter);
-                                    sqlParameter.Value = "@a";
-                                    command.Parameters.Add(sqlParameter);
-                                }
-                                if (parameterName.ToLower() == "@return_value")
-                                {
-                                }                       
-                            }
+                            command.Parameters.Add(OracleParameter);
+                            parameters.Add(OracleParameter);
+                        }
+                        else
+                        {
+                            OracleParameter.Direction = ParameterDirection.Output;
+                            outParams.Add(OracleParameter);
+                            OracleParameter.Value = "@a";
+                            command.Parameters.Add(OracleParameter);
+                        }
+                        if (parameterName.ToLower() == "@return_value")
+                        {
                         }
                     }
-                }
+                
+
             }
             command.CommandText = originalCommandText;
             return parameters;
