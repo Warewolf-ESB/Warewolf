@@ -22,6 +22,14 @@
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:DataMergeDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -46,14 +54,10 @@
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}"
-                                    IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -62,9 +66,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="52"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="52"
                                                     TextWrapping="Wrap"
                                                     Padding="3"
                                                     DefaultText="{Binding WatermarkTextVariable}"
@@ -76,14 +80,14 @@
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.DataMergeHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="InputVariable"
-                                                     SourcePropertyValue="{Binding InputVariable, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyName="InputVariable"
+                                                         SourcePropertyValue="{Binding InputVariable, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -116,7 +120,7 @@
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_MergeType_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -128,8 +132,7 @@
                 <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    Padding="3"
+                            <ui:IntellisenseTextBox Padding="3"
                                                     Margin="0,0,1,1"
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnableAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
