@@ -127,11 +127,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                             Port > 0 ? string.Format("Port={0};", Port) : string.Empty);
 
                     case enSourceType.Oracle:
-
-                        //return string.Format("User Id={2};Password={3};Data Source={0}{1};",
-                        //  Server, (DatabaseName != null ? string.Format("/{0}", DatabaseName) : string.Empty), UserID, Password,
-                        //  Port > 0 ? string.Format(":{0}", Port) : string.Empty");
-                        return "user id=system;password=P@ssword123;data source=SAWD-PREPROD01;OWNER=HR"; ;
+                     //database refers to owner/schema in oracle
+                        return string.Format("User Id={2};Password={3};Data Source={0};{1}",
+                          Server,( DatabaseName  !=null ? string.Format("Database={0};", DatabaseName) : string.Empty) , UserID, Password,
+                         Port > 0 ? string.Format(":{0}", Port) : string.Empty);
+              
 
                 }
                 return string.Empty;
@@ -164,23 +164,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                             }
 
-                            //Oracle -> doesn't have a catalog/database
-                            //Data Source=server:port/database_name;User Id=username;Password=password;
-
-                            var arrOracle = prm[1].Split('/'); 
-                            if (arrOracle.Length > 1)
-                            {
-                                var arrDataSource = prm[1].Split(':'); 
-                                DatabaseName = arrOracle[1];
-                                if (arrDataSource.Length > 1)
-                                {
-                                    Server = arrDataSource[0];
-                                    if (Int32.TryParse(arrDataSource[1], out port))
-                                    {
-                                        Port = port;
-                                    }
-                                }
-                            }
+                           
                            
                             break;
                         case "port":
@@ -188,6 +172,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             {
                                 Port = port;
                             }
+                          
                             break;
                         case "database":
                         case "initial catalog":

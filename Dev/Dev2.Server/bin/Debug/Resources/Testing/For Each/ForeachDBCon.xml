@@ -1,5 +1,5 @@
 
-<Service ID="79a5fd1e-6106-40cb-8936-5066a1cb878a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForeachDBCon" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5865.29055">
+<Service ID="79a5fd1e-6106-40cb-8936-5066a1cb878a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForeachDBCon" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5868.28925">
   <DisplayName>ForeachDBCon</DisplayName>
   <Category>Testing\For Each\ForeachDBCon</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
