@@ -20,6 +20,14 @@
                                d:DataContext="{d:DesignInstance sharepointListDelete:SharepointListDeleteDesignerViewModel}"
                                d:DesignWidth="230">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,9 +40,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="Server" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
         <ComboBox Grid.Column="1"
                   Grid.Row="0"
                   x:Name="InitialFocusElement"
@@ -58,10 +64,7 @@
                 ToolTip="Edit Sharepoint Server Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="1"
-               Text="List"
-               Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -96,10 +99,7 @@
                                             VerticalAlignment="Center" HorizontalAlignment="Center"
                                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                             AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
-        <TextBlock Grid.Row="2"
-               Grid.Column="0"
-               Text="Result"
-               Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Result" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
