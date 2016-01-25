@@ -20,6 +20,14 @@
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:FindRecordsMultipleCriteriaDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -69,14 +77,10 @@
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -114,8 +118,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -162,7 +165,6 @@
                                                         FilterType="All"
                                                         Grid.Column="0"                                                        
                                                         AllowUserCalculateMode="False"
-                                                        AllowUserInsertLine="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
                                                         TextWrapping="NoWrap"
