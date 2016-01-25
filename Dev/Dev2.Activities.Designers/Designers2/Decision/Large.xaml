@@ -12,8 +12,6 @@
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-                               xmlns:activities1="clr-namespace:Dev2.Activities;assembly=Dev2.Activities"
                                xmlns:decision="clr-namespace:Dev2.Activities.Designers2.Decision"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -29,6 +27,14 @@
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance decision:DecisionDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -57,7 +63,7 @@
         <controls:Dev2DataGrid Grid.Row="0"
                                Grid.Column="0"
                                Grid.ColumnSpan="2"
-                             VerticalScrollBarVisibility="Hidden"
+                               VerticalScrollBarVisibility="Hidden"
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
@@ -78,8 +84,7 @@
                                         Header="#"
                                         HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
                                         IsReadOnly="False"
-                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}"
-                                        >
+                                        d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Style="{StaticResource ButtonOrangeTransparentStyle}" Command="{Binding DeleteCommand}" Width="25">
@@ -135,10 +140,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </ui:IntellisenseTextBox>
-
-
                             </Grid>
-
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -183,8 +185,7 @@
                                         Header="Match"
                                         HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=to:DecisionTO}"
-                                        Visibility="{Binding IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                        >
+                                        Visibility="{Binding IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -289,12 +290,10 @@
                                     </AutomationProperties.AutomationId>
                                 </ui:IntellisenseTextBox>
                             </Grid>
-
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-
         </controls:Dev2DataGrid>
 
         <CheckBox Grid.Row="1"

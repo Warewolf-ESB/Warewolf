@@ -27,6 +27,7 @@
                                Height="400"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
+                               Loaded="Large_OnLoaded"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -44,10 +45,8 @@
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="{Binding ButtonDisplayValue}"
                                      Margin="0,0,7,12"
-                                     IsValidatedBefore="{Binding IsFixed}"
-                                     IsClosedAfter="{Binding IsFixed}"                  
-                                     CustomCommand ="{Binding DoneCommand}"
-                                     PostCommand ="{Binding DoneCompletedCommand}"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
@@ -85,6 +84,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
                       ItemsSource="{Binding Sources}"
+                      SelectionChanged="SourcesComboBox_OnSelectionChanged"
                       SelectedItem="{Binding SelectedSource, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
@@ -133,6 +133,7 @@
                       IsEnabled="{Binding NamespaceVisible}"
                       ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
                       IsEditable="False"
+                      SelectionChanged="NamespaceComboBox_OnSelectionChanged"
                       SelectedItem="{Binding SelectedNamespace}"/>
             <Button x:Name="NamespaceRefreshButton" 
                     Grid.Column="2"
@@ -160,7 +161,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <TextBlock x:Name="ActionLabel" Text="Method" Margin="{StaticResource ControlBorderRight}" />
             <ComboBox x:Name="ActionsComboBox"
                       Grid.Column="1"
                       Margin="{StaticResource ControlBorderRight}"
@@ -169,6 +170,7 @@
                       IsEnabled="{Binding ActionVisible}"
                       ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
                       IsEditable="False"
+                      SelectionChanged="ActionsComboBox_OnSelectionChanged"
                       SelectedItem="{Binding SelectedMethod}"/>
             <Button x:Name="ActionRefreshButton" 
                     Grid.Column="2"

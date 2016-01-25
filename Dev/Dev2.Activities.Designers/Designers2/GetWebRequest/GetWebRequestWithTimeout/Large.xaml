@@ -6,7 +6,6 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:preview="clr-namespace:Dev2.Activities.Preview"
@@ -22,6 +21,14 @@
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance getWebRequestWithTimeout:GetWebRequestWithTimeoutDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -80,8 +87,7 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpHeader}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpHeader}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Headers"
                                      SourcePropertyValue="{Binding ModelItem.Headers, UpdateSourceTrigger=PropertyChanged}"
@@ -98,7 +104,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.TimeOutText, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipTimeOut}" />
-        
+
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Result" VerticalAlignment="Bottom" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
@@ -110,8 +116,7 @@
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"
                                 ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipResult}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpResult}"
-                                 DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
