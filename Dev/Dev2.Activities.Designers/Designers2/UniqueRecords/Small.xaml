@@ -17,6 +17,14 @@
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:UniqueRecordsDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -25,7 +33,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0"
@@ -34,13 +42,12 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                AllowUserInsertLine="False" 
-                                 DefaultText="[[Rec().F1]],[[Rec().F2]]" 
+                                DefaultText="[[Rec().F1]],[[Rec().F2]]" 
                                 FilterType="RecordsetFields"
                                 ToolTip="{x:Static help:HelpTextResources.UniqueToolTipInFields}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                 Text="{Binding ModelItem.InFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                Text="{Binding ModelItem.InFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtInFields_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpInFields}" DataContext="{Binding}" />
@@ -51,7 +58,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-         <TextBlock Grid.Column="0"
+        <TextBlock Grid.Column="0"
                Grid.Row="1"
                 Margin="{StaticResource ControlBorderTop}"
                Text="Return Fields" />
@@ -63,8 +70,6 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                AllowUserInsertLine="False"
-                                AllowMultilinePaste="False" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtReturnFields_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpReturnFields}" DataContext="{Binding}" />
@@ -74,21 +79,19 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
         <TextBlock Grid.Column="0"
                Grid.Row="2"
                Margin="{StaticResource ControlBorderTop}"
                Text="Result" />
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
-                                 DefaultText="[[New().F1]]" 
+                                DefaultText="[[New().F1]]" 
                                 Margin="{StaticResource ControlBorderTop}"
                                 ToolTip="{x:Static help:HelpTextResources.UniqueToolTipResults}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                AllowUserInsertLine="False"
-                                AllowMultilinePaste="False" 
+                                Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtResults_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.UniqueHelpResults}" DataContext="{Binding}" />

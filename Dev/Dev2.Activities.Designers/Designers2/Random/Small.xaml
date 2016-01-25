@@ -17,6 +17,14 @@
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:RandomDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -55,27 +63,25 @@
             </Grid.ColumnDefinitions>
 
             <ui:IntellisenseTextBox Grid.Column="0"
-                                Visibility="{Binding Visibility}"
-                                AllowUserInsertLine="False"
-                                DefaultText="From" 
+                                    Visibility="{Binding Visibility}"
+                                    DefaultText="From" 
                                     Margin="0,0,1,1"
-                                ToolTip="{x:Static help:HelpTextResources.RandomToolTipRangeFrom}"
-                                Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
+                                    ToolTip="{x:Static help:HelpTextResources.RandomToolTipRangeFrom}"
+                                    Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.RandomHelpRangeFrom}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.From"
-                                     SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="ModelItem.From"
+                                         SourcePropertyValue="{Binding ModelItem.From, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
             <TextBlock Visibility="{Binding Visibility}" Text="-" Grid.Column="1" Margin="0,0,1,1"/>
 
             <ui:IntellisenseTextBox Grid.Column="2"
-                                    AllowUserInsertLine="False"
                                     DefaultText="Length" 
                                     Margin="0,0,1,1"
                                     IsEnabled="{Binding Path=IsLengthPath}"
@@ -94,7 +100,6 @@
 
             <ui:IntellisenseTextBox Grid.Column="2"
                                     Visibility="{Binding Visibility}"
-                                    AllowUserInsertLine="False"
                                     DefaultText="To" 
                                     Margin="0,0,1,1"
                                     Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -114,7 +119,6 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
-                                AllowUserInsertLine="False"
                                 DefaultText="[[Result]]" 
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
