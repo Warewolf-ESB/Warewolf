@@ -1,0 +1,7 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\bin\Debug\Dev2.UnitTestUtils.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\bin\Debug\Dev2.UnitTestUtils.pdb
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\bin\Debug\Moq.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\bin\Debug\Moq.xml
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\obj\Debug\Dev2.UnitTestUtils.csprojResolveAssemblyReference.cache
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\obj\Debug\Dev2.UnitTestUtils.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.UnitTestUtils\obj\Debug\Dev2.UnitTestUtils.pdb

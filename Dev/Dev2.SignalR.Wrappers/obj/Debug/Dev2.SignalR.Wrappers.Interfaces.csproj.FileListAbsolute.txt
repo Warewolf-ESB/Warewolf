@@ -1,0 +1,10 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Dev2.SignalR.Wrappers.dll.config
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Dev2.SignalR.Wrappers.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Dev2.SignalR.Wrappers.pdb
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Newtonsoft.Json.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\bin\Debug\Newtonsoft.Json.xml
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\obj\Debug\Dev2.SignalR.Wrappers.Interfaces.csprojResolveAssemblyReference.cache
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\obj\Debug\Dev2.SignalR.Wrappers.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.SignalR.Wrappers\obj\Debug\Dev2.SignalR.Wrappers.pdb

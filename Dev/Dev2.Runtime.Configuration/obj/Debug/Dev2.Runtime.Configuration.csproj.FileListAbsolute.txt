@@ -1,0 +1,6 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\Dev2.Runtime.Configuration.csprojResolveAssemblyReference.cache
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\Themes\ConfigResources.baml
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\Views\FileBrowser.g.cs
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\Dev2.Runtime.Configuration_MarkupCompile.cache
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Runtime.Configuration\obj\Debug\Dev2.Runtime.Configuration_MarkupCompile.lref

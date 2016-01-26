@@ -1,0 +1,4 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Core\obj\Debug\Dev2.Core.csprojResolveAssemblyReference.cache
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Core\obj\Debug\Dev2.DynamicServices.Resources.resources
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Core\obj\Debug\Dev2.FrameworkResources.resources
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Core\obj\Debug\Dev2.Core.csproj.GenerateResource.Cache
