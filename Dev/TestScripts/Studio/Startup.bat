@@ -41,7 +41,7 @@ rem using the "ping" command as make-shift wait or sleep command, wait for serve
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio 
 rem wait for 5 seconds before trying again
 @echo Waiting 5 seconds...
-ping -n 5 127.0.0.1 > nul
+ping -n 5 192.0.2.2 > nul
 goto WaitForServerStart 
 
 :StartStudio
@@ -54,6 +54,6 @@ REM ** Start Warewolf studio from deployed binaries **
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 
 REM  Wait 2 minutes ;)
-ping -n 120 127.0.0.1 > nul
+ping -n 120 192.0.2.2 > nul
 
 exit 0
