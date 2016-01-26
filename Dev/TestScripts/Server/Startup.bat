@@ -38,7 +38,7 @@ IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirect
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 REM ** Start Warewolf server from deployed binaries **
-IF EXIST %windir%\nircmd.exe nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe" else START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
