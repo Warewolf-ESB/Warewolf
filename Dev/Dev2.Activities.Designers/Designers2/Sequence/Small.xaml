@@ -19,6 +19,14 @@
                                d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
                                ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -31,7 +39,6 @@
                   ItemsSource="{Binding ModelItem.Activities}"
                   BorderThickness="0"
                   MinHeight="0"
-                  CanUserAddRows="False"
                   Background="White"
                   MaxHeight="60"
                   RowHeight="15"
@@ -42,10 +49,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock VerticalAlignment="Top"
-                                   HorizontalAlignment="Left"
-                                   Margin="0"
-                                   Padding="0"
-                                   Text="{Binding DisplayName}" />
+                                       HorizontalAlignment="Left"
+                                       Margin="0"
+                                       Padding="0"
+                                       Text="{Binding DisplayName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

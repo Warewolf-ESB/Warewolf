@@ -22,6 +22,14 @@
                                d:DataContext="{d:DesignInstance sharepointListCreate:SharepointListCreateDesignerViewModel}"
                                d:DesignHeight="300" d:DesignWidth="300">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -35,9 +43,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="Server" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
         <ComboBox Grid.Column="1"
                   Grid.Row="0"
                   x:Name="InitialFocusElement"
@@ -61,10 +67,7 @@
                 ToolTip="Edit Sharepoint Server Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="1"
-               Text="List"
-               Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Margin="{StaticResource ControlBorderTopRight}"
@@ -109,7 +112,7 @@
                                ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-            <DataGrid.Columns>                
+            <DataGrid.Columns>
                 <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="[[Variable]]"
@@ -174,10 +177,7 @@
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-        <TextBlock Grid.Row="3"
-               Grid.Column="0"
-               Text="Result"
-               Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Result" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Row="3"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
@@ -196,6 +196,6 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
     </Grid>
 </core:ActivityDesignerTemplate>
