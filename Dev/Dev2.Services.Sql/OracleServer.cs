@@ -44,6 +44,7 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 string fullProcedureName = row["Name"].ToString();
+                
                 if (row["Db"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
@@ -55,6 +56,7 @@ namespace Dev2.Services.Sql
                             List<IDbDataParameter> outParameters ;
 
                             List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            fullProcedureName = Owner + "." + fullProcedureName;
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
        
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
@@ -280,6 +282,7 @@ namespace Dev2.Services.Sql
         {
             try
             {
+                
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
                     return handler(reader);

@@ -1,5 +1,5 @@
 
-<Source ID="8c5946a5-c300-4f7a-bc8e-c8494ddbd9c2" Name="testmysql" ResourceType="DbSource" IsValid="false" ServerType="MySqlDatabase" Type="MySqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAABZnEtzNxitYnvgYOjrq2RAAAAAAASAAACgAAAAEAAAAAuxSQpgmljzYnObebhVPrBYAAAAkAxXzFKQke3zp2Y/xoM4EucQvBW+MLaKt/CeByU+nti2fS/S9pEWkJVKYmtq5Bj3s329ijLZ6g271zVjwMRgnXzLb+/kSPZdB4k1HI+e7lwbpIagoy5sOBQAAAByogy5XiFZkGsDEwu/Jzrc3CPCWw==" ServerVersion="0.0.5868.28925" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="8c5946a5-c300-4f7a-bc8e-c8494ddbd9c2" Name="testmysql" ResourceType="DbSource" IsValid="false" ServerType="MySqlDatabase" Type="MySqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAABZnEtzNxitYnvgYOjrq2RAAAAAAASAAACgAAAAEAAAAAuxSQpgmljzYnObebhVPrBYAAAAkAxXzFKQke3zp2Y/xoM4EucQvBW+MLaKt/CeByU+nti2fS/S9pEWkJVKYmtq5Bj3s329ijLZ6g271zVjwMRgnXzLb+/kSPZdB4k1HI+e7lwbpIagoy5sOBQAAAByogy5XiFZkGsDEwu/Jzrc3CPCWw==" ServerVersion="0.0.5869.26514" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>testmysql</DisplayName>
   <Category>testmysql</Category>
   <AuthorRoles>
