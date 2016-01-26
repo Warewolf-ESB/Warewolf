@@ -14,13 +14,18 @@
     <sap:ActivityDesigner.Icon>
         <Binding Source="{StaticResource Scripting-JavaScript-Icon}"/>
     </sap:ActivityDesigner.Icon>
-   
-    <sap:ActivityDesigner.Resources>
-        <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
 
-        <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content" Value="{DynamicResource Small}" />
-        </Style>
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityDesigner>

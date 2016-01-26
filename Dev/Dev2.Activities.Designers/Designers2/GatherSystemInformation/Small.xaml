@@ -22,6 +22,14 @@
                                d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance local:GatherSystemInformationDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.SystemInformationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -40,14 +48,10 @@
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=dev2:GatherSystemInformationTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -57,7 +61,6 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
-                                                    AllowUserInsertLine="False"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Margin="0,0,1,1"
