@@ -20,40 +20,40 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Warewolf ;) **
-taskkill /im "Warewolf Studio.exe" /T /F
-taskkill /im "Warewolf Server.exe" /T /F
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /im "Warewolf Studio.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
 
 REM  Wait 5 seconds ;)
-ping -n 5 127.0.0.1 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM Init paths to Warewolf server under test
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0Server\Warewolf Server.exe" SET DeploymentDirectory=%~dp0Server\
 IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
 REM ** Start Warewolf server from deployed binaries **
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
-IF NOT EXIST %TestRunDirectory%\..\..\..\nircmd.exe GOTO RegularStartup
-%TestRunDirectory%\..\..\..\nircmd.exe elevate "%DeploymentDirectory%\Warewolf Server.exe"
-GOTO WaitForServerStart
-:RegularStartup
-START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
+@echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 rem using the "ping" command as make-shift wait or sleep command, wait for server started file to appear
 :WaitForServerStart
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio 
 rem wait for 5 seconds before trying again
 @echo Waiting 5 seconds...
-ping -n 5 127.0.0.1 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 goto WaitForServerStart 
 
 :StartStudio
+REM Try use Default Workspace Layout
+IF EXIST "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" COPY /Y "%DeploymentDirectory%\..\DefaultWorkspaceLayout.xml" "%LocalAppData%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml"
 REM Init paths to Warewolf studio under test
 IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
 IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 REM ** Start Warewolf studio from deployed binaries **
-START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Studio.exe") else (START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe")
 
-REM  Wait 1 minute ;)
-ping -n 60 127.0.0.1 > nul
+REM  Wait 2 minutes ;)
+ping -n 120 -w 1000 192.0.2.2 > nul
 
 exit 0

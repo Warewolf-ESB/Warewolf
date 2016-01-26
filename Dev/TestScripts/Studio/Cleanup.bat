@@ -20,8 +20,6 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Warewolf ;) **
-taskkill /im "Warewolf Studio.exe" /T /F
-taskkill /im "Warewolf Server.exe" /T /F
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Studio.exe" /T /F
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe" /T /F
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (elevate taskkill /im "Warewolf Studio.exe" /T /F)
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
 exit 0
