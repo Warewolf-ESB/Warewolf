@@ -1,5 +1,5 @@
 
-<Service ID="f44c7543-5ac8-4afd-bd70-22fb799fda49" Name="wolf-829" ResourceType="PluginService" IsValid="false" ServerVersion="0.0.5868.28925" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="f44c7543-5ac8-4afd-bd70-22fb799fda49" Name="wolf-829" ResourceType="PluginService" IsValid="false" ServerVersion="0.0.5869.26514" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <Actions>
     <Action Name="wolf-829" Type="Plugin" SourceID="de51798e-cbc3-41f4-b928-1f44cb1755cc" SourceName="SharepointPlugin" ExecuteAction="" SourceMethod="GetListItemswithQuery" Namespace="Warewolf.SharePoint.WarewolfSharepointUtils">
       <Inputs>

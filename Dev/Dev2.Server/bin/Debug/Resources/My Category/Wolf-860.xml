@@ -1,5 +1,5 @@
 
-<Service ID="0c1775b4-8f8c-47d0-86e4-f80ca6a4089c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-860" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5868.28925">
+<Service ID="0c1775b4-8f8c-47d0-86e4-f80ca6a4089c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Wolf-860" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5869.26514">
   <DisplayName>Wolf-860</DisplayName>
   <Category>My Category\Wolf-860</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
