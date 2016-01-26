@@ -1,1 +1,0 @@
-D:\Repos\GENDEV\Warewolf-ESB\Dev\WarewolfParsing.Tests\obj\Debug\WarewolfParsing.Tests.csprojResolveAssemblyReference.cache

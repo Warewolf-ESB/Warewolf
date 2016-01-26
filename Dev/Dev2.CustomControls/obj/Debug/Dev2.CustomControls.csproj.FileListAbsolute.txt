@@ -1,6 +1,0 @@
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\Dev2.CustomControls.csprojResolveAssemblyReference.cache
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\CircularProgressBar.baml
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\CircularProgressBar.g.cs
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\Dev2.CustomControls_MarkupCompile.cache
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.CustomControls\obj\Debug\Dev2.CustomControls_MarkupCompile.lref

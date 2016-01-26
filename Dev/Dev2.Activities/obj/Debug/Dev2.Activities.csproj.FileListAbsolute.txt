@@ -1,2 +1,0 @@
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Activities\obj\Debug\Dev2.Activities.csprojResolveAssemblyReference.cache
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Activities\obj\Debug\Dev2.Activities.g.resources
