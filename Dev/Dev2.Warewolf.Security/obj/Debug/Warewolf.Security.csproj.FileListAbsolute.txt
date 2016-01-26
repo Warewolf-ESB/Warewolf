@@ -1,5 +1,0 @@
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.dll
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security\bin\Debug\Warewolf.Security.pdb
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Warewolf.Security.csprojResolveAssemblyReference.cache
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Warewolf.Security.dll
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Warewolf.Security\obj\Debug\Warewolf.Security.pdb

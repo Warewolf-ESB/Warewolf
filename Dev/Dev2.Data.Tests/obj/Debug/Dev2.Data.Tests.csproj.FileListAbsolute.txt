@@ -1,3 +1,0 @@
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Data.Tests\obj\Debug\Dev2.Data.Tests.csprojResolveAssemblyReference.cache
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Data.Tests\obj\Debug\Dev2.Data.Tests.TestStrings.resources
-D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Data.Tests\obj\Debug\Dev2.Data.Tests.csproj.GenerateResource.Cache
