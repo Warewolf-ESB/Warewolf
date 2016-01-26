@@ -1,0 +1,5 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe.config
+D:\Repos\GENDEV\Warewolf-ESB\Dev\ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe
+D:\Repos\GENDEV\Warewolf-ESB\Dev\ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.pdb
+D:\Repos\GENDEV\Warewolf-ESB\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe
+D:\Repos\GENDEV\Warewolf-ESB\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\ConsoleAppToTestExecuteCommandLineActivity.pdb

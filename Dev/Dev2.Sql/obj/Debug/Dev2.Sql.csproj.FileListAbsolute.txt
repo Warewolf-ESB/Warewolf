@@ -1,0 +1,11 @@
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\Readme.txt
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\Samples.sql
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\Warewolf\Install.sql
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\Warewolf\Uninstall.sql
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\install.cmd
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Deploy\SqlResources\uninstall.cmd
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Warewolf.snk
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Warewolf.Sql.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\bin\Debug\Warewolf.Sql.pdb
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\obj\Debug\Warewolf.Sql.dll
+D:\Repos\GENDEV\Warewolf-ESB\Dev\Dev2.Sql\obj\Debug\Warewolf.Sql.pdb
