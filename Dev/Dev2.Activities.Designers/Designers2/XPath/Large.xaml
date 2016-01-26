@@ -14,8 +14,8 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:xPath="clr-namespace:Dev2.Activities.Designers2.XPath"
-    xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-    Width="350"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               Width="350"
                                MinWidth="350"
                                MinHeight="350"
                                Height="350"
@@ -26,6 +26,14 @@
                                d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance xPath:XPathDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -41,7 +49,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -76,7 +84,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        
+
 
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                Grid.Row="1"      
@@ -87,7 +95,7 @@
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
-              <i:Interaction.Behaviors>
+            <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
                         <system:String>[[Recset().F1]]</system:String>
@@ -97,7 +105,7 @@
                     </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                 </behaviors:DataGridWatermarkModifier>
             </i:Interaction.Behaviors>
-            
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="27"
                                         d:DataContext="{d:DesignInstance Type=activities:XPathDTO}"
@@ -115,10 +123,9 @@
                 <DataGridTemplateColumn Width="*"
                                         Header="Results"
                                         d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
                                                     DefaultText="{Binding WatermarkTextVariable}"
@@ -144,14 +151,14 @@
                                 </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
                                         Header="Xpath"
                                     d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
@@ -178,13 +185,13 @@
                                 </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-                
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-         <errors:OnError Grid.Column="0"
+        <errors:OnError Grid.Column="0"
                         Grid.Row="5"
                         Grid.ColumnSpan="3" />
     </Grid>

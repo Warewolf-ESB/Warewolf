@@ -23,7 +23,8 @@ REM ** Kill The Server **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
 
 REM ** Delete the Warewolf ProgramData folder
-rmdir /S /Q %PROGRAMDATA%\Warewolf
+rd /S /Q %PROGRAMDATA%\Warewolf\Resources
+rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces
 REM  Wait 5 seconds ;)
 ping -n 5 127.0.0.1 > nul
 
