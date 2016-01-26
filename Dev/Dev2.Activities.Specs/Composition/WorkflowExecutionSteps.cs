@@ -430,18 +430,32 @@ namespace Dev2.Activities.Specs.Composition
 
                 var source = service.Source as DbSource;
 
-                Activity mysqlActivity = null;
+                Activity databaseActivity = null;
                 switch(serviceType)
                 {
                     case "mysql database":
-                        mysqlActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                        databaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
                         break;
                     case "sqlserver database":
-                        mysqlActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                        databaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                         break;
                 }
-                CommonSteps.AddActivityToActivityList(wf, serviceName, mysqlActivity);
+                CommonSteps.AddActivityToActivityList(wf, serviceName, databaseActivity);
             }
+//            else
+//            {
+//                Activity dbAct = null;
+//                switch (serviceType)
+//                {
+//                    case "mysql database":
+//                        dbAct = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+//                        break;
+//                    case "sqlserver database":
+//                        dbAct = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+//                        break;
+//                }
+//                CommonSteps.AddActivityToActivityList(wf, serviceName, dbAct);
+ //           }
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]

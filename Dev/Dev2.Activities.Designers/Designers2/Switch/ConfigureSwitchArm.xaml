@@ -9,6 +9,11 @@
              Height="Auto" Width="Auto"
              d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance switch:SwitchDesignerViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+    </UserControl.Resources>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
