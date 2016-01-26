@@ -26,7 +26,7 @@ REM ** Delete the Warewolf ProgramData folder
 rd /S /Q %PROGRAMDATA%\Warewolf\Resources
 rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces
 REM  Wait 5 seconds ;)
-ping -n 5 127.0.0.1 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM ** Copy in Debug resources **
 IF EXIST "%~dp0..\..\BPM Resources - Debug" robocopy "%~dp0..\..\BPM Resources - Debug" "%~dp0..\..\Dev2.Server\bin\Debug\Resources" *.* /s
@@ -50,5 +50,5 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 5 192.0.2.2 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 goto MainLoopBody
