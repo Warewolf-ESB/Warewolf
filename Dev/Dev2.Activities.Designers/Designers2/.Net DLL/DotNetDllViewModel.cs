@@ -440,6 +440,32 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
+        public double InputsMinHeight
+        {
+            get
+            {
+                return _inputsMinHeight;
+            }
+            set
+            {
+                _inputsMinHeight = value;
+                OnPropertyChanged("InputsMinHeight");
+            }
+        }
+
+        public double OutputsMinHeight
+        {
+            get
+            {
+                return _outputsMinHeight;
+            }
+            set
+            {
+                _outputsMinHeight = value;
+                OnPropertyChanged("OutputsMinHeight");
+            }
+        }
+
         public ObservableCollection<IPluginSource> Sources { get; set; }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
@@ -680,6 +706,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private IPluginSource _previousSource;
         private ICollection<INamespaceItem> _previosNamespaces;
         bool _testComplete;
+        double _inputsMinHeight;
+        double _outputsMinHeight;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
