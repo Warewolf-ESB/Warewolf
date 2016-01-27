@@ -39,14 +39,15 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
               errors = new ErrorResultTO();
-            if(Method == null)
-            {
-                errors.AddError("Invalid Method");
-                return;
-            }
+       
             if (Namespace == null)
             {
-                errors.AddError("Invalid Namespace invoked");
+                errors.AddError("No Namespace Selected.");
+                return;
+            }
+            if (Method == null)
+            {
+                errors.AddError("No Method Selected.");
                 return;
             }
             //  OutputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);

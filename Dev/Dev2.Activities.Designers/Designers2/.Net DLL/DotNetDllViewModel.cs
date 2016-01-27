@@ -264,7 +264,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             };
             foreach (var serviceInput in Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
+                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, ""){TypeName = serviceInput.TypeName});
             }
             return pluginServiceDefinition;
         }
