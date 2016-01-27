@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Warewolf</title>
+    <link rel="icon" href="favicon.ico" />
+    <script src="Scripts/fx/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/fx/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="Scripts/fx/jquery.validate.min.js"></script>
+    <script src="Scripts/fx/jquery.validate.unobtrusive.min.js"></script>
+    <script src="Scripts/fx/jquery.caret.js"></script>
+    <script src="Scripts/fx/jquery.dataTables.min.js"></script>
+    <script src="Scripts/fx/jquery.Guid.js"></script>
+    <script src="Scripts/fx/jquery.scrollTo-1.4.3.1.js"></script>
+    <script src="Scripts/fx/jquery.dynatree-1.2.4.js"></script>
+    <script src="Scripts/fx/jquery.dynatree.min.js"></script>
+    <script src="Scripts/fx/knockout-2.2.1.js"></script>
+    <script src="Scripts/fx/knockout.mapping-latest.js"></script>
+    <script src="Scripts/fx/modernizr-2.5.3.js"></script>
+    <script src="Scripts/fx/placeMe-1.0.js"></script>
+    <script src="Scripts/warewolf-globals.js"></script>
+    <script src="Scripts/warewolf-jquery.js"></script>
+    <script src="Scripts/warewolf-ko.js"></script>
+    <script src="Scripts/warewolf-utils.js"></script>
+    <script src="Scripts/warewolf-recordsets.js"></script>
+    <script src="Scripts/warewolf-studio.js"></script>
+    <link href="Content/themes/warewolf/jquery-ui.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+	<style>
+		.ui-autocomplete-loading {
+			background: white url('Images/ajax-loader.gif') right center no-repeat;
+		}
+
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #pageMissingWrap {
+            height: 100%;
+            padding: 15px;
+            background: #e0e0e0;
+            overflow: hidden;
+            color: #171717;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #pageMissingSidebar {
+            float: left;
+            width: 130px;
+        }
+
+        #pageMissingMain {
+            float: left;
+        }
+
+        #pageMissingCloseButton {
+            float: right;
+            font-weight: normal;
+            padding: 0;
+            margin: 0 2px 0 0;
+            color: #171717;
+            text-decoration: none;
+        }
+
+            #pageMissingCloseButton:link, #pageMissingCloseButton:visited,
+            #pageMissingCloseButton:active, #pageMissingCloseButton:hover {
+                color: #171717;
+                background: transparent;
+            }
+
+            #pageMissingCloseButton:hover {
+                font-weight: bolder;
+            }
+
+        h1.pageMissing {
+            color: #F3700D;
+            font-family: 'Arial Black', sans-serif;
+            -webkit-margin-before: 0;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+            font-size: 2em;
+        }
+
+        h3.pageMissing {
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 1em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+            font-size: 1.17em;
+        }
+
+        p.pageMissing {
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 1em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        ol.pageMissing {
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 1em;
+        }
+
+        li.pageMissing {
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 0.5em;
+            font-size: 17px;
+        }
+
+        td.pageMissingContent {
+            vertical-align: top;
+            color: #171717;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+            white-space: normal;
+            line-height: normal;
+            font-weight: normal;
+            font-size: medium;
+            font-variant: normal;
+            font-style: normal;
+            color: -webkit-text;
+        }
+
+        td.pageMissingImage {
+            vertical-align: top;
+            width: 130px;
+        }
+	</style>
+    <script>		
+        $(function () {
+            // Remove default messages - we use a global validation handler
+            jQuery.validator.messages.required = "";
+
+            var contentUrl = getParameterByName("content");
+            $("#content").load(contentUrl, function (responseText, textStatus, req) {
+                if (textStatus == "error") {
+                    loadMissingPage();
+                }
+            });
+
+            $(document).keydown(function (e) {
+                // ESCAPE key pressed
+                if (e.keyCode == 27) {
+                    studio.cancel();
+                }
+            });
+        });
+
+        function loadMissingPage() {
+            var url = window.location.protocol + "//" + window.location.hostname;
+            if (window.location.port) {
+                url += ":" + window.location.port;
+            }
+            var $span = window.document.getElementById("missingPageServerUrl");
+            $span.innerText = url;
+
+            var $wrap = window.document.getElementById("pageMissingWrap");
+            $wrap.style.visibility = "visible";
+
+            var $content = window.document.getElementById("content");
+            $content.style.height = "100%";
+        }
+
+        function closeMissingPage() {
+            if (typeof Dev2Awesomium != 'undefined') {
+                Dev2Awesomium.Close();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="content">
+        <div id="pageMissingWrap" style="visibility: hidden">
+            <a id="pageMissingCloseButton" onclick="javascript: closeMissingPage();" href="#">X</a>
+            <table>
+                <tr>
+                    <td class="pageMissingImage">
+                        <img src="Images\PageMissing.png" alt="Page Missing" />
+                    </td>
+                    <td class="pageMissingContent">
+                        <h1 class="pageMissing">Missing</h1>
+                        <h3 class="pageMissing">We can’t find the server: <span id="missingPageServerUrl"></span></h3>
+                        <p class="pageMissing">You can try the following to resolve this:</p>
+                        <ol class="pageMissing">
+                            <li class="pageMissing">Open <b>Services</b> in <b>Administrative Tools</b> and check that the Warewolf Server service is started.</li>
+                            <li class="pageMissing">Check that your <b>network connection</b> is fully operational.</li>
+                            <li class="pageMissing">Open <b>Windows Firewall</b> and check that the correct <b>ports</b> are open for the <b>TCP</b> protocol.</li>
+                            <li class="pageMissing">Open the <b>server’s configuration</b> file and check that the <b>web server ports</b> are correct.</li>
+                        </ol>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
