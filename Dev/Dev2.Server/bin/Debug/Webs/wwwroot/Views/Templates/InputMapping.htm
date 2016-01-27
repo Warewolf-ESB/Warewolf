@@ -1,0 +1,31 @@
+﻿<h4>Inputs</h4>
+<div>
+    <table class="input-param">
+        <thead>
+            <tr>
+                <th style="width: 155px; vertical-align: middle">Input</th>
+                <th style="width: 150px;">Default Value</th>
+                <th style="width: 75px; text-align: center;">Required Field</th>
+                <th style="width: 55px; text-align: center;">Empty is Null</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="scrollable-y box-border" style="height: 395px;">
+    <div style="margin: 8px;" data-bind="visible: !hasInputs()">
+        <a href="#" data-bind="click: showTab.bind($data, 0), text: inputMappingLink"></a>
+    </div>
+    <table class="input-param">
+        <tbody data-bind="foreach: data.method.Parameters">
+            <tr>
+                <td class="input-param-name" data-bind="text: Name, attr: { title: Name }"></td>
+                <td>
+                    <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
+                <td style="width: 70px; text-align: center;">
+                    <input type="checkbox" data-bind="checked: IsRequired" /></td>
+                <td style="width: 55px; text-align: center;">
+                    <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
