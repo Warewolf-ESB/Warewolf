@@ -1,5 +1,5 @@
 
-<Service ID="82010405-5bbf-482f-beba-bbf3639030cd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="workflow2" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5869.26514">
+<Service ID="82010405-5bbf-482f-beba-bbf3639030cd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="workflow2" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5870.29154">
   <DisplayName>workflow2</DisplayName>
   <Category>workflow2</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
