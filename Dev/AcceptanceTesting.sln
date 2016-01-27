@@ -153,6 +153,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Network", "Dev2.Networ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{597FBE89-9E35-4C8E-90CC-57081B610B80}"
+	ProjectSection(SolutionItems) = preProject
+		BakeInVersion.ps1 = BakeInVersion.ps1
+		ReadOutVersion.ps1 = ReadOutVersion.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1126,6 +1132,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
+		{597FBE89-9E35-4C8E-90CC-57081B610B80} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
