@@ -95,6 +95,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
+            DesignHeight = 220;
+            DesignMinHeight = 220;
+            DesignMaxHeight = 220;
             TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -230,8 +233,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             if (Outputs != null)
             {
-                OutputsVisible = true;
-                TestComplete = true;
+                TestComplete = Outputs.Count >= 1 || _previousTestComplete;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -239,6 +241,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
             }
             _isInitializing = false;
+            SetInputGridHeight();
+            SetOutputGridHeight();
         }
 
         private bool CanRefresh()
@@ -313,6 +317,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     catch (Exception e)
                     {
+                        _previousTestComplete = false;
+                        TestComplete = false;
                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
@@ -321,10 +327,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
-                    if (Outputs != null)
-                    {
-                        OutputsVisible = true;
-                    }
                     OutputDescription = ManageServiceInputViewModel.Description;
                 };
                 ManageServiceInputViewModel.ShowView();
@@ -332,6 +334,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     ValidateTestComplete();
                 }
+                SetInputGridHeight();
+                SetOutputGridHeight();
             }
             catch (Exception e)
             {
@@ -441,6 +445,199 @@ namespace Dev2.Activities.Designers2.Net_DLL
             {
                 _isTesting = value;
                 OnPropertyChanged("IsTesting");
+            }
+        }
+
+        public double DesignMaxHeight
+        {
+            get
+            {
+                return _designMaxHeight;
+            }
+            set
+            {
+                _designMaxHeight = value;
+                OnPropertyChanged("DesignMaxHeight");
+            }
+        }
+        public double DesignMinHeight
+        {
+            get
+            {
+                return _designMinHeight;
+            }
+            set
+            {
+                _designMinHeight = value;
+                OnPropertyChanged("DesignMinHeight");
+            }
+        }
+        public double DesignHeight
+        {
+            get
+            {
+                return _designHeight;
+            }
+            set
+            {
+                _designHeight = value;
+                OnPropertyChanged("DesignHeight");
+            }
+        }
+
+        public double InputsMinHeight
+        {
+            get
+            {
+                return _inputsMinHeight;
+            }
+            set
+            {
+                _inputsMinHeight = value;
+                OnPropertyChanged("InputsMinHeight");
+            }
+        }
+        public bool InputsHasItems
+        {
+            get
+            {
+                return _inputsHasItems;
+            }
+            set
+            {
+                _inputsHasItems = value;
+                OnPropertyChanged("InputsHasItems");
+            }
+        }
+
+        double _inputGridHeight = 60;
+        double _outputGridHeight = 60;
+        double _toolHeight = 230;
+        double _maxToolHeight = 230;
+
+        public void SetInputGridHeight()
+        {
+            if (Inputs != null && InputsVisible)
+            {
+                switch (Inputs.Count)
+                {
+                    case 0:
+                        // Add the Grid Height to the tool Height
+                        _toolHeight += _inputGridHeight;
+                        break;
+                    default:
+                        /* 30px used for row Height multiply by Inputs count plus 1 extra row
+                         * Add grid Height to tool Height original Height value
+                         * Set Maximum tool Height to calculated tool Height */
+                        if (Inputs.Count > 0 && Inputs.Count < 5)
+                        {
+                            _inputGridHeight = 30 * (Inputs.Count + 1);
+                            _toolHeight += _inputGridHeight + 5;
+                            _maxToolHeight = _toolHeight;
+                        }
+                        else
+                        {
+                            // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
+                            _inputGridHeight = 30 * 6;
+                            _toolHeight += _inputGridHeight;
+                            _maxToolHeight += (30 * Inputs.Count) + 10;
+                        }
+                        break;
+                }
+
+                SetToolHeightValue(_toolHeight);
+            }
+            else
+            {
+                SetInitialHeight();
+            }
+        }
+
+        void SetInitialHeight()
+        {
+            DesignHeight = _toolHeight;
+            DesignMinHeight = _toolHeight;
+            DesignMaxHeight = _maxToolHeight;
+        }
+
+        void SetToolHeightValue(double newToolHeight)
+        {
+            DesignHeight = newToolHeight;
+            DesignMinHeight = newToolHeight;
+            DesignMaxHeight = _maxToolHeight;
+            InputsMinHeight = _inputGridHeight;
+            OutputsMinHeight = _outputGridHeight;
+
+            // Reset the values
+            _inputGridHeight = 60;
+            _outputGridHeight = 60;
+            _toolHeight = 230;
+            _maxToolHeight = 230;
+        }
+
+        public double OutputsMinHeight
+        {
+            get
+            {
+                return _outputsMinHeight;
+            }
+            set
+            {
+                _outputsMinHeight = value;
+                OnPropertyChanged("OutputsMinHeight");
+            }
+        }
+        public bool OutputsHasItems
+        {
+            get
+            {
+                return _outputsHasItems;
+            }
+            set
+            {
+                _outputsHasItems = value;
+                OnPropertyChanged("OutputsHasItems");
+            }
+        }
+
+        public void SetOutputGridHeight()
+        {
+            if (Outputs != null && TestComplete)
+            {
+                /* Plugin start tool height is 290px after Input Height value added
+                 * Plugin start max tool height  is 290px after Input Height value added */
+
+                _toolHeight = 290;
+                _maxToolHeight = 290;
+                switch (Outputs.Count)
+                {
+                    case 0:
+                        // Add the Grid Height to the tool Height
+                        _toolHeight += _outputGridHeight;
+                        break;
+                    default:
+                        /* 30px used for row Height multiply by Outputs count plus 1 extra row
+                         * Add grid Height to tool Height original Height value
+                         * Set Maximum tool Height to calculated tool Height */
+                        if (Outputs.Count > 0 && Outputs.Count < 5)
+                        {
+                            _outputGridHeight = 30 * (Outputs.Count + 1);
+                            _toolHeight += _outputGridHeight;
+                            _maxToolHeight = _toolHeight;
+                        }
+                        else
+                        {
+                            // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
+                            _outputGridHeight = 30 * 6;
+                            _toolHeight += _outputGridHeight;
+                            _maxToolHeight += (30 * (Outputs.Count + 1)) + 10;
+                        }
+                        break;
+                }
+
+                OutputsHasItems = Outputs != null && Outputs.Count > 0;
+                var newToolHeight = !OutputsHasItems ? 290 : _toolHeight;
+                SetToolHeightValue(newToolHeight);
             }
         }
 
@@ -664,7 +861,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private IPluginAction _selectedMethod;
         private ICollection<IServiceInput> _inputs;
         private bool _inputsVisible;
-        private bool _outputsVisible;
         private bool _isTesting;
         private bool _canEditMappings;
         private bool _testSuccessful;
@@ -684,6 +880,15 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private IPluginSource _previousSource;
         private ICollection<INamespaceItem> _previosNamespaces;
         bool _testComplete;
+        double _inputsMinHeight;
+        double _outputsMinHeight;
+        bool _previousTestComplete;
+        bool _inputsHasItems;
+        bool _outputsHasItems;
+        double _designHeight;
+        double _designMinHeight;
+        double _designMaxHeight;
+        bool _previousInputsVisible;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -873,24 +1078,26 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
                     Methods = _previousMethods;
-
+                    Outputs = _previousOutputs;
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
-
-                    InputsVisible = true;
+                    InputsVisible = SelectedMethod != null;
+                    SetInputGridHeight();
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
                     TestComplete = false;
                     IsRefreshing = true;
+                    InputsVisible = false;
                     Errors = new List<IActionableErrorInfo>();
+
+                    _previosNamespace = _selectedNamespace;
+                    _previousMethods = Methods;
                     _previousMethod = _selectedMethod;
                     _previousInputs = _inputs;
-                    _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
-                    _previosNamespace = _selectedNamespace;
+                    _previousRecset = _recordsetName;
 
-                    _previousMethods = Methods;
                     _selectedNamespace = value;
                     Namespace = value;
                     try
@@ -901,8 +1108,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            InputsVisible = false;
-                            OutputsVisible = false;
                         }
                         ActionVisible = Methods.Count != 0;
 
@@ -910,14 +1115,13 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         {
                             ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                         }
-                        InputsVisible = false;
-                        OutputsVisible = false;
                     }
                     catch (Exception e)
                     {
                         Methods = new List<IPluginAction>();
                         SelectedMethod = null;
                         ActionVisible = false;
+                        _previosNamespace = null;
                         var errorInfo = new ErrorInfo
                         {
                             ErrorType = ErrorType.Critical,
@@ -925,6 +1129,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
+                    SetInputGridHeight();
                 }
                 IsRefreshing = false;
                 OnPropertyChanged("SelectedNamespace");
@@ -956,26 +1161,30 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     {
                         Errors = new List<IActionableErrorInfo>();
                         _selectedSource = value;
-                        Methods = _previousMethods;
-                        SelectedMethod = _previousMethod;
                         Namespaces = _previosNamespaces;
                         SelectedNamespace = _previosNamespace;
                         NamespaceVisible = Namespaces.Count != 0;
+                        Methods = _previousMethods;
+                        Outputs = _previousOutputs;
+                        SelectedMethod = _previousMethod;
                         ActionVisible = Methods.Count != 0;
-                        InputsVisible = true;
+                        InputsVisible = _previousInputsVisible;
+                        SetInputGridHeight();
                     }
                     else
                     {
-                        _previousMethod = _selectedMethod;
-                        _previousInputs = _inputs;
-                        _previousRecset = _recordsetName;
-                        _previousOutputs = Outputs;
-                        _previosNamespace = _selectedNamespace;
-                        _previousMethods = Methods;
                         _previousSource = _selectedSource;
                         _previosNamespaces = Namespaces;
+                        _previosNamespace = _selectedNamespace;
+                        _previousMethods = Methods;
+                        _previousMethod = _selectedMethod;
+                        _previousInputs = _inputs;
+                        _previousOutputs = Outputs;
+                        _previousRecset = _recordsetName;
+
                         TestComplete = false;
                         IsNamespaceRefreshing = true;
+                        InputsVisible = false;
                         Errors = new List<IActionableErrorInfo>();
                         _selectedSource = value;
                         try
@@ -984,8 +1193,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             if (!_isInitializing)
                             {
                                 RecordsetName = "";
-                                InputsVisible = false;
-                                OutputsVisible = false;
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
                             }
@@ -1010,14 +1217,15 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                     RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
                                     FriendlySourceNameValue = _selectedSource.Name;
                                 }
-                                InputsVisible = false;
                             }
+                            SetInputGridHeight();
                         }
                         catch (Exception e)
                         {
                             Methods = new List<IPluginAction>();
                             SelectedMethod = null;
                             ActionVisible = false;
+                            _previousSource = null;
                             var errorInfo = new ErrorInfo
                             {
                                 ErrorType = ErrorType.Critical,
@@ -1035,7 +1243,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         void ValidateTestComplete()
         {
-            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null;
+            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null && Errors.Count < 1;
         }
 
         public bool NamespaceVisible
@@ -1106,11 +1314,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Errors = new List<IActionableErrorInfo>();
                     _selectedMethod = value;
                     Inputs = _previousInputs;
-                    RecordsetName = _previousRecset;
                     Outputs = _previousOutputs;
-                    InputsVisible = true;
-                    OutputsVisible = true;
-                    TestComplete = true;
+                    RecordsetName = _previousRecset;
+                    InputsVisible = _previousInputsVisible;
+                    TestComplete = _previousTestComplete || Outputs.Count > 0;
+                    SetInputGridHeight();
+                    SetOutputGridHeight();
                     OnPropertyChanged("SelectedMethod");
                 }
                 else if (!Equals(value, _selectedMethod))
@@ -1119,21 +1328,26 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     _previousInputs = _inputs;
                     _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
+
                     TestComplete = false;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
                     {
                         if (!_isInitializing)
                         {
+                            Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            Inputs = _selectedMethod.Inputs;
                         }
+
+                        Inputs = _selectedMethod.Inputs;
+
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
                     Method = _selectedMethod;
                     InitializeProperties();
-                    InputsVisible = true;
+                    InputsVisible = _selectedMethod != null;
+                    SetInputGridHeight();
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
@@ -1204,6 +1418,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
+                _previousTestComplete = _testComplete;
                 _testComplete = value;
                 OnPropertyChanged("TestComplete");
             }
@@ -1216,20 +1431,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             set
             {
+                _previousInputsVisible = _inputsVisible;
                 _inputsVisible = value;
                 OnPropertyChanged("InputsVisible");
-            }
-        }
-        public bool OutputsVisible
-        {
-            get
-            {
-                return _outputsVisible;
-            }
-            set
-            {
-                _outputsVisible = value;
-                OnPropertyChanged("OutputsVisible");
             }
         }
         public ICollection<IServiceInput> Inputs
@@ -1244,6 +1448,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (!Equals(value, _inputs))
                 {
                     _inputs = value;
+                    InputsHasItems = _inputs != null && _inputs.Count > 0;
                     SetProperty(value);
                     OnPropertyChanged("Inputs");
                 }
@@ -1265,6 +1470,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             set
             {
                 SetProperty(value);
+                OutputsHasItems = value != null && value.Count > 0;
                 OnPropertyChanged("Outputs");
             }
         }
