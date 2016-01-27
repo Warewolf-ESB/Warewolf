@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ESB.Execution
     /// <summary>
     /// Wrapper class for all executable types in our ESB
     /// </summary>
-    public abstract class EsbExecutionContainer
+    public abstract class EsbExecutionContainer : IEsbExecutionContainer
     {
         protected ServiceAction ServiceAction { get; private set; }
         protected IDSFDataObject DataObject { get; private set; }
