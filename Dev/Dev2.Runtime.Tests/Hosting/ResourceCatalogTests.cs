@@ -81,6 +81,10 @@ namespace Dev2.Tests.Runtime.Hosting
                     //Ashley: Bad unit isolation.
                 }
             }
+            if(!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
+            }
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             LoadActivitiesPresentationDll();
         }
