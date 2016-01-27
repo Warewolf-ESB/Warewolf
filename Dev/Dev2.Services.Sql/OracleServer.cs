@@ -43,24 +43,24 @@ namespace Dev2.Services.Sql
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                string fullProcedureName = row["NAME"].ToString();
                 
-                if (row["Db"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
+                if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                            Owner+"."+fullProcedureName))
                     {
                         try
                         {
                             List<IDbDataParameter> outParameters ;
 
                             List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
-                            fullProcedureName = Owner + "." + fullProcedureName;
+                            
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-       
+                           // fullProcedureName = Owner + "." + fullProcedureName;
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
-
+                            //procedureProcessor(command, parameters, helpText, fullProcedureName);
 
                         }
                         catch (Exception)
@@ -73,6 +73,11 @@ namespace Dev2.Services.Sql
                     }
                 }
             }
+
+
+
+
+
         }
 
         public IDbCommand CreateCommand()
@@ -184,21 +189,21 @@ namespace Dev2.Services.Sql
 
             // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
 
-            foreach (DataRow row in proceduresDataTable.Rows)
+            foreach (DataRow row in proceduresDataTable.Rows)//Procedure 2
             {
                 string fullProcedureName = row["NAME"].ToString();
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                           Owner+"."+ fullProcedureName))
                     {
                         try
                         {
                             List<IDbDataParameter> isOut;
                             List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                           
+                         //   fullProcedureName = Owner + "." + fullProcedureName;
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
 
 
@@ -213,6 +218,8 @@ namespace Dev2.Services.Sql
                     }
                 }
             }
+
+
         }
 
         // ReSharper disable InconsistentNaming
@@ -283,6 +290,7 @@ namespace Dev2.Services.Sql
             try
             {
                 
+                
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
                     return handler(reader);
@@ -327,7 +335,7 @@ namespace Dev2.Services.Sql
         {
             using (
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
+                    string.Format("SELECT text FROM all_source WHERE name='{0}' ORDER BY line", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                     delegate(IDataReader reader)
@@ -335,7 +343,7 @@ namespace Dev2.Services.Sql
                         var sb = new StringBuilder();
                         while (reader.Read())
                         {
-                            object value = reader.GetValue(2);
+                            object value = reader.GetValue(0);
                             if (value != null)
                             {
                                 sb.Append(value);
@@ -377,12 +385,15 @@ namespace Dev2.Services.Sql
 
 
                 bool isout = false;
-                    const ParameterDirection direction = ParameterDirection.Input;
-                    if (InOut.Contains("OUT"))
+                    const ParameterDirection direction = ParameterDirection.Output;
+
+                if (InOut.Contains("IN/OUT"))
+                    isout = false;
+                if (InOut.Contains("OUT"))
                         isout = true;
-                    if (InOut.Contains("IN/OUT"))
-                        isout = false;
-                    var parameterx = InOut.Replace("IN ", "").Replace("OUT ", "");
+
+              
+              
                     if (!String.IsNullOrEmpty(parameterName))
                     {
                        
@@ -392,19 +403,24 @@ namespace Dev2.Services.Sql
                     var OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
                         if (!isout)
                         {
+                        try
+                        {
+                            OracleParameter.Direction = ParameterDirection.Input;
                             command.Parameters.Add(OracleParameter);
                             parameters.Add(OracleParameter);
                         }
+                        catch (Exception) {
+                            continue;
+                        }
+                        }
                         else
                         {
-                            OracleParameter.Direction = ParameterDirection.Output;
+                           
                             outParams.Add(OracleParameter);
-                            OracleParameter.Value = "@a";
-                            command.Parameters.Add(OracleParameter);
+                         //  OracleParameter.Value = "@a";
+                       // command.Parameters.Add(OracleParameter);
                         }
-                        if (parameterName.ToLower() == "@return_value")
-                        {
-                        }
+                   
                     }
                 
 
