@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     IsNamespaceRefreshing = false;
                 }, CanRefresh);
-                var pluginSources = _dllModel.RetrieveSources();
+                var pluginSources = _dllModel.RetrieveSources().OrderBy(source => source.Name);
                 Sources = pluginSources.ToObservableCollection();
                 SourceVisible = true;
                 if (SourceId != Guid.Empty)
@@ -180,21 +180,25 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if (!string.IsNullOrEmpty(MethodName))
+                        if(Method != null)
                         {
-                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == MethodName);
-                            if (SelectedMethod == null)
+                            var method = Method.Method;
+                            if(!string.IsNullOrEmpty(method))
                             {
-                                Inputs = new List<IServiceInput>();
-                                Outputs = new List<IServiceOutputMapping>();
-                                InputsVisible = false;
-                                OutputsVisible = false;
+                                SelectedMethod = Methods.FirstOrDefault(action => action.Method == method);
+                                if(SelectedMethod == null)
+                                {
+                                    Inputs = new List<IServiceInput>();
+                                    Outputs = new List<IServiceOutputMapping>();
+                                    InputsVisible = false;
+                                    OutputsVisible = false;
+                                    UpdateLastValidationMemoWithProcedureNotSelectedError();
+                                }
+                            }
+                            else
+                            {
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
                             }
-                        }
-                        else
-                        {
-                            UpdateLastValidationMemoWithProcedureNotSelectedError();
                         }
                     }
                     else
@@ -891,7 +895,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Namespace = value;
                     try
                     {
-                        Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace);
+                        Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace).OrderBy(action => action.Method).ToList();
                         if (!_isInitializing)
                         {
                             Inputs = new List<IServiceInput>();
@@ -976,7 +980,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         _selectedSource = value;
                         try
                         {
-                            Namespaces = _dllModel.GetNameSpaces(_selectedSource);
+                            Namespaces = _dllModel.GetNameSpaces(_selectedSource).OrderBy(item => item.AssemblyName).ToList();
                             if (!_isInitializing)
                             {
                                 RecordsetName = "";
@@ -1127,8 +1131,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
-                    InitializeProperties();
                     Method = _selectedMethod;
+                    InitializeProperties();
                     InputsVisible = true;
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
