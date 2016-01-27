@@ -193,8 +193,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                 {
                                     Inputs = new List<IServiceInput>();
                                     Outputs = new List<IServiceOutputMapping>();
-                                    InputsVisible = false;
-                                    OutputsVisible = false;
                                     UpdateLastValidationMemoWithProcedureNotSelectedError();
                                 }
                             }
@@ -711,14 +709,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
             private set
             {
-                if (value)
-                {
-                    ButtonDisplayValue = DoneText;
-                }
-                else
-                {
-                    ButtonDisplayValue = FixText;
-                }
+                ButtonDisplayValue = value ? DoneText : FixText;
                 SetValue(IsWorstErrorReadOnlyProperty, value);
             }
         }
