@@ -313,6 +313,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     catch (Exception e)
                     {
                         _previousTestComplete = false;
+                        TestComplete = false;
                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
@@ -534,7 +535,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
                             _inputGridHeight = 30 * 6;
                             _toolHeight += _inputGridHeight;
-                            _maxToolHeight += (30 * (Inputs.Count + 1)) + 7;
+                            _maxToolHeight += (30 * Inputs.Count) + 10;
                         }
                         break;
                 }
@@ -1076,6 +1077,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
                     InputsVisible = SelectedMethod != null;
+                    SetInputGridHeight();
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
@@ -1162,6 +1164,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         SelectedMethod = _previousMethod;
                         ActionVisible = Methods.Count != 0;
                         InputsVisible = _previousInputsVisible;
+                        SetInputGridHeight();
                     }
                     else
                     {
@@ -1173,7 +1176,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         _previousInputs = _inputs;
                         _previousOutputs = Outputs;
                         _previousRecset = _recordsetName;
-                        
+
                         TestComplete = false;
                         IsNamespaceRefreshing = true;
                         InputsVisible = false;
@@ -1235,7 +1238,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         void ValidateTestComplete()
         {
-            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null;
+            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null && Errors.Count < 1;
         }
 
         public bool NamespaceVisible
@@ -1310,6 +1313,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     RecordsetName = _previousRecset;
                     InputsVisible = _previousInputsVisible;
                     TestComplete = _previousTestComplete || Outputs.Count > 0;
+                    SetInputGridHeight();
                     SetOutputGridHeight();
                     OnPropertyChanged("SelectedMethod");
                 }
@@ -1322,15 +1326,17 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
                     TestComplete = false;
                     _selectedMethod = value;
-                    Inputs = new List<IServiceInput>();
                     if (_selectedMethod != null)
                     {
                         if (!_isInitializing)
                         {
+                            Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            Inputs = _selectedMethod.Inputs;
                         }
+
+                        Inputs = _selectedMethod.Inputs;
+
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
                     InitializeProperties();
