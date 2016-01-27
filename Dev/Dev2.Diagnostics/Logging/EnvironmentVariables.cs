@@ -12,8 +12,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Text;
 
 // ReSharper disable CheckNamespace
@@ -76,22 +74,6 @@ namespace Dev2.Common
                 {
                     Directory.CreateDirectory(appDataPath);
                 }
-                var directoryInfo = new DirectoryInfo(appDataPath);
-                SecurityIdentifier securityIdentifier = new SecurityIdentifier
-                    (WellKnownSidType.WorldSid, null);
-                bool modified;
-                var directorySecurity = directoryInfo.GetAccessControl();
-                AccessRule rule = new FileSystemAccessRule(
-                    securityIdentifier,
-                    FileSystemRights.Write |
-                    FileSystemRights.ReadAndExecute |
-                    FileSystemRights.Modify,
-                    InheritanceFlags.ContainerInherit |
-                    InheritanceFlags.ObjectInherit,
-                    PropagationFlags.InheritOnly,
-                    AccessControlType.Allow);
-                directorySecurity.ModifyAccessRule(AccessControlModification.Add, rule, out modified);
-                directoryInfo.SetAccessControl(directorySecurity);
                 return appDataPath;
             }
         }
