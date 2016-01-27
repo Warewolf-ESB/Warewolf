@@ -405,7 +405,7 @@ namespace Dev2.Runtime.ESB.Control
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
-        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer, ErrorResultTO errors)
+        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
             if(remoteContainer != null)
