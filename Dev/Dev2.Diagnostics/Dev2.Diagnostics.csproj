@@ -79,6 +79,12 @@
     <Compile Include="Logging\EnvironmentVariables.cs" />
     <Compile Include="Logging\Dev2Logger.cs" />
     <Compile Include="Logging\WorkflowLoggger.cs" />
+    <Compile Include="PerformanceCounters\IWarewolfPerformanceCounterLocater.cs" />
+    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounter.cs" />
+    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounter.cs" />
+    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterBuilder.cs" />
+    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterLocater.cs" />
+    <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -100,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
