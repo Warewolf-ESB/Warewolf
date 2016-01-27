@@ -188,11 +188,18 @@ namespace Dev2.Activities.Designers2.Net_DLL
                             var method = Method.Method;
                             if(!string.IsNullOrEmpty(method))
                             {
-                                SelectedMethod = Methods.FirstOrDefault(action => action.Method == method);
-                                if(SelectedMethod == null)
+                                if(Methods != null)
                                 {
-                                    Inputs = new List<IServiceInput>();
-                                    Outputs = new List<IServiceOutputMapping>();
+                                    SelectedMethod = Methods.FirstOrDefault(action => action.Method == method);
+                                    if(SelectedMethod == null)
+                                    {
+                                        Inputs = new List<IServiceInput>();
+                                        Outputs = new List<IServiceOutputMapping>();
+                                        UpdateLastValidationMemoWithProcedureNotSelectedError();
+                                    }
+                                }
+                                else
+                                {
                                     UpdateLastValidationMemoWithProcedureNotSelectedError();
                                 }
                             }
