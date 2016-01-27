@@ -8,11 +8,10 @@
                                xmlns:netDll="clr-namespace:Dev2.Activities.Designers2.Net_DLL"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="220"
-                               Height="220"
+                               MinHeight="{Binding DesignMinHeight}"
+                               Height="{Binding DesignHeight}"
                                MaxWidth="Infinity"
-                               MaxHeight="Infinity"
-                               Loaded="Large_OnLoaded"
+                               MaxHeight="{Binding DesignMaxHeight}"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -42,21 +41,49 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=InputsHasItems}" Value="True">
+                                <Setter Property="RowDefinition.Height" Value="*"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=InputsHasItems}" Value="False">
+                                <Setter Property="RowDefinition.Height" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=OutputsHasItems}" Value="True">
+                                <Setter Property="RowDefinition.Height" Value="*"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=OutputsHasItems}" Value="False">
+                                <Setter Property="RowDefinition.Height" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Control Template="{StaticResource SelectionGrid}"></Control>
         </Grid>
-        <Grid Grid.Row="1" Height="{Binding ElementName=InputsControl, Path=Height}" IsSharedSizeScope="True" 
-              x:Name="InputsTemplate" IsVisibleChanged="InputsTemplate_OnIsVisibleChanged"
+        <Grid Grid.Row="1" 
+              Height="{Binding ElementName=InputsControl, Path=Height}" 
+              x:Name="InputsTemplate" 
               Visibility="{Binding InputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Control x:Name="InputsControl" Template="{StaticResource InputsGrid}"></Control>
         </Grid>
-        <Grid Grid.Row="2" Height="{Binding ElementName=InputsControl, Path=Height}" IsSharedSizeScope="True" 
-              x:Name="OutputsTemplate" IsVisibleChanged="OutputsTemplate_OnIsVisibleChanged"
+        <Grid Grid.Row="2" 
+              Height="{Binding ElementName=InputsControl, Path=Height}" 
+              x:Name="OutputsTemplate" 
               Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
             <Control x:Name="OutputsControl" Template="{StaticResource OutputsGrid}"></Control>
         </Grid>
