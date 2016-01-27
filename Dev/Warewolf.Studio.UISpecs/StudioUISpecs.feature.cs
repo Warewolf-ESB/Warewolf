@@ -18,7 +18,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class StudioUISpecsFeature
     {
         
@@ -79,7 +79,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("The \'Assert_MainStudioWindow_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.When("The \'PressF11_EnterFullScreen_FromStartPage\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'PressF11_EnterFullScreen\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
