@@ -19,7 +19,8 @@
                     xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                     xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                     xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
-                    mc:Ignorable="d">
+                    mc:Ignorable="d"
+                    x:Class="CustomToolDesigner">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
