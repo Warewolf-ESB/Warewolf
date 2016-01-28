@@ -30,10 +30,12 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
+using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
@@ -59,6 +61,7 @@ namespace Dev2.Runtime.Hosting
         readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
         readonly ConcurrentDictionary<string, object> _fileLocks = new ConcurrentDictionary<string, object>();
         readonly object _loadLock = new object();
+        readonly IPerformanceCounter _perfCounter;// = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
 
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
@@ -116,6 +119,17 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             // MUST load management services BEFORE server workspace!!
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+
+            }
+            catch(Exception)
+            {
+                
+                
+            }
+         
             _versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
             if(managementServices != null)
             {
@@ -130,6 +144,17 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
             // MUST load management services BEFORE server workspace!!
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+
+            }
+            catch (Exception)
+            {
+
+
+            }
+         
             _versioningRepository = serverVersionRepository;
             if(managementServices != null)
             {
@@ -1154,6 +1179,11 @@ namespace Dev2.Runtime.Hosting
             {
                 Dev2Logger.Error("Error getting resource",e);
             }
+            if(foundResource==null)
+                if(_perfCounter != null)
+                {
+                    _perfCounter.Increment();
+                }
             return foundResource;
         }
 

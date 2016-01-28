@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.PerformanceCounters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounter:IPerformanceCounter
+    public class WarewolfNumberOfErrors:IPerformanceCounter
     {
        
         private PerformanceCounter _counter;
-        private PerformanceCounter _baseCounter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfAverageExecutionTimePerformanceCounter()
+        public WarewolfNumberOfErrors()
         {
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.AverageExecutionTime;
+            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -35,18 +33,9 @@ namespace Dev2.Diagnostics.PerformanceCounters
             {
                 CounterName = Name,
                 CounterHelp = Name,
-                CounterType = PerformanceCounterType.AverageTimer32,
-                
+                CounterType = PerformanceCounterType.NumberOfItems32
             };
-            CounterCreationData avgDurationBase = new CounterCreationData
-            {
-                CounterName = "average time per operation base",
-                CounterHelp = "Average duration per operation execution base",
-                CounterType = PerformanceCounterType.AverageBase
-            };
-
-            return new[] { totalOps ,avgDurationBase};
-        
+            return new []{ totalOps};
         }
 
         public bool IsActive { get; set; }
@@ -55,24 +44,15 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            
             Setup();
             if (IsActive)
-            {
                 _counter.Increment();
-                _baseCounter.Increment();
-            }
         }
 
         public void IncrementBy(long ticks)
         {
-           
             Setup();
-            if (IsActive)
-            {
-                _counter.IncrementBy(ticks);
-                _baseCounter.Increment();
-            }
+            _counter.IncrementBy(ticks);
         }
 
         private void Setup()
@@ -82,14 +62,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 _counter = new PerformanceCounter("Warewolf", Name)
                 {
                     MachineName = ".",
-                    ReadOnly = false,
-                    
-                };
-                _baseCounter = new PerformanceCounter("Warewolf", "average time per operation base")
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-
+                    ReadOnly = false
                 };
                 _started = true;
             }
@@ -98,11 +71,9 @@ namespace Dev2.Diagnostics.PerformanceCounters
         public void Decrement()
         {
             Setup();
-            if (IsActive)
-            {
+            if(IsActive)
+
                 _counter.Decrement();
-                _baseCounter.Decrement();
-            }
         }
 
         public string Category
@@ -116,7 +87,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             get
             {
-                return "Average workflow execution time";
+                return "Total Errors";
             }
         }
 

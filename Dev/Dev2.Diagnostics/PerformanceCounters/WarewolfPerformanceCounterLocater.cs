@@ -18,5 +18,9 @@ namespace Dev2.Diagnostics.PerformanceCounters
             return _counters.First(a => a.Name == name);
         }
 
+        public IPerformanceCounter GetCounter(WarewolfPerfCounterType type)
+        {
+            return _counters.First(a => a.PerfCounterType == type);
+        }
     }
 }

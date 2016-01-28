@@ -1,64 +1,93 @@
 using System;
+using System.Diagnostics;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.PerformanceCounters;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     public class  PerfmonExecutionContainer:IEsbExecutionContainer
     {
         private readonly IEsbExecutionContainer _container;
-        private IPerformanceCounter _counter;
+        private readonly IPerformanceCounter _recPerSecondCounter;
+        private readonly IPerformanceCounter _currentConnections;
+        private readonly IPerformanceCounter _avgTime;
+        private readonly Stopwatch _stopwatch;
+        private readonly IPerformanceCounter _totalErrors;
 
         public  PerfmonExecutionContainer(IEsbExecutionContainer container)
         {
+            VerifyArgument.IsNotNull("Container",container);
             _container = container;
-            _counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
+            _recPerSecondCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
+            _currentConnections = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Concurrent requests currently executing");
+           _avgTime =  CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Average workflow execution time");
+           _totalErrors = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Total Errors");
+            _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+            //_counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
         }
 
         #region Implementation of IEsbExecutionContainer
 
         public Guid Execute(out ErrorResultTO errors, int update)
         {
+            var start = _stopwatch.ElapsedTicks;
+            ErrorResultTO outErrors = new ErrorResultTO();
             try
             {
-                _counter.Increment();
-                return _container.Execute(out errors, update);
+                _recPerSecondCounter.Increment();
+                _currentConnections.Increment();
+               
+                var ret = Container.Execute(out outErrors, update);
+                errors = outErrors;
+                return ret;
             }
             finally 
             {
-                _counter.Decrement();
-             
+                
+                _currentConnections.Decrement();
+                _avgTime.IncrementBy(_stopwatch.ElapsedTicks-start);
+                if(outErrors != null)
+                {
+                    _totalErrors.IncrementBy(outErrors.FetchErrors().Count);
+                }
             }
             
         }
 
-        public IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        public IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
-            return _container.Execute(inputs,activity);
+            return Container.Execute(inputs,activity);
         }
 
         public string InstanceOutputDefinition
         {
             get
             {
-                return _container.InstanceOutputDefinition;
+                return Container.InstanceOutputDefinition;
             }
             set
             {
-                _container.InstanceOutputDefinition = value;
+                Container.InstanceOutputDefinition = value;
             }
         }
         public string InstanceInputDefinition
         {
             get
             {
-                return _container.InstanceInputDefinition;
+                return Container.InstanceInputDefinition;
             }
             set
             {
-                _container.InstanceInputDefinition = value;
+                Container.InstanceInputDefinition = value;
+            }
+        }
+        public IEsbExecutionContainer Container
+        {
+            get
+            {
+                return _container;
             }
         }
 

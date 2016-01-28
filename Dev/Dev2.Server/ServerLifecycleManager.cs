@@ -459,14 +459,14 @@ namespace Dev2
                 result = 3;
                 didBreak = true;
             }
-
+            LoadPerformanceCounters();
             if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
                 didBreak = true;
             }
 
-            LoadPerformanceCounters();
+       
 
             // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadServerWorkspace())
@@ -1682,14 +1682,20 @@ namespace Dev2
                 WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfRequestsPerSecondPerformanceCounter()
+                                                                new WarewolfNumberOfErrors(),    
+                                                               
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                 new WarewolfNumberOfAuthErrors(),
+                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
 
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
             }
-            catch
+            catch (Exception err)
             {
                 // ignored
+                Dev2Logger.Error(err);
             }
         }
 

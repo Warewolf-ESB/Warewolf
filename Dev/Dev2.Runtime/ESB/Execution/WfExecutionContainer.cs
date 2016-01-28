@@ -27,7 +27,6 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -90,7 +89,14 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Thread.CurrentPrincipal;
             ErrorResultTO to = errors;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple,()=>{result = ExecuteWf(to);});
-            
+            foreach(var err in DataObject.Environment.Errors)
+            {
+                errors.AddError(err);
+            }
+            foreach (var err in DataObject.Environment.AllErrors)
+            {
+                errors.AddError(err);
+            }
             Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
@@ -149,7 +155,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
         
 
-        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
         }
