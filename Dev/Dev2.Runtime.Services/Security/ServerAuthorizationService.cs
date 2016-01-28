@@ -14,7 +14,9 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
+using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.Security
@@ -28,11 +30,14 @@ namespace Dev2.Runtime.Security
         public static IAuthorizationService Instance { get { return TheInstance.Value; } }
 
         readonly TimeSpan _timeOutPeriod;
+        private IPerformanceCounter _perfCounter;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
         {
             _timeOutPeriod = securityService.TimeOutPeriod;
+            _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
+   
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
@@ -72,7 +77,8 @@ namespace Dev2.Runtime.Security
                 authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
                 _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
             }
-
+            if(!authorized)
+            _perfCounter.Increment();
             return authorized;
         }
 

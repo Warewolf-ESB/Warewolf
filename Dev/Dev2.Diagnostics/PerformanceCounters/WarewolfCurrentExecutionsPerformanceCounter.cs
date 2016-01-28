@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Interfaces.Monitoring;
+﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Monitoring;
 using System.Diagnostics;
 
 namespace Dev2.Diagnostics.PerformanceCounters
@@ -8,23 +9,33 @@ namespace Dev2.Diagnostics.PerformanceCounters
        
        private PerformanceCounter _counter;
        private bool _started;
+       private readonly WarewolfPerfCounterType _perfCounterType;
 
        public WarewolfCurrentExecutionsPerformanceCounter()
        {
            _started = false;
-
+           IsActive = true;
+           _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
        }
 
-       public CounterCreationData CreationData()
+       public WarewolfPerfCounterType PerfCounterType
+       {
+           get
+           {
+               return _perfCounterType;
+           }
+       }
+
+       public IList<CounterCreationData> CreationData()
        {
           
                CounterCreationData totalOps = new CounterCreationData
                {
-                   CounterName = "Current connections",
-                   CounterHelp = "Concurrent requests currently executing",
+                   CounterName = Name,
+                   CounterHelp = Name,
                    CounterType = PerformanceCounterType.NumberOfItems32
                };
-               return totalOps;
+               return new []{ totalOps};
        }
 
        public bool IsActive { get; set; }
@@ -38,11 +49,17 @@ namespace Dev2.Diagnostics.PerformanceCounters
            _counter.Increment();
        }
 
+       public void IncrementBy(long ticks)
+       {
+           Setup();
+           _counter.IncrementBy(ticks);
+       }
+
        private void Setup()
        {
            if (!_started)
            {
-               _counter = new PerformanceCounter("Warewolf", "Current connections")
+               _counter = new PerformanceCounter("Warewolf", Name)
                {
                    MachineName = ".",
                    ReadOnly = false
@@ -55,6 +72,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
        {
            Setup();
            if(IsActive)
+               if(_counter.RawValue>0)
            _counter.Decrement();
        }
 
@@ -69,7 +87,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
        {
            get
            {
-               return "Current connections";
+               return "Concurrent requests currently executing";
            }
        }
 

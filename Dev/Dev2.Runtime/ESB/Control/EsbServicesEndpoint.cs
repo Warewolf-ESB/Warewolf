@@ -263,6 +263,7 @@ namespace Dev2.Runtime.ESB.Control
         static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+            
             return resource;
         }
 
@@ -322,6 +323,7 @@ namespace Dev2.Runtime.ESB.Control
                     if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
                         errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                
                         return null;
                     }
                 }

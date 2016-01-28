@@ -7,25 +7,13 @@ namespace Dev2.Diagnostics.PerformanceCounters
 {
     public class WarewolfPerformanceCounterBuilder
     {
-        private IList<IPerformanceCounter> _counters;
-
         public  WarewolfPerformanceCounterBuilder(IList<IPerformanceCounter> counters )
         {
             CreateCounters(counters);
-            _counters = counters;
+            Counters = counters;
         }
 
-        public IList<IPerformanceCounter> Counters
-        {
-            get
-            {
-                return _counters;
-            }
-            set
-            {
-                _counters = value;
-            }
-        }
+        public IList<IPerformanceCounter> Counters { get; set; }
 
         private void CreateCounters(IList<IPerformanceCounter> counters)
         {
@@ -49,12 +37,16 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         }
 
-        private static void CreateAllCounters(IList<IPerformanceCounter> counters)
+        private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters)
         {
             CounterCreationDataCollection coll = new CounterCreationDataCollection();
-            foreach(var counter in counters)
+            foreach(var counterl in counters)
             {
-                coll.Add(counter.CreationData());
+                foreach (var counter in counterl.CreationData())
+                {
+                    coll.Add(counter);
+                }
+               
             }
             PerformanceCounterCategory.Create("Warewolf", "Warewolf Performance Counters", PerformanceCounterCategoryType.SingleInstance, coll);
         }
