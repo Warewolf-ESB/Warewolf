@@ -2735,11 +2735,11 @@ namespace Warewolf.Studio.UISpecs
         public void PressF11_EnterFullScreen()
         {
             #region Variable Declarations
-            WpfButton maximiseStudioButton = this.MainStudioWindow.MaximiseStudioButton;
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
             #endregion
 
-            // Type '{F11}' in 'PART_MAXIMIZE_RESTORE' button
-            Keyboard.SendKeys(maximiseStudioButton, this.PressF11_EnterFullScreenParams.MaximiseStudioButtonSendKeys, ModifierKeys.None);
+            // Type '{F11}' in 'Warewolf (DEV2\ASHLEY.LEWIS)' window
+            Keyboard.SendKeys(mainStudioWindow, this.PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
         }
         
         /// <summary>
@@ -5986,9 +5986,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Type '{F11}' in 'PART_MAXIMIZE_RESTORE' button
+        /// Type '{F11}' in 'Warewolf (DEV2\ASHLEY.LEWIS)' window
         /// </summary>
-        public string MaximiseStudioButtonSendKeys = "{F11}";
+        public string MainStudioWindowSendKeys = "{F11}";
         #endregion
     }
     

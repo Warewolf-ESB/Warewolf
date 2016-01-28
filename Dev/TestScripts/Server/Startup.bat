@@ -23,9 +23,10 @@ REM ** Kill The Server **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
 
 REM ** Delete the Warewolf ProgramData folder
-rmdir /S /Q %PROGRAMDATA%\Warewolf
+rd /S /Q %PROGRAMDATA%\Warewolf\Resources
+rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces
 REM  Wait 5 seconds ;)
-ping -n 5 127.0.0.1 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM ** Copy in Debug resources **
 IF EXIST "%~dp0..\..\BPM Resources - Debug" robocopy "%~dp0..\..\BPM Resources - Debug" "%~dp0..\..\Dev2.Server\bin\Debug\Resources" *.* /s
@@ -37,7 +38,7 @@ IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirect
 IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 REM ** Start Warewolf server from deployed binaries **
-IF EXIST %windir%\nircmd.exe nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe" else START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
+IF EXIST %windir%\nircmd.exe (nircmd elevate "%DeploymentDirectory%\Warewolf Server.exe") else (START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe")
 @echo Started "%DeploymentDirectory%\Warewolf Server.exe".
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
@@ -49,5 +50,5 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 5 192.0.2.2 > nul
+ping -n 5 -w 1000 192.0.2.2 > nul
 goto MainLoopBody

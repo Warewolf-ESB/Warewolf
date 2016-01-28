@@ -17,6 +17,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
 using WarewolfParserInterop;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities
 {
@@ -27,7 +29,6 @@ namespace Dev2.Activities
         public INamespaceItem Namespace { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
-        public string InstanceOutputDefintions { get; set; }
 
         public DsfDotNetDllActivity()
         {
@@ -50,13 +51,12 @@ namespace Dev2.Activities
                 errors.AddError("No Method Selected.");
                 return;
             }
-            //  OutputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
 
           
         }
 
-        protected object ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
 
@@ -66,27 +66,22 @@ namespace Dev2.Activities
                 AssemblyName = Namespace.AssemblyName, 
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,
-                Parameters = method.Inputs.Select(a=>new MethodParameter(){EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,Type = a.TypeName}).ToList(),
+                Parameters = method.Inputs.Select(a=>new MethodParameter{EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,Type = a.TypeName}).ToList(),
                 OutputFormatter = formater
             };
 
-            string result = null;
-
             try
             {
-    
-                result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
+                var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
                 PushXmlIntoEnvironment(result,update,dataObject);
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
             }
-
-            return result;
         }
 
-        public void PushXmlIntoEnvironment(string input, int update,IDSFDataObject DataObj)
+        public void PushXmlIntoEnvironment(string input, int update,IDSFDataObject dataObj)
         {
 
             if (input != string.Empty)
@@ -101,24 +96,18 @@ namespace Dev2.Activities
                     if (xDoc.DocumentElement != null)
                     {
                         XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
-                        this.Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, ""));
-                        // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
                         var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache,  update,DataObj,0);
+                        TryConvert(children, outputDefs, indexCache,  update,dataObj);
                     }
                 }
-                catch (Exception )
+                catch (Exception e)
                 {
-                 //   Dev2Logger.l.Error(e.Message, e);
-                    // if use passed in empty input they only wanted the shape ;)
-                    if (input.Length > 0)
-                    {
-                    }
+                    Dev2Logger.Error(e.Message, e);                 
                 }
             }
         }
+
         void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
         {
             // spin through each element in the XML
@@ -149,7 +138,6 @@ namespace Dev2.Activities
                                         dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
                                     }
                                 }
-
                             }
                             // update this recordset index
                             dataObj.Environment.CommitAssign();
