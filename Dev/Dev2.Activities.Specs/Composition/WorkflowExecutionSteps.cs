@@ -580,6 +580,9 @@ namespace Dev2.Activities.Specs.Composition
                 case "sqlserver database":
                     activity = new DsfDatabaseActivity();
                     break;
+                case "oracle":
+                    activity = new DsfDatabaseActivity();
+                    break;
                 case "plugin":
                     activity = new DsfPluginActivity();
                     break;
