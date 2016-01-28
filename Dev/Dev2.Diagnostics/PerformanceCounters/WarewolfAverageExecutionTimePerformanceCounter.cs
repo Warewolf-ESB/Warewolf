@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.PerformanceCounters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounter:IPerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter
     {
-       
+
         private PerformanceCounter _counter;
         private PerformanceCounter _baseCounter;
         private bool _started;
@@ -30,13 +31,13 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public IList<CounterCreationData> CreationData()
         {
-          
+
             CounterCreationData totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.AverageTimer32,
-                
+
             };
             CounterCreationData avgDurationBase = new CounterCreationData
             {
@@ -45,8 +46,8 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 CounterType = PerformanceCounterType.AverageBase
             };
 
-            return new[] { totalOps ,avgDurationBase};
-        
+            return new[] { totalOps, avgDurationBase };
+
         }
 
         public bool IsActive { get; set; }
@@ -55,23 +56,35 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            
-            Setup();
-            if (IsActive)
+            try
             {
-                _counter.Increment();
-                _baseCounter.Increment();
+                Setup();
+                if (IsActive)
+                {
+                    _counter.Increment();
+                    _baseCounter.Increment();
+                }
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error(exception);
             }
         }
 
         public void IncrementBy(long ticks)
         {
-           
-            Setup();
-            if (IsActive)
+            try
             {
-                _counter.IncrementBy(ticks);
-                _baseCounter.Increment();
+                Setup();
+                if (IsActive)
+                {
+                    _counter.IncrementBy(ticks);
+                    _baseCounter.Increment();
+                }
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error(exception);
             }
         }
 
@@ -83,7 +96,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 {
                     MachineName = ".",
                     ReadOnly = false,
-                    
+
                 };
                 _baseCounter = new PerformanceCounter("Warewolf", "average time per operation base")
                 {
@@ -100,8 +113,17 @@ namespace Dev2.Diagnostics.PerformanceCounters
             Setup();
             if (IsActive)
             {
-                _counter.Decrement();
-                _baseCounter.Decrement();
+                try
+                {
+                    _counter.Decrement();
+                    _baseCounter.Decrement();
+                }
+                catch (Exception err)
+                {
+
+                    Dev2Logger.Error(err);
+                }
+
             }
         }
 

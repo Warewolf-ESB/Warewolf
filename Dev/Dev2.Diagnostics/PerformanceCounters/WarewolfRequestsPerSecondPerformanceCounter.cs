@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.PerformanceCounters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounter:IPerformanceCounter
+    public class WarewolfRequestsPerSecondPerformanceCounter : IPerformanceCounter
     {
-       
+
         private PerformanceCounter _counter;
         private Stopwatch _stopwatch;
 
         // ReSharper disable once InconsistentNaming
         private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
+        public WarewolfRequestsPerSecondPerformanceCounter()
+        {
+            IsActive = true;
+        }
 
         private void Setup()
         {
+
 
             if (_counter == null)
             {
@@ -32,21 +39,52 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            Setup();
-            _counter.Increment();
+            if (IsActive)
+            try
+            {
+                Setup();
+                _counter.Increment();
+            }
+
+            catch (Exception err)
+            {
+
+                Dev2Logger.Error(err);
+            }
         }
 
         public void IncrementBy(long ticks)
         {
-            Setup();
+            if (IsActive)
+            try
+            {
+                Setup();
 
-            _counter.IncrementBy(ticks);
+                _counter.IncrementBy(ticks);
+            }
+
+            catch (Exception err)
+            {
+
+                Dev2Logger.Error(err);
+            }
         }
 
         public void Decrement()
         {
-            Setup();
-            _counter.Decrement();
+            if (IsActive)
+            {
+                Setup();
+                try
+                {
+                    _counter.Decrement();
+                }
+                catch (Exception err)
+                {
+
+                    Dev2Logger.Error(err);
+                }
+            }
         }
 
         public string Category
