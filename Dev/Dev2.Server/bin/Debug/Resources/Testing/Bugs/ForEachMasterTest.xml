@@ -1,5 +1,5 @@
 
-<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5870.29154">
+<Service ID="618947ec-aeb0-494a-8bd1-a7d2621e424a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachMasterTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5871.21811">
   <DisplayName>ForEachMasterTest</DisplayName>
   <Category>Testing\Bugs\ForEachMasterTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

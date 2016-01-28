@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using  System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
+
 namespace Dev2.Services.Sql
 {
     public sealed class OracleServer :IDbServer
@@ -289,11 +291,51 @@ namespace Dev2.Services.Sql
         {
             try
             {
-                
-                
-                using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                if (command.CommandType == CommandType.StoredProcedure)
                 {
-                    return handler(reader);
+                    OracleParameter obj = new OracleParameter();
+                    
+                    for (int i = 0; i < command.Parameters.Count; i++) {
+                        OracleParameter temp = (OracleParameter)command.Parameters[i];
+
+                        if (temp.OracleDbType == OracleDbType.RefCursor ) {
+                            obj = (OracleParameter)command.Parameters[i];
+                        }
+
+                    }
+                    if (obj.ParameterName.Length > 0)
+                    {
+                        try {
+                            command.ExecuteNonQuery();
+                            using (OracleDataReader reader = ((OracleRefCursor)obj.Value).GetDataReader()) {
+                                return handler(reader);
+                            }
+                           
+                            
+                        }
+                        catch(Exception e){
+                            using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                            {
+                                Console.WriteLine(e);
+                                return handler(reader);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                        {
+                            return handler(reader);
+                        }
+                    }
+                }
+                else
+                {
+
+                    using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                    {
+                        return handler(reader);
+                    }
                 }
             }
             catch (DbException e)
@@ -396,11 +438,21 @@ namespace Dev2.Services.Sql
               
                     if (!String.IsNullOrEmpty(parameterName))
                     {
-                       
 
-                        OracleDbType OracleType;
+                    var OracleParameter = new OracleParameter();
+                    OracleDbType OracleType;
+                    
                     Enum.TryParse((row["DATA_TYPE"] as string).Replace(" ",""), true, out OracleType);
-                    var OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                    if (OracleType == 0)
+                    {
+                        OracleType = OracleDbType.Varchar2;
+                        OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                    }
+                    else {
+                         OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                    }
+                    
+                   
                         if (!isout)
                         {
                         try
