@@ -6,10 +6,9 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IManageServiceInputViewModel
+    public interface IManageServiceInputViewModel<T>
     {
         ICollection<IServiceInput> Inputs { get; set; }
-        DataTable TestResults { get; set; }
         Action TestAction { get; set; }
         ICommand TestCommand { get; }
         bool TestResultsAvailable { get; set; }
@@ -17,9 +16,13 @@ namespace Dev2.Common.Interfaces
         bool IsTesting { get; set; }
         ICommand CloseCommand { get; }
         ICommand OkCommand { get; }
-        IDatabaseService Model { get; set; }
         Action OkAction { get; set; }
-
+        T Model { get; set; }
         void ShowView();
+    }
+
+    public interface IManageDatabaseInputViewModel : IManageServiceInputViewModel<IDatabaseService>
+    {
+        DataTable TestResults { get; set; }
     }
 }
