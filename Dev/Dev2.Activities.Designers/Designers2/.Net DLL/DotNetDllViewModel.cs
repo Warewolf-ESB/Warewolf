@@ -245,6 +245,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             _isInitializing = false;
             SetToolHeight();
+            ResetHeightValues(230);
         }
 
         private bool CanRefresh()
@@ -336,6 +337,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     ValidateTestComplete();
                 }
                 SetToolHeight();
+                ResetHeightValues(_toolHeight);
             }
             catch (Exception e)
             {
@@ -369,29 +371,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             TestSuccessful = false;
             IsTesting = false;
             TestResults = null;
-        }
-
-        public string RecordsetName
-        {
-            get
-            {
-                return _recordsetName;
-            }
-            set
-            {
-                if (Outputs != null)
-                {
-                    foreach (var serviceOutputMapping in Outputs)
-                    {
-                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
-                        {
-                            serviceOutputMapping.RecordSetName = value;
-                        }
-                    }
-                }
-                _recordsetName = value;
-                OnPropertyChanged("RecordsetName");
-            }
         }
 
         public string ErrorText
@@ -663,7 +642,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private bool _canEditMappings;
         private bool _testSuccessful;
         private string _errorText;
-        private string _recordsetName;
         bool _isRefreshing;
         private INamespaceItem _selectedNamespace;
         private ICollection<INamespaceItem> _namespaces;
@@ -874,6 +852,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     ActionVisible = Methods.Count != 0;
                     InputsVisible = SelectedMethod != null;
                     SetToolHeight();
+                    ResetHeightValues(_toolHeight);
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
@@ -921,6 +900,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
                     SetToolHeight();
+                    ResetHeightValues(_toolHeight);
                 }
                 IsRefreshing = false;
                 OnPropertyChanged("SelectedNamespace");
@@ -961,6 +941,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ActionVisible = Methods.Count != 0;
                         InputsVisible = PreviousInputsVisible;
                         SetToolHeight();
+                        ResetHeightValues(_toolHeight);
                     }
                     else
                     {
@@ -1010,6 +991,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                 }
                             }
                             SetToolHeight();
+                            ResetHeightValues(_toolHeight);
                         }
                         catch (Exception e)
                         {
@@ -1095,6 +1077,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     InputsVisible = PreviousInputsVisible;
                     TestComplete = PreviousTestComplete || Outputs.Count > 0;
                     SetToolHeight();
+                    ResetHeightValues(_toolHeight);
                     OnPropertyChanged("SelectedMethod");
                 }
                 else if (!Equals(value, _selectedMethod))
@@ -1123,6 +1106,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     InitializeProperties();
                     InputsVisible = _selectedMethod != null;
                     SetToolHeight();
+                    ResetHeightValues(_toolHeight);
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
