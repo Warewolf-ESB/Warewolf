@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.PerformanceCounters
@@ -7,12 +8,19 @@ namespace Dev2.Diagnostics.PerformanceCounters
     {
        
         private PerformanceCounter _counter;
+        private Stopwatch _stopwatch;
+
+        // ReSharper disable once InconsistentNaming
+        private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
 
         private void Setup()
         {
+
             if (_counter == null)
             {
-                _counter = new PerformanceCounter("Warewolf", "Request Per Second")
+                _stopwatch = new Stopwatch();
+                _stopwatch.Start();
+                _counter = new PerformanceCounter("Warewolf", Name)
                 {
                     MachineName = ".",
                     ReadOnly = false
@@ -25,12 +33,20 @@ namespace Dev2.Diagnostics.PerformanceCounters
         public void Increment()
         {
             Setup();
-            _counter.IncrementBy(1);
+            _counter.Increment();
+        }
+
+        public void IncrementBy(long ticks)
+        {
+            Setup();
+
+            _counter.IncrementBy(ticks);
         }
 
         public void Decrement()
         {
             Setup();
+            _counter.Decrement();
         }
 
         public string Category
@@ -47,16 +63,24 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 return "Request Per Second";
             }
         }
-
-        public CounterCreationData CreationData()
+        public WarewolfPerfCounterType PerfCounterType
         {
+            get
+            {
+                return _perfCounterType;
+            }
+        }
+
+        public IList<CounterCreationData> CreationData()
+        {
+
             CounterCreationData totalOps = new CounterCreationData
             {
-                CounterName = "Request Per Second",
-                CounterHelp = "Request Per Second",
+                CounterName = Name,
+                CounterHelp = Name,
                 CounterType = PerformanceCounterType.RateOfCountsPerSecond32
             };
-            return totalOps;
+            return new[] { totalOps };
         }
 
         public bool IsActive { get; set; }
