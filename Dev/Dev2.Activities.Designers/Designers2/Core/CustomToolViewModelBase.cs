@@ -296,6 +296,7 @@ namespace Dev2.Activities.Designers2.Core
                             {
                                 _outputGridHeight = RowHeight * (Outputs.Count + 1);
                                 OutputsMinHeight = _outputGridHeight;
+                                ToolHeight += _outputGridHeight + RowHeight;
                                 MaxToolHeight = ToolHeight;
                                 OutputsHasItems = false;
                             }
