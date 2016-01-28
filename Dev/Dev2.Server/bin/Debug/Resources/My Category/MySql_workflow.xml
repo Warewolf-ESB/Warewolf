@@ -1,5 +1,5 @@
 
-<Service ID="f28f1e26-7cd6-4e1b-9340-4e98e4acd1ce" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MySql_workflow" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5870.29154">
+<Service ID="f28f1e26-7cd6-4e1b-9340-4e98e4acd1ce" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MySql_workflow" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5871.21811">
   <DisplayName>MySql_workflow</DisplayName>
   <Category>My Category\MySql_workflow</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

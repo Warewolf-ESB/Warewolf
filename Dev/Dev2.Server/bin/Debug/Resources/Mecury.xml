@@ -1,5 +1,5 @@
 
-<Source ID="03f7e963-55e4-4442-8ca4-07fbaf022dcf" Name="Mecury" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAADPc1p4VmMXq5CrX/59Mt5NAAAAAASAAACgAAAAEAAAANl6OwD3kHB42AQUebg4Mt6QAAAAMohlXrjZKk8CKUlAksAfVN+iSNhSQvCvtSYC29cv1mp24Qw106S1g1sSqeXsh46Qr1Bcun/kbWs1VKCSxIonxRyj+5BR6WH39BDRAmY2kj+1v5EXTz05G+puI5VpWASYjUcjz5aGPRwyEleZ8sarjwGZJ0a6ME2etSXuG6nSTNoHi8PD9wg/kL2DGabt9fqUFAAAAHjTisy9S9Rcee/K7ume6J18s5wA" ServerVersion="0.0.5870.29154" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="03f7e963-55e4-4442-8ca4-07fbaf022dcf" Name="Mecury" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAADPc1p4VmMXq5CrX/59Mt5NAAAAAASAAACgAAAAEAAAANl6OwD3kHB42AQUebg4Mt6QAAAAMohlXrjZKk8CKUlAksAfVN+iSNhSQvCvtSYC29cv1mp24Qw106S1g1sSqeXsh46Qr1Bcun/kbWs1VKCSxIonxRyj+5BR6WH39BDRAmY2kj+1v5EXTz05G+puI5VpWASYjUcjz5aGPRwyEleZ8sarjwGZJ0a6ME2etSXuG6nSTNoHi8PD9wg/kL2DGabt9fqUFAAAAHjTisy9S9Rcee/K7ume6J18s5wA" ServerVersion="0.0.5871.21811" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>Mecury</DisplayName>
   <Category>Mecury</Category>
   <AuthorRoles>
