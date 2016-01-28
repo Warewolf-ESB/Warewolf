@@ -105,6 +105,10 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Linq.Expressions" />
+    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -183,6 +187,7 @@
     </Compile>
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputView.xaml.cs" />
@@ -866,6 +871,10 @@
     <Page Include="Designers2\Comment\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Core\CustomToolDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Core\ManagePluginServiceInputView.xaml">
       <Generator>MSBuild:Compile</Generator>

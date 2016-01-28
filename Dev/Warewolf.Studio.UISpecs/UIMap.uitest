@@ -3410,7 +3410,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SendKeysAction UIObjectName="UIMap.MainStudioWindow.MaximiseStudioButton">
+    <SendKeysAction UIObjectName="UIMap.MainStudioWindow">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
