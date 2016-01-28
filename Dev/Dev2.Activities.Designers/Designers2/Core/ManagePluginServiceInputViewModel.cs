@@ -9,7 +9,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManagePluginServiceInputViewModel : BindableBase,IManagePluginServiceInputViewModel
+    public class ManagePluginServiceInputViewModel : BindableBase, IManagePluginServiceInputViewModel
     {
         private ICollection<IServiceInput> _inputs;
         private string _testResults;
@@ -18,7 +18,6 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTesting;
         private ManagePluginServiceInputView _manageServiceInputView;
         private Action _testAction;
-        private List<IServiceOutputMapping> _outputMappings;
         private bool _okSelected;
 
         public ManagePluginServiceInputViewModel()
@@ -26,7 +25,7 @@ namespace Dev2.Activities.Designers2.Core
             IsTesting = false;
             CloseCommand = new DelegateCommand(() =>
             {
-                if(_manageServiceInputView != null)
+                if (_manageServiceInputView != null)
                 {
                     _manageServiceInputView.RequestClose();
                 }
@@ -51,7 +50,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _inputs = value;
-                OnPropertyChanged(()=>Inputs);
+                OnPropertyChanged(() => Inputs);
             }
         }
         public string TestResults
@@ -63,9 +62,10 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResults = value;
-                OnPropertyChanged(()=>TestResults);
+                OnPropertyChanged(() => TestResults);
             }
         }
+
         public bool OkSelected
         {
             get { return _okSelected; }
@@ -97,7 +97,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResultsAvailable = value;
-                OnPropertyChanged(()=>TestResultsAvailable);
+                OnPropertyChanged(() => TestResultsAvailable);
             }
         }
         public bool IsTestResultsEmptyRows
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _isTestResultsEmptyRows = value;
-                OnPropertyChanged(()=>IsTestResultsEmptyRows);
+                OnPropertyChanged(() => IsTestResultsEmptyRows);
             }
         }
 
@@ -130,22 +130,12 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand OkCommand { get; private set; }
         public IPluginService Model { get; set; }
         public Action OkAction { get; set; }
-        public List<IServiceOutputMapping> OutputMappings
-        {
-            get
-            {
-                return _outputMappings;
-            }
-            set
-            {
-                _outputMappings = value;
-            }
-        }
+        public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
 
         public void ShowView()
         {
-            _manageServiceInputView = new ManagePluginServiceInputView() { DataContext = this };
+            _manageServiceInputView = new ManagePluginServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
         }
     }
