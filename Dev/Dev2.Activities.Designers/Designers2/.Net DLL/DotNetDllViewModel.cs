@@ -1,4 +1,14 @@
 ﻿
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -92,9 +102,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-            DesignHeight = 237;
-            DesignMinHeight = 237;
-            DesignMaxHeight = 237;
+            ResetHeightValues(DefaultToolHeight);
+            SetInitialHeight();
             TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -337,7 +346,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     ValidateTestComplete();
                 }
                 SetToolHeight();
-                ResetHeightValues(_toolHeight);
+                ResetHeightValues(DefaultToolHeight);
             }
             catch (Exception e)
             {
@@ -657,6 +666,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<INamespaceItem> _previosNamespaces;
         double _toolHeight = 230;
         double _maxToolHeight = 230;
+        const double DefaultToolHeight = 230;
 
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
@@ -852,7 +862,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     ActionVisible = Methods.Count != 0;
                     InputsVisible = SelectedMethod != null;
                     SetToolHeight();
-                    ResetHeightValues(_toolHeight);
+                    ResetHeightValues(DefaultToolHeight);
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
@@ -900,7 +910,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
                     SetToolHeight();
-                    ResetHeightValues(_toolHeight);
+                    ResetHeightValues(DefaultToolHeight);
                 }
                 IsRefreshing = false;
                 OnPropertyChanged("SelectedNamespace");
@@ -941,7 +951,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         ActionVisible = Methods.Count != 0;
                         InputsVisible = PreviousInputsVisible;
                         SetToolHeight();
-                        ResetHeightValues(_toolHeight);
+                        ResetHeightValues(DefaultToolHeight);
                     }
                     else
                     {
@@ -991,7 +1001,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                 }
                             }
                             SetToolHeight();
-                            ResetHeightValues(_toolHeight);
+                            ResetHeightValues(DefaultToolHeight);
                         }
                         catch (Exception e)
                         {
@@ -1077,7 +1087,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     InputsVisible = PreviousInputsVisible;
                     TestComplete = PreviousTestComplete || Outputs.Count > 0;
                     SetToolHeight();
-                    ResetHeightValues(_toolHeight);
+                    ResetHeightValues(DefaultToolHeight);
                     OnPropertyChanged("SelectedMethod");
                 }
                 else if (!Equals(value, _selectedMethod))
@@ -1106,7 +1116,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     InitializeProperties();
                     InputsVisible = _selectedMethod != null;
                     SetToolHeight();
-                    ResetHeightValues(_toolHeight);
+                    ResetHeightValues(DefaultToolHeight);
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
