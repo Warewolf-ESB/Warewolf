@@ -1,11 +1,19 @@
 ﻿
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -19,7 +27,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -34,7 +41,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
-    public class DotNetDllViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
+    public class DotNetDllViewModel : CustomToolViewModelBase<IPluginSource>, IHandle<UpdateResourceMessage>
     {
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
@@ -95,6 +102,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
+            ResetHeightValues(DefaultToolHeight);
+            SetInitialHeight();
             TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -171,7 +180,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     IsNamespaceRefreshing = false;
                 }, CanRefresh);
-                var pluginSources = _dllModel.RetrieveSources();
+                var pluginSources = _dllModel.RetrieveSources().OrderBy(source => source.Name);
                 Sources = pluginSources.ToObservableCollection();
                 SourceVisible = true;
                 if (SourceId != Guid.Empty)
@@ -180,21 +189,30 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if (!string.IsNullOrEmpty(MethodName))
+                        if(Method != null)
                         {
-                            SelectedMethod = Methods.FirstOrDefault(action => action.Method == MethodName);
-                            if (SelectedMethod == null)
+                            var method = Method.Method;
+                            if(!string.IsNullOrEmpty(method))
                             {
-                                Inputs = new List<IServiceInput>();
-                                Outputs = new List<IServiceOutputMapping>();
-                                InputsVisible = false;
-                                OutputsVisible = false;
+                                if(Methods != null)
+                                {
+                                    SelectedMethod = Methods.FirstOrDefault(action => action.Method == method);
+                                    if(SelectedMethod == null)
+                                    {
+                                        Inputs = new List<IServiceInput>();
+                                        Outputs = new List<IServiceOutputMapping>();
+                                        UpdateLastValidationMemoWithProcedureNotSelectedError();
+                                    }
+                                }
+                                else
+                                {
+                                    UpdateLastValidationMemoWithProcedureNotSelectedError();
+                                }
+                            }
+                            else
+                            {
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
                             }
-                        }
-                        else
-                        {
-                            UpdateLastValidationMemoWithProcedureNotSelectedError();
                         }
                     }
                     else
@@ -226,8 +244,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             if (Outputs != null)
             {
-                OutputsVisible = true;
-                TestComplete = true;
+                TestComplete = Outputs.Count >= 1 || PreviousTestComplete;
+                OutputsHasItems = Outputs.Count >= 1;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -235,6 +253,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
             }
             _isInitializing = false;
+            SetToolHeight();
+            ResetHeightValues(230);
         }
 
         private bool CanRefresh()
@@ -248,7 +268,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         IPluginService ToModel()
@@ -265,7 +284,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             return pluginServiceDefinition;
         }
-
+        protected IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
         public void TestAction()
         {
             try
@@ -309,6 +328,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     catch (Exception e)
                     {
+                        PreviousTestComplete = false;
+                        TestComplete = false;
                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
@@ -317,10 +338,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
-                    if (Outputs != null)
-                    {
-                        OutputsVisible = true;
-                    }
                     OutputDescription = ManageServiceInputViewModel.Description;
                 };
                 ManageServiceInputViewModel.ShowView();
@@ -328,6 +345,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     ValidateTestComplete();
                 }
+                SetToolHeight();
+                ResetHeightValues(DefaultToolHeight);
             }
             catch (Exception e)
             {
@@ -361,29 +380,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             TestSuccessful = false;
             IsTesting = false;
             TestResults = null;
-        }
-
-        public string RecordsetName
-        {
-            get
-            {
-                return _recordsetName;
-            }
-            set
-            {
-                if (Outputs != null)
-                {
-                    foreach (var serviceOutputMapping in Outputs)
-                    {
-                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
-                        {
-                            serviceOutputMapping.RecordSetName = value;
-                        }
-                    }
-                }
-                _recordsetName = value;
-                OnPropertyChanged("RecordsetName");
-            }
         }
 
         public string ErrorText
@@ -440,7 +436,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        public ObservableCollection<IPluginSource> Sources { get; set; }
+        public override ObservableCollection<IPluginSource> Sources { get; set; }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
@@ -510,14 +506,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
             private set
             {
-                if (value)
-                {
-                    ButtonDisplayValue = DoneText;
-                }
-                else
-                {
-                    ButtonDisplayValue = FixText;
-                }
+                ButtonDisplayValue = value ? DoneText : FixText;
                 SetValue(IsWorstErrorReadOnlyProperty, value);
             }
         }
@@ -658,14 +647,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private bool _actionVisible;
         private ICollection<IPluginAction> _methods;
         private IPluginAction _selectedMethod;
-        private ICollection<IServiceInput> _inputs;
-        private bool _inputsVisible;
-        private bool _outputsVisible;
         private bool _isTesting;
         private bool _canEditMappings;
         private bool _testSuccessful;
         private string _errorText;
-        private string _recordsetName;
         bool _isRefreshing;
         private INamespaceItem _selectedNamespace;
         private ICollection<INamespaceItem> _namespaces;
@@ -679,7 +664,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<IPluginAction> _previousMethods;
         private IPluginSource _previousSource;
         private ICollection<INamespaceItem> _previosNamespaces;
-        bool _testComplete;
+        double _toolHeight = 230;
+        double _maxToolHeight = 230;
+        const double DefaultToolHeight = 230;
+
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -869,36 +857,37 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Errors = new List<IActionableErrorInfo>();
                     _selectedNamespace = value;
                     Methods = _previousMethods;
-
+                    Outputs = _previousOutputs;
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
-
-                    InputsVisible = true;
+                    InputsVisible = SelectedMethod != null;
+                    SetToolHeight();
+                    ResetHeightValues(DefaultToolHeight);
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
                     TestComplete = false;
                     IsRefreshing = true;
+                    InputsVisible = false;
                     Errors = new List<IActionableErrorInfo>();
+
+                    _previosNamespace = _selectedNamespace;
+                    _previousMethods = Methods;
                     _previousMethod = _selectedMethod;
                     _previousInputs = _inputs;
-                    _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
-                    _previosNamespace = _selectedNamespace;
+                    _previousRecset = _recordsetName;
 
-                    _previousMethods = Methods;
                     _selectedNamespace = value;
                     Namespace = value;
                     try
                     {
-                        Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace);
+                        Methods = _dllModel.GetActions(_selectedSource, SelectedNamespace).OrderBy(action => action.Method).ToList();
                         if (!_isInitializing)
                         {
                             Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            InputsVisible = false;
-                            OutputsVisible = false;
                         }
                         ActionVisible = Methods.Count != 0;
 
@@ -906,14 +895,13 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         {
                             ErrorMessage(new Exception("The selected dll does not contain actions to perform"));
                         }
-                        InputsVisible = false;
-                        OutputsVisible = false;
                     }
                     catch (Exception e)
                     {
                         Methods = new List<IPluginAction>();
                         SelectedMethod = null;
                         ActionVisible = false;
+                        _previosNamespace = null;
                         var errorInfo = new ErrorInfo
                         {
                             ErrorType = ErrorType.Critical,
@@ -921,6 +909,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
+                    SetToolHeight();
+                    ResetHeightValues(DefaultToolHeight);
                 }
                 IsRefreshing = false;
                 OnPropertyChanged("SelectedNamespace");
@@ -938,7 +928,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        public IPluginSource SelectedSource
+        public override IPluginSource SelectedSource
         {
             get
             {
@@ -952,36 +942,39 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     {
                         Errors = new List<IActionableErrorInfo>();
                         _selectedSource = value;
-                        Methods = _previousMethods;
-                        SelectedMethod = _previousMethod;
                         Namespaces = _previosNamespaces;
                         SelectedNamespace = _previosNamespace;
                         NamespaceVisible = Namespaces.Count != 0;
+                        Methods = _previousMethods;
+                        Outputs = _previousOutputs;
+                        SelectedMethod = _previousMethod;
                         ActionVisible = Methods.Count != 0;
-                        InputsVisible = true;
+                        InputsVisible = PreviousInputsVisible;
+                        SetToolHeight();
+                        ResetHeightValues(DefaultToolHeight);
                     }
                     else
                     {
-                        _previousMethod = _selectedMethod;
-                        _previousInputs = _inputs;
-                        _previousRecset = _recordsetName;
-                        _previousOutputs = Outputs;
-                        _previosNamespace = _selectedNamespace;
-                        _previousMethods = Methods;
                         _previousSource = _selectedSource;
                         _previosNamespaces = Namespaces;
+                        _previosNamespace = _selectedNamespace;
+                        _previousMethods = Methods;
+                        _previousMethod = _selectedMethod;
+                        _previousInputs = _inputs;
+                        _previousOutputs = Outputs;
+                        _previousRecset = _recordsetName;
+
                         TestComplete = false;
                         IsNamespaceRefreshing = true;
+                        InputsVisible = false;
                         Errors = new List<IActionableErrorInfo>();
                         _selectedSource = value;
                         try
                         {
-                            Namespaces = _dllModel.GetNameSpaces(_selectedSource);
+                            Namespaces = _dllModel.GetNameSpaces(_selectedSource).OrderBy(item => item.AssemblyName).ToList();
                             if (!_isInitializing)
                             {
                                 RecordsetName = "";
-                                InputsVisible = false;
-                                OutputsVisible = false;
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
                             }
@@ -1006,14 +999,16 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                     RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
                                     FriendlySourceNameValue = _selectedSource.Name;
                                 }
-                                InputsVisible = false;
                             }
+                            SetToolHeight();
+                            ResetHeightValues(DefaultToolHeight);
                         }
                         catch (Exception e)
                         {
                             Methods = new List<IPluginAction>();
                             SelectedMethod = null;
                             ActionVisible = false;
+                            _previousSource = null;
                             var errorInfo = new ErrorInfo
                             {
                                 ErrorType = ErrorType.Critical,
@@ -1031,7 +1026,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         void ValidateTestComplete()
         {
-            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null;
+            TestComplete = SelectedSource != null && SelectedNamespace != null && SelectedMethod != null && Errors.Count < 1;
         }
 
         public bool NamespaceVisible
@@ -1045,21 +1040,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 _namespaceVisible = value;
                 OnPropertyChanged("NamespaceVisible");
             }
-        }
-        public ICommand EditSourceCommand
-        {
-            get;
-            set;
-        }
-        public ICommand NewSourceCommand
-        {
-            get;
-            set;
-        }
-        public bool SourceVisible
-        {
-            get;
-            set;
         }
         public bool ActionVisible
         {
@@ -1102,11 +1082,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Errors = new List<IActionableErrorInfo>();
                     _selectedMethod = value;
                     Inputs = _previousInputs;
-                    RecordsetName = _previousRecset;
                     Outputs = _previousOutputs;
-                    InputsVisible = true;
-                    OutputsVisible = true;
-                    TestComplete = true;
+                    RecordsetName = _previousRecset;
+                    InputsVisible = PreviousInputsVisible;
+                    TestComplete = PreviousTestComplete || Outputs.Count > 0;
+                    SetToolHeight();
+                    ResetHeightValues(DefaultToolHeight);
                     OnPropertyChanged("SelectedMethod");
                 }
                 else if (!Equals(value, _selectedMethod))
@@ -1115,21 +1096,27 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     _previousInputs = _inputs;
                     _previousRecset = _recordsetName;
                     _previousOutputs = Outputs;
+
                     TestComplete = false;
                     _selectedMethod = value;
                     if (_selectedMethod != null)
                     {
                         if (!_isInitializing)
                         {
+                            Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            Inputs = _selectedMethod.Inputs;
                         }
+
+                        Inputs = _selectedMethod.Inputs;
+
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_methodNotSelectedMessage)).ToList());
                     }
-                    InitializeProperties();
                     Method = _selectedMethod;
-                    InputsVisible = true;
+                    InitializeProperties();
+                    InputsVisible = _selectedMethod != null;
+                    SetToolHeight();
+                    ResetHeightValues(DefaultToolHeight);
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
@@ -1191,80 +1178,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         {
             return SelectedMethod != null;
         }
-
-        public bool TestComplete
-        {
-            get
-            {
-                return _testComplete;
-            }
-            set
-            {
-                _testComplete = value;
-                OnPropertyChanged("TestComplete");
-            }
-        }
-        public bool InputsVisible
-        {
-            get
-            {
-                return _inputsVisible;
-            }
-            set
-            {
-                _inputsVisible = value;
-                OnPropertyChanged("InputsVisible");
-            }
-        }
-        public bool OutputsVisible
-        {
-            get
-            {
-                return _outputsVisible;
-            }
-            set
-            {
-                _outputsVisible = value;
-                OnPropertyChanged("OutputsVisible");
-            }
-        }
-        public ICollection<IServiceInput> Inputs
-        {
-            get
-            {
-                var serviceInputs = GetProperty<ICollection<IServiceInput>>();
-                return serviceInputs;
-            }
-            set
-            {
-                if (!Equals(value, _inputs))
-                {
-                    _inputs = value;
-                    SetProperty(value);
-                    OnPropertyChanged("Inputs");
-                }
-            }
-        }
-        public ICommand TestInputCommand
-        {
-            get;
-            set;
-        }
-
-        public ICollection<IServiceOutputMapping> Outputs
-        {
-            get
-            {
-                var serviceOutputMappings = GetProperty<ICollection<IServiceOutputMapping>>();
-                return serviceOutputMappings;
-            }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("Outputs");
-            }
-        }
-
 
         string GetIconPath()
         {
@@ -1546,28 +1459,31 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         #endregion
 
-        #region Implementation of INotifyPropertyChanged
+        #region Overrides of CustomToolViewModelBase
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
-        protected void OnPropertyChanged(string propertyName = null)
+        public override double ToolHeight
         {
-            var handler = PropertyChanged;
-            if (handler != null)
+            get
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return _toolHeight;
+            }
+            set
+            {
+                _toolHeight = value;
             }
         }
+        public override double MaxToolHeight
+        {
+            get
+            {
+                return _maxToolHeight;
+            }
+            set
+            {
+                _maxToolHeight = value;
+            }
+        }
+
         #endregion
-
-        public override void UpdateHelpDescriptor(string helpText)
-        {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-        }
-
     }
 }

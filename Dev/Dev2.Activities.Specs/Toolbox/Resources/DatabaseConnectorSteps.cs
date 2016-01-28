@@ -39,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var sqlServerActivity = new DsfSqlServerDatabaseActivity();
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -103,9 +103,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
         }
 
-        private static Mock<IManageServiceInputViewModel> GetInputViewModel()
+        private static Mock<IManageDatabaseInputViewModel> GetInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
+            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
         }
 
         private static Mock<IDbServiceModel> GetDbServiceModel()
@@ -214,7 +214,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Outputs = outputs
             };
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();

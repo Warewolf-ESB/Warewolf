@@ -6,8 +6,6 @@
 
 
 
-**NOTE:** Warewolf is currently undergoing some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). On Friday 22nd January 2016 This repositories history will be backed up and removed. This will render any repositories cloned before this date incompatable and will have to be recloned.
-
 
 
 **What is Warewolf ESB all about?**
