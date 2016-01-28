@@ -3,9 +3,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -19,7 +17,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -34,7 +31,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
-    public class DotNetDllViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
+    public class DotNetDllViewModel : CustomToolViewModelBase<IPluginSource>, IHandle<UpdateResourceMessage>
     {
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
@@ -95,9 +92,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-            DesignHeight = 220;
-            DesignMinHeight = 220;
-            DesignMaxHeight = 220;
+            DesignHeight = 237;
+            DesignMinHeight = 237;
+            DesignMaxHeight = 237;
             TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -228,7 +225,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             if (Outputs != null)
             {
-                TestComplete = Outputs.Count >= 1 || _previousTestComplete;
+                TestComplete = Outputs.Count >= 1 || PreviousTestComplete;
+                OutputsHasItems = Outputs.Count >= 1;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -236,8 +234,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
             }
             _isInitializing = false;
-            SetInputGridHeight();
-            SetOutputGridHeight();
+            SetToolHeight();
         }
 
         private bool CanRefresh()
@@ -251,7 +248,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         IPluginService ToModel()
@@ -268,7 +264,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             return pluginServiceDefinition;
         }
-
+        protected IManagePluginServiceInputViewModel ManageServiceInputViewModel { get; set; }
         public void TestAction()
         {
             try
@@ -312,7 +308,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     }
                     catch (Exception e)
                     {
-                        _previousTestComplete = false;
+                        PreviousTestComplete = false;
                         TestComplete = false;
                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
@@ -329,8 +325,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     ValidateTestComplete();
                 }
-                SetInputGridHeight();
-                SetOutputGridHeight();
+                SetToolHeight();
             }
             catch (Exception e)
             {
@@ -443,200 +438,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        public double DesignMaxHeight
-        {
-            get
-            {
-                return _designMaxHeight;
-            }
-            set
-            {
-                _designMaxHeight = value;
-                OnPropertyChanged("DesignMaxHeight");
-            }
-        }
-        public double DesignMinHeight
-        {
-            get
-            {
-                return _designMinHeight;
-            }
-            set
-            {
-                _designMinHeight = value;
-                OnPropertyChanged("DesignMinHeight");
-            }
-        }
-        public double DesignHeight
-        {
-            get
-            {
-                return _designHeight;
-            }
-            set
-            {
-                _designHeight = value;
-                OnPropertyChanged("DesignHeight");
-            }
-        }
-
-        public double InputsMinHeight
-        {
-            get
-            {
-                return _inputsMinHeight;
-            }
-            set
-            {
-                _inputsMinHeight = value;
-                OnPropertyChanged("InputsMinHeight");
-            }
-        }
-        public bool InputsHasItems
-        {
-            get
-            {
-                return _inputsHasItems;
-            }
-            set
-            {
-                _inputsHasItems = value;
-                OnPropertyChanged("InputsHasItems");
-            }
-        }
-
-        double _inputGridHeight = 60;
-        double _outputGridHeight = 60;
-        double _toolHeight = 230;
-        double _maxToolHeight = 230;
-
-        public void SetInputGridHeight()
-        {
-            if (Inputs != null && InputsVisible)
-            {
-                switch (Inputs.Count)
-                {
-                    case 0:
-                        // Add the Grid Height to the tool Height
-                        _toolHeight += _inputGridHeight;
-                        break;
-                    default:
-                        /* 30px used for row Height multiply by Inputs count plus 1 extra row
-                         * Add grid Height to tool Height original Height value
-                         * Set Maximum tool Height to calculated tool Height */
-                        if (Inputs.Count > 0 && Inputs.Count < 5)
-                        {
-                            _inputGridHeight = 30 * (Inputs.Count + 1);
-                            _toolHeight += _inputGridHeight + 5;
-                            _maxToolHeight = _toolHeight;
-                        }
-                        else
-                        {
-                            // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
-                            _inputGridHeight = 30 * 6;
-                            _toolHeight += _inputGridHeight;
-                            _maxToolHeight += (30 * Inputs.Count) + 10;
-                        }
-                        break;
-                }
-
-                SetToolHeightValue(_toolHeight);
-            }
-            else
-            {
-                SetInitialHeight();
-            }
-        }
-
-        void SetInitialHeight()
-        {
-            DesignHeight = _toolHeight;
-            DesignMinHeight = _toolHeight;
-            DesignMaxHeight = _maxToolHeight;
-        }
-
-        void SetToolHeightValue(double newToolHeight)
-        {
-            DesignHeight = newToolHeight;
-            DesignMinHeight = newToolHeight;
-            DesignMaxHeight = _maxToolHeight;
-            InputsMinHeight = _inputGridHeight;
-            OutputsMinHeight = _outputGridHeight;
-
-            // Reset the values
-            _inputGridHeight = 60;
-            _outputGridHeight = 60;
-            _toolHeight = 230;
-            _maxToolHeight = 230;
-        }
-
-        public double OutputsMinHeight
-        {
-            get
-            {
-                return _outputsMinHeight;
-            }
-            set
-            {
-                _outputsMinHeight = value;
-                OnPropertyChanged("OutputsMinHeight");
-            }
-        }
-        public bool OutputsHasItems
-        {
-            get
-            {
-                return _outputsHasItems;
-            }
-            set
-            {
-                _outputsHasItems = value;
-                OnPropertyChanged("OutputsHasItems");
-            }
-        }
-
-        public void SetOutputGridHeight()
-        {
-            if (Outputs != null && TestComplete)
-            {
-                /* Plugin start tool height is 290px after Input Height value added
-                 * Plugin start max tool height  is 290px after Input Height value added */
-
-                _toolHeight = 290;
-                _maxToolHeight = 290;
-                switch (Outputs.Count)
-                {
-                    case 0:
-                        // Add the Grid Height to the tool Height
-                        _toolHeight += _outputGridHeight;
-                        break;
-                    default:
-                        /* 30px used for row Height multiply by Outputs count plus 1 extra row
-                         * Add grid Height to tool Height original Height value
-                         * Set Maximum tool Height to calculated tool Height */
-                        if (Outputs.Count > 0 && Outputs.Count < 5)
-                        {
-                            _outputGridHeight = 30 * (Outputs.Count + 1);
-                            _toolHeight += _outputGridHeight;
-                            _maxToolHeight = _toolHeight;
-                        }
-                        else
-                        {
-                            // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
-                            _outputGridHeight = 30 * 6;
-                            _toolHeight += _outputGridHeight;
-                            _maxToolHeight += (30 * (Outputs.Count + 1)) + 10;
-                        }
-                        break;
-                }
-
-                OutputsHasItems = Outputs != null && Outputs.Count > 0;
-                var newToolHeight = !OutputsHasItems ? 290 : _toolHeight;
-                SetToolHeightValue(newToolHeight);
-            }
-        }
-
-        public ObservableCollection<IPluginSource> Sources { get; set; }
+        public override ObservableCollection<IPluginSource> Sources { get; set; }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
@@ -854,8 +656,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private bool _actionVisible;
         private ICollection<IPluginAction> _methods;
         private IPluginAction _selectedMethod;
-        private ICollection<IServiceInput> _inputs;
-        private bool _inputsVisible;
         private bool _isTesting;
         private bool _canEditMappings;
         private bool _testSuccessful;
@@ -874,16 +674,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<IPluginAction> _previousMethods;
         private IPluginSource _previousSource;
         private ICollection<INamespaceItem> _previosNamespaces;
-        bool _testComplete;
-        double _inputsMinHeight;
-        double _outputsMinHeight;
-        bool _previousTestComplete;
-        bool _inputsHasItems;
-        bool _outputsHasItems;
-        double _designHeight;
-        double _designMinHeight;
-        double _designMaxHeight;
-        bool _previousInputsVisible;
+        double _toolHeight = 230;
+        double _maxToolHeight = 230;
+
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -1077,7 +870,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     SelectedMethod = _previousMethod;
                     ActionVisible = Methods.Count != 0;
                     InputsVisible = SelectedMethod != null;
-                    SetInputGridHeight();
+                    SetToolHeight();
                 }
                 else if (!Equals(value, _selectedNamespace))
                 {
@@ -1124,7 +917,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         };
                         Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfo, () => { }) };
                     }
-                    SetInputGridHeight();
+                    SetToolHeight();
                 }
                 IsRefreshing = false;
                 OnPropertyChanged("SelectedNamespace");
@@ -1142,7 +935,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        public IPluginSource SelectedSource
+        public override IPluginSource SelectedSource
         {
             get
             {
@@ -1163,8 +956,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         Outputs = _previousOutputs;
                         SelectedMethod = _previousMethod;
                         ActionVisible = Methods.Count != 0;
-                        InputsVisible = _previousInputsVisible;
-                        SetInputGridHeight();
+                        InputsVisible = PreviousInputsVisible;
+                        SetToolHeight();
                     }
                     else
                     {
@@ -1213,7 +1006,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                                     FriendlySourceNameValue = _selectedSource.Name;
                                 }
                             }
-                            SetInputGridHeight();
+                            SetToolHeight();
                         }
                         catch (Exception e)
                         {
@@ -1252,21 +1045,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 _namespaceVisible = value;
                 OnPropertyChanged("NamespaceVisible");
             }
-        }
-        public ICommand EditSourceCommand
-        {
-            get;
-            set;
-        }
-        public ICommand NewSourceCommand
-        {
-            get;
-            set;
-        }
-        public bool SourceVisible
-        {
-            get;
-            set;
         }
         public bool ActionVisible
         {
@@ -1311,10 +1089,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Inputs = _previousInputs;
                     Outputs = _previousOutputs;
                     RecordsetName = _previousRecset;
-                    InputsVisible = _previousInputsVisible;
-                    TestComplete = _previousTestComplete || Outputs.Count > 0;
-                    SetInputGridHeight();
-                    SetOutputGridHeight();
+                    InputsVisible = PreviousInputsVisible;
+                    TestComplete = PreviousTestComplete || Outputs.Count > 0;
+                    SetToolHeight();
                     OnPropertyChanged("SelectedMethod");
                 }
                 else if (!Equals(value, _selectedMethod))
@@ -1342,7 +1119,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     InitializeProperties();
                     Method = _selectedMethod;
                     InputsVisible = _selectedMethod != null;
-                    SetInputGridHeight();
+                    SetToolHeight();
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedMethod");
                 }
@@ -1404,72 +1181,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         {
             return SelectedMethod != null;
         }
-
-        public bool TestComplete
-        {
-            get
-            {
-                return _testComplete;
-            }
-            set
-            {
-                _previousTestComplete = _testComplete;
-                _testComplete = value;
-                OnPropertyChanged("TestComplete");
-            }
-        }
-        public bool InputsVisible
-        {
-            get
-            {
-                return _inputsVisible;
-            }
-            set
-            {
-                _previousInputsVisible = _inputsVisible;
-                _inputsVisible = value;
-                OnPropertyChanged("InputsVisible");
-            }
-        }
-        public ICollection<IServiceInput> Inputs
-        {
-            get
-            {
-                var serviceInputs = GetProperty<ICollection<IServiceInput>>();
-                return serviceInputs;
-            }
-            set
-            {
-                if (!Equals(value, _inputs))
-                {
-                    _inputs = value;
-                    InputsHasItems = _inputs != null && _inputs.Count > 0;
-                    SetProperty(value);
-                    OnPropertyChanged("Inputs");
-                }
-            }
-        }
-        public ICommand TestInputCommand
-        {
-            get;
-            set;
-        }
-
-        public ICollection<IServiceOutputMapping> Outputs
-        {
-            get
-            {
-                var serviceOutputMappings = GetProperty<ICollection<IServiceOutputMapping>>();
-                return serviceOutputMappings;
-            }
-            set
-            {
-                SetProperty(value);
-                OutputsHasItems = value != null && value.Count > 0;
-                OnPropertyChanged("Outputs");
-            }
-        }
-
 
         string GetIconPath()
         {
@@ -1751,28 +1462,31 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         #endregion
 
-        #region Implementation of INotifyPropertyChanged
+        #region Overrides of CustomToolViewModelBase
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
-        protected void OnPropertyChanged(string propertyName = null)
+        public override double ToolHeight
         {
-            var handler = PropertyChanged;
-            if (handler != null)
+            get
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return _toolHeight;
+            }
+            set
+            {
+                _toolHeight = value;
             }
         }
+        public override double MaxToolHeight
+        {
+            get
+            {
+                return _maxToolHeight;
+            }
+            set
+            {
+                _maxToolHeight = value;
+            }
+        }
+
         #endregion
-
-        public override void UpdateHelpDescriptor(string helpText)
-        {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-        }
-
     }
 }
