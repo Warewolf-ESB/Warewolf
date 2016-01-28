@@ -4150,6 +4150,23 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	  |                      |
 	  | [[Result]] = Pass |
 
+
+Scenario: Workflow with Performance counters
+	  Given I have a workflow "PerfCounterTest"
+	  And I have reset local perfromance Counters
+	  And "PerfCounterTest" contains "PerfCounter" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "PerfCounterTest" is executed
+	Then the perfcounter raw values are
+	| Name                                              | Value |
+	| Average workflow execution time                   | x     |
+	| Concurrent requests currently executing           | 0     |
+	| Count of Not Authorised errors                    | 0     |
+	| Total Errors                                      | 4     |
+	| Request Per Second                                | x     |
+	| Count of requests for workflows which don’t exist | 9     |
+
 #flickering test
 @ignore
 Scenario: Time Zone Changes
