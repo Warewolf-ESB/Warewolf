@@ -23,6 +23,7 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -58,6 +59,8 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Diagnostics.PerformanceCounters;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -224,6 +227,60 @@ namespace Dev2.Activities.Specs.Composition
             Add("resourceRepo", environmentModel.ResourceRepository);
             Add("debugStates", new List<IDebugState>());
         }
+
+        [Given(@"I have reset local perfromance Counters")]
+        public void GivenIHaveResetLocalPerfromanceCounters()
+        {
+           
+                try
+                {
+                    try
+                    {
+                        PerformanceCounterCategory.Delete("Warewolf");
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch { }
+
+                    WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                                new WarewolfNumberOfErrors(),   
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                new WarewolfNumberOfAuthErrors(),
+                                                                new WarewolfServicesNotFoundCounter()
+                                                            });
+
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                }
+                catch 
+                {
+                    // ignored
+                    Assert.Fail("failed to delete existing counters");
+                }
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+        
+               
+        
+
+        [Then(@"the perfcounter raw values are")]
+        public void ThenThePerfcounterRawValuesAre(Table table)
+        {
+           var counters =  new PerformanceCounterCategory("Warewolf").GetCounters();
+           
+            foreach(var tableRow in table.Rows)
+            {
+                if(tableRow[1]=="x")
+                Assert.AreNotEqual(counters.First(a=>a.CounterName==tableRow[0]).RawValue,0);
+                else
+                {
+                    Assert.AreEqual(counters.First(a => a.CounterName == tableRow[0]).RawValue, int.Parse( tableRow[1]));
+                }
+              
+            }
+        }
+
+
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int Timeout)
         {

@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.PerformanceCounters
 {
-    public class WarewolfServicesNotFoundCounter:IPerformanceCounter
+    public class WarewolfServicesNotFoundCounter : IPerformanceCounter
     {
-       
+
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
@@ -28,14 +30,14 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public IList<CounterCreationData> CreationData()
         {
-          
+
             CounterCreationData totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.NumberOfItems32
             };
-            return new []{ totalOps};
+            return new[] { totalOps };
         }
 
         public bool IsActive { get; set; }
@@ -44,15 +46,34 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            Setup();
-            if (IsActive)
-                _counter.Increment();
+            try
+            {
+                Setup();
+                if (IsActive)
+                    _counter.Increment();
+            }
+
+            catch (Exception err)
+            {
+
+                Dev2Logger.Error(err);
+            }
         }
 
         public void IncrementBy(long ticks)
         {
-            Setup();
-            _counter.IncrementBy(ticks);
+            try
+            {
+
+                Setup();
+                _counter.IncrementBy(ticks);
+            }
+
+            catch (Exception err)
+            {
+
+                Dev2Logger.Error(err);
+            }
         }
 
         private void Setup()
@@ -66,14 +87,24 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 };
                 _started = true;
             }
+
         }
 
         public void Decrement()
         {
-            Setup();
-            if(IsActive)
+            if (IsActive)
+            {
+                Setup();
+                try
+                {
+                    _counter.Decrement();
+                }
+                catch (Exception err)
+                {
 
-                _counter.Decrement();
+                    Dev2Logger.Error(err);
+                }
+            }
         }
 
         public string Category
