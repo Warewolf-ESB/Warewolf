@@ -42,12 +42,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Reflection;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
+using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -457,13 +459,14 @@ namespace Dev2
                 result = 3;
                 didBreak = true;
             }
-
+            LoadPerformanceCounters();
             if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
                 didBreak = true;
             }
 
+       
 
             // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadServerWorkspace())
@@ -1671,6 +1674,30 @@ namespace Dev2
         #endregion
 
         #region External Services
+
+        void LoadPerformanceCounters()
+        {
+            try
+            {
+                WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                                                            {
+                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                                new WarewolfNumberOfErrors(),    
+                                                               
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                 new WarewolfNumberOfAuthErrors(),
+                                                                 new WarewolfServicesNotFoundCounter()
+                                                            });
+
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+            }
+            catch (Exception err)
+            {
+                // ignored
+                Dev2Logger.Error(err);
+            }
+        }
 
         /// <summary>
         /// </summary>

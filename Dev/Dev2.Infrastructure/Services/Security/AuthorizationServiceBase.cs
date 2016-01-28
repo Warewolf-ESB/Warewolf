@@ -22,6 +22,8 @@ using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
 {
+
+
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         // ReSharper disable once InconsistentNaming

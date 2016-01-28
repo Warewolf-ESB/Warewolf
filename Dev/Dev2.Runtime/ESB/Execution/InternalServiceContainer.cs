@@ -20,7 +20,6 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -91,7 +90,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
         }

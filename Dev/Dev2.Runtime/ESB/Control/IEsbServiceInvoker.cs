@@ -37,7 +37,7 @@ namespace Dev2.DynamicServices
         /// <param name="isLocal">if set to <c>true</c> [is local].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocal, Guid masterDataListId);
+        IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocal, Guid masterDataListId);
 
         /// <summary>
         /// Generates the invoke container.
@@ -47,7 +47,7 @@ namespace Dev2.DynamicServices
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId);
+        IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId);
 
      }
 }
