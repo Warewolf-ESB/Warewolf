@@ -41,6 +41,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable ExplicitCallerInfoArgument
 
@@ -81,7 +82,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         {
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManageServiceInputViewModel manageServiceInputViewModel)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManageDatabaseInputViewModel manageServiceInputViewModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
@@ -240,7 +241,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             return SelectedSource != null;
         }
 
-        IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {

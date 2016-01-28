@@ -42,6 +42,7 @@ using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 // ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -90,14 +91,14 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
         }
 
-        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+        public SqlServerDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageDatabaseInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(rootModel, environmentRepository, eventPublisher, asyncWorker, manageServiceInputViewModel, dbServiceModel);
         }
 
-        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageDatabaseInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
         {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
@@ -252,7 +253,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             return SelectedSource != null;
         }
 
-        public IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {

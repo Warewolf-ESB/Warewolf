@@ -1,3 +1,14 @@
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +20,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManageServiceInputViewModel : BindableBase,IManageServiceInputViewModel
+    public class ManageServiceInputViewModel : BindableBase, IManageDatabaseInputViewModel
     {
         private ICollection<IServiceInput> _inputs;
         private DataTable _testResults;
@@ -24,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core
             IsTesting = false;
             CloseCommand = new DelegateCommand(() =>
             {
-                if(_manageServiceInputView != null)
+                if (_manageServiceInputView != null)
                 {
                     _manageServiceInputView.RequestClose();
                 }
@@ -48,7 +59,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _inputs = value;
-                OnPropertyChanged(()=>Inputs);
+                OnPropertyChanged(() => Inputs);
             }
         }
         public DataTable TestResults
@@ -60,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResults = value;
-                OnPropertyChanged(()=>TestResults);
+                OnPropertyChanged(() => TestResults);
             }
         }
         public Action TestAction
@@ -89,7 +100,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _manageServiceInputView.OutputDataGridResize();
                 }
-                OnPropertyChanged(()=>TestResultsAvailable);
+                OnPropertyChanged(() => TestResultsAvailable);
             }
         }
         public bool IsTestResultsEmptyRows
@@ -101,7 +112,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _isTestResultsEmptyRows = value;
-                OnPropertyChanged(()=>IsTestResultsEmptyRows);
+                OnPropertyChanged(() => IsTestResultsEmptyRows);
             }
         }
 
