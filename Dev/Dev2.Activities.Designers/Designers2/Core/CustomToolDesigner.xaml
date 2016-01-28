@@ -17,6 +17,7 @@
                     xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                     xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                     mc:Ignorable="d"
+                    x:Class="CustomToolDesigner"
                     d:DataContext="{d:DesignInstance core1:CustomToolViewModelBase}">
 
     <ResourceDictionary.MergedDictionaries>
@@ -76,7 +77,7 @@
                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </Button>
-            </Grid>           
+            </Grid>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="InputsGrid">

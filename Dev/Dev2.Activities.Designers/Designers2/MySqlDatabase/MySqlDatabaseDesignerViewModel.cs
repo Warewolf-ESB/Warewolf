@@ -41,6 +41,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable ExplicitCallerInfoArgument
 
