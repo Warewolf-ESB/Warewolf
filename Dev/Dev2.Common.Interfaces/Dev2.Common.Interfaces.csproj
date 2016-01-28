@@ -256,6 +256,7 @@
     <Compile Include="IWarewolfWebClient.cs" />
     <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
+    <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
