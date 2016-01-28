@@ -1,6 +1,5 @@
 using System;
 using Dev2.DataList.Contract;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -8,7 +7,7 @@ namespace Dev2.Runtime.ESB.Execution
     {
         Guid Execute(out ErrorResultTO errors, int update);
 
-        IExecutionEnvironment Execute(IDSFDataObject inputs,IDev2Activity activity);
+        IDSFDataObject Execute(IDSFDataObject inputs,IDev2Activity activity);
 
         String InstanceOutputDefinition { get; set; }
         String InstanceInputDefinition { get; set; }
