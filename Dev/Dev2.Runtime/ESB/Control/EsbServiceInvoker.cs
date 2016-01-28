@@ -220,7 +220,7 @@ namespace Dev2.Runtime.ESB
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
@@ -258,7 +258,7 @@ namespace Dev2.Runtime.ESB
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
@@ -276,7 +276,7 @@ namespace Dev2.Runtime.ESB
                     ServiceLocator sl = new ServiceLocator();
                     var resourceId = dataObject.ResourceID;
                     DynamicService theService = GetService(serviceName, resourceId, sl);
-                    EsbExecutionContainer executionContainer = null;
+                    IEsbExecutionContainer executionContainer = null;
 
 
                     if (theService != null && theService.Actions.Any())
@@ -315,12 +315,12 @@ namespace Dev2.Runtime.ESB
             }
         }
 
-        private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
+        private IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
         {
             // set the ID for later use ;)
             dataObj.WorkspaceID = _workspace.ID;
 
-            EsbExecutionContainer result = null;
+            IEsbExecutionContainer result = null;
 
             switch(serviceAction.ActionType)
             {
@@ -340,7 +340,7 @@ namespace Dev2.Runtime.ESB
                     break;
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
-                    result = new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
+                    result = new PerfmonExecutionContainer( new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
                     break;
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:

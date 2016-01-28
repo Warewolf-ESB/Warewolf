@@ -28,7 +28,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -158,7 +157,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
         }
