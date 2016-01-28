@@ -22,6 +22,7 @@ namespace Dev2.Activities.Designers2.Core
         double _designMinHeight;
         double _designMaxHeight;
         bool _testComplete;
+        protected string _recordsetName;
         protected bool PreviousInputsVisible;
         private bool _inputsVisible;
         protected bool PreviousTestComplete;
@@ -183,6 +184,29 @@ namespace Dev2.Activities.Designers2.Core
         public abstract double MaxToolHeight { get; set; }
         public abstract ObservableCollection<T> Sources { get; set; }
         public abstract T SelectedSource { get; set; }
+        public string RecordsetName
+        {
+            get
+            {
+                return _recordsetName;
+            }
+            set
+            {
+                if (Outputs != null)
+                {
+                    foreach (var serviceOutputMapping in Outputs)
+                    {
+                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
+                        {
+                            serviceOutputMapping.RecordSetName = value;
+                        }
+                    }
+                }
+                _recordsetName = value;
+                OnPropertyChanged("RecordsetName");
+            }
+        }
+
 
         public void SetToolHeight()
         {
@@ -195,6 +219,7 @@ namespace Dev2.Activities.Designers2.Core
                         case 0:
                             // Add the Grid Height to the tool Height
                             ToolHeight += _inputGridHeight + 10;
+                            InputsHasItems = false;
                             break;
                         default:
                             /* 30px used for row Height multiply by Inputs count plus 1 extra row
@@ -203,21 +228,27 @@ namespace Dev2.Activities.Designers2.Core
                             if (Inputs.Count > 0 && Inputs.Count < 5 && Outputs != null && TestComplete)
                             {
                                 _inputGridHeight = RowHeight * (Inputs.Count + 1);
+                                InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
                                 MaxToolHeight = ToolHeight;
+                                InputsHasItems = false;
                             }
                             else if (Inputs.Count > 0 && Inputs.Count < 5)
                             {
                                 _inputGridHeight = RowHeight * (Inputs.Count + 1);
+                                InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
                                 MaxToolHeight = ToolHeight;
+                                InputsHasItems = false;
                             }
                             else
                             {
                                 // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
                                 _inputGridHeight = RowHeight * 6;
+                                InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * Inputs.Count) + RowHeight;
+                                MaxToolHeight += (RowHeight * Inputs.Count + 2) + RowHeight + 15;
+                                InputsHasItems = true;
                             }
                             break;
                     }
@@ -229,6 +260,7 @@ namespace Dev2.Activities.Designers2.Core
                         case 0:
                             // Add the Grid Height to the tool Height
                             ToolHeight += _outputGridHeight + 10;
+                            OutputsHasItems = false;
                             break;
                         default:
                             /* 30px used for row Height multiply by Outputs count plus 1 extra row
@@ -237,21 +269,33 @@ namespace Dev2.Activities.Designers2.Core
                             if (Inputs != null && (Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 0 && Inputs.Count < 5))
                             {
                                 _outputGridHeight = RowHeight * (Outputs.Count + 1);
+                                OutputsMinHeight = _outputGridHeight;
                                 ToolHeight += _outputGridHeight + RowHeight;
                                 MaxToolHeight = ToolHeight;
+                                OutputsHasItems = false;
+                            }
+                            else if (Inputs != null && (Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 5))
+                            {
+                                _outputGridHeight = RowHeight * (Outputs.Count + 1);
+                                OutputsMinHeight = _outputGridHeight;
+                                MaxToolHeight += OutputsMinHeight;
+                                OutputsHasItems = false;
                             }
                             else if (Outputs.Count > 0 && Outputs.Count < 5)
                             {
                                 _outputGridHeight = RowHeight * (Outputs.Count + 1);
-                                ToolHeight += _outputGridHeight + RowHeight;
+                                OutputsMinHeight = _outputGridHeight;
                                 MaxToolHeight = ToolHeight;
+                                OutputsHasItems = false;
                             }
                             else
                             {
                                 // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
                                 _outputGridHeight = RowHeight * 6;
+                                OutputsMinHeight = _outputGridHeight;
                                 ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * (Outputs.Count + 2)) + RowHeight;
+                                MaxToolHeight += (RowHeight * (Outputs.Count + 2)) + RowHeight + 15;
+                                OutputsHasItems = true;
                             }
                             break;
                     }
@@ -275,6 +319,7 @@ namespace Dev2.Activities.Designers2.Core
                             if (Inputs.Count > 0 && Inputs.Count < 5)
                             {
                                 _inputGridHeight = RowHeight * (Inputs.Count + 1);
+                                InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
                                 MaxToolHeight = ToolHeight;
                             }
@@ -282,6 +327,7 @@ namespace Dev2.Activities.Designers2.Core
                             {
                                 // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
                                 _inputGridHeight = RowHeight * 6;
+                                InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
                                 MaxToolHeight += (RowHeight * Inputs.Count) + 10;
                             }
@@ -311,11 +357,16 @@ namespace Dev2.Activities.Designers2.Core
             InputsMinHeight = _inputGridHeight;
             OutputsMinHeight = _outputGridHeight;
 
+            ResetHeightValues();
+        }
+
+        public void ResetHeightValues(double height)
+        {
             // Reset the values
             _inputGridHeight = 60;
             _outputGridHeight = 60;
-            ToolHeight = 230;
-            MaxToolHeight = 230;
+            ToolHeight = height;
+            MaxToolHeight = height;
         }
 
         public override void UpdateHelpDescriptor(string helpText)

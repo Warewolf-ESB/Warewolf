@@ -207,7 +207,6 @@
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                             Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}"
                             MinHeight="{Binding OutputsMinHeight}"
-                            MaxHeight="Infinity"
                             ColumnWidth="*">
                     <ig:XamGrid.Columns>
                         <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">
