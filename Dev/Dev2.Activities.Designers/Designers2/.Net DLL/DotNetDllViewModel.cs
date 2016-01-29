@@ -254,7 +254,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             _isInitializing = false;
             SetToolHeight();
-            ResetHeightValues(230);
+            ResetHeightValues(DefaultToolHeight);
         }
 
         private bool CanRefresh()
@@ -664,9 +664,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
         private ICollection<IPluginAction> _previousMethods;
         private IPluginSource _previousSource;
         private ICollection<INamespaceItem> _previosNamespaces;
-        double _toolHeight = 230;
-        double _maxToolHeight = 230;
-        const double DefaultToolHeight = 230;
+        double _toolHeight = 210;
+        double _maxToolHeight = 210;
+        const double DefaultToolHeight = 210;
 
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
