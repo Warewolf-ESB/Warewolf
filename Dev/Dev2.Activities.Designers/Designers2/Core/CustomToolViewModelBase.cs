@@ -258,7 +258,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _inputGridHeight = RowHeight * 6;
                                 InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * Inputs.Count + 2) + RowHeight + 15;
+                                MaxToolHeight += (RowHeight * (Inputs.Count + 2)) + RowHeight;
                                 InputsHasItems = true;
                             }
                             break;
@@ -306,7 +306,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _outputGridHeight = RowHeight * 6;
                                 OutputsMinHeight = _outputGridHeight;
                                 ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * (Outputs.Count + 2)) + RowHeight + 15;
+                                MaxToolHeight += (RowHeight * (Outputs.Count + 3)) + RowHeight;
                                 OutputsHasItems = true;
                             }
                             break;
@@ -341,7 +341,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _inputGridHeight = RowHeight * 6;
                                 InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * Inputs.Count) + 15;
+                                MaxToolHeight += (RowHeight * (Inputs.Count + 1)) + RowHeight;
                             }
                             break;
                     }
