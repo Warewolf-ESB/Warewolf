@@ -1,26 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Diagnostics.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable RedundantAssignment
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PerfCounterBuilderTest
     {
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
+        // ReSharper disable once InconsistentNaming
         public void PerformanceCounterBuilder_CtorBuildCounters_Valid_ExpectNewCounters()
         {
-
-
-
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
@@ -29,18 +26,16 @@ namespace Dev2.Diagnostics.Test
             catch
             {
 
-
             }
-            var lst = new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
-                                                            };
+            var lst = new List<IPerformanceCounter>{
+                new WarewolfCurrentExecutionsPerformanceCounter(),
+                new WarewolfNumberOfErrors(),    
+                new WarewolfRequestsPerSecondPerformanceCounter(),
+                new WarewolfAverageExecutionTimePerformanceCounter(),
+                new WarewolfNumberOfAuthErrors(),
+                new WarewolfServicesNotFoundCounter()
+            };
+            // ReSharper disable once ObjectCreationAsStatement
             new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
@@ -53,19 +48,14 @@ namespace Dev2.Diagnostics.Test
                     Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
                 }
             }
-
-
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
+        // ReSharper disable once InconsistentNaming
         public void PerformanceCounterBuilder_CtorBuildCounters_RebuildDoesNotReset_ExpectNewCounters()
         {
-
-
-
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
@@ -74,26 +64,22 @@ namespace Dev2.Diagnostics.Test
             catch
             {
 
-
             }
-            var lst = new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
-                                                            };
+            var lst = new List<IPerformanceCounter> {
+                new WarewolfCurrentExecutionsPerformanceCounter(),
+                new WarewolfNumberOfErrors(),    
+                new WarewolfRequestsPerSecondPerformanceCounter(),
+                new WarewolfAverageExecutionTimePerformanceCounter(),
+                new WarewolfNumberOfAuthErrors(),
+                new WarewolfServicesNotFoundCounter()
+            };
             WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(lst);
-            foreach(var performanceCounter in builder.Counters)
+            foreach (var performanceCounter in builder.Counters)
             {
                 performanceCounter.Increment();
             }
 
-            // ReSharper disable once ObjectCreationAsStatement
-             new WarewolfPerformanceCounterBuilder(lst);
+            builder = new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -105,17 +91,12 @@ namespace Dev2.Diagnostics.Test
                     Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
                 }
             }
-
-
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
         public void PerformanceCounterBuilder_CtorBuildCounters_NewResets_ExpectNewCounters()
         {
-
-
-
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
@@ -124,18 +105,14 @@ namespace Dev2.Diagnostics.Test
             catch
             {
 
-
             }
-            var lst = new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                   
-                                                            };
+            var lst = new List<IPerformanceCounter> {
+                new WarewolfCurrentExecutionsPerformanceCounter(),
+                new WarewolfNumberOfErrors(),    
+                new WarewolfRequestsPerSecondPerformanceCounter(),
+                new WarewolfAverageExecutionTimePerformanceCounter(),
+                new WarewolfNumberOfAuthErrors()
+            };
 
             WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(lst);
             foreach (var performanceCounter in builder.Counters)
@@ -143,8 +120,7 @@ namespace Dev2.Diagnostics.Test
                 performanceCounter.Increment();
             }
             lst.Add(new WarewolfServicesNotFoundCounter());
-            // ReSharper disable once ObjectCreationAsStatement
-            new WarewolfPerformanceCounterBuilder(lst);
+            builder = new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -156,9 +132,6 @@ namespace Dev2.Diagnostics.Test
                     Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
                 }
             }
-
-
         }
-
     }
 }
