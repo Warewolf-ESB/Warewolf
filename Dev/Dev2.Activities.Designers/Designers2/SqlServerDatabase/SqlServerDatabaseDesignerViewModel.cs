@@ -13,9 +13,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -30,17 +28,17 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
-using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+
 // ReSharper disable ExplicitCallerInfoArgument
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -48,7 +46,7 @@ using Warewolf.Core;
 // ReSharper disable MemberCanBePrivate.Global
 namespace Dev2.Activities.Designers2.SqlServerDatabase
 {
-    public class SqlServerDatabaseDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
+    public class SqlServerDatabaseDesignerViewModel : CustomToolViewModelBase<IDbSource>, IHandle<UpdateResourceMessage>
     {
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
@@ -109,18 +107,22 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
+            LabelWidth = 46;
+            ResetHeightValues(DefaultToolHeight);
+            SetInitialHeight();
+            TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
+            FixErrorsCommand = new DelegateCommand(o =>
             {
                 FixErrors();
                 IsFixed = IsWorstErrorReadOnly;
             });
-            DoneCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o => Done());
-            DoneCompletedCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o => DoneCompleted());
+            DoneCommand = new DelegateCommand(o => Done());
+            DoneCompletedCommand = new DelegateCommand(o => DoneCompleted());
 
             InitializeDisplayName();
 
@@ -147,7 +149,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 }
                 _environment = environment;
             }
-            TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
+            TestInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestAction, CanTestProcedure);
             InitializeValidationService(_environment);
             InitializeLastValidationMemo(_environment);
             ManageServiceInputViewModel = manageServiceInputViewModel;
@@ -157,9 +159,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
 
                 _dbServiceModel = dbServiceModel;
-                NewSourceCommand = new DelegateCommand(_dbServiceModel.CreateNewSource);
-                EditSourceCommand = new DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource), CanEditSource);
-                RefreshActionsCommand = new DelegateCommand(() =>
+                NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(_dbServiceModel.CreateNewSource);
+                EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource), CanEditSource);
+                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
                     if (_selectedProcedure != null)
@@ -190,9 +192,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
                                 InputsVisible = false;
-                                InputsExpanded = false;
                                 OutputsVisible = false;
-                                OutputsExpanded = false;
                                 ProcedureName = "";
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
                             }
@@ -228,12 +228,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             if (Inputs != null)
             {
                 InputsVisible = true;
-                InputsExpanded = true;
             }
             if (Outputs != null)
             {
                 OutputsVisible = true;
-                OutputsExpanded = true;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -241,6 +239,8 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 }
             }
             _isInitializing = false;
+            SetToolHeight();
+            ResetHeightValues(DefaultToolHeight);
         }
 
         private bool CanRefresh()
@@ -305,10 +305,15 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                     if (Outputs != null)
                     {
                         OutputsVisible = true;
-                        OutputsExpanded = true;
                     }
                 };
                 ManageServiceInputViewModel.ShowView();
+                if (ManageServiceInputViewModel.OkSelected)
+                {
+                    ValidateTestComplete();
+                }
+                SetToolHeight();
+                ResetHeightValues(DefaultToolHeight);
             }
             catch (Exception e)
             {
@@ -347,29 +352,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 return mappings;
             }
             return new List<IServiceOutputMapping>();
-        }
-
-        public string RecordsetName
-        {
-            get
-            {
-                return _recordsetName;
-            }
-            set
-            {
-                if (Outputs != null)
-                {
-                    foreach (var serviceOutputMapping in Outputs)
-                    {
-                        if (_recordsetName != null && serviceOutputMapping.RecordSetName != null && serviceOutputMapping.RecordSetName.Equals(_recordsetName))
-                        {
-                            serviceOutputMapping.RecordSetName = value;
-                        }
-                    }
-                }
-                _recordsetName = value;
-                OnPropertyChanged("RecordsetName");
-            }
         }
 
         public string ErrorText
@@ -426,7 +408,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
         }
 
-        public ObservableCollection<IDbSource> Sources { get; set; }
+        public override ObservableCollection<IDbSource> Sources { get; set; }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
@@ -668,17 +650,15 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         private bool _actionVisible;
         private ICollection<IDbAction> _procedures;
         private IDbAction _selectedProcedure;
-        private ICollection<IServiceInput> _inputs;
-        private bool _inputsVisible;
-        private bool _inputsExpanded;
         private bool _outputsVisible;
-        private bool _outputsExpanded;
         private bool _isTesting;
         private bool _canEditMappings;
         private bool _testSuccessful;
         private string _errorText;
-        private string _recordsetName;
         bool _isRefreshing;
+        double _toolHeight = 180;
+        double _maxToolHeight = 180;
+        const double DefaultToolHeight = 180;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
@@ -840,7 +820,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             get;
             set;
         }
-        public IDbSource SelectedSource
+        public override IDbSource SelectedSource
         {
             get
             {
@@ -852,6 +832,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 {
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
+                    
+                    TestComplete = false;
+                    InputsVisible = false;
                     _selectedSource = value;
                     try
                     {
@@ -862,9 +845,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             InputsVisible = false;
-                            InputsExpanded = false;
                             OutputsVisible = false;
-                            OutputsExpanded = false;
                         }
                         if (Procedures.Count <= 0)
                         {
@@ -877,6 +858,8 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                             RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
                             FriendlySourceNameValue = _selectedSource.Name;
                         }
+                        SetToolHeight();
+                        ResetHeightValues(DefaultToolHeight);
                     }
                     catch (Exception e)
                     {
@@ -896,21 +879,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ViewModelUtils.RaiseCanExecuteChanged(RefreshActionsCommand);
             }
         }
-        public ICommand EditSourceCommand
+
+        void ValidateTestComplete()
         {
-            get;
-            set;
+            TestComplete = SelectedSource != null && SelectedProcedure != null && Errors.Count < 1;
         }
-        public ICommand NewSourceCommand
-        {
-            get;
-            set;
-        }
-        public bool SourceVisible
-        {
-            get;
-            set;
-        }
+
         public bool ActionVisible
         {
             get
@@ -945,6 +919,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 if (!Equals(value, _selectedProcedure))
                 {
+                    TestComplete = false;
                     _selectedProcedure = value;
                     if (_selectedProcedure != null)
                     {
@@ -957,9 +932,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
                     }
                     OutputsVisible = false;
-                    OutputsExpanded = false;
                     ProcedureName = _selectedProcedure != null ? _selectedProcedure.Name : "";
                     InitializeProperties();
+                    InputsVisible = _selectedProcedure != null;
+                    SetToolHeight();
+                    ResetHeightValues(DefaultToolHeight);
                     ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedProcedure");
                 }
@@ -993,30 +970,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             return SelectedProcedure != null;
         }
 
-        public bool InputsVisible
-        {
-            get
-            {
-                return _inputsVisible;
-            }
-            set
-            {
-                _inputsVisible = value;
-                OnPropertyChanged("InputsVisible");
-            }
-        }
-        public bool InputsExpanded
-        {
-            get
-            {
-                return _inputsExpanded;
-            }
-            set
-            {
-                _inputsExpanded = value;
-                OnPropertyChanged("InputsExpanded");
-            }
-        }
         public bool OutputsVisible
         {
             get
@@ -1027,58 +980,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 _outputsVisible = value;
                 OnPropertyChanged("OutputsVisible");
-            }
-        }
-        public bool OutputsExpanded
-        {
-            get
-            {
-                return _outputsExpanded;
-            }
-            set
-            {
-                _outputsExpanded = value;
-                OnPropertyChanged("OutputsExpanded");
-            }
-        }
-        public ICollection<IServiceInput> Inputs
-        {
-            get
-            {
-                var serviceInputs = GetProperty<ICollection<IServiceInput>>();
-                return serviceInputs;
-            }
-            set
-            {
-                if (!Equals(value, _inputs))
-                {
-                    _inputs = value;
-                    InputsVisible = true;
-                    InputsExpanded = true;
-                    SetProperty(value);
-                    OnPropertyChanged("Inputs");
-                }
-            }
-        }
-        public ICommand TestInputCommand
-        {
-            get;
-            set;
-        }
-
-        public ICollection<IServiceOutputMapping> Outputs
-        {
-            get
-            {
-                var serviceOutputMappings = GetProperty<ICollection<IServiceOutputMapping>>();
-                return serviceOutputMappings;
-            }
-            set
-            {
-                OutputsVisible = true;
-                OutputsExpanded = true;
-                SetProperty(value);
-                OnPropertyChanged("Outputs");
             }
         }
 
@@ -1362,27 +1263,31 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         #endregion
 
-        #region Implementation of INotifyPropertyChanged
+        #region Overrides of CustomToolViewModelBase
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
-        protected void OnPropertyChanged(string propertyName = null)
+        public override double ToolHeight
         {
-            var handler = PropertyChanged;
-            if (handler != null)
+            get
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return _toolHeight;
+            }
+            set
+            {
+                _toolHeight = value;
             }
         }
+        public override double MaxToolHeight
+        {
+            get
+            {
+                return _maxToolHeight;
+            }
+            set
+            {
+                _maxToolHeight = value;
+            }
+        }
+
         #endregion
-
-        public override void UpdateHelpDescriptor(string helpText)
-        {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-        }
     }
 }
