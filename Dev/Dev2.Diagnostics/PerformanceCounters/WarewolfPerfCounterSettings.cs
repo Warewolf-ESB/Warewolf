@@ -1,6 +1,22 @@
-﻿namespace Dev2.Diagnostics.PerformanceCounters
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Monitoring;
+
+namespace Dev2.Diagnostics.PerformanceCounters
 {
-    public class WarewolfPerfCounterSettings
+    public class WarewolfPerfCounterSetting
     {
+       public string Name { get; set; }
+       public Guid ResourceId { get; set; }
+       public bool Enabled { get; set; }
+    }
+
+    public class  WarewolfPerfCounterSettings
+    {
+        public IList<IPerformanceCounter> BuildFromFile()
+        {
+            return null;
+        }
+        List<WarewolfPerfCounterSetting> Settings { get; set; }
     }
 }
