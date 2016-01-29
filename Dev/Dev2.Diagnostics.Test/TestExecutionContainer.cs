@@ -8,6 +8,7 @@ using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Diagnostics.Test
 {
@@ -24,10 +25,11 @@ namespace Dev2.Diagnostics.Test
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
-                catch{}
+                catch { }
 
                 WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
-                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                            {
+                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
                                                                 new WarewolfRequestsPerSecondPerformanceCounter(),
                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
@@ -67,19 +69,13 @@ namespace Dev2.Diagnostics.Test
             var cont = new Mock<IEsbExecutionContainer>();
             //------------Setup for test--------------------------
             var perfmonContainer = new PerfmonExecutionContainer(null);
-
-
         }
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerfmonContainer_Ctor")]
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
-
-
             var cont = new Cont();
             ErrorResultTO err;
 
@@ -87,31 +83,27 @@ namespace Dev2.Diagnostics.Test
             var perfmonContainer = new PerfmonExecutionContainer(cont);
 
             //------------Execute Test---------------------------
-
             perfmonContainer.Execute(out err, 3);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, cont.CallCount);
             Assert.AreEqual(perfmonContainer.InstanceInputDefinition, "bob");
             Assert.AreEqual(perfmonContainer.InstanceOutputDefinition, "dave");
-             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond);
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond);
 
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
-            Assert.AreNotEqual(0,innerCounter.RawValue);
+            Assert.AreNotEqual(0, innerCounter.RawValue);
 
             counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.AverageExecutionTime);
 
-             po = new PrivateObject(counter);
+            po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
-             innerCounter = po.GetField("_counter") as PerformanceCounter;
+            innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
             Assert.AreNotEqual(0, innerCounter.RawValue);
-
         }
-
-
     }
 
     class Cont : IEsbExecutionContainer

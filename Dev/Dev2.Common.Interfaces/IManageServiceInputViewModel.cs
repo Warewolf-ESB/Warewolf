@@ -24,5 +24,6 @@ namespace Dev2.Common.Interfaces
     public interface IManageDatabaseInputViewModel : IManageServiceInputViewModel<IDatabaseService>
     {
         DataTable TestResults { get; set; }
+        bool OkSelected { get; set; }
     }
 }
