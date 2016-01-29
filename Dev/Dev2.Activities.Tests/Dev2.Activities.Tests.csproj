@@ -163,7 +163,6 @@
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDropBoxFileActivityTest.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
-    <Compile Include="ActivityTests\DsfPluginActivityTests.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
     <Compile Include="ActivityTests\CountRecordsTest.cs" />
@@ -176,7 +175,6 @@
     <Compile Include="ActivityTests\GatherSystemInformationTests.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
     <Compile Include="ActivityTests\IndexActivityTests.cs" />
-    <Compile Include="ActivityTests\Activity Stubs\MockDsfPluginActivity.cs" />
     <Compile Include="ActivityTests\Activity Stubs\MockDsfDatabaseActivity.cs" />
     <Compile Include="ActivityTests\MultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\NumberFormatActivityTests.cs" />
