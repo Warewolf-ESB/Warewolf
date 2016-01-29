@@ -61,7 +61,7 @@ namespace Dev2.Runtime.Hosting
         readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
         readonly ConcurrentDictionary<string, object> _fileLocks = new ConcurrentDictionary<string, object>();
         readonly object _loadLock = new object();
-        readonly IPerformanceCounter _perfCounter;// = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+        readonly IPerformanceCounter _perfCounter;
 
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
@@ -124,6 +124,7 @@ namespace Dev2.Runtime.Hosting
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
 
             }
+                // ReSharper disable once EmptyGeneralCatchClause
             catch(Exception)
             {
                 
@@ -149,6 +150,7 @@ namespace Dev2.Runtime.Hosting
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
 
             }
+                // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception)
             {
 
