@@ -40,6 +40,8 @@ namespace Dev2.Activities.Designers2.Core
 
         protected ICollection<IServiceInput> _inputs;
         double _labelWidth;
+        bool _isInputsEmptyRows;
+        bool _isOutputsEmptyRows;
 
         protected CustomToolViewModelBase(ModelItem modelItem)
             : base(modelItem)
@@ -168,6 +170,30 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged("InputsVisible");
             }
         }
+        public bool IsInputsEmptyRows
+        {
+            get
+            {
+                return _isInputsEmptyRows;
+            }
+            set
+            {
+                _isInputsEmptyRows = value;
+                OnPropertyChanged("IsInputsEmptyRows");
+            }
+        }
+        public bool IsOutputsEmptyRows
+        {
+            get
+            {
+                return _isOutputsEmptyRows;
+            }
+            set
+            {
+                _isOutputsEmptyRows = value;
+                OnPropertyChanged("IsOutputsEmptyRows");
+            }
+        }
         public bool SourceVisible { get; set; }
         public ICommand TestInputCommand { get; set; }
         public ICommand EditSourceCommand { get; set; }
@@ -185,6 +211,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _inputs = value;
                     InputsHasItems = _inputs != null && _inputs.Count > 0;
+                    IsInputsEmptyRows = _inputs != null && _inputs.Count == 0;
                     SetProperty(value);
                     OnPropertyChanged("Inputs");
                 }
@@ -201,6 +228,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 SetProperty(value);
                 OutputsHasItems = value != null && value.Count > 0;
+                IsOutputsEmptyRows = value != null && value.Count == 0;
                 OnPropertyChanged("Outputs");
             }
         }
