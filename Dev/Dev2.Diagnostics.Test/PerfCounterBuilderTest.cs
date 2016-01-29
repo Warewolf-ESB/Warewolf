@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Diagnostics.PerformanceCounters;
@@ -8,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PerfCounterBuilderTest
     {
 
@@ -39,7 +41,7 @@ namespace Dev2.Diagnostics.Test
                                                                  new WarewolfNumberOfAuthErrors(),
                                                                  new WarewolfServicesNotFoundCounter()
                                                             };
-            WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(lst);
+            new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -90,7 +92,8 @@ namespace Dev2.Diagnostics.Test
                 performanceCounter.Increment();
             }
 
-             builder = new WarewolfPerformanceCounterBuilder(lst);
+            // ReSharper disable once ObjectCreationAsStatement
+             new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -140,7 +143,8 @@ namespace Dev2.Diagnostics.Test
                 performanceCounter.Increment();
             }
             lst.Add(new WarewolfServicesNotFoundCounter());
-            builder = new WarewolfPerformanceCounterBuilder(lst);
+            // ReSharper disable once ObjectCreationAsStatement
+            new WarewolfPerformanceCounterBuilder(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
