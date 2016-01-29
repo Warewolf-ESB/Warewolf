@@ -4,9 +4,6 @@
 	I want to have a good UX
 
 Scenario: Drag toolbox multiassign onto a new workflow
-	Given The 'Assert_MainStudioWindow_Exists' recorded action is performed
-	When The 'PressF11_EnterFullScreen' recorded action is performed
-
 	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
 	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
 	Then The 'Assert_StartNode_Exists' recorded action is performed
