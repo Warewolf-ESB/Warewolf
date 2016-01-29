@@ -39,8 +39,7 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
-              errors = new ErrorResultTO();
-       
+            errors = new ErrorResultTO();
             if (Namespace == null)
             {
                 errors.AddError("No Namespace Selected.");
@@ -52,8 +51,6 @@ namespace Dev2.Activities
                 return;
             }
             ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
-
-          
         }
 
         protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
