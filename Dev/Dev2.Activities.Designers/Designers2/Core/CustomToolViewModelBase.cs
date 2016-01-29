@@ -341,7 +341,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _inputGridHeight = RowHeight * 6;
                                 InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * Inputs.Count) + 10;
+                                MaxToolHeight += (RowHeight * Inputs.Count) + 15;
                             }
                             break;
                     }
