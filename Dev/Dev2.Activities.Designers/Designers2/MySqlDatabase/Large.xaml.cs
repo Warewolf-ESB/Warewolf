@@ -18,7 +18,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         public Large()
         {
             InitializeComponent();
-            DataGrid = LargeDataGrid;
             SetInitialFocus();
         }
 
@@ -26,7 +25,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return SourcesComboBox;
+            return MainGrid;
         }
 
         #endregion
