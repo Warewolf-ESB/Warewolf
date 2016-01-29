@@ -39,12 +39,25 @@ namespace Dev2.Activities.Designers2.Core
         protected bool PreviousTestComplete;
 
         protected ICollection<IServiceInput> _inputs;
+        double _labelWidth;
 
         protected CustomToolViewModelBase(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged("LabelWidth");
+            }
+        }
         public double DesignMaxHeight
         {
             get
@@ -229,7 +242,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + 10;
+                            ToolHeight += _inputGridHeight + RowHeight;
                             InputsHasItems = false;
                             break;
                         default:
@@ -270,7 +283,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _outputGridHeight + 10;
+                            ToolHeight += _outputGridHeight + RowHeight;
                             OutputsHasItems = false;
                             break;
                         default:
@@ -322,7 +335,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + 10;
+                            ToolHeight += _inputGridHeight + RowHeight;
                             break;
                         default:
                             /* 30px used for row Height multiply by Inputs count plus 1 extra row
