@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Diagnostics.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Diagnostics.Test
 {
