@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTesting;
         private ManageServiceInputView _manageServiceInputView;
         private Action _testAction;
+        private bool _okSelected;
 
         public ManageServiceInputViewModel()
         {
@@ -45,6 +46,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (_manageServiceInputView != null)
                 {
                     OkAction();
+                    OkSelected = true;
                     _manageServiceInputView.RequestClose();
                 }
             });
@@ -72,6 +74,16 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _testResults = value;
                 OnPropertyChanged(() => TestResults);
+            }
+        }
+
+        public bool OkSelected
+        {
+            get { return _okSelected; }
+            set
+            {
+                _okSelected = value;
+                OnPropertyChanged(() => OkSelected);
             }
         }
         public Action TestAction

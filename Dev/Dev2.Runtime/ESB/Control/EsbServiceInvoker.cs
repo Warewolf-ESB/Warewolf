@@ -327,22 +327,13 @@ namespace Dev2.Runtime.ESB
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
-                    result = new DatabaseServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                    break;
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
                     result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                    break;
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
-                    result = new PluginServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     result = new PerfmonExecutionContainer( new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
                     break;
-
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                     break;
