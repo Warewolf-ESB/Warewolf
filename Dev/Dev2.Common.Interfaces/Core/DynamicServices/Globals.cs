@@ -108,7 +108,10 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         ///     A MySQL database
         /// </summary>
         MySqlDatabase,
-
+        /// <summary>
+        ///     A ODBC database
+        /// </summary>
+        ODBC,
         /// <summary>
         ///     A Oracle database
         /// </summary>

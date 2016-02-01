@@ -175,7 +175,7 @@ namespace Dev2.Activities.Designers2.Oracle
                     IsRefreshing = false;
                 }, CanRefresh);
                 var dbSources = _dbServiceModel.RetrieveSources();
-                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.SqlDatabase).ToObservableCollection();
+                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.Oracle).ToObservableCollection();
                 SourceVisible = true;
                 if (SourceId != Guid.Empty)
                 {

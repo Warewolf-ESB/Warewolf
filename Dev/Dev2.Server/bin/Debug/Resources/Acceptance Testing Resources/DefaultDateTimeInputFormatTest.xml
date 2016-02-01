@@ -1,5 +1,5 @@
 
-<Service ID="1c3f96c0-242a-437a-9240-d3da855e0863" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DefaultDateTimeInputFormatTest" ResourceType="WorkflowService" ServerVersion="0.0.5871.21811">
+<Service ID="1c3f96c0-242a-437a-9240-d3da855e0863" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DefaultDateTimeInputFormatTest" ResourceType="WorkflowService" ServerVersion="0.0.5875.28365">
   <DisplayName>DefaultDateTimeInputFormatTest</DisplayName>
   <Category>Acceptance Testing Resources\DefaultDateTimeInputFormatTest</Category>
   <AuthorRoles>

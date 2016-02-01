@@ -65,6 +65,7 @@ using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Oracle;
+using Dev2.Activities.Designers2.ODBC;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -118,6 +119,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
+                  { typeof(DsfODBCDatabaseActivity), typeof(DsfODBCDatabaseActivity) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },

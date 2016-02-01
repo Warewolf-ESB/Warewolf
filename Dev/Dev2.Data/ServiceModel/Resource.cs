@@ -125,6 +125,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                             ResourceType = ResourceType.DbSource;
                             IsUpgraded = true;
                             break;
+                        case enSourceType.ODBC:
+                            ResourceType = ResourceType.DbSource;
+                            IsUpgraded = true;
+                            break;
                         case enSourceType.Plugin:
                             ResourceType = ResourceType.PluginSource;
                             IsUpgraded = true;

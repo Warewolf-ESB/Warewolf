@@ -11,6 +11,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using Dev2.Services.Sql;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -46,6 +47,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return null;
             }).ToList();
+            ODBCServer Odbc = new ODBCServer();
+            var Dsns = Odbc.GetDSN();
+            foreach(var Dsn in Dsns)
+            {
+                list.Add(
+
+                        new DbSourceDefinition
+                        {
+                            Name = Dsn,
+                            DbName = Dsn,
+                            Type = enSourceType.ODBC
+                        }
+
+              );
+
+            }
+          
+
+
             return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
             // ReSharper restore MaximumChainedReferences
         }

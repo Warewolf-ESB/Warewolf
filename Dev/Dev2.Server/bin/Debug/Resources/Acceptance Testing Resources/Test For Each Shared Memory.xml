@@ -1,5 +1,5 @@
 
-<Service ID="9520769f-2f56-4476-ba67-144d93df3c5c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Test For Each Shared Memory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5871.21811">
+<Service ID="9520769f-2f56-4476-ba67-144d93df3c5c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Test For Each Shared Memory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5875.28365">
   <DisplayName>Test For Each Shared Memory</DisplayName>
   <Category>Acceptance Testing Resources\Test For Each Shared Memory</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
