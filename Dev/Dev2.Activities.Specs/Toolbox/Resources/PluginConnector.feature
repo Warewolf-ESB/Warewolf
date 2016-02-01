@@ -62,7 +62,6 @@ Scenario: Create new Plugin Tool and Select a Namespace
 	And Recordset is ""
 	And there are "no" validation errors of "" 
 	When I select the Source "Echo"
-	
 	Then  "Sources" combobox is enabled
 	And  Selected Source is "Echo"
 	And the Namespaces are 
