@@ -62,30 +62,45 @@ namespace Dev2.Activities.Designers2.Oracle
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
-        readonly IEventAggregator _eventPublisher;
-
+        //readonly IEventAggregator _eventPublisher;
+        IEventAggregator _eventPublisher;
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _isDisposed;
         const string DoneText = "Done";
         const string FixText = "Fix";
-        readonly bool _isInitializing;
+        //readonly bool _isInitializing;
+        bool _isInitializing;
         public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel())
+            : base(modelItem)
         {
+            AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
         }
 
         public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
                                         IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel())
-        {
-        }
-
-        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel)
-            : base(modelItem)
+             : base(modelItem)
         {
             AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+        }
 
+        public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+             : base(modelItem)
+        {
+            AddTitleBarMappingToggle();
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, asyncWorker, manageServiceInputViewModel, dbServiceModel);
+        }
+
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+        {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -140,9 +155,9 @@ namespace Dev2.Activities.Designers2.Oracle
             if (_environment != null)
             {
                 _isInitializing = true;
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var server = shellViewModel.ActiveServer;
-                _dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+
+
+                _dbServiceModel = dbServiceModel;
                 NewSourceCommand = new DelegateCommand(_dbServiceModel.CreateNewSource);
                 EditSourceCommand = new DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource), CanEditSource);
                 RefreshActionsCommand = new DelegateCommand(() =>
@@ -160,7 +175,7 @@ namespace Dev2.Activities.Designers2.Oracle
                     IsRefreshing = false;
                 }, CanRefresh);
                 var dbSources = _dbServiceModel.RetrieveSources();
-                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.Oracle).ToObservableCollection();
+                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.SqlDatabase).ToObservableCollection();
                 SourceVisible = true;
                 if (SourceId != Guid.Empty)
                 {
@@ -226,9 +241,9 @@ namespace Dev2.Activities.Designers2.Oracle
                     RecordsetName = recordsetItem.RecordSetName;
                 }
             }
-
             _isInitializing = false;
         }
+
 
         private bool CanRefresh()
         {
@@ -240,7 +255,7 @@ namespace Dev2.Activities.Designers2.Oracle
             return SelectedSource != null;
         }
 
-        IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {
