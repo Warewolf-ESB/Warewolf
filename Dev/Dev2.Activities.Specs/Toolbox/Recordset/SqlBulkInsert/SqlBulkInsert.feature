@@ -365,6 +365,15 @@ Scenario: Import data into table with blank data
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
 
+Scenario: Edit DB Source
+Given I have DB as "DemoDB"
+	And table as "dbo.[Country]"
+	And I have this data
+	| InputData                  | ToField     | Type        |
+	| [[Country(*).CountryID]]   | CountryID   | int         |
+	| [[Country(*).Description]] | Description | varchar(50) |
+	When I click "Edit"
+	Then the "DemoDB" tab is opened
 
 #Audit
 @ignore
