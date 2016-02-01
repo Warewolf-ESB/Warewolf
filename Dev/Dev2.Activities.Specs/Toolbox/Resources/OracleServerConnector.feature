@@ -14,31 +14,37 @@ Scenario: Creating Oracle Server Connector
 	And Validate is Disabled 
 	When I Select "GreenPoint" as Source
 	Then Action is Enabled
-	When I select "dbo.ImportOrder" as the action
+	When I select "HR.TESTPROC9" as the action
 	Then Inputs is Enabled 
 	And Inputs appear as 
 	| Input     | Value | Empty is Null |
-	| ProductId |       | false         |
+	| EID		|       | false         |
 	And Validate is Enabled
 	When I click Validate
 	Then the Test Connector and Calculate Outputs window is opened
 	And Test Inputs appear as
-	| ProductId |
-	| 1         |
+	| EID		 |
+	| 100        |
 	When I click Test
 	Then Test Connector and Calculate Outputs outputs appear as
-	| Column1 |
-	| 1       |
+	| Column1 | Column2 | Column3 | Column4		| Column5	| Column6 | Column7 |
+	| 100     | Steven  | King    | sk@mail.com | 000000000 | 2500    | 6		|
 	When I click OK
 	Then Outputs appear as
 	| Mapped From | Mapped To                     | 
-	| Column1     | [[dbo_ImportOrder().Column1]] | 
-	And Recordset Name equals "dbo_ImportOrder"	
+	| Column1     | [[HR_TESTPROC9().Column1]] | 
+	| Column2     | [[HR_TESTPROC9().Column2]] | 
+	| Column3     | [[HR_TESTPROC9().Column3]] | 
+	| Column4     | [[HR_TESTPROC9().Column4]] | 
+	| Column5     | [[HR_TESTPROC9().Column5]] | 
+	| Column6     | [[HR_TESTPROC9().Column6]] | 
+	| Column7     | [[HR_TESTPROC9().Column7]] | 
+	And Recordset Name equals "HR_TESTPROC9"	
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open "Wolf-860"
 	And Source is Enabled
-	And Source is "testingDBSrc"
+	And Source is "localOracleTest"
 	And Action is Enabled
 	And Action is dbo.Pr_CitiesGetCountries
 	And Inputs is Enabled
@@ -57,7 +63,7 @@ Scenario: Change Source on Existing tool
 	Given I open Wolf-860
 	Then "Wolf-860" tab is opened
 	And "Source" is "Enabled"
-	And "Source" equals "testingDBSrc"
+	And "Source" equals "localOracleTest"
 	And "Action" is "Enabled"
 	And "Action" equals "dbo.Pr_CitiesGetCountries"
 	And "Input/Output" is "Enabled"
@@ -71,7 +77,7 @@ Scenario: Change Source on Existing tool
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And "Recordset Name" equals "dbo_Pr_CitiesGetCountries"
-	When "Source" is changed from "testingDBSrc" to "GreenPoint"
+	When "Source" is changed from "localOracleTest" to "GreenPoint"
 	Then "Action" is "Enabled"
 	And "Inputs/Outputs" is "Disabled" 
 	And "Mapping" is "Disabled" 
@@ -107,7 +113,7 @@ Scenario: Changing Actions
 	Given I open Wolf-860
 	Then "Wolf-860" tab is opened
 	And "Source" is "Enabled"
-	And "Source" equals "testingDBSrc"
+	And "Source" equals "localOracleTest"
 	And "Action" is "Enabled"
 	And "Action" equals "dbo.Pr_CitiesGetCountries"
 	And "Input/Output" is "Enabled"
@@ -147,7 +153,7 @@ Scenario: Change Recordset Name
 	Given I open Wolf-860
 	Then "Wolf-860" tab is opened
 	And "Source" is "Enabled"
-	And "Source" equals "testingDBSrc"
+	And "Source" equals "localOracleTest"
 	And "Action" is "Enabled"
 	And "Action" equals "dbo.Pr_CitiesGetCountries"
 	And "Input/Output" is "Enabled"

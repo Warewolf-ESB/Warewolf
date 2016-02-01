@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -16,24 +10,19 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using TechTalk.SpecFlow;
-using Warewolf.Core;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class OracleConnectorSteps
+    public class OracleServerConnectorSteps
     {
         private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-
-        [Given(@"I open New Workflow")]
-        public void GivenIOpenNewWorkflow()
-        {
-        }
-        
         [Given(@"I drag a Oracle Server database connector")]
-        public void GivenIADragOracleServerConnector()
+        public void GivenIDragAOracleServerDatabaseConnector()
         {
             var oracleServerActivity = new DsfOracleDatabaseActivity();
             var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
@@ -57,16 +46,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel((modelItem,new Mock<IContextualResourceModel>().Object,
-                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object,new SynchronousAsyncWorker(), mockServiceInputViewModel.Object,mockDbServiceModel.Object);
-            
-            ScenarioContext.Current.Add("viewModel",oracleServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel",mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel",mockDbServiceModel);
-        }
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
+                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
 
-        [Given(@"Source is Enabled")]
-        public void GivenSourceIsEnabled()
+            ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+        }
+        
+        [Given(@"Source is ""(.*)""")]
+        public void GivenSourceIs()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceVisible);
@@ -87,286 +76,56 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
-        [Given(@"Action is Disabled")]
-        public void GivenActionIsDisabled()
+        [Given(@"Action is dbo\.Pr_CitiesGetCountries")]
+        public void GivenActionIsDbo_Pr_CitiesGetCountries()
         {
-            var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.ActionVisible);
+            ScenarioContext.Current.Pending();
         }
-
-        [Given(@"Inputs is Disabled")]
-        public void GivenInputsIsDisabled()
+        
+        [Given(@"Inputs is Enabled")]
+        public void GivenInputsIsEnabled()
         {
-            var viewModel = GetViewModel();
-            var hasNoInputs = viewModel.Inputs == null || viewModel.Inputs.Count == 0 || !viewModel.InputsVisible;
-            Assert.IsTrue(hasNoInputs);
+            ScenarioContext.Current.Pending();
         }
-
-        [Given(@"Outputs is Disabled")]
-        public void GivenOutputsIsDisabled()
+        
+        [Given(@"Inputs appear as")]
+        public void GivenInputsAppearAs(Table table)
         {
-            var viewModel = GetViewModel();
-            var hasNoOutputs = viewModel.Outputs == null || viewModel.Outputs.Count == 0 || !viewModel.OutputsVisible;
-            Assert.IsTrue(hasNoOutputs);
+            ScenarioContext.Current.Pending();
         }
-
-        [Given(@"Validate is Disabled")]
-        public void GivenValidateIsDisabled()
+        
+        [Given(@"Validate is Enabled")]
+        public void GivenValidateIsEnabled()
         {
-            var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
+            ScenarioContext.Current.Pending();
         }
-
-        [Given(@"Action is Enabled")]
-        [Then(@"Action is Enabled")]
-        [When(@"Action is Enabled")]
-        public void ThenActionIsEnabled()
+        
+        [Given(@"Mapping is Enabled")]
+        public void GivenMappingIsEnabled()
         {
-            var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.ActionVisible);
+            ScenarioContext.Current.Pending();
         }
-
-        [Then(@"Inputs is Enabled")]
-        public void ThenInputsIsEnabled()
+        
+        [Given(@"I open Wolf(.*)")]
+        public void GivenIOpenWolf(int p0)
         {
-            var viewModel = GetViewModel();
-            var hasInputs = viewModel.Inputs != null  || viewModel.InputsVisible;
-            Assert.IsTrue(hasInputs);
+            ScenarioContext.Current.Pending();
         }
-
-        [Then(@"Validate is Enabled")]
-        public void ThenValidateIsEnabled()
+        
+        [When(@"I click ""(.*)""")]
+        public void WhenIClick(string p0)
         {
-            var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+            ScenarioContext.Current.Pending();
         }
-
-        [Then(@"Inputs appear as")]
+        
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
+        [Then(@"inputs appear as")]
         public void ThenInputsAppearAs(Table table)
-        {
-            var viewModel = GetViewModel();
-            int rowNum = 0;
-            foreach(var row in table.Rows)
-            {
-                var inputValue = row["Input"];
-                var value = row["Value"];
-                var serviceInputs = viewModel.Inputs.ToList();
-                var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual(inputValue,serviceInput.Name);
-                Assert.AreEqual(value,serviceInput.Value);
-                rowNum++;
-            }
-        }
-
-        [Given(@"I open ""(.*)""")]
-        public void GivenIOpenWolf(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"""(.*)"" tab is opened")]
-        public void GivenTabIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I Select ""(.*)"" as Source")]
-        public void WhenISelectAsSource(string sourceName)
-        {
-            if(sourceName == "GreenPoint")
-            {
-                _importOrderAction = new DbAction();
-                _importOrderAction.Name = "dbo.ImportOrder";
-                _importOrderAction.Inputs = new List<IServiceInput>{new ServiceInput("ProductId","")};
-                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SelectedSource = _greenPointSource;
-            }
-        }
-        
-        [When(@"I select ""(.*)"" as the action")]
-        public void WhenISelectAsTheAction(string actionName)
-        {
-            if (actionName == "dbo.ImportOrder")
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("Column1"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[]{1},true));
-                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().SelectedProcedure = _importOrderAction;
-            }
-        }
-        
-        [When(@"I click Test")]
-        public void WhenIClickTest()
-        {
-            var testCommand = GetViewModel().ManageServiceInputViewModel.TestAction;
-            testCommand();
-        }
-
-        [When(@"I click OK")]
-        public void WhenIClickOK()
-        {
-            GetViewModel().ManageServiceInputViewModel.OkAction();
-        }
-        
-        [When(@"""(.*)"" is changed from ""(.*)"" to ""(.*)""")]
-        public void WhenIsChangedFromTo(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"""(.*)"" is selected as the data source")]
-        public void WhenIsSelectedAsTheDataSource(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"testing the action fails")]
-        public void WhenTestingTheActionFails()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click Validate")]
-        public void WhenIClickValidate()
-        {
-            GetViewModel().TestInputCommand.Execute(null);
-        }
-
-
-        [Then(@"the Test Connector and Calculate Outputs window is opened")]
-        public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
-        {
-            //GetInputViewModel().SetupProperty(model => model.Inputs,null);   
-        }
-
-        [Then(@"Test Inputs appear as")]
-        public void ThenTestInputsAppearAs(Table table)
-        {
-            int rowNum = 0;
-            var viewModel = GetViewModel();
-            foreach (var row in table.Rows)
-            {
-                var inputValue = row["ProductId"];
-                var serviceInputs = viewModel.ManageServiceInputViewModel.Inputs.ToList();
-                var serviceInput = serviceInputs[rowNum];
-                serviceInput.Value = inputValue;
-                rowNum++;
-            }
-        }
-
-        
-        [Then(@"Test Connector and Calculate Outputs outputs appear as")]
-        public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
-        {
-            var rowIdx = 0;
-            foreach(var tableRow in table.Rows)
-            {
-                var outputValue = tableRow["Column1"];
-                var rows = GetViewModel().ManageServiceInputViewModel.TestResults.Rows;
-                var dataRow = rows[rowIdx];
-                var dataRowValue = dataRow[0].ToString();
-                Assert.AreEqual(outputValue,dataRowValue);
-                rowIdx++;
-            }
-        }
-        
-        [Then(@"Outputs appear as")]
-        public void ThenOutputsAppearAs(Table table)
-        {
-            var outputMappings = GetViewModel().Outputs;
-            Assert.IsNotNull(outputMappings);
-            var rowIdx = 0;
-            foreach(var tableRow in table.Rows)
-            {
-                var mappedFrom = tableRow["Mapped From"];
-                var mappedTo = tableRow["Mapped To"];
-                var outputMapping = outputMappings.ToList()[rowIdx];
-                Assert.AreEqual(mappedFrom,outputMapping.MappedFrom);
-                Assert.AreEqual(mappedTo,outputMapping.MappedTo);
-            }
-        }
-
-        [Then(@"Recordset Name equals ""(.*)""")]
-        public void ThenRecordsetNameEquals(string recsetName)
-        {
-            Assert.AreEqual(recsetName,GetViewModel().RecordsetName);
-        }
-        
-        [Then(@"""(.*)"" tab is opened")]
-        public void ThenTabIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" equals ""(.*)""")]
-        public void ThenEquals(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" mappings are")]
-        public void ThenMappingsAre(string p0, Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"mappings are")]
-        public void ThenMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"input mappings are")]
-        public void ThenInputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"Data Source is focused")]
-        public void ThenDataSourceIsFocused()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is selected as the action")]
-        public void ThenIsSelectedAsTheAction(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
-        public void ThenInspectDataConnectorHyperLinkIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"inputs are")]
-        public void ThenInputsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"output mappings are")]
-        public void ThenOutputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"the ""(.*)"" window is opened")]
-        public void ThenTheWindowIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" outputs appear as")]
-        public void ThenOutputsAppearAs(string p0, Table table)
         {
             ScenarioContext.Current.Pending();
         }
