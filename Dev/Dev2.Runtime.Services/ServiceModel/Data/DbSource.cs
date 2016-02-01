@@ -49,6 +49,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                     ServerType = enSourceType.Oracle;
                     Port = 1521;
                     break;
+                case "ODBC":
+                    ServerType = enSourceType.ODBC;
+                    break;
                 default:
                     ServerType = enSourceType.Unknown;
                     break;
@@ -131,7 +134,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                         return string.Format("User Id={2};Password={3};Data Source={0};{1}",
                           Server,( DatabaseName  !=null ? string.Format("Database={0};", DatabaseName) : string.Empty) , UserID, Password,
                          Port > 0 ? string.Format(":{0}", Port) : string.Empty);
-              
+
+                    case enSourceType.ODBC:
+                        return string.Format("DSN={0};", DatabaseName);
 
                 }
                 return string.Empty;

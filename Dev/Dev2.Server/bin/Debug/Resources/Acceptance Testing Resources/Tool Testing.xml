@@ -1,5 +1,5 @@
 
-<Service ID="7fae60bd-89e1-46a8-898d-c88ba3e581fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Tool Testing" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5871.21811">
+<Service ID="7fae60bd-89e1-46a8-898d-c88ba3e581fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Tool Testing" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5875.28365">
   <DisplayName>Tool Testing</DisplayName>
   <Category>Acceptance Testing Resources\Tool Testing</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

@@ -25,6 +25,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
+using System.Data.Odbc;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -135,6 +136,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             break;
                         }
+                    case enSourceType.ODBC:
+                        {
+                            using (var connection = new OdbcConnection(runtTimedbSource.ConnectionString))
+                            {
+                                // Connect to the database then retrieve the schema information.
+                                connection.Open();
+                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+
+                                using (var sqlcmd = new OdbcCommand(sql, connection))
+                                {
+                                    // force it closed so we just get the proper schema ;)
+                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                    {
+                                        columnInfo = sdr.GetSchemaTable();
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
                     default:
                         {
                             using (var connection = new SqlConnection(runtTimedbSource.ConnectionString))

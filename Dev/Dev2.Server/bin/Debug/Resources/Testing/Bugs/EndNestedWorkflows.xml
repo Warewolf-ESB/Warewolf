@@ -1,5 +1,5 @@
 
-<Service ID="c78a3436-e895-4efc-b849-b1d7f9e5a0e9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EndNestedWorkflows" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5871.21811">
+<Service ID="c78a3436-e895-4efc-b849-b1d7f9e5a0e9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="EndNestedWorkflows" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5875.28365">
   <DisplayName>EndNestedWorkflows</DisplayName>
   <Category>Testing\Bugs\EndNestedWorkflows</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

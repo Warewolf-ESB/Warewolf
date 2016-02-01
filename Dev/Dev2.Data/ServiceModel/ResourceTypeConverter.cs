@@ -126,6 +126,9 @@ namespace Dev2.Data.ServiceModel
                 case enSourceType.Oracle:
                     resourceType = ResourceType.DbSource;
                     break;
+                case enSourceType.ODBC:
+                    resourceType = ResourceType.DbSource;
+                    break;
                 case enSourceType.Plugin:
                     resourceType = ResourceType.PluginSource;
                     break;

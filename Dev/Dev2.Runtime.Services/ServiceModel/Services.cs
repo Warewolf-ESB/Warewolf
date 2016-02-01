@@ -297,6 +297,26 @@ namespace Dev2.Runtime.ServiceModel
                             return dbService.Recordset;
 
                         }
+                    case enSourceType.ODBC:
+                        {
+
+                            var broker = new ODBCDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.ODBCMapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+
+                        }
                     default: return null;
 
                 }
@@ -351,6 +371,11 @@ namespace Dev2.Runtime.ServiceModel
                 case enSourceType.Oracle:
                     {
                         var broker = new OracleDatabaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                    }
+                case enSourceType.ODBC:
+                    {
+                        var broker = new ODBCDatabaseBroker();
                         return broker.GetServiceMethods(dbSource);
                     }
                 default:

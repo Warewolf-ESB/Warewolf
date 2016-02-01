@@ -301,6 +301,7 @@
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />

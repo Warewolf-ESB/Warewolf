@@ -152,6 +152,10 @@ namespace Dev2.Runtime.ServiceModel
                     var obroker = CreateOracleDatabaseBroker(dbSourceDetails.ServerType);
                     result.DatabaseList = obroker.GetDatabases(dbSourceDetails);
                     break;
+                case enSourceType.ODBC:
+                    var odbcbroker = CreateODBCDatabaseBroker(dbSourceDetails.ServerType);
+                    result.DatabaseList = odbcbroker.GetDatabases(dbSourceDetails);
+                    break;
                 default:
                     result.IsValid = false;
                     break;
@@ -175,6 +179,11 @@ namespace Dev2.Runtime.ServiceModel
         {
 
             return new OracleDatabaseBroker();
+        }
+        protected virtual ODBCDatabaseBroker CreateODBCDatabaseBroker(enSourceType type)
+        {
+
+            return new ODBCDatabaseBroker();
         }
     }
 }

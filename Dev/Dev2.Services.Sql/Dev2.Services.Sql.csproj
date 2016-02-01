@@ -62,6 +62,8 @@
     <Compile Include="DbFactory.cs" />
     <Compile Include="MySqlDbFactory.cs" />
     <Compile Include="MySqlServer.cs" />
+    <Compile Include="ODBCFactory.cs" />
+    <Compile Include="ODBCServer.cs" />
     <Compile Include="OracleServer.cs" />
     <Compile Include="OracleSqlFactory.cs" />
     <Compile Include="SqlServer.cs" />

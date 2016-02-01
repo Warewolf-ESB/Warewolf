@@ -24,6 +24,7 @@ using Dev2.Services.Sql;
 using MySql.Data.MySqlClient;
 using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
+using System.Data.Odbc;
 
 namespace Dev2.Services.Execution
 {
@@ -152,6 +153,13 @@ namespace Dev2.Services.Execution
                 case enSourceType.Oracle:
                     {
                         object result = OracleExecution(invokeErrors, update);
+                        ErrorResult.MergeErrors(invokeErrors);
+                        return result;
+                    }
+
+                case enSourceType.ODBC:
+                    {
+                        object result = ODBCExecution(invokeErrors, update);
                         ErrorResult.MergeErrors(invokeErrors);
                         return result;
                     }
@@ -398,6 +406,85 @@ namespace Dev2.Services.Execution
                     else
                     {
                         sqlParameters.Add(new OracleParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                    }
+                }
+            }
+            return sqlParameters;
+        }
+
+        private ODBCServer SetupODBCServer(ErrorResultTO errors)
+        {
+            var server = new ODBCServer();
+            try
+            {
+                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                if (!connected)
+                {
+                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                        Source.ConnectionString));
+                }
+                return server;
+            }
+            catch (OdbcException oex)
+            {
+                var errorMessages = new StringBuilder();
+                errorMessages.Append(oex.Message);
+                errors.AddError(errorMessages.ToString());
+                Dev2Logger.Log.Error(errorMessages.ToString());
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                Dev2Logger.Log.Error(ex);
+            }
+            return server;
+        }
+
+        private bool ODBCExecution(ErrorResultTO errors, int update)
+        {
+            //try
+            //{
+
+            //    List<OdbcParameter> parameters = GetODBCParameters(Inputs);
+            //    using (OdbcParameter server = SetupODBCServer(errors))
+            //    {
+
+            //        //if (parameters != null)
+            //        //{
+            //        //    // ReSharper disable CoVariantArrayConversion
+            //        //    using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+            //        //    //// ReSharper restore CoVariantArrayConversion
+            //        //   {
+            //        //      TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+            //        //        return true;
+            //        //    }
+            //        //}
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+            //}
+            return false;
+        }
+
+        private static List<OdbcParameter> GetODBCParameters(ICollection<IServiceInput> methodParameters)
+        {
+            var sqlParameters = new List<OdbcParameter>();
+
+            if (methodParameters.Count > 0)
+            {
+                foreach (var parameter in methodParameters)
+                {
+                    if (parameter.EmptyIsNull &&
+                        (parameter.Value == null ||
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    {
+                        sqlParameters.Add(new OdbcParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                    }
+                    else
+                    {
+                        sqlParameters.Add(new OdbcParameter(string.Format("@{0}", parameter.Name), parameter.Value));
                     }
                 }
             }

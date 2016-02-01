@@ -15,7 +15,8 @@ namespace Dev2.Common.Interfaces.DB
     {
         MSSQL,
         MySQL,
-        Oracle
+        Oracle,
+        ODBC
     }
 
     public interface IDBConnectionString
