@@ -2,18 +2,9 @@
 
 [![Bossie award](http://warewolf.io/images/Bossie-Award-badge.png)](http://www.infoworld.com/article/2982622/open-source-tools/bossie-awards-2015-the-best-open-source-applications.html#slide13) 
 
-      
-
-
-
-
-
 **What is Warewolf ESB all about?**
 
 We’re making integration into a simple, seamless process. Warewolf helps you quickly design, orchestrate and implement communication between software applications. Easily manage messaging, routing, and service co-ordination in a SOA framework.
-
-
-
 
 **Who can help?**
 
@@ -34,13 +25,11 @@ Use the [Knowledge Base](http://warewolf.io/knowledge-base/) site for:
 
 Get [Community Help, Support and Info](http://community.warewolf.io)
 
-
-
 Release notes are available at http://warewolf.io/release-notes.php
 
 You can download the latest compiled release from http://warewolf.io
 
-Please note that Warewolf is built for Windows 7 and Windows Server 2008. 
+Please note that Warewolf is built for Windows 8.1, Windows 10, Windows Server 2008 and Windows Server 2012. This repo includes an F# project which requires [Visual FSharp](http://www.microsoft.com/en-us/download/details.aspx?id=48179)
 
 
 **LICENCE:** Licensed under [GNU Affero General Public License 3.0](http://www.gnu.org/licenses/agpl-3.0.html) or later
