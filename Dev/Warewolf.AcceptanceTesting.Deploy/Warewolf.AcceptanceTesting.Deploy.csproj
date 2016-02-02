@@ -137,7 +137,7 @@
       <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
