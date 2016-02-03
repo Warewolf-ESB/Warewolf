@@ -1,7 +1,7 @@
-﻿Feature: Get Web Service Tool
-	In order to create New Web Get Request Tool in Warewolf
+﻿Feature: Put Web Connector Tool
+	In order to create New Web Put Service Tool in Warewolf
 	As a Warewolf User
-	I want to Create or Edit Warewolf Web Get Request.
+	I want to Create or Edit Warewolf Web Put Request.
 
 # layout of tool not ready
 @ignore

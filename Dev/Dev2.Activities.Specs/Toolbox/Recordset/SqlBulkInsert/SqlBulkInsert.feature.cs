@@ -2609,14 +2609,16 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Edit DB Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EditDBSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit DB Source", ((string[])(null)));
-#line 368
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit DB Source", new string[] {
+                        "ignore"});
 #line 369
- testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 370
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 371
  testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2631,11 +2633,11 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Country(*).Description]]",
                         "Description",
                         "varchar(50)"});
-#line 371
+#line 372
  testRunner.And("I have this data", ((string)(null)), table45, "And ");
-#line 375
- testRunner.When("I click \"Edit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 376
+ testRunner.When("I click \"Edit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 377
  testRunner.Then("the \"DemoDB\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2650,11 +2652,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in recordsets", @__tags);
-#line 380
-this.ScenarioSetup(scenarioInfo);
 #line 381
- testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 382
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 383
  testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2669,15 +2671,15 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Country(*).Description]]",
                         "Description",
                         "varchar(50)"});
-#line 383
+#line 384
  testRunner.And("I have this data", ((string)(null)), table46, "And ");
-#line 387
- testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 388
- testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 389
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 390
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 391
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2734,11 +2736,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SavingResultsInComplexTypes(string result, string value, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in complex types", exampleTags);
-#line 400
-this.ScenarioSetup(scenarioInfo);
 #line 401
- testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 402
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 403
  testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2753,15 +2755,15 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Country(*).Description().value]]",
                         "Description",
                         "varchar(50)"});
-#line 403
+#line 404
  testRunner.And("I have this data", ((string)(null)), table47, "And ");
-#line 407
- testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 408
- testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 409
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 410
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 411
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

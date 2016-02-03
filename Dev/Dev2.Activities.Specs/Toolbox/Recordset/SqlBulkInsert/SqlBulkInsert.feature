@@ -365,9 +365,10 @@ Scenario: Import data into table with blank data
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
 
+@ignore
 Scenario: Edit DB Source
-Given I have DB as "DemoDB"
-	And table as "dbo.[Country]"
+	Given I have "DB Source" as "DemoDB"
+	And table as "dbo.[Country]" 
 	And I have this data
 	| InputData                  | ToField     | Type        |
 	| [[Country(*).CountryID]]   | CountryID   | int         |
@@ -378,7 +379,7 @@ Given I have DB as "DemoDB"
 #Audit
 @ignore
 Scenario Outline: Saving results in recordsets
-	Given I have DB as "DemoDB"
+	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"
 	And I have this data
 	| InputData                  | ToField     | Type        |
@@ -398,7 +399,7 @@ Scenario Outline: Saving results in recordsets
 
 #Complex Types
 Scenario Outline: Saving results in complex types
-	Given I have DB as "DemoDB"
+	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"
 	And I have this data
 	| InputData                          | ToField     | Type        |
