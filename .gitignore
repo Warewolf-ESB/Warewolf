@@ -34,3 +34,4 @@ bin
 /Dev/packages/**
 /Dev/TestResults/**
 /TestResults/**
+.sonarqube

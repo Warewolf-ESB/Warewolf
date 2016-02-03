@@ -139,7 +139,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsing.Tests", "WarewolfParsing.Tests\WarewolfParsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj", "{18717E42-DF21-45A4-9527-F0BB95D7135D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj", "{18717E42-DF21-45A4-9527-F0BB95D7135D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Views", "Warewolf.Studio.Views\Warewolf.Studio.Views.csproj", "{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}"
 	ProjectSection(ProjectDependencies) = postProject
