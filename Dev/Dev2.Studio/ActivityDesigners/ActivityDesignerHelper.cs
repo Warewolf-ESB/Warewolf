@@ -58,6 +58,7 @@ using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
+using Dev2.Activities.Designers2.WebServiceGet;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
@@ -117,6 +118,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
+                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
