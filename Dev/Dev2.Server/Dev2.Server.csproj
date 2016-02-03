@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87AEFD04-29F3-45B6-A7C6-4161F9190876}</ProjectGuid>
@@ -19,9 +19,12 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <PublishUrl>\\tuw-devfs\installs\Dynamic Service Framework\</PublishUrl>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>e20cc85e</NuGetPackageImportStamp>
+    <PublishUrl>C:\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -29,11 +32,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <SupportUrl>http://tuw-hubps2010/pwa/ITWiki/Pages/Dynamic%2520Services%2520Framework.aspx</SupportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Dynamic Service Framework</ProductName>
-    <PublisherName>The Unlimited</PublisherName>
-    <SuiteName>The Unlimited Architecture Team</SuiteName>
     <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -41,9 +40,6 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>e20cc85e</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
