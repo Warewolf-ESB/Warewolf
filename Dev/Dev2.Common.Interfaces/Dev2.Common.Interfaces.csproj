@@ -302,6 +302,12 @@
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
+    <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
+    <Compile Include="ToolBase\IErrorRegion.cs" />
+    <Compile Include="ToolBase\IInputsToolRegion.cs" />
+    <Compile Include="ToolBase\IOutputsToolRegion.cs" />
+    <Compile Include="ToolBase\ISourceToolRegion.cs" />
+    <Compile Include="ToolBase\IToolRegion.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
     <Compile Include="Toolbox\IToolboxModel.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />

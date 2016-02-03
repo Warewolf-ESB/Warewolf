@@ -62,6 +62,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2188, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
@@ -188,6 +192,7 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
+    <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputView.xaml.cs" />
@@ -196,6 +201,9 @@
       <DependentUpon>ManageServiceInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
+    <Compile Include="Designers2\Core\WebSourceRegion.cs" />
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -663,6 +671,10 @@
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\WriteFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -869,6 +881,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Comment\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Core\CustomToolDesignerRegions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1337,6 +1353,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
