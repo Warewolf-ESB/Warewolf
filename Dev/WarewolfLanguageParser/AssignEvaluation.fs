@@ -177,7 +177,9 @@ and EvalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (e
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp update
     match left with 
         |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  value shouldUseLast update None
-        |    _ ->   failwith "only recsets"
+        |   ScalarExpression s ->   let value = System.String.Join("," ,Seq.map (fun a-> a.ToString()) value |> Array.ofSeq) |> WarewolfAtom.DataString
+                                    AddToScalars env s value
+        |    _ ->   failwith "Only recsets and scalars can be assigned from a list"
 
 
 and EvalDataShape (exp:string) (update:int) (env:WarewolfEnvironment) =
