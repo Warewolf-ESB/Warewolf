@@ -4406,3 +4406,14 @@ Scenario: ForEach using * and Database Connector
 	  And the 'ForeachDBCon' in Workflow 'DBConnInForEach_3' debug outputs as
 	  |                   |
 	  | [[Result]] = pass |
+
+
+#Wolf-1370
+@ignore
+Scenario: Mixing Scalar And Recordset bug 
+	Given I have a workflow "OutterWorkflow"
+	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+      | [[reg(*).a]]     | [[a]]         | [[rec().a]]         | [[re]]      |
+	When "OutterWorkflow" is executed
+	Then the workflow execution has "NO" error
