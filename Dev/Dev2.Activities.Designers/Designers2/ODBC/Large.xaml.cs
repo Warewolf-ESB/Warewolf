@@ -18,7 +18,7 @@ namespace Dev2.Activities.Designers2.ODBC
         public Large()
         {
             InitializeComponent();
-            DataGrid = LargeDataGrid;
+          //  DataGrid = LargeDataGrid;
             SetInitialFocus();
         }
 

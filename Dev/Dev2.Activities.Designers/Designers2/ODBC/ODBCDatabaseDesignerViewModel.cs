@@ -846,28 +846,30 @@ namespace Dev2.Activities.Designers2.ODBC
                     _selectedSource = value;
                     try
                     {
-                        Procedures = _dbServiceModel.GetActions(_selectedSource);
+                       
                         if (!_isInitializing)
                         {
                             Inputs = new List<IServiceInput>();
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
-                            InputsVisible = false;
+                            InputsVisible = true;
                             InputsExpanded = false;
                             OutputsVisible = false;
                             OutputsExpanded = false;
                         }
-                        ActionVisible = Procedures.Count != 0;
-                        if (Procedures.Count <= 0)
-                        {
-                            ErrorMessage(new Exception("The selected database does not contain actions to perform"));
-                        }
+                      //  ActionVisible = Procedures.Count != 0;
+                        ActionVisible =true;
+                        ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
+                        Procedures = _dbServiceModel.GetActions(_selectedSource);
+                        //if (Procedures.Count <= 0)
+                        //{
+                        //    ErrorMessage(new Exception("The selected database does not contain actions to perform"));
+                        //}
                         SourceId = _selectedSource.Id;
-                        if (SourceId != Guid.Empty)
-                        {
+                        
                             RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
                             FriendlySourceNameValue = _selectedSource.Name;
-                        }
+                        
                     }
                     catch (Exception e)
                     {
@@ -951,7 +953,7 @@ namespace Dev2.Activities.Designers2.ODBC
                     OutputsExpanded = false;
                     ProcedureName = _selectedProcedure != null ? _selectedProcedure.Name : "";
                     InitializeProperties();
-                    ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
+                   ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                     OnPropertyChanged("SelectedProcedure");
                 }
             }
@@ -981,7 +983,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
         bool CanTestProcedure()
         {
-            return SelectedProcedure != null;
+            return SelectedSource != null;
         }
 
         public bool InputsVisible

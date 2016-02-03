@@ -57,7 +57,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             Name = Dsn,
                             DbName = Dsn,
-                            Type = enSourceType.ODBC
+                            Type = enSourceType.ODBC,
+
                         }
 
               );
