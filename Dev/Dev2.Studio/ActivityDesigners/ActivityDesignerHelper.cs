@@ -119,7 +119,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
-                  { typeof(DsfODBCDatabaseActivity), typeof(DsfODBCDatabaseActivity) },
+                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
