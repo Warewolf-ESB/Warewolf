@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.Diagnostics.PerformanceCounters
 {
@@ -17,20 +18,26 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         private void CreateCounters(IList<IPerformanceCounter> counters)
         {
-          
-            if (!PerformanceCounterCategory.Exists("Warewolf"))
+            try
             {
-                CreateAllCounters(counters);
-            }
-            else
-            {
-                PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
-                if (!counters.All(a => cat.CounterExists(a.Name)))
+                if (!PerformanceCounterCategory.Exists("Warewolf"))
                 {
-                    PerformanceCounterCategory.Delete("Warewolf");
                     CreateAllCounters(counters);
-
                 }
+                else
+                {
+                    PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
+                    if (!counters.All(a => cat.CounterExists(a.Name)))
+                    {
+                        PerformanceCounterCategory.Delete("Warewolf");
+                        CreateAllCounters(counters);
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2.Common.Dev2Logger.Error(e);
             }
 
           
