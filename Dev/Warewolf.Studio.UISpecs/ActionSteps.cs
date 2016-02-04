@@ -1700,7 +1700,75 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.PressF11_EnterFullScreen_FromStartPage();
                         break;
                     }
-                
+
+                case "Drag_DotNet_DLL_Connector_Onto_DesignSurface":
+                    {
+                        Uimap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
+                        break;
+                    }
+                case "Assert_DotNet_DLL_Connector_Exists_OnDesignSurface":
+                    {
+                        Uimap.Assert_DotNet_DLL_Connector_Exists_OnDesignSurface();
+                        break;
+                    }
+                case "Open_DotNet_DLL_Connector_Tool_Small_View":
+                    {
+                        Uimap.Open_DotNet_DLL_Connector_Tool_Small_View();
+                        break;
+                    }
+
+
+                case "Click_Toggle_Unpin_VariableList":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Unpin_VariableList();
+                        break;
+                    }
+                case "Click_Toggle_Unpin_Explorer":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Unpin_Explorer();
+                        break;
+                    }
+                case "Click_Toggle_Unpin_Documentor":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Unpin_Documentor();
+                        break;
+                    }
+                case "Click_Toggle_Unpin_DebugOutput":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Unpin_DebugOutput();
+                        break;
+                    }
+                case "Click_Toggle_Unpiin_Toolbox":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Unpiin_Toolbox();
+                        break;
+                    }
+                case "Click_Toggle_Pin_VariableList":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_VariableList();
+                        break;
+                    }
+                case "Click_Toggle_Pin_Toolbox":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_Toolbox();
+                        break;
+                    }
+
+                case "Click_Toggle_Pin_Explorer":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_Explorer();
+                        break;
+                    }
+                case "Click_Toggle_Pin_Documentor":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_Documentor();
+                        break;
+                    }
+                case "Click_Toggle_Pin_DebugOutput":
+                    {
+                        OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_DebugOutput();
+                        break;
+                    }
                 default:
                     {
                         Assert.Fail(p0 + " is not a recognized action recording.");
