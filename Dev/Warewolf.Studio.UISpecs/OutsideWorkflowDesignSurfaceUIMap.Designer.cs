@@ -3022,11 +3022,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Pin_Documentor()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWpfWindow.UIItemCustom.UIWHATDOESTHISDOCustom.UIUnpinBtnButton;
+            WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(2, 11));
+            Mouse.Click(documentorUnpinBtn, new Point(2, 11));
         }
         
         /// <summary>
@@ -3035,11 +3035,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Pin_Explorer()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWpfWindow.UIItemCustom.UIEXPLORERCustom.UIUnpinBtnButton;
+            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(12, 9));
+            Mouse.Click(explorerUnpinBtn, new Point(12, 9));
         }
         
         /// <summary>
@@ -3048,11 +3048,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Pin_Toolbox()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWpfWindow.UIItemCustom.UITOOLBOXCustom.UIUnpinBtnButton;
+            WpfButton toolUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(10, 8));
+            Mouse.Click(toolUnpinBtn, new Point(10, 8));
         }
         
         /// <summary>
@@ -3061,11 +3061,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Pin_VariableList()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWpfWindow.UIItemCustom.UIVARIABLESCustom.UIUnpinBtnButton;
+            WpfButton variableUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(10, 14));
+            Mouse.Click(variableUnpinBtn, new Point(10, 14));
         }
         
         /// <summary>
@@ -3074,11 +3074,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Unpiin_Toolbox()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWarewolfDEV2LEROYWARWindow.UIZcfe13fc0d52945a9a79Custom.UITOOLBOXCustom.UIUnpinBtnButton;
+            WpfButton toolUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(15, 13));
+            Mouse.Click(toolUnpinBtn, new Point(15, 13));
         }
         
         /// <summary>
@@ -3087,11 +3087,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Unpin_DebugOutput()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWarewolfDEV2LEROYWARWindow.UIZ74f8d4a07ae44ffcbd8Custom.UIOUTPUTCustom.UIUnpinBtnButton;
+            WpfButton debugOutputUnpinBtn = this.UIWarewolfDEV2LEROYWARWindow.UIZ74f8d4a07ae44ffcbd8Custom.UIOUTPUTCustom.DebugOutputUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(8, 14));
+            Mouse.Click(debugOutputUnpinBtn, new Point(8, 14));
         }
         
         /// <summary>
@@ -3100,11 +3100,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Unpin_Documentor()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWarewolfDEV2LEROYWARWindow.UIZ16e631b821c94d90bacCustom.UIZ2da82c89e9c54f37a62TabList.UIWHATDOESTHISDOTabPage.UIWHATDOESTHISDOCustom.UIUnpinBtnButton;
+            WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(14, 13));
+            Mouse.Click(documentorUnpinBtn, new Point(14, 13));
         }
         
         /// <summary>
@@ -3113,11 +3113,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Unpin_Explorer()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWarewolfDEV2LEROYWARWindow.UIZ16e631b821c94d90bacCustom.UIEXPLORERCustom.UIUnpinBtnButton;
+            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(13, 7));
+            Mouse.Click(explorerUnpinBtn, new Point(13, 7));
         }
         
         /// <summary>
@@ -3126,11 +3126,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Toggle_Unpin_VariableList()
         {
             #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.UIWarewolfDEV2LEROYWARWindow.UIZ74f8d4a07ae44ffcbd8Custom.UIVARIABLESCustom.UIUnpinBtnButton;
+            WpfButton variableUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn;
             #endregion
 
             // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(14, 15));
+            Mouse.Click(variableUnpinBtn, new Point(14, 15));
         }
         
         /// <summary>
@@ -11093,6 +11093,22 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public WpfButton ExplorerUnpinBtn
+        {
+            get
+            {
+                if ((this.mExplorerUnpinBtn == null))
+                {
+                    this.mExplorerUnpinBtn = new WpfButton(this);
+                    #region Search Criteria
+                    this.mExplorerUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mExplorerUnpinBtn.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mExplorerUnpinBtn;
+            }
+        }
+        
         public ConnectControl ConnectControl
         {
             get
@@ -11147,6 +11163,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private WpfButton mExplorerUnpinBtn;
+        
         private ConnectControl mConnectControl;
         
         private SearchTextBox mSearchTextBox;
@@ -11402,6 +11420,22 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public WpfButton ToolUnpinBtn
+        {
+            get
+            {
+                if ((this.mToolUnpinBtn == null))
+                {
+                    this.mToolUnpinBtn = new WpfButton(this);
+                    #region Search Criteria
+                    this.mToolUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mToolUnpinBtn.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mToolUnpinBtn;
+            }
+        }
+        
         public WpfEdit SearchTextBox
         {
             get
@@ -11448,6 +11482,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private WpfButton mToolUnpinBtn;
+        
         private WpfEdit mSearchTextBox;
         
         private WpfButton mRefreshButton;
@@ -12711,6 +12747,22 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public WpfButton DocumentorUnpinBtn
+        {
+            get
+            {
+                if ((this.mDocumentorUnpinBtn == null))
+                {
+                    this.mDocumentorUnpinBtn = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDocumentorUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mDocumentorUnpinBtn.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mDocumentorUnpinBtn;
+            }
+        }
+        
         public WpfControl HelpWindow
         {
             get
@@ -12730,6 +12782,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private WpfButton mDocumentorUnpinBtn;
+        
         private WpfControl mHelpWindow;
         #endregion
     }
@@ -19102,6 +19156,22 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public WpfButton VariableUnpinBtn
+        {
+            get
+            {
+                if ((this.mVariableUnpinBtn == null))
+                {
+                    this.mVariableUnpinBtn = new WpfButton(this);
+                    #region Search Criteria
+                    this.mVariableUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mVariableUnpinBtn.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mVariableUnpinBtn;
+            }
+        }
+        
         public VariablesControl VariablesControl
         {
             get
@@ -19116,6 +19186,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private WpfButton mVariableUnpinBtn;
+        
         private VariablesControl mVariablesControl;
         #endregion
     }
@@ -21034,13 +21106,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIVARIABLESCustom1 UIVARIABLESCustom
+        public UIVARIABLESCustom UIVARIABLESCustom
         {
             get
             {
                 if ((this.mUIVARIABLESCustom == null))
                 {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom1(this);
+                    this.mUIVARIABLESCustom = new UIVARIABLESCustom(this);
                 }
                 return this.mUIVARIABLESCustom;
             }
@@ -21118,7 +21190,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private UISmallViewContentCustom mUISmallViewContentCustom;
         
-        private UIVARIABLESCustom1 mUIVARIABLESCustom;
+        private UIVARIABLESCustom mUIVARIABLESCustom;
         
         private WpfCustom mUIItemCustom4;
         
@@ -23143,13 +23215,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIEXPLORERCustom UIEXPLORERCustom
+        public WpfCustom UIEXPLORERCustom
         {
             get
             {
                 if ((this.mUIEXPLORERCustom == null))
                 {
-                    this.mUIEXPLORERCustom = new UIEXPLORERCustom(this);
+                    this.mUIEXPLORERCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
+                    this.mUIEXPLORERCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
                 }
                 return this.mUIEXPLORERCustom;
             }
@@ -23169,46 +23246,9 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIEXPLORERCustom mUIEXPLORERCustom;
+        private WpfCustom mUIEXPLORERCustom;
         
         private UIZ2da82c89e9c54f37a62TabList mUIZ2da82c89e9c54f37a62TabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UIEXPLORERCustom : WpfCustom
-    {
-        
-        public UIEXPLORERCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mUIUnpinBtnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
         #endregion
     }
     
@@ -23291,22 +23331,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mUIUnpinBtnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        
         public WpfText UIWHATDOESTHISDOText
         {
             get
@@ -23325,8 +23349,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        
         private WpfText mUIWHATDOESTHISDOText;
         #endregion
     }
@@ -23346,13 +23368,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIVARIABLESCustom UIVARIABLESCustom
+        public WpfCustom UIVARIABLESCustom
         {
             get
             {
                 if ((this.mUIVARIABLESCustom == null))
                 {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom(this);
+                    this.mUIVARIABLESCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
+                    this.mUIVARIABLESCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
                 }
                 return this.mUIVARIABLESCustom;
             }
@@ -23372,46 +23399,9 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIVARIABLESCustom mUIVARIABLESCustom;
+        private WpfCustom mUIVARIABLESCustom;
         
         private UIOUTPUTCustom mUIOUTPUTCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UIVARIABLESCustom : WpfCustom
-    {
-        
-        public UIVARIABLESCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mUIUnpinBtnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
         #endregion
     }
     
@@ -23430,25 +23420,25 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WpfButton UIUnpinBtnButton
+        public WpfButton DebugOutputUnpinBtn
         {
             get
             {
-                if ((this.mUIUnpinBtnButton == null))
+                if ((this.mDebugOutputUnpinBtn == null))
                 {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
+                    this.mDebugOutputUnpinBtn = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mUIUnpinBtnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mDebugOutputUnpinBtn.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
+                    this.mDebugOutputUnpinBtn.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
-                return this.mUIUnpinBtnButton;
+                return this.mDebugOutputUnpinBtn;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mUIUnpinBtnButton;
+        private WpfButton mDebugOutputUnpinBtn;
         #endregion
     }
     
@@ -23467,13 +23457,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UITOOLBOXCustom UITOOLBOXCustom
+        public WpfCustom UITOOLBOXCustom
         {
             get
             {
                 if ((this.mUITOOLBOXCustom == null))
                 {
-                    this.mUITOOLBOXCustom = new UITOOLBOXCustom(this);
+                    this.mUITOOLBOXCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
+                    this.mUITOOLBOXCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
                 }
                 return this.mUITOOLBOXCustom;
             }
@@ -23481,44 +23476,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UITOOLBOXCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UITOOLBOXCustom : WpfCustom
-    {
-        
-        public UITOOLBOXCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    this.mUIUnpinBtnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
+        private WpfCustom mUITOOLBOXCustom;
         #endregion
     }
     
@@ -23680,10 +23638,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UIVARIABLESCustom1 : WpfCustom
+    public class UIVARIABLESCustom : WpfCustom
     {
         
-        public UIVARIABLESCustom1(UITestControl searchLimitContainer) : 
+        public UIVARIABLESCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -24354,13 +24312,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIVARIABLESCustom2 UIVARIABLESCustom
+        public UIVARIABLESCustom1 UIVARIABLESCustom
         {
             get
             {
                 if ((this.mUIVARIABLESCustom == null))
                 {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom2(this);
+                    this.mUIVARIABLESCustom = new UIVARIABLESCustom1(this);
                 }
                 return this.mUIVARIABLESCustom;
             }
@@ -24378,13 +24336,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIEXPLORERCustom1 UIEXPLORERCustom
+        public UIEXPLORERCustom UIEXPLORERCustom
         {
             get
             {
                 if ((this.mUIEXPLORERCustom == null))
                 {
-                    this.mUIEXPLORERCustom = new UIEXPLORERCustom1(this);
+                    this.mUIEXPLORERCustom = new UIEXPLORERCustom(this);
                 }
                 return this.mUIEXPLORERCustom;
             }
@@ -24402,13 +24360,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UITOOLBOXCustom1 UITOOLBOXCustom
+        public UITOOLBOXCustom UITOOLBOXCustom
         {
             get
             {
                 if ((this.mUITOOLBOXCustom == null))
                 {
-                    this.mUITOOLBOXCustom = new UITOOLBOXCustom1(this);
+                    this.mUITOOLBOXCustom = new UITOOLBOXCustom(this);
                 }
                 return this.mUITOOLBOXCustom;
             }
@@ -24416,23 +24374,23 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIVARIABLESCustom2 mUIVARIABLESCustom;
+        private UIVARIABLESCustom1 mUIVARIABLESCustom;
         
         private UIOUTPUTCustom1 mUIOUTPUTCustom;
         
-        private UIEXPLORERCustom1 mUIEXPLORERCustom;
+        private UIEXPLORERCustom mUIEXPLORERCustom;
         
         private UIWHATDOESTHISDOCustom1 mUIWHATDOESTHISDOCustom;
         
-        private UITOOLBOXCustom1 mUITOOLBOXCustom;
+        private UITOOLBOXCustom mUITOOLBOXCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UIVARIABLESCustom2 : WpfCustom
+    public class UIVARIABLESCustom1 : WpfCustom
     {
         
-        public UIVARIABLESCustom2(UITestControl searchLimitContainer) : 
+        public UIVARIABLESCustom1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -24499,10 +24457,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UIEXPLORERCustom1 : WpfCustom
+    public class UIEXPLORERCustom : WpfCustom
     {
         
-        public UIEXPLORERCustom1(UITestControl searchLimitContainer) : 
+        public UIEXPLORERCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -24569,10 +24527,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.31101.0")]
-    public class UITOOLBOXCustom1 : WpfCustom
+    public class UITOOLBOXCustom : WpfCustom
     {
         
-        public UITOOLBOXCustom1(UITestControl searchLimitContainer) : 
+        public UITOOLBOXCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
