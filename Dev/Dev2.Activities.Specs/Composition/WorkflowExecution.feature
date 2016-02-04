@@ -4410,7 +4410,7 @@ Scenario: ForEach using * and Database Connector
 
 #Wolf-1370
 @ignore
-Scenario: Mixing Scalar And Recordset bug 
+Scenario: Mixing Scalar And Recordset bug 2
 	Given I have a workflow "OutterWorkflow"
 	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
