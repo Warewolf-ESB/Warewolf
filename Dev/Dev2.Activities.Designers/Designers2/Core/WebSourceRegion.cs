@@ -26,9 +26,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
-            MinHeight = 60;
-            MaxHeight = 60;
-            CurrentHeight = 60;
+            MinHeight = 20;
+            MaxHeight = 20;
+            CurrentHeight = 20;
             IsVisible = true;
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
@@ -47,23 +47,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return GetProperty<Guid>();
+                return _modelItem.GetProperty<Guid>("SourceId");
             }
             set
             {
-                SetProperty(value);
+               _modelItem.SetProperty("SourceId",value);
             }
         }
 
-        protected T GetProperty<T>([CallerMemberName] string propertyName = null)
-        {
-            return _modelItem.GetProperty<T>(propertyName);
-        }
 
-        protected void SetProperty<T>(T value, [CallerMemberName] string propertyName = null)
-        {
-            _modelItem.SetProperty(propertyName, value);
-        }
 
 
         private bool CanEditSource()
@@ -141,7 +133,9 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _selectedSource = value;
+                SourceId = value.Id;
                 OnSomethingChanged(this);
+                OnHeightChanged(this);
                 OnPropertyChanged();
             }
         }
@@ -183,6 +177,96 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
+            if(handler != null)
+            {
+                handler(this, args);
+            }
+        }
+    }
+
+    public class ErrorRegion:IToolRegion
+    {
+        private double _minHeight;
+        private double _currentHeight;
+        private bool _isVisible;
+        private double _maxHeight;
+
+        public ErrorRegion()
+        {
+            IsVisible = true;
+            MaxHeight = 250;
+            MinHeight = 250;
+            CurrentHeight = 250;
+        }
+
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Implementation of IToolRegion
+
+        public double MinHeight
+        {
+            get
+            {
+                return _minHeight;
+            }
+            set
+            {
+                _minHeight = value;
+            }
+        }
+        public double CurrentHeight
+        {
+            get
+            {
+                return _currentHeight;
+            }
+            set
+            {
+                _currentHeight = value;
+            }
+        }
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+            set
+            {
+                _isVisible = value;
+            }
+        }
+        public double MaxHeight
+        {
+            get
+            {
+                return _maxHeight;
+            }
+            set
+            {
+                _maxHeight = value;
+            }
+        }
+        public event HeightChanged HeightChanged;
+
+        #endregion
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void OnHeightChanged(IToolRegion args)
+        {
+            var handler = HeightChanged;
             if(handler != null)
             {
                 handler(this, args);

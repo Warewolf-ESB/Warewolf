@@ -3,24 +3,27 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
+using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
-using Dev2.Network;
-using Dev2.Providers.Errors;
-using Dev2.Services;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
+using Newtonsoft.Json;
+using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Web_Service_Get
 {
@@ -30,45 +33,43 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private IWebGetInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _source;
         private IEventAggregator _eventPublisher;
-        private string _buttonDisplayValue;
-        private int _labelWidth;
-        private bool _testComplete;
-        private IContextualResourceModel _rootModel;
-        private ObservableCollection<IErrorInfo> _designValidationErrors;
-        private Runtime.Configuration.ViewModels.Base.DelegateCommand _fixErrorsCommand;
         private string _resourceType;
         private string _imageSource;
 
 #pragma warning disable 169
         private IEnvironmentModel _environment;
 #pragma warning restore 169
-        private DelegateCommand _testInputCommand;
-        private DesignValidationService _validationService;
+#pragma warning disable 169
         private IErrorInfo _worstDesignError;
+#pragma warning restore 169
         const string DoneText = "Done";
         const string FixText = "Fix";
+        // ReSharper disable UnusedMember.Local
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+    
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
         readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
-
+        // ReSharper restore UnusedMember.Local
         public WebServiceGetViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : base(modelItem)
         {
+            LabelWidth = 75;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = pluginServiceModel;
             BuildRegions();
-            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManagePluginServiceInputViewModel(), pluginServiceModel);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel(), pluginServiceModel);
 
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem, regions)
         {
+
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
@@ -82,13 +83,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
         }
 
-        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManagePluginServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
         {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-
+            ManageServiceInputViewModel = manageServiceInputViewModel;
             _eventPublisher = eventPublisher;
             eventPublisher.Subscribe(this);
             //ButtonDisplayValue = DoneText;
@@ -117,22 +118,29 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             //// It is very possible we are treating a remote active as local since we cannot logically assign 
             //// an environment id when this is the case as it will fail with source not found since the remote 
             //// does not contain localhost's connections ;)
-            //var activeEnvironment = environmentRepository.ActiveEnvironment;
-            //if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
+            var activeEnvironment = environmentRepository.ActiveEnvironment;
+            if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
+            {
+                _environment = activeEnvironment;
+            }
+            else
+            {
+                var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
+                if (environment == null)
+                {
+                    IList<IEnvironmentModel> environments = EnvironmentRepository.Instance.LookupEnvironments(activeEnvironment);
+                    environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
+                }
+                _environment = environment;
+            }
+
+            //TestInputCommand = new DelegateCommand(() =>
             //{
-            //    _environment = activeEnvironment;
-            //}
-            //else
-            //{
-            //    var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
-            //    if (environment == null)
-            //    {
-            //        IList<IEnvironmentModel> environments = EnvironmentRepository.Instance.LookupEnvironments(activeEnvironment);
-            //        environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
-            //    }
-            //    _environment = environment;
-            //}
-            //TestInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestAction, CanTestProcedure);
+            //    TestComplete = true;
+            //    Outputs.IsVisible = true;
+            //    Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
+            //}, CanTestProcedure);
+            TestInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestAction, CanTestProcedure);
             //InitializeValidationService(_environment);
             //InitializeLastValidationMemo(_environment);
             //ManageServiceInputViewModel = manageServiceInputViewModel;
@@ -166,100 +174,35 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         }
 
-        void InitializeResourceModel(IEnvironmentModel environmentModel)
-        {
-            if (environmentModel != null)
-            {
-                if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
-                {
-                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
-                    environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
-                }
-                InitializeResourceModelSync(environmentModel);
-            }
-        }
+        //void InitializeResourceModel(IEnvironmentModel environmentModel)
+        //{
+        //    if (environmentModel != null)
+        //    {
+        //        if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
+        //        {
+        //            environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
+        //            environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
+        //        }
+        //        InitializeResourceModelSync(environmentModel);
+        //    }
+        //}
 
         // ReSharper disable InconsistentNaming
-        void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
-        // ReSharper restore InconsistentNaming
-        {
-        }
+        //void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
+        //// ReSharper restore InconsistentNaming
+        //{
+        //}
 
 
-        private void InitializeResourceModelSync(IEnvironmentModel environmentModel)
-        {
-            if (!environmentModel.IsConnected) // if we are not connected then just verify connection and return
-            {
-                environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
-            }
-            CheckSourceMissing();
-        }
-
-        void UpdateLastValidationMemoWithOfflineError(ConnectResult result)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                switch (result)
-                {
-                    case ConnectResult.Success:
-
-                        break;
-
-                    case ConnectResult.ConnectFailed:
-                    case ConnectResult.LoginFailed:
-                        var uniqueId = UniqueID;
-                        var memo = new DesignValidationMemo
-                        {
-                            InstanceID = uniqueId,
-                            IsValid = false,
-                        };
-                        memo.Errors.Add(new ErrorInfo
-                        {
-                            InstanceID = uniqueId,
-                            ErrorType = ErrorType.Warning,
-                            FixType = FixType.None,
-                            Message = result == ConnectResult.ConnectFailed
-                                          ? "Server is offline. " + _serviceExecuteOnline
-                                          : "Server login failed. " + _serviceExecuteLoginPermission
-                        });
-                        UpdateLastValidationMemo(memo);
-                        break;
-                }
-            });
-        }
-
-        bool CheckSourceMissing()
-        {
-            return true;
-        }
 
 
-        void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
-        {
-            //RemovePermissionsError();
 
-            //var hasNoPermission = HasNoPermission();
-            //if (hasNoPermission)
-            //{
-            //    var memo = new DesignValidationMemo
-            //    {
-            //        InstanceID = UniqueID,
-            //        IsValid = false,
-            //    };
-            //    memo.Errors.Add(new ErrorInfo
-            //    {
-            //        InstanceID = UniqueID,
-            //        ErrorType = ErrorType.Critical,
-            //        FixType = FixType.InvalidPermissions,
-            //        Message = _serviceExecuteViewPermission
-            //    });
-            //    UpdateLastValidationMemo(memo);
-            }
-        
 
-        private void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs e)
-        {
-        }
+       
+
+     
+
+
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
@@ -290,7 +233,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        public IManagePluginServiceInputViewModel ManageServiceInputViewModel
+        public IManageWebServiceInputViewModel ManageServiceInputViewModel
         {
             get
             {
@@ -304,69 +247,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private bool CanTestProcedure()
         {
-            return false;
-        }
-
-        void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
-        {
-            var uniqueId = UniqueID;
-            var designValidationMemo = new DesignValidationMemo
-            {
-                InstanceID = uniqueId,
-                ServiceID = ResourceID,
-                IsValid = RootModel.Errors == null || RootModel.Errors.Count == 0
-            };
-            var errors = RootModel.GetErrors(uniqueId).Cast<ErrorInfo>();
-            designValidationMemo.Errors.AddRange(errors);
-
-            if (environmentModel == null)
-            {
-                designValidationMemo.IsValid = false;
-                designValidationMemo.Errors.Add(new ErrorInfo
-                {
-                    ErrorType = ErrorType.Critical,
-                    FixType = FixType.None,
-                    InstanceID = uniqueId,
-                    Message = "Server source not found. This service will not execute."
-                });
-            }
-
-            UpdateLastValidationMemo(designValidationMemo);
-        }
-        void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
-        {
-            DesignValidationErrors.Clear();
-            RootModel.ClearErrors();
-            foreach (var error in errors)
-            {
-                DesignValidationErrors.Add(error);
-                RootModel.AddError(error);
-            }
-            UpdateWorstError();
-        }
-
-        void UpdateWorstError()
-        {
-            if (DesignValidationErrors.Count == 0)
-            {
-                DesignValidationErrors.Add(NoError);
-                if (!RootModel.HasErrors)
-                {
-                    RootModel.IsValid = true;
-                }
-            }
-
-            IErrorInfo[] worstError = { DesignValidationErrors[0] };
-
-            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
-            {
-                worstError[0] = error;
-                if (error.ErrorType == ErrorType.Critical)
-                {
-                    break;
-                }
-            }
-            WorstDesignError = worstError[0];
+            return Source.SelectedSource != null;
         }
 
         public IErrorInfo NoError
@@ -374,20 +255,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             get
             {
                 return _noError;
-            }
-        }
-
-        IErrorInfo WorstDesignError
-        {
-            get { return _worstDesignError; }
-            set
-            {
-                if (_worstDesignError != value)
-                {
-                    _worstDesignError = value;
-                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
-                }
             }
         }
 
@@ -411,20 +278,20 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
         public static readonly DependencyProperty WorstErrorProperty =
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
-        private System.Action _testAction;
-        private IManagePluginServiceInputViewModel _manageServiceInputViewModel;
+        private IManageWebServiceInputViewModel _manageServiceInputViewModel;
 #pragma warning disable 414
 #pragma warning disable 169
         private bool _isInitializing;
 #pragma warning restore 169
 #pragma warning restore 414
-        private IWebServiceModel _model;
         private DelegateCommand _newSourceCommand;
 #pragma warning disable 649
         private IErrorInfo _noError;
+        private bool _testComplete;
+        private bool _testSuccessful;
 #pragma warning restore 649
 
-        // ReSharper disable once UnusedParameter.Local
+        
         void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
         {
             LastValidationMemo = memo;
@@ -442,26 +309,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public DesignValidationMemo LastValidationMemo { get; private set; }
 
-        void InitializeValidationService(IEnvironmentModel environmentModel)
-        {
-            if (environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
-            {
-                _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                _validationService.Subscribe(UniqueID, a => UpdateLastValidationMemo(a));
-            }
-        }
-
-        public DelegateCommand TestInputCommand
-        {
-            get
-            {
-                return _testInputCommand;
-            }
-            set
-            {
-                _testInputCommand = value;
-            }
-        }
+        public DelegateCommand TestInputCommand { get; set; }
 
         public string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
@@ -524,41 +372,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
         public string ServiceName { get { return GetProperty<string>(); } }
-        public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand
-        {
-            get
-            {
-                return _fixErrorsCommand;
-            }
-            set
-            {
-                _fixErrorsCommand = value;
-            }
-        }
+        public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
-        public ObservableCollection<IErrorInfo> DesignValidationErrors
-        {
-            get
-            {
-                return _designValidationErrors;
-            }
-            set
-            {
-                _designValidationErrors = value;
-            }
-        }
+        public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
 
-        public IContextualResourceModel RootModel
-        {
-            get
-            {
-                return _rootModel;
-            }
-            set
-            {
-                _rootModel = value;
-            }
-        }
+        public IContextualResourceModel RootModel { get; set; }
 
         public bool TestComplete
         {
@@ -569,34 +387,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _testComplete = value;
+                OnPropertyChanged();
             }
         }
 
+        public int LabelWidth { get; set; }
 
-
-        public int LabelWidth
-        {
-            get
-            {
-                return _labelWidth;
-            }
-            set
-            {
-                _labelWidth = value;
-            }
-        }
-
-        public string ButtonDisplayValue
-        {
-            get
-            {
-                return _buttonDisplayValue;
-            }
-            set
-            {
-                _buttonDisplayValue = value;
-            }
-        }
+        public string ButtonDisplayValue { get; set; }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
@@ -614,10 +411,24 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Source = new WebSourceRegion(Model, ModelItem);
                 regions.Add(Source);
                 InputArea = new WebGetInputRegion(ModelItem,Source);
+                regions.Add(InputArea);
+                Outputs = new OutputsRegion(ModelItem);
+                regions.Add(Outputs);
+                regions.Add(new ErrorRegion());
             }
             Regions = regions;
+            foreach(var toolRegion in regions)
+            {
+                toolRegion.HeightChanged += toolRegion_HeightChanged;
+            }    
             ReCalculateHeight();
             return regions;
+        }
+
+        void toolRegion_HeightChanged(object sender, IToolRegion args)
+        {
+           ReCalculateHeight();
+            TestInputCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -660,31 +471,156 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 OnPropertyChanged();
             }
         }
-        public System.Action TestAction
+        public void TestAction()
         {
-            get
+            try
             {
-                return _testAction;
+                Errors = new List<IActionableErrorInfo>();
+                var service = ToModel();
+                ManageServiceInputViewModel.Model = service;
+                ManageServiceInputViewModel.Inputs = service.Inputs;
+                ManageServiceInputViewModel.TestResults = null;
+                ManageServiceInputViewModel.TestAction = () =>
+                {
+                    ManageServiceInputViewModel.IsTesting = true;
+                    try
+                    {
+                        ManageServiceInputViewModel.TestResults = Model.TestService(ManageServiceInputViewModel.Model);
+                        var serializer = new Dev2JsonSerializer();
+
+                        var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
+                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                        {
+                            var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
+                            throw new Exception(errorMessage);
+                        }
+
+                        ManageServiceInputViewModel.Description = responseService.Description;
+                        // ReSharper disable MaximumChainedReferences
+                        var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                        {
+                            Outputs.RecordsetName = recordset.Name;
+                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
+                            return serviceOutputMapping;
+                        }).Cast<IServiceOutputMapping>().ToList();
+                        // ReSharper restore MaximumChainedReferences
+
+                        ManageServiceInputViewModel.OutputMappings = outputMapping;
+                        if (ManageServiceInputViewModel.TestResults != null)
+                        {
+                            ManageServiceInputViewModel.TestResultsAvailable = ManageServiceInputViewModel.TestResults != null;
+                            TestSuccessful = true;
+                            ManageServiceInputViewModel.IsTesting = false;
+                        }
+                    }
+                    catch(JsonSerializationException )
+                    {
+                        ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping>{new ServiceOutputMapping("Result","[[Result]]","")};
+                    }
+                    catch (Exception)
+                    {
+
+                        TestComplete = false;
+                       // ErrorMessage(e);
+                        ManageServiceInputViewModel.IsTesting = false;
+                        ManageServiceInputViewModel.CloseCommand.Execute(null);
+                    }
+                };
+                ManageServiceInputViewModel.OkAction = () =>
+                {
+                    Outputs.Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
+                    Outputs.Description = ManageServiceInputViewModel.Description;
+                };
+                ManageServiceInputViewModel.ShowView();
+                if (ManageServiceInputViewModel.OkSelected)
+                {
+                   ValidateTestComplete();
+                }
+                ReCalculateHeight();
+     
             }
-            set
+            catch (Exception)
             {
-                _testAction = value;
-            }
-        }
-        public IWebServiceModel Model
-        {
-            get
-            {
-                return _model;
-            }
-            set
-            {
-                _model = value;
+                //ErrorMessage(e);
             }
         }
 
+        private void ValidateTestComplete()
+        {
+            TestComplete = true;
+        }
+
+        public bool TestSuccessful
+        {
+            get
+            {
+                return _testSuccessful;
+            }
+            set
+            {
+                _testSuccessful = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private IWebService ToModel()
+        {
+            return new WebServiceDefinition
+            {
+                Inputs = InputsFromModel() ,
+                OutputMappings = new List<IServiceOutputMapping>(),
+                Source = Source.SelectedSource,
+                Name = "",
+                Path = "",
+                Id = Guid.NewGuid(),
+                PostData = "",
+                Headers = InputArea.Headers.Select(value => new NameValue { Name =value.Name, Value = value.Value }).ToList(),
+                QueryString = InputArea.QueryString,
+                SourceUrl = "",//Source.SelectedSource.HostName,
+                RequestUrl = Source.SelectedSource.HostName,
+                Response = ""
+            };
+        }
+
+        private IList<IServiceInput> InputsFromModel()
+        {
+            var dt = new List<IServiceInput>();
+            string s = InputArea.QueryString;
+            GetValue(s, dt);
+            foreach(var nameValue in InputArea.Headers)
+            {
+                GetValue(nameValue.Name, dt);
+                GetValue(nameValue.Value, dt);
+            }
+            return dt;
+        }
+
+        private static void GetValue(string s, List<IServiceInput> dt)
+        {
+            var exp = WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(s);
+            if(exp.IsComplexExpression)
+            {
+                var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
+                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.LanguageExpressionToString);
+                dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
+            }
+            if (exp.IsScalarExpression)
+            {
+
+                 dt.Add(new ServiceInput(s, ""));
+            }
+            if (exp.IsRecordSetExpression)
+            {
+
+                dt.Add(new ServiceInput(s, ""));
+            }
+        }
+
+        public IWebServiceModel Model { get; set; }
+
         #endregion
     }
+
 
 
 }
