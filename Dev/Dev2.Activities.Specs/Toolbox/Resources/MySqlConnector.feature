@@ -305,3 +305,15 @@ Scenario: Recordset has invalid character
 	  |                                                              |
 	  | [[getCountrie.s().id]] : Recordset name has invalid format   |
 	  | [[getCountrie.s().value]]: Recordset name has invalid format |
+
+
+#Wolf-1262
+@ignore
+Scenario: backward Compatiblity
+	Given I have a workflow "MySQLMigration"
+	And "MySQLMigration" contains "MySQLDATA" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      |                  |               | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "MySQLMigration" is executed
+	Then the workflow execution has "NO" error
