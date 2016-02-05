@@ -186,18 +186,17 @@ namespace Dev2.Activities.Designers2.ODBC
                         FriendlySourceNameValue = SelectedSource.Name;
                         if (!string.IsNullOrEmpty(ProcedureName))
                         {
-                            SelectedProcedure = Procedures.FirstOrDefault(action => action.Name == ProcedureName);
-                            if (SelectedProcedure == null)
-                            {
+                           
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
                                 InputsVisible = false;
                                 InputsExpanded = false;
                                 OutputsVisible = false;
                                 OutputsExpanded = false;
-                                ProcedureName = "";
+                               // ProcedureName = "";
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
-                            }
+                            MyCommand = ProcedureName;
+                            
                         }
                         else
                         {
@@ -263,7 +262,7 @@ namespace Dev2.Activities.Designers2.ODBC
             DbAction command = new DbAction();
             command.Name = MyCommand.ToString();
             SelectedProcedure = command;
-            OnPropertyChanged("SelectedProcedure");
+          
             var databaseService = new DatabaseService
             {
                 Action = command,
