@@ -46,6 +46,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var parameters = src.Inputs == null ? new List<MethodParameter>() : src.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
                 // ReSharper restore MaximumChainedReferences
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
+                if (source == null)
+                {
+                    source = new DbSource();
+                    source.DatabaseName = src.Source.DbName;
+                    source.ResourceID = src.Source.Id;
+                    source.ServerType = src.Source.Type;
+                    source.ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+                }
+                
                 var res = new DbService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.Name),

@@ -1,5 +1,5 @@
 
-<Service ID="11f679ae-627b-4e03-87eb-1bc37b71b475" Name="MyDataCon" ResourceType="DbService" IsValid="false" ServerVersion="0.0.5877.25778" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="11f679ae-627b-4e03-87eb-1bc37b71b475" Name="MyDataCon" ResourceType="DbService" IsValid="false" ServerVersion="0.0.5879.24134" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <Actions>
     <Action Name="MyDataCon" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" ExecuteAction="dbo.Pr_CitiesGetCountries" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>

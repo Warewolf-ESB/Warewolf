@@ -36,7 +36,7 @@ namespace Dev2.Services.Sql
         }
         public ODBCServer()
         {
-           
+            _factory = new ODBCFactory();
         }
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
@@ -167,10 +167,22 @@ namespace Dev2.Services.Sql
         {
             try
             {
+                if (command.CommandType == CommandType.StoredProcedure)
+                {
+                    command.CommandType = CommandType.Text;
+                   
                     using (IDataReader reader = command.ExecuteReader(commandBehavior))
                     {
                         return handler(reader);
                     }
+                }
+                else
+                {
+                    using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                    {
+                        return handler(reader);
+                    }
+                }
             }
             catch (DbException e)
             {
