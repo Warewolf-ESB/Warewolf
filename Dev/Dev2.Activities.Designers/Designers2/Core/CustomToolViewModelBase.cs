@@ -400,6 +400,7 @@ namespace Dev2.Activities.Designers2.Core
             DesignHeight = ToolHeight;
             DesignMinHeight = ToolHeight;
             DesignMaxHeight = MaxToolHeight;
+           
         }
 
         void SetToolHeightValue(double newToolHeight)

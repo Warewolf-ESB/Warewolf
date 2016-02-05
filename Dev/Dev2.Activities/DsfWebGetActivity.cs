@@ -11,11 +11,11 @@ namespace Dev2
     public class DsfWebGetActivity : DsfActivity
     {
      
-         IList<NameValue> Headers { get; set; }
+        public IList<INameValue> Headers { get; set; }
 
-         String QueryString { get; set; }
+         public string QueryString { get; set; }
 
-         IPluginSource Source { get; set; }
+   
 
          public DsfWebGetActivity()
          {

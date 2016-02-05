@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Input;
 using Infragistics.Controls.Grids;
 using Infragistics.Controls.Menus;
-using Warewolf.Studio.Views.XamGrid;
+using Warewolf.Studio.Themes.Luna.XamGrid;
 
-namespace Warewolf.Studio.Views.XamGridEx
+namespace Warewolf.Studio.Themes.Luna.XamGridEx
 {
     public class ContextMenuSettings : Infragistics.Controls.Grids.SettingsBase
     {
