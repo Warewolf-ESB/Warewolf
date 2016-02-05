@@ -1769,6 +1769,11 @@ namespace Warewolf.Studio.UISpecs
                         OutsideWorkflowDesignSurfaceUiMap.Click_Toggle_Pin_DebugOutput();
                         break;
                     }
+                case "Assert_Server_Version_Exists":
+                    {
+                        Uimap.Assert_Server_Version_Exists();
+                        break;
+                    }
                 default:
                     {
                         Assert.Fail(p0 + " is not a recognized action recording.");

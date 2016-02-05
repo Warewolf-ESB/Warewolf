@@ -1126,3 +1126,5 @@ Scenario: Pin and unpin Debug Output
 Scenario: Pin and unpin variable list
 	Given The 'Click_Toggle_Unpin_VariableList' recorded action is performed
 	Then The 'Click_Toggle_Pin_VariableList' recorded action is performed
+
+#Server splash screen missning

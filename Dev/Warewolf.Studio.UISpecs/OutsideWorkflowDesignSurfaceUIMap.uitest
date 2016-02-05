@@ -5477,6 +5477,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <DragDropAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow2.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem11">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow3.UIWpfWindow</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="54" Y="11" />
+      <StopLocation X="112" Y="15" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_ExplorerItem_IntoFolder_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -13562,9 +13580,7 @@
                     <PropertyCondition Name="AutomationId">OutputPane</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>
@@ -14478,11 +14494,56 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
+                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem11" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <SearchConfigurations>
+                            <SearchConfiguration>Expand</SearchConfiguration>
+                          </SearchConfigurations>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                       </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
               </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2LEROYWARWindow3" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="7212134">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>
