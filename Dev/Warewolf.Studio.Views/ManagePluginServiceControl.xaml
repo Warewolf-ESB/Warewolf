@@ -8,11 +8,11 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:xamGrid="clr-namespace:Warewolf.Studio.Views.XamGrid"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:converters="clr-namespace:Warewolf.Studio.Views.Converters"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:xamGrid="clr-namespace:Warewolf.Studio.Themes.Luna.XamGrid;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=interfaces:IPluginServiceViewModel, IsDesignTimeCreatable=False}">
