@@ -619,9 +619,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         public string FriendlySourceName
         {
+            
             get { return GetProperty<string>(); }
             set
             {
+                
                 SetProperty(value);
             }
         }

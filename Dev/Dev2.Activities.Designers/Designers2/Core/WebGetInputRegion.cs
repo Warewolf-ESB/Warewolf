@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -18,11 +20,14 @@ namespace Dev2.Activities.Designers2.Core
         private readonly ISourceToolRegion<IWebServiceSource> _source;
         private string _queryString;
         private string _requestUrl;
-        private ICollection<NameValue> _headers;
+        private ObservableCollection<INameValue> _headers;
         private double _minHeight;
         private double _currentHeight;
         private bool _isVisible;
         private double _maxHeight;
+        private string _headerText;
+        private double _headersHeight;
+        private const double baseHeight = 150;
         //private ICommand _addRowCommand;
         //private ICommand _removeRowCommand;
 
@@ -33,10 +38,19 @@ namespace Dev2.Activities.Designers2.Core
             MinHeight = 150;
             MaxHeight = 150;
             CurrentHeight = 150;
-            var headerCollection = new ObservableCollection<NameValue>();
+            IsVisible = false;
+
+            SetupHeaders(modelItem);
+            QueryString = "";
+        }
+
+        private void SetupHeaders(ModelItem modelItem)
+        {
+            var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
+            var headerCollection = new ObservableCollection<INameValue>(existing ?? new List<INameValue>());
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
+            Headers.Add(new NameValue());
         }
 
         private void UpdateRequestVariables(string obj)
@@ -45,6 +59,11 @@ namespace Dev2.Activities.Designers2.Core
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+
+            MaxHeight  = baseHeight+ Headers.Count * 45; ;
+            HeadersHeight = 15 +Headers.Count * 45;
+            _modelItem.SetProperty("Headers", _headers.ToList());
+           
         }
 
         public WebGetInputRegion( ModelItem modelItem,ISourceToolRegion<IWebServiceSource> source)
@@ -53,21 +72,25 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged+= SourceOnSomethingChanged  ;
-            MinHeight = 150;
-            MaxHeight = 150;
-            CurrentHeight = 150;
+            MinHeight = 300;
+            MaxHeight = 300;
+            CurrentHeight = 300;
             IsVisible = false;
-            var headerCollection = new ObservableCollection<NameValue>();
-            headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            Headers = headerCollection;
-            Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
+            SetupHeaders(modelItem);
+            RequestUrl = source.SelectedSource.HostName;
            
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
+            if(_source != null && _source.SelectedSource != null)
+            {
+                RequestUrl = _source.SelectedSource.HostName;
+                QueryString = _source.SelectedSource.DefaultQuery;
+            }
             OnPropertyChanged(@"IsVisible");
+            OnHeightChanged(this);
         }
 
         #region Implementation of IWebGetInputArea
@@ -76,11 +99,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _queryString;
+                return _modelItem.GetProperty<string>("QueryString");
             }
             set
             {
                 _queryString = value;
+                _modelItem.SetProperty("QueryString",value);
                 OnPropertyChanged();
             }
         }
@@ -96,7 +120,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public ICollection<NameValue> Headers
+        public ObservableCollection<INameValue> Headers
         {
             get
             {
@@ -105,6 +129,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _headers = value;
+                _modelItem.SetProperty("Headers", value.ToList());
                 OnPropertyChanged();
             }
         }
@@ -120,6 +145,30 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return null;
+            }
+        }
+        public string HeaderText
+        {
+            get
+            {
+                return _headerText;
+            }
+            set
+            {
+                _headerText = value;
+                OnPropertyChanged();
+            }
+        }
+        public double HeadersHeight
+        {
+            get
+            {
+                return _headersHeight;
+            }
+            set
+            {
+                _headersHeight = value;
+                OnPropertyChanged();
             }
         }
 

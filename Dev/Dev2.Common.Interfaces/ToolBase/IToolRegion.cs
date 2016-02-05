@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -18,9 +19,11 @@ namespace Dev2.Common.Interfaces.ToolBase
         string QueryString { get; set; }
         string RequestUrl { get; set; }
 
-        ICollection<NameValue> Headers { get; set; }
+        ObservableCollection<INameValue> Headers { get; set; }
         ICommand AddRowCommand { get; }
         ICommand RemoveRowCommand { get; }
+        string HeaderText { get; set; }
+        double HeadersHeight { get; set; }
     }
 
     public delegate void HeightChanged(object sender, IToolRegion args);
