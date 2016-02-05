@@ -12,6 +12,8 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Dev2.Services.Sql;
+using System;
+using System.Security.Cryptography;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -49,19 +51,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             }).ToList();
             ODBCServer Odbc = new ODBCServer();
             var Dsns = Odbc.GetDSN();
-            foreach(var Dsn in Dsns)
+          for(int i = 0; i < Dsns.Count; i++) 
             {
-                list.Add(
+                string input = Dsns[i];
+                using (MD5 md5 = MD5.Create())
+                {
+                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
+                    Guid result = new Guid(hash);
 
-                        new DbSourceDefinition
-                        {
-                            Name = Dsn,
-                            DbName = Dsn,
-                            Type = enSourceType.ODBC,
+                    list.Add(
 
-                        }
+                            new DbSourceDefinition
+                            {
+                                Name = Dsns[i],
+                                DbName = Dsns[i],
+                                Type = enSourceType.ODBC,
+                                Id = result
 
-              );
+                            }
+
+                  );
+                }
 
             }
           

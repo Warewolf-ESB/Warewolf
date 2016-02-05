@@ -43,6 +43,8 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.ResourceManagement;
+using Dev2.Services.Sql;
+using System.Security.Cryptography;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
@@ -1133,8 +1135,10 @@ namespace Dev2.Runtime.Hosting
                 lock (workspaceLock)
                 {
                     List<IResource> resources;
+                
                     if (_workspaceResources.TryGetValue(workspaceID, out resources))
                     {
+                       
                         foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
                     }
 
@@ -1142,6 +1146,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                         {
+                           
                             foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
                         }
                     }

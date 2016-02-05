@@ -69,6 +69,7 @@ namespace Dev2.Activities.Designers2.ODBC
         bool _isDisposed;
         const string DoneText = "Done";
         const string FixText = "Fix";
+        public string MyCommand { get; set; }
         //readonly bool _isInitializing;
         bool _isInitializing;
         public ODBCDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
@@ -259,16 +260,18 @@ namespace Dev2.Activities.Designers2.ODBC
 
         IDatabaseService ToModel()
         {
+            DbAction command = new DbAction();
+            command.Name = MyCommand.ToString();
+            SelectedProcedure = command;
+            OnPropertyChanged("SelectedProcedure");
             var databaseService = new DatabaseService
             {
-                Action = SelectedProcedure,
+                Action = command,
                 Source = SelectedSource,
             };
             databaseService.Inputs = new List<IServiceInput>();
-            foreach (var serviceInput in Inputs)
-            {
-                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
-            }
+            
+            
             return databaseService;
         }
 
@@ -276,6 +279,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             try
             {
+                
                 Errors = new List<IActionableErrorInfo>();
                 var databaseService = ToModel();
                 ManageServiceInputViewModel.Model = databaseService;
@@ -337,7 +341,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            RecordsetName = ProcedureName.Replace(".", "_");
+            RecordsetName = "Command";
             for (int i = 0; i < testResults.Columns.Count; i++)
             {
                 var column = testResults.Columns[i];
@@ -859,12 +863,9 @@ namespace Dev2.Activities.Designers2.ODBC
                         }
                       //  ActionVisible = Procedures.Count != 0;
                         ActionVisible =true;
-                        ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
+                       
                         Procedures = _dbServiceModel.GetActions(_selectedSource);
-                        //if (Procedures.Count <= 0)
-                        //{
-                        //    ErrorMessage(new Exception("The selected database does not contain actions to perform"));
-                        //}
+                        ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                         SourceId = _selectedSource.Id;
                         
                             RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_sourceNotSelectedMessage)).ToList());
@@ -936,6 +937,7 @@ namespace Dev2.Activities.Designers2.ODBC
             }
             set
             {
+                
                 if (!Equals(value, _selectedProcedure))
                 {
                     _selectedProcedure = value;

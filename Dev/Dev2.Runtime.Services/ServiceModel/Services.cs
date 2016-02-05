@@ -221,6 +221,7 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ArgumentNullException("dbService");
             }
                         var  source = dbService.Source as DbSource;
+          
             if(source != null)
             {
                 switch(source.ServerType)

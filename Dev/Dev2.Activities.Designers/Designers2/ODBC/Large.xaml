@@ -89,27 +89,13 @@
                     <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <!--<Button x:Name="SourceEditButton" 
-                                    Grid.Column="2"
-                                    Margin="{StaticResource ControlBorderRight}"
-                                    Content="..."
-                                    ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
-                                    Command="{Binding Path=EditSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button x:Name="SourceNewButton" 
-                                    Grid.Column="3"
-                                    Content="{x:Static languages:Core.New}" 
-                                    Width="Auto"
-                                    Style="{StaticResource ButtonOrangeStyle}" 
-                                    ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
-                                    Command="{Binding Path=NewSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>-->
+            
+            
+       
+            
+            
+            
+            
             <Button x:Name="TestInputButton"
                 Grid.Column="5"
                 
@@ -122,9 +108,34 @@
                 IsEnabled="True" />
         </Grid>
 
-     
+        <Grid x:Name="ActionsGrid" 
+              Grid.Column="0"
+              Grid.ColumnSpan="3"
+              Grid.Row="1" 
+              Margin="{StaticResource ControlBorderTop}" 
+              IsEnabled="{Binding ActionVisible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=SourceLabel, Path=ActualWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
 
-        
+            <TextBox  x:Name="ActionsComboBox"
+                      Text="{Binding MyCommand,  Mode=TwoWay}"
+                                      Grid.Column="1"
+                                      Margin="{StaticResource ControlBorderRight}"
+                                      IsEnabled="True"
+                                      ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                      
+                                      >
+                
+            </TextBox>
+
+
+        </Grid>
+
+       
 
         <ig:XamGrid x:Name="OutputsMappingDataGrid" 
                     Grid.Column="0"

@@ -104,7 +104,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
-                server.FetchStoredProcedures(procedureFunc, functionFunc, false, dbSource.DatabaseName);
+                
             }
 
             // Add to cache ;)
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
         }
 
-        #region Overrides of AbstractDatabaseBroker<MySqlServer>
+        #region Overrides of AbstractDatabaseBroker<ODBCServer>
 
         protected override ODBCServer CreateDbServer(DbSource dbSource)
         {
@@ -154,7 +154,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //{
                     //    command.Parameters.Add(dbDataParameter);
                     //}
-                    //var dataTable = server.FetchDataTable(command);
+                    var dataTable = server.FetchDataTable(command);
 
                     //
                     // Map shape of XML
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     result.DataSourceShapes.Add(dataSourceShape);
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                   // dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
                 }
                 finally
                 {
