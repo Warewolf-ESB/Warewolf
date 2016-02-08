@@ -3,12 +3,14 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.WebService;
 using Moq;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.ToolBase;
+
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -18,52 +20,7 @@ namespace Dev2.Activities.Designers.Tests.Core
     [TestClass]
     public class WebSourceRegionTest
     {
-        public WebSourceRegionTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void Ctor()
@@ -75,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(region.MaxHeight, 20);
             Assert.AreEqual(region.MinHeight, 20);
             Assert.AreEqual(region.Errors.Count,1);
+            Assert.IsTrue(region.IsVisible);
         }
         [TestMethod]
         public void CtorWitSelectedSrc()
@@ -104,49 +62,77 @@ namespace Dev2.Activities.Designers.Tests.Core
             region.SelectedSource = s2;
             Assert.IsTrue(Evt);
         }
-    }
 
-    [TestClass]
-    public class WebInputRegionTest
-    {
 
         [TestMethod]
-        public void TestInputCtor()
+        public void ChangeSelectedSource_ExpectRegionsRestored()
         {
             var id = Guid.NewGuid();
             var act = new DsfWebGetActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var src = new Mock<IWebServiceModel>();
+            var websrc = new WebServiceSourceDefinition() { Id = id };
 
-            var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> {  });
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
-            var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),srcreg);
-            Assert.AreEqual(region.MaxHeight,195);
-            Assert.AreEqual(region.MinHeight, 300);
-            Assert.AreEqual(region.CurrentHeight, 300);
-            Assert.AreEqual(region.IsVisible, false);
+            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
+            src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
+            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
+            var clone1 = new Mock<IToolRegion>();
+            var clone2 = new Mock<IToolRegion>();
+            var dep1 = new Mock<IToolRegion>();
+            dep1.Setup(a => a.CloneRegion()).Returns(clone1.Object);
+         
+            var dep2 = new Mock<IToolRegion>();
+            dep2.Setup(a => a.CloneRegion()).Returns(clone2.Object);
+            region.Dependants = new List<IToolRegion>{dep1.Object,dep2.Object};
+            region.SelectedSource = s2;
+            region.SelectedSource = websrc;
+            dep1.Verify(a=>a.RestoreRegion(clone1.Object));
+            dep2.Verify(a => a.RestoreRegion(clone2.Object));
         }
 
         [TestMethod]
-        public void TestInputAddHeaderExpectHeightChanges()
+        public void CloneRegionExpectClone()
         {
             var id = Guid.NewGuid();
             var act = new DsfWebGetActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
-
-            var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { });
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
-            var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.MaxHeight, 195);
-            Assert.AreEqual(region.MinHeight, 300);
-            Assert.AreEqual(region.CurrentHeight, 300);
-            Assert.AreEqual(region.IsVisible, false);
-            region.Headers.Add(new NameValue());
-            Assert.AreEqual(region.MaxHeight, 240);
-            Assert.AreEqual(region.MinHeight, 300);
-            Assert.AreEqual(region.CurrentHeight, 300);
+            var src = new Mock<IWebServiceModel>();
+            var websrc = new WebServiceSourceDefinition() { Id = id };
+            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
+            src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
+            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var cloned = region.CloneRegion();
+            Assert.AreEqual(cloned.CurrentHeight,region.CurrentHeight);
+            Assert.AreEqual(cloned.MaxHeight,region.MaxHeight);
+            Assert.AreEqual(cloned.IsVisible,region.IsVisible);
+            Assert.AreEqual(cloned.MinHeight,region.MinHeight);
+            Assert.AreEqual(((WebSourceRegion) cloned).SelectedSource,region.SelectedSource);
         }
+
+        [TestMethod]
+        public void Restore_Region_ExpectRestore()
+        {
+            var id = Guid.NewGuid();
+            var act = new DsfWebGetActivity() { SourceId = id };
+            var src = new Mock<IWebServiceModel>();
+            var websrc = new WebServiceSourceDefinition() { Id = id };
+            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
+            src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
+            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            WebSourceRegion regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            regionToRestore.MaxHeight = 144;
+            regionToRestore.MinHeight = 133;
+            regionToRestore.CurrentHeight = 111;
+            regionToRestore.IsVisible = false;
+            regionToRestore.SelectedSource = s2;
+
+            region.RestoreRegion(regionToRestore);
+
+            Assert.AreEqual(region.MaxHeight,144);
+            Assert.AreEqual(region.MinHeight,133);
+            Assert.AreEqual(region.CurrentHeight,111);
+            Assert.AreEqual(region.SelectedSource,s2);
+            Assert.IsFalse(region.IsVisible);
+        }
+
     }
 }

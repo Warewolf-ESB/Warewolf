@@ -81,6 +81,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public override void Validate()
         {
+          //  Regions.SelectMany(a => a.Errors);
         }
 
         private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
@@ -415,6 +416,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Outputs = new OutputsRegion(ModelItem);
                 regions.Add(Outputs);
                 regions.Add(new ErrorRegion());
+                Source.Dependants.Add(InputArea);
+                Source.Dependants.Add(Outputs);
             }
             Regions = regions;
             foreach(var toolRegion in regions)
