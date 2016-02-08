@@ -66,6 +66,17 @@ namespace Dev2.Activities.Designers.Tests
                 _maxHeight = value;
             }
         }
+
+        public IList<IToolRegion> Dependants { get; set; }
+
+        public IList<string> Errors
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public event HeightChanged HeightChanged;
 
 
