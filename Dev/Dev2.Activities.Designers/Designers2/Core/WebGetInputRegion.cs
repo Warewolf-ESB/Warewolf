@@ -17,7 +17,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class WebGetInputRegion:IWebGetInputArea
     {
-        private readonly IWebServiceSource _src;
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
         private string _queryString;
@@ -25,24 +24,13 @@ namespace Dev2.Activities.Designers2.Core
         private ObservableCollection<INameValue> _headers;
         private double _minHeight;
         private double _currentHeight;
-        private bool _isVisible;
         private double _maxHeight;
-        private string _headerText;
         private double _headersHeight;
         private const double baseHeight = 150;
         //private ICommand _addRowCommand;
         //private ICommand _removeRowCommand;
 
-        public WebGetInputRegion(IWebServiceSource src, ModelItem modelItem)
-        {
-            _src = src;
-            _modelItem = modelItem;
-            SetInitialHeight();
-            IsVisible = false;
 
-            SetupHeaders(modelItem);
-            QueryString = "";
-        }
         public WebGetInputRegion()
         {
             SetInitialHeight();
@@ -143,32 +131,8 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public ICommand AddRowCommand
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public ICommand RemoveRowCommand
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public string HeaderText
-        {
-            get
-            {
-                return _headerText;
-            }
-            set
-            {
-                _headerText = value;
-                OnPropertyChanged();
-            }
-        }
+
+
         public double HeadersHeight
         {
             get
@@ -219,8 +183,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _isVisible = value;
-                OnPropertyChanged();
+
             }
         }
         public double MaxHeight
