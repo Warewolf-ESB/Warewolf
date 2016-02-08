@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -98,6 +99,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
 
         #endregion
 
@@ -161,6 +163,16 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _description = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public IList<string> Errors
+        {
+            get
+            {
+        
+               return Outputs.Where(a => WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomAtomExpression).Select(a => "Invalid Output Mapping"+ a.ToString()).ToList();
+
             }
         }
 
