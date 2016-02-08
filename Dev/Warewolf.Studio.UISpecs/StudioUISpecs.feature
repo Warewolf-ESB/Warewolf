@@ -76,6 +76,21 @@ Scenario: Drag toolbox Base_Conversion onto a new workflow
 	When The 'Open_Base_Conversion_Tool_Qvi_Large_View' recorded action is performed
 	Then The 'Assert_Base_Conversion_Qvi_Large_View_Exists_OnDesignSurface' recorded action is performed
 
+Scenario: Drag toolbox DotNet Dll Tool onto a new workflow
+	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
+	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
+	Then The 'Assert_StartNode_Exists' recorded action is performed
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When The 'Drag_DotNet_DLL_Connector_Onto_DesignSurface' recorded action is performed
+	Then The 'Assert_DotNet_DLL_Connector_Exists_OnDesignSurface' recorded action is performed
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When The 'Open_DotNet_DLL_Connector_Tool_Small_View' recorded action is performed
 
 Scenario: Drag toolbox MySql Tool onto a new workflow
 	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
@@ -93,7 +108,7 @@ Scenario: Drag toolbox MySql Tool onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When The 'Open_MySql_Database_Tool_Small_View' recorded action is performed
 	
-Scenario: Drag toolbox MySql Tool onto a new workflow2
+Scenario: Drag toolbox Sql Tool onto a new workflow
 	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
 	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
 	Then The 'Assert_StartNode_Exists' recorded action is performed
@@ -1091,4 +1106,25 @@ Scenario: Explorer
 	Then The 'Right_Click_Context_Menu_InExplorer' recorded action is performed
 
 
+Scenario: Pin and unpin Explorer
+	Given The 'Click_Toggle_Unpin_Explorer' recorded action is performed
+	Then The 'Click_Toggle_Pin_Explorer' recorded action is performed
 
+Scenario: Pin and unpin Help
+	Given The 'Click_Toggle_Unpin_Documentor' recorded action is performed
+	Then The 'Click_Toggle_Pin_Documentor' recorded action is performed
+
+
+Scenario: Pin and unpin Toolbox
+	Given The 'Click_Toggle_Unpiin_Toolbox' recorded action is performed
+	Then The 'Click_Toggle_Pin_Toolbox' recorded action is performed
+
+Scenario: Pin and unpin Debug Output
+	Given The 'Click_Toggle_Unpin_DebugOutput' recorded action is performed
+	Then The 'Click_Toggle_Pin_DebugOutput' recorded action is performed
+
+Scenario: Pin and unpin variable list
+	Given The 'Click_Toggle_Unpin_VariableList' recorded action is performed
+	Then The 'Click_Toggle_Pin_VariableList' recorded action is performed
+
+#Server splash screen missning

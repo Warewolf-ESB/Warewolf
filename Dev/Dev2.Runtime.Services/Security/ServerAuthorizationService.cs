@@ -36,7 +36,16 @@ namespace Dev2.Runtime.Security
             : base(securityService, true)
         {
             _timeOutPeriod = securityService.TimeOutPeriod;
-            _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
+            }
+            catch(Exception e)
+            {
+                
+                Dev2Logger.Error(e);
+            }
+            
    
         }
 
@@ -78,7 +87,10 @@ namespace Dev2.Runtime.Security
                 _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
             }
             if(!authorized)
-            _perfCounter.Increment();
+                if(_perfCounter != null)
+                {
+                    _perfCounter.Increment();
+                }
             return authorized;
         }
 
