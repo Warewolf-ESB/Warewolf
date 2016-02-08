@@ -487,7 +487,8 @@ or type_desc LIKE '%Procedure%'";
         }
         public static int AddPopupTimeDelay = 2000;
         static GenericPrincipal _user;
-
+        public static double RowHeight = 30;
+        public static double RowHeaderHeight=30;
 
         public static IPrincipal GenericPrincipal
         {

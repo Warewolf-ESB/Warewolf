@@ -69,6 +69,15 @@ namespace Dev2.Activities.Designers.Tests
 
         public IList<IToolRegion> Dependants { get; set; }
 
+        public IToolRegion CloneRegion()
+        {
+            return this;
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+        }
+
         public IList<string> Errors
         {
             get
