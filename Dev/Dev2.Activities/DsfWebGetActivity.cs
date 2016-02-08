@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -15,9 +16,10 @@ namespace Dev2
 
          public string QueryString { get; set; }
 
-   
+     public IWebServiceSource SavedSource { get; set; }
 
-         public DsfWebGetActivity()
+
+     public DsfWebGetActivity()
          {
                 Type = "Web Get Request Connector";
                 DisplayName = "Web Get Request Connector";
