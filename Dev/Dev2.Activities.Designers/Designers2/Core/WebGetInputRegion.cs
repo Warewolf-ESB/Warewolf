@@ -77,8 +77,7 @@ namespace Dev2.Activities.Designers2.Core
             CurrentHeight = 300;
             IsVisible = false;
             SetupHeaders(modelItem);
-            RequestUrl = source.SelectedSource.HostName;
-           
+            if (source != null && source.SelectedSource != null) RequestUrl = source.SelectedSource.HostName;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -227,6 +226,18 @@ namespace Dev2.Activities.Designers2.Core
                 OnHeightChanged(this);
             }
         }
+
+        public IList<IToolRegion> Dependants { get; set; }
+
+        public IList<string> Errors
+        {
+            get
+            {
+                IList<string> errors = new List<string>();
+                return errors;
+            }
+        }
+
         public event HeightChanged HeightChanged;
 
         #endregion

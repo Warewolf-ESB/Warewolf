@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.Core
 
 
 
-        private bool CanEditSource()
+        public bool CanEditSource()
         {
             return SelectedSource != null;
         }
@@ -119,6 +119,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
 
         #endregion
 
@@ -133,6 +134,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _selectedSource = value;
+                SavedSource = value;
                 SourceId = value.Id;
                 OnSomethingChanged(this);
                 OnHeightChanged(this);
@@ -151,6 +153,24 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public IList<string> Errors
+        {
+            get
+            {
+                return SelectedSource == null ? new List<string> { "Invalid Source Selected" } : new List<string>();
+            }
+        }
+
+        public IWebServiceSource SavedSource {
+            get
+            {
+               return _modelItem.GetProperty<IWebServiceSource>("SavedSource");
+            }
+            set {
+                _modelItem.SetProperty("SavedSource", value);
+
+            } }
 
         #endregion
 
@@ -251,6 +271,17 @@ namespace Dev2.Activities.Designers2.Core
                 _maxHeight = value;
             }
         }
+
+        public IList<IToolRegion> Dependants { get; set; }
+
+        public IList<string> Errors
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
+
         public event HeightChanged HeightChanged;
 
         #endregion
