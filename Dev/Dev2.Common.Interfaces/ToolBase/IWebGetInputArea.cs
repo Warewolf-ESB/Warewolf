@@ -9,9 +9,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         string RequestUrl { get; set; }
 
         ObservableCollection<INameValue> Headers { get; set; }
-        ICommand AddRowCommand { get; }
-        ICommand RemoveRowCommand { get; }
-        string HeaderText { get; set; }
+
         double HeadersHeight { get; set; }
     }
 }
