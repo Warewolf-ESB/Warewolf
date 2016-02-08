@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using TechTalk.SpecFlow;
@@ -9,6 +10,18 @@ namespace Warewolf.Studio.UISpecs
     [Binding]
     public class ActionSteps
     {
+        [BeforeTestRun]
+        public void StartPlayback()
+        {
+            Playback.Initialize();
+        }
+
+        [AfterTestRun]
+        public void StopPlayback()
+        {
+            Playback.Cleanup();
+        }
+
         [Given(@"The '(.*)' recorded action is performed")]
         [When(@"The '(.*)' recorded action is performed")]
         [Then(@"The '(.*)' recorded action is performed")]
