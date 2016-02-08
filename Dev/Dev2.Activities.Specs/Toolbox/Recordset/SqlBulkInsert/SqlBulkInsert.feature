@@ -365,7 +365,7 @@ Scenario: Import data into table with blank data
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
 
-@ignore
+#Wolf-1359
 Scenario: Edit DB Source
 	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]" 
