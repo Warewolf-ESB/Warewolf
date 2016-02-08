@@ -220,12 +220,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
+    <Compile Include="Settings Permissions.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings Permissions.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
+      <DependentUpon>Sequence.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Sequence\SequenceSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
       <AutoGen>True</AutoGen>
@@ -513,9 +523,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
     </None>
+    <None Include="Settings Permissions.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Sequence\Sequence.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Sequence.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
