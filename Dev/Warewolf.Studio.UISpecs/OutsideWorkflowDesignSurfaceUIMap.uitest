@@ -3893,7 +3893,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWpfWindow.UIItemCustom.UIOUTPUTCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3911,7 +3911,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWpfWindow.UIItemCustom.UIWHATDOESTHISDOCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3929,7 +3929,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWpfWindow.UIItemCustom.UIEXPLORERCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3947,7 +3947,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWpfWindow.UIItemCustom.UITOOLBOXCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3965,7 +3965,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWpfWindow.UIItemCustom.UIVARIABLESCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3983,7 +3983,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow.UIZcfe13fc0d52945a9a79Custom.UITOOLBOXCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -4001,7 +4001,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow.UIZ74f8d4a07ae44ffcbd8Custom.UIOUTPUTCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -4019,7 +4019,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow.UIZ16e631b821c94d90bacCustom.UIZ2da82c89e9c54f37a62TabList.UIWHATDOESTHISDOTabPage.UIWHATDOESTHISDOCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -4037,7 +4037,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow.UIZ16e631b821c94d90bacCustom.UIEXPLORERCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -4055,7 +4055,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow.UIZ74f8d4a07ae44ffcbd8Custom.UIVARIABLESCustom.UIUnpinBtnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5477,6 +5477,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <DragDropAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow2.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem11">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>OutsideWorkflowDesignSurfaceUIMap.UIWarewolfDEV2LEROYWARWindow3.UIWpfWindow</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="54" Y="11" />
+      <StopLocation X="112" Y="15" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_ExplorerItem_IntoFolder_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -5941,6 +5959,19 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
+                        <UIObject ControlType="Button" Id="ExplorerUnpinBtn" FriendlyName="unpinBtn" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                         <UIObject ControlType="Custom" Id="ConnectControl" FriendlyName="ConnectControl" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
@@ -6141,6 +6172,19 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
+                        <UIObject ControlType="Button" Id="ToolUnpinBtn" FriendlyName="unpinBtn" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                         <UIObject ControlType="Edit" Id="SearchTextBox" FriendlyName="SearchTextBox" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
@@ -7014,6 +7058,19 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
+                        <UIObject ControlType="Button" Id="DocumentorUnpinBtn" FriendlyName="unpinBtn" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                         <UIObject ControlType="Indicator" Id="HelpWindow" FriendlyName="" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
@@ -11048,6 +11105,19 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
+                        <UIObject ControlType="Button" Id="VariableUnpinBtn" FriendlyName="unpinBtn" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                         <UIObject ControlType="Custom" Id="VariablesControl" FriendlyName="UI_VariablesControl_AutoID" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
@@ -11365,6 +11435,19 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
+                        <UIObject ControlType="Button" Id="DebugOutputUnpinBtn" FriendlyName="unpinBtn" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                         <UIObject ControlType="Edit" Id="SearchTextBox" FriendlyName="SearchTextBox" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
@@ -13398,21 +13481,7 @@
                     <PropertyCondition Name="AutomationId">Explorer</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
                 <UIObject ControlType="TabList" Id="UIZ2da82c89e9c54f37a62TabList" FriendlyName="Z2da82c89e9c54f37a622562186283aaf" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
@@ -13451,19 +13520,6 @@
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants>
-                            <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants />
-                            </UIObject>
                             <UIObject ControlType="Text" Id="UIWHATDOESTHISDOText" FriendlyName="WHAT DOES THIS DO?" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
@@ -13510,21 +13566,7 @@
                     <PropertyCondition Name="AutomationId">Variables</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
                 <UIObject ControlType="Custom" Id="UIOUTPUTCustom" FriendlyName="OUTPUT" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
@@ -13538,21 +13580,7 @@
                     <PropertyCondition Name="AutomationId">OutputPane</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>
@@ -13581,21 +13609,7 @@
                     <PropertyCondition Name="AutomationId">Toolbox</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>
@@ -14480,11 +14494,56 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
+                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem11" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <SearchConfigurations>
+                            <SearchConfiguration>Expand</SearchConfiguration>
+                          </SearchConfigurations>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
+                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
                       </Descendants>
                     </UIObject>
                   </Descendants>
                 </UIObject>
               </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2LEROYWARWindow3" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="7212134">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>

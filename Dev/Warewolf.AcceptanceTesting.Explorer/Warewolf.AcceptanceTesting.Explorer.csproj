@@ -471,7 +471,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
@@ -500,11 +500,11 @@
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
-      <Project>{c870fe6d-5889-4dfc-90d9-68fa3e525be2}</Project>
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
-      <Project>{81414783-9990-46ea-9668-dfa61e1aad18}</Project>
+      <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
   </ItemGroup>
