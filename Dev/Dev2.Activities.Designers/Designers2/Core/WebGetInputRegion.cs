@@ -6,9 +6,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
@@ -35,13 +37,22 @@ namespace Dev2.Activities.Designers2.Core
         {
             _src = src;
             _modelItem = modelItem;
-            MinHeight = 150;
-            MaxHeight = 150;
-            CurrentHeight = 150;
+            SetInitialHeight();
             IsVisible = false;
 
             SetupHeaders(modelItem);
             QueryString = "";
+        }
+        public WebGetInputRegion()
+        {
+            SetInitialHeight();
+        }
+
+        private void SetInitialHeight()
+        {
+            MinHeight = 150;
+            MaxHeight = 150;
+            CurrentHeight = 150;
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -60,8 +71,8 @@ namespace Dev2.Activities.Designers2.Core
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
 
-            MaxHeight  = baseHeight+ Headers.Count * 45; ;
-            HeadersHeight = 15 +Headers.Count * 45;
+            MaxHeight  = baseHeight+ Headers.Count * GlobalConstants.RowHeight; ;
+            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
             _modelItem.SetProperty("Headers", _headers.ToList());
            
         }
@@ -72,9 +83,7 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged+= SourceOnSomethingChanged  ;
-            MinHeight = 300;
-            MaxHeight = 300;
-            CurrentHeight = 300;
+            SetInitialHeight();
             IsVisible = false;
             SetupHeaders(modelItem);
             if (source != null && source.SelectedSource != null) RequestUrl = source.SelectedSource.HostName;
@@ -87,7 +96,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
+                Headers.Clear();
             }
+            // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
             OnHeightChanged(this);
         }
@@ -98,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _modelItem.GetProperty<string>("QueryString");
+                return _queryString;
             }
             set
             {
@@ -204,7 +215,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return  _source.SelectedSource != null;
+                return  _source != null && _source.SelectedSource != null;
             }
             set
             {
@@ -228,6 +239,26 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public IList<IToolRegion> Dependants { get; set; }
+
+        public IToolRegion CloneRegion()
+        {
+            var ser = new Dev2JsonSerializer();
+            return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+            var region = toRestore as WebGetInputRegion;
+            if(region != null)
+            {
+                MaxHeight = region.MaxHeight;
+                MinHeight = region.MinHeight;
+                IsVisible = region.IsVisible;
+                CurrentHeight = region.CurrentHeight;
+                QueryString = region.QueryString;
+                Headers = region.Headers;
+            }
+        }
 
         public IList<string> Errors
         {

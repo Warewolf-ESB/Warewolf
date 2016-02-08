@@ -1,4 +1,3 @@
-using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
 
 
@@ -31,6 +31,13 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.CollectionChanged += outputs_CollectionChanged;
                 Outputs = outputs;
             }
+            MaxHeight = 150;
+            MinHeight = 150;
+            CurrentHeight = 150;
+        }
+
+        public OutputsRegion()
+        {
             MaxHeight = 150;
             MinHeight = 150;
             CurrentHeight = 150;
@@ -101,6 +108,28 @@ namespace Dev2.Activities.Designers2.Core
         public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
+        public IToolRegion CloneRegion()
+        {
+            var ser = new Dev2JsonSerializer();
+            return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+            var region = toRestore as OutputsRegion;
+            if (region != null)
+            {
+                MaxHeight = region.MaxHeight;
+                MinHeight = region.MinHeight;
+                IsVisible = region.IsVisible;
+                CurrentHeight = region.CurrentHeight;
+                Outputs = region.Outputs;
+                RecordsetName = region.RecordsetName;
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged("IsOutputsEmptyRows");
+            }
+        }
+
         #endregion
 
         #region Implementation of IOutputsToolRegion
@@ -140,6 +169,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _outputs==null || _outputs.Count>0;
             }
+  
         }
         public string RecordsetName
         {

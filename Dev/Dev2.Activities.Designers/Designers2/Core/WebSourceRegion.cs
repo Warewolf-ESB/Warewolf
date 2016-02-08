@@ -9,12 +9,12 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
+using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.Practices.Prism.Commands;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class WebSourceRegion:ISourceToolRegion<IWebServiceSource>
+    public class WebSourceRegion : ISourceToolRegion<IWebServiceSource>
     {
         private double _minHeight;
         private double _currentHeight;
@@ -23,23 +23,38 @@ namespace Dev2.Activities.Designers2.Core
         private IWebServiceSource _selectedSource;
         private ICollection<IWebServiceSource> _sources;
         private readonly ModelItem _modelItem;
+        Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+        private Guid _sourceId;
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
-            MinHeight = 20;
-            MaxHeight = 20;
-            CurrentHeight = 20;
-            IsVisible = true;
+            SetInitialValues();
+            Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
             IsVisible = true;
             _modelItem = modelItem;
+            SourceId = modelItem.GetProperty<Guid>("SourceId");
             if (SourceId != Guid.Empty)
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
+
+        }
+
+        private void SetInitialValues()
+        {
+            MinHeight = 20;
+            MaxHeight = 20;
+            CurrentHeight = 20;
+            IsVisible = true;
+        }
+
+        public  WebSourceRegion()
+        {
+            SetInitialValues();
         }
 
 
@@ -47,11 +62,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _modelItem.GetProperty<Guid>("SourceId");
+                return _sourceId;
             }
             set
             {
-               _modelItem.SetProperty("SourceId",value);
+                _sourceId = value;
+                if(_modelItem != null)
+                {
+                    _modelItem.SetProperty("SourceId", value);
+                }
             }
         }
 
@@ -121,6 +140,32 @@ namespace Dev2.Activities.Designers2.Core
         public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
+        public IToolRegion CloneRegion()
+        {
+            var ser = new Dev2JsonSerializer();
+            return  new WebSourceRegion()
+            {
+                MaxHeight = MaxHeight,
+                MinHeight = MinHeight,
+                IsVisible =  IsVisible,
+                SelectedSource =  SelectedSource,
+                CurrentHeight = CurrentHeight
+            };
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+            var region = toRestore as WebSourceRegion;
+            if (region != null)
+            {
+                MaxHeight = region.MaxHeight;
+                SelectedSource = region.SelectedSource;
+                MinHeight = region.MinHeight;
+                CurrentHeight = region.CurrentHeight;
+                IsVisible = region.IsVisible;
+            }
+        }
+
         #endregion
 
         #region Implementation of ISourceToolRegion<IWebServiceSource>
@@ -133,14 +178,58 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
+                if (!Equals(value, _selectedSource) && _selectedSource != null)
+                {
+                    StorePreviousValues(_selectedSource.Id);
+                }
+
+                if (IsAPreviousValue(value) && _selectedSource != null)
+                {
+                    RestorePreviousValues(value);
+                    SetSelectedSource(value);
+                }
+                else
+                {
+                    SetSelectedSource(value);
+                    OnSomethingChanged(this);
+                }
+            }
+        }
+
+        private void SetSelectedSource(IWebServiceSource value)
+        {
+            
+            if(value != null)
+            {
                 _selectedSource = value;
                 SavedSource = value;
                 SourceId = value.Id;
-                OnSomethingChanged(this);
-                OnHeightChanged(this);
-                OnPropertyChanged();
+            }
+
+            OnHeightChanged(this);
+            OnPropertyChanged();
+        }
+
+        private void StorePreviousValues(Guid id)
+        {
+            _previousRegions.Remove(id);
+            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
+        }
+
+        private void RestorePreviousValues(IWebServiceSource value)
+        {
+            var toRestore = _previousRegions[value.Id];
+            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
+            {
+                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
             }
         }
+
+        private bool IsAPreviousValue(IWebServiceSource value)
+        {
+            return _previousRegions.Keys.Any(a => a == value.Id);
+        }
+
         public ICollection<IWebServiceSource> Sources
         {
             get
@@ -162,15 +251,18 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public IWebServiceSource SavedSource {
+        public IWebServiceSource SavedSource
+        {
             get
             {
-               return _modelItem.GetProperty<IWebServiceSource>("SavedSource");
+                return _modelItem.GetProperty<IWebServiceSource>("SavedSource");
             }
-            set {
+            set
+            {
                 _modelItem.SetProperty("SavedSource", value);
 
-            } }
+            }
+        }
 
         #endregion
 
@@ -179,7 +271,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -188,7 +280,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnHeightChanged(IToolRegion args)
         {
             var handler = HeightChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, args);
             }
@@ -197,108 +289,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if(handler != null)
-            {
-                handler(this, args);
-            }
-        }
-    }
-
-    public class ErrorRegion:IToolRegion
-    {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-
-        public ErrorRegion()
-        {
-            IsVisible = true;
-            MaxHeight = 250;
-            MinHeight = 250;
-            CurrentHeight = 250;
-        }
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Implementation of IToolRegion
-
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-            }
-        }
-
-        public IList<IToolRegion> Dependants { get; set; }
-
-        public IList<string> Errors
-        {
-            get
-            {
-                return new List<string>();
-            }
-        }
-
-        public event HeightChanged HeightChanged;
-
-        #endregion
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if(handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, args);
             }

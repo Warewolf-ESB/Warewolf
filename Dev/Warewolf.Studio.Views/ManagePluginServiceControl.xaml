@@ -12,7 +12,9 @@
              xmlns:converters="clr-namespace:Warewolf.Studio.Views.Converters"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:xamGrid="clr-namespace:Warewolf.Studio.Themes.Luna.XamGrid;assembly=Warewolf.Studio.Themes.Luna"
+      
+             xmlns:xamGrid1="clr-namespace:Warewolf.Studio.Views.XamGrid;assembly=Warewolf.Studio.Themes.Luna"
+             xmlns:xamGridEx="clr-namespace:Warewolf.Studio.Views.XamGridEx;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=interfaces:IPluginServiceViewModel, IsDesignTimeCreatable=False}">
@@ -326,8 +328,8 @@
                                       VerticalScrollBarVisibility="Auto"
                                       Margin="{StaticResource ControlBorderTop}"
                                       MaxHeight="110">
-                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                                <xamGrid:XamGridEx x:Name="InputGrid" 
+                            <!--<Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                <xamGrid1:XamGridEx x:Name="InputGrid" 
                                                      Style="{StaticResource XamGridStyle}"
                                                      ItemsSource="{Binding Path=Inputs}"
                                                      AutoGenerateColumns="False"
@@ -363,9 +365,9 @@
                                     <ig:XamGrid.ConditionalFormattingSettings>
                                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                                     </ig:XamGrid.ConditionalFormattingSettings>
-                                    <xamGrid:XamGridEx.ContextMenuSettings>
-                                        <xamGrid:ContextMenuSettings AllowContextMenu="True">
-                                            <xamGrid:ContextMenuSettings.ContextMenu>
+                                    <xamGrid1:XamGridEx.ContextMenuSettings>
+                                        <xamGridEx:ContextMenuSettings AllowContextMenu="True">
+                                            <xamGridEx:ContextMenuSettings.ContextMenu>
                                                 <ig:XamContextMenu >
                                                     <ig:XamMenuItem Header="Insert Row" Command="{Binding  Path=AddRowCommand}">
                                                         <ig:XamMenuItem.Icon>
@@ -378,11 +380,11 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                 </ig:XamContextMenu>
-                                            </xamGrid:ContextMenuSettings.ContextMenu>
-                                        </xamGrid:ContextMenuSettings>
-                                    </xamGrid:XamGridEx.ContextMenuSettings>
-                                </xamGrid:XamGridEx>
-                            </Grid>
+                                            </xamGridEx:ContextMenuSettings.ContextMenu>
+                                        </xamGridEx:ContextMenuSettings>
+                                    </xamGrid1:XamGridEx.ContextMenuSettings>
+                                </xamGrid1:XamGridEx>
+                            </Grid>-->
                         </ScrollViewer>
                         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
