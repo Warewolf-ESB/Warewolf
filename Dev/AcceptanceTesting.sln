@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -281,8 +281,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{97031F
 		TestScripts\Server\Cleanup.bat = TestScripts\Server\Cleanup.bat
 		TestScripts\Server\Startup.bat = TestScripts\Server\Startup.bat
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Flickering.Specs", "Dev2.FlickeringSpecs\Dev2.Flickering.Specs.csproj", "{98503680-75D8-46B3-8DF7-ED282EFF413C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -690,10 +688,6 @@ Global
 		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98503680-75D8-46B3-8DF7-ED282EFF413C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98503680-75D8-46B3-8DF7-ED282EFF413C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98503680-75D8-46B3-8DF7-ED282EFF413C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98503680-75D8-46B3-8DF7-ED282EFF413C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
