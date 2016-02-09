@@ -162,6 +162,13 @@ namespace Dev2.Services.Sql
             return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+        public DataTable FetchDataTable()
+        {
+           
+
+            return ExecuteReader(_command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
+                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+        }
         private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
             Func<IDataReader, T> handler)
         {

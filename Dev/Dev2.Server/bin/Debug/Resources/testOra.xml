@@ -1,5 +1,5 @@
 
-<Source ID="8b7f1490-44db-4980-b41c-8f17ccbda226" Name="testOra" ResourceType="DbSource" IsValid="false" ServerType="Oracle" Type="Oracle" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAABBZ4OCQ85ObN2tcru9f/plAAAAAASAAACgAAAAEAAAACOSyTzzQ9uNUOQjiIbgIMGYAAAAKitu+p1H6AfGnoBXOshxPY9aaT/jcMAhdKbK/qtiIiQk1jtp9nswbfMSKLGyqw+ha1YWF0T2GWb+E7p5Z7khj7RU19Tb/KWN2rhrygYAjNI2bpvirFIGv2yLJ5CZSwiTHa3TOXoxWOdz8K0vbHAqnpWRCgX83Z8drI8T0a6MllvK/s3i6LVBIZ8aOFfUpcY4Sm0EhfcOj/EUAAAA2m3rACzEMfNrLqrYRvuZqe1EVW0=" ServerVersion="0.0.5879.24134" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="8b7f1490-44db-4980-b41c-8f17ccbda226" Name="testOra" ResourceType="DbSource" IsValid="false" ServerType="Oracle" Type="Oracle" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAofv+tz9HhUCLVrkFZv9MewQAAAACAAAAAAADZgAAwAAAABAAAABBZ4OCQ85ObN2tcru9f/plAAAAAASAAACgAAAAEAAAACOSyTzzQ9uNUOQjiIbgIMGYAAAAKitu+p1H6AfGnoBXOshxPY9aaT/jcMAhdKbK/qtiIiQk1jtp9nswbfMSKLGyqw+ha1YWF0T2GWb+E7p5Z7khj7RU19Tb/KWN2rhrygYAjNI2bpvirFIGv2yLJ5CZSwiTHa3TOXoxWOdz8K0vbHAqnpWRCgX83Z8drI8T0a6MllvK/s3i6LVBIZ8aOFfUpcY4Sm0EhfcOj/EUAAAA2m3rACzEMfNrLqrYRvuZqe1EVW0=" ServerVersion="0.0.5883.19592" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>testOra</DisplayName>
   <Category>testOra</Category>
   <AuthorRoles>

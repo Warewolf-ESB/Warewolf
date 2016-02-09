@@ -27,6 +27,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+using Dev2.Services.Sql;
+using System.Security.Cryptography;
 
 namespace Dev2.Services.Execution
 {
@@ -102,12 +104,43 @@ namespace Dev2.Services.Execution
         public void GetSource(Guid sourceId)
         {
             var catalog = ResourceCatalog.Instance;
-            Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
-            if (Source == null)
+            ODBCServer Odbc = new ODBCServer();
+            List<TSource> list = new List<TSource>();
+            var Dsns = Odbc.GetDSN();
+            for (int i = 0; i < Dsns.Count; i++)
             {
-                ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}",
-                    Service.Source.ResourceID, Service.Source.ResourceName));
+                string input = Dsns[i];
+                using (MD5 md5 = MD5.Create())
+                {
+                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
+                    Guid result = new Guid(hash);
+
+                    list.Add(
+
+                            new TSource
+                            {
+                                ResourceName = Dsns[i],
+                                ResourceType= ResourceType.DbSource,
+                                ResourceID = result
+
+                            }
+
+                  );
+                }
+
             }
+
+            Source = list.Find(S => S.ResourceID == sourceId);
+            if(Source == null)
+            {
+                Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
+                if (Source == null)
+                {
+                    ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}",
+                        Service.Source.ResourceID, Service.Source.ResourceName));
+                }
+            }
+          
         }
         protected virtual bool GetService(ResourceCatalog catalog)
         {

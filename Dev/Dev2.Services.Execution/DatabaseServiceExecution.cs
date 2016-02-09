@@ -25,6 +25,8 @@ using MySql.Data.MySqlClient;
 using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using System.Security.Cryptography;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Services.Execution
 {
@@ -133,6 +135,41 @@ namespace Dev2.Services.Execution
         // ReSharper disable once OptionalParameterHierarchyMismatch
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
+            ODBCServer Odbc = new ODBCServer();
+            List<DbSource> list = new List<DbSource>();
+            var Dsns = Odbc.GetDSN();
+            for (int i = 0; i < Dsns.Count; i++)
+            {
+                string input = Dsns[i];
+                using (MD5 md5 = MD5.Create())
+                {
+                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
+                    Guid result = new Guid(hash);
+
+                    list.Add(
+
+                            new DbSource
+                            {
+                                ResourceName = Dsns[i],
+                                ResourceType = ResourceType.DbSource,
+                                ResourceID = result,
+                                ServerType = enSourceType.ODBC,
+                                DatabaseName = Dsns[i],
+                                ConnectionString = "DSN=" + Dsns[i]
+
+                            }
+
+                  );
+                }
+
+            }
+
+            var temp = list.Find(S => S.ResourceID == Source.ResourceID);
+
+            if (temp != null)
+            {
+                Source = temp;
+            }
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             switch (Source.ServerType)
@@ -442,29 +479,29 @@ namespace Dev2.Services.Execution
 
         private bool ODBCExecution(ErrorResultTO errors, int update)
         {
-            //try
-            //{
+            try
+            {
 
-            //    List<OdbcParameter> parameters = GetODBCParameters(Inputs);
-            //    using (OdbcParameter server = SetupODBCServer(errors))
-            //    {
+                List<OdbcParameter> parameters = GetODBCParameters(Inputs);
+                using (ODBCServer server = SetupODBCServer(errors))
+                {
 
-            //        //if (parameters != null)
-            //        //{
-            //        //    // ReSharper disable CoVariantArrayConversion
-            //        //    using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
-            //        //    //// ReSharper restore CoVariantArrayConversion
-            //        //   {
-            //        //      TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
-            //        //        return true;
-            //        //    }
-            //        //}
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-            //}
+                    if (parameters != null)
+                    {
+                        // ReSharper disable CoVariantArrayConversion
+                        using (DataTable dataSet = server.FetchDataTable())
+                        //// ReSharper restore CoVariantArrayConversion
+                        {
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+            }
             return false;
         }
 
