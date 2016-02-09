@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests
 
         #region Overrides of CustomToolWithRegionBase
 
-        protected override IList<IToolRegion> BuildRegions()
+        public override IList<IToolRegion> BuildRegions()
         {
             return new List<IToolRegion>{new Region(){CurrentHeight = 25,IsVisible = true,MaxHeight = 33,MinHeight = 2}};
         }
@@ -155,6 +155,7 @@ namespace Dev2.Activities.Designers.Tests
         public void TestMethod1()
         {
             CustomToolWithRegionBase b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()));
+            b.Regions=b.BuildRegions();
             b.ReCalculateHeight();
             Assert.AreEqual(33,b.DesignMaxHeight);
             Assert.AreEqual(2, b.DesignMinHeight);
