@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
@@ -27,7 +26,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Web_Service_Get
 {
-    public class WebServiceGetViewModel :CustomToolWithRegionBase,IWebServiceGetViewModel
+    public class WebServiceGetViewModel : CustomToolWithRegionBase, IWebServiceGetViewModel
     {
         private IOutputsToolRegion _outputs;
         private IWebGetInputArea _inputArea;
@@ -46,7 +45,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         const string FixText = "Fix";
         // ReSharper disable UnusedMember.Local
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-    
+
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
         readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
@@ -56,20 +55,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : base(modelItem)
         {
-            LabelWidth = 75;
+            LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = pluginServiceModel;
-            BuildRegions();
             InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel(), pluginServiceModel);
-
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem, regions)
         {
-
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
@@ -81,7 +77,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public override void Validate()
         {
-          //  Regions.SelectMany(a => a.Errors);
+            //  Regions.SelectMany(a => a.Errors);
         }
 
         private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
@@ -90,12 +86,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+
+            BuildRegions();
+
             ManageServiceInputViewModel = manageServiceInputViewModel;
             _eventPublisher = eventPublisher;
             eventPublisher.Subscribe(this);
-            //ButtonDisplayValue = DoneText;
+            ButtonDisplayValue = DoneText;
 
-            //LabelWidth = 70;
             ReCalculateHeight();
 
             TestComplete = false;
@@ -113,7 +111,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             InitializeImageSource();
 
-            //Outputs.OutputMappingEnabled = true;
+            Outputs.OutputMappingEnabled = true;
 
             //// When the active environment is not local, we need to get smart around this piece of logic.
             //// It is very possible we are treating a remote active as local since we cannot logically assign 
@@ -135,13 +133,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 _environment = environment;
             }
 
-            //TestInputCommand = new DelegateCommand(() =>
-            //{
-            //    TestComplete = true;
-            //    Outputs.IsVisible = true;
-            //    Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
-            //}, CanTestProcedure);
-            TestInputCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestAction, CanTestProcedure);
+            TestInputCommand = new DelegateCommand(() =>
+            {
+                TestComplete = true;
+                Outputs.IsVisible = true;
+                Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
+            }, CanTestProcedure);
+            TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
             //InitializeValidationService(_environment);
             //InitializeLastValidationMemo(_environment);
             //ManageServiceInputViewModel = manageServiceInputViewModel;
@@ -152,12 +150,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             //    Model = webServiceModel;
 
-
-             
-               
-
             //}
-            //InitializeProperties();
+            InitializeProperties();
             //if (IsItemDragged.Instance.IsDragged)
             //{
             //    Expand();
@@ -194,24 +188,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         //{
         //}
 
-
-
-
-
-
-       
-
-     
-
-
-
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", Source.SelectedSource.Name);
+            AddProperty("Source :", Source.SelectedSource == null ? "" : Source.SelectedSource.Name);
             AddProperty("Type :", Type);
-            AddProperty("Url :", Source.SelectedSource.HostName);
+            AddProperty("Url :", Source.SelectedSource == null ? "" : Source.SelectedSource.HostName);
         }
 
         void AddProperty(string key, string value)
@@ -269,8 +252,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-    DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServiceGetViewModel), new PropertyMetadata(false));
-
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServiceGetViewModel), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
@@ -292,12 +274,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private bool _testSuccessful;
 #pragma warning restore 649
 
-        
         void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
         {
             LastValidationMemo = memo;
 
-           // CheckIsDeleted(memo);
+            // CheckIsDeleted(memo);
 
             //UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
             //if (SourceId == Guid.Empty)
@@ -317,8 +298,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         Guid EnvironmentID { get { return GetProperty<Guid>(); } }
         Guid ResourceID { get { return GetProperty<Guid>(); } }
         Guid UniqueID { get { return GetProperty<Guid>(); } }
-
-
 
         private void FixErrors()
         {
@@ -404,14 +383,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         #region Overrides of CustomToolWithRegionBase
 
-        protected override IList<IToolRegion> BuildRegions()
+        public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (Source == null)
             {
                 Source = new WebSourceRegion(Model, ModelItem);
                 regions.Add(Source);
-                InputArea = new WebGetInputRegion(ModelItem,Source);
+                InputArea = new WebGetInputRegion(ModelItem, Source);
                 regions.Add(InputArea);
                 Outputs = new OutputsRegion(ModelItem);
                 regions.Add(Outputs);
@@ -420,17 +399,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Source.Dependants.Add(Outputs);
             }
             Regions = regions;
-            foreach(var toolRegion in regions)
+            foreach (var toolRegion in regions)
             {
                 toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }    
+            }
             ReCalculateHeight();
             return regions;
         }
 
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
-           ReCalculateHeight();
+            ReCalculateHeight();
             TestInputCommand.RaiseCanExecuteChanged();
         }
 
@@ -471,6 +450,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _source = value;
+                if (_source.SelectedSource != null)
+                {
+                    LabelWidth = 75;
+                }
                 OnPropertyChanged();
             }
         }
@@ -516,15 +499,15 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                             ManageServiceInputViewModel.IsTesting = false;
                         }
                     }
-                    catch(JsonSerializationException )
+                    catch (JsonSerializationException)
                     {
-                        ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping>{new ServiceOutputMapping("Result","[[Result]]","")};
+                        ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
                     }
                     catch (Exception)
                     {
 
                         TestComplete = false;
-                       // ErrorMessage(e);
+                        // ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
@@ -533,14 +516,15 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 {
                     Outputs.Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
                     Outputs.Description = ManageServiceInputViewModel.Description;
+                    Outputs.IsVisible = Outputs.Outputs.Count > 0;
                 };
                 ManageServiceInputViewModel.ShowView();
                 if (ManageServiceInputViewModel.OkSelected)
                 {
-                   ValidateTestComplete();
+                    ValidateTestComplete();
                 }
                 ReCalculateHeight();
-     
+
             }
             catch (Exception)
             {
@@ -570,14 +554,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             return new WebServiceDefinition
             {
-                Inputs = InputsFromModel() ,
+                Inputs = InputsFromModel(),
                 OutputMappings = new List<IServiceOutputMapping>(),
                 Source = Source.SelectedSource,
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData = "",
-                Headers = InputArea.Headers.Select(value => new NameValue { Name =value.Name, Value = value.Value }).ToList(),
+                Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
@@ -590,7 +574,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
             GetValue(s, dt);
-            foreach(var nameValue in InputArea.Headers)
+            foreach (var nameValue in InputArea.Headers)
             {
                 GetValue(nameValue.Name, dt);
                 GetValue(nameValue.Value, dt);
@@ -601,7 +585,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private static void GetValue(string s, List<IServiceInput> dt)
         {
             var exp = WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(s);
-            if(exp.IsComplexExpression)
+            if (exp.IsComplexExpression)
             {
                 var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
                 var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.LanguageExpressionToString);
@@ -610,7 +594,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             if (exp.IsScalarExpression)
             {
 
-                 dt.Add(new ServiceInput(s, ""));
+                dt.Add(new ServiceInput(s, ""));
             }
             if (exp.IsRecordSetExpression)
             {
@@ -623,7 +607,4 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         #endregion
     }
-
-
-
 }
