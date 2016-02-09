@@ -15,7 +15,7 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class WebGetInputRegion:IWebGetInputArea
+    public class WebGetInputRegion : IWebGetInputArea
     {
         private readonly IWebServiceSource _src;
         private readonly ModelItem _modelItem;
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _maxHeight;
         private string _headerText;
         private double _headersHeight;
-        private const double baseHeight = 150;
+        private const double BaseHeight = 60;
         //private ICommand _addRowCommand;
         //private ICommand _removeRowCommand;
 
@@ -50,9 +50,9 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetInitialHeight()
         {
-            MinHeight = 150;
-            MaxHeight = 150;
-            CurrentHeight = 150;
+            MinHeight = 60;
+            MaxHeight = 60;
+            CurrentHeight = 60;
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -70,19 +70,16 @@ namespace Dev2.Activities.Designers2.Core
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-
-            MaxHeight  = baseHeight+ Headers.Count * GlobalConstants.RowHeight; ;
+            MaxHeight = BaseHeight + Headers.Count * GlobalConstants.RowHeight; ;
             HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
             _modelItem.SetProperty("Headers", _headers.ToList());
-           
         }
 
-        public WebGetInputRegion( ModelItem modelItem,ISourceToolRegion<IWebServiceSource> source)
+        public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
         {
-            
             _modelItem = modelItem;
             _source = source;
-            _source.SomethingChanged+= SourceOnSomethingChanged  ;
+            _source.SomethingChanged += SourceOnSomethingChanged;
             SetInitialHeight();
             IsVisible = false;
             SetupHeaders(modelItem);
@@ -92,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if(_source != null && _source.SelectedSource != null)
+            if (_source != null && _source.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
@@ -114,7 +111,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _queryString = value;
-                _modelItem.SetProperty("QueryString",value);
+                _modelItem.SetProperty("QueryString", value);
                 OnPropertyChanged();
             }
         }
@@ -215,7 +212,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return  _source != null && _source.SelectedSource != null;
+                return _source != null && _source.SelectedSource != null;
             }
             set
             {
@@ -232,7 +229,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _maxHeight = value;
-                
+
                 OnPropertyChanged();
                 OnHeightChanged(this);
             }
@@ -249,7 +246,7 @@ namespace Dev2.Activities.Designers2.Core
         public void RestoreRegion(IToolRegion toRestore)
         {
             var region = toRestore as WebGetInputRegion;
-            if(region != null)
+            if (region != null)
             {
                 MaxHeight = region.MaxHeight;
                 MinHeight = region.MinHeight;
@@ -276,7 +273,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnHeightChanged(IToolRegion args)
         {
             var handler = HeightChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, args);
             }
@@ -287,7 +284,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
