@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -20,6 +21,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _currentHeight;
         private bool _isVisible;
         private double _maxHeight;
+        private const double BaseHeight = 60;
         private ICollection<IServiceOutputMapping> _outputs;
         public OutputsRegion(ModelItem modelItem)
         {
@@ -36,9 +38,9 @@ namespace Dev2.Activities.Designers2.Core
 
         void SetInitialHeight()
         {
-            MaxHeight = 60;
-            MinHeight = 60;
-            CurrentHeight = 60;
+            MaxHeight = BaseHeight;
+            MinHeight = BaseHeight;
+            CurrentHeight = BaseHeight;
         }
 
         public OutputsRegion()
@@ -146,9 +148,16 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _outputs = value;
                 _modelItem.SetProperty("Outputs", value.ToList());
-                MaxHeight = 250 + _outputs.Count * 45;
-                MinHeight = 250;
-                CurrentHeight = 250;
+                MaxHeight = BaseHeight + _outputs.Count * GlobalConstants.RowHeight;
+                if (_outputs.Count == 0)
+                {
+                    MaxHeight = 0;
+                }
+                if (_outputs.Count > 3)
+                {
+                    MinHeight = 110;
+                }
+                CurrentHeight = MinHeight;
                 OnHeightChanged(this);
                 OnPropertyChanged();
             }

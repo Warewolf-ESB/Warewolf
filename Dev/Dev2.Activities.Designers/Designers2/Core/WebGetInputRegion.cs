@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -38,9 +39,9 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetInitialHeight()
         {
-            MinHeight = 60;
-            MaxHeight = 60;
-            CurrentHeight = 60;
+            MinHeight = BaseHeight;
+            MaxHeight = BaseHeight;
+            CurrentHeight = BaseHeight;
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -58,9 +59,20 @@ namespace Dev2.Activities.Designers2.Core
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            MaxHeight = BaseHeight + Headers.Count * GlobalConstants.RowHeight; ;
-            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
+            ResetInputsHeight();
             _modelItem.SetProperty("Headers", _headers.ToList());
+        }
+
+        void ResetInputsHeight()
+        {
+            SetInitialHeight();
+            if(Headers.Count >= 3)
+            {
+                MinHeight = 110;
+                MaxHeight = 110;
+            }
+            CurrentHeight = MinHeight;
+            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
         }
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -82,6 +94,7 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
                 Headers.Clear();
+                Headers.Add(new NameValue());
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
@@ -94,12 +107,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _queryString;
+                return _queryString ?? string.Empty;
             }
             set
             {
-                _queryString = value;
-                _modelItem.SetProperty("QueryString", value);
+                _queryString = value ?? string.Empty;
+                _modelItem.SetProperty("QueryString", value ?? string.Empty);
                 OnPropertyChanged();
             }
         }
@@ -211,12 +224,10 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as WebGetInputRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
-                MinHeight = region.MinHeight;
                 IsVisible = region.IsVisible;
-                CurrentHeight = region.CurrentHeight;
                 QueryString = region.QueryString;
                 Headers = region.Headers;
+                ResetInputsHeight();
             }
         }
 
