@@ -404,7 +404,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         #region Overrides of CustomToolWithRegionBase
 
-        protected override IList<IToolRegion> BuildRegions()
+        public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (Source == null)
