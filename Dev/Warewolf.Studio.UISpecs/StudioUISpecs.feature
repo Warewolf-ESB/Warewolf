@@ -1128,3 +1128,20 @@ Scenario: Pin and unpin variable list
 	Then The 'Click_Toggle_Pin_VariableList' recorded action is performed
 
 #Server splash screen missning
+
+Scenario: Get Web Request tool
+	Given The 'Assert_NewWorkFlow_RibbonButton_Exists' recorded action is performed
+	When The 'Click_New_Workflow_Ribbon_Button' recorded action is performed
+	Then The 'Assert_StartNode_Exists' recorded action is performed
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When The 'Drag_Web_Get_Request_Tool_Onto_DesignSurface' recorded action is performed
+	Then The 'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface' recorded action is performed
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	#When The 'Open_Move_Tool_Large_View' recorded action is performed
+	Then The 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface' recorded action is performed
