@@ -15,9 +15,9 @@ namespace Dev2.Activities.Designers2.Core
         public ErrorRegion()
         {
             IsVisible = true;
-            MaxHeight = 250;
-            MinHeight = 250;
-            CurrentHeight = 250;
+            MaxHeight = 125;
+            MinHeight = 125;
+            CurrentHeight = 125;
             Dependants = new List<IToolRegion>();
         }
 
