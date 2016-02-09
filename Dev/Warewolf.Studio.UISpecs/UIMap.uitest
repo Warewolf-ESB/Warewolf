@@ -3684,7 +3684,7 @@
   <Maps>
     <UIMap Id="UIMap">
       <TopLevelWindows>
-        <TopLevelWindow ControlType="Window" Id="MainStudioWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="2230694">
+        <TopLevelWindow ControlType="Window" Id="MainStudioWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="2230694">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
             <WindowTitle>Warewolf</WindowTitle>
