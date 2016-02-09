@@ -13,7 +13,8 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class OutputsRegion : IOutputsToolRegion {
+    public class OutputsRegion : IOutputsToolRegion
+    {
         private readonly ModelItem _modelItem;
         private double _minHeight;
         private double _currentHeight;
@@ -25,22 +26,24 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             if (Outputs == null)
             {
-
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
-                var outputs = new ObservableCollection<IServiceOutputMapping>(current??new List<IServiceOutputMapping>());
+                var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
                 outputs.CollectionChanged += outputs_CollectionChanged;
                 Outputs = outputs;
             }
-            MaxHeight = 150;
-            MinHeight = 150;
-            CurrentHeight = 150;
+            SetInitialHeight();
+        }
+
+        void SetInitialHeight()
+        {
+            MaxHeight = 60;
+            MinHeight = 60;
+            CurrentHeight = 60;
         }
 
         public OutputsRegion()
         {
-            MaxHeight = 150;
-            MinHeight = 150;
-            CurrentHeight = 150;
+            SetInitialHeight();
         }
 
         void outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -48,7 +51,6 @@ namespace Dev2.Activities.Designers2.Core
             MaxHeight = e.NewItems.Count * 15;
             MinHeight = 45;
             _modelItem.SetProperty("Outputs", _outputs.ToList());
-           
         }
         private bool _outputMappingEnabled;
         private string _recordsetName;
@@ -138,13 +140,13 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _outputs; 
+                return _outputs;
             }
             set
             {
                 _outputs = value;
-                _modelItem.SetProperty("Outputs",value.ToList());
-                MaxHeight = 250+ _outputs.Count * 45;
+                _modelItem.SetProperty("Outputs", value.ToList());
+                MaxHeight = 250 + _outputs.Count * 45;
                 MinHeight = 250;
                 CurrentHeight = 250;
                 OnHeightChanged(this);
@@ -167,9 +169,8 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _outputs==null || _outputs.Count>0;
+                return _outputs == null || _outputs.Count > 0;
             }
-  
         }
         public string RecordsetName
         {
@@ -177,10 +178,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _recordsetName;
             }
-                        set
+            set
             {
-                 _recordsetName=value;
-                            OnPropertyChanged();
+                _recordsetName = value;
+                OnPropertyChanged();
             }
         }
         public IOutputDescription Description
@@ -200,9 +201,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-        
-               return Outputs.Where(a => WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomAtomExpression).Select(a => "Invalid Output Mapping"+ a.ToString()).ToList();
-
+                return Outputs.Where(a => WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
             }
         }
 
@@ -213,7 +212,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -222,7 +221,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnHeightChanged(IToolRegion args)
         {
             var handler = HeightChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, args);
             }
