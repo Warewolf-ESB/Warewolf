@@ -159,6 +159,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Theme.cs" />
+    <Compile Include="XamGridEx\ContextMenuSettings.cs" />
+    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
+    <Compile Include="XamGrid\ContextMenuSettings.cs" />
+    <Compile Include="XamGrid\XamGridEx.cs" />
     <Resource Include="Images\Resize_Grip.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

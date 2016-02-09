@@ -81,7 +81,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -94,6 +96,9 @@
     </Compile>
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="Core\WebInputRegionTest.cs" />
+    <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
@@ -168,6 +173,7 @@
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
+    <Compile Include="TestToolBaseViewModel.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />

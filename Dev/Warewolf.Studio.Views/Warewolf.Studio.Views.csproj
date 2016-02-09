@@ -218,10 +218,6 @@
     <Compile Include="WindowBorderLess.xaml.cs">
       <DependentUpon>WindowBorderLess.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XamGridEx\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
-    <Compile Include="XamGrid\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\XamGridEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="CircularProgressBar.xaml">

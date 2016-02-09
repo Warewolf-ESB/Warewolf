@@ -154,12 +154,13 @@ namespace Warewolf.Studio.Views
 
         public ItemCollection GetInputs()
         {
-            BindingExpression be = InputGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return InputGrid.ItemsSource as ItemCollection;
+            //BindingExpression be = InputGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            //if (be != null)
+            //{
+            //    be.UpdateTarget();
+            //}
+            //return InputGrid.ItemsSource as ItemCollection;
+            return null;
         }
 
         /// <summary>
