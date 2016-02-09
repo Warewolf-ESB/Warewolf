@@ -1964,13 +1964,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 1135
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1140
- testRunner.When("The \'Drag_Toolbox_Move_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'Drag_Web_Get_Request_Tool_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1141
- testRunner.Then("The \'Assert_Move_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1146
- testRunner.When("The \'Open_Move_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("The \'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface\' recorded action is perfo" +
+                    "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1147
- testRunner.Then("The \'Assert_Move_Large_View_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface\' recorded action is" +
+                    " performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

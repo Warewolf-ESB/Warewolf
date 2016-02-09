@@ -72,6 +72,11 @@
       <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
     <Compile Include="ActionSteps.cs" />
+    <Compile Include="StudioUISpecs1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="UIMap.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
     </Compile>
@@ -87,7 +92,7 @@
     <None Include="packages.config" />
     <None Include="StudioUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
+      <LastGenOutput>StudioUISpecs1.feature.cs</LastGenOutput>
     </None>
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
