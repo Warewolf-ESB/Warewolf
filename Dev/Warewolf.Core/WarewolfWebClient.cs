@@ -15,7 +15,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 
-namespace Warewolf.Studio.Core
+namespace Warewolf.Core
 {
     public class WarewolfWebClient : IWarewolfWebClient
     {
