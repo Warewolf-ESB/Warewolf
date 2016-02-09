@@ -18,6 +18,7 @@ namespace Dev2
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public Dev2.Common.Interfaces.Core.Graph.IPath Path { get; set; }
 
         protected bool OnPropertyChanged<T>(ref T propertyValue, T newValue, [CallerMemberName] string propertyName = null)
         {
