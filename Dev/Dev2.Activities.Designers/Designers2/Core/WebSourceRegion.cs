@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _currentHeight;
         private bool _isVisible;
         private double _maxHeight;
+        private const double BaseHeight = 25;
         private IWebServiceSource _selectedSource;
         private ICollection<IWebServiceSource> _sources;
         private readonly ModelItem _modelItem;
@@ -45,9 +46,9 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetInitialValues()
         {
-            MinHeight = 25;
-            MaxHeight = 25;
-            CurrentHeight = 25;
+            MinHeight = BaseHeight;
+            MaxHeight = BaseHeight;
+            CurrentHeight = BaseHeight;
             IsVisible = true;
         }
 
@@ -201,7 +202,7 @@ namespace Dev2.Activities.Designers2.Core
             }
 
             OnHeightChanged(this);
-            OnPropertyChanged();
+            OnPropertyChanged("SelectedSource");
         }
 
         private void StorePreviousValues(Guid id)
