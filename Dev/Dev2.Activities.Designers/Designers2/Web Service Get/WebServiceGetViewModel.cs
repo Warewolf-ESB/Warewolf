@@ -151,7 +151,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             //    Model = webServiceModel;
 
             //}
-            //InitializeProperties();
+            InitializeProperties();
             //if (IsItemDragged.Instance.IsDragged)
             //{
             //    Expand();
@@ -192,9 +192,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", Source.SelectedSource.Name);
+            AddProperty("Source :", Source.SelectedSource == null ? "" : Source.SelectedSource.Name);
             AddProperty("Type :", Type);
-            AddProperty("Url :", Source.SelectedSource.HostName);
+            AddProperty("Url :", Source.SelectedSource == null ? "" : Source.SelectedSource.HostName);
         }
 
         void AddProperty(string key, string value)
@@ -516,6 +516,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 {
                     Outputs.Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
                     Outputs.Description = ManageServiceInputViewModel.Description;
+                    Outputs.IsVisible = Outputs.Outputs.Count > 0;
                 };
                 ManageServiceInputViewModel.ShowView();
                 if (ManageServiceInputViewModel.OkSelected)

@@ -15,6 +15,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _designHeight;
         private double _designMinHeight;
         private double _designMaxHeight;
+        private const double BaseHeight = 125;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -72,9 +73,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             if(_regions != null)
             {
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
+                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight) + BaseHeight;
+                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight) + BaseHeight;
+                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight) + BaseHeight;
             }
         }
 
