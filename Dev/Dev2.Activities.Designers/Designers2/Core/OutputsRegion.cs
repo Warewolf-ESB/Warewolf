@@ -202,6 +202,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _description = value;
+                _modelItem.SetProperty("OutputDescription",value);
                 OnPropertyChanged();
             }
         }

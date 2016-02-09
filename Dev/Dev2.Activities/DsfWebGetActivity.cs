@@ -7,6 +7,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
@@ -15,6 +16,8 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using WarewolfParserInterop;
 
@@ -29,6 +32,9 @@ namespace Dev2
         public string QueryString { get; set; }
 
         public IWebServiceSource SavedSource { get; set; }
+
+        public IOutputDescription OutputDescription { get; set; }
+
 
         #region Overrides of DsfNativeActivity<bool>
 
@@ -52,12 +58,22 @@ namespace Dev2
             var client = CreateClient(head, query, url);
             var result = client.DownloadString(url.Address+query);
             //ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
-            PushXmlIntoEnvironment(result, update, dataObject);
+            DataSourceShape shape = new DataSourceShape(){Paths = Outputs.Select(a=>((ServiceOutputMapping)a).Path).ToList()};
+            PushXmlIntoEnvironment(result, update,dataObject);
         }
 
         public void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
+            int i = 0;
+            foreach(var serviceOutputMapping in Outputs)
+            {
+                OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = serviceOutputMapping.MappedTo;
+                i++;
+            }
 
+            var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+
+            input = formater.Format(input).ToString();
             if (input != string.Empty)
             {
                 try
@@ -72,7 +88,7 @@ namespace Dev2
                         XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
                         var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache, update, dataObj);
+                        TryConvert(children, outputDefs, indexCache, update, dataObj,0);
                     }
                 }
                 catch (Exception e)
