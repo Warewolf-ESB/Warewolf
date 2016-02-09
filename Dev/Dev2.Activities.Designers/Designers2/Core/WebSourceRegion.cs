@@ -41,22 +41,20 @@ namespace Dev2.Activities.Designers2.Core
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
-
         }
 
         private void SetInitialValues()
         {
-            MinHeight = 20;
-            MaxHeight = 20;
-            CurrentHeight = 20;
+            MinHeight = 25;
+            MaxHeight = 25;
+            CurrentHeight = 25;
             IsVisible = true;
         }
 
-        public  WebSourceRegion()
+        public WebSourceRegion()
         {
             SetInitialValues();
         }
-
 
         Guid SourceId
         {
@@ -67,15 +65,12 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _sourceId = value;
-                if(_modelItem != null)
+                if (_modelItem != null)
                 {
                     _modelItem.SetProperty("SourceId", value);
                 }
             }
         }
-
-
-
 
         public bool CanEditSource()
         {
@@ -143,12 +138,12 @@ namespace Dev2.Activities.Designers2.Core
         public IToolRegion CloneRegion()
         {
             var ser = new Dev2JsonSerializer();
-            return  new WebSourceRegion()
+            return new WebSourceRegion()
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
-                IsVisible =  IsVisible,
-                SelectedSource =  SelectedSource,
+                IsVisible = IsVisible,
+                SelectedSource = SelectedSource,
                 CurrentHeight = CurrentHeight
             };
         }
@@ -198,8 +193,7 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetSelectedSource(IWebServiceSource value)
         {
-            
-            if(value != null)
+            if (value != null)
             {
                 _selectedSource = value;
                 SavedSource = value;
@@ -260,7 +254,6 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _modelItem.SetProperty("SavedSource", value);
-
             }
         }
 
