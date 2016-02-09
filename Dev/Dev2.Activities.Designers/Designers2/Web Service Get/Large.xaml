@@ -7,13 +7,10 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:ig="http://schemas.infragistics.com/xaml"
                                xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-                               xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                MinWidth="350"
                                Width="350"
@@ -50,7 +47,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <!--<RowDefinition>
                 <RowDefinition.Style>
                     <Style>
                         <Style.Triggers>
@@ -63,15 +61,15 @@
                         </Style.Triggers>
                     </Style>
                 </RowDefinition.Style>
-            </RowDefinition>
+            </RowDefinition>-->
             <RowDefinition>
                 <RowDefinition.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                            <DataTrigger Binding="{Binding Path=Outputs.IsVisible}" Value="True">
                                 <Setter Property="RowDefinition.Height" Value="*"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                            <DataTrigger Binding="{Binding Path=Outputs.IsVisible}" Value="False">
                                 <Setter Property="RowDefinition.Height" Value="Auto"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -81,41 +79,41 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <Control Template="{StaticResource SelectionGrid}"/>
 
-                <Control Template="{StaticResource SelectionGrid}"/>
-
-                <Grid x:Name="NamespaceGrid"
-                      Grid.Row="1"
-                      Margin="{StaticResource ControlBorderTop}"
+        <Grid Grid.Row="1" 
                       Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding LabelWidth}"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
-                    <ig:XamGrid Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Grid.Row="1"
-                                ItemsSource="{Binding InputArea.Headers}"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="HeadersGrid"
+                      Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
+
+                <Border Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1" 
+                        BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                        BorderThickness="1" >
+                    <ig:XamGrid ItemsSource="{Binding InputArea.Headers}"
                                 IsAlternateRowsEnabled="False"
                                 AutoGenerateColumns="False"
                                 IsEnabled="{Binding InputArea.IsVisible}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Margin="-1,0,0,0"
                                 Height="Auto"
-                                MaxHeight="115"
+                                MaxHeight="{Binding InputArea.MaxHeadersHeight}"
                                 ColumnWidth="*">
                         <ig:XamGrid.Columns>
                             <customControls1:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
@@ -159,49 +157,40 @@
                             <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                         </ig:XamGrid.ConditionalFormattingSettings>
                     </ig:XamGrid>
-                </Grid>
+                </Border>
+            </Grid>
 
-                <Grid x:Name="ActionsGrid"
-                      Grid.Row="2"
-                      Margin="{StaticResource ControlBorderTop}"
-                      Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding LabelWidth}"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" />
-                    <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" Margin="{StaticResource ControlBorderRight}" />
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString}"></TextBox>
-                    <Button x:Name="TestInputButton"
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Content="Validate"
-                            Width="Auto"
-                            Margin="{StaticResource ControlBorderTop}"
-                            ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                            Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                            HorizontalAlignment="Right"
-                            Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
-                </Grid>
+            <Grid x:Name="UrlGrid"
+                  Grid.Row="1"
+                  Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
+                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString}"></TextBox>
+                <Button x:Name="TestInputButton"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Content="Validate"
+                        Width="Auto"
+                        Margin="{StaticResource ControlBorderTop}"
+                        ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                        Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                        HorizontalAlignment="Right"
+                        Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="2"
-              Height="{Binding Outputs.CurrentHeight}"
-              MinHeight="{Binding Outputs.MinHeight}"
-              MaxHeight="{Binding Outputs.MaxHeight}"
-              x:Name="OutputsTemplate"
-              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Grid >
-                <Control x:Name="OutputsControl" Template="{StaticResource OutputsGrid}"></Control>
-            </Grid>
-        </Grid>
+        <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
+
         <Grid x:Name="ErrorGrid"
               Grid.Row="3"
               Margin="{StaticResource ControlBorderTop}"

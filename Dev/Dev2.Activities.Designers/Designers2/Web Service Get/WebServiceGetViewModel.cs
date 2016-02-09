@@ -450,10 +450,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _source = value;
-                if (_source.SelectedSource != null)
-                {
-                    LabelWidth = 75;
-                }
                 OnPropertyChanged();
             }
         }
