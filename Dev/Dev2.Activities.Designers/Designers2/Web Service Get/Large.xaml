@@ -5,13 +5,12 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                              xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:ig="http://schemas.infragistics.com/xaml"
                                xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-                                xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
+                               xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -27,313 +26,187 @@
                                d:DesignWidth="350"
                                d:DataContext="{d:DesignInstance webServiceGet1:WebServiceGetViewModel}">
 
-  <core:ActivityDesignerTemplate.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
-        <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </core:ActivityDesignerTemplate.Resources>
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
 
-  <core:ActivityDesignerTemplate.RightButtons>
-    <core:ActivityDesignerButton x:Name="DoneButton"
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
                                  Content="{Binding ButtonDisplayValue}"
                                  Margin="0,0,7,12"
                                  IsValidatedBefore="True"
                                  IsClosedAfter="True"
                                  Style="{StaticResource ActivityDesignerButtonStyle}" />
-  </core:ActivityDesignerTemplate.RightButtons>
+    </core:ActivityDesignerTemplate.RightButtons>
 
-  <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition>
-        <!--<RowDefinition.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
-                                <Setter Property="RowDefinition.Height" Value="*"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
-                                <Setter Property="RowDefinition.Height" Value="Auto"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>-->
-      </RowDefinition>
-      <RowDefinition>
-        <!--<RowDefinition.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
-                                <Setter Property="RowDefinition.Height" Value="*"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
-                                <Setter Property="RowDefinition.Height" Value="Auto"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>-->
-      </RowDefinition>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
-
-    <Grid Grid.Row="0">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Grid x:Name="SourcesGrid"
-         Grid.Row="0"
-         Visibility="{Binding Source.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding LabelWidth}"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock x:Name="SourceLabel" Text="Source" />
-          <ComboBox x:Name="SourcesComboBox"
-                    Grid.Column="1"
-                    DisplayMemberPath="Name"
-                    Margin="{StaticResource ControlBorderRight}"
-                    ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
-                    ItemsSource="{Binding Source.Sources}"
-                    SelectedItem="{Binding Source.SelectedSource , Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-              <help:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-          </ComboBox>
-          <Button x:Name="SourceEditButton"
-                  Grid.Column="2"
-                  Margin="{StaticResource ControlBorderRight}"
-                  Content="..."
-                  ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
-                  Command="{Binding Path=Source.EditSourceCommand, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-              <help:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-          </Button>
-          <Button x:Name="SourceNewButton"
-                  Grid.Column="3"
-                  Content="{x:Static languages:Core.New}"
-                  Width="Auto"
-                  Style="{StaticResource ButtonOrangeStyle}"
-                  ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
-                  Command="{Binding Path= Source.NewSourceCommand, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-              <help:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-          </Button>
-        </Grid>
-
-
-        <Grid x:Name="NamespaceGrid"
-              Grid.Row="1"
-              Margin="{StaticResource ControlBorderTop}"
-              Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding LabelWidth}"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-          </Grid.RowDefinitions>
-          <TextBlock x:Name="NamespaceLabel" Text="Headers"  Grid.Row="0" />
-
-
-          <!--<TextBox  Height="110" Text="{Binding InputArea.HeaderText}" TextWrapping="Wrap" AcceptsReturn="True" ></TextBox>-->
-
-          <ig:XamGrid    Grid.Column="1"
-                         Grid.Row="0"
-           ItemsSource="{Binding InputArea.Headers}"
-           IsAlternateRowsEnabled="False"
-           AutoGenerateColumns="False"
-           IsEnabled="{Binding InputArea.IsVisible}"
-           Margin="-1,0,0,0"
-           ScrollViewer.VerticalScrollBarVisibility="Auto"
-           Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-           Height="80"
-           ColumnWidth="*">
-            <ig:XamGrid.Columns>
-              <customControls1:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
-                <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                  <DataTemplate DataType="interfaces:INameValue">
-                    <ui:IntellisenseTextBox Text="{Binding Name}" ToolTip="{Binding Path=Name}">
-                      <ui:IntellisenseTextBox.IntellisenseProvider>
-                        <interfaceImplementors:CompositeIntellisenseProvider>
-                          <interfaceImplementors:DefaultIntellisenseProvider />
-                        </interfaceImplementors:CompositeIntellisenseProvider>
-                      </ui:IntellisenseTextBox.IntellisenseProvider>
-                    </ui:IntellisenseTextBox>
-                  </DataTemplate>
-                </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-              </customControls1:IntellisenseTextBoxColumn>
-              <customControls1:IntellisenseTextBoxColumn Key="Value" HeaderText="Value"  MinimumWidth="100" Watermark="Value">
-                <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                  <DataTemplate DataType="interfaces:INameValue">
-                    <ui:IntellisenseTextBox Text="{Binding Value}" ToolTip="{Binding Path=Value}">
-                      <ui:IntellisenseTextBox.IntellisenseProvider>
-                        <interfaceImplementors:CompositeIntellisenseProvider>
-                          <interfaceImplementors:DefaultIntellisenseProvider />
-                        </interfaceImplementors:CompositeIntellisenseProvider>
-                      </ui:IntellisenseTextBox.IntellisenseProvider>
-                    </ui:IntellisenseTextBox>
-                  </DataTemplate>
-                </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-              </customControls1:IntellisenseTextBoxColumn>
-            </ig:XamGrid.Columns>
-            <ig:XamGrid.SortingSettings>
-              <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-            </ig:XamGrid.SortingSettings>
-            <ig:XamGrid.EditingSettings>
-              <ig:EditingSettings AllowEditing="Cell"
-                              IsMouseActionEditingEnabled="SingleClick"
-                              IsEnterKeyEditingEnabled="True"
-                              IsF2EditingEnabled="True"
-                              IsOnCellActiveEditingEnabled="True" />
-            </ig:XamGrid.EditingSettings>
-            <ig:XamGrid.ConditionalFormattingSettings>
-              <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-            </ig:XamGrid.ConditionalFormattingSettings>
-          </ig:XamGrid>
-
-
-        </Grid>
-
-        <Grid x:Name="ActionsGrid"
-              Grid.Row="2"
-              Margin="{StaticResource ControlBorderTop}"
-                     Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding LabelWidth}"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-          </Grid.RowDefinitions>
-          <TextBlock Grid.Column="0" x:Name="ActionLabel" Text="Url" Margin="{StaticResource ControlBorderRight}" />
-          <TextBlock Grid.Row="0" Grid.Column="1"   x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" />
-          <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" Margin="{StaticResource ControlBorderRight}" />
-          <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString}"> </TextBox>
-          <Button x:Name="TestInputButton"
-                 Grid.Row="2"
-                 Grid.Column="1"
-                 Content="Validate"
-                 Width="Auto"
-                 Margin="{StaticResource ControlBorderTop}"
-                 ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                 Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                 HorizontalAlignment="Right"
-                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
-        </Grid>
-
-      </Grid>
-    </Grid>
-
-    <Grid Grid.Row="2"
-          Height="{Binding Outputs.CurrentHeight}"
-          x:Name="OutputsTemplate"
-          Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
-      <Grid >
+    <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-          <RowDefinition Height="*"/>
-          <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                <Setter Property="RowDefinition.Height" Value="*"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                                <Setter Property="RowDefinition.Height" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                <Setter Property="RowDefinition.Height" Value="*"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                                <Setter Property="RowDefinition.Height" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" Margin="{StaticResource ControlBorderTop}">
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
 
-            <ig:XamGrid x:Name="OutputsMappingDataGrid"
-                    ItemsSource="{Binding Outputs.Outputs}"
-                    IsAlternateRowsEnabled="False"
-                    AutoGenerateColumns="False"
-                    IsEnabled="{Binding TestComplete}"
-                    Margin="-1,0,0,0"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}"
-            Height="80"
-                    ColumnWidth="*">
-              <ig:XamGrid.Columns>
-                <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">
-                  <ig:TextColumn.AddNewRowEditorTemplate>
-                    <DataTemplate DataType="db:IServiceOutputMapping">
-                      <ui:IntellisenseTextBox WrapInBrackets="True" IsEnabled="False" Text="{Binding MappedFrom}" ToolTip="{Binding Path=MappedFrom}"></ui:IntellisenseTextBox>
-                    </DataTemplate>
-                  </ig:TextColumn.AddNewRowEditorTemplate>
-                </ig:TextColumn>
-                <customControls1:IntellisenseTextBoxColumn Key="MappedTo" HeaderText="Mapped To"  MinimumWidth="100" Watermark="Mapped To">
-                  <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                    <DataTemplate DataType="db:IServiceOutputMapping">
-                      <ui:IntellisenseTextBox Text="{Binding MappedTo}" ToolTip="{Binding Path=MappedTo}">
-                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                          <interfaceImplementors:CompositeIntellisenseProvider>
-                            <interfaceImplementors:DefaultIntellisenseProvider />
-                          </interfaceImplementors:CompositeIntellisenseProvider>
-                        </ui:IntellisenseTextBox.IntellisenseProvider>
-                      </ui:IntellisenseTextBox>
-                    </DataTemplate>
-                  </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                </customControls1:IntellisenseTextBoxColumn>
-              </ig:XamGrid.Columns>
-              <ig:XamGrid.SortingSettings>
-                <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-              </ig:XamGrid.SortingSettings>
-              <ig:XamGrid.EditingSettings>
-                <ig:EditingSettings AllowEditing="Cell"
-                                IsMouseActionEditingEnabled="SingleClick"
-                                IsEnterKeyEditingEnabled="True"
-                                IsF2EditingEnabled="True"
-                                IsOnCellActiveEditingEnabled="True" />
-              </ig:XamGrid.EditingSettings>
-              <ig:XamGrid.ConditionalFormattingSettings>
-                <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-              </ig:XamGrid.ConditionalFormattingSettings>
-            </ig:XamGrid>
-            <TextBlock Text="None"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
-                       Margin="0,0,0,-9"
-                       Style="{StaticResource MenuTextBlockStyle}"
-                       Visibility="{Binding Outputs.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
-          </Grid>
-        </Border>
-        <Grid Grid.Row="1"
-              Margin="{StaticResource ControlBorderTop}"
-              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Text="Recordset Name" ></TextBlock>
-          <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding Outputs.RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
-            <i:Interaction.Behaviors>
-              <core1:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-          </TextBox>
+        <Grid Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Template="{StaticResource SelectionGrid}"/>
+
+                <Grid x:Name="NamespaceGrid"
+                      Grid.Row="1"
+                      Margin="{StaticResource ControlBorderTop}"
+                      Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding LabelWidth}"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
+
+                    <ig:XamGrid Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="1"
+                                ItemsSource="{Binding InputArea.Headers}"
+                                IsAlternateRowsEnabled="False"
+                                AutoGenerateColumns="False"
+                                IsEnabled="{Binding InputArea.IsVisible}"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Height="Auto"
+                                MaxHeight="115"
+                                ColumnWidth="*">
+                        <ig:XamGrid.Columns>
+                            <customControls1:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
+                                <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                    <DataTemplate DataType="interfaces:INameValue">
+                                        <ui:IntellisenseTextBox Text="{Binding Name}" ToolTip="{Binding Path=Name}">
+                                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                                    <interfaceImplementors:DefaultIntellisenseProvider />
+                                                </interfaceImplementors:CompositeIntellisenseProvider>
+                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                        </ui:IntellisenseTextBox>
+                                    </DataTemplate>
+                                </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                            </customControls1:IntellisenseTextBoxColumn>
+                            <customControls1:IntellisenseTextBoxColumn Key="Value" HeaderText="Value"  MinimumWidth="100" Watermark="Value">
+                                <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                    <DataTemplate DataType="interfaces:INameValue">
+                                        <ui:IntellisenseTextBox Text="{Binding Value}" ToolTip="{Binding Path=Value}">
+                                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                                    <interfaceImplementors:DefaultIntellisenseProvider />
+                                                </interfaceImplementors:CompositeIntellisenseProvider>
+                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                        </ui:IntellisenseTextBox>
+                                    </DataTemplate>
+                                </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                            </customControls1:IntellisenseTextBoxColumn>
+                        </ig:XamGrid.Columns>
+                        <ig:XamGrid.SortingSettings>
+                            <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                        </ig:XamGrid.SortingSettings>
+                        <ig:XamGrid.EditingSettings>
+                            <ig:EditingSettings AllowEditing="Cell"
+                                                IsMouseActionEditingEnabled="SingleClick"
+                                                IsEnterKeyEditingEnabled="True"
+                                                IsF2EditingEnabled="True"
+                                                IsOnCellActiveEditingEnabled="True" />
+                        </ig:XamGrid.EditingSettings>
+                        <ig:XamGrid.ConditionalFormattingSettings>
+                            <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                        </ig:XamGrid.ConditionalFormattingSettings>
+                    </ig:XamGrid>
+                </Grid>
+
+                <Grid x:Name="ActionsGrid"
+                      Grid.Row="2"
+                      Margin="{StaticResource ControlBorderTop}"
+                      Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding LabelWidth}"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" />
+                    <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" Margin="{StaticResource ControlBorderRight}" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString}"></TextBox>
+                    <Button x:Name="TestInputButton"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Content="Validate"
+                            Width="Auto"
+                            Margin="{StaticResource ControlBorderTop}"
+                            ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                            Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                            HorizontalAlignment="Right"
+                            Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
+                </Grid>
+            </Grid>
         </Grid>
-      </Grid>
+
+        <Grid Grid.Row="2"
+              Height="{Binding Outputs.CurrentHeight}"
+              MinHeight="{Binding Outputs.MinHeight}"
+              MaxHeight="{Binding Outputs.MaxHeight}"
+              x:Name="OutputsTemplate"
+              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid >
+                <Control x:Name="OutputsControl" Template="{StaticResource OutputsGrid}"></Control>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ErrorGrid"
+              Grid.Row="3"
+              Margin="{StaticResource ControlBorderTop}"
+              Visibility="{Binding OnErrorVisible}">
+            <errors:OnError />
+        </Grid>
     </Grid>
-    <Grid x:Name="ErrorGrid"
-          Grid.Row="3"
-          Margin="{StaticResource ControlBorderTop}"
-          Visibility="{Binding OnErrorVisible}">
-      <errors:OnError />
-    </Grid>
-  </Grid>
 </core:ActivityDesignerTemplate>
