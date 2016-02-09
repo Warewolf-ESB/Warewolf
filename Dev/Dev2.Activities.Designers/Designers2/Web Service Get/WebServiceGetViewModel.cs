@@ -486,7 +486,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
                             Outputs.RecordsetName = recordset.Name;
-                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
+                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name){Path = recordsetField.Path};
                             return serviceOutputMapping;
                         }).Cast<IServiceOutputMapping>().ToList();
                         // ReSharper restore MaximumChainedReferences
