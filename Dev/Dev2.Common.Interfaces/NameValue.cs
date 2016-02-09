@@ -96,6 +96,16 @@ namespace Dev2.Common.Interfaces
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
+        public NameValue(string name, string value)
+        {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Name = name;
+
+            Value = value;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+
         public virtual string Name
         {
             get
