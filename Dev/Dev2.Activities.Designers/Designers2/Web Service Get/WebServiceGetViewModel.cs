@@ -480,8 +480,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                             var errorMessage = string.Join(Environment.NewLine, responseService.Recordsets.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-
-                        ManageServiceInputViewModel.Description = responseService.Recordsets.Description;
+                       
+                        ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
                         // ReSharper disable MaximumChainedReferences
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
