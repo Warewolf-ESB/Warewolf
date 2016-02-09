@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.ToolBase
 {
@@ -11,5 +10,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         ObservableCollection<INameValue> Headers { get; set; }
 
         double HeadersHeight { get; set; }
+        double MaxHeadersHeight { get; set; }
     }
 }

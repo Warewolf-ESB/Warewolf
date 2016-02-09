@@ -1435,6 +1435,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Web Get Request connector tool does not exist on the design surface</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Web_Get_Request_Tool_Exists_OnDesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGetRequest">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -2747,6 +2764,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.UIWarewolfDEV2LEROYWARWindow1.UIWorkflowItemPresenteCustom.UIFlowchartCustom1.UIItem62534df079184555Custom</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="733" Y="913" />
+      <StopLocation X="301" Y="97" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Web_Get_Request_Tool_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -3678,6 +3713,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Web Get Request tool small view does not exist on the design surface</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -4378,6 +4430,20 @@
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
+                                                <UIObject ControlType="Custom" Id="WebGet" FriendlyName="DsfWebGetActivity" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.WebServiceGetDesigner</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">Web Get Request Connector(WebServiceGetDesigner)</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
                                                 <UIObject ControlType="Custom" Id="DotNetDll" FriendlyName="DsfDotNetDllActivity" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
@@ -9581,6 +9647,32 @@
                     </UIObject>
                   </Descendants>
                 </UIObject>
+                <UIObject ControlType="Text" Id="UIToolButtonImageText" FriendlyName="ToolButtonImage" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ToolButtonImage</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="Image" Id="UIItemImage" FriendlyName="" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
               </Descendants>
             </UIObject>
             <UIObject ControlType="Custom" Id="UIActivityBuilderCustom" FriendlyName="ActivityBuilder" SpecialControlType="None">
@@ -9944,64 +10036,7 @@
                 <PropertyCondition Name="AutomationId">Unsaved 2(FlowchartDesigner)</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Custom" Id="UIDsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">Assign (1)(MultiAssignDesigner)</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="ToggleButton" Id="OpenQuickVariableInpToggleButton" FriendlyName="Open Quick Variable Input" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">ToggleButton</PropertyCondition>
-                        <PropertyCondition Name="HelpText">Open Quick Variable Input</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="Custom" Id="UIDsfDataMergeActivityCustom" FriendlyName="DsfDataMergeActivity" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.DataMergeDesigner</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">Data Merge (1)(DataMergeDesigner)</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="ToggleButton" Id="OpenQuickVariableInpToggleButton" FriendlyName="Open Quick Variable Input" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">ToggleButton</PropertyCondition>
-                        <PropertyCondition Name="HelpText">Open Quick Variable Input</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
+              <Descendants />
             </UIObject>
             <UIObject ControlType="Window" Id="UIWpfWindow2" FriendlyName="Wpf" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
@@ -10229,6 +10264,49 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
+                </UIObject>
+                <UIObject ControlType="Custom" Id="UIFlowchartCustom1" FriendlyName="Flowchart" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Unsaved 4(FlowchartDesigner)</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="Custom" Id="UIItem62534df079184555Custom" FriendlyName="62534df0-7918-4555-ba96-02efa05a4fc4,300,77.5 300,..." SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">62534df0-7918-4555-ba96-02efa05a4fc4,300,77.5 300,107.5 350,107.5 350,127.5</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                    <UIObject ControlType="Custom" Id="UIDsfWebGetActivityCustom" FriendlyName="DsfWebGetActivity" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.WebServiceGetDesigner</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">Web Get Request Connector(WebServiceGetDesigner)</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
                 </UIObject>
               </Descendants>
             </UIObject>
