@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
             var headerCollection = new ObservableCollection<NameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
+            //Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
             RequestBody = "";
             Response = "";
             try

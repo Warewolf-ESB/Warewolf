@@ -199,8 +199,12 @@
     </ControlTemplate>
 
   <!--DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel }"-->
-  <ControlTemplate x:Key="OutputsGrid" >
-        <Grid >
+    <ControlTemplate x:Key="OutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
+        <Grid Height="{Binding Outputs.CurrentHeight}"
+              MinHeight="{Binding Outputs.MinHeight}"
+              MaxHeight="{Binding Outputs.MaxHeight}"
+              x:Name="OutputsTemplate"
+              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
