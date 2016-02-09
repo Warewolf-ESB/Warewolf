@@ -140,7 +140,6 @@
     <Compile Include="ResourceTypeToIconConverter.cs" />
     <Compile Include="ResourceTypeToIconVisibility.cs" />
     <Compile Include="ServerAddedEvent.cs" />
-    <Compile Include="WarewolfWebClient.cs" />
     <Compile Include="WidthConvertForWrapPanel.cs" />
   </ItemGroup>
   <ItemGroup>
