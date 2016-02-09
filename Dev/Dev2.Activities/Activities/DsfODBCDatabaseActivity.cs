@@ -54,7 +54,7 @@ namespace Dev2.Activities
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
             databaseServiceExecution.ProcedureName = ProcedureName;
             ServiceExecution.GetSource(SourceId);
-            ServiceExecution.BeforeExecution(tmpErrors);
+           // ServiceExecution.BeforeExecution(tmpErrors);
         }
 
         protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
