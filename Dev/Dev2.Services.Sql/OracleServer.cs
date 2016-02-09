@@ -14,7 +14,7 @@ using Oracle.ManagedDataAccess.Types;
 
 namespace Dev2.Services.Sql
 {
-    public sealed class OracleServer :IDbServer
+    public sealed class OracleServer : IDbServer
     {
         private readonly IDbFactory _factory;
         private IDbCommand _command;
@@ -32,7 +32,7 @@ namespace Dev2.Services.Sql
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
-          public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -46,21 +46,21 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 string fullProcedureName = row["NAME"].ToString();
-                
+
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            Owner+"."+fullProcedureName))
+                            Owner + "." + fullProcedureName))
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters ;
+                            List<IDbDataParameter> outParameters;
 
                             List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
-                            
+
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                           // fullProcedureName = Owner + "." + fullProcedureName;
+                            // fullProcedureName = Owner + "." + fullProcedureName;
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
                             //procedureProcessor(command, parameters, helpText, fullProcedureName);
 
@@ -145,11 +145,11 @@ namespace Dev2.Services.Sql
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
-        public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
+        public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
-            foreach(var par in outparameters)
+            foreach (var par in outparameters)
             {
                 _command.Parameters.Add(par);
             }
@@ -165,7 +165,7 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             return FetchDataSet(_command, parameters);
         }
-        
+
         public DataSet FetchDataSet(IDbCommand command, params OracleParameter[] parameters)
         {
             VerifyArgument.IsNotNull("command", command);
@@ -180,7 +180,7 @@ namespace Dev2.Services.Sql
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false,string dbName="")
+            bool continueOnProcessorException = false, string dbName = "")
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -198,14 +198,14 @@ namespace Dev2.Services.Sql
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                           Owner+"."+ fullProcedureName))
+                           Owner + "." + fullProcedureName))
                     {
                         try
                         {
                             List<IDbDataParameter> isOut;
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                         //   fullProcedureName = Owner + "." + fullProcedureName;
+                            //   fullProcedureName = Owner + "." + fullProcedureName;
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
 
 
@@ -260,9 +260,10 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString)
         {
-            if (connectionString.Contains("Database")) {
-                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")),"");
-                 }
+            if (connectionString.Contains("Database"))
+            {
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")), "");
+            }
             _connection = (OracleConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
             return true;
@@ -270,6 +271,10 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
+            if (connectionString.Contains("Database"))
+            {
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")), "");
+            }
             _connection = (OracleConnection)_factory.CreateConnection(connectionString);
 
             VerifyArgument.IsNotNull("commandText", commandText);
@@ -294,26 +299,31 @@ namespace Dev2.Services.Sql
                 if (command.CommandType == CommandType.StoredProcedure)
                 {
                     OracleParameter obj = new OracleParameter();
-                    
-                    for (int i = 0; i < command.Parameters.Count; i++) {
+
+                    for (int i = 0; i < command.Parameters.Count; i++)
+                    {
                         OracleParameter temp = (OracleParameter)command.Parameters[i];
 
-                        if (temp.OracleDbType == OracleDbType.RefCursor ) {
+                        if (temp.OracleDbType == OracleDbType.RefCursor)
+                        {
                             obj = (OracleParameter)command.Parameters[i];
                         }
 
                     }
                     if (obj.ParameterName.Length > 0)
                     {
-                        try {
+                        try
+                        {
                             command.ExecuteNonQuery();
-                            using (OracleDataReader reader = ((OracleRefCursor)obj.Value).GetDataReader()) {
+                            using (OracleDataReader reader = ((OracleRefCursor)obj.Value).GetDataReader())
+                            {
                                 return handler(reader);
                             }
-                           
-                            
+
+
                         }
-                        catch(Exception e){
+                        catch (Exception e)
+                        {
                             using (IDataReader reader = command.ExecuteReader(commandBehavior))
                             {
                                 Console.WriteLine(e);
@@ -344,7 +354,7 @@ namespace Dev2.Services.Sql
                 {
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
-                    exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
+                    exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new DataTableReader(exceptionDataTable));
                 }
                 throw;
@@ -367,7 +377,7 @@ namespace Dev2.Services.Sql
         private DataTable GetSchema(IDbConnection connection)
         {
             const string CommandText = GlobalConstants.SchemaQueryOracle;
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, string.Format(CommandText,Owner)))
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, string.Format(CommandText, Owner)))
             {
                 return FetchDataTable(command);
             }
@@ -380,7 +390,7 @@ namespace Dev2.Services.Sql
                     string.Format("SELECT text FROM all_source WHERE name='{0}' ORDER BY line", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate(IDataReader reader)
+                    delegate (IDataReader reader)
                     {
                         var sb = new StringBuilder();
                         while (reader.Read())
@@ -398,17 +408,17 @@ namespace Dev2.Services.Sql
 
         public List<OracleParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
-            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
             {
 
                 List<IDbDataParameter> isOut;
                 GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
-                return isOut.Select(a=>a as OracleParameter).ToList();
+                return isOut.Select(a => a as OracleParameter).ToList();
 
             }
         }
 
-        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
+        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
@@ -427,54 +437,75 @@ namespace Dev2.Services.Sql
 
 
                 bool isout = false;
-                    const ParameterDirection direction = ParameterDirection.Output;
+                const ParameterDirection direction = ParameterDirection.Output;
 
                 if (InOut.Contains("IN/OUT"))
                     isout = false;
                 if (InOut.Contains("OUT"))
-                        isout = true;
+                    isout = true;
 
-              
-              
-                    if (!String.IsNullOrEmpty(parameterName))
-                    {
+
+
+                if (!String.IsNullOrEmpty(parameterName))
+                {
 
                     var OracleParameter = new OracleParameter();
                     OracleDbType OracleType;
-                    
-                    Enum.TryParse((row["DATA_TYPE"] as string).Replace(" ",""), true, out OracleType);
+
+                    Enum.TryParse((row["DATA_TYPE"] as string).Replace(" ", ""), true, out OracleType);
                     if (OracleType == 0)
                     {
-                        OracleType = OracleDbType.Varchar2;
+                        string dataType = row["DATA_TYPE"].ToString();
+                        switch (dataType)
+                        {
+                            case "NUMBER":
+                                {
+                                    OracleType = OracleDbType.Decimal;
+                                    break;
+                                }
+                            case "FLOAT":
+                                {
+                                    OracleType = OracleDbType.Double;
+                                    break;
+                                }
+                            default:
+                                {
+                                    OracleType = OracleDbType.Varchar2;
+                                    break;
+                                }
+                        }
+
                         OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
                     }
-                    else {
-                         OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                    else
+                    {
+                        OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
                     }
-                    
-                   
-                        if (!isout)
-                        {
+
+
+                    if (!isout)
+                    {
                         try
                         {
                             OracleParameter.Direction = ParameterDirection.Input;
                             command.Parameters.Add(OracleParameter);
                             parameters.Add(OracleParameter);
                         }
-                        catch (Exception) {
+                        catch (Exception)
+                        {
                             continue;
                         }
-                        }
-                        else
-                        {
-                           
-                            outParams.Add(OracleParameter);
-                         //  OracleParameter.Value = "@a";
-                       // command.Parameters.Add(OracleParameter);
-                        }
-                   
                     }
-                
+                    else
+                    {
+
+                        outParams.Add(OracleParameter);
+                        //  OracleParameter.Value = "@a";
+                        // command.Parameters.Add(OracleParameter);
+                    }
+
+                }
+
 
             }
             command.CommandText = originalCommandText;
