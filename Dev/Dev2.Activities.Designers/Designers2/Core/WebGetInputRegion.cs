@@ -1,12 +1,10 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -27,6 +25,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _currentHeight;
         private double _maxHeight;
         private double _headersHeight;
+        double _maxHeadersHeight;
         private const double BaseHeight = 60;
         //private ICommand _addRowCommand;
         //private ICommand _removeRowCommand;
@@ -42,6 +41,7 @@ namespace Dev2.Activities.Designers2.Core
             MinHeight = BaseHeight;
             MaxHeight = BaseHeight;
             CurrentHeight = BaseHeight;
+            MaxHeadersHeight = BaseHeight;
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -50,7 +50,20 @@ namespace Dev2.Activities.Designers2.Core
             var headerCollection = new ObservableCollection<INameValue>(existing ?? new List<INameValue>());
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            Headers.Add(new NameValue());
+
+            if (Headers.Count == 0)
+            {
+                Headers.Add(new ObservableAwareNameValue(Headers, s => {}));
+            }
+            else
+            {
+                var nameValue = Headers.Last();
+                if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+                {
+                    Headers.Add(new ObservableAwareNameValue(Headers, s => {}));
+                }
+            }
+            ResetInputsHeight();
         }
 
         private void UpdateRequestVariables(string obj)
@@ -60,19 +73,32 @@ namespace Dev2.Activities.Designers2.Core
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ResetInputsHeight();
-            _modelItem.SetProperty("Headers", _headers.ToList());
+            _modelItem.SetProperty("Headers", _headers.Select(a=>new NameValue(a.Name,a.Value) as INameValue).ToList());
         }
 
         void ResetInputsHeight()
         {
             SetInitialHeight();
+            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
+            MaxHeadersHeight = HeadersHeight;
             if(Headers.Count >= 3)
             {
-                MinHeight = 110;
-                MaxHeight = 110;
+                MinHeight = 115;
+                MaxHeight = 115;
+                MaxHeadersHeight = 115;
+                CurrentHeight = MinHeight;
             }
-            CurrentHeight = MinHeight;
-            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
+            else
+            {
+                CurrentHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
+                if (CurrentHeight < BaseHeight)
+                {
+                    CurrentHeight = BaseHeight;
+                }
+                MinHeight = CurrentHeight;
+                MaxHeight = CurrentHeight;
+                OnHeightChanged(this);
+            }
         }
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -94,7 +120,7 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
                 Headers.Clear();
-                Headers.Add(new NameValue());
+                Headers.Add(new  ObservableAwareNameValue(Headers, s => {}));
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
@@ -158,6 +184,18 @@ namespace Dev2.Activities.Designers2.Core
 
         #endregion
 
+        public double MaxHeadersHeight
+        {
+            get
+            {
+                return _maxHeadersHeight;
+            }
+            set
+            {
+                _maxHeadersHeight = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 
