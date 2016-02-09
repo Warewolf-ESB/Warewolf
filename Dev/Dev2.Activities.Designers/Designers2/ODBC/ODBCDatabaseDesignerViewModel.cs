@@ -188,18 +188,20 @@ namespace Dev2.Activities.Designers2.ODBC
                         {
                            
                                 Inputs = new List<IServiceInput>();
-                                Outputs = new List<IServiceOutputMapping>();
+                               // Outputs = new List<IServiceOutputMapping>();
                                 InputsVisible = false;
                                 InputsExpanded = false;
-                                OutputsVisible = false;
-                                OutputsExpanded = false;
+                               // OutputsVisible = false;
+                               // OutputsExpanded = false;
                                // ProcedureName = "";
                                 UpdateLastValidationMemoWithProcedureNotSelectedError();
-                            MyCommand = ProcedureName;
-                            
+                                MyCommand = ProcedureName;
+                            RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
+
                         }
                         else
                         {
+                           
                             UpdateLastValidationMemoWithProcedureNotSelectedError();
                         }
                     }
@@ -278,7 +280,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             try
             {
-                
+                RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
                 Errors = new List<IActionableErrorInfo>();
                 var databaseService = ToModel();
                 ManageServiceInputViewModel.Model = databaseService;
@@ -863,7 +865,7 @@ namespace Dev2.Activities.Designers2.ODBC
                       //  ActionVisible = Procedures.Count != 0;
                         ActionVisible =true;
                        
-                        Procedures = _dbServiceModel.GetActions(_selectedSource);
+                      //  Procedures = _dbServiceModel.GetActions(_selectedSource);
                         ViewModelUtils.RaiseCanExecuteChanged(TestInputCommand);
                         SourceId = _selectedSource.Id;
                         
