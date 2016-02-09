@@ -1631,6 +1631,30 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void Warewolf_AssignListToRecset()
+        {
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var env3 = PublicFunctions.EvalAssignFromList("[[a]]", new List<DataASTMutable.WarewolfAtom>() { DataASTMutable.WarewolfAtom.NewDataString("a"), DataASTMutable.WarewolfAtom.NewDataString("b") }, testEnv, 0, true);
+
+       
+            var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, env3);
+            if (items.IsWarewolfAtomListresult)
+            {
+                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+
+                Assert.IsTrue(lst.IsDataString);
+                Assert.AreEqual((lst as DataASTMutable.WarewolfAtom.DataString).Item, "a,b");
+
+            }
+
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Errors")]
         public void WarewolfEnvironment_ErrorsAreUnique()
         {

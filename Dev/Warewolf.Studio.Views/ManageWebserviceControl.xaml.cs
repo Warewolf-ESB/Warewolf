@@ -83,12 +83,13 @@ namespace Warewolf.Studio.Views
 
         public ItemCollection GetHeaders()
         {
-            BindingExpression be = HeadersGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return HeadersGrid.ItemsSource as ItemCollection;
+            //BindingExpression be = HeadersGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            //if (be != null)
+            //{
+            //    be.UpdateTarget();
+            //}
+            //return HeadersGrid.ItemsSource as ItemCollection;
+            return null;
         }
 
         public string GetOutputs()
