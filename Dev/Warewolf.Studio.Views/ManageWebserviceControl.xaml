@@ -9,9 +9,9 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:xamGrid="clr-namespace:Warewolf.Studio.Views.XamGrid"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+    xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=interfaces:IManageWebServiceViewModel, IsDesignTimeCreatable=False}">
@@ -149,7 +149,7 @@
                                       VerticalScrollBarVisibility="Auto"
                                       MaxHeight="110">
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" MinWidth="400">
-                                <xamGrid:XamGridEx x:Name="HeadersGrid" 
+                                <!--<xamGrid:XamGridEx x:Name="HeadersGrid" 
                                                    Style="{StaticResource XamGridStyle}"
                                                    ItemsSource="{Binding Headers}" 
                                                    AutoGenerateColumns="False"
@@ -197,7 +197,7 @@
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>
-                                </xamGrid:XamGridEx>
+                                </xamGrid:XamGridEx>-->
                             </Grid>
                         </ScrollViewer>
                     </Grid>
