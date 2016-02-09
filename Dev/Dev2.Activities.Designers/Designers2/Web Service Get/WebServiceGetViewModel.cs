@@ -474,16 +474,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                         ManageServiceInputViewModel.TestResults = Model.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
 
-                        var responseService = serializer.Deserialize<RecordsetListWrapper>(ManageServiceInputViewModel.TestResults);
-                        if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                        var responseService = serializer.Deserialize<WebService>(ManageServiceInputViewModel.TestResults);
+                        if (responseService.Recordsets.Any(recordset => recordset.HasErrors))
                         {
-                            var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
+                            var errorMessage = string.Join(Environment.NewLine, responseService.Recordsets.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
 
-                        ManageServiceInputViewModel.Description = responseService.Description;
+                        ManageServiceInputViewModel.Description = responseService.Recordsets.Description;
                         // ReSharper disable MaximumChainedReferences
-                        var outputMapping = responseService.RecordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                        var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
                             Outputs.RecordsetName = recordset.Name;
                             var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name);
@@ -565,7 +565,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 QueryString = InputArea.QueryString,
                 SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
-                Response = ""
+                Response = "",
+                
             };
         }
 

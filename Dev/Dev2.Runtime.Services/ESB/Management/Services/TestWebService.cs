@@ -49,7 +49,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                     RequestBody = src.PostData,
                     Headers = src.Headers,
                     RequestResponse = src.Response
-
+                    ,
+                    Source =  new WebSource
+                {
+                    Address = src.Source.HostName,
+                    DefaultQuery = src.Source.DefaultQuery,
+                    AuthenticationType = src.Source.AuthenticationType,
+                    UserName = src.Source.UserName,
+                    Password = src.Source.Password
+                }
                 };
 
                 WebServices.TestWebService(res);
