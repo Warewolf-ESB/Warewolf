@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Core
             //ReCalculateHeight();
         }
 
-        protected abstract IList<IToolRegion> BuildRegions();
+        public abstract IList<IToolRegion> BuildRegions();
 
 
         // ReSharper disable once PublicConstructorInAbstractClass
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers2.Core
                 return _regions;
             }
 
-            protected set
+            set
             {
                 _regions = value;
             }
