@@ -196,5 +196,10 @@ namespace Dev2
             DisplayName = "Web Get Request Connector";
         }
 
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
+        }
+
     }
 }
