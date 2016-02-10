@@ -10,8 +10,6 @@
 */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -21,10 +19,8 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;

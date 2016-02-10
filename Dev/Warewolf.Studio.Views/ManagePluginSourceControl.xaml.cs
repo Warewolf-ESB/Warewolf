@@ -5,7 +5,6 @@ using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Infragistics.Controls.Menus;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -19,25 +18,7 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
 
-           // ExplorerTree.SelectedNodesCollectionChanged+=ExplorerTreeOnSelectedNodesCollectionChanged;
         }
-
-//        void ExplorerTreeOnSelectedNodesCollectionChanged(object sender, NodeSelectionEventArgs nodeSelectionEventArgs)
-//        {
-//            if (nodeSelectionEventArgs.CurrentSelectedNodes.Count > 0)
-//            {
-//                var currentNodeSelection = nodeSelectionEventArgs.CurrentSelectedNodes[0];
-//                if (currentNodeSelection!=null)
-//                {
-//                    var item = currentNodeSelection.Data as IDllListingModel;
-//                    if (item!=null && item.IsSelected)
-//                    {
-//                        item.IsSelected = false;
-//                    }
-//                }
-//            }
-//
-//        }
 
         public string GetHeaderText()
         {

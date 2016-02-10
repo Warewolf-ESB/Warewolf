@@ -12,19 +12,18 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using Warewolf.Security.Encryption;
 
+// ReSharper disable InconsistentNaming
+
+// ReSharper disable once CheckNamespace
 namespace Dev2.Warewolf.Security.Encryption
 {
     [TestClass]
     public class DPAPIWrapperTests
     {
-        // ReSharper disable InconsistentNaming
 
         private readonly string message = "This is the secret message to encrypt.";
 

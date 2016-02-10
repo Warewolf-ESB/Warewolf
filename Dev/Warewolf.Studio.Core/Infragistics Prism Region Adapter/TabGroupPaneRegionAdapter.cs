@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Microsoft.Practices.Prism.Regions;
