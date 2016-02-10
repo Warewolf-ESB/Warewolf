@@ -147,7 +147,9 @@ namespace Dev2.Activities.Designers2.Core
                     OutputMappings = _model.OutputMappings,
                     Method = _model.Method,
                     Name = _model.Name ,
-                    Response =  _model.Response
+                    Response =  _model.Response,
+                    Source = _model.Source,
+                    SourceUrl = _model.SourceUrl
                     
                 };
                 return model;
