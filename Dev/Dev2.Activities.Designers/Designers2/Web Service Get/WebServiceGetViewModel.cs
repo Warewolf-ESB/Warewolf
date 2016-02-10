@@ -104,8 +104,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-            ReCalculateHeight();
-
             TestComplete = false;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -150,18 +148,32 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
             }, CanTestProcedure);
             TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
+
+            InitializeProperties();
+
+            if (Outputs != null && Outputs.Outputs != null)
+            {
+                TestComplete = true;
+                Outputs.IsVisible = true;
+                var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
+                if (recordsetItem != null)
+                {
+                    Outputs.RecordsetName = recordsetItem.RecordSetName;
+                }
+            }
+
+            ReCalculateHeight();
+
+            #region CODE_TO_REMOVE?
             //InitializeValidationService(_environment);
             //InitializeLastValidationMemo(_environment);
             //ManageServiceInputViewModel = manageServiceInputViewModel;
             //if (_environment != null)
             //{
             //    _isInitializing = true;
-
-
             //    Model = webServiceModel;
-
             //}
-            InitializeProperties();
+            
             //if (IsItemDragged.Instance.IsDragged)
             //{
             //    Expand();
@@ -176,7 +188,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             //InitializeResourceModel(_environment);
 
             //_isInitializing = false;
-
+            #endregion
         }
 
         //void InitializeResourceModel(IEnvironmentModel environmentModel)

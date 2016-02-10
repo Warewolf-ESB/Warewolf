@@ -232,6 +232,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             if (Outputs != null)
             {
                 OutputsVisible = true;
+                TestComplete = true;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
