@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         private readonly ModelItem _modelItem;
         Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
+        private Action _sourceChangedAction;
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
@@ -81,6 +82,17 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand EditSourceCommand { get; set; }
 
         public ICommand NewSourceCommand { get; set; }
+        public Action SourceChangedAction
+        {
+            get
+            {
+                return _sourceChangedAction??(()=>{});
+            }
+            set
+            {
+                _sourceChangedAction = value;
+            }
+        }
         public event SomethingChanged SomethingChanged;
 
         #region Implementation of IToolRegion
@@ -187,6 +199,7 @@ namespace Dev2.Activities.Designers2.Core
                 else
                 {
                     SetSelectedSource(value);
+                    SourceChangedAction();
                     OnSomethingChanged(this);
                 }
             }
