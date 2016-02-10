@@ -9,6 +9,7 @@
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                    xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
                     CloseButtonVisibility="Collapsed"
                     Style="{StaticResource XamDialogWindowStyle}"
                     Header="{x:Static languages:Core.TestHeader}"
@@ -16,7 +17,7 @@
                     Width="600"
                     Height="450"
                     d:DesignHeight="450" d:DesignWidth="600"
-                    d:DataContext="{d:DesignInstance Type=interfaces:IManageServiceInputViewModel, IsDesignTimeCreatable=False}">
+                    d:DataContext="{d:DesignInstance Type=interfaces:IManageServiceInputViewModel , IsDesignTimeCreatable=False}">
 
     <ig:XamDialogWindow.Resources>
         <ResourceDictionary>

@@ -1060,22 +1060,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IDatabaseService selectedSource, IWorkSurfaceKey workSurfaceKey = null)
-        {
-            var dbSourceViewModel = new ManageDatabaseServiceViewModel(new ManageDbServiceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this, ActiveServer), null, selectedSource);
-            var vm = new SourceViewModel<IDatabaseService>(EventPublisher, dbSourceViewModel, PopupProvider,new ManageDatabaseServiceControl());
-
-            if (workSurfaceKey == null)
-            {
-                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
-                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
-                workSurfaceKey.ResourceID = selectedSource.Id;
-                workSurfaceKey.ServerID = ActiveServer.ServerID;
-            }
-
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            OpeningWorkflowsHelper.AddWorkflow(key);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        {           
         }
 
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
