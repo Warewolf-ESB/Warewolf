@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
