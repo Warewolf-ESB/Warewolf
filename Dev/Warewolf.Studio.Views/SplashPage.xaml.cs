@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 
 namespace Warewolf.Studio.Views
@@ -32,7 +34,14 @@ namespace Warewolf.Studio.Views
                 }
             }
             Topmost = true;
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error(e.Message,e);
+            }
         }
 
         void SplashPage_OnMouseUp(object sender, MouseButtonEventArgs e)
