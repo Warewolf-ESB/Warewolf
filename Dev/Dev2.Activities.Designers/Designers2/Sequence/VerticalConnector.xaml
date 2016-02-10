@@ -20,7 +20,7 @@
   </FrameworkElement.Resources>
   <FrameworkElement.Triggers>
     <EventTrigger x:Uid="EventTrigger_3" RoutedEvent="DragDrop.Drop">
-      <BeginStoryboard x:Name="Collapse_BeginStoryboardOnDrop" x:Uid="Collapse_BeginStoryboardOnDrop"
+      <BeginStoryboard x:Name="CollapseBeginStoryboardOnDrop" x:Uid="Collapse_BeginStoryboardOnDrop"
                        Storyboard="{StaticResource Collapse}"/>
     </EventTrigger>
   </FrameworkElement.Triggers>
@@ -45,7 +45,7 @@
           Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" 
           Width="16" 
           Height="10"/>
-    <Rectangle x:Name="dropTarget" 
+    <Rectangle x:Name="DropTarget" 
                x:Uid="dropTarget" 
                Fill="#FFE9ECEE" 
                Height="10" 

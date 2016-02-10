@@ -64,18 +64,18 @@ namespace System.Activities.Core.Presentation
         protected override void OnDragEnter(DragEventArgs e)
         {
             CheckAnimate(e, "Expand");
-            dropTarget.Visibility = Visibility.Visible;
+            DropTarget.Visibility = Visibility.Visible;
         }
 
         protected override void OnDragLeave(DragEventArgs e)
         {
             CheckAnimate(e, "Collapse");
-            dropTarget.Visibility = Visibility.Collapsed;
+            DropTarget.Visibility = Visibility.Collapsed;
         }
 
         protected override void OnDrop(DragEventArgs e)
         {
-            dropTarget.Visibility = Visibility.Collapsed;
+            DropTarget.Visibility = Visibility.Collapsed;
             base.OnDrop(e);
         }
 
