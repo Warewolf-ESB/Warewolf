@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
+using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -77,7 +78,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public override void Validate()
         {
-            //  Regions.SelectMany(a => a.Errors);
+            if(Errors == null)
+            {
+                Errors = new List<IActionableErrorInfo>();
+            }
+                Errors.Clear();
+            
+           Errors =  Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
         }
 
         private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
@@ -522,10 +529,15 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ReCalculateHeight();
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //ErrorMessage(e);
+                ErrorMessage(e);
             }
+        }
+
+        private void ErrorMessage(Exception exception)
+        {
+            Errors.Add(new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{}));
         }
 
         private void ValidateTestComplete()
