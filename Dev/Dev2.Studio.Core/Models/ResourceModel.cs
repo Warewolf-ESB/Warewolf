@@ -572,10 +572,8 @@ namespace Dev2.Studio.Core.Models
             IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
         }
 
-        // TODO: cjr: would be best to have this non default to false, so that will be the next step once it all works
         public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
         {
-            //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
             StringBuilder result = new StringBuilder();
 
             if(ResourceType == ResourceType.WorkflowService)
