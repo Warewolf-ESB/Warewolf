@@ -48,20 +48,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <!--<RowDefinition>
-                <RowDefinition.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
-                                <Setter Property="RowDefinition.Height" Value="*"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
-                                <Setter Property="RowDefinition.Height" Value="Auto"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
-            </RowDefinition>-->
             <RowDefinition>
                 <RowDefinition.Style>
                     <Style>
@@ -81,8 +67,7 @@
 
         <Control Template="{StaticResource SelectionGrid}"/>
 
-        <Grid Grid.Row="1" 
-                      Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid Grid.Row="1" Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
