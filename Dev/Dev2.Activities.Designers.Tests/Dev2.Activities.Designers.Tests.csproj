@@ -98,6 +98,7 @@
     <Compile Include="CEventHelperTests.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
+    <Compile Include="Core\WebOutputsRegion.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />
@@ -240,6 +241,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

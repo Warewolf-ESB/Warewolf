@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
@@ -27,9 +28,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),srcreg);
-            Assert.AreEqual(region.MaxHeight,180);
-            Assert.AreEqual(region.MinHeight, 150);
-            Assert.AreEqual(region.CurrentHeight, 150);
+            Assert.AreEqual(region.MaxHeight,60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
             Assert.AreEqual(region.IsVisible, false);
             Assert.AreEqual(region.HeadersHeight,60);
             Assert.AreEqual(region.Errors.Count,0);
@@ -47,18 +48,18 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.MaxHeight, 180);
-            Assert.AreEqual(region.MinHeight, 150);
-            Assert.AreEqual(region.CurrentHeight, 150);
+            Assert.AreEqual(region.MaxHeight, 60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
             Assert.AreEqual(region.IsVisible, false);
             Assert.AreEqual(region.HeadersHeight, 60);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebGetInputRegion;
             if(clone != null)
             {
-                Assert.AreEqual(clone.MaxHeight, 180);
-                Assert.AreEqual(clone.MinHeight, 150);
-                Assert.AreEqual(clone.CurrentHeight, 150);
+                Assert.AreEqual(clone.MaxHeight, 60);
+                Assert.AreEqual(clone.MinHeight, 60);
+                Assert.AreEqual(clone.CurrentHeight, 60);
                 Assert.AreEqual(clone.IsVisible, false);
                 Assert.AreEqual(clone.HeadersHeight, 60);
                 Assert.AreEqual(clone.Errors.Count, 0);
@@ -79,7 +80,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             region.HeightChanged += (a, b) => { Called = true; };
             region.Headers.Add(new NameValue()); 
-            Assert.AreEqual(region.MaxHeight,210);
+            Assert.AreEqual(region.MaxHeight,90);
             Assert.IsTrue(Called);
         }
 
@@ -94,14 +95,38 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.MaxHeight, 180);
-            Assert.AreEqual(region.MinHeight, 150);
-            Assert.AreEqual(region.CurrentHeight, 150);
+            Assert.AreEqual(region.MaxHeight, 60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
             Assert.AreEqual(region.IsVisible, false);
             region.Headers.Add(new NameValue());
-            Assert.AreEqual(region.MaxHeight, 210);
-            Assert.AreEqual(region.MinHeight, 150);
-            Assert.AreEqual(region.CurrentHeight, 150);
+            Assert.AreEqual(region.MaxHeight, 90);
+            Assert.AreEqual(region.MinHeight, 90);
+            Assert.AreEqual(region.CurrentHeight, 90);
+        }
+
+        [TestMethod]
+        public void TestInputAddHeaderExpectHeightChangesPastThree()
+        {
+            var id = Guid.NewGuid();
+            var act = new DsfWebGetActivity() { SourceId = id };
+            var src = new Mock<IWebServiceSource>();
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            Assert.AreEqual(region.MaxHeight, 60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
+            Assert.AreEqual(region.IsVisible, false);
+            region.Headers.Add(new NameValue());
+            region.Headers.Add(new NameValue());
+            region.Headers.Add(new NameValue());
+            region.Headers.Add(new NameValue());
+            Assert.AreEqual(region.MaxHeight, 115);
+            Assert.AreEqual(region.MinHeight, 115);
+            Assert.AreEqual(region.CurrentHeight, 115);
         }
 
 
@@ -120,18 +145,18 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            regionToRestore.MinHeight = 123;
-            regionToRestore.MaxHeight = 1234;
-            regionToRestore.CurrentHeight = 12345;
+            regionToRestore.MinHeight = 60;
+            regionToRestore.MaxHeight = 60;
+            regionToRestore.CurrentHeight = 60;
             regionToRestore.IsVisible = true;
             regionToRestore.QueryString = "blob";
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(region.MaxHeight, 1234);
-            Assert.AreEqual(region.MinHeight, 123);
-            Assert.AreEqual(region.CurrentHeight, 12345);
+            Assert.AreEqual(region.MaxHeight, 60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
             Assert.AreEqual(region.QueryString, "blob");
         }
 
