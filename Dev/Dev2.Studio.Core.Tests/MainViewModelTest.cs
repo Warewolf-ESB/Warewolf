@@ -330,11 +330,11 @@ namespace Dev2.Core.Tests
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
             EventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                .Callback<object>((o =>
+                .Callback<object>(o =>
                 {
                     var msg = (TabClosedMessage)o;
                     Assert.IsTrue(msg.Context.Equals(activetx));
-                }));
+                });
 
             MainViewModel.DeactivateItem(activetx, true);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Once());
@@ -357,18 +357,18 @@ namespace Dev2.Core.Tests
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
             EventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
-                .Callback<object>((o =>
+                .Callback<object>(o =>
                 {
                     var msg = (TabClosedMessage)o;
                     Assert.IsTrue(msg.Context.Equals(activetx));
-                }));
+                });
 
             EventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
-                .Callback<object>((o =>
+                .Callback<object>(o =>
                 {
                     var msg = (SaveResourceMessage)o;
                     Assert.IsTrue(msg.Resource.Equals(FirstResource.Object));
-                }));
+                });
 
             MainViewModel.DeactivateItem(activetx, true);
             MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Once());

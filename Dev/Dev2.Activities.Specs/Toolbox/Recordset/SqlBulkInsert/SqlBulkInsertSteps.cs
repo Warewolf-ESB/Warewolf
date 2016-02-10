@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                     {
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
 
-                        DataObject.Environment.AssignDataShape((DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue)));
+                        DataObject.Environment.AssignDataShape(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue));
                     }
                     else
                     {

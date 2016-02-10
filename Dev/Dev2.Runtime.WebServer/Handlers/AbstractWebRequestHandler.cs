@@ -106,7 +106,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         if (loc > 0)
                         {
-                            var typeOf = serviceName.Substring((loc + 1)).ToUpper();
+                            var typeOf = serviceName.Substring(loc + 1).ToUpper();
                             EmitionTypes myType;
                             if (Enum.TryParse(typeOf, out myType))
                             {
@@ -299,7 +299,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
                         start += GlobalConstants.OpenJSON.Length;
 
-                        executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
+                        executePayload = CleanupHtml(executePayload.Substring(start, end - start));
                         if(!String.IsNullOrEmpty(executePayload))
                         {
                             return new StringResponseWriter(executePayload, ContentTypes.Json);
@@ -351,7 +351,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                 if(startIdx > 0)
                 {
-                    var payload = baseStr.Substring((startIdx + 1));
+                    var payload = baseStr.Substring(startIdx + 1);
                     if(payload.IsXml() || payload.IsJSON())
                     {
                         return payload;

@@ -163,7 +163,7 @@ namespace Dev2.InterfaceImplementors
 
                 if(NoError == nRet && entriesRead > 0)
                 {
-                    Type t = (2 == level) ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                    Type t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
                     int offset = Marshal.SizeOf(t);
 
                     for(int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)

@@ -22,12 +22,12 @@ namespace Dev2.Core.Tests.Settings
     public class TestSecurityViewModel : SecurityViewModel
     {
         public TestSecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
-            : base(securitySettings, directoryObjectPicker, parentWindow, environment, (() => new Mock<IResourcePickerDialog>().Object))
+            : base(securitySettings, directoryObjectPicker, parentWindow, environment, () => new Mock<IResourcePickerDialog>().Object)
         {
         }
 
         public TestSecurityViewModel()
-            : base(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object,(() => new Mock<IResourcePickerDialog>().Object))
+            : base(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object,() => new Mock<IResourcePickerDialog>().Object)
         {
         }
 

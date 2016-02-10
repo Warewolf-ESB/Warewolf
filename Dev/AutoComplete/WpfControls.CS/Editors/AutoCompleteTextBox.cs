@@ -11,9 +11,9 @@
     using System.Windows.Input;
     using System.Windows.Threading;
 
-    [TemplatePart(Name = AutoCompleteTextBox.PartEditor, Type = typeof(TextBox))]
-    [TemplatePart(Name = AutoCompleteTextBox.PartPopup, Type = typeof(Popup))]
-    [TemplatePart(Name = AutoCompleteTextBox.PartSelector, Type = typeof(Selector))]
+    [TemplatePart(Name = PartEditor, Type = typeof(TextBox))]
+    [TemplatePart(Name = PartPopup, Type = typeof(Popup))]
+    [TemplatePart(Name = PartSelector, Type = typeof(Selector))]
     public class AutoCompleteTextBox : Control
     {
 
@@ -168,8 +168,8 @@
 
         public DataTemplateSelector ItemTemplateSelector
         {
-            get { return ((DataTemplateSelector)(GetValue(AutoCompleteTextBox.ItemTemplateSelectorProperty))); }
-            set { SetValue(AutoCompleteTextBox.ItemTemplateSelectorProperty, value); }
+            get { return (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty); }
+            set { SetValue(ItemTemplateSelectorProperty, value); }
         }
 
         public object LoadingContent

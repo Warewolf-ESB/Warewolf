@@ -646,8 +646,8 @@ namespace Dev2.Core.Tests.ModelTests
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -686,8 +686,8 @@ namespace Dev2.Core.Tests.ModelTests
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -724,8 +724,8 @@ namespace Dev2.Core.Tests.ModelTests
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -761,8 +761,8 @@ namespace Dev2.Core.Tests.ModelTests
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -806,8 +806,8 @@ namespace Dev2.Core.Tests.ModelTests
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -857,8 +857,8 @@ namespace Dev2.Core.Tests.ModelTests
             Collection<IContextualResourceModel> actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? (msg as DeleteResourcesMessage).ResourceModels : null;
-                actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
+                var workSurfaceObject = msg is DeleteResourcesMessage ? (msg as DeleteResourcesMessage).ResourceModels : null;
+                actualResourceInvoked = workSurfaceObject is Collection<IContextualResourceModel> ? workSurfaceObject as Collection<IContextualResourceModel> : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -896,7 +896,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualFolderNameInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteFolderMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteFolderMessage) ? (msg as DeleteFolderMessage).FolderName : null;
+                var workSurfaceObject = msg is DeleteFolderMessage ? (msg as DeleteFolderMessage).FolderName : null;
                 actualFolderNameInvoked = workSurfaceObject;
             });
 
@@ -935,9 +935,9 @@ namespace Dev2.Core.Tests.ModelTests
             string folderName = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                DeleteResourcesMessage deleteResourcesMessage = (msg as DeleteResourcesMessage);
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? deleteResourcesMessage.ResourceModels : null;
-                actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
+                DeleteResourcesMessage deleteResourcesMessage = msg as DeleteResourcesMessage;
+                var workSurfaceObject = msg is DeleteResourcesMessage ? deleteResourcesMessage.ResourceModels : null;
+                actualResourceInvoked = workSurfaceObject is Collection<IContextualResourceModel> ? workSurfaceObject as Collection<IContextualResourceModel> : null;
                 if (deleteResourcesMessage != null)
                 {
                     folderName = deleteResourcesMessage.FolderName;
@@ -987,7 +987,7 @@ namespace Dev2.Core.Tests.ModelTests
             var aggregator = new Mock<EventAggregator>();
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? (msg as DeleteResourcesMessage).ResourceModels : null;
+                var workSurfaceObject = msg is DeleteResourcesMessage ? (msg as DeleteResourcesMessage).ResourceModels : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1028,8 +1028,8 @@ namespace Dev2.Core.Tests.ModelTests
             Collection<IContextualResourceModel> actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? (msg as DeleteResourcesMessage).ResourceModels : null;
-                actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
+                var workSurfaceObject = msg is DeleteResourcesMessage ? (msg as DeleteResourcesMessage).ResourceModels : null;
+                actualResourceInvoked = workSurfaceObject is Collection<IContextualResourceModel> ? workSurfaceObject as Collection<IContextualResourceModel> : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1066,8 +1066,8 @@ namespace Dev2.Core.Tests.ModelTests
             Collection<IContextualResourceModel> actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? (msg as DeleteResourcesMessage).ResourceModels : null;
-                actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
+                var workSurfaceObject = msg is DeleteResourcesMessage ? (msg as DeleteResourcesMessage).ResourceModels : null;
+                actualResourceInvoked = workSurfaceObject is Collection<IContextualResourceModel> ? workSurfaceObject as Collection<IContextualResourceModel> : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1104,7 +1104,7 @@ namespace Dev2.Core.Tests.ModelTests
             IExplorerItemModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeployResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeployResourcesMessage) ? (msg as DeployResourcesMessage).ViewModel : null;
+                var workSurfaceObject = msg is DeployResourcesMessage ? (msg as DeployResourcesMessage).ViewModel : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
@@ -1187,7 +1187,7 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<ShowDependenciesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowDependenciesMessage) ? (msg as ShowDependenciesMessage).ResourceModel : null;
+                var workSurfaceObject = msg is ShowDependenciesMessage ? (msg as ShowDependenciesMessage).ResourceModel : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
@@ -1225,7 +1225,7 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<ShowDependenciesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowDependenciesMessage) ? (msg as ShowDependenciesMessage).ResourceModel : null;
+                var workSurfaceObject = msg is ShowDependenciesMessage ? (msg as ShowDependenciesMessage).ResourceModel : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
@@ -1262,15 +1262,15 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DebugResourceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DebugResourceMessage) ? (msg as DebugResourceMessage).Resource : null;
+                var workSurfaceObject = msg is DebugResourceMessage ? (msg as DebugResourceMessage).Resource : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
             IResourceModel editResource = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                editResource = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                editResource = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1309,15 +1309,15 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DebugResourceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DebugResourceMessage) ? (msg as DebugResourceMessage).Resource : null;
+                var workSurfaceObject = msg is DebugResourceMessage ? (msg as DebugResourceMessage).Resource : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
             IResourceModel editResource = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                editResource = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                editResource = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1355,15 +1355,15 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DebugResourceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DebugResourceMessage) ? (msg as DebugResourceMessage).Resource : null;
+                var workSurfaceObject = msg is DebugResourceMessage ? (msg as DebugResourceMessage).Resource : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
             IResourceModel editResource = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                editResource = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                editResource = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -1402,7 +1402,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1445,7 +1445,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1488,7 +1488,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1532,7 +1532,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1575,7 +1575,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1618,7 +1618,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1661,7 +1661,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1704,7 +1704,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1747,7 +1747,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1790,7 +1790,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1838,7 +1838,7 @@ namespace Dev2.Core.Tests.ModelTests
 #pragma warning restore 219
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceFlowNodeDisplayName>())).Callback<object>(msg =>
                 {
-                    var workSurfaceObject = (msg as UpdateWorksurfaceFlowNodeDisplayName);
+                    var workSurfaceObject = msg as UpdateWorksurfaceFlowNodeDisplayName;
                     if (workSurfaceObject != null)
                     {
                         resourceGuid = workSurfaceObject.WorkflowDesignerResourceID;
@@ -1886,7 +1886,7 @@ namespace Dev2.Core.Tests.ModelTests
             string actualResourceCategory = "";
             aggregator.Setup(a => a.Publish(It.IsAny<ShowNewResourceWizard>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is ShowNewResourceWizard) ? (msg as ShowNewResourceWizard) : null;
+                var workSurfaceObject = msg is ShowNewResourceWizard ? msg as ShowNewResourceWizard : null;
                 if (workSurfaceObject != null)
                 {
                     actualResourceCategory = workSurfaceObject.ResourcePath;
@@ -1931,7 +1931,7 @@ namespace Dev2.Core.Tests.ModelTests
             bool wasResourceRemoved = false;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as RemoveResourceAndCloseTabMessage);
+                var workSurfaceObject = msg as RemoveResourceAndCloseTabMessage;
                 if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.ResourceToRemove.ID;
@@ -1942,7 +1942,7 @@ namespace Dev2.Core.Tests.ModelTests
             bool wasResourceReAdded = false;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as AddWorkSurfaceMessage);
+                var workSurfaceObject = msg as AddWorkSurfaceMessage;
                 if (workSurfaceObject != null)
                 {
                     wasResourceReAdded = true;
@@ -2213,7 +2213,7 @@ namespace Dev2.Core.Tests.ModelTests
             bool wasResourceRemoved = false;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as RemoveResourceAndCloseTabMessage);
+                var workSurfaceObject = msg as RemoveResourceAndCloseTabMessage;
                 if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.ResourceToRemove.ID;
@@ -2224,7 +2224,7 @@ namespace Dev2.Core.Tests.ModelTests
             bool wasResourceReAdded = false;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as AddWorkSurfaceMessage);
+                var workSurfaceObject = msg as AddWorkSurfaceMessage;
                 if (workSurfaceObject != null)
                 {
                     wasResourceReAdded = true;
@@ -2281,7 +2281,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceDisplayName>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as UpdateWorksurfaceDisplayName);
+                var workSurfaceObject = msg as UpdateWorksurfaceDisplayName;
                 if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.WorksurfaceResourceID;
@@ -2382,7 +2382,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceDisplayName>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg as UpdateWorksurfaceDisplayName);
+                var workSurfaceObject = msg as UpdateWorksurfaceDisplayName;
                 if (workSurfaceObject != null)
                 {
                     resourceGuid = workSurfaceObject.WorksurfaceResourceID;
@@ -3859,7 +3859,7 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is RemoveResourceAndCloseTabMessage) ? (msg as RemoveResourceAndCloseTabMessage).ResourceToRemove : null;
+                var workSurfaceObject = msg is RemoveResourceAndCloseTabMessage ? (msg as RemoveResourceAndCloseTabMessage).ResourceToRemove : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 
@@ -3909,7 +3909,7 @@ namespace Dev2.Core.Tests.ModelTests
             IContextualResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is RemoveResourceAndCloseTabMessage) ? (msg as RemoveResourceAndCloseTabMessage).ResourceToRemove : null;
+                var workSurfaceObject = msg is RemoveResourceAndCloseTabMessage ? (msg as RemoveResourceAndCloseTabMessage).ResourceToRemove : null;
                 actualResourceInvoked = workSurfaceObject;
             });
 

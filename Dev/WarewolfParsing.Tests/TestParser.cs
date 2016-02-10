@@ -844,7 +844,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.IsTrue((recordSet.Data["a"][1].IsNothing));
+            Assert.IsTrue(recordSet.Data["a"][1].IsNothing);
             Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
@@ -878,8 +878,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.IsTrue((recordSet.Data["a"][1].IsNothing));
-            Assert.IsFalse((recordSet.Data["b"][0].IsNothing));
+            Assert.IsTrue(recordSet.Data["a"][1].IsNothing);
+            Assert.IsFalse(recordSet.Data["b"][0].IsNothing);
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
@@ -1054,7 +1054,7 @@ namespace WarewolfParsingTest
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
 
-            var items = env.EvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"), 0);
+            var items = env.EvalWhere("[[rec(*).a]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
             Assert.AreEqual(items.ToArray()[0], 1);
 
         }
@@ -1086,7 +1086,7 @@ namespace WarewolfParsingTest
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
 
-            var items = env.EvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"), 0);
+            var items = env.EvalWhere("[[rec(*).a]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
 
             IEnumerable<int> enumerable = items as int[] ?? items.ToArray();
             Assert.AreEqual(enumerable.ToArray()[0], 1);

@@ -957,7 +957,7 @@ namespace Dev2.Core.Tests.Repositories
             IEnvironmentModel actualEnvironmentInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<RemoveEnvironmentMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is RemoveEnvironmentMessage) ? (msg as RemoveEnvironmentMessage).EnvironmentModel : null;
+                var workSurfaceObject = msg is RemoveEnvironmentMessage ? (msg as RemoveEnvironmentMessage).EnvironmentModel : null;
                 actualEnvironmentInvoked = workSurfaceObject;
             });
 

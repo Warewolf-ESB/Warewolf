@@ -84,7 +84,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_AdjustForEncodingIssues_BOMRemoved()
         {
             //------------Setup for test--------------------------
-            const char c = ((char)65279);
+            const char c = (char)65279;
             string startingData = c + "<A></A>";
             Assert.IsFalse(startingData.StartsWith("<",StringComparison.OrdinalIgnoreCase));
             //------------Execute Test---------------------------

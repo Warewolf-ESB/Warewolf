@@ -124,7 +124,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                 switch(Type.GetTypeCode(c.Value.GetType()))
                 {
                     case TypeCode.Boolean:
-                        _sb.Append(((bool)c.Value) ? 1 : 0);
+                        _sb.Append((bool)c.Value ? 1 : 0);
                         break;
                     case TypeCode.String:
                         _sb.Append("'");

@@ -2096,7 +2096,7 @@ namespace Dev2.Studio.ViewModels
         {
            
             SaveWorkspaceItems();
-            Task t = new Task((() =>
+            Task t = new Task(() =>
             {
 
                 lock (_locker)
@@ -2111,7 +2111,7 @@ namespace Dev2.Studio.ViewModels
                         }
                     }
                 }
-            }));
+            });
             t.Start();
             
         }

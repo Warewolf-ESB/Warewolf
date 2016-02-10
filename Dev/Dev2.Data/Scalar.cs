@@ -61,7 +61,7 @@ namespace Dev2.Data
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }
@@ -76,7 +76,7 @@ namespace Dev2.Data
         /// </returns>
         public override int GetHashCode()
         {
-            return (Name != null ? Name.GetHashCode() : 0);
+            return Name != null ? Name.GetHashCode() : 0;
         }
 
         public static bool operator ==(Scalar left, Scalar right)

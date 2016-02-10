@@ -430,8 +430,8 @@ namespace Dev2.Util
                 int start = ParseInt(parts[0]);
                 int end = ParseInt(parts[1], list.Count);
                 int step = parts.Length > 2 ? ParseInt(parts[2], 1) : 1;
-                start = (start < 0) ? Math.Max(0, start + length) : Math.Min(length, start);
-                end = (end < 0) ? Math.Max(0, end + length) : Math.Min(length, end);
+                start = start < 0 ? Math.Max(0, start + length) : Math.Min(length, start);
+                end = end < 0 ? Math.Max(0, end + length) : Math.Min(length, end);
                 for (int i = start; i < end; i += step)
                     Trace(i + ";" + expr, value, path);
             }

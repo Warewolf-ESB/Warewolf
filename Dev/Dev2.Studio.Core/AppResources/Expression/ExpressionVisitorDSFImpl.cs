@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
             switch(Type.GetTypeCode(c.Value.GetType()))
             {
                 case TypeCode.Boolean:
-                    _sb.Append(((bool)c.Value) ? "Value=\"True\"" : " Value=\"False\"");
+                    _sb.Append((bool)c.Value ? "Value=\"True\"" : " Value=\"False\"");
                     break;
                 case TypeCode.String:
                     _sb.Append(" Value=\"");

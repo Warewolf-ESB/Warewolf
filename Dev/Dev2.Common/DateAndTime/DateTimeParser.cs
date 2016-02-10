@@ -750,7 +750,7 @@ namespace Dev2.Common.DateAndTime
             string result = "";
             int position = startPosition;
 
-            while (position >= 0 && position < formatArray.Length && position < (startPosition + lookupLength))
+            while (position >= 0 && position < formatArray.Length && position < startPosition + lookupLength)
             {
                 result += formatArray[position];
                 position++;

@@ -80,7 +80,7 @@ namespace Dev2.Utils
                 var allNodes = new List<Node>();
 
 
-                if(nodes.Any() && !(intellisenseParser.EventLog.HasEventLogs))
+                if(nodes.Any() && !intellisenseParser.EventLog.HasEventLogs)
                 {
                     nodes[0].CollectNodes(allNodes);
 
@@ -147,7 +147,7 @@ namespace Dev2.Utils
                     {
                         continue;
                     }
-                    if((dataListItem.Children.Count > 0))
+                    if(dataListItem.Children.Count > 0)
                     {
                         if(partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
@@ -166,7 +166,7 @@ namespace Dev2.Utils
                                 // ReSharper disable once LoopCanBeConvertedToQuery
                                 foreach(var child in dataListItem.Children)
                                 {
-                                    if(!(String.IsNullOrEmpty(child.Name)))
+                                    if(!String.IsNullOrEmpty(child.Name))
                                     {
                                         //19.09.2012: massimo.guerrera - Added in the description to creating the part
                                         if(dataListItem.IsEditable)
