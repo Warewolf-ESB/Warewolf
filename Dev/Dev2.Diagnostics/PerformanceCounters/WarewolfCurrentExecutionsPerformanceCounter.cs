@@ -90,12 +90,17 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Decrement()
         {
-            Setup();
+
             if (IsActive)
-                if (_counter.RawValue > 0)
+               
                     try
                     {
-                        _counter.Decrement();
+                        Setup();
+                        if (_counter.RawValue > 0)
+                        {
+                          
+                            _counter.Decrement();
+                        }
                     }
                     catch (Exception err)
                     {
@@ -122,3 +127,4 @@ namespace Dev2.Diagnostics.PerformanceCounters
         #endregion
     }
 }
+

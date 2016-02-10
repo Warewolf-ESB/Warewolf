@@ -18,7 +18,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class StudioUISpecsFeature
     {
         
@@ -195,52 +195,77 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox DotNet Dll Tool onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void DragToolboxDotNetDllToolOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox DotNet Dll Tool onto a new workflow", ((string[])(null)));
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 80
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 82
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 87
+ testRunner.When("The \'Drag_DotNet_DLL_Connector_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 88
+ testRunner.Then("The \'Assert_DotNet_DLL_Connector_Exists_OnDesignSurface\' recorded action is perfo" +
+                    "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 93
+ testRunner.When("The \'Open_DotNet_DLL_Connector_Tool_Small_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox MySql Tool onto a new workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
         public virtual void DragToolboxMySqlToolOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox MySql Tool onto a new workflow", ((string[])(null)));
-#line 80
+#line 95
 this.ScenarioSetup(scenarioInfo);
-#line 81
+#line 96
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 97
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 83
+#line 98
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 88
+#line 103
  testRunner.When("The \'Drag_Toolbox_MySql_Database_Onto_DesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 89
+#line 104
  testRunner.Then("The \'Assert_Mysql_Database_Large_View_Exists_OnDesignSurface\' recorded action is " +
                     "performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 94
+#line 109
  testRunner.When("The \'Open_MySql_Database_Tool_Small_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox MySql Tool onto a new workflow2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Sql Tool onto a new workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
-        public virtual void DragToolboxMySqlToolOntoANewWorkflow2()
+        public virtual void DragToolboxSqlToolOntoANewWorkflow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox MySql Tool onto a new workflow2", ((string[])(null)));
-#line 96
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sql Tool onto a new workflow", ((string[])(null)));
+#line 111
 this.ScenarioSetup(scenarioInfo);
-#line 97
+#line 112
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 98
+#line 113
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 114
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 104
+#line 119
  testRunner.When("The \'Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
+#line 120
  testRunner.Then("The \'Assert_SQL_Server_Database_Large_View_Exists_OnDesignSurface\' recorded actio" +
                     "n is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 110
+#line 125
  testRunner.When("The \'Open_Sql_Server_Tool_small_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -252,22 +277,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCase_ConversionOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Case_Conversion onto a new workflow", ((string[])(null)));
-#line 112
+#line 127
 this.ScenarioSetup(scenarioInfo);
-#line 113
+#line 128
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 114
+#line 129
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 130
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 120
+#line 135
  testRunner.When("The \'Drag_Toolbox_Case_Conversion_Onto_DesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
+#line 136
  testRunner.Then("The \'Assert_Case_Conversion_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
+#line 141
  testRunner.When("The \'Open_Case_Conversion_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 127
+#line 142
  testRunner.Then("The \'Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurface\' recorded actio" +
                     "n is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -280,26 +305,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxData_MergeOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Data_Merge onto a new workflow", ((string[])(null)));
-#line 129
-this.ScenarioSetup(scenarioInfo);
-#line 130
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 137
- testRunner.When("The \'Drag_Toolbox_Data_Merge_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 138
- testRunner.Then("The \'Assert_Data_Merge_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 143
- testRunner.When("The \'Open_Data_Merge_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 144
+this.ScenarioSetup(scenarioInfo);
+#line 145
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 146
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 152
+ testRunner.When("The \'Drag_Toolbox_Data_Merge_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 153
+ testRunner.Then("The \'Assert_Data_Merge_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 158
+ testRunner.When("The \'Open_Data_Merge_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 159
  testRunner.Then("The \'Assert_Data_Merge_Large_View_Exists_OnDesignSurface\' recorded action is perf" +
                     "ormed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 164
  testRunner.When("The \'Open_Data_Merge_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 165
  testRunner.Then("The \'Assert_Data_Merge_Qvi_Large_View_Exists_OnDesignSurface\' recorded action is " +
                     "performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -312,26 +337,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxData_SplitOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Data_Split onto a new workflow", ((string[])(null)));
-#line 152
-this.ScenarioSetup(scenarioInfo);
-#line 153
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 154
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 155
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 160
- testRunner.When("The \'Drag_Toolbox_Data_Split_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 161
- testRunner.Then("The \'Assert_Data_Split_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
- testRunner.When("The \'Open_Data_Split_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 167
+this.ScenarioSetup(scenarioInfo);
+#line 168
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 170
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
+ testRunner.When("The \'Drag_Toolbox_Data_Split_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 176
+ testRunner.Then("The \'Assert_Data_Split_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
+ testRunner.When("The \'Open_Data_Split_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 182
  testRunner.Then("The \'Assert_Data_Split_Large_View_Exists_OnDesignSurface\' recorded action is perf" +
                     "ormed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 172
+#line 187
  testRunner.When("The \'Open_Data_Split_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 173
+#line 188
  testRunner.Then("The \'Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurface\' recorded action is " +
                     "performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -344,17 +369,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxFind_IndexOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Index onto a new workflow", ((string[])(null)));
-#line 175
+#line 190
 this.ScenarioSetup(scenarioInfo);
-#line 176
+#line 191
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 177
+#line 192
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 193
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 183
+#line 198
  testRunner.When("The \'Drag_Toolbox_Find_Index_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 184
+#line 199
  testRunner.Then("The \'Assert_Find_Index_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -366,17 +391,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxReplaceOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Replace onto a new workflow", ((string[])(null)));
-#line 186
+#line 201
 this.ScenarioSetup(scenarioInfo);
-#line 187
+#line 202
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
+#line 203
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 189
+#line 204
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 194
+#line 209
  testRunner.When("The \'Drag_Toolbox_Replace_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
+#line 210
  testRunner.Then("The \'Assert_Replace_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -388,21 +413,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCopy_PathOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Copy_Path onto a new workflow", ((string[])(null)));
-#line 197
-this.ScenarioSetup(scenarioInfo);
-#line 198
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 199
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 200
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
- testRunner.When("The \'Drag_Toolbox_Copy_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 206
- testRunner.Then("The \'Assert_Copy_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 211
- testRunner.When("The \'Open_Copy_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 212
+this.ScenarioSetup(scenarioInfo);
+#line 213
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 214
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 215
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
+ testRunner.When("The \'Drag_Toolbox_Copy_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 221
+ testRunner.Then("The \'Assert_Copy_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 226
+ testRunner.When("The \'Open_Copy_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 227
  testRunner.Then("The \'Assert_Copy_Large_View_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -414,21 +439,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCreate_PathOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Create_Path onto a new workflow", ((string[])(null)));
-#line 214
-this.ScenarioSetup(scenarioInfo);
-#line 215
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 216
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 217
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 222
- testRunner.When("The \'Drag_Toolbox_Create_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 223
- testRunner.Then("The \'Assert_Create_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 228
- testRunner.When("The \'Open_Create_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 229
+this.ScenarioSetup(scenarioInfo);
+#line 230
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 231
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 232
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 237
+ testRunner.When("The \'Drag_Toolbox_Create_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 238
+ testRunner.Then("The \'Assert_Create_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 243
+ testRunner.When("The \'Open_Create_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 244
  testRunner.Then("The \'Assert_Create_Path_Large_View_Exists_OnDesignSurface\' recorded action is per" +
                     "formed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -441,17 +466,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxDelete_PathOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Delete_Path onto a new workflow", ((string[])(null)));
-#line 231
+#line 246
 this.ScenarioSetup(scenarioInfo);
-#line 232
+#line 247
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 233
+#line 248
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 234
+#line 249
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 239
+#line 254
  testRunner.When("The \'Drag_Toolbox_Delete_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 240
+#line 255
  testRunner.Then("The \'Assert_Delete_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -463,21 +488,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxRead_FileOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Read_File onto a new workflow", ((string[])(null)));
-#line 242
-this.ScenarioSetup(scenarioInfo);
-#line 243
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 244
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 245
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 250
- testRunner.When("The \'Drag_Toolbox_Read_File_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 251
- testRunner.Then("The \'Assert_Read_File_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 256
- testRunner.When("The \'Open_Read_File_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 257
+this.ScenarioSetup(scenarioInfo);
+#line 258
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 259
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 260
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 265
+ testRunner.When("The \'Drag_Toolbox_Read_File_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 266
+ testRunner.Then("The \'Assert_Read_File_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 271
+ testRunner.When("The \'Open_Read_File_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 272
  testRunner.Then("The \'Assert_Read_File_Large_View_Exists_OnDesignSurface\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -490,21 +515,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxRead_FolderOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Read_Folder onto a new workflow", ((string[])(null)));
-#line 259
-this.ScenarioSetup(scenarioInfo);
-#line 260
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 261
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 262
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 267
- testRunner.When("The \'Drag_Toolbox_Read_Folder_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 268
- testRunner.Then("The \'Assert_Read_Folder_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 273
- testRunner.When("The \'Open_Read_Folder_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 274
+this.ScenarioSetup(scenarioInfo);
+#line 275
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 276
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 277
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 282
+ testRunner.When("The \'Drag_Toolbox_Read_Folder_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 283
+ testRunner.Then("The \'Assert_Read_Folder_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 288
+ testRunner.When("The \'Open_Read_Folder_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 289
  testRunner.Then("The \'Assert_Read_Folder_Large_View_Exists_OnDesignSurface\' recorded action is per" +
                     "formed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -517,21 +542,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxRename_FolderOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Rename_Folder onto a new workflow", ((string[])(null)));
-#line 276
-this.ScenarioSetup(scenarioInfo);
-#line 277
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 278
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 279
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 284
- testRunner.When("The \'Drag_Toolbox_Rename_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 285
- testRunner.Then("The \'Assert_Rename_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 290
- testRunner.When("The \'Open_Rename_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 291
+this.ScenarioSetup(scenarioInfo);
+#line 292
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 293
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 294
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 299
+ testRunner.When("The \'Drag_Toolbox_Rename_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 300
+ testRunner.Then("The \'Assert_Rename_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 305
+ testRunner.When("The \'Open_Rename_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 306
  testRunner.Then("The \'Assert_Rename_Large_View_Exists_OnDesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -544,21 +569,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxUnzipOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Unzip onto a new workflow", ((string[])(null)));
-#line 293
-this.ScenarioSetup(scenarioInfo);
-#line 294
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 295
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 296
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 301
- testRunner.When("The \'Drag_Toolbox_Unzip_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 302
- testRunner.Then("The \'Assert_Unzip_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 307
- testRunner.When("The \'Open_Unzip_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 308
+this.ScenarioSetup(scenarioInfo);
+#line 309
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 310
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 311
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 316
+ testRunner.When("The \'Drag_Toolbox_Unzip_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 317
+ testRunner.Then("The \'Assert_Unzip_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 322
+ testRunner.When("The \'Open_Unzip_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 323
  testRunner.Then("The \'Assert_Unzip_Large_View_Exists_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -571,21 +596,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxWrite_FileOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Write_File onto a new workflow", ((string[])(null)));
-#line 310
-this.ScenarioSetup(scenarioInfo);
-#line 311
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 312
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 313
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 318
- testRunner.When("The \'Drag_Toolbox_Write_File_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 319
- testRunner.Then("The \'Assert_Write_File_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 324
- testRunner.When("The \'Open_Write_File_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 325
+this.ScenarioSetup(scenarioInfo);
+#line 326
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 327
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 328
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 333
+ testRunner.When("The \'Drag_Toolbox_Write_File_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 334
+ testRunner.Then("The \'Assert_Write_File_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 339
+ testRunner.When("The \'Open_Write_File_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 340
  testRunner.Then("The \'Assert_Write_File_Large_View_Exists_OnDesignSurface\' recorded action is perf" +
                     "ormed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -598,21 +623,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxZipOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Zip onto a new workflow", ((string[])(null)));
-#line 327
-this.ScenarioSetup(scenarioInfo);
-#line 328
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 329
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 330
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 335
- testRunner.When("The \'Drag_Toolbox_Zip_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
- testRunner.Then("The \'Assert_Zip_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 341
- testRunner.When("The \'Open_Zip_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 342
+this.ScenarioSetup(scenarioInfo);
+#line 343
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 344
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 345
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 350
+ testRunner.When("The \'Drag_Toolbox_Zip_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 351
+ testRunner.Then("The \'Assert_Zip_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 356
+ testRunner.When("The \'Open_Zip_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 357
  testRunner.Then("The \'Assert_Zip_Large_View_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -624,17 +649,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxFor_EachOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox For_Each onto a new workflow", ((string[])(null)));
-#line 344
+#line 359
 this.ScenarioSetup(scenarioInfo);
-#line 345
+#line 360
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 346
+#line 361
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 347
+#line 362
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 352
+#line 367
  testRunner.When("The \'Drag_Toolbox_For_Each_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 353
+#line 368
  testRunner.Then("The \'Assert_For_Each_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -646,17 +671,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxFormat_NumberOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Format_Number onto a new workflow", ((string[])(null)));
-#line 355
+#line 370
 this.ScenarioSetup(scenarioInfo);
-#line 356
+#line 371
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 357
+#line 372
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 358
+#line 373
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 363
+#line 378
  testRunner.When("The \'Drag_Toolbox_Format_Number_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 364
+#line 379
  testRunner.Then("The \'Assert_Format_Number_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -668,17 +693,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxLengthOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Length onto a new workflow", ((string[])(null)));
-#line 366
+#line 381
 this.ScenarioSetup(scenarioInfo);
-#line 367
+#line 382
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 368
+#line 383
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 369
+#line 384
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 374
+#line 389
  testRunner.When("The \'Drag_Toolbox_Length_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 375
+#line 390
  testRunner.Then("The \'Assert_Length_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -690,17 +715,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxRandomOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Random onto a new workflow", ((string[])(null)));
-#line 377
+#line 392
 this.ScenarioSetup(scenarioInfo);
-#line 378
+#line 393
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 379
+#line 394
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 380
+#line 395
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 385
+#line 400
  testRunner.When("The \'Drag_Toolbox_Random_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 386
+#line 401
  testRunner.Then("The \'Assert_Random_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -712,17 +737,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxScriptOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Script onto a new workflow", ((string[])(null)));
-#line 388
+#line 403
 this.ScenarioSetup(scenarioInfo);
-#line 389
+#line 404
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 390
+#line 405
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 391
+#line 406
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 396
+#line 411
  testRunner.When("The \'Drag_Toolbox_Script_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 397
+#line 412
  testRunner.Then("The \'Assert_Script_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -734,23 +759,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSharepoint_CreateOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Create onto a new workflow", ((string[])(null)));
-#line 399
+#line 414
 this.ScenarioSetup(scenarioInfo);
-#line 400
+#line 415
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 401
+#line 416
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 402
+#line 417
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 407
+#line 422
  testRunner.When("The \'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 408
+#line 423
  testRunner.Then("The \'Assert_Sharepoint_Create_Exists_OnDesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 413
+#line 428
  testRunner.When("The \'Open_Sharepoint_Create_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 414
+#line 429
  testRunner.Then("The \'Assert_Sharepoint_Create_Large_View_Exists_OnDesignSurface\' recorded action " +
                     "is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -763,23 +788,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSharepoint_DeleteOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Delete onto a new workflow", ((string[])(null)));
-#line 416
+#line 431
 this.ScenarioSetup(scenarioInfo);
-#line 417
+#line 432
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 418
+#line 433
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 419
+#line 434
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 424
+#line 439
  testRunner.When("The \'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 425
+#line 440
  testRunner.Then("The \'Assert_Sharepoint_Delete_Exists_OnDesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 430
+#line 445
  testRunner.When("The \'Open_Sharepoint_Delete_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 431
+#line 446
  testRunner.Then("The \'Assert_Sharepoint_Delete_Large_View_Exists_OnDesignSurface\' recorded action " +
                     "is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -792,22 +817,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSharepoint_ReadOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Read onto a new workflow", ((string[])(null)));
-#line 433
+#line 448
 this.ScenarioSetup(scenarioInfo);
-#line 434
+#line 449
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 435
+#line 450
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 436
+#line 451
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 441
+#line 456
  testRunner.When("The \'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 442
+#line 457
  testRunner.Then("The \'Assert_Sharepoint_Read_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 447
+#line 462
  testRunner.When("The \'Open_Sharepoint_Read_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 448
+#line 463
  testRunner.Then("The \'Assert_Sharepoint_Read_Large_View_Exists_OnDesignSurface\' recorded action is" +
                     " performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -820,23 +845,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSharepoint_UpdateOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Update onto a new workflow", ((string[])(null)));
-#line 450
+#line 465
 this.ScenarioSetup(scenarioInfo);
-#line 451
+#line 466
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 452
+#line 467
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 453
+#line 468
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 458
+#line 473
  testRunner.When("The \'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 459
+#line 474
  testRunner.Then("The \'Assert_Sharepoint_Update_Exists_OnDesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 464
+#line 479
  testRunner.When("The \'Open_Sharepoint_Update_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 465
+#line 480
  testRunner.Then("The \'Assert_Sharepoint_Update_Large_View_Exists_OnDesignSurface\' recorded action " +
                     "is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -849,17 +874,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSort_RecordOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sort_Record onto a new workflow", ((string[])(null)));
-#line 467
+#line 482
 this.ScenarioSetup(scenarioInfo);
-#line 468
+#line 483
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 469
+#line 484
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 470
+#line 485
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 475
+#line 490
  testRunner.When("The \'Drag_Toolbox_Sort_Record_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 476
+#line 491
  testRunner.Then("The \'Assert_Sort_Records_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -871,27 +896,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSQL_Bulk_InsertOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox SQL_Bulk_Insert onto a new workflow", ((string[])(null)));
-#line 478
+#line 493
 this.ScenarioSetup(scenarioInfo);
-#line 479
+#line 494
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 480
+#line 495
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 481
+#line 496
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 486
+#line 501
  testRunner.When("The \'Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 487
+#line 502
  testRunner.Then("The \'Assert_Sql_Bulk_insert_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 492
+#line 507
  testRunner.When("The \'Open_SQL_Bulk_Insert_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 493
+#line 508
  testRunner.Then("The \'Assert_SQL_Bulk_Insert_Large_View_Exists_OnDesignSurface\' recorded action is" +
                     " performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 498
+#line 513
  testRunner.When("The \'Open_SQL_Bulk_Insert_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 499
+#line 514
  testRunner.Then("The \'Assert_Sql_Bulk_insert_Qvi_Exists_OnDesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -904,23 +929,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxSystem_InformationOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox System_Information onto a new workflow", ((string[])(null)));
-#line 501
+#line 516
 this.ScenarioSetup(scenarioInfo);
-#line 502
+#line 517
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 503
+#line 518
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 504
+#line 519
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 509
+#line 524
  testRunner.When("The \'Drag_Toolbox_System_Information_Onto_DesignSurface\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 510
+#line 525
  testRunner.Then("The \'Assert_System_information_Exists_OnDesignSurface\' recorded action is perform" +
                     "ed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 515
+#line 530
  testRunner.When("The \'Open_System_Information_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 516
+#line 531
  testRunner.Then("The \'Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface\' recorded action is" +
                     " performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -933,18 +958,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxUnique_RecordsOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Unique_Records onto a new workflow", ((string[])(null)));
-#line 518
+#line 533
 this.ScenarioSetup(scenarioInfo);
-#line 519
+#line 534
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 520
+#line 535
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 521
+#line 536
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 526
+#line 541
  testRunner.When("The \'Drag_Toolbox_Unique_Records_Onto_DesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 527
+#line 542
  testRunner.Then("The \'Assert_Unique_Records_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -956,21 +981,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxWeb_RequestOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Web_Request onto a new workflow", ((string[])(null)));
-#line 529
-this.ScenarioSetup(scenarioInfo);
-#line 530
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 531
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 532
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 537
- testRunner.When("The \'Drag_Toolbox_Web_Request_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 538
- testRunner.Then("The \'Assert_Web_Request_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 543
- testRunner.When("The \'Open_Web_Request_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 544
+this.ScenarioSetup(scenarioInfo);
+#line 545
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 546
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 547
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 552
+ testRunner.When("The \'Drag_Toolbox_Web_Request_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 553
+ testRunner.Then("The \'Assert_Web_Request_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 558
+ testRunner.When("The \'Open_Web_Request_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 559
  testRunner.Then("The \'Assert_Web_Request_Large_View_Exists_OnDesignSurface\' recorded action is per" +
                     "formed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -983,26 +1008,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxXPathOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox XPath onto a new workflow", ((string[])(null)));
-#line 546
-this.ScenarioSetup(scenarioInfo);
-#line 547
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 548
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 549
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 554
- testRunner.When("The \'Drag_Toolbox_XPath_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 555
- testRunner.Then("The \'Assert_XPath_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 560
- testRunner.When("The \'Open_Xpath_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 561
+this.ScenarioSetup(scenarioInfo);
+#line 562
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 563
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 564
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 569
+ testRunner.When("The \'Drag_Toolbox_XPath_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 570
+ testRunner.Then("The \'Assert_XPath_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 575
+ testRunner.When("The \'Open_Xpath_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 576
  testRunner.Then("The \'Assert_Xpath_Large_View_Exists_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 566
+#line 581
  testRunner.When("The \'Open_Xpath_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 567
+#line 582
  testRunner.Then("The \'Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurface\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1015,17 +1040,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCalculateOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Calculate onto a new workflow", ((string[])(null)));
-#line 569
+#line 584
 this.ScenarioSetup(scenarioInfo);
-#line 570
+#line 585
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 571
+#line 586
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 572
+#line 587
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 577
+#line 592
  testRunner.When("The \'Drag_Toolbox_Calculate_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 578
+#line 593
  testRunner.Then("The \'Assert_Calculate_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1037,21 +1062,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCMD_LineOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox CMD_Line onto a new workflow", ((string[])(null)));
-#line 580
-this.ScenarioSetup(scenarioInfo);
-#line 581
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 582
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 583
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 588
- testRunner.When("The \'Drag_Toolbox_CMD_Line_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 589
- testRunner.Then("The \'Assert_CMD_Line_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 594
- testRunner.When("The \'Open_CMD_Line_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 595
+this.ScenarioSetup(scenarioInfo);
+#line 596
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 597
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 598
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 603
+ testRunner.When("The \'Drag_Toolbox_CMD_Line_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 604
+ testRunner.Then("The \'Assert_CMD_Line_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 609
+ testRunner.When("The \'Open_CMD_Line_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 610
  testRunner.Then("The \'Assert_CMD_Line_Large_View_Exists_OnDesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1064,17 +1089,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCommentOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Comment onto a new workflow", ((string[])(null)));
-#line 597
+#line 612
 this.ScenarioSetup(scenarioInfo);
-#line 598
+#line 613
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 599
+#line 614
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 600
+#line 615
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 605
+#line 620
  testRunner.When("The \'Drag_Toolbox_Comment_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 606
+#line 621
  testRunner.Then("The \'Assert_Comment_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1086,17 +1111,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCount_RecordsOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Count_Records onto a new workflow", ((string[])(null)));
-#line 608
+#line 623
 this.ScenarioSetup(scenarioInfo);
-#line 609
+#line 624
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 610
+#line 625
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 611
+#line 626
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 616
+#line 631
  testRunner.When("The \'Drag_Toolbox_Count_Records_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 617
+#line 632
  testRunner.Then("The \'Assert_Count_Records_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1108,25 +1133,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxCreateJSONOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox create JSON onto a new workflow", ((string[])(null)));
-#line 619
-this.ScenarioSetup(scenarioInfo);
-#line 620
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 621
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 622
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 627
- testRunner.When("The \'Drag_Toolbox_JSON_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 628
- testRunner.Then("The \'Assert_Create_JSON_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 633
- testRunner.When("The \'Open_Json_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 634
+this.ScenarioSetup(scenarioInfo);
+#line 635
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 636
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 637
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 642
+ testRunner.When("The \'Drag_Toolbox_JSON_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 643
+ testRunner.Then("The \'Assert_Create_JSON_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 648
+ testRunner.When("The \'Open_Json_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 649
  testRunner.Then("The \'Assert_Json_Large_View_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 639
+#line 654
  testRunner.When("The \'Open_Json_Tool_Qvi_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 640
+#line 655
  testRunner.Then("The \'Assert_Json_Qvi_Large_View_Exists_OnDesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1139,17 +1164,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxDelete_RecordOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Delete_Record onto a new workflow", ((string[])(null)));
-#line 642
+#line 657
 this.ScenarioSetup(scenarioInfo);
-#line 643
+#line 658
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 644
+#line 659
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 645
+#line 660
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 650
+#line 665
  testRunner.When("The \'Drag_Toolbox_Delete_Record_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 651
+#line 666
  testRunner.Then("The \'Assert_Delete_Record_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1161,17 +1186,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxDate_And_TimeOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Date_And_Time onto a new workflow", ((string[])(null)));
-#line 653
+#line 668
 this.ScenarioSetup(scenarioInfo);
-#line 654
+#line 669
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 655
+#line 670
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 656
+#line 671
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 661
+#line 676
  testRunner.When("The \'Drag_Toolbox_Date_And_Time_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 662
+#line 677
  testRunner.Then("The \'Assert_Date_And_Time_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1183,18 +1208,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxDateTime_DifferenceOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox DateTime_Difference onto a new workflow", ((string[])(null)));
-#line 664
+#line 679
 this.ScenarioSetup(scenarioInfo);
-#line 665
+#line 680
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 666
+#line 681
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 667
+#line 682
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 672
+#line 687
  testRunner.When("The \'Drag_Toolbox_DateTime_Difference_Onto_DesignSurface\' recorded action is perf" +
                     "ormed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 673
+#line 688
  testRunner.Then("The \'Assert_DateTime_Difference_Conversion_Exists_OnDesignSurface\' recorded actio" +
                     "n is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1207,21 +1232,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxEmailOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Email onto a new workflow", ((string[])(null)));
-#line 675
-this.ScenarioSetup(scenarioInfo);
-#line 676
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 677
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 678
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 683
- testRunner.When("The \'Drag_Toolbox_Email_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 684
- testRunner.Then("The \'Assert_Email_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 689
- testRunner.When("The \'Open_Email_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 690
+this.ScenarioSetup(scenarioInfo);
+#line 691
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 692
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 693
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 698
+ testRunner.When("The \'Drag_Toolbox_Email_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 699
+ testRunner.Then("The \'Assert_Email_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 704
+ testRunner.When("The \'Open_Email_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 705
  testRunner.Then("The \'Assert_Email_Large_View_Exists_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1234,18 +1259,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxServicePickerOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Service Picker onto a new workflow", ((string[])(null)));
-#line 692
+#line 707
 this.ScenarioSetup(scenarioInfo);
-#line 693
+#line 708
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 694
+#line 709
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 695
+#line 710
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 700
+#line 715
  testRunner.When("The \'Drag_Toolbox_Service_Picker_Onto_DesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 701
+#line 716
  testRunner.Then("The \'Assert_Service_Picker_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1257,17 +1282,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxDropboxOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Dropbox onto a new workflow", ((string[])(null)));
-#line 703
+#line 718
 this.ScenarioSetup(scenarioInfo);
-#line 704
+#line 719
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 705
+#line 720
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 706
+#line 721
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 711
+#line 726
  testRunner.When("The \'Drag_Toolbox_Dropbox_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 712
+#line 727
  testRunner.Then("The \'Assert_Dropbox_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1279,23 +1304,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxFind_Record_IndexOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Record_Index onto a new workflow", ((string[])(null)));
-#line 714
+#line 729
 this.ScenarioSetup(scenarioInfo);
-#line 715
+#line 730
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 716
+#line 731
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 717
+#line 732
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 722
+#line 737
  testRunner.When("The \'Drag_Toolbox_Find_Record_Index_Onto_DesignSurface\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 723
+#line 738
  testRunner.Then("The \'Assert_Find_Record_Index_Exists_OnDesignSurface\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 728
+#line 743
  testRunner.When("The \'Open_Find_Record_Index_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 729
+#line 744
  testRunner.Then("The \'Assert_Find_Record_index_Large_View_Exists_OnDesignSurface\' recorded action " +
                     "is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1308,21 +1333,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragToolboxMoveOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Move onto a new workflow", ((string[])(null)));
-#line 731
-this.ScenarioSetup(scenarioInfo);
-#line 732
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 733
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 734
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 739
- testRunner.When("The \'Drag_Toolbox_Move_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 740
- testRunner.Then("The \'Assert_Move_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 745
- testRunner.When("The \'Open_Move_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 746
+this.ScenarioSetup(scenarioInfo);
+#line 747
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 748
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 749
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 754
+ testRunner.When("The \'Drag_Toolbox_Move_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 755
+ testRunner.Then("The \'Assert_Move_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 760
+ testRunner.When("The \'Open_Move_Tool_Large_View\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 761
  testRunner.Then("The \'Assert_Move_Large_View_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1334,44 +1359,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void VariableList()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable List", ((string[])(null)));
-#line 750
+#line 765
 this.ScenarioSetup(scenarioInfo);
-#line 751
+#line 766
  testRunner.Given("The \'Assert_VariableList_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 752
+#line 767
  testRunner.Given("The \'Assert_VariableList_DeleteButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 753
+#line 768
  testRunner.Given("The \'Assert_VariableList_Recordset_ChildTextBox_Exists\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 754
+#line 769
  testRunner.Given("The \'Assert_VariableList_RecordsetInput_CheckBox_Exists\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 755
+#line 770
  testRunner.Given("The \'Assert_VariableList_RecordsetInput_ChildCheckBox_Exists\' recorded action is " +
                     "performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 756
+#line 771
  testRunner.Given("The \'Assert_VariableList_RecordsetItem_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 757
+#line 772
  testRunner.Given("The \'Assert_VariableList_RecordsetOutput_CheckBox_Exists\' recorded action is perf" +
                     "ormed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 758
+#line 773
  testRunner.Given("The \'Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists\' recorded action is" +
                     " performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 759
+#line 774
  testRunner.Given("The \'Assert_VariableList_RecordsetTextBox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 760
+#line 775
  testRunner.Given("The \'Assert_VariableList_SortButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 761
+#line 776
  testRunner.Given("The \'Assert_VariableList_VariableInput_CheckBox_Exists\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 762
+#line 777
  testRunner.Given("The \'Assert_VariableList_VariableItem_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 763
+#line 778
  testRunner.Given("The \'Assert_VariableList_VariableOutput_CheckBox_Exists\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 764
+#line 779
  testRunner.Given("The \'Assert_VariableList_VariableTextBox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 765
+#line 780
  testRunner.Given("The \'Assert_VariableList_DataInputTree_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
@@ -1383,11 +1408,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Toolbox()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toolbox", ((string[])(null)));
-#line 768
+#line 783
 this.ScenarioSetup(scenarioInfo);
-#line 769
+#line 784
  testRunner.Given("The \'Assert_Toolbox_FilterTextbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 770
+#line 785
  testRunner.Given("The \'Assert_Toolbox_RefreshButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
@@ -1399,14 +1424,14 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConnectControlExists()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect Control Exists", ((string[])(null)));
-#line 773
+#line 788
 this.ScenarioSetup(scenarioInfo);
-#line 774
+#line 789
  testRunner.Given("The \'Assert_Connect_Control_Exists_InExplorer\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 775
+#line 790
  testRunner.Given("The \'Assert_Connect_ConnectControl_Button_Exists_InExplorer\' recorded action is p" +
                     "erformed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 776
+#line 791
  testRunner.Given("The \'Assert_Explorer_Edit_Connect_Control_Button_Exists\' recorded action is perfo" +
                     "rmed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -1419,51 +1444,51 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MainMenu()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Main Menu", ((string[])(null)));
-#line 779
+#line 794
 this.ScenarioSetup(scenarioInfo);
-#line 780
+#line 795
  testRunner.Given("The \'Assert_Save_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 781
+#line 796
  testRunner.When("The \'Click_Save_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 782
+#line 797
  testRunner.Then("The \'Assert_New_Version_Download_Button_Exists_OnDesignSurface\' recorded action i" +
                     "s performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 785
+#line 800
  testRunner.Given("The \'Assert_Settings_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 786
+#line 801
  testRunner.When("The \'Click_Settings_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 790
+#line 805
  testRunner.Given("The \'Assert_Debug_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 791
+#line 806
  testRunner.When("The \'Click_Debug_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 795
+#line 810
  testRunner.Given("The \'Assert_Scheduler_Button_Exists_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 796
- testRunner.When("The \'Click_Scheduler_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 800
- testRunner.Given("The \'Assert_Deploy_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 801
- testRunner.When("The \'Click_Deploy_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 805
- testRunner.Given("The \'Assert_Knowledge_Base_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 806
- testRunner.When("The \'Click_Knowledge_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 810
- testRunner.Given("The \'Assert_Lock_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 811
- testRunner.When("The \'Click_Unlock_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'Click_Scheduler_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 815
- testRunner.Given("The \'Assert_Database_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("The \'Assert_Deploy_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 816
- testRunner.When("The \'Click_NewDatabaseSource_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'Click_Deploy_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 820
- testRunner.Given("The \'Assert_Plugin_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("The \'Assert_Knowledge_Base_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 821
- testRunner.When("The \'Click_NewPluginSource_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'Click_Knowledge_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 825
- testRunner.Given("The \'Assert_Web_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("The \'Assert_Lock_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 826
+ testRunner.When("The \'Click_Unlock_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 830
+ testRunner.Given("The \'Assert_Database_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 831
+ testRunner.When("The \'Click_NewDatabaseSource_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 835
+ testRunner.Given("The \'Assert_Plugin_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 836
+ testRunner.When("The \'Click_NewPluginSource_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 840
+ testRunner.Given("The \'Assert_Web_Source_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 841
  testRunner.When("The \'Click_NewWebSource_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -1475,45 +1500,45 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save Dialog", ((string[])(null)));
-#line 830
-this.ScenarioSetup(scenarioInfo);
-#line 831
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 832
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 833
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 838
- testRunner.Given("The \'Assert_Save_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 839
- testRunner.When("The \'Click_Save_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 840
- testRunner.Then("The \'Assert_SaveDialog_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 841
- testRunner.Then("The \'Assert_SaveDialog_CancelButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 842
- testRunner.Then("The \'Assert_SaveDialog_ErrorLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 843
- testRunner.Then("The \'Assert_SaveDialog_ExplorerTree_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 844
- testRunner.Then("The \'Assert_SaveDialog_ExplorerTreeItem_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 845
- testRunner.Then("The \'Assert_SaveDialog_ExplorerView_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 846
- testRunner.Then("The \'Assert_SaveDialog_FilterTextbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 847
- testRunner.Then("The \'Assert_SaveDialog_NameLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 848
- testRunner.Then("The \'Assert_SaveDialog_RefreshButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 849
- testRunner.Then("The \'Assert_SaveDialog_SaveButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 850
- testRunner.Then("The \'Assert_SaveDialog_ServiceName_Textbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 851
- testRunner.Then("The \'Assert_SaveDialog_WorkspaceName_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 853
+ testRunner.Given("The \'Assert_Save_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 854
+ testRunner.When("The \'Click_Save_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 855
+ testRunner.Then("The \'Assert_SaveDialog_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 856
- testRunner.When("The \'Click_SaveDialog_CancelButton\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("The \'Assert_SaveDialog_CancelButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 857
+ testRunner.Then("The \'Assert_SaveDialog_ErrorLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 858
+ testRunner.Then("The \'Assert_SaveDialog_ExplorerTree_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 859
+ testRunner.Then("The \'Assert_SaveDialog_ExplorerTreeItem_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 860
+ testRunner.Then("The \'Assert_SaveDialog_ExplorerView_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 861
+ testRunner.Then("The \'Assert_SaveDialog_FilterTextbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 862
+ testRunner.Then("The \'Assert_SaveDialog_NameLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 863
+ testRunner.Then("The \'Assert_SaveDialog_RefreshButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 864
+ testRunner.Then("The \'Assert_SaveDialog_SaveButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 865
+ testRunner.Then("The \'Assert_SaveDialog_ServiceName_Textbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 866
+ testRunner.Then("The \'Assert_SaveDialog_WorkspaceName_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 871
+ testRunner.When("The \'Click_SaveDialog_CancelButton\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 872
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1525,24 +1550,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DebugOutputWindow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug Output Window", ((string[])(null)));
-#line 860
+#line 875
 this.ScenarioSetup(scenarioInfo);
-#line 861
+#line 876
  testRunner.Given("The \'DebugOutput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 862
+#line 877
  testRunner.Given("The \'DebugOutput_ExpandCollapseButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 863
+#line 878
  testRunner.Given("The \'DebugOutput_FilterTextbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 864
+#line 879
  testRunner.Given("The \'DebugOutput_ResultsTree_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 865
+#line 880
  testRunner.Given("The \'DebugOutput_SettingsButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 866
+#line 881
  testRunner.When("The \'Click_ExpandAndStepIn_NestedWorkflow\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 872
+#line 887
  testRunner.When("The \'Click_Cell_Highlights_Workflow_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 878
+#line 893
  testRunner.When("The \'Click_Nested_Workflow_Name\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -1554,17 +1579,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConnectorsAndSourcesCannotBeDraggedOntoTheDesignSurface()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connectors and Sources cannot be dragged onto the design surface", ((string[])(null)));
-#line 882
+#line 897
 this.ScenarioSetup(scenarioInfo);
-#line 883
+#line 898
  testRunner.When("The \'Drag_Database_Connector_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 889
+#line 904
  testRunner.When("The \'Drag_Plugin_Connector_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 895
+#line 910
  testRunner.When("The \'Drag_Web_Connector_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 901
+#line 916
  testRunner.When("The \'Drag_Sharepoint_Source_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 907
+#line 922
  testRunner.When("The \'Drag_Server_Source_Onto_DesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -1576,74 +1601,74 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Scheduler()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scheduler", ((string[])(null)));
-#line 910
+#line 925
 this.ScenarioSetup(scenarioInfo);
-#line 911
+#line 926
  testRunner.Given("The \'Assert_Scheduler_Button_Exists_OnDesignSurface\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 912
+#line 927
  testRunner.When("The \'Click_Scheduler_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 913
+#line 928
  testRunner.Then("The \'Assert_Scheduler_CreateNewTask_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 918
+#line 933
  testRunner.When("The \'Click_Scheduler_Create_New_Task_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 919
+#line 934
  testRunner.Then("The \'Assert_Scheduler_DisabledRadioButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 924
- testRunner.When("The \'Click_Scheduler_Disable_Task_Radio_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 925
- testRunner.Then("The \'Assert_Scheduler_EditTrigger_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 930
- testRunner.When("The \'Click_Scheduler_EditTrigger_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 931
- testRunner.Then("The \'Assert_Scheduler_EnabledRadioButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 936
- testRunner.When("The \'Click_Scheduler_Enable_Task_Radio_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 937
- testRunner.Then("The \'Assert_Scheduler_ErrorMessage_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 938
- testRunner.Then("The \'Assert_Scheduler_HistoryInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 939
- testRunner.Then("The \'Assert_Scheduler_HistoryLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The \'Click_Scheduler_Disable_Task_Radio_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 940
- testRunner.Then("The \'Assert_Scheduler_HistoryTable_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 941
- testRunner.Then("The \'Assert_Scheduler_NameInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 942
- testRunner.Then("The \'Assert_Scheduler_NameLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 943
- testRunner.Then("The \'Assert_Scheduler_PasswordInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 944
- testRunner.Then("The \'Assert_Scheduler_PasswordLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \'Assert_Scheduler_EditTrigger_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 945
- testRunner.Then("The \'Assert_Scheduler_ResourcePicker_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 950
- testRunner.When("The \'Click_Scheduler_ResourcePicker\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("The \'Click_Scheduler_EditTrigger_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 946
+ testRunner.Then("The \'Assert_Scheduler_EnabledRadioButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 951
- testRunner.Then("The \'Assert_Scheduler_RunTask_Checkbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The \'Click_Scheduler_Enable_Task_Radio_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 952
+ testRunner.Then("The \'Assert_Scheduler_ErrorMessage_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 953
+ testRunner.Then("The \'Assert_Scheduler_HistoryInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 954
+ testRunner.Then("The \'Assert_Scheduler_HistoryLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 955
+ testRunner.Then("The \'Assert_Scheduler_HistoryTable_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 956
- testRunner.When("The \'Click_Scheduler_RunTask\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("The \'Assert_Scheduler_NameInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 957
- testRunner.Then("The \'Assert_Scheduler_DeleteButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 962
- testRunner.When("The \'Click_Scheduler_Delete_Task\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 963
- testRunner.Then("The \'Assert_Scheduler_Status_RadioButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 964
- testRunner.Then("The \'Assert_Scheduler_StatusLabe_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \'Assert_Scheduler_NameLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 958
+ testRunner.Then("The \'Assert_Scheduler_PasswordInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 959
+ testRunner.Then("The \'Assert_Scheduler_PasswordLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 960
+ testRunner.Then("The \'Assert_Scheduler_ResourcePicker_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 965
- testRunner.Then("The \'Assert_Scheduler_TriggerLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The \'Click_Scheduler_ResourcePicker\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 966
- testRunner.Then("The \'Assert_Scheduler_TriggerValue_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 967
- testRunner.Then("The \'Assert_Scheduler_UserAccountLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 968
- testRunner.Then("The \'Assert_Scheduler_UsernameInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 969
- testRunner.Then("The \'Assert_Scheduler_Usernamelabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 970
- testRunner.Then("The \'Assert_Scheduler_WorkflowInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \'Assert_Scheduler_RunTask_Checkbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 971
+ testRunner.When("The \'Click_Scheduler_RunTask\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 972
+ testRunner.Then("The \'Assert_Scheduler_DeleteButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 977
+ testRunner.When("The \'Click_Scheduler_Delete_Task\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 978
+ testRunner.Then("The \'Assert_Scheduler_Status_RadioButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 979
+ testRunner.Then("The \'Assert_Scheduler_StatusLabe_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 980
+ testRunner.Then("The \'Assert_Scheduler_TriggerLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 981
+ testRunner.Then("The \'Assert_Scheduler_TriggerValue_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 982
+ testRunner.Then("The \'Assert_Scheduler_UserAccountLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 983
+ testRunner.Then("The \'Assert_Scheduler_UsernameInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 984
+ testRunner.Then("The \'Assert_Scheduler_Usernamelabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 985
+ testRunner.Then("The \'Assert_Scheduler_WorkflowInput_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 986
  testRunner.Then("The \'Assert_Scheduler_WorkflowLabel_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1655,32 +1680,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Settings()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Settings", ((string[])(null)));
-#line 973
-this.ScenarioSetup(scenarioInfo);
-#line 974
- testRunner.Given("The \'Assert_Settings_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 975
- testRunner.When("The \'Click_Settings_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 980
- testRunner.Then("The \'Assert_Settings_LoggingTab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 981
- testRunner.Then("The \'Assert_Settings_ResourcePermissions_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 982
- testRunner.Then("The \'Assert_Settings_SecurityTab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 983
- testRunner.Then("The \'Assert_Settings_ServerPermissions_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 988
+this.ScenarioSetup(scenarioInfo);
+#line 989
+ testRunner.Given("The \'Assert_Settings_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 990
+ testRunner.When("The \'Click_Settings_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 995
+ testRunner.Then("The \'Assert_Settings_LoggingTab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 996
+ testRunner.Then("The \'Assert_Settings_ResourcePermissions_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 997
+ testRunner.Then("The \'Assert_Settings_SecurityTab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 998
+ testRunner.Then("The \'Assert_Settings_ServerPermissions_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1003
  testRunner.When("The \'Click_Settings_Admin_ServerPermissions\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 994
+#line 1009
  testRunner.When("The \'Click_Settings_Contribute_ResourcePermissions\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1000
+#line 1015
  testRunner.When("The \'Click_Settings_Contribute_ServerPermissions\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1006
+#line 1021
  testRunner.When("The \'Click_Settings_Execute_ResourcePermissions\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1012
+#line 1027
  testRunner.When("The \'Click_Settings_ResourcePermissions_ResourcePicker\' recorded action is perfor" +
                     "med", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1018
+#line 1033
  testRunner.When("The \'Click_Settings_View_ResourcePermissions\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -1692,15 +1717,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ContextMenuOnDesignSurface()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context Menu on design surface", ((string[])(null)));
-#line 1021
+#line 1036
 this.ScenarioSetup(scenarioInfo);
-#line 1022
+#line 1037
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1023
+#line 1038
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1024
+#line 1039
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1025
+#line 1040
  testRunner.Then("The \'Open_Context_Menu_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1712,15 +1737,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ContextMenuOnTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context Menu on Tab", ((string[])(null)));
-#line 1027
+#line 1042
 this.ScenarioSetup(scenarioInfo);
-#line 1028
+#line 1043
  testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1029
+#line 1044
  testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1030
+#line 1045
  testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1035
+#line 1050
  testRunner.Then("The \'Tab_Context_Menu\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1732,35 +1757,35 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DebugInputWindow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug Input window", ((string[])(null)));
-#line 1039
-this.ScenarioSetup(scenarioInfo);
-#line 1040
- testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1041
- testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1042
- testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1047
- testRunner.Then("The \'Assert_DebugInput_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1048
- testRunner.Then("The \'Assert_DebugInput_CancelButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1049
- testRunner.Then("The \'Assert_DebugInput_RememberCheckbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1050
- testRunner.Then("The \'Assert_DebugInput_ViewInBrowser_Button_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1051
- testRunner.Then("The \'Assert_DebugInput_DebugButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1052
- testRunner.Then("The \'Assert_DebugInput_InputData_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1053
- testRunner.Then("The \'Assert_DebugInput_InputData_Field_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1054
- testRunner.Then("The \'Assert_DebugInput_Xml_Tab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 1055
- testRunner.Then("The \'Assert_DebugInput_Xml_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("The \'Assert_NewWorkFlow_RibbonButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1056
- testRunner.Then("The \'Assert_DebugInput_Json_Tab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The \'Click_New_Workflow_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1057
+ testRunner.Then("The \'Assert_StartNode_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1062
+ testRunner.Then("The \'Assert_DebugInput_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1063
+ testRunner.Then("The \'Assert_DebugInput_CancelButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1064
+ testRunner.Then("The \'Assert_DebugInput_RememberCheckbox_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1065
+ testRunner.Then("The \'Assert_DebugInput_ViewInBrowser_Button_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1066
+ testRunner.Then("The \'Assert_DebugInput_DebugButton_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1067
+ testRunner.Then("The \'Assert_DebugInput_InputData_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1068
+ testRunner.Then("The \'Assert_DebugInput_InputData_Field_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1069
+ testRunner.Then("The \'Assert_DebugInput_Xml_Tab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1070
+ testRunner.Then("The \'Assert_DebugInput_Xml_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1071
+ testRunner.Then("The \'Assert_DebugInput_Json_Tab_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1072
  testRunner.Then("The \'Assert_DebugInput_Json_Window_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1772,55 +1797,55 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Deploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy", ((string[])(null)));
-#line 1060
+#line 1075
 this.ScenarioSetup(scenarioInfo);
-#line 1061
+#line 1076
  testRunner.Given("The \'Assert_Deploy_Button_Exists_OnDesignSurface\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1062
+#line 1077
  testRunner.When("The \'Click_Deploy_Ribbon_Button\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1066
+#line 1081
  testRunner.Then("The \'Assert_Source_Server_Name_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1067
+#line 1082
  testRunner.Then("The \'Assert_Refresh_Button_Source_Server_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1068
+#line 1083
  testRunner.Then("The \'Assert_Filter_Source_Server_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1069
+#line 1084
  testRunner.Then("The \'Assert_Connect_Control_DestinationServer_Exists\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1070
+#line 1085
  testRunner.Then("The \'Assert_Override_Count_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1071
+#line 1086
  testRunner.Then("The \'Assert_NewResource_Count_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1072
+#line 1087
  testRunner.Then("The \'Assert_Source_Server_Edit_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1073
+#line 1088
  testRunner.Then("The \'Assert_Connect_Button_Source_Server_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1074
+#line 1089
  testRunner.Then("The \'Assert_Edit_Button_Destination_Server_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1075
+#line 1090
  testRunner.Then("The \'Assert_Connect_button_Destination_Server_Exists\' recorded action is performe" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1076
+#line 1091
  testRunner.Then("The \'Assert_Connect_Control_SourceServer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1077
+#line 1092
  testRunner.Then("The \'Assert_ShowDependencies_Button_DestinationServer_Exists\' recorded action is " +
                     "performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1078
+#line 1093
  testRunner.Then("The \'Assert_ServiceLabel_DestinationServer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1079
+#line 1094
  testRunner.Then("The \'Assert_ServicesCount_Label_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1080
+#line 1095
  testRunner.Then("The \'Assert_SourceLabel_DestinationServer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1081
+#line 1096
  testRunner.Then("The \'Assert_SourceCount_DestinationServer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1082
+#line 1097
  testRunner.Then("The \'Assert_NewResource_Label_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1083
+#line 1098
  testRunner.Then("The \'Assert_Override_Label_DestinationServer_Exists\' recorded action is performed" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1084
+#line 1099
  testRunner.Then("The \'Assert_DeployButton_DestinationServer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1085
+#line 1100
  testRunner.Then("The \'Assert_SuccessMessage_Label_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1832,14 +1857,94 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Explorer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Explorer", ((string[])(null)));
-#line 1088
+#line 1103
 this.ScenarioSetup(scenarioInfo);
-#line 1089
+#line 1104
  testRunner.Given("The \'Assert_Explorer_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1090
+#line 1105
  testRunner.Then("The \'Assert_Explorer_ServerName_Exists\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1091
+#line 1106
  testRunner.Then("The \'Right_Click_Context_Menu_InExplorer\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void PinAndUnpinExplorer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Explorer", ((string[])(null)));
+#line 1109
+this.ScenarioSetup(scenarioInfo);
+#line 1110
+ testRunner.Given("The \'Click_Toggle_Unpin_Explorer\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1111
+ testRunner.Then("The \'Click_Toggle_Pin_Explorer\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Help")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void PinAndUnpinHelp()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Help", ((string[])(null)));
+#line 1113
+this.ScenarioSetup(scenarioInfo);
+#line 1114
+ testRunner.Given("The \'Click_Toggle_Unpin_Documentor\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1115
+ testRunner.Then("The \'Click_Toggle_Pin_Documentor\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Toolbox")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void PinAndUnpinToolbox()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Toolbox", ((string[])(null)));
+#line 1118
+this.ScenarioSetup(scenarioInfo);
+#line 1119
+ testRunner.Given("The \'Click_Toggle_Unpiin_Toolbox\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1120
+ testRunner.Then("The \'Click_Toggle_Pin_Toolbox\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Debug Output")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void PinAndUnpinDebugOutput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Debug Output", ((string[])(null)));
+#line 1122
+this.ScenarioSetup(scenarioInfo);
+#line 1123
+ testRunner.Given("The \'Click_Toggle_Unpin_DebugOutput\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1124
+ testRunner.Then("The \'Click_Toggle_Pin_DebugOutput\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin variable list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void PinAndUnpinVariableList()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin variable list", ((string[])(null)));
+#line 1126
+this.ScenarioSetup(scenarioInfo);
+#line 1127
+ testRunner.Given("The \'Click_Toggle_Unpin_VariableList\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1128
+ testRunner.Then("The \'Click_Toggle_Pin_VariableList\' recorded action is performed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

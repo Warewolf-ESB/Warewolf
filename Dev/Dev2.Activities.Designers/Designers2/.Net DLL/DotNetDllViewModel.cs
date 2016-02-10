@@ -102,6 +102,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
+            LabelWidth = 70;
             ResetHeightValues(DefaultToolHeight);
             SetInitialHeight();
             TestComplete = false;
@@ -618,9 +619,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         public string FriendlySourceName
         {
+            
             get { return GetProperty<string>(); }
             set
             {
+                
                 SetProperty(value);
             }
         }

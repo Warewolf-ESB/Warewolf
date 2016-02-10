@@ -39,12 +39,27 @@ namespace Dev2.Activities.Designers2.Core
         protected bool PreviousTestComplete;
 
         protected ICollection<IServiceInput> _inputs;
+        double _labelWidth;
+        bool _isInputsEmptyRows;
+        bool _isOutputsEmptyRows;
 
         protected CustomToolViewModelBase(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged("LabelWidth");
+            }
+        }
         public double DesignMaxHeight
         {
             get
@@ -155,6 +170,30 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged("InputsVisible");
             }
         }
+        public bool IsInputsEmptyRows
+        {
+            get
+            {
+                return _isInputsEmptyRows;
+            }
+            set
+            {
+                _isInputsEmptyRows = value;
+                OnPropertyChanged("IsInputsEmptyRows");
+            }
+        }
+        public bool IsOutputsEmptyRows
+        {
+            get
+            {
+                return _isOutputsEmptyRows;
+            }
+            set
+            {
+                _isOutputsEmptyRows = value;
+                OnPropertyChanged("IsOutputsEmptyRows");
+            }
+        }
         public bool SourceVisible { get; set; }
         public ICommand TestInputCommand { get; set; }
         public ICommand EditSourceCommand { get; set; }
@@ -172,6 +211,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _inputs = value;
                     InputsHasItems = _inputs != null && _inputs.Count > 0;
+                    IsInputsEmptyRows = _inputs != null && _inputs.Count == 0;
                     SetProperty(value);
                     OnPropertyChanged("Inputs");
                 }
@@ -188,6 +228,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 SetProperty(value);
                 OutputsHasItems = value != null && value.Count > 0;
+                IsOutputsEmptyRows = value != null && value.Count == 0;
                 OnPropertyChanged("Outputs");
             }
         }
@@ -229,7 +270,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + 10;
+                            ToolHeight += _inputGridHeight + RowHeight;
                             InputsHasItems = false;
                             break;
                         default:
@@ -270,7 +311,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _outputGridHeight + 10;
+                            ToolHeight += _outputGridHeight + RowHeight;
                             OutputsHasItems = false;
                             break;
                         default:
@@ -322,7 +363,7 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         case 0:
                             // Add the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + 10;
+                            ToolHeight += _inputGridHeight + RowHeight;
                             break;
                         default:
                             /* 30px used for row Height multiply by Inputs count plus 1 extra row
@@ -359,6 +400,7 @@ namespace Dev2.Activities.Designers2.Core
             DesignHeight = ToolHeight;
             DesignMinHeight = ToolHeight;
             DesignMaxHeight = MaxToolHeight;
+           
         }
 
         void SetToolHeightValue(double newToolHeight)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces
 {
@@ -24,5 +25,6 @@ namespace Dev2.Common.Interfaces
     public interface IManageDatabaseInputViewModel : IManageServiceInputViewModel<IDatabaseService>
     {
         DataTable TestResults { get; set; }
+        bool OkSelected { get; set; }
     }
 }
