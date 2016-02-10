@@ -1099,19 +1099,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Web_Get_Request_Tool_Exists_OnDesignSurface - Use 'Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Web_Get_Request_Tool_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues.WebGetExists, webGet.Exists, "Web Get Request connector tool does not exist on the design surface");
-        }
-        
-        /// <summary>
         /// Assert_Web_Request_Exists_OnDesignSurface - Use 'Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Web_Request_Exists_OnDesignSurface()
@@ -2231,22 +2218,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Drag_Web_Get_Request_Tool_Onto_DesignSurface
-        /// </summary>
-        public void Drag_Web_Get_Request_Tool_Onto_DesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            WpfCustom uIItem62534df079184555Custom = this.UIWarewolfDEV2LEROYWARWindow1.UIWorkflowItemPresenteCustom.UIFlowchartCustom1.UIItem62534df079184555Custom;
-            #endregion
-
-            // Move 'DsfWebGetActivity' custom control to '62534df0-7918-4555-ba96-02efa05a4fc4,300,77.5 300,...' custom control
-            uIItem62534df079184555Custom.EnsureClickable(new Point(301, 97));
-            Mouse.StartDragging(webGet, new Point(733, 913));
-            Mouse.StopDragging(uIItem62534df079184555Custom, new Point(301, 97));
-        }
-        
-        /// <summary>
         /// Drag_Web_Source_Onto_DesignSurface
         /// </summary>
         public void Drag_Web_Source_Onto_DesignSurface()
@@ -2943,19 +2914,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Test' button
             Mouse.Click(uITestButton, new Point(47, 18));
-        }
-        
-        /// <summary>
-        /// Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface - Use 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues.WebGetExists, webGet.Exists, "Web Get Request tool small view does not exist on the design surface");
         }
         
         #region Properties
@@ -3943,18 +3901,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public virtual Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -4243,18 +4189,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -4517,8 +4451,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues;
-        
         private Assert_Web_Request_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Request_Large_View_Exists_OnDesignSurfaceExpectedValues;
@@ -4566,8 +4498,6 @@ namespace Warewolf.Studio.UISpecs
         private PressF11_EnterFullScreen_FromStartPageParams mPressF11_EnterFullScreen_FromStartPageParams;
         
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
-        
-        private Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -5818,21 +5748,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Web_Get_Request_Tool_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-        /// </summary>
-        public bool WebGetExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_Web_Request_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6189,21 +6104,6 @@ namespace Warewolf.Studio.UISpecs
         /// Type 's' in 'Test data' text box
         /// </summary>
         public string UITestdataEditText = "s";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Web_Get_Request_Small_View_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfWebGetActivity' custom control equals 'True'
-        /// </summary>
-        public bool WebGetExists = true;
         #endregion
     }
     
@@ -7633,23 +7533,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCustom WebGet
-        {
-            get
-            {
-                if ((this.mWebGet == null))
-                {
-                    this.mWebGet = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mWebGet.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
-                    this.mWebGet.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Web Get Request Connector(WebServiceGetDesigner)";
-                    this.mWebGet.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mWebGet;
-            }
-        }
-        
         public WpfCustom DotNetDll
         {
             get
@@ -8525,8 +8408,6 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfCustom mWebGet;
-        
         private WpfCustom mDotNetDll;
         
         private DataMerge mDataMerge;
@@ -14332,18 +14213,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCustom UIFlowchartCustom1
+        public UIFlowchartCustom1 UIFlowchartCustom1
         {
             get
             {
                 if ((this.mUIFlowchartCustom1 == null))
                 {
-                    this.mUIFlowchartCustom1 = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom1.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
-                    this.mUIFlowchartCustom1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
+                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
                 }
                 return this.mUIFlowchartCustom1;
             }
@@ -14419,7 +14295,7 @@ namespace Warewolf.Studio.UISpecs
         
         private UIDebugOutputCustom mUIDebugOutputCustom;
         
-        private WpfCustom mUIFlowchartCustom1;
+        private UIFlowchartCustom1 mUIFlowchartCustom1;
         
         private WpfWindow mUIWpfWindow2;
         
@@ -15069,24 +14945,10 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIToolListBoxList;
             }
         }
-        
-        public UIToolButtonImageText UIToolButtonImageText
-        {
-            get
-            {
-                if ((this.mUIToolButtonImageText == null))
-                {
-                    this.mUIToolButtonImageText = new UIToolButtonImageText(this);
-                }
-                return this.mUIToolButtonImageText;
-            }
-        }
         #endregion
         
         #region Fields
         private UIToolListBoxList mUIToolListBoxList;
-        
-        private UIToolButtonImageText mUIToolButtonImageText;
         #endregion
     }
     
@@ -15865,41 +15727,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIToolButtonImageText : WpfText
-    {
-        
-        public UIToolButtonImageText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfImage mUIItemImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIActivityBuilderCustom : WpfCustom
     {
         
@@ -16445,6 +16272,127 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIFlowchartCustom1 : WpfCustom
+    {
+        
+        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfMultiAssignActiviCustom UIDsfMultiAssignActiviCustom
+        {
+            get
+            {
+                if ((this.mUIDsfMultiAssignActiviCustom == null))
+                {
+                    this.mUIDsfMultiAssignActiviCustom = new UIDsfMultiAssignActiviCustom(this);
+                }
+                return this.mUIDsfMultiAssignActiviCustom;
+            }
+        }
+        
+        public UIDsfDataMergeActivityCustom UIDsfDataMergeActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfDataMergeActivityCustom == null))
+                {
+                    this.mUIDsfDataMergeActivityCustom = new UIDsfDataMergeActivityCustom(this);
+                }
+                return this.mUIDsfDataMergeActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfMultiAssignActiviCustom mUIDsfMultiAssignActiviCustom;
+        
+        private UIDsfDataMergeActivityCustom mUIDsfDataMergeActivityCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIDsfMultiAssignActiviCustom : WpfCustom
+    {
+        
+        public UIDsfMultiAssignActiviCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign (1)(MultiAssignDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfToggleButton OpenQuickVariableInpToggleButton
+        {
+            get
+            {
+                if ((this.mOpenQuickVariableInpToggleButton == null))
+                {
+                    this.mOpenQuickVariableInpToggleButton = new WpfToggleButton(this);
+                    #region Search Criteria
+                    this.mOpenQuickVariableInpToggleButton.SearchProperties[WpfToggleButton.PropertyNames.HelpText] = "Open Quick Variable Input";
+                    this.mOpenQuickVariableInpToggleButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mOpenQuickVariableInpToggleButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIDsfDataMergeActivityCustom : WpfCustom
+    {
+        
+        public UIDsfDataMergeActivityCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataMergeDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Data Merge (1)(DataMergeDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfToggleButton OpenQuickVariableInpToggleButton
+        {
+            get
+            {
+                if ((this.mOpenQuickVariableInpToggleButton == null))
+                {
+                    this.mOpenQuickVariableInpToggleButton = new WpfToggleButton(this);
+                    #region Search Criteria
+                    this.mOpenQuickVariableInpToggleButton.SearchProperties[WpfToggleButton.PropertyNames.HelpText] = "Open Quick Variable Input";
+                    this.mOpenQuickVariableInpToggleButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mOpenQuickVariableInpToggleButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIExplorerEnvironmentMMenu : WpfMenu
     {
         
@@ -16743,81 +16691,10 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIFlowchartCustom;
             }
         }
-        
-        public UIFlowchartCustom1 UIFlowchartCustom1
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom1 == null))
-                {
-                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
-                }
-                return this.mUIFlowchartCustom1;
-            }
-        }
         #endregion
         
         #region Fields
         private WpfCustom mUIFlowchartCustom;
-        
-        private UIFlowchartCustom1 mUIFlowchartCustom1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIFlowchartCustom1 : WpfCustom
-    {
-        
-        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 4(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIItem62534df079184555Custom
-        {
-            get
-            {
-                if ((this.mUIItem62534df079184555Custom == null))
-                {
-                    this.mUIItem62534df079184555Custom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItem62534df079184555Custom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
-                    this.mUIItem62534df079184555Custom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "62534df0-7918-4555-ba96-02efa05a4fc4,300,77.5 300,107.5 350,107.5 350,127.5";
-                    this.mUIItem62534df079184555Custom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItem62534df079184555Custom;
-            }
-        }
-        
-        public WpfCustom UIDsfWebGetActivityCustom
-        {
-            get
-            {
-                if ((this.mUIDsfWebGetActivityCustom == null))
-                {
-                    this.mUIDsfWebGetActivityCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfWebGetActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WebServiceGetDesigner";
-                    this.mUIDsfWebGetActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Web Get Request Connector(WebServiceGetDesigner)";
-                    this.mUIDsfWebGetActivityCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIDsfWebGetActivityCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIItem62534df079184555Custom;
-        
-        private WpfCustom mUIDsfWebGetActivityCustom;
         #endregion
     }
 }
