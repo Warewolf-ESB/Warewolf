@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core
                     Response =  _model.Response
                     
                 };
-                return _model;
+                return model;
             }
             set
             {
