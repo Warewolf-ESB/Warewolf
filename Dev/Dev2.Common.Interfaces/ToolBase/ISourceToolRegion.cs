@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.ToolBase
@@ -10,6 +11,7 @@ namespace Dev2.Common.Interfaces.ToolBase
 
         ICommand EditSourceCommand { get; }
         ICommand NewSourceCommand { get; }
+        Action SourceChangedAction { get; set; }
         event SomethingChanged SomethingChanged; 
     }
 }

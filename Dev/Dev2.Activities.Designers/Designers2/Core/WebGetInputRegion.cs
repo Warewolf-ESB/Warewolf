@@ -264,6 +264,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 IsVisible = region.IsVisible;
                 QueryString = region.QueryString;
+                RequestUrl = region.RequestUrl;
                 Headers = region.Headers;
                 ResetInputsHeight();
             }

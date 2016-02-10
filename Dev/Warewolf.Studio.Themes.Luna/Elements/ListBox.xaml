@@ -255,7 +255,7 @@
     </Style>
 
     <Style x:Key="ListBoxItemNoBorderStyle" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="{StaticResource ListBoxItemBackgroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
         <Setter Property="FontFamily" Value="Segoe UI" />
@@ -330,8 +330,8 @@
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle x:Name="Bd" Fill="{TemplateBinding Background}" />
                         <Rectangle x:Name="BgSelected"
-                                   Fill="{StaticResource ListBoxItemSelectedBackgroundBrush}"
-                                   Stroke="{StaticResource ListBoxItemSelectedBorderBrush}"
+                                   Fill="{StaticResource WarewolfPanelGreyBrush}"
+                                   Stroke="{StaticResource WarewolfPanelGreyBrush}"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
@@ -343,7 +343,7 @@
                         </ContentControl>
                         <Rectangle x:Name="FocusedVisualElement"
                                    IsHitTestVisible="False"
-                                   Stroke="{StaticResource ListBoxItemPressedBorderBrush}"
+                                   Stroke="{StaticResource WarewolfPanelGreyBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
