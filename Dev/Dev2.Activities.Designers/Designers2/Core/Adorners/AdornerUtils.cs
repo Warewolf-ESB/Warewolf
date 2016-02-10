@@ -24,19 +24,19 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         public static Adorner[] GetConnectors(this ActivityDesigner designer)
         {
             var element = VisualTreeHelper.GetParent(designer) as FrameworkElement;
-            var parentUI = designer.Parent as UIElement;
+            var parentUi = designer.Parent as UIElement;
             var layer = designer.GetAdornerLayer();
 
-            if(parentUI == null || layer == null)
+            if(parentUi == null || layer == null)
             {
                 return Empty;
             }
 
-            if(parentUI.Equals(element))
+            if(parentUi.Equals(element))
             {
             }
 
-            var adorners = layer.GetAdorners(parentUI);
+            var adorners = layer.GetAdorners(parentUi);
             return adorners ?? Empty;
         }
 

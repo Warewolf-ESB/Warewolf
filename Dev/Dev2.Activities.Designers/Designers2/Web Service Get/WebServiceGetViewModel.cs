@@ -34,7 +34,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private ISourceToolRegion<IWebServiceSource> _source;
         private string _imageSource;
 
-
         private IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
@@ -92,24 +91,23 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public override void Validate()
         {
-            if(Errors == null)
+            if (Errors == null)
             {
                 Errors = new List<IActionableErrorInfo>();
             }
                 Errors.Clear();
             
-           Errors =  Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-          if(Source.Errors.Count>0)
+            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            if (Source.Errors.Count > 0)
           {
               foreach (var designValidationError in Source.Errors)
               {
-                  DesignValidationErrors.Add(new ErrorInfo(){ErrorType = ErrorType.Critical,Message = designValidationError});
+                    DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
               }
          
           }
           UpdateWorstError();
         }
-
 
         void UpdateWorstError()
         {
@@ -134,7 +132,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
             WorstDesignError = worstError[0];
         }
-
 
         IErrorInfo WorstDesignError
         {
@@ -163,7 +160,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-            TestComplete = false;
+        
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -180,32 +177,23 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             Outputs.OutputMappingEnabled = true;
 
-            TestInputCommand = new DelegateCommand(() =>
-            {
-                TestComplete = true;
-                Outputs.IsVisible = true;
-                Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
-            }, CanTestProcedure);
+
             TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
 
             InitializeProperties();
 
             if (Outputs != null && Outputs.IsVisible)
             {
-                TestComplete = true;
+    
                 var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
                     Outputs.RecordsetName = recordsetItem.RecordSetName;
+                    Outputs.IsVisible = true;
                 }
             }
-
             ReCalculateHeight();
-
-
         }
-
-
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
@@ -257,6 +245,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private bool _testComplete;
         private bool _testSuccessful;
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public DesignValidationMemo LastValidationMemo { get; private set; }
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -326,6 +317,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _testComplete = value;
+
                 OnPropertyChanged();
             }
         }
@@ -347,12 +339,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (Source == null)
             {
-                Source = new WebSourceRegion(Model, ModelItem);
+                Source = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { Outputs.IsVisible = false; } };
                 regions.Add(Source);
                 InputArea = new WebGetInputRegion(ModelItem, Source);
                 regions.Add(InputArea);
                 Outputs = new OutputsRegion(ModelItem);
                 regions.Add(Outputs);
+                if(Outputs.Outputs.Count>0)
+                {
+                    Outputs.IsVisible = true;
+                    TestComplete = true;
+                }
                 regions.Add(new ErrorRegion());
                 Source.Dependants.Add(InputArea);
                 Source.Dependants.Add(Outputs);
@@ -369,7 +366,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
             ReCalculateHeight();
+            if(TestInputCommand != null)
+            {
             TestInputCommand.RaiseCanExecuteChanged();
+        }
         }
 
         #endregion
@@ -409,6 +409,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _source = value;
+                InitializeProperties();
                 OnPropertyChanged();
             }
         }
@@ -441,7 +442,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
                             Outputs.RecordsetName = recordset.Name;
-                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name){Path = recordsetField.Path};
+                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                             return serviceOutputMapping;
                         }).Cast<IServiceOutputMapping>().ToList();
                         // ReSharper restore MaximumChainedReferences
@@ -458,11 +459,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     {
                         ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
 
                         TestComplete = false;
-                        // ErrorMessage(e);
+                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
@@ -470,7 +471,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs.Outputs.Clear();
-                    foreach(var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                    foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
                     {
                         Outputs.Outputs.Add(serviceOutputMapping);
                     }
@@ -494,12 +495,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void ErrorMessage(Exception exception)
         {
-            Errors.Add(new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{}));
+           Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
         private void ValidateTestComplete()
         {
-            TestComplete = true;
+            Outputs.IsVisible = true;
         }
 
         public bool TestSuccessful
@@ -534,6 +535,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 
             };
         }
+
 
         private IList<IServiceInput> InputsFromModel()
         {

@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Core
                     IsVisible = false;
                 }
                 var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
-                outputs.CollectionChanged += outputs_CollectionChanged;
+                outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
                 SetInitialHeight();
             }
@@ -42,12 +42,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 IsVisible = true;
                 var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
-                outputs.CollectionChanged += outputs_CollectionChanged;
+                outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
                 ReCalculateHeight();
-
             }
-           
         }
 
         void SetInitialHeight()
@@ -62,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core
             SetInitialHeight();
         }
 
-        void outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
@@ -171,10 +169,14 @@ namespace Dev2.Activities.Designers2.Core
 
         private void ReCalculateHeight()
         {
-            MaxHeight = BaseHeight + _outputs.Count * GlobalConstants.RowHeight;
+            // Need to add custom height due to Infragistics XamGrid doing its own thing again
+            const double XamGridHeight = 15;
+            MaxHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
+            MinHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
             if(_outputs.Count == 0)
             {
-                MaxHeight = 0;
+                MaxHeight = BaseHeight;
+                MinHeight = BaseHeight;
             }
             if(_outputs.Count >= 3)
             {
@@ -216,7 +218,19 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _recordsetName = value;
+     
+                if (Outputs != null)
+                {
+                    _recordsetName = value;
+                    foreach (var serviceOutputMapping in Outputs)
+                    {
+                        if (_recordsetName != null )
+                        {
+                            serviceOutputMapping.RecordSetName = value;
+                        }
+                    }
+                }
+               
                 OnPropertyChanged();
             }
         }

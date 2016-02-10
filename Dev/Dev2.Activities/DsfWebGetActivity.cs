@@ -19,6 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
+using Warewolf.Storage;
 using WarewolfParserInterop;
 
 namespace Dev2
@@ -52,8 +53,9 @@ namespace Dev2
                 errors.AddError("Query is Null");
                 return;
             }
-            var head = Headers.Select(a => new NameValue(dataObject.Environment.Eval(a.Name, update).ToString(), dataObject.Environment.Eval(a.Value, update).ToString()));
-            var query = dataObject.Environment.Eval(QueryString,update);
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+            var query =  ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString,update));
+           
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
             var client = CreateClient(head, query, url);
             var result = client.DownloadString(url.Address+query);
@@ -164,11 +166,12 @@ namespace Dev2
         }
 
 
-        private WebClient CreateClient(IEnumerable<NameValue> head, WarewolfDataEvaluationCommon.WarewolfEvalResult query, WebSource source)
+        private WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var webclient = new WebClient();
             foreach(var nameValue in head)
             {
+                if(!String.IsNullOrEmpty( nameValue.Name) && !String.IsNullOrEmpty( nameValue.Value))
                 webclient.Headers.Add(nameValue.Name,nameValue.Value);
             }
 
@@ -194,6 +197,11 @@ namespace Dev2
         {
             Type = "Web Get Request Connector";
             DisplayName = "Web Get Request Connector";
+        }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
         }
 
     }
