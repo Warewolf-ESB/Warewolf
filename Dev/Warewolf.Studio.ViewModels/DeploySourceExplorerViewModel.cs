@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
-                environmentViewModel.SelectAll = (() => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList()));
+                environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
             }
             CheckPreselectedItems(environmentID);
             if(ConnectControlViewModel != null)
@@ -150,7 +150,7 @@ namespace Warewolf.Studio.ViewModels
                     a.CanEdit = false;
                     a.CanView = false;
                     a.ShowContextMenu = false;
-                    a.SelectAction = (SelectAction);
+                    a.SelectAction = SelectAction;
                     a.AllowResourceCheck = true;
                     a.CanDrop = false;
                     a.CanDrag = false;

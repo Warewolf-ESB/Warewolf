@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             if(start > 0)
             {
                 start += PathStartText.Length;
-                int end = (getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal));
+                int end = getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal);
                 var savedPath = getSavedResource.Substring(start, end - start);
                 Assert.AreEqual(uniquePathText, savedPath);
             }

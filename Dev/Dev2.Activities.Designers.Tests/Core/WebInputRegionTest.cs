@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> {  });
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),srcreg);
             Assert.AreEqual(region.MaxHeight,180);
@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { });
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             Assert.AreEqual(region.MaxHeight, 180);
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceSource>();
             bool Called = false;
             var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { });
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             region.HeightChanged += (a, b) => { Called = true; };
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { });
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             Assert.AreEqual(region.MaxHeight, 180);
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { });
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);

@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void OutputDataGridResize()
         {
-            if (OutputsDataGrid != null && (OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10))
+            if (OutputsDataGrid != null && OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10)
             {
                 OutputsDataGrid.ColumnWidth = ColumnWidth.SizeToHeader;
             }

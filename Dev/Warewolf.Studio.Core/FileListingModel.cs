@@ -230,7 +230,7 @@ namespace Warewolf.Studio.Core
         {
             unchecked
             {
-                var hashCode = (Name != null ? Name.GetHashCode() : 0);
+                var hashCode = Name != null ? Name.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();
                 return hashCode;
@@ -251,7 +251,7 @@ namespace Warewolf.Studio.Core
 
         public List<string> FilterSelected(List<string> acc)
         {   if(IsChecked)
-                    acc.Add(this.FullName);
+                    acc.Add(FullName);
             if(Children!=null)
             {
                 foreach(var dllListingModel in Children)

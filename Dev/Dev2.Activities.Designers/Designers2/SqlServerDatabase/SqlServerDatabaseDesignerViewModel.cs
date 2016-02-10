@@ -714,7 +714,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel != null && (RootModel.Errors != null && RootModel.Errors.Count == 0)
+                IsValid = RootModel != null && RootModel.Errors != null && RootModel.Errors.Count == 0
             };
             if (RootModel != null)
             {

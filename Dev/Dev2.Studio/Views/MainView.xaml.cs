@@ -120,7 +120,7 @@ namespace Dev2.Studio.Views
 
         private void Maximise()
         {
-            var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
+            var handle = new WinInterop.WindowInteropHelper(this).Handle;
             var handleSource = WinInterop.HwndSource.FromHwnd(handle);
             if (handleSource == null)
                 return;

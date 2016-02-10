@@ -184,13 +184,13 @@ namespace Warewolf.AcceptanceTesting.Deploy
         static IExplorerItemViewModel CreateExplorerVms()
         {
             ExplorerItemViewModel ax = null;
-            ax = new ExplorerItemViewModel(new Mock<IServer>().Object, null, (a => { }), new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+            ax = new ExplorerItemViewModel(new Mock<IServer>().Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
             {
                 ResourceName = "Examples",
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
                     // ReSharper disable once ExpressionIsAlwaysNull
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, (a => { }), new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) { ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time" }
+                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) { ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time" }
                 }
             };
             return ax;

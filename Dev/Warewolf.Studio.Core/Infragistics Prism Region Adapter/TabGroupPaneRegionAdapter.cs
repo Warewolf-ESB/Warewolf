@@ -40,7 +40,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
 
             SynchronizeItems(region, regionTarget);
 
-            region.Views.CollectionChanged += (Object sender, NotifyCollectionChangedEventArgs e) =>
+            region.Views.CollectionChanged += (sender, e) =>
             {
                 OnViewsCollectionChanged(sender, e, region, regionTarget);
             };

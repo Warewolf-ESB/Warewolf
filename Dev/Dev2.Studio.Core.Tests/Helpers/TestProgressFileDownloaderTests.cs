@@ -375,7 +375,7 @@ namespace Dev2.Core.Tests.Helpers
             var webClient = new Mock<IDev2WebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
-            ProgressFileDownloader.GetProgressDialogViewModel = ((a, b) => new Mock<IProgressNotifier>().Object);
+            ProgressFileDownloader.GetProgressDialogViewModel = (a, b) => new Mock<IProgressNotifier>().Object;
             var ax = new ProgressFileDownloader(webClient.Object, file.Object, crytpto.Object);
             var stream = new MemoryStream();
             
@@ -406,7 +406,7 @@ namespace Dev2.Core.Tests.Helpers
             var webClient = new Mock<IDev2WebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
-            ProgressFileDownloader.GetProgressDialogViewModel = ((a, b) => new Mock<IProgressNotifier>().Object);
+            ProgressFileDownloader.GetProgressDialogViewModel = (a, b) => new Mock<IProgressNotifier>().Object;
             var ax = new ProgressFileDownloader(webClient.Object, file.Object, crytpto.Object);
             var stream = new MemoryStream();
             stream.WriteByte(1);

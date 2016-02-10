@@ -17,7 +17,7 @@ using System.Reflection;
 namespace Dev2.Activities.Designers2.Core
 {
    
-    static public class CEventHelper
+    public static class CEventHelper
     {
         static readonly Dictionary<Type, List<FieldInfo>> DicEventFieldInfos = new Dictionary<Type, List<FieldInfo>>();
 

@@ -183,7 +183,7 @@ namespace Dev2.Integration.Tests.Helpers
                 int end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
                 if(end > start)
                 {
-                    result = canidate.Substring(start, ((end + endStr.Length) - start));
+                    result = canidate.Substring(start, end + endStr.Length - start);
                 }
             }
 
