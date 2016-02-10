@@ -391,7 +391,7 @@
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
     <Compile Include="Toolbox\Resources\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\OracleServerConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
       <DependentUpon>OracleServerConnector.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,7 +401,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\OracleServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\PluginConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -615,7 +615,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\OracleServerConnector.feature">
+    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>

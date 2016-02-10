@@ -7,39 +7,34 @@
 Scenario: Creating Oracle Server Connector
 	Given I open New Workflow
 	And I drag a Oracle Server database connector
-	And Source is Enabled
-	And Action is Disabled
-	And Inputs is Disabled 
-	And Outputs is Disabled
-	And Validate is Disabled 
-	When I Select "GreenPoint" as Source
-	Then Action is Enabled
-	When I select "HR.TESTPROC9" as the action
-	Then Inputs is Enabled 
-	And Inputs appear as 
+	And Source is Enable
+	And Action is Disable
+	And Inputs is Disable
+	And Outputs is Disable
+	And Validate is Disable
+	When I Selected "GreenPoint" as Source
+	Then Action is Enable
+	When I selected "HR.TESTPROC9" az the action
+	Then Inputs is Enable 
+	And Inputs appear az 
 	| Input     | Value | Empty is Null |
 	| EID		|       | false         |
-	And Validate is Enabled
-	When I click Validate
-	Then the Test Connector and Calculate Outputs window is opened
-	And Test Inputs appear as
+	And Validate is Enable
+	When I click Validat
+	Then the Test Connector and Calculate Outputs window is open
+	And Test Inputs appear az
 	| EID		 |
 	| 100        |
-	When I click Test
-	Then Test Connector and Calculate Outputs outputs appear as
-	| Column1 | Column2 | Column3 | Column4		| Column5	| Column6 | Column7 |
-	| 100     | Steven  | King    | sk@mail.com | 000000000 | 2500    | 6		|
-	When I click OK
-	Then Outputs appear as
+	When I click Testz
+	Then Test Connector and Calculate Outputs outputs appear az
+	| Column1 |
+	| 1       |
+	When I click OKay
+	Then Outputs appear az
 	| Mapped From | Mapped To                     | 
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
-	| Column2     | [[HR_TESTPROC9().Column2]] | 
-	| Column3     | [[HR_TESTPROC9().Column3]] | 
-	| Column4     | [[HR_TESTPROC9().Column4]] | 
-	| Column5     | [[HR_TESTPROC9().Column5]] | 
-	| Column6     | [[HR_TESTPROC9().Column6]] | 
-	| Column7     | [[HR_TESTPROC9().Column7]] | 
-	And Recordset Name equals "HR_TESTPROC9"	
+
+	And Recordset Name equalz "HR_TESTPROC9"	
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open "Wolf-860"
@@ -48,7 +43,7 @@ Scenario: Opening Saved workflow with Oracle Server tool
 	And Action is Enabled
 	And Action is dbo.Pr_CitiesGetCountries
 	And Inputs is Enabled
-	And Inputs appear as
+	And Inputs appear az
 	| Inputs | Default Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
 	And Validate is Enabled
@@ -135,7 +130,7 @@ Scenario: Changing Actions
 	And "Validate" is "Enabled"
 	When I click "Validate"
 	Then the "Test Connector and Calculate Outputs" window is opened
-	And inputs appear as
+	And inputs appear az
 	| ProductId |
 	| 1         |
 	When I click "Test"
