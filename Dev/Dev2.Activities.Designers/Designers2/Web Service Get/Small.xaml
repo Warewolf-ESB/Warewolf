@@ -7,6 +7,7 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.WebServiceGet"
                                xmlns:webServiceGet="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
                                MinWidth="250"
+                               MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel}">
@@ -35,8 +36,8 @@
                             <ColumnDefinition SharedSizeGroup="A" />
                             <ColumnDefinition SharedSizeGroup="B" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
