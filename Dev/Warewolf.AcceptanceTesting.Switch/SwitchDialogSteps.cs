@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Dev2.Activities;
-using Dev2.Activities.Designers2.Decision;
+﻿using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.Core.Activities.Utils;
@@ -65,17 +60,18 @@ namespace Warewolf.AcceptanceTesting.Switch
         public void WhenISetTheSwitchArmAs(string p0)
         {
             var vm = FeatureContext.Current["viewModel"] as SwitchDesignerViewModel;
-            vm.SwitchExpression = p0;
-            
+            if(vm != null)
+            {
+                vm.SwitchExpression = p0;
+            }
         }
-
 
         [Then(@"""(.*)"" is the display text")]
         public void ThenIsTheDisplayText(string p0)
         {
             var vm = FeatureContext.Current["viewModel"] as SwitchDesignerViewModel;
             
-            Assert.IsTrue(vm.Switch.SwitchExpression==p0);
+            Assert.IsTrue(vm != null && vm.Switch.SwitchExpression==p0);
         }
 
         [When(@"a validation error is shown")]
@@ -94,15 +90,18 @@ namespace Warewolf.AcceptanceTesting.Switch
         public void ThenIs(string control, string state)
         {
             var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            switch(control)
+            if(view != null)
             {
-                case "Variable to Switch on" :
-                    view.CheckSwitchVariableState(state);
-                    break;
-                case "Display text" :
-                    view.CheckDisplayState(state);
-                    break;
+                switch(control)
+                {
+                    case "Variable to Switch on":
+                        view.CheckSwitchVariableState(state);
+                        break;
+                    case "Display text":
+                        view.CheckDisplayState(state);
+                        break;
 
+                }
             }
         }
 
@@ -116,7 +115,10 @@ namespace Warewolf.AcceptanceTesting.Switch
         public void ThenEquals(string p0, string variable)
         {
             var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            view.SetVariableToSwitchOn(variable);
+            if(view != null)
+            {
+                view.SetVariableToSwitchOn(variable);
+            }
         }
 
         [Then(@"""(.*)"" is selected")]
@@ -137,17 +139,21 @@ namespace Warewolf.AcceptanceTesting.Switch
         public void ThenIHaveVariableEquals(string p0, string variable)
         {
             var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            view.SetVariableToSwitchOn(variable);
+            if(view != null)
+            {
+                view.SetVariableToSwitchOn(variable);
+            }
         }
 
         [Then(@"""(.*)"" is changed to ""(.*)""")]
         public void ThenIsChangedTo(string p0, string variable)
         {
             var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            Assert.AreEqual(variable,view.GetDisplayName());
+            if(view != null)
+            {
+                Assert.AreEqual(variable,view.GetDisplayName());
+            }
         }
-
-
 
         [Then(@"I set the default arm")]
         public void ThenISetTheDefaultArm()
@@ -159,9 +165,12 @@ namespace Warewolf.AcceptanceTesting.Switch
         public void ThenISetTheSwitchArmAs(string p0)
         {
            var vm =   FeatureContext.Current["viewModel"] as SwitchDesignerViewModel;
-            vm.SwitchExpression = p0;
-          PrivateObject po = new PrivateObject(vm);
-          po.Invoke("Initialise", new object[0]);
+            if(vm != null)
+            {
+                vm.SwitchExpression = p0;
+                PrivateObject po = new PrivateObject(vm);
+                po.Invoke("Initialise", new object[0]);
+            }
         }
 
         [Then(@"""(.*)"" is visible on the switch arm")]

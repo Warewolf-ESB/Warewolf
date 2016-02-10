@@ -674,7 +674,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty { get { return ServerName != null && (String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password)); } }
+        public bool IsEmpty { get { return ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
         public IDbSource DBSource
         {
             get

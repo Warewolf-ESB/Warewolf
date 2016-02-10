@@ -154,7 +154,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2TaskDefinitionTest_Action")]
         public void Dev2TaskDefinitionTest_Action()
         {
-           AssertPassThrough((a, b) => (a.Actions.First().Id== b.Action.Instance.Id));
+           AssertPassThrough((a, b) => a.Actions.First().Id== b.Action.Instance.Id);
 
         }
 
@@ -164,7 +164,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2TaskDefinitionTest_Trigger")]
         public void Dev2TaskDefinitionTest_Trigger()
         {
-            AssertPassThrough((a, b) => (a.Triggers.First().Id== b.Trigger.Instance.Id));
+            AssertPassThrough((a, b) => a.Triggers.First().Id== b.Trigger.Instance.Id);
 
         }
 
@@ -173,7 +173,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2TaskDefinitionTest_AddTrigger")]
         public void Dev2TaskDefinitionTest_Addrigger()
         {
-            var defn = AssertPassThrough((a, b) => (a.Triggers.First().Id == b.Trigger.Instance.Id));
+            var defn = AssertPassThrough((a, b) => a.Triggers.First().Id == b.Trigger.Instance.Id);
             defn.AddTrigger(new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger(1)));
             Assert.AreEqual(defn.Triggers.Count(),2);
         }
@@ -183,7 +183,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2TaskDefinitionTest_AddAction")]
         public void Dev2TaskDefinitionTest_ActionAdd()
         {
-            var defn = AssertPassThrough((a, b) => (a.Triggers.First().Id == b.Trigger.Instance.Id));
+            var defn = AssertPassThrough((a, b) => a.Triggers.First().Id == b.Trigger.Instance.Id);
             defn.AddAction(new Dev2ExecAction(new TaskServiceConvertorFactory(), new ExecAction("a", "b", "c")));
             Assert.AreEqual(defn.Actions.Count(), 2);
         }

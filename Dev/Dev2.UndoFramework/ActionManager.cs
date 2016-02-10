@@ -30,7 +30,7 @@ namespace Dev2.UndoFramework
 
         private void CheckNotRunningBeforeRecording(IAction existingAction)
         {
-            string str = (existingAction != null) ? existingAction.ToString() : "";
+            string str = existingAction != null ? existingAction.ToString() : "";
             if (CurrentAction != null)
             {
                 throw new InvalidOperationException(string.Format("ActionManager.RecordActionDirectly: the ActionManager is currently running or undoing an action ({0}), and this action (while being executed) attempted to recursively record another action ({1}), which is not allowed. You can examine the stack trace of this exception to see what the executing action did wrong and change this action not to influence the Undo stack during its execution. Checking if ActionManager.ActionIsExecuting == true before launching another transaction might help to avoid the problem. Thanks and sorry for the inconvenience.", CurrentAction, str));
@@ -179,7 +179,7 @@ namespace Dev2.UndoFramework
         {
             get
             {
-                return (CurrentAction != null);
+                return CurrentAction != null;
             }
         }
 

@@ -439,7 +439,7 @@ namespace Dev2.Runtime.Hosting
                 IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId)
         .Where(
             a =>
-                (a.ResourcePath == newPath));
+                a.ResourcePath == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");

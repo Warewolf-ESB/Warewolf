@@ -307,7 +307,8 @@ namespace Dev2.Core.Tests
 
                 foreach (var error in memo.Errors)
                 {
-                    var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
+                    var error1 = error;
+                    var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error1.ErrorType && me.Message == error1.Message);
                     Assert.AreSame(error, modelError, "OnDesignValidationReceived did not set the error.");
                 }
             };

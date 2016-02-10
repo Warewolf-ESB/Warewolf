@@ -20,7 +20,7 @@ namespace Dev2.UndoFramework
 
         public virtual bool CanExecute()
         {
-            return (ExecuteCount == 0);
+            return ExecuteCount == 0;
         }
 
         public virtual bool CanUnExecute()

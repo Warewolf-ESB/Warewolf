@@ -191,7 +191,7 @@ namespace Dev2.Services.Security
         {
             get
             {
-                return WindowsGroup != null && (IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase));
+                return WindowsGroup != null && IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
             }
         }
 

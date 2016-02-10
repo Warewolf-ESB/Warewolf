@@ -1254,7 +1254,7 @@ namespace Dev2
                     }
                     else
                     {
-                        bool shouldCollect = (_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet;
+                        bool shouldCollect = _lastKnownWorkingSet / 1024L / 1024L > _minimumWorkingSet;
 
                         if(shouldCollect)
                         {

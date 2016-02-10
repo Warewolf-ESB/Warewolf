@@ -33,7 +33,7 @@ namespace Warewolf.ComponentModel
         /// <returns>The result of the command in a <code>DataTable</code>.</returns>
         public static DataTable FetchDataTable(this SqlCommand command)
         {
-            using (SqlDataReader reader = command.ExecuteReader((CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo)))
+            using (SqlDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo))
             {
                 var table = new DataTable();
                 table.Load(reader, LoadOption.OverwriteChanges);

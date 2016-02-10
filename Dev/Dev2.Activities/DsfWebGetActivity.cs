@@ -88,7 +88,7 @@ namespace Dev2
                         XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
                         var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache, update, dataObj,0);
+                        TryConvert(children, outputDefs, indexCache, update, dataObj);
                     }
                 }
                 catch (Exception e)

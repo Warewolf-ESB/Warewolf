@@ -992,7 +992,7 @@ namespace Dev2.Models
                     IList listObject = (IList)field.GetValue(result);
                     if(listObject != null)
                     {
-                        foreach(ExplorerItemModel item in ((IList)field.GetValue(this)))
+                        foreach(ExplorerItemModel item in (IList)field.GetValue(this))
                         {
                             listObject.Add(item.Clone());
                         }
@@ -1017,7 +1017,7 @@ namespace Dev2.Models
                     IList listObject = (IList)field.GetValue(result);
                     if(listObject != null)
                     {
-                        foreach(ExplorerItemModel item in ((IList)field.GetValue(this)))
+                        foreach(ExplorerItemModel item in (IList)field.GetValue(this))
                         {
                             listObject.Add(item.Clone(connectControlSingleton, studioResourceRepository));
                         }
@@ -1585,7 +1585,7 @@ namespace Dev2.Models
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsChecked");
             // ReSharper restore ExplicitCallerInfoArgument           
-            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType, (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server || (ResourcePath==null|| (!ResourcePath.Contains("\\"))))&&calcStats );
+            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType, (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server || ResourcePath==null || !ResourcePath.Contains("\\"))&&calcStats );
             if(OnCheckedStateChangedAction != null)
             {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);

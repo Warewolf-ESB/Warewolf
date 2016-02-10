@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
             }
             HeaderText = (_serverSource == null ? ResourceName : _serverSource.Name).Trim();
 
-            Header = ((_serverSource == null ? ResourceName : _serverSource.Name));
+            Header = _serverSource == null ? ResourceName : _serverSource.Name;
         }
 
         public override void FromModel(IServerSource source)

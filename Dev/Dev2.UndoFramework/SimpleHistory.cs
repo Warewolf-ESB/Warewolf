@@ -59,7 +59,7 @@ namespace Dev2.UndoFramework
             SimpleHistoryNode head = Head;
             while(true)
             {
-                if(((head == null) || (head == CurrentState)) || (head.NextAction == null))
+                if((head == null) || (head == CurrentState) || (head.NextAction == null))
                 {
                     yield break;
                 }
@@ -120,7 +120,7 @@ namespace Dev2.UndoFramework
         {
             get
             {
-                return ((CurrentState.PreviousAction != null) && (CurrentState.PreviousNode != null));
+                return (CurrentState.PreviousAction != null) && (CurrentState.PreviousNode != null);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Dev2.UndoFramework
         {
             get
             {
-                return ((CurrentState.NextAction != null) && (CurrentState.NextNode != null));
+                return (CurrentState.NextAction != null) && (CurrentState.NextNode != null);
             }
         }
 

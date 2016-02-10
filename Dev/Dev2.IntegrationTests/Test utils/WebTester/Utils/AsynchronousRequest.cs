@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         {
             request.Method = "POST";
             state._requestData.Append(postData);
-            request.ContentLength = (Encoding.ASCII.GetBytes(state._requestData.ToString())).Length;
+            request.ContentLength = Encoding.ASCII.GetBytes(state._requestData.ToString()).Length;
 
             byte[] bytedata = Encoding.UTF8.GetBytes(state._requestData.ToString());
             using(Stream postStream = request.GetRequestStream())

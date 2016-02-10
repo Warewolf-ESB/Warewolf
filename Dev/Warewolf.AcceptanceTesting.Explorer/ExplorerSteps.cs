@@ -129,7 +129,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenEnvironment(servername);
-            Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&(!a.CanEdit) && (!a.CanExecute)) );
+            Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&!a.CanEdit && !a.CanExecute) );
         }
 
         [Then(@"the option to ""(.*)"" is ""(.*)"" on server '(.*)'")]

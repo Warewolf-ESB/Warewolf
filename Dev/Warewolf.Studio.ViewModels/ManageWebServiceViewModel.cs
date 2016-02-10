@@ -384,7 +384,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var nameValue in Variables)
                 {
-                    if (RequestBody != null && (RequestUrlQuery != null && (!RequestUrlQuery.Contains(nameValue.Name) && !RequestBody.Contains(nameValue.Name) && !Headers.Any(a => a.Name.Contains(nameValue.Name) || a.Value.Contains(nameValue.Name)))))
+                    if (RequestBody != null && RequestUrlQuery != null && !RequestUrlQuery.Contains(nameValue.Name) && !RequestBody.Contains(nameValue.Name) && !Headers.Any(a => a.Name.Contains(nameValue.Name) || a.Value.Contains(nameValue.Name)))
                     {
                         unused.Add(nameValue);
                     }
