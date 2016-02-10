@@ -339,8 +339,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (Source == null)
             {
-                Source = new WebSourceRegion(Model, ModelItem);
-                Source.SourceChangedAction = () => { Outputs.IsVisible = false; };
+                Source = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { Outputs.IsVisible = false; } };
                 regions.Add(Source);
                 InputArea = new WebGetInputRegion(ModelItem, Source);
                 regions.Add(InputArea);
