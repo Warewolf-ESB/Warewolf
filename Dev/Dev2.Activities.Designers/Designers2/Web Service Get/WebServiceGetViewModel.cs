@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             var server = shellViewModel.ActiveServer;
             var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = pluginServiceModel;
-
+        
             InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel());
             NoError = new ErrorInfo
             {
@@ -95,18 +95,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 Errors = new List<IActionableErrorInfo>();
             }
-            Errors.Clear();
-
+                Errors.Clear();
+            
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (Source.Errors.Count > 0)
-            {
-                foreach (var designValidationError in Source.Errors)
-                {
+          {
+              foreach (var designValidationError in Source.Errors)
+              {
                     DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
-                }
-
-            }
-            UpdateWorstError();
+              }
+         
+          }
+          UpdateWorstError();
         }
 
         void UpdateWorstError()
@@ -430,7 +430,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                             var errorMessage = string.Join(Environment.NewLine, responseService.Recordsets.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-
+                       
                         ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
                         // ReSharper disable MaximumChainedReferences
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
@@ -469,7 +469,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     {
                         Outputs.Outputs.Add(serviceOutputMapping);
                     }
-
+                    
                     Outputs.Description = ManageServiceInputViewModel.Description;
                     Outputs.IsVisible = Outputs.Outputs.Count > 0;
                 };
@@ -526,7 +526,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
                 Response = "",
-
+                
             };
         }
 

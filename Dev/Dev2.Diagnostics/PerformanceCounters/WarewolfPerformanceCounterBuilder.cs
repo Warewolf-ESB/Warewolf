@@ -37,7 +37,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
             }
             catch (Exception e)
             {
-                Dev2.Common.Dev2Logger.Error(e);
+                Common.Dev2Logger.Error(e);
             }
 
           

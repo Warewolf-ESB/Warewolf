@@ -100,7 +100,7 @@ namespace Dev2.Common.Common
                 for (int i = 0; i < rounds; i++)
                 {
                     var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if (len > (sb.Length - startIdx))
+                    if (len > sb.Length - startIdx)
                     {
                         len = sb.Length - startIdx;
                     }
@@ -182,7 +182,7 @@ namespace Dev2.Common.Common
             for (int i = 0; i < rounds; i++)
             {
                 var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
-                if (len > (sb.Length - startIdx))
+                if (len > sb.Length - startIdx)
                 {
                     len = sb.Length - startIdx;
                 }

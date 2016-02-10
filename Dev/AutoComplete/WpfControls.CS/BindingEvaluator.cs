@@ -44,7 +44,7 @@
 
         public string Evaluate(object dataItem)
         {
-            this.DataContext = dataItem;
+            DataContext = dataItem;
             SetBinding(ValueProperty, ValueBinding);
             return Value;
         }

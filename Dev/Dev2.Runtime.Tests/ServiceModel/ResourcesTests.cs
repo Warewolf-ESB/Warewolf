@@ -107,7 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         ResourceID = Guid.NewGuid(),
                         ResourceName = string.Format("My Name {0}", i),
                         ResourcePath = string.Format("My Path {0}", i),
-                        ResourceType = (i % Modulo == 0) ? ResourceType.DbSource : ResourceType.Unknown
+                        ResourceType = i % Modulo == 0 ? ResourceType.DbSource : ResourceType.Unknown
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
@@ -142,9 +142,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     var resource = new Resource
                     {
                         ResourceID = Guid.NewGuid(),
-                        ResourcePath = (i % Modulo == 0) ? ResourceType.WorkflowService + "\\" + string.Format("My Name {0}", i) : string.Format("My Name {0}", i),
+                        ResourcePath = i % Modulo == 0 ? ResourceType.WorkflowService + "\\" + string.Format("My Name {0}", i) : string.Format("My Name {0}", i),
                         ResourceName = string.Format("My Name {0}", i),
-                        ResourceType = (i % Modulo == 0) ? ResourceType.WorkflowService : ResourceType.Unknown
+                        ResourceType = i % Modulo == 0 ? ResourceType.WorkflowService : ResourceType.Unknown
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }

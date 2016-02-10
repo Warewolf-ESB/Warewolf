@@ -255,7 +255,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && (vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
+            if (vm != null && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
             }
@@ -462,7 +462,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && (vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
+            if (vm != null && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -472,7 +472,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && (vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect)))
+            if (vm != null && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out indexToSelect))
             {
                 DataListInputs.ActiveItem = indexToSelect;
             }

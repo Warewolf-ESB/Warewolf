@@ -20,7 +20,6 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -38,7 +37,6 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments
 {
-    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
     /// <summary>
     /// Summary description for EnvironmentRepositoryTest

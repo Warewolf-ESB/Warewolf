@@ -134,8 +134,7 @@ namespace Warewolf.Studio.Views
                 var explorerItem = node.Data as IExplorerTreeItem;
                 if (explorerItem != null)
                 {
-                    if (explorerItem.ResourceName != null && (explorerItem.ResourceName.ToLowerInvariant().Contains(searchName.ToLowerInvariant()) &&
-                                                              (explorerItem.ResourceType == ResourceType.Folder || explorerItem.ResourceType==ResourceType.ServerSource)))
+                    if (explorerItem.ResourceName != null && explorerItem.ResourceName.ToLowerInvariant().Contains(searchName.ToLowerInvariant()) && (explorerItem.ResourceType == ResourceType.Folder || explorerItem.ResourceType==ResourceType.ServerSource))
                     {
                         return true;
                     }
@@ -153,7 +152,7 @@ namespace Warewolf.Studio.Views
 
                 if (childnode != null)
                 {
-                    var env = (childnode.Data as IExplorerTreeItem);
+                    var env = childnode.Data as IExplorerTreeItem;
                     if (env != null)
                     {
                         env.CreateFolderCommand.Execute(null);
@@ -176,7 +175,7 @@ namespace Warewolf.Studio.Views
                 var childnode = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IExplorerTreeItem)a.Data).ResourceName.Contains(toSearch));
                 if (childnode != null)
                 {
-                    var env = (childnode.Data as IExplorerTreeItem);
+                    var env = childnode.Data as IExplorerTreeItem;
                     if (env != null)
                     {
                         env.CreateFolderCommand.Execute(null);
@@ -247,7 +246,7 @@ namespace Warewolf.Studio.Views
             var node = VerifyItemExists(path);
             if (node != null)
             {
-                var explorerItem = ((ExplorerItemViewModel)node.Data);
+                var explorerItem = (ExplorerItemViewModel)node.Data;
                 explorerItem.EnvironmentModel = model;
                 ((IExplorerTreeItem)node.Data).DeleteCommand.Execute(null);
             }
@@ -286,7 +285,7 @@ namespace Warewolf.Studio.Views
                 if (node == null)
                     throw new Exception("Invalid path");
 
-                var item = (node.Data as IExplorerTreeItem);
+                var item = node.Data as IExplorerTreeItem;
                 if (item != null)
                 {
                     item.AddChild(new ExplorerItemViewModel(item.Server, item ,a=>{},item.ShellViewModel,CustomContainer.Get<IPopupController>() )
@@ -321,7 +320,7 @@ namespace Warewolf.Studio.Views
             if (path.Contains("\\"))
             {
                 var node = VerifyItemExists(path);
-                var item = (node.Data as IExplorerTreeItem);
+                var item = node.Data as IExplorerTreeItem;
 
                 for (int i = 0; i < resourceNumber; i++)
                 {
@@ -334,7 +333,7 @@ namespace Warewolf.Studio.Views
             else
             {
                 var node = VerifyItemExists(path);
-                var item = (node.Data as IExplorerTreeItem);
+                var item = node.Data as IExplorerTreeItem;
 
                 for (int i = 0; i < resourceNumber; i++)
                 {
@@ -349,7 +348,7 @@ namespace Warewolf.Studio.Views
         public int GetFoldersResourcesVisible(string path)
         {
             var node = VerifyItemExists(path);
-            return node.Nodes.Select(child => (child.Data as IExplorerTreeItem)).Count(childitem => childitem != null && childitem.ResourceType == ResourceType.WorkflowService);
+            return node.Nodes.Select(child => child.Data as IExplorerTreeItem).Count(childitem => childitem != null && childitem.ResourceType == ResourceType.WorkflowService);
         }
 
         public void ShowVersionHistory(string path)
@@ -365,7 +364,7 @@ namespace Warewolf.Studio.Views
         public ICollection<IExplorerTreeItem> CreateChildNodes(int count, string path)
         {
             var node = VerifyItemExists(path);
-            var item = (node.Data as IExplorerTreeItem);
+            var item = node.Data as IExplorerTreeItem;
             var items = new List<IExplorerTreeItem>();
             const string Name = "Resource ";
             for (int i = 0; i < count; i++)
@@ -430,7 +429,7 @@ namespace Warewolf.Studio.Views
 
         public void Reset()
         {
-            var item = (_explorerView.DataContext as IExplorerViewModel);
+            var item = _explorerView.DataContext as IExplorerViewModel;
             if (item != null)
             {
                 item.RefreshCommand.Execute(null);

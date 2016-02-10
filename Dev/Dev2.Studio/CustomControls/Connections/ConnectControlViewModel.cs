@@ -411,7 +411,7 @@ namespace Dev2.CustomControls.Connections
         void GetServerToEdit(object param)
         {
 
-            var path = (SelectedServer.EnvironmentModel.Category)??"";
+            var path = SelectedServer.EnvironmentModel.Category??"";
             _mainViewModel.EditServer(new ServerSource()
             {
                 Address = SelectedServer.EnvironmentModel.Connection.AppServerUri.ToString(), 

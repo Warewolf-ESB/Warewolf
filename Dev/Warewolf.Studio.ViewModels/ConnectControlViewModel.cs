@@ -135,7 +135,7 @@ namespace Warewolf.Studio.ViewModels
             var svrs = from serverConnection in serverConnections
             join server in Servers on serverConnection.EnvironmentID equals server.EnvironmentID
                                          select new {newServer= serverConnection,old=server};
-            foreach (var svr in (svrs))
+            foreach (var svr in svrs)
             {
                 svr.old.DisplayName = svr.newServer.DisplayName;
             }

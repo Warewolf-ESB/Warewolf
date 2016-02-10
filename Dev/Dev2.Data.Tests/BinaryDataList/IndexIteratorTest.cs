@@ -53,7 +53,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 cnt++;
             }
 
-            Assert.AreEqual(cnt, (maxValue - gaps.Count));
+            Assert.AreEqual(cnt, maxValue - gaps.Count);
             Assert.AreEqual(2, firstIdx);
         }
 
@@ -75,7 +75,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 cnt++;
             }
 
-            Assert.AreEqual(cnt, (maxValue - gaps.Count));
+            Assert.AreEqual(cnt, maxValue - gaps.Count);
             Assert.AreEqual(2, firstIdx);
         }
 

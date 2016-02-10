@@ -206,7 +206,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     string name = Regex.Replace(d.Name, @"\\", @"\\");
                     json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
                             name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    if(count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
+                    if(count < directory.GetDirectories().Length + directory.GetFiles().Length - 1)
                     {
                         json += ',';
                     }
@@ -217,7 +217,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     json += @"{""title"":""" + f.Name + @""", ""key"":""" +
                             f.Name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    if(count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
+                    if(count < directory.GetDirectories().Length + directory.GetFiles().Length - 1)
                     {
                         json += ',';
                     }

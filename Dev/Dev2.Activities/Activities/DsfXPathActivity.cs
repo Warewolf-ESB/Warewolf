@@ -155,7 +155,7 @@ namespace Dev2.Activities
                                                             if(!string.IsNullOrEmpty(newFieldName))
                                                             {
                                                                 string cleanFieldName;
-                                                                if((newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2) < newFieldName.Length)
+                                                                if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
                                                                 }

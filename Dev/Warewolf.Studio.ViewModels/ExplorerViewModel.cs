@@ -273,7 +273,7 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var environmentViewModel in Environments)
             {
-                environmentViewModel.SelectItem(id, (a => SelectedItem = a));
+                environmentViewModel.SelectItem(id, a => SelectedItem = a);
                 environmentViewModel.SelectAction = a => SelectedItem = a;
             }
         }
@@ -281,7 +281,7 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var environmentViewModel in Environments)
             {
-                environmentViewModel.SelectItem(path, (a => SelectedItem = a));
+                environmentViewModel.SelectItem(path, a => SelectedItem = a);
                 environmentViewModel.SelectAction = a => SelectedItem = a;
             }
         }

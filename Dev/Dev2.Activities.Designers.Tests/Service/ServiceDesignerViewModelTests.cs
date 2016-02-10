@@ -1298,7 +1298,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             worker.Verify(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()));
@@ -1395,7 +1395,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1495,7 +1495,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1596,7 +1596,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1685,7 +1685,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.Count == 0);
@@ -1797,7 +1797,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.IsConnected).Returns(true);
 
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
 
