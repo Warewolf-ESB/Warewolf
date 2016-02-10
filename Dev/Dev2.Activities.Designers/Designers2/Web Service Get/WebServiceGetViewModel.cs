@@ -55,6 +55,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : base(modelItem)
         {
+            AddTitleBarMappingToggle();
             LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
@@ -66,11 +67,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem, regions)
         {
+            AddTitleBarMappingToggle();
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
             : base(modelItem, showExampleWorkflow, regions)
         {
+            AddTitleBarMappingToggle();
         }
 
         #region Overrides of ActivityDesignerViewModel
@@ -325,6 +328,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             ResourceType = Common.Interfaces.Data.ResourceType.PluginService.ToString();
             return "PluginService-32";
+        }
+
+        void AddTitleBarMappingToggle()
+        {
+            HasLargeView = true;
         }
 
         public string ResourceType
