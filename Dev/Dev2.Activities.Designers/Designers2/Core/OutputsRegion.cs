@@ -26,14 +26,28 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem)
         {
             _modelItem = modelItem;
-            if (Outputs == null)
+            if (_modelItem.GetProperty("Outputs") == null)
             {
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
+                if(current == null)
+                {
+                    IsVisible = false;
+                }
                 var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
                 outputs.CollectionChanged += outputs_CollectionChanged;
                 Outputs = outputs;
+                SetInitialHeight();
             }
-            SetInitialHeight();
+            else
+            {
+                IsVisible = true;
+                var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
+                outputs.CollectionChanged += outputs_CollectionChanged;
+                Outputs = outputs;
+                ReCalculateHeight();
+
+            }
+           
         }
 
         void SetInitialHeight()
@@ -50,13 +64,14 @@ namespace Dev2.Activities.Designers2.Core
 
         void outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            MaxHeight = e.NewItems.Count * 15;
-            MinHeight = 45;
+            ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
+            OnPropertyChanged("IsOutputsEmptyRows");
         }
         private bool _outputMappingEnabled;
         private string _recordsetName;
         private IOutputDescription _description;
+        private bool _isOutputsEmptyRows;
 
         #region Implementation of IToolRegion
 
@@ -148,20 +163,27 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _outputs = value;
                 _modelItem.SetProperty("Outputs", value.ToList());
-                MaxHeight = BaseHeight + _outputs.Count * GlobalConstants.RowHeight;
-                if (_outputs.Count == 0)
-                {
-                    MaxHeight = 0;
-                }
-                if (_outputs.Count > 3)
-                {
-                    MinHeight = 110;
-                }
-                CurrentHeight = MinHeight;
+                ReCalculateHeight();
                 OnHeightChanged(this);
                 OnPropertyChanged();
             }
         }
+
+        private void ReCalculateHeight()
+        {
+            MaxHeight = BaseHeight + _outputs.Count * GlobalConstants.RowHeight;
+            if(_outputs.Count == 0)
+            {
+                MaxHeight = 0;
+            }
+            if(_outputs.Count >= 3)
+            {
+                MinHeight = 110;
+            }
+            IsOutputsEmptyRows = _outputs == null || _outputs.Count == 0;
+            CurrentHeight = MinHeight;
+        }
+
         public bool OutputMappingEnabled
         {
             get
@@ -178,7 +200,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _outputs == null || _outputs.Count > 0;
+                return _isOutputsEmptyRows;
+            }
+            set
+            {
+                _isOutputsEmptyRows = value;
+                OnPropertyChanged();
             }
         }
         public string RecordsetName
