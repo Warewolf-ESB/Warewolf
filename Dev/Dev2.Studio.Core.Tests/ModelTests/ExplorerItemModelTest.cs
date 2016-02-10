@@ -134,7 +134,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             var clonedItemModel = explorerItemModel.Clone(connectControlSingleton, new Mock<IStudioResourceRepository>().Object);
             //------------Assert Results-------------------------
-            Assert.AreEqual(68, properties.Length);
+            Assert.AreEqual(69, properties.Length);
             Assert.AreEqual(explorerItemModel.DisplayName, clonedItemModel.DisplayName);
             Assert.AreEqual(explorerItemModel.Children.Count, clonedItemModel.Children.Count);
             Assert.AreEqual(explorerItemModel.CanConnect, clonedItemModel.CanConnect);
