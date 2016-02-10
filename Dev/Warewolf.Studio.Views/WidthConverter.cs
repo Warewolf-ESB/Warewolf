@@ -15,7 +15,7 @@ namespace Warewolf.Studio.Views
             var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
             if(xamDataTreeNodeControl != null)
             {
-                return (double)values[1] - (xamDataTreeNodeControl.Node.Manager.Level * 21) - 62;
+                return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 62;
             }
             return 22;
         }

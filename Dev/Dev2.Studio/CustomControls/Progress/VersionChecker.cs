@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Utils;
 using Warewolf.Core;
-using Warewolf.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Helpers

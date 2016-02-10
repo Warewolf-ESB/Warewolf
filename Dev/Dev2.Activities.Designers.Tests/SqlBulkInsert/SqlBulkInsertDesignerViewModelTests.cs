@@ -1214,7 +1214,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 for (var j = 0; j < 10; j++)
                 {
                     var columns = new List<IDbColumn>();
-                    var colCount = ((j % 4) + 1) * (i + 1);
+                    var colCount = (j % 4 + 1) * (i + 1);
                     for (var k = 0; k < colCount; k++)
                     {
                         var t = k % 4;

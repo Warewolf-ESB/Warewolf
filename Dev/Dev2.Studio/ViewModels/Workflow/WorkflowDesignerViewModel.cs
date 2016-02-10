@@ -500,7 +500,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var switchExpressionValue = SwitchExpressionValue(activityExpression);
                     ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
+                    if (modelProperty != null && (modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case"))
                     {
                         Dev2Logger.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
                         FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
@@ -534,7 +534,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             {
                                 start += 2;
                                 end -= 1;
-                                switchExpressionValue = tmp.Substring(start, (end - start));
+                                switchExpressionValue = tmp.Substring(start, end - start);
                             }
                         }
                     }
@@ -880,7 +880,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var getCol = getCols[i];
                             var parsed = GetParsedRegions(getCol, datalistModel);
-                            if (!DataListUtil.IsValueRecordset((getCol)) && parsed.Any(a => DataListUtil.IsValueRecordset((a))))
+                            if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(a => DataListUtil.IsValueRecordset(a)))
                             {
                                 IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
                                 decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
@@ -893,7 +893,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 catch (Exception)
                 {
 
-                    if (!DataListUtil.IsValueRecordset((decisionValue)))
+                    if (!DataListUtil.IsValueRecordset(decisionValue))
                     {
                         IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
                         decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
@@ -2154,7 +2154,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return (ResourceModel == null) ? WorkSurfaceContext.Unknown : ResourceModel.ResourceType.ToWorkSurfaceContext();
+                return ResourceModel == null ? WorkSurfaceContext.Unknown : ResourceModel.ResourceType.ToWorkSurfaceContext();
             }
         }
 

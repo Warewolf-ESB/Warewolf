@@ -216,7 +216,7 @@ namespace Warewolf.Studio.ViewModels
             if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
             {
                 var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && (model.ResourceName != null && (model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder)));
+                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
             }
             return false;
         }

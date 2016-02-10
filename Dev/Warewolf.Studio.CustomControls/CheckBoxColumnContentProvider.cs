@@ -34,8 +34,8 @@ namespace Warewolf.Studio.CustomControls
 
             cell.Control.Padding = new Thickness();
             cell.Control.Cell.Control.Padding = new Thickness();
-            this._checkBox.SetValue(WatermarkTextBox.WatermarkProperty, column.CheckBox);
-            this._checkBox.SetBinding(TextBox.TextProperty, cellBinding);
+            _checkBox.SetValue(WatermarkTextBox.WatermarkProperty, column.CheckBox);
+            _checkBox.SetBinding(TextBox.TextProperty, cellBinding);
             _checkBox.Height = cell.Row.MinimumRowHeightResolved;
             cell.Column.HorizontalContentAlignment = HorizontalAlignment.Center;
             return _checkBox;
@@ -44,8 +44,8 @@ namespace Warewolf.Studio.CustomControls
         protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
             double availableHeight, Binding editorBinding)
         {
-            if (editorValue != null) this._checkBox.IsChecked = (bool)editorValue;
-            return this._checkBox;
+            if (editorValue != null) _checkBox.IsChecked = (bool)editorValue;
+            return _checkBox;
         }
 
         public override object ResolveValueFromEditor(Cell cell)

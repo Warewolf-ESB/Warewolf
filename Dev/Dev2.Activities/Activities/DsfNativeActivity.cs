@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Execute
 
         // 4423 : TWR - sealed so that this cannot be overridden
-        protected override sealed void Execute(NativeActivityContext context)
+        protected sealed override void Execute(NativeActivityContext context)
         {
             Dev2Logger.Debug(String.Format("Start {0}", GetType().Name));
             _tmpErrors = new ErrorResultTO();

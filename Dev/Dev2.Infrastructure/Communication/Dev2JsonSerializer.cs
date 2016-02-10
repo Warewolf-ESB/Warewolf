@@ -92,7 +92,7 @@ namespace Dev2.Communication
                     for(int i = 0; i < rounds; i++)
                     {
                         var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                        if(len > (message.Length - startIdx))
+                        if(len > message.Length - startIdx)
                         {
                             len = message.Length - startIdx;
                         }

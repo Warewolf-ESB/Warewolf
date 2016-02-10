@@ -130,7 +130,7 @@ namespace Warewolf.Core
                 var otherHeaders = other.Headers;
                 eq = otherHeaders.EnumerableEquals(headers);
             }
-            return other != null && (string.Equals(Name, other.Name) && string.Equals(Path, other.Path) && string.Equals(Method, other.Method) && string.Equals(PostData, other.PostData) && string.Equals(RequestUrl, other.RequestUrl) && Equals(Source, other.Source) && eq && string.Equals(PostData, other.PostData));
+            return other != null && (string.Equals(Name, other.Name) && string.Equals(Path, other.Path) && string.Equals(Method, other.Method) && string.Equals(PostData, other.PostData)) && string.Equals(RequestUrl, other.RequestUrl) && Equals(Source, other.Source) && eq && string.Equals(PostData, other.PostData);
         }
 
 
@@ -146,7 +146,7 @@ namespace Warewolf.Core
             unchecked
             {
                 // ReSharper disable NonReadonlyFieldInGetHashCode
-                int hashCode = (Name != null ? Name.GetHashCode() : 0);
+                int hashCode = Name != null ? Name.GetHashCode() : 0;
 
                 hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);
@@ -161,7 +161,7 @@ namespace Warewolf.Core
                     hashCode = Headers.Aggregate(hashCode, (current, nameValue) => (current * 397) ^ (nameValue != null ? nameValue.GetHashCode() : 0));
                 }
                 hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ ( Method.GetHashCode() );
+                hashCode = (hashCode * 397) ^ Method.GetHashCode();
                 return hashCode;
                 // ReSharper restore NonReadonlyFieldInGetHashCode
             }
@@ -206,7 +206,7 @@ namespace Warewolf.Core
                 }
             }
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            else if ((otherHeaders == null && headers != null) )
+            else if (otherHeaders == null && headers != null )
             {
                 return false;
             }

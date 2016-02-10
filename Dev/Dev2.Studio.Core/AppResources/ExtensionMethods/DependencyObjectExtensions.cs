@@ -155,7 +155,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             var children = new List<DependencyObject>();
 
-            if((parent is Visual) || (parent is Visual3D))
+            if(parent is Visual || parent is Visual3D)
             {
                 var visualChildrenCount = VisualTreeHelper.GetChildrenCount(parent);
                 for(int childIndex = 0; childIndex < visualChildrenCount; childIndex++)

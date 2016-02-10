@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
@@ -73,5 +72,17 @@ namespace Warewolf.Studio.Views
             script.text = @"window.onerror = function(msg,url,line){return true;}";
             document.head.appendChild(script);
         }
+
+        #region Implementation of IComponentConnector
+
+        /// <summary>
+        /// Attaches events and names to compiled content. 
+        /// </summary>
+        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
+        public void Connect(int connectionId, object target)
+        {
+        }
+
+        #endregion
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using Dev2.Views.DropBox;
 using Dev2.Webs.Callbacks;
-using DropNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

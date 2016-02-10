@@ -89,8 +89,8 @@ namespace Dev2.Studio.Views.DependencyVisualization
                     var currentPosition = e.GetPosition(element.Parent as UIElement);
 
                     element.Node.Location = new Point(
-                        element.Node.Location.X + (currentPosition.X - this._currentPosition.X) / Nodes.ZoomLevel,
-                        element.Node.Location.Y + (currentPosition.Y - this._currentPosition.Y) / Nodes.ZoomLevel);
+                        element.Node.Location.X + (currentPosition.X - _currentPosition.X) / Nodes.ZoomLevel,
+                        element.Node.Location.Y + (currentPosition.Y - _currentPosition.Y) / Nodes.ZoomLevel);
 
                     _currentPosition = currentPosition;
                 }

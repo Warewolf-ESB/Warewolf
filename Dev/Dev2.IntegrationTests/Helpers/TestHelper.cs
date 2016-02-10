@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -184,7 +183,7 @@ namespace Dev2.Integration.Tests.Helpers
                 int end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
                 if(end > start)
                 {
-                    result = canidate.Substring(start, ((end + endStr.Length) - start));
+                    result = canidate.Substring(start, end + endStr.Length - start);
                 }
             }
 
