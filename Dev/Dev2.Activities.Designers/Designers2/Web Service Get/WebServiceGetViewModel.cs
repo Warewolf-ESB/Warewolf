@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-            TestComplete = false;
+        
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -187,7 +187,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             if (Outputs != null && Outputs.IsVisible)
             {
-                TestComplete = true;
+    
                 var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -505,7 +505,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void ValidateTestComplete()
         {
-            TestComplete = true;
+            Outputs.IsVisible = true;
         }
 
         public bool TestSuccessful
