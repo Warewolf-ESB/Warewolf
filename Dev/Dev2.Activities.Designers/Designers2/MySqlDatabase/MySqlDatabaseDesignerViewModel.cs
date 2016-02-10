@@ -219,6 +219,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             if(Outputs != null)
             {
                 OutputsVisible = true;
+                TestComplete = true;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if(recordsetItem != null)
                 {
