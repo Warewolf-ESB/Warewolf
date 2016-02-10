@@ -180,12 +180,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             Outputs.OutputMappingEnabled = true;
 
-            TestInputCommand = new DelegateCommand(() =>
-            {
-                TestComplete = true;
-                Outputs.IsVisible = true;
-                Outputs.Outputs.Add(new ServiceOutputMapping("a", "b", "c"));
-            }, CanTestProcedure);
+
             TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
 
             InitializeProperties();
@@ -197,6 +192,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 if (recordsetItem != null)
                 {
                     Outputs.RecordsetName = recordsetItem.RecordSetName;
+                    Outputs.IsVisible = true;
                 }
             }
 
@@ -326,6 +322,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _testComplete = value;
+
                 OnPropertyChanged();
             }
         }
@@ -348,11 +345,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             if (Source == null)
             {
                 Source = new WebSourceRegion(Model, ModelItem);
+                Source.SourceChangedAction = () => { Outputs.IsVisible = false; };
                 regions.Add(Source);
                 InputArea = new WebGetInputRegion(ModelItem, Source);
                 regions.Add(InputArea);
                 Outputs = new OutputsRegion(ModelItem);
                 regions.Add(Outputs);
+                if(Outputs.Outputs.Count>0)
+                {
+                    Outputs.IsVisible = true;
+                    TestComplete = true;
+                }
                 regions.Add(new ErrorRegion());
                 Source.Dependants.Add(InputArea);
                 Source.Dependants.Add(Outputs);
@@ -369,7 +372,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
             ReCalculateHeight();
-            TestInputCommand.RaiseCanExecuteChanged();
+            if(TestInputCommand != null)
+            {
+                TestInputCommand.RaiseCanExecuteChanged();
+            }
         }
 
         #endregion
@@ -458,11 +464,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     {
                         ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
 
                         TestComplete = false;
-                        // ErrorMessage(e);
+                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
@@ -494,7 +500,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void ErrorMessage(Exception exception)
         {
-            Errors.Add(new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{}));
+           Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
         private void ValidateTestComplete()
