@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests.Activities
     {
         public void TestAssociatedObject_Loaded(Mock<DataGrid> dataGrid)
         {
-            AssociatedObject_Loaded(dataGrid.Object, It.IsAny<RoutedEventArgs>());
+            AssociatedObjectLoaded(dataGrid.Object, It.IsAny<RoutedEventArgs>());
         }
     }
 }
