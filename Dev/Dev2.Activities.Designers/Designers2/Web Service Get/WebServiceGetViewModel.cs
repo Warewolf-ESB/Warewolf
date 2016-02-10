@@ -34,7 +34,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private ISourceToolRegion<IWebServiceSource> _source;
         private string _imageSource;
 
-
         private IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
@@ -57,7 +56,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             var server = shellViewModel.ActiveServer;
             var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = pluginServiceModel;
-        
+
             InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel());
             NoError = new ErrorInfo
             {
@@ -92,24 +91,23 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public override void Validate()
         {
-            if(Errors == null)
+            if (Errors == null)
             {
                 Errors = new List<IActionableErrorInfo>();
             }
-                Errors.Clear();
-            
-           Errors =  Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-          if(Source.Errors.Count>0)
-          {
-              foreach (var designValidationError in Source.Errors)
-              {
-                  DesignValidationErrors.Add(new ErrorInfo(){ErrorType = ErrorType.Critical,Message = designValidationError});
-              }
-         
-          }
-          UpdateWorstError();
-        }
+            Errors.Clear();
 
+            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            if (Source.Errors.Count > 0)
+            {
+                foreach (var designValidationError in Source.Errors)
+                {
+                    DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
+                }
+
+            }
+            UpdateWorstError();
+        }
 
         void UpdateWorstError()
         {
@@ -134,7 +132,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
             WorstDesignError = worstError[0];
         }
-
 
         IErrorInfo WorstDesignError
         {
@@ -199,13 +196,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     Outputs.RecordsetName = recordsetItem.RecordSetName;
                 }
             }
-
             ReCalculateHeight();
-
-
         }
-
-
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
@@ -257,9 +249,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private bool _testComplete;
         private bool _testSuccessful;
-
-
-
 
         public DesignValidationMemo LastValidationMemo { get; private set; }
 
@@ -414,6 +403,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             set
             {
                 _source = value;
+                InitializeProperties();
                 OnPropertyChanged();
             }
         }
@@ -440,13 +430,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                             var errorMessage = string.Join(Environment.NewLine, responseService.Recordsets.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-                       
+
                         ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
                         // ReSharper disable MaximumChainedReferences
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
                             Outputs.RecordsetName = recordset.Name;
-                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name){Path = recordsetField.Path};
+                            var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                             return serviceOutputMapping;
                         }).Cast<IServiceOutputMapping>().ToList();
                         // ReSharper restore MaximumChainedReferences
@@ -475,11 +465,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs.Outputs.Clear();
-                    foreach(var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                    foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
                     {
                         Outputs.Outputs.Add(serviceOutputMapping);
                     }
-                    
+
                     Outputs.Description = ManageServiceInputViewModel.Description;
                     Outputs.IsVisible = Outputs.Outputs.Count > 0;
                 };
@@ -499,7 +489,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void ErrorMessage(Exception exception)
         {
-            Errors.Add(new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{}));
+            Errors.Add(new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }));
         }
 
         private void ValidateTestComplete()
@@ -536,7 +526,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
                 Response = "",
-                
+
             };
         }
 
