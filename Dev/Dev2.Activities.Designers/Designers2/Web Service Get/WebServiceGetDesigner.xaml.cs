@@ -23,8 +23,8 @@ namespace Dev2.Activities.Designers2.WebServiceGet
         }
         protected override WebServiceGetViewModel CreateViewModel()
         {
-            var designerManagementService = Context.Services.GetService<IDesignerManagementService>();
-            return new WebServiceGetViewModel(ModelItem,designerManagementService.GetRootResourceModel());
+       
+            return new WebServiceGetViewModel(ModelItem);
 
         }
     }
