@@ -79,8 +79,17 @@ namespace Dev2.Studio
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
-            InitializeComponent();
-            AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+
+            try
+            {
+                AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+                InitializeComponent();
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error(e.Message,e);
+                AppSettings.LocalHost = "http://localhost:3142";
+            }
         }
 
         public static bool IsAutomationMode
