@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Microsoft.Practices.Prism.Regions;
@@ -41,7 +40,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
 
             SynchronizeItems(region, regionTarget);
 
-            region.Views.CollectionChanged += (Object sender, NotifyCollectionChangedEventArgs e) =>
+            region.Views.CollectionChanged += (sender, e) =>
             {
                 OnViewsCollectionChanged(sender, e, region, regionTarget);
             };

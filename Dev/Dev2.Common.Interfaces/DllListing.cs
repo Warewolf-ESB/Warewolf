@@ -38,7 +38,7 @@ namespace Dev2.Common.Interfaces
             {
                 return true;
             }
-            if(obj.GetType() != this.GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }
@@ -55,7 +55,7 @@ namespace Dev2.Common.Interfaces
         {
             unchecked
             {
-                var hashCode = (Name != null ? Name.GetHashCode() : 0);
+                var hashCode = Name != null ? Name.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Children != null ? Children.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();

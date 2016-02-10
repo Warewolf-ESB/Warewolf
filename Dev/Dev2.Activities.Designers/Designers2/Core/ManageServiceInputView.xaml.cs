@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
@@ -59,7 +58,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void OutputDataGridResize()
         {
-            if (OutputsDataGrid != null && (OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10))
+            if (OutputsDataGrid != null && OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10)
             {
                 OutputsDataGrid.ColumnWidth = ColumnWidth.SizeToHeader;
             }

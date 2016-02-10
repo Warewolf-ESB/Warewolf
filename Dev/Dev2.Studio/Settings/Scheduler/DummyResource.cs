@@ -2,8 +2,8 @@ using System;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.Settings.Scheduler;
 using Microsoft.Practices.Prism.Commands;
+
 namespace Dev2.Scheduler
 {
     public class DummyResource : IScheduledResource, INewScheduledResource

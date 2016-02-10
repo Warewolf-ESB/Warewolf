@@ -84,7 +84,7 @@ namespace WPF.JoshSmith.Panels
         /// <summary>
         ///     Creates a disconnected UIElement collection.
         /// </summary>
-        protected override sealed UIElementCollection CreateUIElementCollection(FrameworkElement logicalParent)
+        protected sealed override UIElementCollection CreateUIElementCollection(FrameworkElement logicalParent)
         {
             var children = new DisconnectedUIElementCollection(this);
             children.CollectionChanged += OnChildrenCollectionChanged;

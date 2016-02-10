@@ -651,11 +651,11 @@ namespace Dev2.Network
                 if (start > 0)
                 {
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start < end && (end - start) > 1)
+                    if (start < end && end - start > 1)
                     {
                         // we can return the trimmed payload instead
-                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                        return new StringBuilder(result.Substring(start, (end - start)));
+                        start += GlobalConstants.ManagementServicePayload.Length + 2;
+                        return new StringBuilder(result.Substring(start, end - start));
                     }
                 }
             }
@@ -695,11 +695,11 @@ namespace Dev2.Network
                     if (start > 0)
                     {
                         var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                        if (start < end && (end - start) > 1)
+                        if (start < end && end - start > 1)
                         {
                             // we can return the trimmed payload instead
-                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                            return new StringBuilder(result.Substring(start, (end - start)));
+                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+                            return new StringBuilder(result.Substring(start, end - start));
                         }
                     }
                 }

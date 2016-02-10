@@ -24,8 +24,8 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public TimeSpan Delay
         {
-            get { return (Instance).Delay; }
-            set { (Instance).Delay = value; }
+            get { return Instance.Delay; }
+            set { Instance.Delay = value; }
         }
 
         public string UserId

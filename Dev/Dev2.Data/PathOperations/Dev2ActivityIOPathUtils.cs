@@ -48,7 +48,7 @@ namespace Dev2.PathOperations
                     tmp = path.Split(spliter);
                 }
 
-                for(int i = 0; i < (tmp.Length - 1); i++)
+                for(int i = 0; i < tmp.Length - 1; i++)
                 {
                     tmpBuilder.Append(tmp[i] + spliter);
                 }

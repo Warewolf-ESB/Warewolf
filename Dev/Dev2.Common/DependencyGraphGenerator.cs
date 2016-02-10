@@ -32,6 +32,7 @@ namespace Dev2.Common
         /// <param name="modelName">Name of the model.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
+        /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
         public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {

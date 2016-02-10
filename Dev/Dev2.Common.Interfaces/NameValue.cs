@@ -117,6 +117,7 @@ namespace Dev2.Common.Interfaces
                 _name = value;
             }
         }
+   
         public virtual string Value
         {
             get

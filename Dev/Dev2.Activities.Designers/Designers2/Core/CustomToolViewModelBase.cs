@@ -299,7 +299,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _inputGridHeight = RowHeight * 6;
                                 InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * (Inputs.Count + 2)) + RowHeight;
+                                MaxToolHeight += RowHeight * (Inputs.Count + 2) + RowHeight;
                                 InputsHasItems = true;
                             }
                             break;
@@ -318,7 +318,7 @@ namespace Dev2.Activities.Designers2.Core
                             /* 30px used for row Height multiply by Outputs count plus 1 extra row
                              * Add grid Height to tool Height original Height value
                              * Set Maximum tool Height to calculated tool Height */
-                            if (Inputs != null && (Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 0 && Inputs.Count < 5))
+                            if (Inputs != null && Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 0 && Inputs.Count < 5)
                             {
                                 _outputGridHeight = RowHeight * (Outputs.Count + 1);
                                 OutputsMinHeight = _outputGridHeight;
@@ -326,7 +326,7 @@ namespace Dev2.Activities.Designers2.Core
                                 MaxToolHeight = ToolHeight;
                                 OutputsHasItems = false;
                             }
-                            else if (Inputs != null && (Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 5))
+                            else if (Inputs != null && Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 5)
                             {
                                 _outputGridHeight = RowHeight * (Outputs.Count + 1);
                                 OutputsMinHeight = _outputGridHeight;
@@ -347,7 +347,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _outputGridHeight = RowHeight * 6;
                                 OutputsMinHeight = _outputGridHeight;
                                 ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * (Outputs.Count + 3)) + RowHeight;
+                                MaxToolHeight += RowHeight * (Outputs.Count + 3) + RowHeight;
                                 OutputsHasItems = true;
                             }
                             break;
@@ -382,7 +382,7 @@ namespace Dev2.Activities.Designers2.Core
                                 _inputGridHeight = RowHeight * 6;
                                 InputsMinHeight = _inputGridHeight;
                                 ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += (RowHeight * (Inputs.Count + 1)) + RowHeight;
+                                MaxToolHeight += RowHeight * (Inputs.Count + 1) + RowHeight;
                             }
                             break;
                     }

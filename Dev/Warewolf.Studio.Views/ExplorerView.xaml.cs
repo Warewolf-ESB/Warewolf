@@ -206,7 +206,7 @@ namespace Warewolf.Studio.Views
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                if (drag != null && (drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null))
+                if (drag != null && drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
                 {
                     Mouse.SetCursor(!CancelDrag ? grabbingCursor : Cursors.No);
                     var dragType = drag.Node.Data.GetType();
@@ -564,7 +564,7 @@ namespace Warewolf.Studio.Views
                 if (dataContext != null)
                 {
                     var selectedItem = dataContext.SelectedItem;
-                    if (dataContext.SelectedDataItems != null && (dataContext.SelectedDataItems.Any() && selectedItem == null))
+                    if (dataContext.SelectedDataItems != null && dataContext.SelectedDataItems.Any() && selectedItem == null)
                     {
                         selectedItem = dataContext.SelectedDataItems[0] as IExplorerTreeItem;
                         dataContext.SelectedItem = selectedItem;

@@ -323,7 +323,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
                 for(var j = 0; j < NumThreadsPerWorkspace; j++)
                 {
-                    var t = (i * NumThreadsPerWorkspace) + j;
+                    var t = i * NumThreadsPerWorkspace + j;
                     if(j == 0)
                     {
                         threadArray[t] = new Thread(() =>

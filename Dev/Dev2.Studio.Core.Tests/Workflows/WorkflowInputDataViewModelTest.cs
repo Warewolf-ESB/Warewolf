@@ -545,7 +545,7 @@ namespace Dev2.Core.Tests.Workflows
             {
                 for(int j = 1; j <= recordFieldCount; j++)
                 {
-                    recordSets.Add(CreateRecord("Recset", "Field" + (j), "Field" + (j) + "Data" + (i), i));
+                    recordSets.Add(CreateRecord("Recset", "Field" + j, "Field" + j + "Data" + i, i));
                 }
             }
 

@@ -157,9 +157,6 @@
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageDatabaseServiceControl.xaml.cs">
-      <DependentUpon>ManageDatabaseServiceControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
     </Compile>
@@ -233,10 +230,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HelpView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageDatabaseServiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

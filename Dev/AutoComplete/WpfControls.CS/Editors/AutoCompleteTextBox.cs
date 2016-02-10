@@ -11,9 +11,9 @@
     using System.Windows.Input;
     using System.Windows.Threading;
 
-    [TemplatePart(Name = AutoCompleteTextBox.PartEditor, Type = typeof(TextBox))]
-    [TemplatePart(Name = AutoCompleteTextBox.PartPopup, Type = typeof(Popup))]
-    [TemplatePart(Name = AutoCompleteTextBox.PartSelector, Type = typeof(Selector))]
+    [TemplatePart(Name = PartEditor, Type = typeof(TextBox))]
+    [TemplatePart(Name = PartPopup, Type = typeof(Popup))]
+    [TemplatePart(Name = PartSelector, Type = typeof(Selector))]
     public class AutoCompleteTextBox : Control
     {
 
@@ -168,8 +168,8 @@
 
         public DataTemplateSelector ItemTemplateSelector
         {
-            get { return ((DataTemplateSelector)(GetValue(AutoCompleteTextBox.ItemTemplateSelectorProperty))); }
-            set { SetValue(AutoCompleteTextBox.ItemTemplateSelectorProperty, value); }
+            get { return (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty); }
+            set { SetValue(ItemTemplateSelectorProperty, value); }
         }
 
         public object LoadingContent
@@ -225,7 +225,7 @@
 
         public static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            AutoCompleteTextBox act = null;
+            AutoCompleteTextBox act;
             act = d as AutoCompleteTextBox;
             if (act != null)
             {
@@ -474,13 +474,19 @@
             private void GetSuggestionsAsync(object param)
             {
                 object[] args = param as object[];
-                string searchText = Convert.ToString(args[0]);
-                ISuggestionProvider provider = args[1] as ISuggestionProvider;
-                IEnumerable list = provider.GetSuggestions(searchText);
-                _actb.Dispatcher.BeginInvoke(new Action<IEnumerable, string>(DisplaySuggestions), DispatcherPriority.Background, new object[] {
-				list,
-				searchText
-			});
+                if(args != null)
+                {
+                    string searchText = Convert.ToString(args[0]);
+                    ISuggestionProvider provider = args[1] as ISuggestionProvider;
+                    if(provider != null)
+                    {
+                        IEnumerable list = provider.GetSuggestions(searchText);
+                        _actb.Dispatcher.BeginInvoke(new Action<IEnumerable, string>(DisplaySuggestions), DispatcherPriority.Background, new object[] {
+                            list,
+                            searchText
+                        });
+                    }
+                }
             }
 
             #endregion

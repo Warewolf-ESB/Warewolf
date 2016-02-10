@@ -111,7 +111,7 @@ namespace Dev2.Studio.ViewModels.DataList
             Activity.SavedOutputMapping = toSaveOutputMapping;
             Activity.LiveOutputMapping = toSaveOutputMapping;
 
-            XmlOutput = (XmlOutput + toSaveInputMapping);
+            XmlOutput = XmlOutput + toSaveInputMapping;
             Activity.SavedInputMapping = toSaveInputMapping;
             Activity.LiveInputMapping = toSaveInputMapping;
 
@@ -230,7 +230,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
 
             string inputString = GetInputString(inputData);
-            XmlOutput = (XmlOutput + inputString);
+            XmlOutput = XmlOutput + inputString;
             Activity.SavedInputMapping = inputString;
             Activity.LiveInputMapping = Activity.SavedInputMapping;
         }

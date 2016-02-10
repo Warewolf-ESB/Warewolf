@@ -69,7 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         initializeWith, index, inserted)),
                 TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, inserted)),
                 TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),
-                TypeSwitch.Case<DecisionTO>((() => toReturn = new DecisionTO(initializeWith, "", "", index, inserted))),
+                TypeSwitch.Case<DecisionTO>(() => toReturn = new DecisionTO(initializeWith, "", "", index, inserted)),
                 TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith, index, inserted)),
                 TypeSwitch.Case<SharepointSearchTo>(() => toReturn = new SharepointSearchTo(initializeWith, "=", "", index, inserted)),
                 TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "","")),

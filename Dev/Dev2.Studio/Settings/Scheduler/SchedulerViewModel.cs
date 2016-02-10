@@ -189,7 +189,6 @@ namespace Dev2.Settings.Scheduler
                 server.UpdateRepository.ItemSaved += Refresh;
             }
             new EnvironmentViewModel(server, shellViewModel);
-            return;
         }
 
 

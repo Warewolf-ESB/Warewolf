@@ -218,7 +218,19 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _recordsetName = value;
+     
+                if (Outputs != null)
+                {
+                    _recordsetName = value;
+                    foreach (var serviceOutputMapping in Outputs)
+                    {
+                        if (_recordsetName != null )
+                        {
+                            serviceOutputMapping.RecordSetName = value;
+                        }
+                    }
+                }
+               
                 OnPropertyChanged();
             }
         }

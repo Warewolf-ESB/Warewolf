@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-           var upgraded = a.UpgradeResource(XElement.Parse("<a></a>"), new Version(1, 2),(x=>{}));
+           var upgraded = a.UpgradeResource(XElement.Parse("<a></a>"), new Version(1, 2),x=>{});
             //------------Assert Results-------------------------
            Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var upgraded = a.UpgradeResource(XElement.Parse("<a></a>"), new Version(1, 2), (x => { }));
+            var upgraded = a.UpgradeResource(XElement.Parse("<a></a>"), new Version(1, 2), x => { });
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
@@ -93,14 +93,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var mockUpgrade = new Mock<IResourceUpgrade>();
             upgradePaths.Add(upgrade1.Object);
 
-            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse((a.ToString().Replace("a", "b"))));
+            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse(a.ToString().Replace("a", "b")));
             upgrade1.Setup(a=>a.CanUpgrade(source)).Returns(true);
             upgrade1.Setup(a => a.Upgrade).Returns(mockUpgrade.Object);
             var upgrader = new ResourceUpgrader(upgradePaths);
 
 
             //------------Execute Test---------------------------
-            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), (x => { }));
+            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), x => { });
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<b ServerVersion=\"" +upgrader.GetType().Assembly.GetName().Version + "\"></b>");
         }
@@ -123,8 +123,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var mockUpgrade2 = new Mock<IResourceUpgrade>();
             upgradePaths.Add(upgrade1.Object);
             upgradePaths.Add(upgrade2.Object);
-            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse((a.ToString().Replace("a", "b"))));
-            mockUpgrade2.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse((a.ToString().Replace("b", "c"))));
+            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse(a.ToString().Replace("a", "b")));
+            mockUpgrade2.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse(a.ToString().Replace("b", "c")));
             upgrade1.Setup(a => a.CanUpgrade(source)).Returns(true);
             upgrade1.Setup(a => a.Upgrade).Returns(mockUpgrade.Object);
             upgrade2.Setup(a => a.CanUpgrade(source)).Returns(true);
@@ -133,7 +133,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), (x => { }));
+            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), x => { });
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<c ServerVersion=\"" + upgrader.GetType().Assembly.GetName().Version + "\"></c>");
         }
@@ -156,8 +156,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var mockUpgrade2 = new Mock<IResourceUpgrade>();
             upgradePaths.Add(upgrade1.Object);
             upgradePaths.Add(upgrade2.Object);
-            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse((a.ToString().Replace("a", "b"))));
-            mockUpgrade2.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse((a.ToString().Replace("b", "c"))));
+            mockUpgrade.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse(a.ToString().Replace("a", "b")));
+            mockUpgrade2.Setup(a => a.UpgradeFunc).Returns(a => XElement.Parse(a.ToString().Replace("b", "c")));
             upgrade1.Setup(a => a.CanUpgrade(source)).Returns(true);
             upgrade1.Setup(a => a.Upgrade).Returns(mockUpgrade.Object);
             upgrade2.Setup(a => a.CanUpgrade(source)).Returns(false);
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Execute Test---------------------------
-            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), (x => { }));
+            var upgraded = upgrader.UpgradeResource(source, new Version(1, 2), x => { });
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<b ServerVersion=\"" + upgrader.GetType().Assembly.GetName().Version + "\"></b>");
         }

@@ -64,7 +64,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TabControl.feature</DependentUpon>
     </Compile>
-    <Compile Include="TabControl.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>

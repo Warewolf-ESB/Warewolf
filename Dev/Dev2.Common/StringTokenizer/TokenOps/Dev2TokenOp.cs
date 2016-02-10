@@ -72,7 +72,7 @@ namespace Dev2.Common
                 }
 
                 // did the user want the token included?
-                if (_include && (result.Length + startIdx) < candidate.Length)
+                if (_include && result.Length + startIdx < candidate.Length)
                 {
                     result.Append(_tokenParts);
                 }
@@ -103,7 +103,7 @@ namespace Dev2.Common
                     }
                 }
 
-                if (_include && (startIdx - result.Length) >= 0)
+                if (_include && startIdx - result.Length >= 0)
                 {
                     result.Insert(0, _tokenParts);
                 }
@@ -133,7 +133,7 @@ namespace Dev2.Common
                 }
 
                 // did they want the token included?
-                if (_include && (startIdx + result.Length) < len)
+                if (_include && startIdx + result.Length < len)
                 {
                     result.Append(_tokenParts);
                 }
@@ -173,7 +173,7 @@ namespace Dev2.Common
                 cnt = _tokenParts.Length - 1;
             }
 
-            if ((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed || !isReversed)
+            if (canidateIdx - (_tokenParts.Length - 1) >= 0 && isReversed || !isReversed)
             {
                 while (cnt < _tokenParts.Length && cnt >= 0 && canidateIdx >= 0 && canidateIdx < canidate.Length && result)
                 {

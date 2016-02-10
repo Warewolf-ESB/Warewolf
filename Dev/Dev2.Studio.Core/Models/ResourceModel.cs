@@ -620,7 +620,7 @@ namespace Dev2.Studio.Core.Models
                     var endNode = result.IndexOf("</Category>", 0, true);
                     if(endNode > startNode)
                     {
-                        var len = (endNode - startNode);
+                        var len = endNode - startNode;
                         var oldCategory = result.Substring(startNode, len);
                         if(oldCategory != Category)
                         {
@@ -642,7 +642,7 @@ namespace Dev2.Studio.Core.Models
             XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
@@ -674,7 +674,7 @@ namespace Dev2.Studio.Core.Models
             var contentElement = content.ToXElement();
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),
