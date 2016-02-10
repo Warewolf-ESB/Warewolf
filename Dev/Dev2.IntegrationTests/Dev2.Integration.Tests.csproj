@@ -221,7 +221,6 @@
     <Compile Include="Interfaces\IWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
-    <Compile Include="AppTests.cs" />
     <Compile Include="wizard_test_strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

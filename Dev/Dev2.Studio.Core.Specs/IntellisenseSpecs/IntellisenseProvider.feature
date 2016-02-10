@@ -132,15 +132,15 @@ Examples:
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[x]])]]       |
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
 	#Newly Added
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123().1234]]       |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123(a).1234]]      |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[*]])]].set]] |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123().1234]]       |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123(a).1234]]      |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
+	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[*]])]].set]] |
 
 Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
 	Given I have the following variable list '<varlist>'
