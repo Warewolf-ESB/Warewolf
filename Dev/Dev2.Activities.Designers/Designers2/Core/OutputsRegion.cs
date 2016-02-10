@@ -45,9 +45,7 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.CollectionChanged += outputs_CollectionChanged;
                 Outputs = outputs;
                 ReCalculateHeight();
-
             }
-           
         }
 
         void SetInitialHeight()
@@ -171,10 +169,14 @@ namespace Dev2.Activities.Designers2.Core
 
         private void ReCalculateHeight()
         {
-            MaxHeight = BaseHeight + _outputs.Count * GlobalConstants.RowHeight;
+            // Need to add custom height due to Infragistics XamGrid doing its own thing again
+            const double XamGridHeight = 15;
+            MaxHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
+            MinHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
             if(_outputs.Count == 0)
             {
-                MaxHeight = 0;
+                MaxHeight = BaseHeight;
+                MinHeight = BaseHeight;
             }
             if(_outputs.Count >= 3)
             {
