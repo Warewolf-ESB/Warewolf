@@ -38,21 +38,21 @@ Scenario: Creating Oracle Server Connector
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open "Wolf-860"
-	And Source is Enabled
+	And Source is Enable
 	And Source is "localOracleTest"
-	And Action is Enabled
+	And Action is Enable
 	And Action is dbo.Pr_CitiesGetCountries
-	And Inputs is Enabled
-	And Inputs appear az
+	And Inputs is Enable
+	Then Inputs appear az
 	| Inputs | Default Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And Validate is Enabled
-	And Mapping is Enabled
-	Then Outputs appear as
+	And Validate is Enable
+	And Mapping is Enable
+	Then Outputs appear az
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change Source on Existing tool
 	Given I open Wolf-860

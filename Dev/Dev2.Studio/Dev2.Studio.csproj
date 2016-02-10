@@ -856,7 +856,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Warewolf Studio.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
         
         [Given(@"Source is ""(.*)""")]
-        public void GivenSourceIs()
+        public void GivenSourceIs(string name)
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceVisible);
@@ -148,18 +148,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
-        
+        [Then(@"Mapping is Enable")]
         [Given(@"Mapping is Enable")]
         public void GivenMappingIsEnabled()
         {
             ScenarioContext.Current.Pending();
         }
         
-        [Given(@"I open Wolf(.*)")]
-        public void GivenIOpenWolf(int p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+      
         
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string p0)
@@ -181,6 +177,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Then(@"Inputs appear az")]
+        [Given(@"Inputs appear az")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
@@ -197,11 +194,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Given(@"I open ""(.*)""")]
-        public void GivenIOpenWolf(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+      
 
         [Given(@"I open ""(.*)"" service")]
         public void GivenIOpenService(string p0)
@@ -209,11 +202,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"""(.*)"" tab is opened")]
-        public void GivenTabIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+       
 
         [When(@"I Selected ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -264,11 +253,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-        [When(@"""(.*)"" is changed from ""(.*)"" to ""(.*)""")]
-        public void WhenIsChangedFromTo(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
+      
 
         [When(@"""(.*)"" is selected as the data source")]
         public void WhenIsSelectedAsTheDataSource(string p0)
@@ -349,76 +334,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual(recsetName, GetViewModel().RecordsetName);
         }
 
-        [Then(@"""(.*)"" tab is opened")]
-        public void ThenTabIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+       
 
-        [Then(@"""(.*)"" equals ""(.*)""")]
-        public void ThenEquals(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
+      
 
-        [Then(@"""(.*)"" mappings are")]
-        public void ThenMappingsAre(string p0, Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
+     
 
-        [Then(@"mappings are")]
-        public void ThenMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
+       
 
-        [Then(@"input mappings are")]
-        public void ThenInputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
-        [Then(@"Data Source is focused")]
-        public void ThenDataSourceIsFocused()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"""(.*)"" is selected as the action")]
-        public void ThenIsSelectedAsTheAction(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
-        public void ThenInspectDataConnectorHyperLinkIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"inputs are")]
-        public void ThenInputsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"output mappings are")]
-        public void ThenOutputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"the ""(.*)"" window is opened")]
-        public void ThenTheWindowIsOpened(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"""(.*)"" outputs appear as")]
-        public void ThenOutputsAppearAs(string p0, Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
+      
+  
     }
 }

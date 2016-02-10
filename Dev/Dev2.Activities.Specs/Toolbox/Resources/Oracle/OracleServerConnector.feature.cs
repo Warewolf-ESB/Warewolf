@@ -160,15 +160,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 40
    testRunner.Given("I open \"Wolf-860\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 41
- testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Source is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
  testRunner.And("Source is \"localOracleTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
- testRunner.And("Action is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
  testRunner.And("Action is dbo.Pr_CitiesGetCountries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
- testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Inputs",
@@ -179,11 +179,11 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Prefix]]",
                         "false"});
 #line 46
- testRunner.And("Inputs appear az", ((string)(null)), table5, "And ");
+ testRunner.Then("Inputs appear az", ((string)(null)), table5, "Then ");
 #line 49
- testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mapping is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
@@ -195,9 +195,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
 #line 51
- testRunner.Then("Outputs appear as", ((string)(null)), table6, "Then ");
+ testRunner.Then("Outputs appear az", ((string)(null)), table6, "Then ");
 #line 55
- testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Recordset Name equalz \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
