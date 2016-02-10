@@ -96,6 +96,16 @@ namespace Dev2.Common.Interfaces
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
+        public NameValue(string name, string value)
+        {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Name = name;
+
+            Value = value;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+
         public virtual string Name
         {
             get
@@ -138,12 +148,12 @@ namespace Dev2.Common.Interfaces
     }
     public class ObservableAwareNameValue : NameValue
     {
-        readonly ObservableCollection<NameValue> _sourceCollection;
+        readonly ObservableCollection<INameValue> _sourceCollection;
         readonly Action<string> _update;
 
         ICommand _removeRowCommand;
         ICommand _addRowCommand;
-        public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection, Action<string> update)
+        public ObservableAwareNameValue(ObservableCollection<INameValue> sourceCollection, Action<string> update)
         {
             _sourceCollection = sourceCollection;
             _update = update;

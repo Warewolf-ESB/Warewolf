@@ -162,4 +162,19 @@ Scenario Outline: Context menu in save dialog on server name
 
 
 
+#wold-1364
+@ignore
+Scenario Outline: Create a new folder to save a new Source
+	Given I hava a '<Source>' tab opened
+	And I "Right-click" on "Localhost"  in the Explorer
+	And I click "New Folder"
+	Then I Click "Save"
+	Then the Save Dialog is opened
+	Examples: 
+	| Source                   |
+	| New Database Source      |
+	| New Web Source           |
+	| New Remote Server Source |
+	| New Plugin Source        |
+
 

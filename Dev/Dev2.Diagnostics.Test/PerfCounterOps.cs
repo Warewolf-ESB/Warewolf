@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Diagnostics.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Diagnostics.Test
 {
@@ -16,30 +17,25 @@ namespace Dev2.Diagnostics.Test
         {
             try
             {
-
-
                 try
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once EmptyGeneralCatchClause
                 catch
                 {
-                    
-                
+
                 }
-               
+
                 WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),    
-                                                               
                                                                 new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                new WarewolfNumberOfAuthErrors(),
+                                                                new WarewolfServicesNotFoundCounter()
                                                             });
-
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
             }
             catch (Exception err)
@@ -57,16 +53,15 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(counter.Category, "Warewolf");
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
-            var innerCounter = po.GetField("_counter") as PerformanceCounter ;
+            var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
-            Assert.AreEqual(innerCounter.RawValue,0);
+            Assert.AreEqual(innerCounter.RawValue, 0);
             counter.Increment();
-            Assert.AreEqual(innerCounter.RawValue,1);
+            Assert.AreEqual(innerCounter.RawValue, 1);
             counter.Decrement();
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-
         }
 
         [TestMethod]
@@ -75,10 +70,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ConcurrentRequests);
             var counter2 = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Concurrent requests currently executing");
             Assert.AreEqual(counter, counter2);
-
         }
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -99,7 +91,6 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-
         }
 
         [TestMethod]
@@ -121,7 +112,6 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-
         }
 
         [TestMethod]
@@ -143,7 +133,6 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-
         }
 
         [TestMethod]
@@ -165,9 +154,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 0);
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
-
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -195,7 +182,7 @@ namespace Dev2.Diagnostics.Test
             counter.IncrementBy(3);
             Assert.AreEqual(innerCounter.RawValue, 3);
             Assert.AreEqual(innerBase.RawValue, 1);
-            
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------

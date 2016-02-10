@@ -409,6 +409,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_DotNet_DLL_Connector_Exists_OnDesignSurface - Use 'Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DotNet_DLL_Connector_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues.DotNetDllExists, dotNetDll.Exists, "DotNet DLL tool does not exist on the design surface");
+        }
+        
+        /// <summary>
         /// Assert_Dropbox_Exists_OnDesignSurface - Use 'Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Dropbox_Exists_OnDesignSurface()
@@ -560,7 +573,7 @@ namespace Warewolf.Studio.UISpecs
             WpfWindow mainStudioWindow = this.MainStudioWindow;
             #endregion
 
-            // Verify that the 'Exists' property of 'Warewolf (DEV2\ASHLEY.LEWIS)' window equals 'True'
+            // Verify that the 'Exists' property of 'Warewolf' window equals 'True'
             Assert.AreEqual(this.Assert_MainStudioWindow_ExistsExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
         }
         
@@ -1280,7 +1293,7 @@ namespace Warewolf.Studio.UISpecs
             WpfWindow mainStudioWindow = this.MainStudioWindow;
             #endregion
 
-            // Double-Click 'Warewolf (DEV2\ASHLEY.LEWIS)' window
+            // Double-Click 'Warewolf' window
             Mouse.DoubleClick(mainStudioWindow, new Point(575, 14));
         }
         
@@ -1314,6 +1327,22 @@ namespace Warewolf.Studio.UISpecs
             flowchart.EnsureClickable(new Point(288, 185));
             Mouse.StartDragging(uIExplorerTreeTree, new Point(102, 377));
             Mouse.StopDragging(flowchart, new Point(288, 185));
+        }
+        
+        /// <summary>
+        /// Drag_DotNet_DLL_Connector_Onto_DesignSurface
+        /// </summary>
+        public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfCustom uIFlowchartCustom3 = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom3;
+            #endregion
+
+            // Move 'DsfDotNetDllActivity' custom control to 'Flowchart' custom control
+            uIFlowchartCustom3.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(dotNetDll, new Point(16, 25));
+            Mouse.StopDragging(uIFlowchartCustom3, new Point(308, 127));
         }
         
         /// <summary>
@@ -2414,6 +2443,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_DotNet_DLL_Connector_Tool_Small_View
+        /// </summary>
+        public void Open_DotNet_DLL_Connector_Tool_Small_View()
+        {
+            #region Variable Declarations
+            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            #endregion
+
+            // Double-Click 'DsfDotNetDllActivity' custom control
+            Mouse.DoubleClick(dotNetDll, new Point(238, 16));
+        }
+        
+        /// <summary>
         /// Open_Email_Tool_Large_View
         /// </summary>
         public void Open_Email_Tool_Large_View()
@@ -2738,7 +2780,7 @@ namespace Warewolf.Studio.UISpecs
             WpfWindow mainStudioWindow = this.MainStudioWindow;
             #endregion
 
-            // Type '{F11}' in 'Warewolf (DEV2\ASHLEY.LEWIS)' window
+            // Type '{F11}' in 'Warewolf' window
             Keyboard.SendKeys(mainStudioWindow, this.PressF11_EnterFullScreenParams.MainStudioWindowSendKeys, ModifierKeys.None);
         }
         
@@ -3220,6 +3262,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues = new Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues = new Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -4218,6 +4272,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
+        
+        public UIWarewolfDEV2LEROYWARWindow1 UIWarewolfDEV2LEROYWARWindow1
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2LEROYWARWindow1 == null))
+                {
+                    this.mUIWarewolfDEV2LEROYWARWindow1 = new UIWarewolfDEV2LEROYWARWindow1();
+                }
+                return this.mUIWarewolfDEV2LEROYWARWindow1;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4278,6 +4344,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Delete_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues mAssert_Dropbox_Exists_OnDesignSurfaceExpectedValues;
         
@@ -4444,6 +4512,8 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
+        
+        private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
         #endregion
     }
     
@@ -4883,6 +4953,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_DotNet_DLL_Connector_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfDotNetDllActivity' custom control equals 'True'
+        /// </summary>
+        public bool DotNetDllExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Dropbox_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -5056,7 +5141,7 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf (DEV2\ASHLEY.LEWIS)' window equals 'True'
+        /// Verify that the 'Exists' property of 'Warewolf' window equals 'True'
         /// </summary>
         public bool MainStudioWindowExists = true;
         #endregion
@@ -5986,7 +6071,7 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Type '{F11}' in 'Warewolf (DEV2\ASHLEY.LEWIS)' window
+        /// Type '{F11}' in 'Warewolf' window
         /// </summary>
         public string MainStudioWindowSendKeys = "{F11}";
         #endregion
@@ -7448,6 +7533,23 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public WpfCustom DotNetDll
+        {
+            get
+            {
+                if ((this.mDotNetDll == null))
+                {
+                    this.mDotNetDll = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
+                    this.mDotNetDll.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL Connector(DotNetDllDesigner)";
+                    this.mDotNetDll.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mDotNetDll;
+            }
+        }
+        
         public DataMerge DataMerge
         {
             get
@@ -8306,6 +8408,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private WpfCustom mDotNetDll;
+        
         private DataMerge mDataMerge;
         
         private DataSplit mDataSplit;
@@ -15542,10 +15646,28 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfStudioViewMoListItem;
             }
         }
+        
+        public WpfListItem UIWarewolfStudioViewMoListItem1
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
+                {
+                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoListItem1;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mUIWarewolfStudioViewMoListItem;
+        
+        private WpfListItem mUIWarewolfStudioViewMoListItem1;
         #endregion
     }
     
@@ -15697,6 +15819,23 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIFlowchartCustom2;
             }
         }
+        
+        public WpfCustom UIFlowchartCustom3
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom3 == null))
+                {
+                    this.mUIFlowchartCustom3 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom3.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom3.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 16(FlowchartDesigner)";
+                    this.mUIFlowchartCustom3.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom3;
+            }
+        }
         #endregion
         
         #region Fields
@@ -15705,6 +15844,8 @@ namespace Warewolf.Studio.UISpecs
         private WpfCustom mUIFlowchartCustom1;
         
         private WpfCustom mUIFlowchartCustom2;
+        
+        private WpfCustom mUIFlowchartCustom3;
         #endregion
     }
     
@@ -16484,6 +16625,76 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2LEROYWARWindow1 : WpfWindow
+    {
+        
+        public UIWarewolfDEV2LEROYWARWindow1()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom1 UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom1(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom1 mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWorkflowItemPresenteCustom1 : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 16(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }

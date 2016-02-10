@@ -213,3 +213,15 @@ Scenario: Recordset has invalid character
 	  |                                                                    |
 	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
 	  
+
+
+#Wolf-1262
+@ignore
+Scenario: backward Compatiblity
+	Given I have a workflow "DataMigration"
+	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      | [[ProductId]]    | productId     | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "DataMigration" is executed
+	Then the workflow execution has "NO" error

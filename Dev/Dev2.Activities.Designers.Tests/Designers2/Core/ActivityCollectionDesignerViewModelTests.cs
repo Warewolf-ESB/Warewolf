@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_Constructor_TwoBlankRows_NoRowAdded()
         // ReSharper restore InconsistentNaming
         {
-            var modelItem = CreateModelItem(2);
+            CreateModelItem(2);
             //exe
             var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(2));
 
