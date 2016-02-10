@@ -731,9 +731,16 @@ namespace Dev2.Activities.Designers2.Oracle
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel != null && (RootModel.Errors != null && RootModel.Errors.Count == 0)
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            if (RootModel != null)
+            {
+                var errorInfos = RootModel.GetErrors(uniqueId);
+                if (errorInfos != null)
+                {
+                    designValidationMemo.Errors.AddRange(errorInfos.Cast<ErrorInfo>());
+                }
+            }
 
             if (environmentModel == null)
             {

@@ -1,5 +1,5 @@
 
-<Service ID="995e4561-3339-45a7-a289-f022ec18784e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XmlSerialisation" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5883.19592">
+<Service ID="995e4561-3339-45a7-a289-f022ec18784e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XmlSerialisation" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.0.5883.28629">
   <DisplayName>XmlSerialisation</DisplayName>
   <Category>Testing\Bugs\XmlSerialisation</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
