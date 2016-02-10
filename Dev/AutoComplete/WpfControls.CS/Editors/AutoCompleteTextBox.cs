@@ -225,7 +225,7 @@
 
         public static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            AutoCompleteTextBox act = null;
+            AutoCompleteTextBox act;
             act = d as AutoCompleteTextBox;
             if (act != null)
             {
@@ -474,13 +474,19 @@
             private void GetSuggestionsAsync(object param)
             {
                 object[] args = param as object[];
-                string searchText = Convert.ToString(args[0]);
-                ISuggestionProvider provider = args[1] as ISuggestionProvider;
-                IEnumerable list = provider.GetSuggestions(searchText);
-                _actb.Dispatcher.BeginInvoke(new Action<IEnumerable, string>(DisplaySuggestions), DispatcherPriority.Background, new object[] {
-				list,
-				searchText
-			});
+                if(args != null)
+                {
+                    string searchText = Convert.ToString(args[0]);
+                    ISuggestionProvider provider = args[1] as ISuggestionProvider;
+                    if(provider != null)
+                    {
+                        IEnumerable list = provider.GetSuggestions(searchText);
+                        _actb.Dispatcher.BeginInvoke(new Action<IEnumerable, string>(DisplaySuggestions), DispatcherPriority.Background, new object[] {
+                            list,
+                            searchText
+                        });
+                    }
+                }
             }
 
             #endregion

@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -53,13 +54,15 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(region.HeadersHeight, 60);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebGetInputRegion;
-            Assert.AreEqual(clone.MaxHeight, 180);
-            Assert.AreEqual(clone.MinHeight, 150);
-            Assert.AreEqual(clone.CurrentHeight, 150);
-            Assert.AreEqual(clone.IsVisible, false);
-            Assert.AreEqual(clone.HeadersHeight, 60);
-            Assert.AreEqual(clone.Errors.Count, 0);
-
+            if(clone != null)
+            {
+                Assert.AreEqual(clone.MaxHeight, 180);
+                Assert.AreEqual(clone.MinHeight, 150);
+                Assert.AreEqual(clone.CurrentHeight, 150);
+                Assert.AreEqual(clone.IsVisible, false);
+                Assert.AreEqual(clone.HeadersHeight, 60);
+                Assert.AreEqual(clone.Errors.Count, 0);
+            }
         }
 
 
@@ -101,13 +104,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(region.CurrentHeight, 150);
         }
 
-
-                //        MaxHeight = region.MaxHeight;
-                //MinHeight = region.MinHeight;
-                //IsVisible = region.IsVisible;
-                //CurrentHeight = region.CurrentHeight;
-                //QueryString = region.QueryString;
-                //Headers = region.Headers;
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

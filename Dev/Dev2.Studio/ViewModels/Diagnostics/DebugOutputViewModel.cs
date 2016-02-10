@@ -34,7 +34,6 @@ using Dev2.Services.Events;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;

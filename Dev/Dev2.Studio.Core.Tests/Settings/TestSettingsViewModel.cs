@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Dialogs;
