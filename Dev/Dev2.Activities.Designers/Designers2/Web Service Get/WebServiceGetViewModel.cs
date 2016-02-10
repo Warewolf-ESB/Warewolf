@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
+using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -31,16 +32,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private IOutputsToolRegion _outputs;
         private IWebGetInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _source;
-        private IEventAggregator _eventPublisher;
-        private string _resourceType;
         private string _imageSource;
 
-#pragma warning disable 169
-        private IEnvironmentModel _environment;
-#pragma warning restore 169
-#pragma warning disable 169
+
         private IErrorInfo _worstDesignError;
-#pragma warning restore 169
+
         const string DoneText = "Done";
         const string FixText = "Fix";
         // ReSharper disable UnusedMember.Local
@@ -61,29 +57,100 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             var server = shellViewModel.ActiveServer;
             var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = pluginServiceModel;
-            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel(), pluginServiceModel);
+        
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel());
+            NoError = new ErrorInfo
+            {
+                ErrorType = ErrorType.None,
+                Message = "Service Working Normally"
+            };
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem, regions)
         {
             AddTitleBarMappingToggle();
+            NoError = new ErrorInfo
+            {
+                ErrorType = ErrorType.None,
+                Message = "Service Working Normally"
+            };
         }
 
         public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
             : base(modelItem, showExampleWorkflow, regions)
         {
             AddTitleBarMappingToggle();
+            NoError = new ErrorInfo
+            {
+                ErrorType = ErrorType.None,
+                Message = "Service Working Normally"
+            };
         }
 
         #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
         {
-            //  Regions.SelectMany(a => a.Errors);
+            if(Errors == null)
+            {
+                Errors = new List<IActionableErrorInfo>();
+            }
+                Errors.Clear();
+            
+           Errors =  Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+          if(Source.Errors.Count>0)
+          {
+              foreach (var designValidationError in Source.Errors)
+              {
+                  DesignValidationErrors.Add(new ErrorInfo(){ErrorType = ErrorType.Critical,Message = designValidationError});
+              }
+         
+          }
+          UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel, IWebServiceModel webServiceModel)
+
+        void UpdateWorstError()
+        {
+            if (DesignValidationErrors.Count == 0)
+            {
+                DesignValidationErrors.Add(NoError);
+                if (!RootModel.HasErrors)
+                {
+                    RootModel.IsValid = true;
+                }
+            }
+
+            IErrorInfo[] worstError = { DesignValidationErrors[0] };
+
+            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            {
+                worstError[0] = error;
+                if (error.ErrorType == ErrorType.Critical)
+                {
+                    break;
+                }
+            }
+            WorstDesignError = worstError[0];
+        }
+
+
+        IErrorInfo WorstDesignError
+        {
+            get { return _worstDesignError; }
+            set
+            {
+                if (_worstDesignError != value)
+                {
+                    _worstDesignError = value;
+                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
+                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                }
+            }
+        }
+
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
@@ -93,7 +160,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             BuildRegions();
 
             ManageServiceInputViewModel = manageServiceInputViewModel;
-            _eventPublisher = eventPublisher;
             eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
@@ -114,26 +180,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             Outputs.OutputMappingEnabled = true;
 
-            //// When the active environment is not local, we need to get smart around this piece of logic.
-            //// It is very possible we are treating a remote active as local since we cannot logically assign 
-            //// an environment id when this is the case as it will fail with source not found since the remote 
-            //// does not contain localhost's connections ;)
-            var activeEnvironment = environmentRepository.ActiveEnvironment;
-            if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
-            {
-                _environment = activeEnvironment;
-            }
-            else
-            {
-                var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
-                if (environment == null)
-                {
-                    IList<IEnvironmentModel> environments = EnvironmentRepository.Instance.LookupEnvironments(activeEnvironment);
-                    environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
-                }
-                _environment = environment;
-            }
-
             TestInputCommand = new DelegateCommand(() =>
             {
                 TestComplete = true;
@@ -144,10 +190,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             InitializeProperties();
 
-            if (Outputs != null && Outputs.Outputs != null)
+            if (Outputs != null && Outputs.IsVisible)
             {
                 TestComplete = true;
-                Outputs.IsVisible = true;
                 var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -157,51 +202,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             ReCalculateHeight();
 
-            #region CODE_TO_REMOVE?
-            //InitializeValidationService(_environment);
-            //InitializeLastValidationMemo(_environment);
-            //ManageServiceInputViewModel = manageServiceInputViewModel;
-            //if (_environment != null)
-            //{
-            //    _isInitializing = true;
-            //    Model = webServiceModel;
-            //}
-            
-            //if (IsItemDragged.Instance.IsDragged)
-            //{
-            //    Expand();
-            //    IsItemDragged.Instance.IsDragged = false;
-            //}
 
-            //if (_environment != null)
-            //{
-            //    _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
-            //    AuthorizationServiceOnPermissionsChanged(null, null);
-            //}
-            //InitializeResourceModel(_environment);
-
-            //_isInitializing = false;
-            #endregion
         }
 
-        //void InitializeResourceModel(IEnvironmentModel environmentModel)
-        //{
-        //    if (environmentModel != null)
-        //    {
-        //        if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
-        //        {
-        //            environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
-        //            environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
-        //        }
-        //        InitializeResourceModelSync(environmentModel);
-        //    }
-        //}
 
-        // ReSharper disable InconsistentNaming
-        //void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
-        //// ReSharper restore InconsistentNaming
-        //{
-        //}
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
@@ -220,42 +224,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        public DelegateCommand NewSourceCommand
-        {
-            get
-            {
-                return _newSourceCommand;
-            }
-            set
-            {
-                _newSourceCommand = value;
-            }
-        }
+        public DelegateCommand NewSourceCommand { get; set; }
 
-        public IManageWebServiceInputViewModel ManageServiceInputViewModel
-        {
-            get
-            {
-                return _manageServiceInputViewModel;
-            }
-            set
-            {
-                _manageServiceInputViewModel = value;
-            }
-        }
+        public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         private bool CanTestProcedure()
         {
             return Source.SelectedSource != null;
         }
 
-        public IErrorInfo NoError
-        {
-            get
-            {
-                return _noError;
-            }
-        }
+        public IErrorInfo NoError { get; private set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -276,33 +254,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
         public static readonly DependencyProperty WorstErrorProperty =
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
-        private IManageWebServiceInputViewModel _manageServiceInputViewModel;
-#pragma warning disable 414
-#pragma warning disable 169
-        private bool _isInitializing;
-#pragma warning restore 169
-#pragma warning restore 414
-        private DelegateCommand _newSourceCommand;
-#pragma warning disable 649
-        private IErrorInfo _noError;
+
         private bool _testComplete;
         private bool _testSuccessful;
-#pragma warning restore 649
 
-        void UpdateLastValidationMemo(DesignValidationMemo memo, bool checkSource = true)
-        {
-            LastValidationMemo = memo;
 
-            // CheckIsDeleted(memo);
 
-            //UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
-            //if (SourceId == Guid.Empty)
-            //{
-            //    if (checkSource && CheckSourceMissing())
-            //    {
-            //    }
-            //}
-        }
 
         public DesignValidationMemo LastValidationMemo { get; private set; }
 
@@ -310,9 +267,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
-        Guid EnvironmentID { get { return GetProperty<Guid>(); } }
-        Guid ResourceID { get { return GetProperty<Guid>(); } }
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
 
         private void FixErrors()
         {
@@ -347,17 +301,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             HasLargeView = true;
         }
 
-        public string ResourceType
-        {
-            get
-            {
-                return _resourceType;
-            }
-            set
-            {
-                _resourceType = value;
-            }
-        }
+        public string ResourceType { get; set; }
 
         void InitializeDisplayName()
         {
@@ -530,7 +474,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 };
                 ManageServiceInputViewModel.OkAction = () =>
                 {
-                    Outputs.Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
+                    Outputs.Outputs.Clear();
+                    foreach(var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                    {
+                        Outputs.Outputs.Add(serviceOutputMapping);
+                    }
+                    
                     Outputs.Description = ManageServiceInputViewModel.Description;
                     Outputs.IsVisible = Outputs.Outputs.Count > 0;
                 };
@@ -542,10 +491,15 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ReCalculateHeight();
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //ErrorMessage(e);
+                ErrorMessage(e);
             }
+        }
+
+        private void ErrorMessage(Exception exception)
+        {
+            Errors.Add(new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{}));
         }
 
         private void ValidateTestComplete()
