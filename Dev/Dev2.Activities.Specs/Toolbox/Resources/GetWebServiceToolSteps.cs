@@ -195,11 +195,11 @@ namespace Dev2.Activities.Specs
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"""(.*)""  is ""(.*)""")]
-        public void ThenIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
+        //[Then(@"""(.*)""  is ""(.*)""")]
+        //public void ThenIs(string p0, string p1)
+        //{
+        //    ScenarioContext.Current.Pending();
+        //}
 
         [Then(@"I ""(.*)"" into ""Request")]
         public void ThenIIntoRequest(string p0)
