@@ -258,11 +258,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private bool _testComplete;
         private bool _testSuccessful;
 
-
-
-
-        public DesignValidationMemo LastValidationMemo { get; private set; }
-
         public DelegateCommand TestInputCommand { get; set; }
 
         public string Type { get { return GetProperty<string>(); } }
