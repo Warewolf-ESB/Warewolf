@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.WebServices;
@@ -17,6 +18,7 @@ namespace Dev2.Common.Interfaces
     {
         string TestResults { get; set; }
         bool OkSelected { get; set; }
+        ICommand PasteResponseCommand { get; }
         List<IServiceOutputMapping> OutputMappings { get; set; }
         IOutputDescription Description { get; set; }
     }

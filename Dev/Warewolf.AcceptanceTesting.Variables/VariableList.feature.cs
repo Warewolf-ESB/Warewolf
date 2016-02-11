@@ -649,21 +649,26 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
                         "Error State",
+                        "Delete IsEnabled",
                         "Error Tooltip"});
             table20.AddRow(new string[] {
                         "a",
+                        "",
                         "",
                         ""});
             table20.AddRow(new string[] {
                         "1b",
                         "YES",
+                        "",
                         "Variables must begin with alphabetical characters"});
             table20.AddRow(new string[] {
                         "b@",
                         "YES",
+                        "",
                         "Variables contains invalid character"});
             table20.AddRow(new string[] {
                         "b1",
+                        "",
                         "",
                         ""});
 #line 141
@@ -672,34 +677,42 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset Name",
                         "Error State",
+                        "Delete IsEnabled",
                         "Error Tooltip"});
             table21.AddRow(new string[] {
                         "1r()",
                         "YES",
+                        "",
                         "Recordset names must begin with alphabetical characters"});
             table21.AddRow(new string[] {
                         "1r().a",
+                        "",
                         "",
                         ""});
             table21.AddRow(new string[] {
                         "rec()",
                         "",
+                        "",
                         ""});
             table21.AddRow(new string[] {
                         "rec().a",
+                        "",
                         "",
                         ""});
             table21.AddRow(new string[] {
                         "rec().1a",
                         "YES",
+                        "",
                         "Recordset fields must begin with alphabetical characters"});
             table21.AddRow(new string[] {
                         "rec().b",
                         "YES",
+                        "",
                         "Duplicate Variable"});
             table21.AddRow(new string[] {
                         "rec().b",
                         "YES",
+                        "",
                         "Duplicate Variable"});
 #line 147
  testRunner.And("the Recordset Names are", ((string)(null)), table21, "And ");

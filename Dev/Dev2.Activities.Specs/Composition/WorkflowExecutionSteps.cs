@@ -482,7 +482,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.OutputMapping = outputMapping;
                 activity.InputMapping = inputMapping;
 
-                if(resource.IsDatabaseService)
+                if (resource.ServerResourceType == "DbService")
                 {
                     var xml = resource.ToServiceDefinition(true).ToXElement();
                     var service = new DbService(xml);

@@ -32,8 +32,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
-            <TextBlock Margin="5" Text="{x:Static languages:Core.TestHeader}" Style="{StaticResource SourceHeader}" x:Name="HeaderTextBlock" />
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Image Margin="5,0,0,0" Width="24" Height="24" Source="{Binding TestIconImageSource}" />
+            <TextBlock Margin="{StaticResource ElementBorder}" Text="{x:Static languages:Core.DotNetDllTestHeader}" Style="{StaticResource SourceHeader}" x:Name="HeaderTextBlock" />
         </StackPanel>
 
         <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
