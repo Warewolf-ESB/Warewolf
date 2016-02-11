@@ -4379,9 +4379,9 @@ Scenario: Error not bubbling up
 	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
 	And the 'ErrorHandled' in Workflow 'Wolf-1212_Test' debug outputs as
-	  |                   |
-	  | [[Result]] = Pass |
-	  | [[Error]] = <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> |
+	  |                                                                                                                                     |
+	  | [[Result]] = Fail                                                                                                                   |
+	  | [[Error]] = Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
 
 
 Scenario: Error not bubbling up error message
