@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core
         private IWebServiceSource _selectedSource;
         private ICollection<IWebServiceSource> _sources;
         private readonly ModelItem _modelItem;
-        Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
 
@@ -188,7 +188,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
-                    StorePreviousValues(_selectedSource.Id);
+                    if(! String.IsNullOrEmpty(_selectedSource.HostName))
+                        StorePreviousValues(_selectedSource.Id);
                 }
 
                 if (IsAPreviousValue(value) && _selectedSource != null)

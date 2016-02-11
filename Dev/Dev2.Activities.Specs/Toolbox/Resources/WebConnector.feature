@@ -7,13 +7,13 @@
 @ignore
 Scenario: Open new Web Tool
 	Given I open New Web Service Tool
-	Then "Sources" combobox is enabled
-	And Selected Source is null
-	And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	And "Request header" is enabled
-	And "Request Url" is enabled
-	And "Validate" is enabled
+	Then Sources combobox is enabled
+	And Selected Web Source is null
+	And New is Enabled
+	And Edit is Enabled
+	And Request header is enabled
+	And Request Url is enabled
+	And Validate is enabled
 	And Outputs are
 	| Output | Output Alias |
 	And Recordset is ""

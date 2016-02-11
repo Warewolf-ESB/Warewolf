@@ -463,7 +463,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true);
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
 
 
             var activity = GetServiceActivity(serviceType);
@@ -482,36 +482,28 @@ namespace Dev2.Activities.Specs.Composition
                 activity.OutputMapping = outputMapping;
                 activity.InputMapping = inputMapping;
 
-                var service = new DbService(resource.WorkflowXaml.ToXElement());
-
-                var source = service.Source as DbSource;
-
-                Activity databaseActivity = null;
-                switch(serviceType)
+                if (resource.ServerResourceType == "DbService")
                 {
-                    case "mysql database":
-                        databaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
-                        break;
-                    case "sqlserver database":
-                        databaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
-                        break;
+                    var xml = resource.ToServiceDefinition(true).ToXElement();
+                    var service = new DbService(xml);
+                    var source = service.Source as DbSource;
+                    Activity databaseActivity = null;
+                    switch(serviceType)
+                    {
+                        case "mysql database":
+                            databaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                            break;
+                        case "sqlserver database":
+                            databaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
+                    }
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, databaseActivity);
                 }
-                CommonSteps.AddActivityToActivityList(wf, serviceName, databaseActivity);
+                else
+                {
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, activity);
+                }
             }
-//            else
-//            {
-//                Activity dbAct = null;
-//                switch (serviceType)
-//                {
-//                    case "mysql database":
-//                        dbAct = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
-//                        break;
-//                    case "sqlserver database":
-//                        dbAct = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
-//                        break;
-//                }
-//                CommonSteps.AddActivityToActivityList(wf, serviceName, dbAct);
- //           }
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
