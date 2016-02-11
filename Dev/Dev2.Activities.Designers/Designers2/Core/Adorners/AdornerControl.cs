@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         const double OffsetY = 0.0;
 
         private const double PositionX = Double.NaN;
-        private const double _positionY = Double.NaN;
+        private const double PositionY = Double.NaN;
 
         AdornerLayer _adornerLayer;
 
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             {
                 x = DetermineX();
             }
-            var y = _positionY;
+            var y = PositionY;
             if(Double.IsNaN(y))
             {
                 y = DetermineY();
@@ -172,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         double DetermineHeight()
         {
             var height = Math.Max(Content.MinHeight, Content.DesiredSize.Height);
-            if(!Double.IsNaN(_positionY))
+            if(!Double.IsNaN(PositionY))
             {
                 return height;
             }

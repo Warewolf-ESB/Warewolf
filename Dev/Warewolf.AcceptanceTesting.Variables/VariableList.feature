@@ -139,20 +139,20 @@ Scenario: Sorting Variables in Variable list
 
 Scenario: Variable Errors
 	Given the Variable Names are
-	 | Variable | Error State | Error Tooltip                                     |
-	 | a        |             |                                                   |
-	 | 1b       | YES         | Variables must begin with alphabetical characters |
-	 | b@       | YES         | Variables contains invalid character              |
-	 | b1       |             |                                                   |
+	 | Variable | Error State | Delete IsEnabled | Error Tooltip                                     |
+	 | a        |             |                  |                                                   |
+	 | 1b       | YES         |                  | Variables must begin with alphabetical characters |
+	 | b@       | YES         |                  | Variables contains invalid character              |
+	 | b1       |             |                  |                                                   |
 	And the Recordset Names are
-	 | Recordset Name | Error State | Error Tooltip                                            |
-	 | 1r()     | YES         | Recordset names must begin with alphabetical characters  |
-	 | 1r().a   |             |                                                          |
-	 | rec()    |             |                                                          |
-	 | rec().a  |             |                                                          |
-	 | rec().1a | YES         | Recordset fields must begin with alphabetical characters |
-	 | rec().b  | YES         | Duplicate Variable                                       |
-	 | rec().b  | YES         | Duplicate Variable                                       |
+	 | Recordset Name | Error State | Delete IsEnabled | Error Tooltip                                            |
+	 | 1r()           | YES         |                  | Recordset names must begin with alphabetical characters  |
+	 | 1r().a         |             |                  |                                                          |
+	 | rec()          |             |                  |                                                          |
+	 | rec().a        |             |                  |                                                          |
+	 | rec().1a       | YES         |                  | Recordset fields must begin with alphabetical characters |
+	 | rec().b        | YES         |                  | Duplicate Variable                                       |
+	 | rec().b        | YES         |                  | Duplicate Variable                                       |
 	
 Scenario: Variables removed from design surface and list
 	Given I have variables as

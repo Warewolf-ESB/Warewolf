@@ -196,7 +196,7 @@ namespace Dev2.Activities.Designers2.Core
         public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
 
-        public void ShowView()
+        public virtual void ShowView()
         {
             _manageServiceInputView = new ManageWebServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();

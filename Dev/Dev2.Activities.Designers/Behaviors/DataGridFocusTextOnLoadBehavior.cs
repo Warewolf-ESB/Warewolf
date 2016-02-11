@@ -26,16 +26,16 @@ namespace Dev2.Activities
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.Loaded += AssociatedObject_Loaded;
+            AssociatedObject.Loaded += AssociatedObjectLoaded;
         }
 
         protected override void OnDetaching()
         {
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            AssociatedObject.Loaded -= AssociatedObjectLoaded;
             base.OnDetaching();
         }
 
-        protected void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        protected void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
         {
             var dgr = sender as DataGrid;
 
@@ -53,24 +53,24 @@ namespace Dev2.Activities
             _textBox = GetVisualChild<TextBox>(dgr);
             if(_textBox != null)
             {
-                _textBox.Loaded += intellisenseTextBox_Loaded;
+                _textBox.Loaded += IntellisenseTextBoxLoaded;
             }
         }
 
-        void intellisenseTextBox_Loaded(object sender, RoutedEventArgs e)
+        void IntellisenseTextBoxLoaded(object sender, RoutedEventArgs e)
         {
             _textBox.Focus();
-            _textBox.LostKeyboardFocus += _textBox_LostKeyboardFocus;
+            _textBox.LostKeyboardFocus += TextBoxLostKeyboardFocus;
         }
 
-        void _textBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void TextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             _textBox.Focus();
             _stealCount++;
             if(_stealCount == 1)
             {
-                _textBox.LostKeyboardFocus -= _textBox_LostKeyboardFocus;
-                _textBox.Loaded -= intellisenseTextBox_Loaded;
+                _textBox.LostKeyboardFocus -= TextBoxLostKeyboardFocus;
+                _textBox.Loaded -= IntellisenseTextBoxLoaded;
             }
         }
 

@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem)
         {
             _modelItem = modelItem;
-            if (_modelItem.GetProperty("Outputs") == null)
+            if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
             {
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
                 if(current == null)
@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Core
                     IsVisible = false;
                 }
                 var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
-                outputs.CollectionChanged += outputs_CollectionChanged;
+                outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
                 SetInitialHeight();
             }
@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 IsVisible = true;
                 var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
-                outputs.CollectionChanged += outputs_CollectionChanged;
+                outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
                 ReCalculateHeight();
             }
@@ -60,11 +60,13 @@ namespace Dev2.Activities.Designers2.Core
             SetInitialHeight();
         }
 
-        void outputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsOutputsEmptyRows");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
         private bool _outputMappingEnabled;
         private string _recordsetName;
