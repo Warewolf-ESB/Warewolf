@@ -15893,10 +15893,10 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table848 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table848.AddRow(new string[] {
-                        "[[Result]] = Pass"});
+                        "[[Result]] = Fail"});
             table848.AddRow(new string[] {
-                        "[[Error]] = <InnerError>Could not parse input datetime with given input format (e" +
-                            "ven after trying default datetime formats from other cultures)</InnerError>"});
+                        "[[Error]] = Could not parse input datetime with given input format (even after tr" +
+                            "ying default datetime formats from other cultures)"});
 #line 4381
  testRunner.And("the \'ErrorHandled\' in Workflow \'Wolf-1212_Test\' debug outputs as", ((string)(null)), table848, "And ");
 #line hidden
