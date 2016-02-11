@@ -14,9 +14,10 @@ using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
+// ReSharper disable All
 
 namespace Dev2.Activities.Designers.Tests.WebGetTool
 {
@@ -36,12 +37,12 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 SourceId = mod.Sources[0].Id, Outputs = new List<IServiceOutputMapping>{new ServiceOutputMapping("a","b","c"), new ServiceOutputMapping("d","e","f")},
                 Headers = new List<INameValue> {new NameValue("a","x") },
                 QueryString = "Bob the builder",
-
+                ServiceName = "dsfBob"
                 
             };
    
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
-            
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+           
             //------------Execute Test---------------------------
             Assert.AreEqual(465,webget.DesignMaxHeight);
             Assert.AreEqual(465, webget.DesignMinHeight);
@@ -50,7 +51,12 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-
+            Assert.AreEqual(webget.ImageSource, "PluginService-32");
+            webget.ValidateTestComplete();
+            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.CanTestProcedure());
+            Assert.IsFalse(webget.TestSuccessful);
+ 
             //------------Assert Results-------------------------
         }
 
@@ -65,11 +71,11 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-               var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+               var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
                webget.Validate();
             //------------Execute Test---------------------------
           Assert.AreEqual(webget.Errors.Count,1);
-            Assert.AreEqual(webget.DesignValidationErrors.Count,1);
+            Assert.AreEqual(webget.DesignValidationErrors.Count,2);
 
             //------------Assert Results-------------------------
         }
@@ -86,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
             Assert.AreEqual(150, webget.DesignMaxHeight);
@@ -111,7 +117,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
             //------------Execute Test---------------------------
@@ -136,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
 #pragma warning disable 4014
@@ -151,6 +157,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsFalse(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            
 
             //------------Assert Results-------------------------
         }
@@ -167,7 +174,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
 #pragma warning disable 4014
@@ -198,7 +205,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
 #pragma warning disable 4014
@@ -231,7 +238,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
 #pragma warning disable 4014
@@ -259,7 +266,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
 #pragma warning disable 4014
@@ -287,7 +294,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
             webget.InputArea.Headers.Add(new NameValue("[[a]]","asa"));
@@ -320,7 +327,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
             webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
@@ -356,7 +363,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var act = new DsfWebGetActivity();
 
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), new Mock<IShellViewModel>().Object, mod);
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest();
             webget.Source.SelectedSource = webget.Source.Sources.First();
             webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
