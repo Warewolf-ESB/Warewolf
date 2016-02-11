@@ -66,6 +66,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
+            UpdateWorstError();
         }
 
         public WebServiceGetViewModel(ModelItem modelItem,IShellViewModel shell,IWebServiceModel model )
@@ -229,7 +230,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
-        private bool CanTestProcedure()
+        public bool CanTestProcedure()
         {
             return Source.SelectedSource != null;
         }
@@ -501,7 +502,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
            Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
-        private void ValidateTestComplete()
+        public void ValidateTestComplete()
         {
             Outputs.IsVisible = true;
         }
