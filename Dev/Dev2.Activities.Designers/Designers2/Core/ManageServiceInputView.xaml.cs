@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Infragistics.Controls.Grids;
 
@@ -13,6 +14,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             InitializeComponent();
             DoneButton.IsEnabled = false;
+            KeyDown += OnKeyDown; 
+        }
+
+        void OnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.Key == Key.Escape)
+            {
+                RequestClose();
+            }
         }
 
         public void ShowView()
@@ -44,3 +54,51 @@ namespace Dev2.Activities.Designers2.Core
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

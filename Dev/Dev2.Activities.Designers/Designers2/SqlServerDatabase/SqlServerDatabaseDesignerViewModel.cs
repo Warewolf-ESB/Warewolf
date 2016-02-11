@@ -17,6 +17,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
@@ -280,6 +281,8 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.Model = databaseService;
                 ManageServiceInputViewModel.Inputs = databaseService.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
+                ManageServiceInputViewModel.TestHeader = Warewolf.Studio.Resources.Languages.Core.SqlServerDbTestHeader;
+                ManageServiceInputViewModel.TestIconImageSource = Application.Current.TryFindResource("Explorer-DB-White") as DrawingImage;
                 ManageServiceInputViewModel.TestAction = () =>
                 {
                     ManageServiceInputViewModel.IsTesting = true;
@@ -308,6 +311,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                         OutputsVisible = true;
                     }
                 };
+                ManageServiceInputViewModel.CloseView();
                 ManageServiceInputViewModel.ShowView();
                 if (ManageServiceInputViewModel.OkSelected)
                 {
