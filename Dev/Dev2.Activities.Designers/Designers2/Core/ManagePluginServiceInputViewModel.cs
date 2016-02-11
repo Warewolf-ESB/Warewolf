@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -137,9 +139,21 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public ImageSource TestIconImageSource
+        {
+            get
+            {
+                return Application.Current.TryFindResource("Explorer-DLL-White") as DrawingImage;
+            }
+            set
+            {
+                
+            }
+        }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
         public IPluginService Model { get; set; }
+        public string TestHeader { get; set; }
         public Action OkAction { get; set; }
         public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
@@ -148,6 +162,14 @@ namespace Dev2.Activities.Designers2.Core
         {
             _manageServiceInputView = new ManagePluginServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
+        }
+
+        public void CloseView()
+        {
+            if (_manageServiceInputView != null)
+            {
+                _manageServiceInputView.RequestClose();
+            }
         }
     }
 }

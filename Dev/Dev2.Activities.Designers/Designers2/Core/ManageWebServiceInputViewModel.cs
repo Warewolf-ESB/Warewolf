@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -19,7 +21,7 @@ namespace Dev2.Activities.Designers2.Core
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
-        private ManagePluginServiceInputView _manageServiceInputView;
+        private ManageWebServiceInputView _manageServiceInputView;
         private Action _testAction;
         private bool _okSelected;
         private IWebService _model;
@@ -41,6 +43,15 @@ namespace Dev2.Activities.Designers2.Core
                     OkAction();
                     OkSelected = true;
                     _manageServiceInputView.RequestClose();
+                }
+            });
+            PasteResponseCommand = new DelegateCommand(() =>
+            {
+                if (_manageServiceInputView != null)
+                {
+                    _manageServiceInputView.OutputsGrid.Visibility = Visibility.Collapsed;
+                    _manageServiceInputView.ResponseGrid.Visibility = Visibility.Visible;
+                    _manageServiceInputView.DoneButton.IsEnabled = true;
                 }
             });
         }
@@ -130,6 +141,17 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public ImageSource TestIconImageSource
+        {
+            get
+            {
+                return Application.Current.TryFindResource("Explorer-WebService-White") as DrawingImage;
+            }
+            set
+            {
+                
+            }
+        }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
         public IWebService Model
@@ -159,6 +181,7 @@ namespace Dev2.Activities.Designers2.Core
                 _model = value;
             }
         }
+        public string TestHeader { get; set; }
 
         private string ReplaceString(string name)
         {
@@ -169,13 +192,22 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public Action OkAction { get; set; }
+        public ICommand PasteResponseCommand { get; private set; }
         public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
 
         public virtual void ShowView()
         {
-            _manageServiceInputView = new ManagePluginServiceInputView { DataContext = this };
+            _manageServiceInputView = new ManageWebServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
+        }
+
+        public void CloseView()
+        {
+            if (_manageServiceInputView != null)
+            {
+                _manageServiceInputView.RequestClose();
+            }
         }
     }
 }

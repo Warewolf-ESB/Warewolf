@@ -8,6 +8,7 @@
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
         xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         Style="{StaticResource WindowBorderlessStyle}"
         WindowStartupLocation="CenterScreen"
         Topmost="True"
@@ -32,48 +33,53 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
-            <TextBlock Margin="5" Text="{x:Static languages:Core.TestHeader}" Style="{StaticResource SourceHeader}" x:Name="HeaderTextBlock" />
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Image Margin="5,0,0,0" Width="24" Height="24" Source="{Binding TestIconImageSource}" />
+            <TextBlock Margin="{StaticResource ElementBorder}" Text="{x:Static languages:Core.WebGetTestHeader}" Style="{StaticResource SourceHeader}" x:Name="HeaderTextBlock" />
         </StackPanel>
 
         <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="50*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
-            <Grid Grid.Row="1" Margin="0" >
+
+            <Grid Margin="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
+                <ScrollViewer Grid.Column="0" Grid.Row="1"  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <ListBox x:Name="InputsList" 
                              Grid.IsSharedSizeScope="True" 
                              ItemsSource="{Binding Inputs}" 
                              BorderBrush="Transparent" 
                              MaxHeight="125"
-                             ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" >
+                             ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
+                             Background="Transparent">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" >
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="{Binding Name}" />
-                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="50*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Path=Name}" Width="85"/>
+                                        <TextBlock Text="{Binding Path=Name}"/>
                                         <TextBox Grid.Column="1" 
                                                  Margin="{StaticResource ControlBorderLeft}" 
                                                  Text="{Binding Path=Value}" 
-                                                 Width="200"  customControls:WatermarkTextBox.Watermark="Test Data"
+                                                 customControls:WatermarkTextBox.Watermark="Test Data"
                                                  ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
@@ -85,52 +91,104 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </ScrollViewer>
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <customControls:CircularProgressBar Width="25"
-                                                        HorizontalAlignment="Right" 
-                                                        Margin="{StaticResource ControlBorderRight}"
-                                                        Height="25"
-                                                        Padding="2.5"
-                                                        Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
-                    <Button x:Name="TestActionButton" 
-                            HorizontalAlignment="Right" 
-                            Command="{Binding TestCommand}" 
-                            Click="TestActionButton_OnClick"
-                            ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                            Width="100">Test
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </Button>
-                </StackPanel>
             </Grid>
-            <TextBlock Grid.Row="2" 
-                       Margin="0,3,0,0"
-                       Text="{x:Static languages:Core.OutputsLabel}" 
-                       FontWeight="Bold" 
-                       Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"/>
-            <ScrollViewer Grid.Row="3" 
-                          Grid.Column="0" 
-                          VerticalAlignment="Top"
-                          HorizontalScrollBarVisibility="Auto" 
-                          VerticalScrollBarVisibility="Auto">
-                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                    <TextBlock Text="{Binding TestResults}" 
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Stretch" 
-                               VerticalAlignment="Stretch">
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                <customControls:CircularProgressBar Width="25"
+                                                    HorizontalAlignment="Right" 
+                                                    Margin="{StaticResource ControlBorderRight}"
+                                                    Height="25"
+                                                    Padding="2.5"
+                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
+                <Button Width="25" 
+                        Height="25"
+                        x:Name="PasteButton"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Command="{Binding PasteResponseCommand}" 
+                        ToolTip="{x:Static languages:Core.ManageWebServicePasteTooltip}"
+                        VerticalAlignment="Top">
+                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                    FontSize="16" 
+                                    FontWeight="DemiBold" 
+                                    Icon="Pencil" 
+                                    VerticalAlignment="Top" 
+                                    HorizontalAlignment="Center"/>
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
-                    </TextBlock>
-                </Grid>
-            </ScrollViewer>
-            <TextBlock Grid.Row="3" 
-                       Text="None" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
+                </Button>
+                <Button x:Name="TestActionButton" 
+                        HorizontalAlignment="Right" 
+                        Command="{Binding TestCommand}" 
+                        Click="TestActionButton_OnClick"
+                        ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                        Width="100">Test
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+            </StackPanel>
+
+            <Grid x:Name="OutputsGrid" Grid.Row="2" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" />
+                <ScrollViewer Grid.Row="1" 
+                              Grid.Column="0" 
+                              VerticalAlignment="Top"
+                              HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto">
+                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                        <TextBlock Text="{Binding TestResults}" 
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Stretch" 
+                                   VerticalAlignment="Stretch">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </Grid>
+                </ScrollViewer>
+                <TextBlock Grid.Row="1"
+                           Text="None" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+            </Grid>
+
+            <Grid x:Name="ResponseGrid" Grid.Row="2" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Paste Response" FontWeight="Bold" />
+
+                <TextBox Grid.Row="1"
+                         Text="{Binding TestResults}" 
+                         x:Name="ResponseTextbox"
+                         Style="{StaticResource StretchedTextBoxStyle}"
+                         customControls:WatermarkTextBox.Watermark="Paste response here"
+                         SnapsToDevicePixels="True" 
+                         VerticalScrollBarVisibility="Auto"
+                         ToolTip="{x:Static languages:Core.ManageWebPasteResponseTooltip}"
+                         HorizontalScrollBarVisibility="Disabled" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteInputHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
                 <Button x:Name="DoneButton" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"

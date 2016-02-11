@@ -341,6 +341,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     Outputs = new ObservableCollection<IServiceOutputMapping>(ManageServiceInputViewModel.OutputMappings);
                     OutputDescription = ManageServiceInputViewModel.Description;
                 };
+                ManageServiceInputViewModel.CloseView();
                 ManageServiceInputViewModel.ShowView();
                 if (ManageServiceInputViewModel.OkSelected)
                 {
