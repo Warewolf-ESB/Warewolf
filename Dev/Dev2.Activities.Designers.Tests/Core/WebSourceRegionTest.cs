@@ -69,9 +69,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             var id = Guid.NewGuid();
             var act = new DsfWebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
-            var websrc = new WebServiceSourceDefinition() { Id = id };
+            var websrc = new WebServiceSourceDefinition() { Id = id ,HostName = "bob"};
 
-            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
+            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid(), HostName = "bob" };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
