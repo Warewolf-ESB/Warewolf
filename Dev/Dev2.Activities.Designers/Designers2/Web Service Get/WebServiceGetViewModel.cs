@@ -111,6 +111,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Errors.Clear();
             
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            if (!Outputs.IsVisible)
+            {
+                Errors = new List<IActionableErrorInfo>(){new ActionableErrorInfo(){Message = "Web get must be validated before minimising"}};
+            }
             if (Source.Errors.Count > 0)
             {
                 foreach (var designValidationError in Source.Errors)
