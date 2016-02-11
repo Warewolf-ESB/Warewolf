@@ -27,10 +27,10 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
-            Assert.AreEqual(region.CurrentHeight, 20);
-            Assert.AreEqual(region.MaxHeight, 20);
-            Assert.AreEqual(region.MinHeight, 20);
-            Assert.AreEqual(region.Errors.Count,1);
+            Assert.AreEqual(25,region.CurrentHeight);
+            Assert.AreEqual(25,region.MaxHeight);
+            Assert.AreEqual(25,region.MinHeight);
+            Assert.AreEqual(1,region.Errors.Count);
             Assert.IsTrue(region.IsVisible);
         }
         [TestMethod]
