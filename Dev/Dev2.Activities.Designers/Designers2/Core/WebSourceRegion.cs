@@ -188,7 +188,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
-                    StorePreviousValues(_selectedSource.Id);
+                    if(! String.IsNullOrEmpty(_selectedSource.HostName))
+                        StorePreviousValues(_selectedSource.Id);
                 }
 
                 if (IsAPreviousValue(value) && _selectedSource != null)
