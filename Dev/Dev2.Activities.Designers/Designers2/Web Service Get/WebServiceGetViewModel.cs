@@ -43,17 +43,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
         // ReSharper restore UnusedMember.Local
-       [ExcludeFromCodeCoverage]
+        [ExcludeFromCodeCoverage]
         public WebServiceGetViewModel(ModelItem modelItem)
             : base(modelItem)
         {
- 
+
             LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
-        
+
             SetupCommonProperties();
         }
 
@@ -69,10 +69,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             UpdateWorstError();
         }
 
-        public WebServiceGetViewModel(ModelItem modelItem,IWebServiceModel model )
+        public WebServiceGetViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
-       
+
             LabelWidth = 45;
 
             Model = model;
@@ -88,22 +88,22 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 Errors = new List<IActionableErrorInfo>();
             }
-                Errors.Clear();
-            
+            Errors.Clear();
+
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!Outputs.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo>(){new ActionableErrorInfo(){Message = "Web get must be validated before minimising"}};
+                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web get must be validated before minimising" } };
             }
             if (Source.Errors.Count > 0)
-          {
-              foreach (var designValidationError in Source.Errors)
-              {
+            {
+                foreach (var designValidationError in Source.Errors)
+                {
                     DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
-              }
-         
-          }
-          UpdateWorstError();
+                }
+
+            }
+            UpdateWorstError();
         }
 
         void UpdateWorstError()
@@ -147,18 +147,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
-   
-      
 
-    
+
+
+
 
             BuildRegions();
 
             ManageServiceInputViewModel = manageServiceInputViewModel;
-          //  eventPublisher.Subscribe(this);
+            //  eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
-        
+
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             if (Outputs != null && Outputs.IsVisible)
             {
-    
+
                 var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -333,7 +333,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 if (Outputs.Outputs.Count > 0)
                 {
                     Outputs.IsVisible = true;
-            
+
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -356,8 +356,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             ReCalculateHeight();
             if (TestInputCommand != null)
             {
-            TestInputCommand.RaiseCanExecuteChanged();
-        }
+                TestInputCommand.RaiseCanExecuteChanged();
+            }
         }
 
         #endregion
@@ -424,7 +424,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                             var errorMessage = string.Join(Environment.NewLine, responseService.Recordsets.Select(recordset => recordset.ErrorMessage));
                             throw new Exception(errorMessage);
                         }
-                       
+
                         ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
                         // ReSharper disable MaximumChainedReferences
                         var outputMapping = responseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
@@ -451,21 +451,31 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     {
 
                         Outputs.IsVisible = false;
-                         ErrorMessage(e);
+                        ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
                 ManageServiceInputViewModel.OkAction = () =>
                 {
-                    Outputs.Outputs.Clear();
-                    foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                    try
                     {
-                        Outputs.Outputs.Add(serviceOutputMapping);
+                        Outputs.Outputs.Clear();
+                        foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                        {
+                            Outputs.Outputs.Add(serviceOutputMapping);
+                        }
+
+                        Outputs.Description = ManageServiceInputViewModel.Description;
+                        Outputs.IsVisible = Outputs.Outputs.Count > 0;
                     }
-                    
-                    Outputs.Description = ManageServiceInputViewModel.Description;
-                    Outputs.IsVisible = Outputs.Outputs.Count > 0;
+                    catch (Exception e)
+                    {
+                        Outputs.IsVisible = false;
+                        ErrorMessage(e);
+                        ManageServiceInputViewModel.IsTesting = false;
+                        ManageServiceInputViewModel.CloseCommand.Execute(null);
+                    }
                 };
                 ManageServiceInputViewModel.CloseView();
                 ManageServiceInputViewModel.ShowView();
@@ -521,7 +531,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
                 Response = "",
-                
+
             };
         }
 
@@ -584,5 +594,5 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         #endregion
     }
 
-   
+
 }
