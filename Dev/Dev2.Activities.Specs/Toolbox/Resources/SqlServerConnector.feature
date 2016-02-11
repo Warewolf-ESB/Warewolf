@@ -36,7 +36,7 @@ Scenario: Creating SQL Server Connector
 	And Recordset Name equals "dbo_ImportOrder"	
 
 Scenario: Opening Saved workflow with SQL Server tool
-   Given I open "Wolf-860"
+   Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
 	And Action is Enabled
@@ -53,7 +53,7 @@ Scenario: Opening Saved workflow with SQL Server tool
 	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change Source on Existing tool
-	Given I open "Wolf-860"
+	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
 	And Action is Enabled
@@ -77,7 +77,7 @@ Scenario: Change Source on Existing tool
 #Spec to be modified once test results section is included in tool window
 @ignore
  Scenario: Editing DB Service and Test Execution is unsuccesful
-   Given I open "InsertDummyUser" service
+   Given I open workflow with database connector
    And "InsertDummyUser" tab is opened
    Then "1 Data Source" is "Enabled"
    And Data Source is focused
@@ -101,7 +101,7 @@ Scenario: Change Source on Existing tool
 
 
 Scenario: Changing Actions
-	Given I open "Wolf-860"
+	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
 	And Action is Enabled
@@ -124,7 +124,7 @@ Scenario: Changing Actions
 	And Validate is Enabled	
 
 Scenario: Change Recordset Name
-	Given I open "Wolf-860"
+	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
 	And Action is Enabled
