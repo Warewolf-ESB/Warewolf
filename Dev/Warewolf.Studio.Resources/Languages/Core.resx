@@ -1462,6 +1462,18 @@ Connected Servers will be Disconnected and vice versa. &lt;br/&gt;
   <data name="TestHeader" xml:space="preserve">
     <value>Test Connector and Calculate Outputs</value>
   </data>
+  <data name="SqlServerDbTestHeader" xml:space="preserve">
+    <value>SQL Server Database Test Connector and Calculate Outputs</value>
+  </data>
+  <data name="MySqlTestHeader" xml:space="preserve">
+    <value>MySQL Database Test Connector and Calculate Outputs</value>
+  </data>
+  <data name="DotNetDllTestHeader" xml:space="preserve">
+    <value>DotNet DLL Test Connector and Calculate Outputs</value>
+  </data>
+  <data name="WebGetTestHeader" xml:space="preserve">
+    <value>Web Get Request Test Connector and Calculate Outputs</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
