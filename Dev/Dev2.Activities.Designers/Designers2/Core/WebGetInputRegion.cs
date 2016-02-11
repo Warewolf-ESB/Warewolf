@@ -66,10 +66,6 @@ namespace Dev2.Activities.Designers2.Core
             ResetInputsHeight();
         }
 
-        private void UpdateRequestVariables(string obj)
-        {
-        }
-
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ResetInputsHeight();

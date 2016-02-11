@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem)
         {
             _modelItem = modelItem;
-            if (_modelItem.GetProperty("Outputs") == null)
+            if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
             {
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
                 if(current == null)
@@ -64,7 +64,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsOutputsEmptyRows");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
         private bool _outputMappingEnabled;
         private string _recordsetName;

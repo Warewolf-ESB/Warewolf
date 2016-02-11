@@ -66,41 +66,20 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
+            UpdateWorstError();
         }
 
-        public WebServiceGetViewModel(ModelItem modelItem,IShellViewModel shell,IWebServiceModel model )
+        public WebServiceGetViewModel(ModelItem modelItem,IWebServiceModel model )
             : base(modelItem)
         {
        
             LabelWidth = 45;
-            var shellViewModel = shell;
-           
+
             Model = model;
 
             SetupCommonProperties();
         }
-        //public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
-        //    : base(modelItem, regions)
-        //{
-        //    AddTitleBarMappingToggle();
-        //    NoError = new ErrorInfo
-        //    {
-        //        ErrorType = ErrorType.None,
-        //        Message = "Service Working Normally"
-        //    };
-        //}
-
-        //public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
-        //    : base(modelItem, showExampleWorkflow, regions)
-        //{
-        //    AddTitleBarMappingToggle();
-        //    NoError = new ErrorInfo
-        //    {
-        //        ErrorType = ErrorType.None,
-        //        Message = "Service Working Normally"
-        //    };
-        //}
-
+       
         #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
@@ -112,6 +91,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Errors.Clear();
             
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            if (!Outputs.IsVisible)
+            {
+                Errors = new List<IActionableErrorInfo>(){new ActionableErrorInfo(){Message = "Web get must be validated before minimising"}};
+            }
             if (Source.Errors.Count > 0)
             {
                 foreach (var designValidationError in Source.Errors)
@@ -149,6 +132,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
+            // ReSharper disable once UnusedMember.Local
             get { return _worstDesignError; }
             set
             {
@@ -230,7 +214,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
-        private bool CanTestProcedure()
+        public bool CanTestProcedure()
         {
             return Source.SelectedSource != null;
         }
@@ -502,7 +486,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
            Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
-        private void ValidateTestComplete()
+        public void ValidateTestComplete()
         {
             Outputs.IsVisible = true;
         }
@@ -576,6 +560,25 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
 
         public IWebServiceModel Model { get; set; }
+
+        public override void ReCalculateHeight()
+        {
+            if (_regions != null)
+            {
+                var isInputVisible = _regions[1].IsVisible;
+
+                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
+                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
+                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
+
+                if (isInputVisible)
+                {
+                    DesignMaxHeight += BaseHeight;
+                    DesignHeight += BaseHeight;
+                    DesignMinHeight += BaseHeight;
+                }
+            }
+        }
 
         #endregion
     }
