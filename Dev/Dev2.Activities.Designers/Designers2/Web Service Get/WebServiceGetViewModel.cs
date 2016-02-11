@@ -73,8 +73,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
        
             LabelWidth = 45;
-            var shellViewModel = shell;
-           
+
             Model = model;
 
             SetupCommonProperties();
@@ -576,6 +575,25 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
 
         public IWebServiceModel Model { get; set; }
+
+        public override void ReCalculateHeight()
+        {
+            if (_regions != null)
+            {
+                var isInputVisible = _regions[1].IsVisible;
+
+                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
+                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
+                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
+
+                if (isInputVisible)
+                {
+                    DesignMaxHeight += BaseHeight;
+                    DesignHeight += BaseHeight;
+                    DesignMinHeight += BaseHeight;
+                }
+            }
+        }
 
         #endregion
     }

@@ -152,7 +152,7 @@ namespace Dev2.Activities.Designers.Tests
     public class TestViewModelWithRegionsBase
     {
         [TestMethod]
-        public void TestMethod1()
+        public void CustomToolWithRegionBase_Ctor()
         {
             CustomToolWithRegionBase b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()));
             b.Regions=b.BuildRegions();
