@@ -64,13 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-        
-        [Given(@"Source is ""(.*)""")]
-        public void GivenSourceIs(string name)
-        {
-            var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.SourceVisible);
-        }
+                
         [Given(@"Source is Enable")]
         public void GivenSourceIsEnabled()
         {
