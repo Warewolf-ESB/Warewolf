@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core
         private IWebServiceSource _selectedSource;
         private ICollection<IWebServiceSource> _sources;
         private readonly ModelItem _modelItem;
-        Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
 
