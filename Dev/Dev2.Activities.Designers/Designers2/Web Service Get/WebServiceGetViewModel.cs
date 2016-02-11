@@ -2,25 +2,21 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
@@ -47,46 +43,43 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
         // ReSharper restore UnusedMember.Local
-        public WebServiceGetViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
+       [ExcludeFromCodeCoverage]
+        public WebServiceGetViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            AddTitleBarMappingToggle();
+ 
             LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
-            var pluginServiceModel = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
-            Model = pluginServiceModel;
+            var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            Model = model;
         
-            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageWebServiceInputViewModel());
-            NoError = new ErrorInfo
-            {
-                ErrorType = ErrorType.None,
-                Message = "Service Working Normally"
-            };
+            SetupCommonProperties();
         }
 
-        public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
-            : base(modelItem, regions)
+        private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
+            InitialiseViewModel(new ManageWebServiceInputViewModel());
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
+            UpdateWorstError();
         }
 
-        public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
-            : base(modelItem, showExampleWorkflow, regions)
+        public WebServiceGetViewModel(ModelItem modelItem,IWebServiceModel model )
+            : base(modelItem)
         {
-            AddTitleBarMappingToggle();
-            NoError = new ErrorInfo
-            {
-                ErrorType = ErrorType.None,
-                Message = "Service Working Normally"
-            };
-        }
+       
+            LabelWidth = 45;
 
+            Model = model;
+
+            SetupCommonProperties();
+        }
+       
         #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
@@ -98,14 +91,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Errors.Clear();
             
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            if (!Outputs.IsVisible)
+            {
+                Errors = new List<IActionableErrorInfo>(){new ActionableErrorInfo(){Message = "Web get must be validated before minimising"}};
+            }
             if (Source.Errors.Count > 0)
-          {
-              foreach (var designValidationError in Source.Errors)
-              {
+            {
+                foreach (var designValidationError in Source.Errors)
+                {
                     DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
-              }
-         
-          }
+                }
+
+            }
           UpdateWorstError();
         }
 
@@ -114,7 +111,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             if (DesignValidationErrors.Count == 0)
             {
                 DesignValidationErrors.Add(NoError);
-                if (!RootModel.HasErrors)
+                if (RootModel != null && !RootModel.HasErrors)
                 {
                     RootModel.IsValid = true;
                 }
@@ -135,6 +132,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
+            // ReSharper disable once UnusedMember.Local
             get { return _worstDesignError; }
             set
             {
@@ -147,24 +145,24 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageWebServiceInputViewModel manageServiceInputViewModel)
+        private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
-            VerifyArgument.IsNotNull("rootModel", rootModel);
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+   
+      
+
+    
 
             BuildRegions();
 
             ManageServiceInputViewModel = manageServiceInputViewModel;
-            eventPublisher.Subscribe(this);
+          //  eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
         
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
-            RootModel = rootModel;
+
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
@@ -216,7 +214,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
-        private bool CanTestProcedure()
+        public bool CanTestProcedure()
         {
             return Source.SelectedSource != null;
         }
@@ -243,7 +241,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public static readonly DependencyProperty WorstErrorProperty =
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
 
-        private bool _testComplete;
         private bool _testSuccessful;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
@@ -308,19 +305,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IContextualResourceModel RootModel { get; set; }
 
-        public bool TestComplete
-        {
-            get
-            {
-                return _testComplete;
-            }
-            set
-            {
-                _testComplete = value;
 
-                OnPropertyChanged();
-            }
-        }
 
         public int LabelWidth { get; set; }
 
@@ -348,9 +333,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 if(Outputs.Outputs.Count>0)
                 {
                     Outputs.IsVisible = true;
-                    TestComplete = true;
+            
                 }
-                regions.Add(new ErrorRegion());
+                ErrorRegion = new ErrorRegion();
+                regions.Add(ErrorRegion);
                 Source.Dependants.Add(InputArea);
                 Source.Dependants.Add(Outputs);
             }
@@ -362,6 +348,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             ReCalculateHeight();
             return regions;
         }
+
+        public ErrorRegion ErrorRegion { get; set; }
 
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
@@ -462,7 +450,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     catch (Exception e)
                     {
 
-                        TestComplete = false;
+                        Outputs.IsVisible = false;
                          ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
@@ -498,7 +486,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
            Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
-        private void ValidateTestComplete()
+        public void ValidateTestComplete()
         {
             Outputs.IsVisible = true;
         }
@@ -573,6 +561,27 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IWebServiceModel Model { get; set; }
 
+        public override void ReCalculateHeight()
+        {
+            if (_regions != null)
+            {
+                var isInputVisible = _regions[1].IsVisible;
+
+                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
+                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
+                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
+
+                if (isInputVisible)
+                {
+                    DesignMaxHeight += BaseHeight;
+                    DesignHeight += BaseHeight;
+                    DesignMinHeight += BaseHeight;
+                }
+            }
+        }
+
         #endregion
     }
+
+   
 }
