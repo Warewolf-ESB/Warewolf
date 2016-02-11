@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Communication;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
