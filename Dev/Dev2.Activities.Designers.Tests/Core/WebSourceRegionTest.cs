@@ -90,6 +90,32 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
+        public void ChangeSelectedSource_ExpectRegionsNotRestoredInvalid()
+        {
+            var id = Guid.NewGuid();
+            var act = new DsfWebGetActivity() { SourceId = id };
+            var src = new Mock<IWebServiceModel>();
+            var websrc = new WebServiceSourceDefinition() { Id = id };
+
+            var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid()};
+            src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
+            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+
+            var clone1 = new Mock<IToolRegion>();
+            var clone2 = new Mock<IToolRegion>();
+            var dep1 = new Mock<IToolRegion>();
+            dep1.Setup(a => a.CloneRegion()).Returns(clone1.Object);
+
+            var dep2 = new Mock<IToolRegion>();
+            dep2.Setup(a => a.CloneRegion()).Returns(clone2.Object);
+            region.Dependants = new List<IToolRegion> { dep1.Object, dep2.Object };
+            region.SelectedSource = s2;
+            region.SelectedSource = websrc;
+            dep1.Verify(a => a.RestoreRegion(clone1.Object),Times.Never);
+            dep2.Verify(a => a.RestoreRegion(clone2.Object), Times.Never);
+        }
+
+        [TestMethod]
         public void CloneRegionExpectClone()
         {
             var id = Guid.NewGuid();
