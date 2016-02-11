@@ -26,6 +26,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     {
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
+        private DbSourceDefinition _testingDbSource;
+        private DbAction _getCountriesAction;
+
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
         {
@@ -64,7 +67,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-                
+        [Given(@"Source iss ""(.*)""")]
+        public void GivenSourceIs(string sourceName)
+        {
+            var selectedSource = GetViewModel().SelectedSource;
+            Assert.IsNotNull(selectedSource);
+            Assert.AreEqual(sourceName, selectedSource.Name);
+        }
         [Given(@"Source is Enable")]
         public void GivenSourceIsEnabled()
         {
@@ -85,7 +94,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
-
+        [Given(@"Action iss ""(.*)""")]
+        public void GivenActionIs(string actionName)
+        {
+            var selectedProcedure = GetViewModel().SelectedProcedure;
+            Assert.IsNotNull(selectedProcedure);
+            Assert.AreEqual(actionName, selectedProcedure.Name);
+        }
         [Given(@"Action is dbo\.Pr_CitiesGetCountries")]
         public void GivenActionIsDbo_Pr_CitiesGetCountries()
         {
@@ -99,6 +114,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Given(@"Inputs is Disable")]
+        [When(@"Inputs is Disable")]
+        [Then(@"Inputs is Disable")]
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -106,7 +123,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasNoInputs);
         }
 
+        
         [Given(@"Outputs is Disable")]
+        [When(@"Outputs is Disable")]
+        [Then(@"Outputs is Disable")]
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -115,12 +135,22 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Given(@"Validate is Disable")]
+        [When(@"Validate is Disable")]
+        [Then(@"Validate is Disable")]
         public void GivenValidateIsDisabled()
         {
             var viewModel = GetViewModel();
             Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
         }
-
+        [When(@"Source iz changed from to ""(.*)""")]
+        public void WhenSourceIsChangedFromTo(string sourceName)
+        {
+            if (sourceName == "GreenPoint")
+            {
+                var viewModel = GetViewModel();
+                viewModel.SelectedSource = _greenPointSource;
+            }
+        }
         [Given(@"Action is Enable")]
         [Then(@"Action is Enable")]
         [When(@"Action is Enable")]
@@ -129,14 +159,27 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.ActionVisible);
         }
+      
+
         [Given(@"Inputs is Enable")]
-        public void GivenInputsIsEnabled()
+        [When(@"Inputs is Enable")]
+        [Then(@"Inputs is Enable")]
+        public void ThenInputsIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.Inputs != null || viewModel.InputsVisible;
+            Assert.IsTrue(hasInputs);
         }
-        
-       
-        
+
+        [Given(@"Validate is Enable")]
+        [When(@"Validate is Enable")]
+        [Then(@"Validate is Enable")]
+        public void ThenValidateIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+        }
+
         [Given(@"Validate is Enable")]
         public void GivenValidateIsEnabled()
         {
@@ -148,9 +191,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
-        
-      
-        
+
+        [When(@"Action iz changed from to ""(.*)""")]
+        public void WhenActionIsChangedFromTo(string procName)
+        {
+            if (procName == "dbo.ImportOrder")
+            {
+                GetViewModel().SelectedProcedure = _importOrderAction;
+            }
+        }
+
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string p0)
         {
@@ -163,13 +213,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"Validate is Enable")]
-        public void ThenValidateIsEnabled()
+        [When(@"Recordset Name iz changed to ""(.*)""")]
+        public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
-            var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+            GetViewModel().RecordsetName = recSetName;
         }
-
+        [When(@"Inputs appear az")]
         [Then(@"Inputs appear az")]
         [Given(@"Inputs appear az")]
         public void ThenInputsAppearAs(Table table)
@@ -227,13 +276,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     
 
 
-        [Then(@"Inputs is Enable")]
-        public void ThenInputsIsEnabled()
-        {
-            var viewModel = GetViewModel();
-            var hasInputs = viewModel.Inputs != null || viewModel.InputsVisible;
-            Assert.IsTrue(hasInputs);
-        }
         [When(@"I click Testz")]
         public void WhenIClickTest()
         {
@@ -305,7 +347,66 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowIdx++;
             }
         }
+        [Given(@"I open workflow with Oracle connector")]
+        public void GivenIOpenWolf()
+        {
+            var sourceId = Guid.NewGuid();
+            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            var outputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
+                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
+            };
+            var oracleServerActivity = new DsfOracleDatabaseActivity
+            {
+                SourceId = sourceId,
+                ProcedureName = "dbo.Pr_CitiesGetCountries",
+                Inputs = inputs,
+                Outputs = outputs
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
+            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 
+            _greenPointSource = new DbSourceDefinition
+            {
+                Name = "GreenPoint",
+                Type = enSourceType.Oracle
+            };
+
+            _testingDbSource = new DbSourceDefinition
+            {
+                Name = "testingDBSrc",
+                Type = enSourceType.Oracle,
+                Id = sourceId
+            };
+            _importOrderAction = new DbAction
+            {
+                Name = "dbo.ImportOrder",
+                Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") }
+            };
+
+            _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
+            _getCountriesAction.Inputs = inputs;
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
+            mockServiceInputViewModel.SetupAllProperties();
+            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
+                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+        }
         [Then(@"Outputs appear az")]
         public void ThenOutputsAppearAs(Table table)
         {
@@ -319,6 +420,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var outputMapping = outputMappings.ToList()[rowIdx];
                 Assert.AreEqual(mappedFrom, outputMapping.MappedFrom);
                 Assert.AreEqual(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
             }
         }
 

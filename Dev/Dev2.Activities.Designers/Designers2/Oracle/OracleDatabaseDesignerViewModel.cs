@@ -869,6 +869,7 @@ namespace Dev2.Activities.Designers2.Oracle
                         {
                             ErrorMessage(new Exception("The selected database does not contain actions to perform"));
                         }
+                        ActionVisible = Procedures.Count != 0;
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {

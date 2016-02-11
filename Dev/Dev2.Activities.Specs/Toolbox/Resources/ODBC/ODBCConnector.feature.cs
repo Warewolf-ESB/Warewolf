@@ -149,21 +149,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
 this.ScenarioSetup(scenarioInfo);
 #line 35
-   testRunner.Given("I open \"Wolf-860\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I open workflow with ODBC connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
  testRunner.And("Source iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
- testRunner.And("Source is \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Source iz \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
  testRunner.And("Action iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.And("Action is dbo.Pr_CitiesGetCountries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action iz \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Inputs",
-                        "Default Value",
+                        "Input",
+                        "Value",
                         "Empty is Null"});
             table4.AddRow(new string[] {
                         "Prefix",
@@ -173,8 +173,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("Inputs appears az", ((string)(null)), table4, "Then ");
 #line 44
  testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
- testRunner.And("Mapping iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
@@ -185,9 +183,9 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 46
+#line 45
  testRunner.Then("Outputs appears az", ((string)(null)), table5, "Then ");
-#line 50
+#line 49
  testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -199,37 +197,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangeSourceOnExistingTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Existing tool", ((string[])(null)));
-#line 52
+#line 51
 this.ScenarioSetup(scenarioInfo);
+#line 52
+ testRunner.Given("I open workflow with ODBC connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 53
- testRunner.Given("I open Wolf-860", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Source iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
- testRunner.Then("\"Wolf-860\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Source iz \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
- testRunner.And("\"Source\" equals \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action iz \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.And("\"Action\" equals \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Inputs",
-                        "Default Value",
+                        "Input",
+                        "Value",
                         "Empty is Null"});
             table6.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 60
- testRunner.And("input mappings are", ((string)(null)), table6, "And ");
-#line 63
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
- testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+ testRunner.Then("Inputs appears az", ((string)(null)), table6, "Then ");
+#line 61
+ testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
@@ -240,20 +234,20 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 65
- testRunner.And("mappings are", ((string)(null)), table7, "And ");
+#line 62
+ testRunner.Then("Outputs appears az", ((string)(null)), table7, "Then ");
+#line 66
+ testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.When("Source iz changed to \"GreenPoint\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.And("Action iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
- testRunner.And("\"Recordset Name\" equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Inputs iz Disable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
- testRunner.When("\"Source\" is changed from \"localODBCTest\" to \"GreenPoint\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Outputs iz Disable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
- testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 72
- testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
- testRunner.And("\"Validate\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -266,25 +260,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing DB Service and Test Execution is unsuccesful", new string[] {
                         "ignore"});
-#line 78
+#line 75
  this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 76
    testRunner.Given("I open \"InsertDummyUser\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
+#line 77
    testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 78
    testRunner.Then("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
+#line 79
    testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 80
    testRunner.When("\"DemoDB\" is selected az the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 81
    testRunner.Then("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 82
    testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 83
    testRunner.Then("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 87
+#line 84
    testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -299,15 +293,15 @@ this.ScenarioSetup(scenarioInfo);
                         "wolf",
                         "Dev",
                         "10/1/1990"});
-#line 88
+#line 85
    testRunner.And("inputs are", ((string)(null)), table8, "And ");
-#line 91
+#line 88
    testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 89
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 90
    testRunner.When("testing the action fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 94
+#line 91
    testRunner.Then("\"4 Defaults and Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -315,16 +309,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 95
+#line 92
    testRunner.And("input mappings are", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias",
                         "Recordset Name"});
-#line 97
+#line 94
  testRunner.And("output mappings are", ((string)(null)), table10, "And ");
-#line 99
+#line 96
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -336,37 +330,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangingActions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions", ((string[])(null)));
-#line 102
+#line 99
 this.ScenarioSetup(scenarioInfo);
+#line 100
+ testRunner.Given("I open workflow with ODBC connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.And("Source iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.And("Source iz \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
- testRunner.Given("I open Wolf-860", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Action iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
- testRunner.Then("\"Wolf-860\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Action iz \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
- testRunner.And("\"Source\" equals \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
- testRunner.And("\"Action\" equals \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
- testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Inputs",
-                        "Default Value",
+                        "Input",
+                        "Value",
                         "Empty is Null"});
             table11.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 110
- testRunner.And("\"Input/Output\" mappings are", ((string)(null)), table11, "And ");
-#line 113
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
- testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.Then("Inputs appears az", ((string)(null)), table11, "Then ");
+#line 109
+ testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
@@ -377,60 +367,27 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
+#line 110
+ testRunner.Then("Outputs appears az", ((string)(null)), table12, "Then ");
+#line 114
+ testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
- testRunner.And("mappings are", ((string)(null)), table12, "And ");
-#line 119
- testRunner.When("\"Action\" is changed from \"dbo.Pr_CitiesGetCountries\" to \"dbo.ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
- testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Action iz changed to \"dbo.ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 116
+ testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Inputs",
-                        "Default Value",
+                        "Input",
+                        "Value",
                         "Empty is Null"});
             table13.AddRow(new string[] {
-                        "ProductID",
+                        "ProductId",
                         "",
                         "false"});
-#line 121
- testRunner.And("\"Inputs/Outputs\" mappings are", ((string)(null)), table13, "And ");
-#line 124
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
- testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 127
- testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ProductId"});
-            table14.AddRow(new string[] {
-                        "1"});
-#line 128
- testRunner.And("inputs appears az", ((string)(null)), table14, "And ");
-#line 131
- testRunner.When("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Column1"});
-            table15.AddRow(new string[] {
-                        "1"});
-#line 132
- testRunner.Then("\"Test Connector and Calculate Outputs\" outputs appear as", ((string)(null)), table15, "Then ");
-#line 135
- testRunner.When("I click \"OK\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table16.AddRow(new string[] {
-                        "Column1",
-                        "[[dbo_ImportOrder().Column1]]"});
-#line 136
- testRunner.Then("mappings are", ((string)(null)), table16, "Then ");
-#line 139
- testRunner.And("\"Recordset Name\" equals \"dbo_ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+ testRunner.And("Inputs appears az", ((string)(null)), table13, "And ");
+#line 120
+ testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -441,65 +398,61 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangeRecordsetName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Recordset Name", ((string[])(null)));
-#line 142
+#line 123
 this.ScenarioSetup(scenarioInfo);
-#line 143
- testRunner.Given("I open Wolf-860", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 144
- testRunner.Then("\"Wolf-860\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 145
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
- testRunner.And("\"Source\" equals \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
- testRunner.And("\"Action\" equals \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
- testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+ testRunner.Given("I open workflow with ODBC connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 125
+ testRunner.And("Source iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+ testRunner.And("Source iz \"localODBCTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+ testRunner.And("Action iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+ testRunner.And("Action iz \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+ testRunner.And("Inputs iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Inputs",
-                        "Default Value",
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input",
+                        "Value",
                         "Empty is Null"});
-            table17.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 150
- testRunner.And("input mappings are", ((string)(null)), table17, "And ");
-#line 153
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
- testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+ testRunner.Then("Inputs appears az", ((string)(null)), table14, "Then ");
+#line 133
+ testRunner.And("Validate iz Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table18.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table18.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 155
- testRunner.And("mappings are", ((string)(null)), table18, "And ");
-#line 159
- testRunner.And("\"Recordset Name\" equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
- testRunner.When("\"Recordset Name\" is changed from \"dbo_Pr_CitiesGetCountries\" to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 134
+ testRunner.Then("Outputs appears az", ((string)(null)), table15, "Then ");
+#line 138
+ testRunner.And("Recordset Name equal \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+ testRunner.When("Recordset Name iz changed from to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table19.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "CountryID",
                         "[[Pr_Cities().CountryID]]"});
-            table19.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "Description",
                         "[[Pr_Cities().Description]]"});
-#line 161
- testRunner.Then("mappings are", ((string)(null)), table19, "Then ");
+#line 140
+ testRunner.Then("Outputs appears az", ((string)(null)), table16, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
