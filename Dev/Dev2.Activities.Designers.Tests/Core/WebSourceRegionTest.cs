@@ -143,6 +143,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            // ReSharper disable once UseObjectOrCollectionInitializer
             WebSourceRegion regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.MaxHeight = 144;
             regionToRestore.MinHeight = 133;
