@@ -32,17 +32,16 @@ Scenario: Creating ODBC Server Connector
 	And Recordset Name equal "Command"	
 
 Scenario: Opening Saved workflow with ODBC Server tool
-   Given I open "Wolf-860"
+   Given I open workflow with ODBC connector
 	And Source iz Enable
-	And Source is "localODBCTest"
+	And Source iz "localODBCTest"
 	And Action iz Enable
-	And Action is dbo.Pr_CitiesGetCountries
+	And Action iz "dbo.Pr_CitiesGetCountries"
 	And Inputs iz Enable
 	Then Inputs appears az
-	| Inputs | Default Value | Empty is Null |
+	| Input | Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
 	And Validate iz Enable
-	And Mapping iz Enable
 	Then Outputs appears az
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
@@ -50,28 +49,26 @@ Scenario: Opening Saved workflow with ODBC Server tool
 	And Recordset Name equal "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change Source on Existing tool
-	Given I open Wolf-860
-	Then "Wolf-860" tab is opened
-	And "Source" is "Enabled"
-	And "Source" equals "localODBCTest"
-	And "Action" is "Enabled"
-	And "Action" equals "dbo.Pr_CitiesGetCountries"
-	And "Input/Output" is "Enabled"
-	And input mappings are
-	| Inputs | Default Value | Empty is Null |
+	Given I open workflow with ODBC connector
+	And Source iz Enable
+	And Source iz "localODBCTest"
+	And Action iz Enable
+	And Action iz "dbo.Pr_CitiesGetCountries"
+	And Inputs iz Enable
+	Then Inputs appears az
+	| Input | Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And "Validate" is "Enabled"
-	And "Mapping" is "Enabled"
-	And mappings are
+	And Validate iz Enable
+	Then Outputs appears az
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And "Recordset Name" equals "dbo_Pr_CitiesGetCountries"
-	When "Source" is changed from "localODBCTest" to "GreenPoint"
-	Then "Action" is "Enabled"
-	And "Inputs/Outputs" is "Disabled" 
-	And "Mapping" is "Disabled" 
-	And "Validate" is "Disabled"
+	And Recordset Name equal "dbo_Pr_CitiesGetCountries"
+	When Source iz changed to "GreenPoint"
+	And Action iz Enable
+	And Inputs iz Disable
+	And Outputs iz Disable  
+	And Validate iz Enable
 
 #Spec to be modified once test results section is included in tool window
 @ignore
@@ -100,65 +97,47 @@ Scenario: Change Source on Existing tool
 
 
 Scenario: Changing Actions
-	Given I open Wolf-860
-	Then "Wolf-860" tab is opened
-	And "Source" is "Enabled"
-	And "Source" equals "localODBCTest"
-	And "Action" is "Enabled"
-	And "Action" equals "dbo.Pr_CitiesGetCountries"
-	And "Input/Output" is "Enabled"
-	And "Input/Output" mappings are
-	| Inputs | Default Value | Empty is Null |
+	Given I open workflow with ODBC connector
+	And Source iz Enable
+	And Source iz "localODBCTest"
+	And Action iz Enable
+	And Action iz "dbo.Pr_CitiesGetCountries"
+	And Inputs iz Enable
+	Then Inputs appears az
+	| Input | Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And "Validate" is "Enabled"
-	And "Mapping" is "Enabled"
-	And mappings are
+	And Validate iz Enable
+	Then Outputs appears az
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	When "Action" is changed from "dbo.Pr_CitiesGetCountries" to "dbo.ImportOrder"
-	Then "Inputs/Outputs" is "Enabled" 
-	And "Inputs/Outputs" mappings are
-	| Inputs    | Default Value | Empty is Null |
-	| ProductID |               | false         |
-	And "Mapping" is "Disabled" 
-	And "Validate" is "Enabled"
-	When I click "Validate"
-	Then the "Test Connector and Calculate Outputs" window is opened
-	And inputs appears az
-	| ProductId |
-	| 1         |
-	When I click "Test"
-	Then "Test Connector and Calculate Outputs" outputs appear as
-	| Column1 |
-	| 1       |
-	When I click "OK"
-	Then mappings are
-	| Mapped From | Mapped To                     |
-	| Column1     | [[dbo_ImportOrder().Column1]] |
-	And "Recordset Name" equals "dbo_ImportOrder"
+	And Recordset Name equal "dbo_Pr_CitiesGetCountries"
+	When Action iz changed to "dbo.ImportOrder"
+	And Inputs iz Enable
+	And Inputs appears az
+	| Input    | Value | Empty is Null |
+	| ProductId |               | false         |	
+	And Validate iz Enable	
 
 
 Scenario: Change Recordset Name
-	Given I open Wolf-860
-	Then "Wolf-860" tab is opened
-	And "Source" is "Enabled"
-	And "Source" equals "localODBCTest"
-	And "Action" is "Enabled"
-	And "Action" equals "dbo.Pr_CitiesGetCountries"
-	And "Input/Output" is "Enabled"
-	And input mappings are
-	| Inputs | Default Value | Empty is Null |
+	Given I open workflow with ODBC connector
+	And Source iz Enable
+	And Source iz "localODBCTest"
+	And Action iz Enable
+	And Action iz "dbo.Pr_CitiesGetCountries"
+	And Inputs iz Enable
+	Then Inputs appears az
+	| Input | Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And "Validate" is "Enabled"
-	And "Mapping" is "Enabled"
-	And mappings are
+	And Validate iz Enable
+	Then Outputs appears az
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And "Recordset Name" equals "dbo_Pr_CitiesGetCountries"
-	When "Recordset Name" is changed from "dbo_Pr_CitiesGetCountries" to "Pr_Cities"
-	Then mappings are
+	And Recordset Name equal "dbo_Pr_CitiesGetCountries"
+	When Recordset Name iz changed from to "Pr_Cities"
+	Then Outputs appears az
 	| Mapped From | Mapped To                   |
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |
