@@ -128,6 +128,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
+            // ReSharper disable once UnusedMember.Local
             get { return _worstDesignError; }
             set
             {
