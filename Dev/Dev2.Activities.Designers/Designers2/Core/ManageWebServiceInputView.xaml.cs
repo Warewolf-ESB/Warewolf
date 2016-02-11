@@ -12,6 +12,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             InitializeComponent();
             DoneButton.IsEnabled = false;
+            KeyDown += OnKeyDown;
+        }
+
+        void OnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.Key == Key.Escape)
+            {
+                RequestClose();
+            }
         }
 
         public void ShowView()
@@ -26,6 +35,8 @@ namespace Dev2.Activities.Designers2.Core
 
         void TestActionButton_OnClick(object sender, RoutedEventArgs e)
         {
+            ResponseGrid.Visibility = Visibility.Collapsed;
+            OutputsGrid.Visibility = Visibility.Visible;
             DoneButton.IsEnabled = true;
         }
 

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Microsoft.Practices.Prism.Commands;
@@ -141,15 +142,26 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public ImageSource TestIconImageSource { get; set; }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
         public IDatabaseService Model { get; set; }
         public Action OkAction { get; set; }
 
+        public string TestHeader { get; set; }
+
         public void ShowView()
         {
             _manageServiceInputView = new ManageServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
+        }
+
+        public void CloseView()
+        {
+            if (_manageServiceInputView != null)
+            {
+                _manageServiceInputView.RequestClose();
+            }
         }
     }
 }
