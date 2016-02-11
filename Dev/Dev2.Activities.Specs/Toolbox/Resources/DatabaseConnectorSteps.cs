@@ -196,8 +196,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Given(@"I open ""(.*)""")]
-        public void GivenIOpenWolf(string resourceName)
+        [Given(@"I open workflow with database connector")]
+        public void GivenIOpenWolf()
         {
             var sourceId = Guid.NewGuid();
             var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };

@@ -17,7 +17,7 @@
         Height="450"
         MouseDown="ManageServiceInputView_OnMouseDown"
         d:DesignHeight="450" d:DesignWidth="600"
-        d:DataContext="{d:DesignInstance Type=interfaces:IManageServiceInputViewModel , IsDesignTimeCreatable=False}">
+        d:DataContext="{d:DesignInstance Type=interfaces:IManageDatabaseInputViewModel , IsDesignTimeCreatable=False}">
 
     <Window.Resources>
         <ResourceDictionary>
