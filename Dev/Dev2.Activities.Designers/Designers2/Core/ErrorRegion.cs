@@ -7,11 +7,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ErrorRegion:IToolRegion
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-
         public ErrorRegion()
         {
             IsVisible = true;
@@ -29,60 +24,21 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IToolRegion
 
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-            }
-        }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
 
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
-            return null;
+            return new ErrorRegion();
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
+
         }
 
         public IList<string> Errors

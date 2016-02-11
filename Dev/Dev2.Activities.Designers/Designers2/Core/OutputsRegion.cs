@@ -64,7 +64,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsOutputsEmptyRows");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
         private bool _outputMappingEnabled;
         private string _recordsetName;

@@ -66,9 +66,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
+            UpdateWorstError();
         }
 
-        public WebServiceGetViewModel(ModelItem modelItem,IShellViewModel shell,IWebServiceModel model )
+        public WebServiceGetViewModel(ModelItem modelItem,IWebServiceModel model )
             : base(modelItem)
         {
        
@@ -78,28 +79,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             SetupCommonProperties();
         }
-        //public WebServiceGetViewModel(ModelItem modelItem, IList<IToolRegion> regions)
-        //    : base(modelItem, regions)
-        //{
-        //    AddTitleBarMappingToggle();
-        //    NoError = new ErrorInfo
-        //    {
-        //        ErrorType = ErrorType.None,
-        //        Message = "Service Working Normally"
-        //    };
-        //}
-
-        //public WebServiceGetViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
-        //    : base(modelItem, showExampleWorkflow, regions)
-        //{
-        //    AddTitleBarMappingToggle();
-        //    NoError = new ErrorInfo
-        //    {
-        //        ErrorType = ErrorType.None,
-        //        Message = "Service Working Normally"
-        //    };
-        //}
-
+       
         #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
@@ -152,6 +132,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         IErrorInfo WorstDesignError
         {
+            // ReSharper disable once UnusedMember.Local
             get { return _worstDesignError; }
             set
             {
@@ -233,7 +214,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
-        private bool CanTestProcedure()
+        public bool CanTestProcedure()
         {
             return Source.SelectedSource != null;
         }
@@ -505,7 +486,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
            Errors = new List<IActionableErrorInfo>{new ActionableErrorInfo(new ErrorInfo(){ErrorType  = ErrorType.Critical,FixData = "",FixType = FixType.None,Message = exception.Message,StackTrace = exception.StackTrace},()=>{})};
         }
 
-        private void ValidateTestComplete()
+        public void ValidateTestComplete()
         {
             Outputs.IsVisible = true;
         }
