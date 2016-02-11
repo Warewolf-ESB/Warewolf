@@ -17,7 +17,9 @@
         MouseDown="ManagePluginServiceInputView_OnMouseDown"
         d:DesignHeight="450" d:DesignWidth="600"
         d:DataContext="{d:DesignInstance Type=interfaces:IManagePluginServiceInputViewModel, IsDesignTimeCreatable=False}">
-
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding Path=CloseCommand}"/>
+    </Window.InputBindings>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
