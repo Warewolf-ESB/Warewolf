@@ -11,11 +11,11 @@ namespace Dev2.Activities.Designers2.Core
     public abstract class CustomToolWithRegionBase : ActivityDesignerViewModel, INotifyPropertyChanged, ICustomToolViewModelWithRegionBase
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private IList<IToolRegion> _regions;
-        private double _designHeight;
-        private double _designMinHeight;
-        private double _designMaxHeight;
-        private const double BaseHeight = 120;
+        protected IList<IToolRegion> _regions;
+        protected double _designHeight;
+        protected double _designMinHeight;
+        protected double _designMaxHeight;
+        protected const double BaseHeight = 120;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -69,22 +69,13 @@ namespace Dev2.Activities.Designers2.Core
             ReCalculateHeight();
         }
 
-        public void ReCalculateHeight()
+        public virtual void ReCalculateHeight()
         {
             if(_regions != null)
             {
-                var isInputVisible = _regions[1].IsVisible;
-
                 DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
                 DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isInputVisible)
-                {
-                    DesignMaxHeight += BaseHeight;
-                    DesignHeight += BaseHeight;
-                    DesignMinHeight += BaseHeight;
-                }
             }
         }
 
