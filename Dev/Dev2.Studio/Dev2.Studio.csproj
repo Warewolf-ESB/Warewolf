@@ -37,6 +37,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>24cf3212</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -260,6 +261,10 @@
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFTextBoxAutoComplete">
       <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.0\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
+    </Reference>
+    <Reference Include="XamlSpy, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlSpyLibs.3.0.3\lib\net4\XamlSpy.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1074,7 +1079,9 @@ copy "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PostBuildEvent
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\XamlSpy.3.0.3\build\XamlSpy.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\XamlSpy.3.0.3\build\XamlSpy.targets'))" />
   </Target>
+  <Import Project="..\packages\XamlSpy.3.0.3\build\XamlSpy.targets" Condition="Exists('..\packages\XamlSpy.3.0.3\build\XamlSpy.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
