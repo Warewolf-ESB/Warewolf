@@ -34,9 +34,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string ErrorMessage { get; set; }
 
-        public List<RecordsetField> Fields { get; private set; }
+        public List<RecordsetField> Fields { get; set; }
 
-        public List<RecordsetRecord> Records { get; private set; }
+        public List<RecordsetRecord> Records { get; set; }
 
         #endregion
 

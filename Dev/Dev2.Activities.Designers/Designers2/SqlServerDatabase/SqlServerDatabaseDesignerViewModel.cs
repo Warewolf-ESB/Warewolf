@@ -1253,6 +1253,8 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                     if (_environment != null)
                     {
                         _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
+                        _environment.AuthorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsChanged;
+                        _environment.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
                     }
                 }
 
