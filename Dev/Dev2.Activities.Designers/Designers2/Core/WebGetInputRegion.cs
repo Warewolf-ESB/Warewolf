@@ -11,7 +11,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
@@ -352,6 +351,7 @@ namespace Dev2.Activities.Designers2.Core
         public double MaxHeight { get; set; }
         public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }
         public ObservableCollection<INameValue> Headers { get; set; }
         public string QueryString { get; set; }

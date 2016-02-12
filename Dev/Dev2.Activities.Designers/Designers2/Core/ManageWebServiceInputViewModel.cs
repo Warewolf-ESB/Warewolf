@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -29,31 +30,38 @@ namespace Dev2.Activities.Designers2.Core
         public ManageWebServiceInputViewModel()
         {
             IsTesting = false;
-            CloseCommand = new DelegateCommand(() =>
+            CloseCommand = new DelegateCommand(ExecuteClose);
+            OkCommand = new DelegateCommand(ExecuteOk);
+            PasteResponseCommand = new DelegateCommand(ExecutePaste);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private void ExecuteClose()
+        {
+            if (_manageServiceInputView != null)
             {
-                if (_manageServiceInputView != null)
-                {
-                    _manageServiceInputView.RequestClose();
-                }
-            });
-            OkCommand = new DelegateCommand(() =>
+                _manageServiceInputView.RequestClose();
+            }
+        }
+            [ExcludeFromCodeCoverage]
+        private void ExecuteOk()
+        {
+            if (_manageServiceInputView != null)
             {
-                if (_manageServiceInputView != null)
-                {
-                    OkAction();
-                    OkSelected = true;
-                    _manageServiceInputView.RequestClose();
-                }
-            });
-            PasteResponseCommand = new DelegateCommand(() =>
+                OkAction();
+                OkSelected = true;
+                _manageServiceInputView.RequestClose();
+            }
+        }
+            [ExcludeFromCodeCoverage]
+        private void ExecutePaste()
+        {
+            if (_manageServiceInputView != null)
             {
-                if (_manageServiceInputView != null)
-                {
-                    _manageServiceInputView.OutputsGrid.Visibility = Visibility.Collapsed;
-                    _manageServiceInputView.ResponseGrid.Visibility = Visibility.Visible;
-                    _manageServiceInputView.DoneButton.IsEnabled = true;
-                }
-            });
+                _manageServiceInputView.OutputsGrid.Visibility = Visibility.Collapsed;
+                _manageServiceInputView.ResponseGrid.Visibility = Visibility.Visible;
+                _manageServiceInputView.DoneButton.IsEnabled = true;
+            }
         }
 
         public ICollection<IServiceInput> Inputs
@@ -195,13 +203,13 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand PasteResponseCommand { get; private set; }
         public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
-
+        [ExcludeFromCodeCoverage]
         public virtual void ShowView()
         {
             _manageServiceInputView = new ManageWebServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
         }
-
+           [ExcludeFromCodeCoverage]
         public void CloseView()
         {
             if (_manageServiceInputView != null)
