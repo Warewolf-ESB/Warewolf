@@ -17,7 +17,9 @@
         MouseDown="ManagePluginServiceInputView_OnMouseDown"
         d:DesignHeight="450" d:DesignWidth="600"
         d:DataContext="{d:DesignInstance Type=interfaces:IManagePluginServiceInputViewModel, IsDesignTimeCreatable=False}">
-
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding Path=CloseCommand}"/>
+    </Window.InputBindings>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -48,7 +50,6 @@
             <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
             <Grid Grid.Row="1" Margin="0" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -59,34 +60,41 @@
                     <ListBox x:Name="InputsList" 
                              Grid.IsSharedSizeScope="True" 
                              ItemsSource="{Binding Inputs}" 
-                             BorderBrush="Transparent" 
+                             BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
                              MaxHeight="125"
-                             ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" >
+                             HorizontalContentAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
+                             Background="{StaticResource WarewolfPanelGreyBrush}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" >
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="{Binding Name}" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Path=Name}" Width="85"/>
-                                        <TextBox Grid.Column="1" 
-                                                 Margin="{StaticResource ControlBorderLeft}" 
-                                                 Text="{Binding Path=Value}" 
-                                                 Width="200"  customControls:WatermarkTextBox.Watermark="Test Data"
-                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                            <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
-                                            </i:Interaction.Behaviors>
-                                        </TextBox>
-                                    </Grid>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="InputName" 
+                                               Text="{Binding Path=Name}" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               MinWidth="50" 
+                                               MaxWidth="200" 
+                                               HorizontalAlignment="Stretch" 
+                                               ToolTip="{Binding Path=Name}"/>
+                                    <TextBox Grid.Column="1" 
+                                             Margin="{StaticResource ControlBorderLeft}" 
+                                             Text="{Binding Path=Value}" 
+                                             HorizontalAlignment="Stretch"
+                                             customControls:WatermarkTextBox.Watermark="Test Data"
+                                             ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </ScrollViewer>
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                     <customControls:CircularProgressBar Width="25"
                                                         HorizontalAlignment="Right" 
                                                         Margin="{StaticResource ControlBorderRight}"
