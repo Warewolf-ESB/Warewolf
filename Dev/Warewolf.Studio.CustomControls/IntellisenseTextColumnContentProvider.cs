@@ -21,14 +21,17 @@ namespace Warewolf.Studio.CustomControls
 
         public IntellisenseTextColumnContentProvider()
         {
-            _textBox = new IntellisenseTextBox
+            if(_textBox == null)
             {
-                Style = Application.Current.TryFindResource("DatagridIntellisenseTextBoxStyle") as Style,
-                IntellisenseProvider = new DefaultIntellisenseProvider(),
-                WrapInBrackets = false,
-                AcceptsReturn = false,
-                IsOpen =  true
-            };
+                _textBox = new IntellisenseTextBox
+                {
+                    Style = Application.Current.TryFindResource("DatagridIntellisenseTextBoxStyle") as Style,
+                    IntellisenseProvider = new DefaultIntellisenseProvider(),
+                    WrapInBrackets = false,
+                    AcceptsReturn = false,
+                    IsOpen = true
+                };
+            }
         }
 
         public override bool RemovePaddingDuringEditing
@@ -60,5 +63,15 @@ namespace Warewolf.Studio.CustomControls
         {
             return _textBox.Text;
         }
+
+        #region Overrides of ColumnContentProviderBase
+
+        public override void EditorRemoved()
+        {
+            BindingOperations.ClearBinding(_textBox, TextBox.TextProperty);
+            base.EditorRemoved();
+        }
+
+        #endregion
     }
 }
