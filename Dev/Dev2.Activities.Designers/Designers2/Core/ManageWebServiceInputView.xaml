@@ -13,9 +13,16 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True"
         mc:Ignorable="d" 
-        Width="700"
-        Height="800"
-        MouseDown="ManageWebServiceInputView_OnMouseDown"
+        Width="450"
+        MinWidth="450"
+        MaxWidth="700"
+        Height="600"
+        MinHeight="600"
+        MaxHeight="800"
+        ResizeMode="CanResizeWithGrip"
+        Background="Transparent"
+        AllowsTransparency="True"
+        MouseDown="ManageWebServiceInputView_OnMouseDown" 
         d:DesignHeight="450" d:DesignWidth="600"
         d:DataContext="{d:DesignInstance Type=interfaces:IManageWebServiceInputViewModel, IsDesignTimeCreatable=False}">
     <Window.InputBindings>
@@ -29,7 +36,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource WindowBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -41,70 +48,66 @@
         </StackPanel>
 
         <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="50*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid Margin="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
-                <ScrollViewer Grid.Column="0" Grid.Row="1"  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <ListBox x:Name="InputsList" 
-                             Grid.IsSharedSizeScope="True" 
-                             ItemsSource="{Binding Inputs}" 
-                             BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
-                             MaxHeight="300"
-                             HorizontalContentAlignment="Stretch"
-                             ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
-                             Background="{StaticResource WarewolfPanelGreyBrush}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="330" />
-                                        <ColumnDefinition Width="330" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock x:Name="InputName" 
-                                               Text="{Binding Path=Name}" 
-                                               TextTrimming="CharacterEllipsis" 
-                                               MinWidth="50" 
-                                               HorizontalAlignment="Stretch" 
-                                               ToolTip="{Binding Path=Name}"/>
-                                    <TextBox Margin="{StaticResource ControlBorderLeft}" 
-                                             Grid.Column="1"
-                                             Text="{Binding Path=Value}" 
-                                             HorizontalAlignment="Stretch" 
-                                             AcceptsReturn="True"
-                                             Height="Auto"
-                                             MaxHeight="45"
-                                             TextWrapping="Wrap"
-                                             VerticalAlignment="Stretch"
-                                             VerticalScrollBarVisibility="Auto"
-                                             HorizontalScrollBarVisibility="Disabled"
-                                             customControls:WatermarkTextBox.Watermark="Test Data"
-                                             ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                        <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
-                                        </i:Interaction.Behaviors>
-                                    </TextBox>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </ScrollViewer>
+                <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
+
+                <ListBox x:Name="InputsList" 
+                         Grid.Row="1"
+                         Grid.IsSharedSizeScope="True" 
+                         ItemsSource="{Binding Inputs}" 
+                         BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
+                         Height="Auto"
+                         MaxHeight="300"
+                         HorizontalContentAlignment="Stretch"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
+                         Background="{StaticResource WarewolfPanelGreyBrush}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="130" MaxWidth="330" />
+                                    <ColumnDefinition MinWidth="130" MaxWidth="330" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="InputName" 
+                                           Text="{Binding Path=Name}" 
+                                           TextTrimming="CharacterEllipsis" 
+                                           MinWidth="50" 
+                                           HorizontalAlignment="Stretch" 
+                                           ToolTip="{Binding Path=Name}"/>
+                                <TextBox Margin="{StaticResource ControlBorderLeft}" 
+                                         Grid.Column="1"
+                                         Text="{Binding Path=Value}" 
+                                         HorizontalAlignment="Stretch" 
+                                         AcceptsReturn="True"
+                                         Height="Auto"
+                                         MaxHeight="45"
+                                         TextWrapping="Wrap"
+                                         VerticalAlignment="Stretch"
+                                         VerticalScrollBarVisibility="Auto"
+                                         HorizontalScrollBarVisibility="Disabled"
+                                         customControls:WatermarkTextBox.Watermark="Test Data"
+                                         ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">

@@ -12,8 +12,15 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True"
         mc:Ignorable="d" 
-        Width="700"
-        Height="800"
+        Width="450"
+        MinWidth="450"
+        MaxWidth="700"
+        Height="600"
+        MinHeight="600"
+        MaxHeight="800"
+        ResizeMode="CanResizeWithGrip"
+        Background="Transparent"
+        AllowsTransparency="True"
         MouseDown="ManagePluginServiceInputView_OnMouseDown"
         d:DesignHeight="450" d:DesignWidth="600"
         d:DataContext="{d:DesignInstance Type=interfaces:IManagePluginServiceInputViewModel, IsDesignTimeCreatable=False}">
@@ -28,7 +35,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource WindowBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -43,21 +50,23 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
-            <Grid Grid.Row="1" Margin="0" >
+
+            <Grid Grid.Row="0" Margin="0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <ListBox x:Name="InputsList" 
+
+                <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
+
+                <ListBox x:Name="InputsList" 
+                             Grid.Row="1"
                              Grid.IsSharedSizeScope="True" 
                              ItemsSource="{Binding Inputs}" 
                              BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
@@ -65,20 +74,20 @@
                              HorizontalContentAlignment="Stretch"
                              ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
                              Background="{StaticResource WarewolfPanelGreyBrush}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="330" />
-                                        <ColumnDefinition Width="330" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock x:Name="InputName" 
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="130" MaxWidth="330" />
+                                    <ColumnDefinition MinWidth="130" MaxWidth="330" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="InputName" 
                                                Text="{Binding Path=Name}" 
                                                TextTrimming="CharacterEllipsis" 
                                                MinWidth="50" 
                                                HorizontalAlignment="Stretch" 
                                                ToolTip="{Binding Path=Name}"/>
-                                    <TextBox Margin="{StaticResource ControlBorderLeft}" 
+                                <TextBox Margin="{StaticResource ControlBorderLeft}" 
                                              Grid.Column="1"
                                              Text="{Binding Path=Value}" 
                                              HorizontalAlignment="Stretch" 
@@ -91,61 +100,70 @@
                                              HorizontalScrollBarVisibility="Disabled"
                                              customControls:WatermarkTextBox.Watermark="Test Data"
                                              ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                        <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
-                                        </i:Interaction.Behaviors>
-                                    </TextBox>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </ScrollViewer>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
-                    <customControls:CircularProgressBar Width="25"
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                <customControls:CircularProgressBar Width="25"
                                                         HorizontalAlignment="Right" 
                                                         Margin="{StaticResource ControlBorderRight}"
                                                         Height="25"
                                                         Padding="2.5"
                                                         Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
-                    <Button x:Name="TestActionButton" 
+                <Button x:Name="TestActionButton" 
                             HorizontalAlignment="Right" 
                             Command="{Binding TestCommand}" 
                             Click="TestActionButton_OnClick"
                             ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                             Width="100">Test
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </Button>
-                </StackPanel>
-            </Grid>
-            <TextBlock Grid.Row="2" 
-                       Margin="0,3,0,0"
-                       Text="{x:Static languages:Core.OutputsLabel}" 
-                       FontWeight="Bold" 
-                       Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"/>
-            <ScrollViewer Grid.Row="3" 
-                          Grid.Column="0" 
-                          VerticalAlignment="Top"
-                          HorizontalScrollBarVisibility="Auto" 
-                          VerticalScrollBarVisibility="Auto">
-                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                    <TextBlock Text="{Binding TestResults}" 
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Stretch" 
-                               VerticalAlignment="Stretch">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
-                    </TextBlock>
-                </Grid>
-            </ScrollViewer>
-            <TextBlock Grid.Row="3" 
-                       Text="None" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
+                </Button>
+            </StackPanel>
+
+            <Grid x:Name="OutputsGrid" Grid.Row="2" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" />
+                <ScrollViewer Grid.Row="1" 
+                              Grid.Column="0" 
+                              VerticalAlignment="Top"
+                              HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto">
+                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                        <TextBlock Text="{Binding TestResults}" 
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Stretch" 
+                                   VerticalAlignment="Stretch">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </Grid>
+                </ScrollViewer>
+                <TextBlock Grid.Row="1" 
+                           Text="None" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+            </Grid>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
                 <Button x:Name="DoneButton" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"
