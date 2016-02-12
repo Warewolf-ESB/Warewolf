@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -38,6 +39,21 @@ namespace Dev2
 
         #region Overrides of DsfNativeActivity<bool>
 
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            base.GetDebugInputs(env, update);
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a=>!(String.IsNullOrEmpty(a.Name)&&String.IsNullOrEmpty(a.Value)));
+            var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
+            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
+            string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
+
+
+            AddDebugInputItem(new DebugEvalResult(query, "URL", env, update));
+            AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", env, update));
+            AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
+          
+            return _debugInputs;
+        }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
@@ -54,12 +70,15 @@ namespace Dev2
             }
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             var query =  ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString,update));
-            if (dataObject.IsDebugMode())
-            {
-                AddDebugInputItem(new DebugEvalResult(query, "Query String", dataObject.Environment, update));
-            }
+
                      
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
+
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(query, "URL", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
+            }
             var client = CreateClient(head, query, url);
             var result = client.DownloadString(url.Address+query);
             //ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
@@ -75,7 +94,11 @@ namespace Dev2
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = serviceOutputMapping.MappedTo;
                 i++;
             }
-
+            if(OutputDescription == null)
+            {
+                dataObj.Environment.AddError("There are no outputs");
+                return;
+            }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
 
             input = formater.Format(input).ToString();
