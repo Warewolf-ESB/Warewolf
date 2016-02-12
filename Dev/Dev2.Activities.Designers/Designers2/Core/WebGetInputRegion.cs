@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Activities.Annotations;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -53,14 +55,22 @@ namespace Dev2.Activities.Designers2.Core
 
             if (Headers.Count == 0)
             {
-                Headers.Add(new ObservableAwareNameValue(Headers, s => {}));
+                Headers.Add(new ObservableAwareNameValue(Headers, s =>
+                    {
+                        _modelItem.SetProperty("Headers",
+                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                    }));
             }
             else
             {
                 var nameValue = Headers.Last();
                 if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
                 {
-                    Headers.Add(new ObservableAwareNameValue(Headers, s => {}));
+                    Headers.Add(new ObservableAwareNameValue(Headers, s =>
+                    {
+                        _modelItem.SetProperty("Headers",
+                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                    }));
                 }
             }
             ResetInputsHeight();
@@ -116,7 +126,11 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
                 Headers.Clear();
-                Headers.Add(new  ObservableAwareNameValue(Headers, s => {}));
+                Headers.Add(new ObservableAwareNameValue(Headers, s =>
+                {
+                    _modelItem.SetProperty("Headers",
+                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                }));
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
@@ -249,19 +263,48 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            var ser = new Dev2JsonSerializer();
-            return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+            //var ser = new Dev2JsonSerializer();
+            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+            var headers2 =  new ObservableCollection<INameValue>();
+            foreach (var nameValue in Headers)
+            {
+                headers2.Add(new NameValue(nameValue.Name,nameValue.Value));
+            }
+            return new WebGetInputRegionClone()
+            {
+                Headers = headers2,
+                QueryString = QueryString,
+                RequestUrl = RequestUrl
+            };
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebGetInputRegion;
+            var region = toRestore as WebGetInputRegionClone;
             if (region != null)
             {
                 IsVisible = region.IsVisible;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
-                Headers = region.Headers;
+                Headers.Clear();
+                Headers.Add(new ObservableAwareNameValue(Headers, s =>
+                {
+                    _modelItem.SetProperty("Headers",
+                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                }));
+                if (region.Headers != null)
+                {
+                    foreach (var nameValue in region.Headers)
+                    {
+                        Headers.Add(new ObservableAwareNameValue(Headers, s =>
+                        {
+                            _modelItem.SetProperty("Headers",
+                                _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                        }) {Name = nameValue.Name, Value = nameValue.Value});
+                    }
+                    Headers.Remove(Headers.First());
+                }
+
                 ResetInputsHeight();
             }
         }
@@ -297,6 +340,44 @@ namespace Dev2.Activities.Designers2.Core
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+    }
+
+    public class WebGetInputRegionClone : IToolRegion
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
+        public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
+        public IList<string> Errors { get; private set; }
+        public ObservableCollection<INameValue> Headers { get; set; }
+        public string QueryString { get; set; }
+        public string RequestUrl { get; set; }
+              [ExcludeFromCodeCoverage]
+        public IToolRegion CloneRegion()
+        {
+            return this;
+        }
+        [ExcludeFromCodeCoverage]
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+            
+        }
+        [ExcludeFromCodeCoverage]
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        [ExcludeFromCodeCoverage]
+        protected virtual void OnHeightChanged(IToolRegion args)
+        {
+            var handler = HeightChanged;
+            if (handler != null) handler(this, args);
         }
     }
 }
