@@ -204,8 +204,12 @@
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
-    <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs" />
-    <Compile Include="Designers2\Core\ManagePluginServiceInputView.xaml.cs" />
+    <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs">
+      <DependentUpon>ManageWebServiceInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ManagePluginServiceInputView.xaml.cs">
+      <DependentUpon>ManagePluginServiceInputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageServiceInputView.xaml.cs">
       <DependentUpon>ManageServiceInputView.xaml</DependentUpon>

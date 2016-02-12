@@ -33,8 +33,6 @@ namespace Dev2
 
         public string QueryString { get; set; }
 
-        public IWebServiceSource SavedSource { get; set; }
-
         public IOutputDescription OutputDescription { get; set; }
 
 
