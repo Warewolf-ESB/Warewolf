@@ -109,6 +109,7 @@
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
