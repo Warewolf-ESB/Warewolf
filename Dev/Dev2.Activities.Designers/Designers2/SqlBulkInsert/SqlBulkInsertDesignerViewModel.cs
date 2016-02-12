@@ -19,6 +19,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Properties;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -491,12 +492,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void EditDbSource()
         {
-            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
-            if (resourceModel != null)
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            if(shellViewModel != null)
             {
-                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                shellViewModel.OpenResource(SelectedDatabase.ResourceID,_environmentModel.ID);
                 RefreshDatabases();
-            }
+            }            
         }
 
         void CreateDbSource()

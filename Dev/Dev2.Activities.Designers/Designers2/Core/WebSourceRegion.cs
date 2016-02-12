@@ -203,6 +203,11 @@ namespace Dev2.Activities.Designers2.Core
                     SourceChangedAction();
                     OnSomethingChanged(this);
                 }
+                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                if(delegateCommand != null)
+                {
+                    delegateCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
