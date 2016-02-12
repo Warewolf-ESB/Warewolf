@@ -10,7 +10,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -19,10 +18,12 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2
 {
@@ -81,12 +82,10 @@ namespace Dev2
             }
             var client = CreateClient(head, query, url);
             var result = client.DownloadString(url.Address+query);
-            //ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
-            DataSourceShape shape = new DataSourceShape(){Paths = Outputs.Select(a=>((ServiceOutputMapping)a).Path).ToList()};
             PushXmlIntoEnvironment(result, update,dataObject);
         }
 
-        public void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
+        private void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
             int i = 0;
             foreach(var serviceOutputMapping in Outputs)
