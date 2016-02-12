@@ -360,7 +360,7 @@ this.FeatureBackground();
                         "variable",
                         "value"});
             table17.AddRow(new string[] {
-                        "[[ext]]",
+                        "[[extension]]",
                         "json"});
             table17.AddRow(new string[] {
                         "[[prefix]]",
@@ -375,7 +375,7 @@ this.FeatureBackground();
                         "To Variable"});
             table18.AddRow(new string[] {
                         "extension",
-                        "[[ext]]",
+                        "[[extension]]",
                         "Countries(*).CountryID",
                         "[[MyCountries().ID]]"});
             table18.AddRow(new string[] {
@@ -397,7 +397,7 @@ this.FeatureBackground();
                         "New Value"});
             table19.AddRow(new string[] {
                         "1",
-                        "[[ext]] =",
+                        "[[extension]] =",
                         "json"});
             table19.AddRow(new string[] {
                         "2",
@@ -411,7 +411,7 @@ this.FeatureBackground();
                         ""});
             table20.AddRow(new string[] {
                         "1",
-                        "[[ext]] = json"});
+                        "[[extension]] = json"});
             table20.AddRow(new string[] {
                         "2",
                         "[[prefix]] = a"});

@@ -380,6 +380,12 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                 }
             }
 
+            var jArray = data as JArray;
+            if(jArray != null)
+            {
+                returnVal = jArray;
+            }
+
             return returnVal;
         }
 
