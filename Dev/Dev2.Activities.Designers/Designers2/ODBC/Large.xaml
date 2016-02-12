@@ -121,16 +121,20 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
 
-            <TextBox  x:Name="ActionsComboBox"
+            <TextBox 
+                     x:Name="ActionsComboBox"
                       Text="{Binding MyCommand,  Mode=TwoWay}"
-                                      Grid.Column="1"
-                                      Margin="{StaticResource ControlBorderRight}"
-                                      IsEnabled="True"
-                                      ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
-                      
-                                      >
-                
-            </TextBox>
+                         Grid.Column="1"
+                         Margin="{StaticResource ControlBorderRight}"
+                         IsEnabled="True"
+                       ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                       TextWrapping="Wrap"
+                       Height="80"
+                       MinLines="5"
+                       VerticalContentAlignment="Top"
+                VerticalScrollBarVisibility="Auto"
+                  
+            />
 
 
         </Grid>
