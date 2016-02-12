@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -8,6 +10,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable UnusedVariable
 
 // ReSharper disable InconsistentNaming
 
@@ -36,6 +39,26 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(region.Errors.Count,0);
 
         }
+
+        [TestMethod]
+        public void TestInputCtorEmpty()
+        {
+            var id = Guid.NewGuid();
+            var act = new DsfWebGetActivity() { SourceId = id };
+            var src = new Mock<IWebServiceSource>();
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var region = new WebGetInputRegion();
+            Assert.AreEqual(region.MaxHeight, 60);
+            Assert.AreEqual(region.MinHeight, 60);
+            Assert.AreEqual(region.CurrentHeight, 60);
+            Assert.AreEqual(region.IsVisible, false);
+
+
+        }
+
 
         [TestMethod]
         public void TestClone()
@@ -144,12 +167,13 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var regionToRestore = new WebGetInputRegionClone();
             regionToRestore.MinHeight = 60;
             regionToRestore.MaxHeight = 60;
             regionToRestore.CurrentHeight = 60;
             regionToRestore.IsVisible = true;
             regionToRestore.QueryString = "blob";
+            regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
@@ -158,6 +182,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(region.MinHeight, 60);
             Assert.AreEqual(region.CurrentHeight, 60);
             Assert.AreEqual(region.QueryString, "blob");
+            Assert.AreEqual(region.Headers.First().Name, "a");
+            Assert.AreEqual(region.Headers.First().Value, "b");
         }
 
 

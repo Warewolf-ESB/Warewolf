@@ -10,7 +10,8 @@
         Closing="MessageBoxView_OnClosing"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
-        Title="WarewolfMessageBox">
+        Title="WarewolfMessageBox"
+        Topmost="True">
 
     <Window.Resources>
         <ResourceDictionary>

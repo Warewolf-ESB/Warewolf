@@ -24,5 +24,7 @@ namespace Warewolf.Studio.CustomControls
         {
             return new IntellisenseTextColumnContentProvider();
         }
+
+
     }
 }
