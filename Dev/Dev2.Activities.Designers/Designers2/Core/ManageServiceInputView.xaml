@@ -13,8 +13,8 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True"
         mc:Ignorable="d" 
-        Width="600"
-        Height="450"
+        Width="700"
+        Height="800"
         MouseDown="ManageServiceInputView_OnMouseDown"
         d:DesignHeight="450" d:DesignWidth="600"
         d:DataContext="{d:DesignInstance Type=interfaces:IManageDatabaseInputViewModel , IsDesignTimeCreatable=False}">
@@ -62,7 +62,7 @@
                              Grid.IsSharedSizeScope="True" 
                              ItemsSource="{Binding Inputs}" 
                              BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
-                             MaxHeight="125"
+                             MaxHeight="300"
                              HorizontalContentAlignment="Stretch"
                              ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
                              Background="{StaticResource WarewolfPanelGreyBrush}">
@@ -70,22 +70,28 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="330" />
+                                        <ColumnDefinition Width="330" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock x:Name="InputName" 
                                                Text="{Binding Path=Name}" 
                                                TextTrimming="CharacterEllipsis" 
                                                MinWidth="50" 
-                                               MaxWidth="200" 
                                                HorizontalAlignment="Stretch" 
                                                ToolTip="{Binding Path=Name}"/>
-                                    <TextBox Grid.Column="1" 
-                                                 Margin="{StaticResource ControlBorderLeft}" 
-                                                 Text="{Binding Path=Value}" 
-                                                 HorizontalAlignment="Stretch"
-                                                 customControls:WatermarkTextBox.Watermark="Test Data"
-                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                    <TextBox Margin="{StaticResource ControlBorderLeft}" 
+                                             Grid.Column="1"
+                                             Text="{Binding Path=Value}" 
+                                             HorizontalAlignment="Stretch" 
+                                             AcceptsReturn="True"
+                                             Height="Auto"
+                                             MaxHeight="45"
+                                             TextWrapping="Wrap"
+                                             VerticalAlignment="Stretch"
+                                             VerticalScrollBarVisibility="Auto"
+                                             HorizontalScrollBarVisibility="Disabled"
+                                             customControls:WatermarkTextBox.Watermark="Test Data"
+                                             ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
