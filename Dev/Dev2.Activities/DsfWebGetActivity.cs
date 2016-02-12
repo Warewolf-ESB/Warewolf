@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -53,7 +54,11 @@ namespace Dev2
             }
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             var query =  ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString,update));
-           
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(query, "Query String", dataObject.Environment, update));
+            }
+                     
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
             var client = CreateClient(head, query, url);
             var result = client.DownloadString(url.Address+query);
