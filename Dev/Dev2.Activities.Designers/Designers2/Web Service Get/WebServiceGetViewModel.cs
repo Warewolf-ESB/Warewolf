@@ -47,7 +47,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-
             LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
@@ -72,11 +71,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
-
             LabelWidth = 45;
-
             Model = model;
-
             SetupCommonProperties();
         }
 
@@ -147,17 +143,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
-
-
-
-
-
             BuildRegions();
 
             ManageServiceInputViewModel = manageServiceInputViewModel;
             //  eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
-
 
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -170,19 +160,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             });
 
             InitializeDisplayName();
-
             InitializeImageSource();
-
             Outputs.OutputMappingEnabled = true;
-
-
             TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
 
             InitializeProperties();
 
             if (Outputs != null && Outputs.IsVisible)
             {
-
                 var recordsetItem = Outputs.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
@@ -304,8 +289,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
 
         public IContextualResourceModel RootModel { get; set; }
-
-
 
         public int LabelWidth { get; set; }
 
@@ -535,7 +518,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             };
         }
 
-
         private IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
@@ -593,6 +575,4 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         #endregion
     }
-
-
 }
