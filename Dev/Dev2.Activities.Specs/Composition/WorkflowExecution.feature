@@ -95,31 +95,31 @@ Scenario: Workflow with an assign and webservice
 Scenario: Workflow with an assign and webservice different mappings
 	 Given I have a workflow "TestWebServiceDiffMappings"
 	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
-	  | variable   | value |
-	  | [[ext]]    | json  |
-	  | [[prefix]] | a     |
+	  | variable      | value |
+	  | [[extension]] | json  |
+	  | [[prefix]]    | a     |
 	 And "TestWebServiceDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[ext]]       | Countries(*).CountryID   | [[MyCountries().ID]]   |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]] |
+	  | Input to Service | From Variable | Output from Service      | To Variable          |
+	  | extension        | [[extension]] | Countries(*).CountryID   | [[MyCountries().ID]] |
+	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]]             |
 	  When "TestWebServiceDiffMappings" is executed
 	  Then the workflow execution has "NO" error
 	   And the 'Inputs' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  | # | Variable     | New Value |
-	  | 1 | [[ext]] =    | json      |
-	  | 2 | [[prefix]] = | a         |
+	  | # | Variable        | New Value |
+	  | 1 | [[extension]] = | json      |
+	  | 2 | [[prefix]] =    | a         |
 	  And the 'Inputs' in Workflow 'TestWebServiceDiffMappings' debug outputs as    
-	  | # |                |
-	  | 1 | [[ext]] = json |
-	  | 2 | [[prefix]] = a |
+	  | # |                      |
+	  | 1 | [[extension]] = json |
+	  | 2 | [[prefix]] = a       |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  |  |
+	  |                      |
 	  | [[extension]] = json |
-	  | [[prefix]] = a |
+	  | [[prefix]] = a       |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
-	  |                                            |
-	  | [[MyCountries(10).ID]] = 10           |
-	  | [[Name]] = Azerbaijan |
+	  |                             |
+	  | [[MyCountries(10).ID]] = 10 |
+	  | [[Name]] = Azerbaijan       |
 
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteNoError1"
