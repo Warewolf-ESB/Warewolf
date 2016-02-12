@@ -487,17 +487,38 @@ namespace Dev2.Activities.Specs.Composition
                     var xml = resource.ToServiceDefinition(true).ToXElement();
                     var service = new DbService(xml);
                     var source = service.Source as DbSource;
-                    Activity databaseActivity = null;
+                    Activity updatedActivity = null;
                     switch(serviceType)
                     {
                         case "mysql database":
-                            databaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                            updatedActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
                             break;
                         case "sqlserver database":
-                            databaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
                     }
-                    CommonSteps.AddActivityToActivityList(wf, serviceName, databaseActivity);
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
+                }
+                else if(resource.ServerResourceType == "WebService")
+                {
+                    var updatedActivity = new DsfWebGetActivity();
+                    var xml = resource.ToServiceDefinition(true).ToXElement();
+                    var service = new WebService(xml);
+                    var source = service.Source as WebSource;
+                    updatedActivity.Headers = new List<INameValue>();
+                    if(service.Headers != null)
+                    {
+                        service.Headers.AddRange(service.Headers);                        
+                    }
+                    updatedActivity.OutputDescription = service.OutputDescription;
+                    updatedActivity.QueryString = service.RequestUrl;
+                    updatedActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                    updatedActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    if(source != null)
+                    {
+                        updatedActivity.SourceId = source.ResourceID;
+                    }
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
                 else
                 {

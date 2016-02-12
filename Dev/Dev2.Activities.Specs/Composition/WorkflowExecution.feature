@@ -36,7 +36,7 @@ Scenario: Workflow with multiple tools executing against the server
 
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestWFWithDBService"
-	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
+	 And "TestWFWithDBService" contains a "sqlserver database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
 	 And "TestWFWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
@@ -66,27 +66,27 @@ Scenario: Simple workflow executing against the server with a database service
 Scenario: Workflow with an assign and webservice
 	 Given I have a workflow "TestWebServiceWF"
 	 And "TestWebServiceWF" contains an Assign "Inputs" as
-	  | variable   | value |
-	  | [[ext]]    | json  |
-	  | [[prefix]] | a     |
+	  | variable      | value |
+	  | [[extension]] | json  |
+	  | [[prefix]]    | a     |
 	 And "TestWebServiceWF" contains a "webservice" service "InternalCountriesServiceTest" with mappings
 	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[ext]]       | Countries(*).CountryID   | [[Countries().CountryID]]   |
+	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
 	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
 	  When "TestWebServiceWF" is executed
 	  Then the workflow execution has "NO" error
 	   And the 'Inputs' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  | # | Variable     | New Value |
-	  | 1 | [[ext]] =    | json      |
-	  | 2 | [[prefix]] = | a         |
+	  | # | Variable        | New Value |
+	  | 1 | [[extension]] = | json      |
+	  | 2 | [[prefix]] =    | a         |
 	  And the 'Inputs' in Workflow 'TestWebServiceWF' debug outputs as    
-	  | # |                |
-	  | 1 | [[ext]] = json |
-	  | 2 | [[prefix]] = a |
+	  | # |                      |
+	  | 1 | [[extension]] = json |
+	  | 2 | [[prefix]] = a       |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  |  |
+	  |                      |
 	  | [[extension]] = json |
-	  | [[prefix]] = a |
+	  | [[prefix]] = a       |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
@@ -155,9 +155,10 @@ Scenario: Workflow with an assign and remote workflow
 	  | 3 | [[values(1).low]] = hello |	  	 
 	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as
 	  |                           |
-	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  | [[output]] = HELLO        |
+	  
 	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' has a debug Server Name of ""Remote Connection Integration""
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
@@ -4132,10 +4133,10 @@ Scenario: workflow without StackOverflow exception check
          Then the workflow execution has "NO" error      
 
 Scenario: Executing WF on a remote server 
-         Given I have a workflow "TestRemoteTools"
-         And "Testing - LoopTest" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+         Given I have a workflow "Testing - TestRemoteTools"
+         And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
          | Input to Service | From Variable | Output from Service | To Variable      |
-         When "TestRemoteTools" is executed
+         When "Testing - TestRemoteTools" is executed
          Then the workflow execution has "NO" error     
 
 		 
