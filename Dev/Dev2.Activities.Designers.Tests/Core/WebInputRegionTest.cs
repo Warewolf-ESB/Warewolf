@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable UnusedVariable
 
 // ReSharper disable InconsistentNaming
 
