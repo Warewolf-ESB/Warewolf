@@ -204,6 +204,7 @@
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
+    <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs">
       <DependentUpon>ManageWebServiceInputView.xaml</DependentUpon>
     </Compile>
@@ -687,9 +688,15 @@
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
-    <Compile Include="Designers2\Web Service Get\Large.xaml.cs" />
-    <Compile Include="Designers2\Web Service Get\Small.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
+      <DependentUpon>WebGetDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\WriteFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>

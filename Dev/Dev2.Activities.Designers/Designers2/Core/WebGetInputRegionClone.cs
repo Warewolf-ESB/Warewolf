@@ -13,6 +13,7 @@ namespace Dev2.Activities.Designers2.Core
     public sealed class WebGetInputRegionClone : IToolRegion
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public string ToolRegionName { get; set; }
         public double MinHeight { get; set; }
         public double CurrentHeight { get; set; }
         public bool IsVisible { get; set; }

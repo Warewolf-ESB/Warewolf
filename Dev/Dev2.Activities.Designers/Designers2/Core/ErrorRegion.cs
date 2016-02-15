@@ -9,6 +9,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         public ErrorRegion()
         {
+            ToolRegionName = "ErrorRegion";
             IsVisible = true;
             MaxHeight = 125;
             MinHeight = 125;
@@ -24,6 +25,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IToolRegion
 
+        public string ToolRegionName { get; set; }
         public double MinHeight { get; set; }
         public double CurrentHeight { get; set; }
         public bool IsVisible { get; set; }
