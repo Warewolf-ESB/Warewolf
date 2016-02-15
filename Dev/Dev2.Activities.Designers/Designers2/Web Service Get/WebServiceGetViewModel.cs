@@ -19,6 +19,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Designers2.Web_Service_Get
 {
@@ -27,7 +29,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private IOutputsToolRegion _outputs;
         private IWebGetInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _source;
-        private string _imageSource;
 
         private IErrorInfo _worstDesignError;
 
@@ -172,18 +173,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             ReCalculateHeight();
         }
 
-        public double LabelWidth
-        {
-            get
-            {
-                return _labelWidth;
-            }
-            set
-            {
-                _labelWidth = value;
-                OnPropertyChanged("LabelWidth");
-            }
-        }
+        public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
@@ -234,7 +224,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private bool _testSuccessful;
         bool _generateOutputsVisible;
         IGenerateInputArea _generateInputArea;
-        double _labelWidth;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -247,33 +236,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         void InitializeImageSource()
         {
-            ImageSource = GetIconPath();
-        }
-
-        public string ImageSource
-        {
-            get
-            {
-                return _imageSource;
-            }
-            private set
-            {
-                _imageSource = value;
-                OnPropertyChanged();
-            }
-        }
-
-        string GetIconPath()
-        {
-            return "PluginService-32";
         }
 
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
-
-        public string ResourceType { get; set; }
 
         void InitializeDisplayName(string outputFieldName)
         {
@@ -296,7 +264,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        private string ServiceName { get { return GetProperty<string>(); } }
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
@@ -356,7 +323,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             ReCalculateHeight();
             return regions;
         }
-        public ErrorRegion ErrorRegion { get; set; }
+        public ErrorRegion ErrorRegion { get; private set; }
 
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
@@ -371,7 +338,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         #region Implementation of IWebServiceGetViewModel
 
-        public IGenerateInputArea GenerateInputArea
+        private IGenerateInputArea GenerateInputArea
         {
             get
             {
@@ -443,16 +410,19 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     {
                         var testResult = Model.TestService(ManageServiceInputViewModel.Model);
                         var serializer = new Dev2JsonSerializer();
-                        var responseService = serializer.Deserialize<WebService>(testResult);
-                        ManageServiceInputViewModel.TestResults = responseService.RequestResponse;
-                        var recordsetList = responseService.Recordsets;
-                        if (recordsetList.Any(recordset => recordset.HasErrors))
+                        RecordsetList recordsetList;
+                        using(var responseService = serializer.Deserialize<WebService>(testResult))
                         {
-                            var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
-                            throw new Exception(errorMessage);
-                        }
+                            ManageServiceInputViewModel.TestResults = responseService.RequestResponse;
+                            recordsetList = responseService.Recordsets;
+                            if (recordsetList.Any(recordset => recordset.HasErrors))
+                            {
+                                var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                                throw new Exception(errorMessage);
+                            }
 
-                        ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
+                            ManageServiceInputViewModel.Description = responseService.GetOutputDescription();
+                        }
                         // ReSharper disable MaximumChainedReferences
                         var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                         {
@@ -604,7 +574,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        public IWebServiceModel Model { get; set; }
+        private IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
             get
