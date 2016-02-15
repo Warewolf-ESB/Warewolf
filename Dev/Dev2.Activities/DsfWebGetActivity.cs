@@ -49,8 +49,8 @@ namespace Dev2
             string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
 
-            AddDebugInputItem(new DebugEvalResult(query, "URL", env, update));
-            AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", env, update));
+            AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
+            AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
             AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
           
             return _debugInputs;

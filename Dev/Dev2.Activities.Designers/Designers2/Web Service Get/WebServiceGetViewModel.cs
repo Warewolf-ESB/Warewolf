@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
@@ -47,7 +46,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            LabelWidth = 45;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -71,7 +69,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         public WebServiceGetViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
-            LabelWidth = 45;
             Model = model;
             SetupCommonProperties();
         }
@@ -106,11 +103,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             if (DesignValidationErrors.Count == 0)
             {
-                DesignValidationErrors.Add(NoError);
-                if (RootModel != null && !RootModel.HasErrors)
-                {
-                    RootModel.IsValid = true;
-                }
+                DesignValidationErrors.Add(NoError);                
             }
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };
@@ -195,8 +188,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        public DelegateCommand NewSourceCommand { get; set; }
-
         public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         public bool CanTestProcedure()
@@ -204,7 +195,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             return Source.SelectedSource != null;
         }
 
-        public IErrorInfo NoError { get; private set; }
+        private IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -228,12 +219,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private bool _testSuccessful;
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public DesignValidationMemo LastValidationMemo { get; private set; }
-
         public DelegateCommand TestInputCommand { get; set; }
 
-        public string Type { get { return GetProperty<string>(); } }
+        private string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
 
         private void FixErrors()
@@ -251,7 +239,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 return _imageSource;
             }
-            set
+            private set
             {
                 _imageSource = value;
                 OnPropertyChanged();
@@ -260,7 +248,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         string GetIconPath()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.PluginService.ToString();
             return "PluginService-32";
         }
 
@@ -268,8 +255,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             HasLargeView = true;
         }
-
-        public string ResourceType { get; set; }
 
         void InitializeDisplayName()
         {
@@ -283,14 +268,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 }
             }
         }
-        public string ServiceName { get { return GetProperty<string>(); } }
+
+        private string ServiceName { get { return GetProperty<string>(); } }
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
-
-        public IContextualResourceModel RootModel { get; set; }
-
-        public int LabelWidth { get; set; }
 
         public string ButtonDisplayValue { get; set; }
 
@@ -332,7 +314,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             return regions;
         }
 
-        public ErrorRegion ErrorRegion { get; set; }
+        public ErrorRegion ErrorRegion { get; private set; }
 
         void toolRegion_HeightChanged(object sender, IToolRegion args)
         {
@@ -384,7 +366,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 OnPropertyChanged();
             }
         }
-        public void TestAction()
+
+        private void TestAction()
         {
             try
             {
@@ -491,7 +474,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 return _testSuccessful;
             }
-            set
+            private set
             {
                 _testSuccessful = value;
                 OnPropertyChanged();
@@ -500,7 +483,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         private IWebService ToModel()
         {
-            return new WebServiceDefinition
+            var webServiceDefinition = new WebServiceDefinition
             {
                 Inputs = InputsFromModel(),
                 OutputMappings = new List<IServiceOutputMapping>(),
@@ -511,11 +494,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 PostData = "",
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
-                SourceUrl = "",//Source.SelectedSource.HostName,
                 RequestUrl = Source.SelectedSource.HostName,
                 Response = "",
 
             };
+            return webServiceDefinition;
         }
 
         private IList<IServiceInput> InputsFromModel()
@@ -552,7 +535,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        public IWebServiceModel Model { get; set; }
+        private IWebServiceModel Model { get; set; }
 
         public override void ReCalculateHeight()
         {
