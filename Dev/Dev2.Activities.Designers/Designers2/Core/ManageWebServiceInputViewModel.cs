@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -31,24 +32,36 @@ namespace Dev2.Activities.Designers2.Core
         {
             PasteResponseAvailable = true;
             IsTesting = false;
-            CloseCommand = new DelegateCommand(() =>
-            {
-                CloseAction();
-            });
-            OkCommand = new DelegateCommand(() =>
-            {
-                OkAction();
-                OkSelected = true;
-            });
-            PasteResponseCommand = new DelegateCommand(() =>
-            {
-                PasteResponseVisible = true;
-            });
-            TestCommand = new DelegateCommand(() =>
-            {
-                TestAction();
-                PasteResponseVisible = false;
-            });
+            CloseCommand = new DelegateCommand(ExecuteClose);
+            OkCommand = new DelegateCommand(ExecuteOk);
+            PasteResponseCommand = new DelegateCommand(ExecutePaste);
+            TestCommand = new DelegateCommand(ExecuteTest);
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecuteTest()
+        {
+            TestAction();
+            PasteResponseVisible = false;
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecutePaste()
+        {
+            PasteResponseVisible = true;
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecuteOk()
+        {
+            OkAction();
+            OkSelected = true;
+        }
+
+        [ExcludeFromCodeCoverage]
+        private void ExecuteClose()
+        {
+            CloseAction();
         }
 
         public ICollection<IServiceInput> Inputs
@@ -217,11 +230,11 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand PasteResponseCommand { get; private set; }
         public List<IServiceOutputMapping> OutputMappings { get; set; }
         public IOutputDescription Description { get; set; }
-
+        [ExcludeFromCodeCoverage]
         public virtual void ShowView()
         {
         }
-
+        [ExcludeFromCodeCoverage]
         public void CloseView()
         {
         }
