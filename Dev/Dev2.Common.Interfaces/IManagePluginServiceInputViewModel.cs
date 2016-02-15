@@ -21,5 +21,7 @@ namespace Dev2.Common.Interfaces
         ICommand PasteResponseCommand { get; }
         List<IServiceOutputMapping> OutputMappings { get; set; }
         IOutputDescription Description { get; set; }
+        bool PasteResponseVisible { get; }
+        bool PasteResponseAvailable { get; }
     }
 }

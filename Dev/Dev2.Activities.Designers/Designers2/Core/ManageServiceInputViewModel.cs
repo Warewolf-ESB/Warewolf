@@ -145,6 +145,7 @@ namespace Dev2.Activities.Designers2.Core
         public ImageSource TestIconImageSource { get; set; }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
+        public Action CloseAction { get; set; }
         public IDatabaseService Model { get; set; }
         public Action OkAction { get; set; }
 
