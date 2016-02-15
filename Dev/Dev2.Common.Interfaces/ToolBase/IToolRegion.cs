@@ -5,6 +5,7 @@ namespace Dev2.Common.Interfaces.ToolBase
 {
     public interface IToolRegion:INotifyPropertyChanged
     {
+        string ToolRegionName { get; set; }
         double MinHeight{get;set;}
         double CurrentHeight{get;set;}
         bool IsVisible { get; set; }

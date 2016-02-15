@@ -22,6 +22,7 @@ namespace Dev2.Activities.Designers.Tests
 
         #region Implementation of IToolRegion
 
+        public string ToolRegionName { get; set; }
         public double MinHeight
         {
             get
@@ -143,6 +144,11 @@ namespace Dev2.Activities.Designers.Tests
         public override IList<IToolRegion> BuildRegions()
         {
             return new List<IToolRegion>{new Region(){CurrentHeight = 25,IsVisible = true,MaxHeight = 33,MinHeight = 2}};
+        }
+
+        public override IList<IToolRegion> BuildOutputsRegions()
+        {
+            return new List<IToolRegion> { new Region() { CurrentHeight = 25, IsVisible = true, MaxHeight = 33, MinHeight = 2 } };
         }
 
         #endregion

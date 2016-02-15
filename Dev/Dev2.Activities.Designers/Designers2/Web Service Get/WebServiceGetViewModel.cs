@@ -34,6 +34,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         const string DoneText = "Done";
         const string FixText = "Fix";
+        const string OutputDisplayName = " - Outputs";
         // ReSharper disable UnusedMember.Local
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
@@ -159,7 +160,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 FixErrors();
             });
 
-            InitializeDisplayName();
+            InitializeDisplayName("");
             InitializeImageSource();
             Outputs.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestAction, CanTestProcedure);
@@ -227,6 +228,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
 
         private bool _testSuccessful;
+        bool _generateOutputsVisible;
+        IGenerateInputArea _generateInputArea;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public DesignValidationMemo LastValidationMemo { get; private set; }
@@ -271,16 +274,24 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public string ResourceType { get; set; }
 
-        void InitializeDisplayName()
+        void InitializeDisplayName(string outputFieldName)
         {
-            var serviceName = ServiceName;
-            if (!string.IsNullOrEmpty(serviceName))
+            var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
+
+            if (index > 0)
             {
-                var displayName = DisplayName;
-                if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
-                {
-                    DisplayName = serviceName;
-                }
+                DisplayName = DisplayName.Remove(index);
+            }
+
+            var displayName = DisplayName;
+
+            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            {
+                DisplayName = displayName;
+            }
+            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            {
+                DisplayName = displayName + outputFieldName;
             }
         }
         public string ServiceName { get { return GetProperty<string>(); } }
@@ -332,6 +343,21 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             return regions;
         }
 
+        public override IList<IToolRegion> BuildOutputsRegions()
+        {
+            IList<IToolRegion> regions = new List<IToolRegion>();
+
+            GenerateInputArea = new GenerateInputsRegion();
+            regions.Add(GenerateInputArea);
+
+            Regions = regions;
+            foreach (var toolRegion in regions)
+            {
+                toolRegion.HeightChanged += toolRegion_HeightChanged;
+            }
+            ReCalculateHeight();
+            return regions;
+        }
         public ErrorRegion ErrorRegion { get; set; }
 
         void toolRegion_HeightChanged(object sender, IToolRegion args)
@@ -346,6 +372,19 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         #endregion
 
         #region Implementation of IWebServiceGetViewModel
+
+        public IGenerateInputArea GenerateInputArea
+        {
+            get
+            {
+                return _generateInputArea;
+            }
+            set
+            {
+                _generateInputArea = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IOutputsToolRegion Outputs
         {
@@ -388,6 +427,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             try
             {
+                InitializeDisplayName(OutputDisplayName);
+                //BuildOutputsRegions();
+                GenerateOutputsVisible = true;
                 Errors = new List<IActionableErrorInfo>();
                 var service = ToModel();
                 ManageServiceInputViewModel.Model = service;
@@ -451,6 +493,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
                         Outputs.Description = ManageServiceInputViewModel.Description;
                         Outputs.IsVisible = Outputs.Outputs.Count > 0;
+                        GenerateOutputsVisible = false;
+                        InitializeDisplayName("");
                     }
                     catch (Exception e)
                     {
@@ -460,8 +504,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                         ManageServiceInputViewModel.CloseCommand.Execute(null);
                     }
                 };
-                ManageServiceInputViewModel.CloseView();
-                ManageServiceInputViewModel.ShowView();
+                ManageServiceInputViewModel.CloseAction = () =>
+                {
+                    GenerateOutputsVisible = false;
+                    InitializeDisplayName("");
+                };
                 if (ManageServiceInputViewModel.OkSelected)
                 {
                     ValidateTestComplete();
@@ -553,12 +600,31 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
 
         public IWebServiceModel Model { get; set; }
+        public bool GenerateOutputsVisible
+        {
+            get
+            {
+                return _generateOutputsVisible;
+            }
+            set
+            {
+                _generateOutputsVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public override void ReCalculateHeight()
         {
             if (_regions != null)
             {
-                var isInputVisible = _regions[1].IsVisible;
+                bool isInputVisible = false;
+                foreach(var toolRegion in _regions)
+                {
+                    if (toolRegion.ToolRegionName == "GetInputRegion")
+                    {
+                        isInputVisible = true;
+                    }
+                }
 
                 DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);

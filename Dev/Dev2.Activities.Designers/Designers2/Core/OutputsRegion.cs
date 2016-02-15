@@ -57,6 +57,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public OutputsRegion()
         {
+            ToolRegionName = "OutputsRegion";
             SetInitialHeight();
         }
 
@@ -75,6 +76,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IToolRegion
 
+        public string ToolRegionName { get; set; }
         public double MinHeight
         {
             get

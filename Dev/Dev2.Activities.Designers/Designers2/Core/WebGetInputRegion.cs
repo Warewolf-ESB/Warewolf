@@ -34,6 +34,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public WebGetInputRegion()
         {
+            ToolRegionName = "GetInputRegion";
             SetInitialHeight();
         }
 
@@ -108,6 +109,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
         {
+            ToolRegionName = "GetInputRegion";
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
@@ -208,6 +210,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IToolRegion
 
+        public string ToolRegionName { get; set; }
         public double MinHeight
         {
             get
@@ -345,6 +348,7 @@ namespace Dev2.Activities.Designers2.Core
     public class WebGetInputRegionClone : IToolRegion
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public string ToolRegionName { get; set; }
         public double MinHeight { get; set; }
         public double CurrentHeight { get; set; }
         public bool IsVisible { get; set; }
