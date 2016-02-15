@@ -152,6 +152,7 @@ namespace Dev2.Activities.Designers2.Core
         }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
+        public Action CloseAction { get; set; }
         public IPluginService Model { get; set; }
         public string TestHeader { get; set; }
         public Action OkAction { get; set; }

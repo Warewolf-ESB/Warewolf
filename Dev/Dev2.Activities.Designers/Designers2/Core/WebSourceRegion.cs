@@ -30,6 +30,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
+            ToolRegionName = "SourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
@@ -97,6 +98,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IToolRegion
 
+        public string ToolRegionName { get; set; }
         public double MinHeight
         {
             get
