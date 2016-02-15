@@ -312,7 +312,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Count ==1);
+            Assert.AreEqual(1,webget.ManageServiceInputViewModel.Inputs.Count);
             Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.First().Name == "[[a]]");
             //------------Assert Results-------------------------
         }
