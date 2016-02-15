@@ -14,6 +14,7 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
+    // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
@@ -53,11 +54,6 @@ namespace Dev2.Activities.Designers2.Core
             MaxHeight = BaseHeight;
             MinHeight = BaseHeight;
             CurrentHeight = BaseHeight;
-        }
-
-        public OutputsRegion()
-        {
-            SetInitialHeight();
         }
 
         void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -216,6 +212,17 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
+                if (string.IsNullOrEmpty(_recordsetName))
+                {
+                    if(Outputs != null)
+                    {
+                        var recSet = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
+                        if (recSet != null)
+                        {
+                            _recordsetName = recSet.RecordSetName;
+                        }
+                    }
+                }
                 return _recordsetName;
             }
             set
@@ -226,13 +233,12 @@ namespace Dev2.Activities.Designers2.Core
                     _recordsetName = value;
                     foreach (var serviceOutputMapping in Outputs)
                     {
-                        if (_recordsetName != null )
+                        if (_recordsetName != null)
                         {
                             serviceOutputMapping.RecordSetName = value;
                         }
                     }
-                }
-               
+                }               
                 OnPropertyChanged();
             }
         }
