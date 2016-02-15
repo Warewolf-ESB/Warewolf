@@ -14,12 +14,12 @@ namespace Dev2.Activities.Designers2.Core
         private double _maxHeight;
         double _inputsHeight;
         double _maxInputsHeight;
+        ICollection<IServiceInput> _inputs;
         private const double BaseHeight = 60;
 
         public GenerateInputsRegion()
         {
             ToolRegionName = "GenerateInputsRegion";
-            SetInitialHeight();
             IsVisible = true;
         }
 
@@ -122,7 +122,18 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IGenerateInputArea
 
-        public ICollection<IServiceInput> Inputs { get; set; }
+        public ICollection<IServiceInput> Inputs
+        {
+            get
+            {
+                return _inputs;
+            }
+            set
+            {
+                _inputs = value;
+                ResetInputsHeight();
+            }
+        }
         public double InputsHeight
         {
             get

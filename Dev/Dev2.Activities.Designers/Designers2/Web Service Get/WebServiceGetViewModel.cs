@@ -139,6 +139,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             BuildRegions();
 
+            LabelWidth = 46;
+
             ManageServiceInputViewModel = manageServiceInputViewModel;
             //  eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
@@ -170,6 +172,19 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 }
             }
             ReCalculateHeight();
+        }
+
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged("LabelWidth");
+            }
         }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
@@ -221,6 +236,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private bool _testSuccessful;
         bool _generateOutputsVisible;
         IGenerateInputArea _generateInputArea;
+        double _labelWidth;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -413,10 +429,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             try
             {
                 InitializeDisplayName(OutputDisplayName);
-                //BuildOutputsRegions();
-                GenerateOutputsVisible = true;
+                
                 Errors = new List<IActionableErrorInfo>();
                 var service = ToModel();
+                BuildOutputsRegions();
+                GenerateInputArea.Inputs = service.Inputs;
+                GenerateOutputsVisible = true;
                 ManageServiceInputViewModel.Model = service;
                 ManageServiceInputViewModel.Inputs = service.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
