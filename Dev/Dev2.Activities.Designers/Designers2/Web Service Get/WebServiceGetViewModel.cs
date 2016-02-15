@@ -432,9 +432,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 
                 Errors = new List<IActionableErrorInfo>();
                 var service = ToModel();
-                BuildOutputsRegions();
-                GenerateInputArea.Inputs = service.Inputs;
-                GenerateOutputsVisible = true;
+                //BuildOutputsRegions();
+                //GenerateInputArea.Inputs = service.Inputs;
+                //GenerateOutputsVisible = true;
                 ManageServiceInputViewModel.Model = service;
                 ManageServiceInputViewModel.Inputs = service.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
@@ -625,7 +625,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 {
                     if (toolRegion.ToolRegionName == "GetInputRegion")
                     {
-                        isInputVisible = true;
+                        if (toolRegion.IsVisible)
+                            isInputVisible = true;
                     }
                 }
 
