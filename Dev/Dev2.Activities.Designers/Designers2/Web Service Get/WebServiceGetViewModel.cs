@@ -434,7 +434,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 var service = ToModel();
                 //BuildOutputsRegions();
                 //GenerateInputArea.Inputs = service.Inputs;
-                //GenerateOutputsVisible = true;
+                GenerateOutputsVisible = true;
                 ManageServiceInputViewModel.Model = service;
                 ManageServiceInputViewModel.Inputs = service.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
@@ -625,8 +625,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 {
                     if (toolRegion.ToolRegionName == "GetInputRegion")
                     {
-                        if (toolRegion.IsVisible)
-                            isInputVisible = true;
+                        isInputVisible = toolRegion.IsVisible;
                     }
                 }
 
