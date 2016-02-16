@@ -9,6 +9,8 @@
                                xmlns:fa="http://schemas.fontawesome.io/icons/"
                                xmlns:customControls1="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:sqlServerDatabase="clr-namespace:Dev2.Activities.Designers2.SqlServerDatabase"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -23,7 +25,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
                 <ResourceDictionary Source="../Core/CustomToolDesigner.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
