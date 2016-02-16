@@ -391,9 +391,11 @@
                                 <TextBlock x:Name="InputName" 
                                            Text="{Binding Path=Name}" 
                                            TextTrimming="CharacterEllipsis" 
-                                           MinWidth="50" 
+                                           MinWidth="75" 
+                                           MaxWidth="75"
                                            HorizontalAlignment="Stretch" 
                                            ToolTip="{Binding Path=Name}"/>
+                                <!--<ScrollViewer >-->
                                 <TextBox Margin="{StaticResource ControlBorderLeft}" 
                                          Grid.Column="1"
                                          Text="{Binding Path=Value}" 
@@ -401,16 +403,19 @@
                                          AcceptsReturn="True"
                                          Height="Auto"
                                          MaxHeight="45"
+                                         MaxWidth="260"
                                          TextWrapping="Wrap"
                                          VerticalAlignment="Stretch"
                                          VerticalScrollBarVisibility="Auto"
-                                         HorizontalScrollBarVisibility="Disabled"
+                                        
+                                         HorizontalScrollBarVisibility="Auto"
                                          customControls:WatermarkTextBox.Watermark="Test Data"
                                          ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
-                                    </i:Interaction.Behaviors>
+                                    </i:Interaction.Behaviors>-->
                                 </TextBox>
+                                <!--</ScrollViewer>-->
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

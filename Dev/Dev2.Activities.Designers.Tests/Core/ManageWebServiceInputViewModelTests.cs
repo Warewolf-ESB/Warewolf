@@ -73,12 +73,17 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(vm.IsTestResultsEmptyRows);
             vm.IsTesting = true;
             Assert.IsTrue(vm.IsTesting);
-
+            vm.PasteResponseVisible = true;
+            Assert.IsTrue(vm.PasteResponseVisible);
+            vm.PasteResponseAvailable = true;
+            Assert.IsTrue(vm.PasteResponseAvailable);
             var b = new WebServiceDefinition() { Headers = new List<NameValue>() { new NameValue("a", "b") } };
             vm.Model = b;
             Assert.IsNotNull(vm.Model);
 
         }
+
+
 
 
     }
