@@ -3,14 +3,15 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:behaviors="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/">
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
-        <ResourceDictionary Source="../Elements/FontAwesome.xaml"/>
-        <ResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/FontAwesome.xaml"/>
+        <luna:SharedResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  TreeView Brushes  -->

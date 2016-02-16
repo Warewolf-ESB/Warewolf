@@ -5,13 +5,14 @@
                     xmlns:converters2="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                    xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core">
+                    xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ActivityStyles.xaml" />
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Elements/DataGrid.xaml"/>
+        <luna:SharedResourceDictionary Source="ActivityStyles.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/DataGrid.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <converters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />

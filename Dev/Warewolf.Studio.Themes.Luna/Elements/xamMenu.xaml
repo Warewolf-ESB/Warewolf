@@ -4,17 +4,16 @@
                     xmlns:igMenu="http://schemas.infragistics.com/xaml"
                     xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     mc:Ignorable="d">
 
     <!--  *********************************  COLORS  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
-
-
-        <ResourceDictionary Source="../Elements/CheckBox.xaml" />
-        <ResourceDictionary Source="../Elements/ScrollBar.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/CheckBox.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/ScrollBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ********************************** BRUSHES **********************************  -->
