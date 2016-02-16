@@ -8,6 +8,7 @@
              xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              Width="150"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
              d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
@@ -16,7 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+              <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         <!--<Storyboard x:Key="BlinkLabel" Duration="0:0:1" RepeatBehavior="Forever">

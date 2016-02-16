@@ -15,6 +15,8 @@
                                xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -29,7 +31,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
                 <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

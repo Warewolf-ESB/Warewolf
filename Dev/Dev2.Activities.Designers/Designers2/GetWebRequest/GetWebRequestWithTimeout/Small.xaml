@@ -9,6 +9,8 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:getWebRequestWithTimeout="clr-namespace:Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
@@ -18,7 +20,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>

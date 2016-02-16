@@ -19,6 +19,8 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="350"
                                MinWidth="350"
                                MinHeight="380"
@@ -32,7 +34,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>

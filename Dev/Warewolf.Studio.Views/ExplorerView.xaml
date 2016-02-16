@@ -14,6 +14,7 @@
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              MouseLeftButtonUp="ExplorerView_OnMouseLeftButtonUp"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
@@ -23,7 +24,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+              <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
