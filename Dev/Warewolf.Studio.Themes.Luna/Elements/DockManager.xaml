@@ -3,13 +3,14 @@
                     xmlns:igDock="http://infragistics.com/DockManager"
                     xmlns:igWinThemes="http://infragistics.com/Themes"
                     xmlns:igWindows="http://infragistics.com/Windows"
-                    xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework">
+                    xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Luna.DockManagerGeneric.xaml" />
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="Luna.DockManagerGeneric.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ***************************************  BRUSHES  ******************  -->

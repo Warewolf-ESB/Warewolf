@@ -2,21 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:studio="clr-namespace:Dev2.Studio"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              DispatcherUnhandledException="OnApplicationDispatcherUnhandledException">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images.xaml"></ResourceDictionary>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml" />
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml" />
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"/>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml"></luna:SharedResourceDictionary>
+                <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images.xaml"></luna:SharedResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-                <!--<ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.NormalColor.xaml"/>-->
-                <!--<ResourceDictionary Source="/PresentationFramework.Classic;component/themes/Classic.xaml"/>-->
-                <!--<ResourceDictionary Source="/PresentationFramework.Royale;component/themes/Royale.NormalColor.xaml"/>-->
-
     </Application.Resources>
 </Application>
