@@ -42,22 +42,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new WebService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test"),
-                    RequestUrl = string.Concat(src.SourceUrl, src.RequestUrl),
+                    RequestUrl = string.Concat(src.RequestUrl, src.QueryString),
                     ResourceName = src.Name,
                     ResourcePath = src.Path,
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,
-                    RequestResponse = src.Response
-                    ,
-                    Source =  new WebSource
-                {
-                    Address = src.Source.HostName,
-                    DefaultQuery = src.Source.DefaultQuery,
-                    AuthenticationType = src.Source.AuthenticationType,
-                    UserName = src.Source.UserName,
-                    Password = src.Source.Password
-                }
+                    RequestResponse = src.Response,
+                    Source = new WebSource
+                    {
+                        Address = src.Source.HostName,
+                        DefaultQuery = src.Source.DefaultQuery,
+                        AuthenticationType = src.Source.AuthenticationType,
+                        UserName = src.Source.UserName,
+                        Password = src.Source.Password
+                    }
                 };
 
                 WebServices.TestWebService(res);

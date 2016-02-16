@@ -51,7 +51,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.AreEqual(webget.ImageSource, "PluginService-32");
             webget.ValidateTestComplete();
             Assert.IsTrue(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.CanTestProcedure());
@@ -272,7 +271,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestAction();
-       //     webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkAction();
 #pragma warning restore 4014
             //------------Execute Test---------------------------
@@ -312,7 +310,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.Outputs.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Count ==1);
+            Assert.AreEqual(1,webget.ManageServiceInputViewModel.Inputs.Count);
             Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.First().Name == "[[a]]");
             //------------Assert Results-------------------------
         }
