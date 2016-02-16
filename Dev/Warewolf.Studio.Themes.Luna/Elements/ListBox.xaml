@@ -1,15 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
 
-        <ResourceDictionary Source="../Elements/ScrollBar.xaml" />
-        <ResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
-        <ResourceDictionary Source="RadioButton.xaml"></ResourceDictionary>
+        <luna:SharedResourceDictionary Source="../Elements/ScrollBar.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
+        <luna:SharedResourceDictionary Source="RadioButton.xaml"></luna:SharedResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
 
