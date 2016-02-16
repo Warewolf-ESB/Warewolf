@@ -4,13 +4,14 @@
                     xmlns:local="http://schemas.infragistics.com/xaml"
                     xmlns:maps="http://schemas.infragistics.com/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     mc:Ignorable="d">
 
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  *********************************  BRUSHES  *********************************  -->

@@ -6,23 +6,22 @@
                     xmlns:igBase="http://schemas.infragistics.com/xaml"
                     xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     mc:Ignorable="d">
 
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Color.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
-
-
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/Button.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/RadioButton.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/TextBox.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ScrollBar.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ComboBox.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/CheckBox.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ValidationToolTip.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/Button.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/RadioButton.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/TextBox.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ScrollBar.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ComboBox.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/CheckBox.xaml" />
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ValidationToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ********************************** BRUSHES **********************************  -->

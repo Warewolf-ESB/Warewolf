@@ -3,13 +3,13 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                     xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
-                    >
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Color.xaml" />
-        <ResourceDictionary Source="../Common/Brushes.xaml" />
-        <ResourceDictionary Source="../Common/Styles.xaml" />
-        <ResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  TextBox Brushes  -->
