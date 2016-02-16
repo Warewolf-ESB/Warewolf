@@ -19,6 +19,7 @@ namespace Dev2.Common.Interfaces
         ICommand CloseCommand { get; }
         ICommand OkCommand { get; }
         Action OkAction { get; set; }
+        Action CloseAction { get; set; }
         T Model { get; set; }
         string TestHeader { get; set; }
 

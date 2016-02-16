@@ -22,46 +22,46 @@ namespace Dev2.Activities.Designers2.Core
         private bool _testResultsAvailable;
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
-        private ManageWebServiceInputView _manageServiceInputView;
         private Action _testAction;
         private bool _okSelected;
         private IWebService _model;
+        bool _pasteResponseVisible;
+        bool _pasteResponseAvailable;
 
         public ManageWebServiceInputViewModel()
         {
+            PasteResponseAvailable = true;
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
             PasteResponseCommand = new DelegateCommand(ExecutePaste);
+            TestCommand = new DelegateCommand(ExecuteTest);
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecuteTest()
+        {
+            TestAction();
+            PasteResponseVisible = false;
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecutePaste()
+        {
+            PasteResponseVisible = true;
+        }
+
+        [ExcludeFromCodeCoverage]
+        void ExecuteOk()
+        {
+            OkAction();
+            OkSelected = true;
         }
 
         [ExcludeFromCodeCoverage]
         private void ExecuteClose()
         {
-            if (_manageServiceInputView != null)
-            {
-                _manageServiceInputView.RequestClose();
-            }
-        }
-            [ExcludeFromCodeCoverage]
-        private void ExecuteOk()
-        {
-            if (_manageServiceInputView != null)
-            {
-                OkAction();
-                OkSelected = true;
-                _manageServiceInputView.RequestClose();
-            }
-        }
-            [ExcludeFromCodeCoverage]
-        private void ExecutePaste()
-        {
-            if (_manageServiceInputView != null)
-            {
-                _manageServiceInputView.OutputsGrid.Visibility = Visibility.Collapsed;
-                _manageServiceInputView.ResponseGrid.Visibility = Visibility.Visible;
-                _manageServiceInputView.DoneButton.IsEnabled = true;
-            }
+            CloseAction();
         }
 
         public ICollection<IServiceInput> Inputs
@@ -107,7 +107,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testAction = value;
-                TestCommand = new DelegateCommand(value);
+
             }
         }
         public ICommand TestCommand { get; private set; }
@@ -149,6 +149,32 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public bool PasteResponseVisible
+        {
+            get
+            {
+                return _pasteResponseVisible;
+            }
+            set
+            {
+                _pasteResponseVisible = value;
+                OnPropertyChanged(() => PasteResponseVisible);
+            }
+        }
+
+        public bool PasteResponseAvailable
+        {
+            get
+            {
+                return _pasteResponseAvailable;
+            }
+            set
+            {
+                _pasteResponseAvailable = value;
+                OnPropertyChanged(() => PasteResponseAvailable);
+            }
+        }
+
         public ImageSource TestIconImageSource
         {
             get
@@ -157,11 +183,12 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                
+
             }
         }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
+        public Action CloseAction { get; set; }
         public IWebService Model
         {
             get
@@ -173,14 +200,14 @@ namespace Dev2.Activities.Designers2.Core
                     Id = _model.Id,
                     Path = _model.Path,
                     PostData = _model.PostData,
-                    Inputs = _model.Inputs ,
+                    Inputs = _model.Inputs,
                     OutputMappings = _model.OutputMappings,
                     Method = _model.Method,
-                    Name = _model.Name ,
-                    Response =  _model.Response,
+                    Name = _model.Name,
+                    Response = _model.Response,
                     Source = _model.Source,
                     SourceUrl = _model.SourceUrl
-                    
+
                 };
                 return model;
             }
@@ -193,10 +220,10 @@ namespace Dev2.Activities.Designers2.Core
 
         private string ReplaceString(string name)
         {
-            if(Inputs==null )
-            return  name;
+            if (Inputs == null)
+                return name;
             return Inputs.Aggregate(name, (current, serviceInput) => current.Replace(serviceInput.Name, serviceInput.Value));
-           
+
         }
 
         public Action OkAction { get; set; }
@@ -206,16 +233,10 @@ namespace Dev2.Activities.Designers2.Core
         [ExcludeFromCodeCoverage]
         public virtual void ShowView()
         {
-            _manageServiceInputView = new ManageWebServiceInputView { DataContext = this };
-            _manageServiceInputView.ShowView();
         }
-           [ExcludeFromCodeCoverage]
+        [ExcludeFromCodeCoverage]
         public void CloseView()
         {
-            if (_manageServiceInputView != null)
-            {
-                _manageServiceInputView.RequestClose();
-            }
         }
     }
 }
