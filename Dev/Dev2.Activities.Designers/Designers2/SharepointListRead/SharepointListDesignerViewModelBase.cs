@@ -20,6 +20,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.TO;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -316,7 +317,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             return table == null ? null : table.FullName;
         }
 
-        protected virtual void OnSharepointServerChanged()
+        protected void OnSharepointServerChanged()
         {
             if (SelectedSharepointServer == NewSharepointSource)
             {
@@ -351,7 +352,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             viewModel.RefreshListsCommand.RaiseCanExecuteChanged();
         }
 
-        protected virtual void OnSelectedListChanged()
+        protected void OnSelectedListChanged()
         {
             if (SelectedList != null)
             {
@@ -465,7 +466,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
+            return ModelItemCollection != null && (ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count);
         }
 
         public override void RemoveAt(int indexNumber)
