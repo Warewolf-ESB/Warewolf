@@ -81,7 +81,6 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using Dev2.UndoFramework;
 using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
@@ -1039,7 +1038,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool NotifyItemSelected(object primarySelection)
         {
             var selectedItem = primarySelection as ModelItem;
-            var isItemSelected = false;
 
             if (selectedItem != null)
             {
@@ -1052,34 +1050,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         selectedItem = innerActivity;
                     }
                 }
-                var modelProperty = selectedItem.Properties["DisplayName"];
-
-                if (modelProperty != null && modelProperty.ComputedValue != null)
-                {
-                    var displayName = modelProperty.ComputedValue.ToString();
-
-                    var resourceModel =
-                        _resourceModel.Environment.ResourceRepository.All()
-                            .FirstOrDefault(
-                                resource =>
-                                    resource.ResourceName.Equals(displayName,
-                                        StringComparison.InvariantCultureIgnoreCase));
-                }
                 Selection.Union(_wd.Context, selectedItem);
-
-
-                //ViewStateService viewStateService = new WorkflowViewStateService(_wd.Context);
-                //var allViewState = viewStateService.RetrieveAllViewState(selectedItem);
-
-                //var contextItemManager = _wd.Context.Items;
-                //var selection = contextItemManager.GetValue<Selection>();
-                //if (!selection.SelectedObjects.Contains(selectedItem))
-                //{
-                //    AddModelItemToSelection(selectedItem);
-                //    SelectSingleModelItem(selectedItem);
-                //}
             }
-            return isItemSelected;
+            return false;
         }
 
         /// <summary>
@@ -1198,7 +1171,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 //For Changing the icon of the flowchart.
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
-                //WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNodePink-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
             }
@@ -1485,25 +1457,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void FocusActivityBuilder()
-        {
-            if (_wd != null)
-            {
-                if (_wd.Context != null)
-                {
-                    var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
-                    if (findActivityBuilderModel != null)
-                    {
-                        var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
-                        if (activityBuilderModel.Count > 0)
-                        {
-                            activityBuilderModel[0].Focus();
-                        }
-                    }
-                }
-            }
-        }
-
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
             if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
@@ -1611,15 +1564,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {
-            //var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-
-            //if (!OpeningWorkflowsHelper.IsLoadedInFocusLossCatalog(workSurfaceKey))
-            //{
-            //    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
-            //}
-
-            //AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false, false);
+        {           
         }
 
         /// <summary>
@@ -2096,13 +2041,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
 
                 _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
+                _virtualizedContainerService = null;
+                _virtualizedContainerServicePopulateAllMethod = null;
             }
 
             if (DesignerManagementService != null)
             {
                 DesignerManagementService.Dispose();
             }
-
+            if(_debugSelectionChangedService != null)
+            {
+                _debugSelectionChangedService.Unsubscribe();
+            }
+            
             if (_resourceModel != null)
             {
                 _resourceModel.OnDataListChanged -= FireWdChanged;
@@ -2133,7 +2084,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             try
             {
-                // CEventHelper.RemoveAllEventHandlers(_wd);
+                CEventHelper.RemoveAllEventHandlers(_wd);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
@@ -2249,30 +2200,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Selection.SelectOnly(_wd.Context, message.ModelItem);
                 BringIntoView(message.ModelItem);
             }
-        }
-
-        #endregion
-    }
-
-    internal class WorkflowIsSavedAction : AbstractAction
-    {
-        private IContextualResourceModel ResourceModel { get; set; }
-
-        public WorkflowIsSavedAction(IContextualResourceModel resourceModel)
-        {
-            ResourceModel = resourceModel;
-        }
-
-        #region Overrides of AbstractAction
-
-        protected override void ExecuteCore()
-        {
-            ResourceModel.IsWorkflowSaved = false;
-        }
-
-        protected override void UnExecuteCore()
-        {
-            ResourceModel.IsWorkflowSaved = true;
         }
 
         #endregion

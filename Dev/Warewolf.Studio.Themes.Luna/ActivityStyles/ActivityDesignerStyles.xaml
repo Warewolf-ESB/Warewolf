@@ -5,12 +5,13 @@
                     xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                     xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
                     xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-                    xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core">
+                    xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Common/Styles.xaml" />
-        <ResourceDictionary Source="../Elements/Button.xaml"/>
-        <ResourceDictionary Source="../Elements/Toolbox/Toolbox.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/Button.xaml"/>
+        <luna:SharedResourceDictionary Source="../Elements/Toolbox/Toolbox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
