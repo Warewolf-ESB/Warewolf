@@ -26,6 +26,21 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             Assert.IsNull(sharepointReadListViewModel);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointListReadDesignerViewModel_CollectionName")]
+        public void SharepointListReadDesignerViewModel_CollectionName_Property_ReturnsFilterCriteria()
+        {
+            //------------Setup for test--------------------------
+            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem());
+            
+            //------------Execute Test---------------------------
+            var collectionName = sharepointListReadDesignerViewModel.CollectionName;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("FilterCriteria", collectionName);
+        }
+
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new SharepointReadListActivity());
