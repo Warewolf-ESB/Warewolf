@@ -146,11 +146,6 @@ namespace Dev2.Activities.Designers.Tests
             return new List<IToolRegion>{new Region(){CurrentHeight = 25,IsVisible = true,MaxHeight = 33,MinHeight = 2}};
         }
 
-        public override IList<IToolRegion> BuildOutputsRegions()
-        {
-            return new List<IToolRegion> { new Region() { CurrentHeight = 25, IsVisible = true, MaxHeight = 33, MinHeight = 2 } };
-        }
-
         #endregion
     }
 

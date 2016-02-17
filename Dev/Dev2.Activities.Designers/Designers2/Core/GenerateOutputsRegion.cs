@@ -7,20 +7,22 @@ using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class GenerateInputsRegion : IGenerateInputArea
+    public class GenerateOutputsRegion : IGenerateOutputArea
     {
         private double _minHeight;
         private double _currentHeight;
         private double _maxHeight;
-        double _inputsHeight;
-        double _maxInputsHeight;
-        ICollection<IServiceInput> _inputs;
-        private const double BaseHeight = 160;
+        double _outputsHeight;
+        double _maxOutputsHeight;
+        ICollection<IServiceOutputMapping> _outputs;
+        bool _isVisible;
 
-        public GenerateInputsRegion()
+        private const double BaseHeight = 300;
+
+        public GenerateOutputsRegion()
         {
-            ToolRegionName = "GenerateInputsRegion";
-            IsVisible = true;
+            ToolRegionName = "GenerateOutputsRegion";
+            IsVisible = false;
         }
 
         private void SetInitialHeight()
@@ -28,7 +30,7 @@ namespace Dev2.Activities.Designers2.Core
             MinHeight = BaseHeight;
             MaxHeight = BaseHeight;
             CurrentHeight = BaseHeight;
-            MaxInputsHeight = BaseHeight;
+            MaxOutputsHeight = BaseHeight;
         }
 
         #region Implementation of IToolRegion
@@ -58,7 +60,18 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public bool IsVisible { get; set; }
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
         public double MaxHeight
         {
             get
@@ -68,9 +81,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _maxHeight = value;
-
                 OnPropertyChanged();
-                OnHeightChanged(this);
             }
         }
         public event HeightChanged HeightChanged;
@@ -93,69 +104,68 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
-        void ResetInputsHeight()
+        void ResetOutputsHeight()
         {
             SetInitialHeight();
-            InputsHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
-            MaxInputsHeight = InputsHeight;
-            if (Inputs.Count >= 3)
+            OutputsHeight = GlobalConstants.RowHeaderHeight + Outputs.Count * GlobalConstants.RowHeight;
+            MaxOutputsHeight = OutputsHeight;
+            if (Outputs.Count >= 3)
             {
-                MinHeight = 260;
-                MaxHeight = 260;
-                MaxInputsHeight = 260;
+                MinHeight = 320;
+                MaxHeight = 500;
+                MaxOutputsHeight = 320;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+                CurrentHeight = GlobalConstants.RowHeaderHeight + Outputs.Count * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;
                 }
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
             }
+            OnHeightChanged(this);
         }
 
         #endregion
 
-        #region Implementation of IGenerateInputArea
+        #region Implementation of IGenerateOutputArea
 
-        public ICollection<IServiceInput> Inputs
+        public ICollection<IServiceOutputMapping> Outputs
         {
             get
             {
-                return _inputs;
+                return _outputs;
             }
             set
             {
-                _inputs = value;
-                OnPropertyChanged();
-                ResetInputsHeight();
+                _outputs = value;
+                ResetOutputsHeight();
             }
         }
-        public double InputsHeight
+        public double OutputsHeight
         {
             get
             {
-                return _inputsHeight;
+                return _outputsHeight;
             }
             set
             {
-                _inputsHeight = value;
+                _outputsHeight = value;
                 OnPropertyChanged();
             }
         }
-        public double MaxInputsHeight
+        public double MaxOutputsHeight
         {
             get
             {
-                return _maxInputsHeight;
+                return _maxOutputsHeight;
             }
             set
             {
-                _maxInputsHeight = value;
+                _maxOutputsHeight = value;
                 OnPropertyChanged();
             }
         }
