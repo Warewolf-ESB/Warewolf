@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         string _selectedPath;
         private bool _hasLoaded;
         string _header;
+        private IEnvironmentViewModel _environmentViewModel;
         MessageBoxResult ViewResult { get; set; }
 
         private RequestServiceNameViewModel()
@@ -32,7 +33,9 @@ namespace Warewolf.Studio.ViewModels
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null" />.</exception>
 #pragma warning disable 1998
+#pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, string selectedPath, string header)
+#pragma warning restore 1998
 #pragma warning restore 1998
         {
             if (environmentViewModel == null)
@@ -59,6 +62,7 @@ namespace Warewolf.Studio.ViewModels
             _view.DataContext = this;
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
+            _environmentViewModel = environmentViewModel;
             return this;
         }
 
@@ -242,5 +246,12 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CancelCommand { get; private set; }
 
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
+
+
+        public void Dispose()
+        {
+            SingleEnvironmentExplorerViewModel.Dispose();
+            _environmentViewModel.Dispose();
+        }
     }
 }

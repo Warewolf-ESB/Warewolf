@@ -31,7 +31,7 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IDisposable, IManagePluginSourceViewModel
+    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
     {
         IDllListingModel _selectedDll;
         readonly IManagePluginSourceModel _updateManager;
@@ -473,16 +473,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void Dispose()
+        protected override void OnDispose()
         {
-            Dispose(true);
+            if (RequestServiceNameViewModel != null)
+            {
+                if (RequestServiceNameViewModel != null) RequestServiceNameViewModel.Dispose();
 
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
+            }
+            Dispose(true);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.

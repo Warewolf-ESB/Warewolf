@@ -1103,7 +1103,7 @@ namespace Dev2.Studio.ViewModels
 
         public  void NewResource(string resourceType, string resourcePath)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel =  GetSaveViewModel(resourcePath, resourceType);
+          
 
             if (resourceType == "Workflow" || resourceType=="WorkflowService")
             {
@@ -1112,8 +1112,10 @@ namespace Dev2.Studio.ViewModels
                 {
                     View.ClearToolboxSearch();
                 }
+                return;
             }
-            else if (resourceType == "EmailSource")
+                  Task<IRequestServiceNameViewModel> saveViewModel =  GetSaveViewModel(resourcePath, resourceType);
+            if (resourceType == "EmailSource")
             {
                 AddEmailWorkSurface(saveViewModel);
             }
