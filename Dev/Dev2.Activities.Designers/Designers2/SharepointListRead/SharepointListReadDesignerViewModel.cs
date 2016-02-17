@@ -11,9 +11,11 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 
@@ -22,13 +24,17 @@ namespace Dev2.Activities.Designers2.SharepointListRead
     public class SharepointListReadDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharepointListReadDesignerViewModel(ModelItem modelItem)
-            : base(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator,false)
+            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
+        {
+        }
+
+        public SharepointListReadDesignerViewModel(ModelItem modelItem,IAsyncWorker asyncWorker,IEnvironmentModel envModel)
+            : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);
         }
-        
 
         public override string CollectionName { get { return "FilterCriteria"; } }
 
