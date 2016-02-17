@@ -469,7 +469,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override void RemoveAt(int indexNumber)
         {
-            if (!CanRemoveAt(indexNumber))
+            if (!CanRemoveAt(indexNumber) || indexNumber==0)
             {
                 return;
             }
