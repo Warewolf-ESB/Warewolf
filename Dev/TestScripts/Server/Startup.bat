@@ -22,15 +22,16 @@ REM ****************************************************************************
 REM ** Kill The Server **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (elevate taskkill /im "Warewolf Server.exe" /T /F)
 
+REM  Wait 5 seconds ;)
+ping -n 5 -w 1000 192.0.2.2 > nul
+
 REM ** Delete the Warewolf ProgramData folder
-IF EXIST %windir%\nircmd.exe (nircmd elevate rd /S /Q %PROGRAMDATA%\Warewolf\Resources) else (elevate rd /S /Q %PROGRAMDATA%\Warewolf\Resources)
-IF EXIST %windir%\nircmd.exe (nircmd elevate rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces) else (elevate rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces)
-IF EXIST %windir%\nircmd.exe (nircmd elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warewolf\Resources) else (elevate rd /S /Q %PROGRAMDATA%\Warewolf\Resources)
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces) else (elevate rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces)
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\")
 rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\"
 rd /S /Q %PROGRAMDATA%\Warewolf\Resources
 rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces
-REM  Wait 5 seconds ;)
-ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM ** Copy in Debug resources **
 IF EXIST "%~dp0..\..\BPM Resources - Debug" robocopy "%~dp0..\..\BPM Resources - Debug" "%~dp0..\..\Dev2.Server\bin\Debug\Resources" *.* /s
