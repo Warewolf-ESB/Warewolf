@@ -196,6 +196,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
