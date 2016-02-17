@@ -25,6 +25,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _maxHeight;
         private double _headersHeight;
         double _maxHeadersHeight;
+        bool _isVisible;
         private const double BaseHeight = 60;
         //private ICommand _addRowCommand;
         //private ICommand _removeRowCommand;
@@ -114,7 +115,11 @@ namespace Dev2.Activities.Designers2.Core
             SetInitialHeight();
             IsVisible = false;
             SetupHeaders(modelItem);
-            if (source != null && source.SelectedSource != null) RequestUrl = source.SelectedSource.HostName;
+            if (source != null && source.SelectedSource != null)
+            {
+                RequestUrl = source.SelectedSource.HostName;
+                IsVisible = true;
+            }
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -130,6 +135,7 @@ namespace Dev2.Activities.Designers2.Core
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
+                IsVisible = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
@@ -237,11 +243,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _source != null && _source.SelectedSource != null;
+                return _isVisible;
             }
             set
             {
-
+                _isVisible = value;
+                OnPropertyChanged();
             }
         }
         public double MaxHeight
