@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
@@ -34,31 +35,28 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity()
             {
-                SourceId = mod.Sources[0].Id, Outputs = new List<IServiceOutputMapping>{new ServiceOutputMapping("a","b","c"), new ServiceOutputMapping("d","e","f")},
-                Headers = new List<INameValue> {new NameValue("a","x") },
+                SourceId = mod.Sources[0].Id,
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "Bob the builder",
                 ServiceName = "dsfBob"
-                
             };
-   
+
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-           
+
             //------------Execute Test---------------------------
-            Assert.AreEqual(465,webget.DesignMaxHeight);
+            Assert.AreEqual(465, webget.DesignMaxHeight);
             Assert.AreEqual(465, webget.DesignMinHeight);
             Assert.AreEqual(465, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
             webget.ValidateTestComplete();
-            Assert.IsTrue(webget.Outputs.IsVisible);
-            Assert.IsTrue(webget.CanTestProcedure());
-            Assert.IsFalse(webget.TestSuccessful);
- 
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
+
             //------------Assert Results-------------------------
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -70,15 +68,14 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-               var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-               webget.Validate();
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            webget.Validate();
             //------------Execute Test---------------------------
-          Assert.AreEqual(webget.Errors.Count,1);
-            Assert.AreEqual(webget.DesignValidationErrors.Count,2);
+            Assert.AreEqual(webget.Errors.Count, 1);
+            Assert.AreEqual(webget.DesignValidationErrors.Count, 2);
 
             //------------Assert Results-------------------------
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -90,15 +87,14 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
             Assert.AreEqual(150, webget.DesignMaxHeight);
             Assert.AreEqual(150, webget.DesignMinHeight);
             Assert.AreEqual(150, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsFalse(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsFalse(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
 
@@ -115,16 +111,15 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
             Assert.AreEqual(330, webget.DesignMaxHeight);
             Assert.AreEqual(330, webget.DesignMinHeight);
             Assert.AreEqual(330, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsFalse(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
 
@@ -140,27 +135,27 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(330, webget.DesignMaxHeight);
-            Assert.AreEqual(330, webget.DesignMinHeight);
-            Assert.AreEqual(330, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsFalse(webget.Outputs.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            
+            Assert.AreEqual(460, webget.ManageServiceInputViewModel.MaxHeight);
+            Assert.AreEqual(460, webget.ManageServiceInputViewModel.MinHeight);
+            Assert.AreEqual(460, webget.ManageServiceInputViewModel.CurrentHeight);
+            Assert.IsFalse(webget.SourceRegion.IsVisible);
+            Assert.IsFalse(webget.OutputsRegion.IsVisible);
+            Assert.IsFalse(webget.InputArea.IsVisible);
+            Assert.IsFalse(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -172,23 +167,25 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
             Assert.AreEqual(405, webget.DesignMaxHeight);
             Assert.AreEqual(405, webget.DesignMinHeight);
             Assert.AreEqual(405, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
@@ -203,24 +200,26 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
             Assert.AreEqual(465, webget.DesignMaxHeight);
             Assert.AreEqual(440, webget.DesignMinHeight);
             Assert.AreEqual(440, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
@@ -236,20 +235,21 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             mod.HasRecError = true;
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
 
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.Errors.Count==1);
+            Assert.IsTrue(webget.Errors.Count == 1);
             Assert.IsTrue(webget.Errors.First().Message == "bobthebuilder");
             //------------Assert Results-------------------------
         }
@@ -264,22 +264,21 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             mod.IsTextResponse = true;
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
 
-          Assert.AreEqual(webget.Outputs.Outputs.First().MappedFrom ,"Result");
+            Assert.AreEqual(webget.OutputsRegion.Outputs.First().MappedFrom, "Result");
             //------------Assert Results-------------------------
         }
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -291,27 +290,28 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
-            webget.InputArea.Headers.Add(new NameValue("[[a]]","asa"));
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
+            webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
             Assert.AreEqual(495, webget.DesignMaxHeight);
             Assert.AreEqual(470, webget.DesignMinHeight);
             Assert.AreEqual(470, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.AreEqual(1,webget.ManageServiceInputViewModel.Inputs.Count);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(1, webget.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -324,29 +324,30 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             webget.InputArea.QueryString = "the [[b]]";
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
             Assert.AreEqual(495, webget.DesignMaxHeight);
             Assert.AreEqual(470, webget.DesignMinHeight);
             Assert.AreEqual(470, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Count == 2);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.First().Name == "[[b]]");
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Last().Name == "[[a]]");
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             //------------Assert Results-------------------------
         }
 
@@ -360,35 +361,36 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity();
 
-
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest();
-            webget.Source.SelectedSource = webget.Source.Sources.First();
+            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
+            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             webget.InputArea.QueryString = "the [[b().a]]";
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestAction();
-            webget.ManageServiceInputViewModel.OutputMappings = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            webget.ManageServiceInputViewModel.OkAction();
+            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
+            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.SetInitialVisibility();
+            webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
             Assert.AreEqual(495, webget.DesignMaxHeight);
             Assert.AreEqual(470, webget.DesignMinHeight);
             Assert.AreEqual(470, webget.DesignHeight);
-            Assert.IsTrue(webget.Source.IsVisible);
-            Assert.IsTrue(webget.Outputs.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Count == 2);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.First().Name == "[[b().a]]");
-            Assert.IsTrue(webget.ManageServiceInputViewModel.Inputs.Last().Name == "[[a]]");
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             //------------Assert Results-------------------------
         }
 
     }
 
-   public class MyWebModel : IWebServiceModel
+    public class MyWebModel : IWebServiceModel
     {
 #pragma warning disable 649
         private IStudioUpdateManager _updateRepository;
@@ -425,14 +427,14 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 return new Dev2JsonSerializer().Serialize("dora");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var svc = new WebService();
-            if(!HasRecError)
-            svc.Recordsets = new RecordsetList(){new Recordset(){HasErrors = false,Fields = new List<RecordsetField>{new RecordsetField(){Alias = "bob",Name="the" , RecordsetAlias = "dd", Path = new XmlPath()}}}};
+            if (!HasRecError)
+                svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
             else
             {
-                svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder",Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+                svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
 
             }
-            return serializer.Serialize( svc);
+            return serializer.Serialize(svc);
         }
 
         public void SaveService(IWebService toModel)
@@ -468,15 +470,20 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 
         #endregion
     }
-   public class InputViewForTest : ManageWebServiceInputViewModel
-   {
-       #region Overrides of ManageWebServiceInputViewModel
+    public class InputViewForTest : ManageWebServiceInputViewModel
+    {
+        #region Overrides of ManageWebServiceInputViewModel
 
-       public override void ShowView()
-       {
-           
-       }
+        public override void ShowView()
+        {
 
-       #endregion
-   }
+        }
+
+        #endregion
+
+        public InputViewForTest(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
+            : base(model, serviceModel)
+        {
+        }
+    }
 }

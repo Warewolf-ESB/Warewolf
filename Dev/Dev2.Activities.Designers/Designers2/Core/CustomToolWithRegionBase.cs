@@ -42,8 +42,6 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public abstract IList<IToolRegion> BuildRegions();
-
-        public abstract IList<IToolRegion> BuildOutputsRegions(); 
         
         // ReSharper disable once PublicConstructorInAbstractClass
         public CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
