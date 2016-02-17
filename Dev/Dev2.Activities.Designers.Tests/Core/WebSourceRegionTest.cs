@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.ToolBase;
 namespace Dev2.Activities.Designers.Tests.Core
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// Summary description for SharepointReadListTests
     /// </summary>
     [TestClass]
     public class WebSourceRegionTest
