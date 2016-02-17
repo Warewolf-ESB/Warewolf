@@ -48,6 +48,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
@@ -178,5 +179,8 @@
                    Foreground="{StaticResource BrushDisabledForeground}"
                    Text="Right click to insert or delete rows." />
         </StackPanel>
+        <errors:OnError Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
