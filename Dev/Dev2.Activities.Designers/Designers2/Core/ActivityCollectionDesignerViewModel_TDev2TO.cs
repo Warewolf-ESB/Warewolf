@@ -133,12 +133,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count;
+            return ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
         }
 
         public override bool CanInsertAt(int indexNumber)
         {
-            return ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count;
+            return ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
         }
 
         public override void RemoveAt(int indexNumber)
