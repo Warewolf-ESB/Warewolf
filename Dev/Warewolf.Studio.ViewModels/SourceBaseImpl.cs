@@ -5,7 +5,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel
+    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel,IDisposable
         where T:IEquatable<T>
     {
         string _header;
@@ -75,5 +75,14 @@ namespace Warewolf.Studio.ViewModels
         public abstract void UpdateHelpDescriptor(string helpText);
         
         public abstract void Save();
+        public void Dispose()
+        {
+            OnDispose();
+        }
+
+        protected virtual void OnDispose()
+        {
+        }
+
     }
 }

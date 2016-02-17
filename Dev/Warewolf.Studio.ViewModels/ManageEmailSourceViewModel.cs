@@ -17,7 +17,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageEmailSourceViewModel : SourceBaseImpl<IEmailServiceSource>, IManageEmailSourceViewModel, IDisposable
+    public class ManageEmailSourceViewModel : SourceBaseImpl<IEmailServiceSource>, IManageEmailSourceViewModel
     {
         private string _hostName;
         private string _userName;
@@ -34,7 +34,6 @@ namespace Warewolf.Studio.ViewModels
 
         private IEmailServiceSource _emailServiceSource;
         private readonly IManageEmailSourceModel _updateManager;
-        readonly IEventAggregator _aggregator;
         CancellationTokenSource _token;
         bool _testPassed;
         bool _testFailed;
@@ -49,7 +48,6 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             _updateManager = updateManager;
-            _aggregator = aggregator;
             RequestServiceNameViewModel = requestServiceNameViewModel;
             HeaderText = Resources.Languages.Core.EmailSourceNewHeaderLabel;
             Header = Resources.Languages.Core.EmailSourceNewHeaderLabel;
@@ -67,6 +65,7 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("emailServiceSource", emailServiceSource);
             _emailServiceSource = emailServiceSource;
+            // ReSharper disable once VirtualMemberCallInContructor
             FromModel(emailServiceSource);
             SetupHeaderTextFromExisting();
         }
@@ -77,7 +76,6 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
-            _aggregator = aggregator;
             SendCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             Testing = false;
@@ -720,16 +718,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void Dispose()
+        protected override void OnDispose()
         {
+            if (RequestServiceNameViewModel != null)
+            {
+                if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
+                RequestServiceNameViewModel.Dispose();
+            }
             Dispose(true);
-
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -749,7 +745,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _token.Dispose();
+                    if (_token != null) _token.Dispose();
                 }
 
                 // Dispose unmanaged resources.
