@@ -461,9 +461,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                     try
                     {
                         Outputs.Outputs.Clear();
-                        foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                        if (ManageServiceInputViewModel.OutputMappings != null)
                         {
-                            Outputs.Outputs.Add(serviceOutputMapping);
+                            foreach (var serviceOutputMapping in ManageServiceInputViewModel.OutputMappings)
+                            {
+                                Outputs.Outputs.Add(serviceOutputMapping);
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("No Outputs detected");
                         }
 
                         Outputs.Description = ManageServiceInputViewModel.Description;
@@ -483,6 +490,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 {
                     GenerateOutputsVisible = false;
                     InitializeDisplayName("");
+                    ManageServiceInputViewModel.PasteResponseVisible = false;
                 };
                 if (ManageServiceInputViewModel.OkSelected)
                 {

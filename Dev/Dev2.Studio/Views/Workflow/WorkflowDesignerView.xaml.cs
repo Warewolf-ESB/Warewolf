@@ -40,10 +40,10 @@ namespace Dev2.Studio.Views.Workflow
 
         void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
+            //if (e.Key == Key.Enter)
+            //{
                 
-            }
+            //}
         }
 
         void WorkflowDesignerViewPreviewMouseDown(object sender, MouseButtonEventArgs e)

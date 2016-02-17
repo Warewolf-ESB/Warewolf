@@ -1178,8 +1178,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
-//            if (e.Key == Key.Return)
-//                e.Handled = true;
         }
 
         void DesigenrViewSubscribe(DesignerView instance)
