@@ -28,17 +28,17 @@ namespace Dev2.Activities.Designers2.SharepointListRead
     {
         readonly IEventAggregator _eventPublisher;
         readonly bool _loadOnlyEditableFields;
-        static readonly SharepointSource NewSharepointSource = new SharepointSource
+        protected static readonly SharepointSource NewSharepointSource = new SharepointSource
         {
             ResourceID = Guid.NewGuid(),
             ResourceName = "New Sharepoint Server Source..."
         };
-        static readonly SharepointSource SelectSharepointSource = new SharepointSource
+        protected static readonly SharepointSource SelectSharepointSource = new SharepointSource
         {
             ResourceID = Guid.NewGuid(),
             ResourceName = "Select a Sharepoint Server Source..."
         };
-        static readonly SharepointListTo SelectSharepointList = new SharepointListTo
+        protected static readonly SharepointListTo SelectSharepointList = new SharepointListTo
         {
             FullName = "Select a List..."
         };
@@ -97,7 +97,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             set
             {
                 SetValue(SelectedSharepointServerProperty, value);
-
                 EditSharepointServerCommand.RaiseCanExecuteChanged();
             }
         }
@@ -113,7 +112,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 if (!_isInitializing)
                 {
                     SetProperty(value);
-
                 } 
             }
         }
@@ -215,10 +213,10 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             SelectedList = selectedTable;
         }
 
-        List<SharepointListTo> GetSharepointLists(SharepointSource dbSource)
+        List<SharepointListTo> GetSharepointLists(SharepointSource sharepointSource)
         {
-            var tables = _environmentModel.ResourceRepository.GetSharepointLists(dbSource);
-            return tables ?? new List<SharepointListTo>();
+            var sharepointLists = _environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            return sharepointLists ?? new List<SharepointListTo>();
         }
 
         void LoadLists(System.Action continueWith = null)
@@ -466,7 +464,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return ModelItemCollection != null && (ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count);
+            return ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
         }
 
         public override void RemoveAt(int indexNumber)
