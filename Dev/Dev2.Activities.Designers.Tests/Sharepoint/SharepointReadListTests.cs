@@ -3,7 +3,12 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Sharepoint
@@ -33,12 +38,29 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListReadDesignerViewModel_CollectionName_Property_ReturnsFilterCriteria()
         {
             //------------Setup for test--------------------------
-            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem());
+            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(),new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
             
             //------------Execute Test---------------------------
             var collectionName = sharepointListReadDesignerViewModel.CollectionName;
             //------------Assert Results-------------------------
             Assert.AreEqual("FilterCriteria", collectionName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SharepointListReadDesignerViewModel_WhereOptions")]
+        public void SharepointListReadDesignerViewModel_WhereOptions_Constructor_ShouldBePopulatedWithCorrectOptions()
+        {
+            //------------Setup for test--------------------------
+            
+            
+            //------------Execute Test---------------------------
+            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(sharepointListReadDesignerViewModel);
+            Assert.IsNotNull(sharepointListReadDesignerViewModel.WhereOptions);
+            Assert.AreEqual(9,sharepointListReadDesignerViewModel.WhereOptions.Count);
+            CollectionAssert.AreEqual(SharepointSearchOptions.SearchOptions(),sharepointListReadDesignerViewModel.WhereOptions);
         }
 
         static ModelItem CreateModelItem()

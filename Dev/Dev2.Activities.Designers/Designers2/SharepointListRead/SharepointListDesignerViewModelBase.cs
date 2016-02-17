@@ -50,12 +50,12 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
             :base(modelItem)
         {
-            AddTitleBarLargeToggle();
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            _environmentModel = environmentModel;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _asyncWorker = asyncWorker;
+            _environmentModel = environmentModel;
+            AddTitleBarLargeToggle();
             _eventPublisher = eventPublisher;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 
