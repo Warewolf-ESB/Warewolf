@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Common.Interfaces.SaveDialog
 {
-    public interface IRequestServiceNameViewModel
+    public interface IRequestServiceNameViewModel:IDisposable
     {
         MessageBoxResult ShowSaveDialog();
         ResourceName ResourceName { get; }

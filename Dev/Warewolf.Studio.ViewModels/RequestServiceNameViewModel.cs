@@ -28,27 +28,33 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentViewModel _environmentViewModel;
         MessageBoxResult ViewResult { get; set; }
 
-        private RequestServiceNameViewModel()
+        public RequestServiceNameViewModel()
         {
         }
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null" />.</exception>
+#pragma warning disable 1998
+#pragma warning disable 1998
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, string selectedPath, string header)
+#pragma warning restore 1998
+#pragma warning restore 1998
         {
             if (environmentViewModel == null)
             {
                 throw new ArgumentNullException("environmentViewModel");
-            }        
+            }
             
             _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;
-            
+          
             OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
             
             Name = "";
-            _environmentViewModel.CanShowServerVersion = false;
+            environmentViewModel.CanShowServerVersion = false;
+            _environmentViewModel = environmentViewModel;
             return this;
         }
 
@@ -77,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
         public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
         {
             if (environmentViewModel == null)
-            {
+        {
                 throw new ArgumentNullException("environmentViewModel");
             }
             var ret = new RequestServiceNameViewModel();
@@ -242,6 +248,13 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand CancelCommand { get; private set; }
 
-        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
+        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; set; }
+
+
+        public void Dispose()
+        {
+            SingleEnvironmentExplorerViewModel.Dispose();
+            _environmentViewModel.Dispose();
+        }
     }
 }

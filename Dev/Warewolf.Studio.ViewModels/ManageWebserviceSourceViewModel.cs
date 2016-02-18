@@ -33,7 +33,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageWebserviceSourceViewModel : SourceBaseImpl<IWebServiceSource>, IManageWebserviceSourceViewModel, IDisposable
+    public class ManageWebserviceSourceViewModel : SourceBaseImpl<IWebServiceSource>, IManageWebserviceSourceViewModel
     {
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker,IExternalProcessExecutor executor)
             : base(ResourceType.WebSource)
         {
@@ -116,6 +116,11 @@ namespace Warewolf.Studio.ViewModels
             _warewolfserverName = updateManager.ServerName;
             SetupHeaderTextFromExisting();
             FromModel(webServiceSource);
+        }
+
+        public ManageWebserviceSourceViewModel() : base(ResourceType.WebSource)
+        {
+          
         }
 
         void SetupHeaderTextFromExisting()
@@ -358,7 +363,8 @@ namespace Warewolf.Studio.ViewModels
             };
 
         }
-        IRequestServiceNameViewModel RequestServiceNameViewModel
+
+        public IRequestServiceNameViewModel RequestServiceNameViewModel
         {
             get
             {
@@ -374,6 +380,7 @@ namespace Warewolf.Studio.ViewModels
                 }
 
             }
+            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
         }
 
         public AuthenticationType AuthenticationType
@@ -562,18 +569,15 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsEmpty { get { return String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
 
-        public void Dispose()
+        protected override void OnDispose()
         {
+            if (RequestServiceNameViewModel != null)
+            {
+                if (RequestServiceNameViewModel != null) RequestServiceNameViewModel.Dispose();
+   
+            }
             Dispose(true);
-
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
         }
-
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources
@@ -591,7 +595,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _token.Dispose();
+                    if (_token != null) _token.Dispose();
                 }
 
                 // Dispose unmanaged resources.
