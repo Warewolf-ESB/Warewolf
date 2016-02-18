@@ -928,7 +928,8 @@ namespace Dev2.Studio.ViewModels
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
                 var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
-                DeactivateItem(wfscvm, true);
+                CloseWorkSurfaceContext(wfscvm, null, true);
+       
             }
         }
 
@@ -1541,7 +1542,7 @@ namespace Dev2.Studio.ViewModels
             bool success = true;
             if (close)
             {
-                success = CloseWorkSurfaceContext(item, null,true);
+                success = CloseWorkSurfaceContext(item, null);
             }
 
             if (success)
