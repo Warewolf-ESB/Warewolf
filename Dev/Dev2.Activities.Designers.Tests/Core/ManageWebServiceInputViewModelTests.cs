@@ -30,12 +30,12 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
+            //------------Assert Results-------------------------
             ManageWebServiceInputViewModel vm = new ManageWebServiceInputViewModel(webget, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.PasteResponseCommand);
             Assert.IsNotNull(vm.CloseCommand);
 
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -71,6 +71,238 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             Assert.IsTrue(called);
             Assert.IsTrue(calledOk);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_TestActionSetSourceAndTest()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+           
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.InputArea.IsVisible);
+            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsNotNull(inputview.OutputArea.Outputs);
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_HeightChangedHandler()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+            var called = false;
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.HeightChanged += (sender, args) => called = true;
+            inputview.Model = new WebServiceDefinition();
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+            
+            //------------Assert Results-------------------------
+            Assert.IsTrue(called);
+
+            
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_PropertyChangedHandler()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+            var called = false;
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.PropertyChanged += (sender, args) => called = true;
+            inputview.Model = new WebServiceDefinition();
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(called);
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModelCloneRegion_ReturnsNull()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            
+            //------------Execute Test---------------------------
+            var clone = inputview.CloneRegion();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(inputview,clone);
+            
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModelTestAction_Exception()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+            mod.HasRecError = true;
+
+            var act = new DsfWebGetActivity();
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = null;
+
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.Errors.Count == 1);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModelOkAction_Exception()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+            mod.HasRecError = true;
+
+            var act = new DsfWebGetActivity();
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            webget.OutputsRegion.Outputs = null;
+
+            //------------Execute Test---------------------------
+            inputview.ExecuteOk();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.Errors.Count == 1);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_RestoreRegion_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+
+            //------------Execute Test---------------------------
+            inputview.RestoreRegion(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(true,"Error RestoreRegion should do nothing");
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickOk()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            inputview.ExecuteTest();
+            //------------Execute Test---------------------------
+            Assert.IsTrue(inputview.InputArea.IsVisible);
+            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsNotNull(inputview.OutputArea.Outputs);
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+
+            inputview.ExecuteOk();
+            //------------Execute Ok---------------------------
+            Assert.AreEqual(405, webget.DesignMaxHeight);
+            Assert.AreEqual(405, webget.DesignMinHeight);
+            Assert.AreEqual(405, webget.DesignHeight);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickPaste()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            //------------Execute Test---------------------------
+            inputview.ExecutePaste();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.PasteResponseVisible);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
+        public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickClose()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            inputview.ExecuteClose();
+            //------------Execute Ok---------------------------
+            Assert.IsNull(inputview.OutputArea.Outputs);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsFalse(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+
+            //------------Assert Results-------------------------
         }
 
         [TestMethod]

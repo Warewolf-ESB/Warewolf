@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
@@ -80,6 +81,24 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Webget_MethodName")]
+        public void Webget_MethodName_ClearErrors()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new MyWebModel();
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            //------------Execute Test---------------------------
+            webget.ClearValidationMemoWithNoFoundError();
+            //------------Assert Results-------------------------
+            Assert.IsNull(webget.Errors);
+            Assert.AreEqual(webget.DesignValidationErrors.Count, 1);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
         public void Webget_Ctor_EmptyModelItem()
         {
             //------------Setup for test--------------------------
@@ -122,70 +141,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-
-            //------------Assert Results-------------------------
-        }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void Webget_TestActionSetSourceAndTest()
-        {
-            //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
-            var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
-
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
-            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
-#pragma warning disable 4014
-            webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
-#pragma warning restore 4014
-            //------------Execute Test---------------------------
-            Assert.AreEqual(460, webget.ManageServiceInputViewModel.MaxHeight);
-            Assert.AreEqual(460, webget.ManageServiceInputViewModel.MinHeight);
-            Assert.AreEqual(460, webget.ManageServiceInputViewModel.CurrentHeight);
-            Assert.IsFalse(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsFalse(webget.InputArea.IsVisible);
-            Assert.IsFalse(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.IsVisible);
-
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void Webget_TestActionSetSourceAndTestClickOk()
-        {
-            //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
-            var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
-
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
-            webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
-#pragma warning disable 4014
-            webget.TestInputCommand.Execute();
-            webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
-            webget.ManageServiceInputViewModel.OkCommand.Execute(null);
-#pragma warning restore 4014
-            //------------Execute Test---------------------------
-            Assert.AreEqual(405, webget.DesignMaxHeight);
-            Assert.AreEqual(405, webget.DesignMinHeight);
-            Assert.AreEqual(405, webget.DesignHeight);
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
@@ -249,8 +204,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Execute Test---------------------------
 
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.Errors.Count == 1);
-            Assert.IsTrue(webget.Errors.First().Message == "bobthebuilder");
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -413,10 +366,11 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             return Sources;
         }
 
+        [ExcludeFromCodeCoverage]
         public void CreateNewSource()
         {
         }
-
+        [ExcludeFromCodeCoverage]
         public void EditSource(IWebServiceSource selectedSource)
         {
         }
@@ -436,7 +390,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             }
             return serializer.Serialize(svc);
         }
-
+        [ExcludeFromCodeCoverage]
         public void SaveService(IWebService toModel)
         {
         }
@@ -473,7 +427,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
     public class InputViewForTest : ManageWebServiceInputViewModel
     {
         #region Overrides of ManageWebServiceInputViewModel
-
+        [ExcludeFromCodeCoverage]
         public override void ShowView()
         {
 

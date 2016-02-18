@@ -801,7 +801,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 model.Dispose();
                 DataListViewModel.Dispose();
             }
-
+            var ws = (WorkSurfaceViewModel as IDisposable);
+            if(ws!= null)
+                ws.Dispose();
             base.OnDispose();
         }
 

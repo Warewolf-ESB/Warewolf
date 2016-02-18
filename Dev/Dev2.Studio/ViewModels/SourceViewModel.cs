@@ -38,6 +38,13 @@ namespace Dev2.ViewModels
             };
         }
 
+        protected override void OnDispose()
+        {
+            _eventPublisher.Unsubscribe(this);
+            base.OnDispose();
+            if (ViewModel != null) ViewModel.Dispose();
+        }
+
         public override object GetView(object context = null)
         {
             return View;
@@ -66,7 +73,9 @@ namespace Dev2.ViewModels
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+
+
+// ReSharper disable once UnusedMember.Global
         public ResourceType ResourceType
         {
             get

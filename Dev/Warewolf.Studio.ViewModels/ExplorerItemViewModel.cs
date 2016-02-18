@@ -141,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
         IVersionInfo _versionInfo;
         private IEnvironmentModel _environmentModel;
 
-        public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, Dev2.Common.Interfaces.Studio.Controller.IPopupController popupController)
+        public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
             SelectAction = selectAction;
             _shellViewModel = shellViewModel;
@@ -433,13 +433,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string NewFolder = "New Folder";
+            const string newFolder = "New Folder";
             int count = 0;
-            string folderName = NewFolder;
+            string folderName = newFolder;
             while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = NewFolder + " " + count;
+                folderName = newFolder + " " + count;
             }
             return folderName;
         }
@@ -451,13 +451,14 @@ namespace Warewolf.Studio.ViewModels
 
         //IExplorerHelpDescriptorBuilder Builder { get; set; }
 
-        void Delete()
+        public void Delete()
         {
             
             var environmentModel = EnvironmentModel;
             
             if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
             {
+                ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
                 if (_explorerRepository.Delete(this))
                 {
                     if (Parent != null)
@@ -469,6 +470,8 @@ namespace Warewolf.Studio.ViewModels
                     {
                         Server.UpdateRepository.FireServerSaved();
                     }
+                  
+
                 }
                 else
                 {
@@ -1275,15 +1278,18 @@ namespace Warewolf.Studio.ViewModels
                 _environmentModel = value;
             }
         }
-        //        public IShellViewModel ShellViewModel
-        //        {
-        //            get
-        //            {
-        //                return _shellViewModel;
-        //            }
-        //        }
 
-        
+
+
+        public void Dispose()
+        {
+            if (Server != null) Server.PermissionsChanged -= UpdatePermissions;
+            if (Children != null)
+                foreach (var explorerItemViewModel in Children)
+                {
+                    if (explorerItemViewModel != null) explorerItemViewModel.Dispose();
+                }
+        }
     }
     public class VersionViewModel : ExplorerItemViewModel {
         public VersionViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
