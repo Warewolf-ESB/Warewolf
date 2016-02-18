@@ -139,7 +139,11 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecutePaste()
         {
+            OutputArea.IsVisible = true;
+            _generateOutputArea.IsVisible = true;
+            _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
             PasteResponseVisible = true;
+            OnHeightChanged(this);
         }
 
         public void ExecuteOk()
