@@ -296,8 +296,10 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
-            <ScrollViewer Grid.Row="1" 
-                              Grid.Column="0" 
+            <Border Grid.Row="1" 
+                              Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
+                    Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+            <ScrollViewer 
                               VerticalAlignment="Top"
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
@@ -313,6 +315,7 @@
                     </TextBlock>
                 </Grid>
             </ScrollViewer>
+            </Border>
             <TextBlock Grid.Row="1"
                            Text="None" 
                            HorizontalAlignment="Center" 
