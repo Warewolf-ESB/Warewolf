@@ -83,6 +83,12 @@ namespace Warewolf.Studio.ViewModels
             _testFailed = false;
         }
 
+        public ManageEmailSourceViewModel()
+            : base(ResourceType.EmailSource)
+        {
+   
+        }
+
         public override void FromModel(IEmailServiceSource emailServiceSource)
         {
             HostName = emailServiceSource.HostName;
@@ -207,7 +213,7 @@ namespace Warewolf.Studio.ViewModels
             TestPassed = false;
         }
 
-        Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+       public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
         void Save(IEmailServiceSource source)
         {

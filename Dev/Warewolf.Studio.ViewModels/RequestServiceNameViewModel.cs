@@ -26,7 +26,7 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentViewModel _environmentViewModel;
         MessageBoxResult ViewResult { get; set; }
 
-        private RequestServiceNameViewModel()
+        public RequestServiceNameViewModel()
         {
 
         }
@@ -245,7 +245,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand CancelCommand { get; private set; }
 
-        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
+        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; set; }
 
 
         public void Dispose()
