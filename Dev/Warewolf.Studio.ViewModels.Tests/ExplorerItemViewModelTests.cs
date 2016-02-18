@@ -1,4 +1,8 @@
-﻿using Dev2.Common.Interfaces;
+﻿using System;
+using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.PopupController;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -20,7 +24,34 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.Verify(a=>a.Dispose());
         }
 
+
+        [TestMethod]
+        public void TestDeleteClosesWindow()
+        {
+
+            var svr = new Mock<IServer>();
+            var shell = new Mock<IShellViewModel>();
+            var pop = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+            pop.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
+            ExplorerItemViewModel vm = new ExplorerItemViewModel(svr.Object, new Mock<IExplorerTreeItem>().Object,
+                a => { }, shell.Object, pop.Object);
+            vm.EnvironmentModel = new Mock<IEnvironmentModel>().Object;
+            var child = new Mock<IExplorerItemViewModel>();
+            vm.Children.Add(child.Object);
+            try
+            {
+                vm.Delete();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            shell.Verify(a=>a.CloseResource(It.IsAny<Guid>(),It.IsAny<Guid>()));
+        }
+
     }
+
 
     [TestClass]
     public class EnvironmentViewModelTests
