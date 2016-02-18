@@ -80,6 +80,24 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Webget_MethodName")]
+        public void Webget_MethodName_ClearErrors()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var mod = new MyWebModel();
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            //------------Execute Test---------------------------
+            webget.ClearValidationMemoWithNoFoundError();
+            //------------Assert Results-------------------------
+            Assert.IsNull(webget.Errors);
+            Assert.AreEqual(webget.DesignValidationErrors.Count, 1);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Webget_MethodName")]
         public void Webget_Ctor_EmptyModelItem()
         {
             //------------Setup for test--------------------------

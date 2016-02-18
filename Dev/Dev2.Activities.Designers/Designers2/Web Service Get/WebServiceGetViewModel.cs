@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             UpdateDesignValidationErrors(memo.Errors);
         }
 
-        void ClearValidationMemoWithNoFoundError()
+        public void ClearValidationMemoWithNoFoundError()
         {
             var memo = new DesignValidationMemo
             {
@@ -290,6 +290,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         private string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
 
+        [ExcludeFromCodeCoverage]
         private void FixErrors()
         {
         }
@@ -330,6 +331,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public string ButtonDisplayValue { get; set; }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
         }
