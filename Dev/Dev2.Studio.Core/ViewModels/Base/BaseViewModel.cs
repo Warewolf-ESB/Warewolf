@@ -61,7 +61,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         {
             _eventPublisher.Unsubscribe(this);
             base.OnDispose();
-            
+
         }
 
         #region Protected Virtual Methods
