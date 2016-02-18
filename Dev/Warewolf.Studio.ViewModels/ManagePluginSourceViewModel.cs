@@ -451,17 +451,20 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception==null)
+                if(_requestServiceNameViewModel != null)
                 {
-                    return _requestServiceNameViewModel.Result;
+                    _requestServiceNameViewModel.Wait();
+                    if (_requestServiceNameViewModel.Exception==null)
+                    {
+                        return _requestServiceNameViewModel.Result;
+                    }
+                    // ReSharper disable once RedundantIfElseBlock
+                    else
+                    {
+                        throw _requestServiceNameViewModel.Exception;
+                    }
                 }
-                // ReSharper disable once RedundantIfElseBlock
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
-                
+                return null;
             }
             set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start();}
         }

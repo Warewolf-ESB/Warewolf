@@ -41,11 +41,6 @@ namespace Warewolf.Studio.ViewModels
 #pragma warning restore 1998
 #pragma warning restore 1998
         {
-            if (environmentViewModel == null)
-            {
-                throw new ArgumentNullException("environmentViewModel");
-            }
-            
             _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
@@ -53,7 +48,6 @@ namespace Warewolf.Studio.ViewModels
           
             OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
-            
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
@@ -78,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _hasLoaded = value;
-                ((DelegateCommand)OkCommand).RaiseCanExecuteChanged();
+                RaiseCanExecuteChanged();
             }
         }
 
@@ -155,7 +149,10 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a => HasLoaded = a.Result);
+            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
+            {
+                HasLoaded = a.Result;                
+            },TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
@@ -217,15 +214,18 @@ namespace Warewolf.Studio.ViewModels
 
         private bool HasDuplicateName(string requestedServiceName)
         {
+            if (SingleEnvironmentExplorerViewModel != null)
+            {
             var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
             if (explorerTreeItem != null)
             {
                 return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
             }
-            if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
+                if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
             {
                 var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
                 return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+            }
             }
             return false;
         }
