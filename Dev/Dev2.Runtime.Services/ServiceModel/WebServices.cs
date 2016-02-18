@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -195,7 +196,7 @@ namespace Dev2.Runtime.ServiceModel
 
         static string SetParameters(IEnumerable<MethodParameter> parameters, string s)
         {
-            return parameters.Aggregate(s ?? "", (current, parameter) => current.Replace("[[" + parameter.Name + "]]", parameter.Value));
+            return parameters.Aggregate(s ?? "", (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
         }
 
         #endregion
