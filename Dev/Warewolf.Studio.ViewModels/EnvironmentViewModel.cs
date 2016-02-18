@@ -863,7 +863,7 @@ namespace Warewolf.Studio.ViewModels
         public void Dispose()
         {
             if (Children != null)
-                foreach (var explorerItemViewModel in Children)
+                foreach (var explorerItemViewModel in _children)
                 {
                     if (explorerItemViewModel != null) explorerItemViewModel.Dispose();
                 }

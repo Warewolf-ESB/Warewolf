@@ -462,7 +462,7 @@ namespace Warewolf.Studio.ViewModels
             SaveConnection();
         }
 
-        Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+        public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
         public IList<NameValue> Types { get; set; }
 

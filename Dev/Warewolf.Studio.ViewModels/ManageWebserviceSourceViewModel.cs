@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker,IExternalProcessExecutor executor)
             : base(ResourceType.WebSource)
         {
@@ -116,6 +116,11 @@ namespace Warewolf.Studio.ViewModels
             _warewolfserverName = updateManager.ServerName;
             SetupHeaderTextFromExisting();
             FromModel(webServiceSource);
+        }
+
+        public ManageWebserviceSourceViewModel() : base(ResourceType.WebSource)
+        {
+          
         }
 
         void SetupHeaderTextFromExisting()
@@ -358,7 +363,8 @@ namespace Warewolf.Studio.ViewModels
             };
 
         }
-        IRequestServiceNameViewModel RequestServiceNameViewModel
+
+        public IRequestServiceNameViewModel RequestServiceNameViewModel
         {
             get
             {
@@ -374,6 +380,7 @@ namespace Warewolf.Studio.ViewModels
                 }
 
             }
+            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
         }
 
         public AuthenticationType AuthenticationType
