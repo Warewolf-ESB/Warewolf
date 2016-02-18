@@ -29,13 +29,8 @@ namespace Warewolf.Studio.ViewModels
         MessageBoxResult ViewResult { get; set; }
 
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-#pragma warning disable 1998
-#pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
-#pragma warning restore 1998
-#pragma warning restore 1998
         {
-            
             _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
