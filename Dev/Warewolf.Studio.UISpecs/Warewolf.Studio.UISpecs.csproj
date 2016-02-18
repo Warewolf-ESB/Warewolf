@@ -96,6 +96,12 @@
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj">
+      <Project>{0d2942ab-2c34-43f9-bb49-8baba58a660a}</Project>
+      <Name>Dev2.CodedUI.SpecGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -124,7 +130,10 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask "StudioUISpecs.feature.cs" --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
+    <PreBuildEvent>
+      "$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask "StudioUISpecs.feature.cs" --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
+      IF EXIST "%25vs120comntools%25" IF NOT EXIST "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"
+      IF EXIST "%25vs140comntools%25" IF NOT EXIST "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
