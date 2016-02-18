@@ -176,15 +176,14 @@ namespace Dev2.Activities.Designers2.Core
 
         void ResetOutputsView()
         {
+            IsVisible = false;
             _viewmodel.GenerateOutputsVisible = false;
             PasteResponseVisible = false;
             InputArea.IsVisible = false;
             OutputArea.IsVisible = false;
             TestResults = String.Empty;
             TestResultsAvailable = false;
-            IsVisible = false;
 
-            IsVisible = false;
             _viewmodel.SetDisplayName("");
             _viewmodel.ErrorMessage(new Exception(), false);
         }
@@ -305,6 +304,8 @@ namespace Dev2.Activities.Designers2.Core
         {
             IsVisible = true;
             InputArea.IsVisible = true;
+            OutputArea.IsVisible = false;
+            SetInitialHeight();
         }
 
         [ExcludeFromCodeCoverage]
