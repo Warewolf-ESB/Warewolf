@@ -381,10 +381,10 @@
                          Background="{StaticResource WareWolfWhiteBrush}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="50*" />
+                                    <ColumnDefinition SharedSizeGroup="True" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="InputName" 
                                            Text="{Binding Path=Name}" 
@@ -393,7 +393,7 @@
                                            MaxWidth="125"
                                            HorizontalAlignment="Stretch" 
                                            ToolTip="{Binding Path=Name}"/>
-                                <TextBox Margin="{StaticResource ControlBorderLeft}" 
+                                <TextBox Margin="{StaticResource ControlBorderRight}" 
                                          Grid.Column="1"
                                          Text="{Binding Path=Value}" 
                                          HorizontalAlignment="Stretch" 

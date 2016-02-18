@@ -716,6 +716,12 @@ namespace Dev2.Studio.ViewModels
             {
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
+            //Activates if exists
+            var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
+            if (exists)
+            {
+                return;
+            }
             switch (resourceModel.ServerResourceType)
             {
                 case "DbSource":
@@ -727,9 +733,6 @@ namespace Dev2.Studio.ViewModels
                 case "PluginSource":
                     EditPluginSource(resourceModel);
                     break;
-  
-
- 
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
@@ -1103,7 +1106,7 @@ namespace Dev2.Studio.ViewModels
 
         public  void NewResource(string resourceType, string resourcePath)
         {
-            Task<IRequestServiceNameViewModel> saveViewModel =  GetSaveViewModel(resourcePath, resourceType);
+          
 
             if (resourceType == "Workflow" || resourceType=="WorkflowService")
             {
@@ -1112,8 +1115,10 @@ namespace Dev2.Studio.ViewModels
                 {
                     View.ClearToolboxSearch();
                 }
+                return;
             }
-            else if (resourceType == "EmailSource")
+                  Task<IRequestServiceNameViewModel> saveViewModel =  GetSaveViewModel(resourcePath, resourceType);
+            if (resourceType == "EmailSource")
             {
                 AddEmailWorkSurface(saveViewModel);
             }

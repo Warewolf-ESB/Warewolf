@@ -183,7 +183,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="executor">Execute external Processes</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
-        /// <param name="setupUnknownVariableTimer"></param>
         // ReSharper disable TooManyDependencies
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
@@ -242,7 +241,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual bool IsDesignerViewVisible { get { return DesignerView != null && DesignerView.IsVisible; } }
 
-        public override string DisplayName
+        public string DisplayName
         {
             get
             {
@@ -544,8 +543,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void InitializeFlowStep(ModelItem mi)
         {
-            ModelProperty modelProperty = mi.Properties["Action"];
-
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
@@ -2097,7 +2094,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
             // ReSharper restore EmptyGeneralCatchClause
-
+            if (_debugSelectionChangedService != null) _debugSelectionChangedService.Unsubscribe();
             base.OnDispose();
         }
 
