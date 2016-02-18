@@ -1182,7 +1182,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var origSource = e.OriginalSource.GetType();
                 if (origSource.BaseType == typeof(ActivityDesigner))
                 {
-                    e.Handled = true;
+                    if (e.Key == Key.Return)
+                    {
+                        e.Handled = true;
+                    }
                 }
             }            
         }

@@ -154,6 +154,58 @@ namespace Warewolf.Studio.ViewModels.Tests
             requestServiceNameViewModel.OkCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NoItemSelectedHasDuplicateName_ShouldReturnError()
+        {
+            //------------Setup for test--------------------------
+            const string expectedErrorMessage = "An item with name \'TestResource\' already exists in this folder.";
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("MyFolder");
+            var childDuplicateExplorerTreeItem = new Mock<IExplorerItemViewModel>();
+            childDuplicateExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.DbService);
+            childDuplicateExplorerTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            childDuplicateExplorerTreeItem.Setup(item => item.ResourceName).Returns("TestResource");
+            childDuplicateExplorerTreeItem.Setup(model => model.Parent).Returns(mockExplorerTreeItem.Object);
+            var explorerItemViewModels = new ObservableCollection<IExplorerItemViewModel> {childDuplicateExplorerTreeItem.Object };
+            mockEnvironmentModel.Setup(model => model.Children).Returns(explorerItemViewModels);
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.Name = "TestResource";
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameEmpty_ShouldHaveErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.Name = "TestResource";
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(requestServiceNameViewModel.ResourceName);
+            Assert.AreEqual("", requestServiceNameViewModel.ResourceName.Path);
+            Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
         }
         
     }
