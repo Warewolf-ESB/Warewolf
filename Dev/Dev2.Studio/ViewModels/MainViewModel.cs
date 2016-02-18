@@ -717,6 +717,7 @@ namespace Dev2.Studio.ViewModels
             {
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
+
             switch (resourceModel.ServerResourceType)
             {
                 case "DbSource":
@@ -728,9 +729,6 @@ namespace Dev2.Studio.ViewModels
                 case "PluginSource":
                     EditPluginSource(resourceModel);
                     break;
-  
-
- 
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
@@ -894,7 +892,7 @@ namespace Dev2.Studio.ViewModels
                         var server =ExplorerViewModel.ConnectControlViewModel.Servers.FirstOrDefault(a => a.EnvironmentID == environmentId);
                         if(server != null)
                         {
-                            ActiveServer = server;
+                            SetActiveServer(server);
                         }
                     }
                 }
@@ -903,7 +901,10 @@ namespace Dev2.Studio.ViewModels
 
         public void SetActiveServer(IServer server)
         {
-            ActiveServer = server;
+            if (server.IsConnected)
+            {
+                ActiveServer = server;
+            }
         }
 
         public void Debug()
@@ -979,7 +980,11 @@ namespace Dev2.Studio.ViewModels
             var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _asyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IServerSource>(EventPublisher, viewModel, PopupProvider, new ManageServerControl());
 
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource) as WorkSurfaceKey;
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
+            workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+            workSurfaceKey.ResourceID = selectedServer.ID;
+            workSurfaceKey.ServerID = ActiveServer.ServerID;
+            var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
 
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
@@ -2081,8 +2086,13 @@ namespace Dev2.Studio.ViewModels
         {
             if (context != null)
             {
-                Items.Add(context);
-                ActivateItem(context);
+                var found = FindWorkSurfaceContextViewModel(context.WorkSurfaceKey);
+                if (found == null)
+                {
+                    found = context;
+                    Items.Add(context);
+                }
+                ActivateItem(found);
             }
         }
 
