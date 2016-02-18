@@ -37,8 +37,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
           
             OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            CancelCommand = new DelegateCommand(CloseView);
-            
+            CancelCommand = new DelegateCommand(CloseView);            
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
@@ -63,7 +62,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _hasLoaded = value;
-                ((DelegateCommand)OkCommand).RaiseCanExecuteChanged();
+                RaiseCanExecuteChanged();
             }
         }
 
@@ -140,7 +139,10 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
-            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a => HasLoaded = a.Result);
+            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
+            {
+                HasLoaded = a.Result;                
+            },TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
