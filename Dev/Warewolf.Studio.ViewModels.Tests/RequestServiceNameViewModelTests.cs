@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Dev2;
@@ -52,6 +53,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(()=> mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(true));
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
@@ -118,6 +120,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(requestServiceNameViewModel.ResourceName);
             Assert.AreEqual("MyParentFolder\\MyFolder\\",requestServiceNameViewModel.ResourceName.Path);
             Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
+            Assert.AreEqual("",requestServiceNameViewModel.ErrorMessage);
         }
 
 
@@ -194,19 +197,162 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameEmpty_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
+            const string expectedErrorMessage = "'Name' cannot be empty.";
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
             requestServiceNameViewModel.ShowSaveDialog();
-            requestServiceNameViewModel.Name = "TestResource";
+            requestServiceNameViewModel.Name = "";
             //------------Execute Test---------------------------
             requestServiceNameViewModel.OkCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(requestServiceNameViewModel.ResourceName);
-            Assert.AreEqual("", requestServiceNameViewModel.ResourceName.Path);
-            Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
+            Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameContainsInvalidCharacters_ShouldHaveErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            const string expectedErrorMessage = "'Name' contains invalid characters.";
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.Name = "Save@#$";
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameContainsLeadingTrailingSpaces_ShouldHaveErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            const string expectedErrorMessage = "'Name' contains leading or trailing whitespace characters.";
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.Name = " Save ";
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_NameValidNotLoaded_CannotClickOk()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.Name = "TesResource";
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
+            Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_Header")]
+        public async Task RequestServiceNameViewModel_Header_Set_ShouldFirePropertyChangedEvent()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            var called = false;
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "") as RequestServiceNameViewModel;
+            Assert.IsNotNull(requestServiceNameViewModel);
+            requestServiceNameViewModel.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == "Header")
+                    {
+                        called = true;
+                    }
+                };
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.Header = "TestHeader";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(called);
+            Assert.AreEqual("TestHeader",requestServiceNameViewModel.Header);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        public async Task RequestServiceNameViewModel_CancelCommand_Called_ShouldCloseView()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "") ;
+            requestServiceNameViewModel.ShowSaveDialog();
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.CancelCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNull(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel);
+            mockRequestServiceNameView.Verify(view => view.RequestClose());
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        public async Task RequestServiceNameViewModel_SetName_SingleEnvironmentModelNull_ErrorMessageEmpty()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.Name = "Test";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("",requestServiceNameViewModel.ErrorMessage);
         }
         
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        public async Task RequestServiceNameViewModel_SetName_SingleEnvironmentModelEnvironmentsNull_ErrorMessageEmpty()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+            requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new List<IEnvironmentViewModel>();
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.Name = "Test";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("",requestServiceNameViewModel.ErrorMessage);
+        }
     }
 }
