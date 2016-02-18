@@ -34,11 +34,6 @@ namespace Warewolf.Studio.ViewModels
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
         {
-            if (environmentViewModel == null)
-            {
-                throw new ArgumentNullException("environmentViewModel");
-            }        
-            
             _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
             _selectedPath = selectedPath;
@@ -209,15 +204,18 @@ namespace Warewolf.Studio.ViewModels
 
         private bool HasDuplicateName(string requestedServiceName)
         {
-            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (explorerTreeItem != null)
+            if (SingleEnvironmentExplorerViewModel != null)
             {
-                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            }
-            if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
-            {
-                var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+                if (explorerTreeItem != null)
+                {
+                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
+                if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
+                {
+                    var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
             }
             return false;
         }
