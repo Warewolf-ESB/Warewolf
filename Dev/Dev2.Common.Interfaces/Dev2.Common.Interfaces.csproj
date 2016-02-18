@@ -305,6 +305,7 @@
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />
     <Compile Include="ToolBase\IGenerateInputArea.cs" />
+    <Compile Include="ToolBase\IGenerateOutputArea.cs" />
     <Compile Include="ToolBase\IInputsToolRegion.cs" />
     <Compile Include="ToolBase\IOutputsToolRegion.cs" />
     <Compile Include="ToolBase\ISourceToolRegion.cs" />

@@ -39,7 +39,7 @@
             <!--DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel }"-->
             <Grid x:Name="SourcesGrid"  
                   Grid.Row="0" 
-                  Visibility="{Binding Source.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                  Visibility="{Binding SourceRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding LabelWidth}"/>
                     <ColumnDefinition Width="*"/>
@@ -52,8 +52,8 @@
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
                           ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
-                          ItemsSource="{Binding Source.Sources}"
-                          SelectedItem="{Binding Source.SelectedSource , Mode=TwoWay}">
+                          ItemsSource="{Binding SourceRegion.Sources}"
+                          SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -63,7 +63,7 @@
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
                         ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
-                        Command="{Binding Path=Source.EditSourceCommand, Mode=TwoWay}">
+                        Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -74,7 +74,7 @@
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
                         ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
-                        Command="{Binding Path= Source.NewSourceCommand, Mode=TwoWay}">
+                        Command="{Binding Path= SourceRegion.NewSourceCommand, Mode=TwoWay}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -300,7 +300,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <ScrollViewer Grid.Row="1" 
                               Grid.Column="0" 
                               VerticalAlignment="Top"
@@ -374,7 +374,7 @@
                 <ListBox x:Name="InputsList" 
                          Grid.Row="1"
                          Grid.IsSharedSizeScope="True" 
-                         ItemsSource="{Binding ManageServiceInputViewModel.Inputs}" 
+                         ItemsSource="{Binding ManageServiceInputViewModel.InputArea.Inputs}" 
                          BorderBrush="{StaticResource WareWolfWhiteBrush}" 
                          Height="Auto"
                          MaxHeight="100"
@@ -386,16 +386,15 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="50*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="InputName" 
                                            Text="{Binding Path=Name}" 
                                            TextTrimming="CharacterEllipsis" 
-                                           MinWidth="75" 
-                                           MaxWidth="75"
+                                           MinWidth="25"
+                                           MaxWidth="125"
                                            HorizontalAlignment="Stretch" 
                                            ToolTip="{Binding Path=Name}"/>
-                                <!--<ScrollViewer >-->
                                 <TextBox Margin="{StaticResource ControlBorderLeft}" 
                                          Grid.Column="1"
                                          Text="{Binding Path=Value}" 
@@ -403,11 +402,10 @@
                                          AcceptsReturn="True"
                                          Height="Auto"
                                          MaxHeight="45"
-                                         MaxWidth="260"
+                                         MinWidth="50"
                                          TextWrapping="Wrap"
                                          VerticalAlignment="Stretch"
                                          VerticalScrollBarVisibility="Auto"
-                                        
                                          HorizontalScrollBarVisibility="Auto"
                                          customControls:WatermarkTextBox.Watermark="Test Data"
                                          ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
@@ -415,7 +413,6 @@
                                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>-->
                                 </TextBox>
-                                <!--</ScrollViewer>-->
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

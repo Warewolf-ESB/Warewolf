@@ -2,26 +2,31 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces
 {
     public interface IManagePluginServiceInputViewModel : IManageServiceInputViewModel<IPluginService>
     {
+        ICollection<IServiceInput> Inputs { get; set; }
         string TestResults { get; set; }
         bool OkSelected { get; set; }
         List<IServiceOutputMapping> OutputMappings { get; set; }
         IOutputDescription Description { get; set; }
     }
 
-    public interface IManageWebServiceInputViewModel : IManageServiceInputViewModel<IWebService>
+    public interface IManageWebServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IWebService>
     {
         string TestResults { get; set; }
         bool OkSelected { get; set; }
         ICommand PasteResponseCommand { get; }
-        List<IServiceOutputMapping> OutputMappings { get; set; }
+        IGenerateOutputArea OutputArea { get; set; }
         IOutputDescription Description { get; set; }
+        IGenerateInputArea InputArea { get; set; }
         bool PasteResponseVisible { get; set; }
         bool PasteResponseAvailable { get; }
+
+        void SetInitialVisibility();
     }
 }
