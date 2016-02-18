@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             //------------Assert Results-------------------------
-            System.Diagnostics.Debug.Assert(x != null, "x != null");
+            Assert.IsNotNull(x, "x != null");
             Assert.AreEqual(x.Outputs.Count,4);
             Assert.AreEqual(x.CurrentHeight,outputsRegion.CurrentHeight);
             Assert.AreEqual(x.MaxHeight, outputsRegion.MaxHeight);
