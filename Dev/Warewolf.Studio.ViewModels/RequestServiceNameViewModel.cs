@@ -28,14 +28,16 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentViewModel _environmentViewModel;
         MessageBoxResult ViewResult { get; set; }
 
+        // ReSharper disable once EmptyConstructor
         public RequestServiceNameViewModel()
         {
         }
+
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null" />.</exception>
+
 #pragma warning disable 1998
 #pragma warning disable 1998
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, string selectedPath, string header)
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header)
 #pragma warning restore 1998
 #pragma warning restore 1998
         {

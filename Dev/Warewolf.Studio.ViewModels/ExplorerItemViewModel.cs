@@ -451,13 +451,14 @@ namespace Warewolf.Studio.ViewModels
 
         //IExplorerHelpDescriptorBuilder Builder { get; set; }
 
-        void Delete()
+        public void Delete()
         {
             
             var environmentModel = EnvironmentModel;
             
             if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
             {
+                ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
                 if (_explorerRepository.Delete(this))
                 {
                     if (Parent != null)
@@ -469,6 +470,8 @@ namespace Warewolf.Studio.ViewModels
                     {
                         Server.UpdateRepository.FireServerSaved();
                     }
+                  
+
                 }
                 else
                 {
