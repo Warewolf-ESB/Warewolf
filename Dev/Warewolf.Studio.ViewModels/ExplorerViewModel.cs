@@ -27,7 +27,9 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
     {
+        // ReSharper disable once InconsistentNaming
         protected ICollection<IEnvironmentViewModel> _environments;
+        // ReSharper disable once InconsistentNaming
         protected string _searchText;
         private bool _isRefreshing;
         private IExplorerTreeItem _selectedItem;
@@ -175,9 +177,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async void RefreshEnvironment(Guid environmentID)
+        public async void RefreshEnvironment(Guid environmentId)
         {
-            var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentID);
+            var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
                 IsRefreshing = true;
@@ -295,6 +297,14 @@ namespace Warewolf.Studio.ViewModels
             var handler = SelectedEnvironmentChanged;
             if (handler != null) handler(this, e);
         }
+
+        public void Dispose()
+        {
+            foreach (var environmentViewModel in Environments)
+            {
+                environmentViewModel.Dispose();
+            }
+        }
     }
 
     public class ExplorerViewModel : ExplorerViewModelBase
@@ -313,9 +323,12 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
+            // ReSharper disable once VirtualMemberCallInContructor
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
+#pragma warning disable 4014
                 LoadEnvironment(localhostEnvironment);
+#pragma warning restore 4014
 
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
             ShowConnectControl = true;
@@ -355,13 +368,13 @@ namespace Warewolf.Studio.ViewModels
                });
         }
 
-        public virtual void AfterLoad(Guid environmentID)
+        public virtual void AfterLoad(Guid environmentId)
         {
             if (ConnectControlViewModel != null)
             {
                 ConnectControlViewModel.IsLoading = false;
             }
-            var env = Environments.FirstOrDefault(a => a.ResourceId == environmentID);
+            var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
             if (env != null)
             {
                 env.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);

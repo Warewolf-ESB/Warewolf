@@ -57,9 +57,9 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of ExplorerViewModel
 
-        public override void AfterLoad(Guid environmentID)
+        public override void AfterLoad(Guid environmentId)
         {
-            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentID);
+            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             SelectedEnvironment = environmentViewModel;
             if (ServerStateChanged != null)
             {
