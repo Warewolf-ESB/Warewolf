@@ -164,11 +164,14 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _outputs = value;
-                _modelItem.SetProperty("Outputs", value.ToList());
-                ReCalculateHeight();
-                OnHeightChanged(this);
-                OnPropertyChanged();
+                if (value != null)
+                {
+                    _outputs = value;
+                    _modelItem.SetProperty("Outputs", value.ToList());
+                    ReCalculateHeight();
+                    OnHeightChanged(this);
+                    OnPropertyChanged();
+                }
             }
         }
 

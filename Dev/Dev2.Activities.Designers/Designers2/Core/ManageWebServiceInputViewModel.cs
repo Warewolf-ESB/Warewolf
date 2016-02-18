@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _isVisible;
         IWebServiceGetViewModel _viewmodel;
         IWebServiceModel _serverModel;
-        private const double BaseHeight = 160;
+        private const double BaseHeight = 200;
 
         public ManageWebServiceInputViewModel(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
         {
@@ -75,74 +75,59 @@ namespace Dev2.Activities.Designers2.Core
             OnHeightChanged(this);
         }
 
-        [ExcludeFromCodeCoverage]
-        void ExecuteTest()
+        public void ExecuteTest()
         {
+            ViewErrors = new List<IActionableErrorInfo>();
+            OutputArea.IsVisible = true;
+            TestResults = null;
+            IsTesting = true;
+
             try
             {
-                ViewErrors = new List<IActionableErrorInfo>();
-                OutputArea.IsVisible = true;
-                TestResults = null;
-                IsTesting = true;
-
-                try
+                var testResult = _serverModel.TestService(Model);
+                var serializer = new Dev2JsonSerializer();
+                RecordsetList recordsetList;
+                using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
-                    var testResult = _serverModel.TestService(Model);
-                    var serializer = new Dev2JsonSerializer();
-                    RecordsetList recordsetList;
-                    using (var responseService = serializer.Deserialize<WebService>(testResult))
+                    TestResults = responseService.RequestResponse;
+                    recordsetList = responseService.Recordsets;
+                    if (recordsetList.Any(recordset => recordset.HasErrors))
                     {
-                        TestResults = responseService.RequestResponse;
-                        recordsetList = responseService.Recordsets;
-                        if (recordsetList.Any(recordset => recordset.HasErrors))
-                        {
-                            var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
-                            throw new Exception(errorMessage);
-                        }
-
-                        Description = responseService.GetOutputDescription();
-                    }
-                    // ReSharper disable MaximumChainedReferences
-                    var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
-                    {
-                        var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
-                        return serviceOutputMapping;
-                    }).Cast<IServiceOutputMapping>().ToList();
-                    // ReSharper restore MaximumChainedReferences
-                    var recSet = recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
-                    if (recSet != null)
-                    {
-                        _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
+                        var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                        throw new Exception(errorMessage);
                     }
 
-                    _generateOutputArea.IsVisible = true;
-                    _generateOutputArea.Outputs = outputMapping;
-                    if (TestResults != null)
-                    {
-                        TestResultsAvailable = TestResults != null;
-                        IsTesting = false;
-                    }
+                    Description = responseService.GetOutputDescription();
                 }
-                catch (JsonSerializationException)
+                // ReSharper disable MaximumChainedReferences
+                var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
-                    OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
+                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                    return serviceOutputMapping;
+                }).Cast<IServiceOutputMapping>().ToList();
+                // ReSharper restore MaximumChainedReferences
+                var recSet = recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
+                if (recSet != null)
+                {
+                    _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
                 }
-                catch (Exception e)
+
+                _generateOutputArea.IsVisible = true;
+                _generateOutputArea.Outputs = outputMapping;
+                if (TestResults != null)
                 {
-                    Errors.Add(e.Message);
+                    TestResultsAvailable = TestResults != null;
                     IsTesting = false;
-                    _viewmodel.ErrorMessage(e, true);
                 }
-
-                //if (ManageServiceInputViewModel.OkSelected)
-                //{
-                //    ValidateTestComplete();
-                //}
-
+            }
+            catch (JsonSerializationException)
+            {
+                OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Result", "[[Result]]", "") };
             }
             catch (Exception e)
             {
                 Errors.Add(e.Message);
+                IsTesting = false;
                 _viewmodel.ErrorMessage(e, true);
             }
             OnHeightChanged(this);
@@ -152,14 +137,16 @@ namespace Dev2.Activities.Designers2.Core
 
         public List<IActionableErrorInfo> ViewErrors { get; set; }
 
-        [ExcludeFromCodeCoverage]
-        void ExecutePaste()
+        public void ExecutePaste()
         {
+            OutputArea.IsVisible = true;
+            _generateOutputArea.IsVisible = true;
+            _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
             PasteResponseVisible = true;
+            OnHeightChanged(this);
         }
 
-        [ExcludeFromCodeCoverage]
-        void ExecuteOk()
+        public void ExecuteOk()
         {
             try
             {
@@ -193,17 +180,19 @@ namespace Dev2.Activities.Designers2.Core
 
         void ResetOutputsView()
         {
+            IsVisible = false;
             _viewmodel.GenerateOutputsVisible = false;
             PasteResponseVisible = false;
             InputArea.IsVisible = false;
             OutputArea.IsVisible = false;
-            IsVisible = false;
+            TestResults = String.Empty;
+            TestResultsAvailable = false;
+
             _viewmodel.SetDisplayName("");
             _viewmodel.ErrorMessage(new Exception(), false);
         }
 
-        [ExcludeFromCodeCoverage]
-        private void ExecuteClose()
+        public void ExecuteClose()
         {
             _viewmodel.OutputsRegion.Outputs.Clear();
             _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
@@ -222,10 +211,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateInputArea;
             }
+            [ExcludeFromCodeCoverage]
             set
             {
-                _generateInputArea = value;
-                OnPropertyChanged();
             }
         }
         public string TestResults
@@ -318,10 +306,13 @@ namespace Dev2.Activities.Designers2.Core
 
         public void SetInitialVisibility()
         {
+            SetInitialHeight();
             IsVisible = true;
             InputArea.IsVisible = true;
+            OutputArea.IsVisible = false;
         }
 
+        [ExcludeFromCodeCoverage]
         public ImageSource TestIconImageSource
         {
             get
@@ -340,22 +331,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                var model = new WebServiceDefinition()
-                {
-                    Headers = new List<NameValue>(_model.Headers.Select(a => new NameValue(ReplaceString(a.Name), ReplaceString(a.Name)))),
-                    QueryString = ReplaceString(_model.QueryString),
-                    Id = _model.Id,
-                    Path = _model.Path,
-                    PostData = _model.PostData,
-                    Inputs = _model.Inputs,
-                    OutputMappings = _model.OutputMappings,
-                    Method = _model.Method,
-                    Name = _model.Name,
-                    Response = _model.Response,
-                    Source = _model.Source,
-                    SourceUrl = _model.SourceUrl
-                };
-                return model;
+
+                return _model ?? new WebServiceDefinition();
+
             }
             set
             {
@@ -364,13 +342,6 @@ namespace Dev2.Activities.Designers2.Core
         }
         public string TestHeader { get; set; }
 
-        private string ReplaceString(string name)
-        {
-            if (InputArea == null)
-                return name;
-            return InputArea.Inputs.Aggregate(name, (current, serviceInput) => current.Replace(serviceInput.Name, serviceInput.Value));
-
-        }
 
         public Action OkAction { get; set; }
         public ICommand PasteResponseCommand { get; private set; }
@@ -380,9 +351,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
+            [ExcludeFromCodeCoverage]
             set
             {
-                _generateOutputArea = value;
             }
         }
         public IOutputDescription Description { get; set; }

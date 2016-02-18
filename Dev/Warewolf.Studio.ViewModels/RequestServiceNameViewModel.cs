@@ -5,12 +5,14 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
+#pragma warning disable 1998
 namespace Warewolf.Studio.ViewModels
 {
     public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
@@ -28,7 +30,6 @@ namespace Warewolf.Studio.ViewModels
 
         public RequestServiceNameViewModel()
         {
-
         }
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null" />.</exception>
@@ -42,24 +43,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("environmentViewModel");
             }
-            if (view == null)
-            {
-                throw new ArgumentNullException("view");
-            }
-            environmentViewModel.Connect();
+            
+            _environmentViewModel = environmentViewModel;
+            _environmentViewModel.Connect();
             _selectedPath = selectedPath;
             _header = header;
-#pragma warning disable 4014
-            environmentViewModel.LoadDialog(selectedPath).ContinueWith(a=>HasLoaded=a.Result);
           
-#pragma warning restore 4014
-            _view = view;
-
             OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
             CancelCommand = new DelegateCommand(CloseView);
-            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel, Guid.Empty, false);
-            SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
-            _view.DataContext = this;
+            
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
@@ -88,15 +80,20 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, string selectedPath, string header)
+        public static Task<IRequestServiceNameViewModel> CreateAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
         {
+            if (environmentViewModel == null)
+        {
+                throw new ArgumentNullException("environmentViewModel");
+            }
             var ret = new RequestServiceNameViewModel();
-            return ret.InitializeAsync(environmentViewModel, view, selectedPath, header);
+            return ret.InitializeAsync(environmentViewModel, selectedPath, header);
         }
 
         private void CloseView()
         {
             _view.RequestClose();
+            SingleEnvironmentExplorerViewModel = null;
         }
 
         private void SetServiceName()
@@ -113,9 +110,10 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetPath()
         {
-            if (SingleEnvironmentExplorerViewModel.SelectedItem != null)
+            var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+            if (selectedItem != null)
             {
-                var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
+                var parent = selectedItem.Parent;
                 var parentNames = new List<string>();
                 while (parent != null)
                 {
@@ -134,9 +132,9 @@ namespace Warewolf.Studio.ViewModels
                         path = path + "\\" + parentName;
                     }
                 }
-                if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
+                if (selectedItem.ResourceType == ResourceType.Folder)
                 {
-                    path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
+                    path = path + "\\" + selectedItem.ResourceName;
                 }
                 return path;
             }
@@ -154,6 +152,11 @@ namespace Warewolf.Studio.ViewModels
 
         public MessageBoxResult ShowSaveDialog()
         {
+            _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
+            _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a => HasLoaded = a.Result);
+            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
+            SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
+            _view.DataContext = this;
             SingleEnvironmentExplorerViewModel.SelectItem(_selectedPath);
             _view.ShowView();
 

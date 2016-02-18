@@ -30,7 +30,10 @@ namespace Warewolf.Studio.Views
             {
                 content.Children.Add(_blackoutGrid);
             }
-            Application.Current.MainWindow.Effect = effect;
+            if(Application.Current != null)
+            {
+                Application.Current.MainWindow.Effect = effect;
+            }
 
             ContentRendered += (sender, args) =>
             {
