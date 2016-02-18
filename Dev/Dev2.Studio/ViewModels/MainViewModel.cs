@@ -1185,8 +1185,7 @@ namespace Dev2.Studio.ViewModels
                     break;
             }
 
-          //  var item = ActiveServer.ExplorerRepository.FindItem(model => model.ResourcePath.Equals(resourcePath, StringComparison.OrdinalIgnoreCase));
-            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, this), new RequestServiceNameView(), resourcePath, header);
+            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(ActiveServer, this), resourcePath, header);
         }
 
         void AddNewServerSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)

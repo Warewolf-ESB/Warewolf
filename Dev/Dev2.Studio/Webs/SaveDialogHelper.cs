@@ -21,7 +21,6 @@ using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
-using Warewolf.Studio.Views;
 
 namespace Dev2.Webs
 {
@@ -93,7 +92,7 @@ namespace Dev2.Webs
                 header = header.Replace("\\", "");
             }
 
-            var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, new RequestServiceNameView(), selectedPath, header);
+            var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, selectedPath, header);
          
             if (loaded != null)
             {

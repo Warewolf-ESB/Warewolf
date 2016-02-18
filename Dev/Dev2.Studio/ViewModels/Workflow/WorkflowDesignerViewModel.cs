@@ -1130,7 +1130,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.PreviewDrop += ViewPreviewDrop;
 
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-
+                _wd.View.PreviewKeyDown += ViewOnKeyDown;
 
                 _wd.View.Measure(new Size(2000, 2000));
 
@@ -1174,7 +1174,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
             }
         }
-        
+
+        private void ViewOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.OriginalSource != null)
+            {
+                var origSource = e.OriginalSource.GetType();
+                if (origSource.BaseType == typeof(ActivityDesigner))
+                {
+                    e.Handled = true;
+                }
+            }            
+        }
+
         void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
