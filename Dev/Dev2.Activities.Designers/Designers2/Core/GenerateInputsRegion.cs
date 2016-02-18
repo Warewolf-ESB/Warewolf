@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Core
         double _inputsHeight;
         double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
-        private const double BaseHeight = 160;
+        private const double BaseHeight = 200;
 
         public GenerateInputsRegion()
         {

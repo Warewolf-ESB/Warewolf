@@ -199,13 +199,10 @@
         </Grid>
     </ControlTemplate>
 
-    <!--DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel }"-->
     <ControlTemplate x:Key="OutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
-        <Grid Height="{Binding CurrentHeight}"
-              MinHeight="{Binding MinHeight}"
-              MaxHeight="{Binding MaxHeight}"
-              x:Name="OutputsTemplate"
-              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid VerticalAlignment="Stretch" 
+                      x:Name="OutputsTemplate"
+                      Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -220,20 +217,20 @@
                     </Grid.RowDefinitions>
 
                     <ig:XamGrid x:Name="OutputsMappingDataGrid"
-                                ItemsSource="{Binding Outputs}"
-                                IsAlternateRowsEnabled="False"
-                                AutoGenerateColumns="False"
-                                IsEnabled="{Binding TestComplete}"
-                                Margin="-1,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}"
-                                MinHeight="{Binding MinHeight}"
-                                ColumnWidth="*">
+                                        ItemsSource="{Binding OutputsRegion.Outputs}"
+                                        IsAlternateRowsEnabled="False"
+                                        AutoGenerateColumns="False"
+                                        IsEnabled="{Binding OutputsRegion.IsVisible}"
+                                        Margin="-1,0,0,0"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        MinHeight="100"
+                                        ColumnWidth="*">
                         <ig:XamGrid.Columns>
                             <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">
                                 <ig:TextColumn.AddNewRowEditorTemplate>
                                     <DataTemplate DataType="db:IServiceOutputMapping">
-                                        <ui:IntellisenseTextBox WrapInBrackets="True" IsEnabled="False" Text="{Binding MappedFrom}" ToolTip="{Binding Path=MappedFrom}"></ui:IntellisenseTextBox>
+                                        <ui:IntellisenseTextBox WrapInBrackets="True" IsEnabled="False" Text="{Binding MappedFrom}" ToolTip="{Binding Path=MappedFrom}"/>
                                     </DataTemplate>
                                 </ig:TextColumn.AddNewRowEditorTemplate>
                             </ig:TextColumn>
@@ -256,32 +253,30 @@
                         </ig:XamGrid.SortingSettings>
                         <ig:XamGrid.EditingSettings>
                             <ig:EditingSettings AllowEditing="Cell"
-                                  IsMouseActionEditingEnabled="SingleClick"
-                                  IsEnterKeyEditingEnabled="True"
-                                  IsF2EditingEnabled="True"
-                                  IsOnCellActiveEditingEnabled="True" />
+                                                        IsMouseActionEditingEnabled="SingleClick"
+                                                        IsEnterKeyEditingEnabled="True"
+                                                        IsF2EditingEnabled="True"
+                                                        IsOnCellActiveEditingEnabled="True" />
                         </ig:XamGrid.EditingSettings>
                         <ig:XamGrid.ConditionalFormattingSettings>
                             <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                         </ig:XamGrid.ConditionalFormattingSettings>
                     </ig:XamGrid>
-                    <!--<TextBlock Text="None"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Bottom"
-                               Margin="0,0,0,-18"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />-->
+                    <TextBlock Text="None"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,0,0,-18"
+                                       Style="{StaticResource MenuTextBlockStyle}"
+                                       Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </Grid>
             </Border>
-            <Grid Grid.Row="1"
-                Margin="{StaticResource ControlBorderTop}"
-                Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Recordset Name" ></TextBlock>
-                <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding OutputsRegion.RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -300,9 +295,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" />
-            <ScrollViewer Grid.Row="1" 
-                              Grid.Column="0" 
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <Border Grid.Row="1" 
+                              Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
+                    Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+            <ScrollViewer 
                               VerticalAlignment="Top"
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
@@ -318,6 +315,7 @@
                     </TextBlock>
                 </Grid>
             </ScrollViewer>
+            </Border>
             <TextBlock Grid.Row="1"
                            Text="None" 
                            HorizontalAlignment="Center" 
@@ -353,7 +351,7 @@
             </TextBox>
         </Grid>
     </ControlTemplate>
-    
+
     <ControlTemplate x:Key="GenerateOutputsView"  d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
         <Grid>
             <Grid.RowDefinitions>
@@ -383,10 +381,10 @@
                          Background="{StaticResource WareWolfWhiteBrush}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="50*" />
+                                    <ColumnDefinition SharedSizeGroup="True" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="InputName" 
                                            Text="{Binding Path=Name}" 
@@ -395,7 +393,7 @@
                                            MaxWidth="125"
                                            HorizontalAlignment="Stretch" 
                                            ToolTip="{Binding Path=Name}"/>
-                                <TextBox Margin="{StaticResource ControlBorderLeft}" 
+                                <TextBox Margin="{StaticResource ControlBorderRight}" 
                                          Grid.Column="1"
                                          Text="{Binding Path=Value}" 
                                          HorizontalAlignment="Stretch" 
@@ -480,6 +478,6 @@
         </Grid>
     </ControlTemplate>
 
-    
-    
+
+
 </ResourceDictionary>

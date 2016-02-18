@@ -9,7 +9,7 @@ namespace Dev2.Common.Interfaces
     public delegate void SelectedExplorerEnvironmentChanged(object sender, IEnvironmentViewModel e);
     public delegate void SelectedServerChanged(object sender, Guid environmentId);
     public delegate void SelectedExplorerItemChanged(object sender, IExplorerTreeItem e);
-	public interface IExplorerViewModel:INotifyPropertyChanged
+	public interface IExplorerViewModel:INotifyPropertyChanged,IDisposable
 	{
 		ICollection<IEnvironmentViewModel> Environments {get;set;}
         void Filter(string filter);
@@ -38,6 +38,6 @@ namespace Dev2.Common.Interfaces
 
 	    void SelectItem(string path);
 
-	    void RefreshEnvironment(Guid environmentID);
+	    void RefreshEnvironment(Guid environmentId);
 	}
 }

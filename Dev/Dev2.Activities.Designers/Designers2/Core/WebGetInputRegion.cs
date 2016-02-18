@@ -281,7 +281,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Headers = headers2,
                 QueryString = QueryString,
-                RequestUrl = RequestUrl
+                RequestUrl = RequestUrl,
+                IsVisible = IsVisible
             };
         }
 
