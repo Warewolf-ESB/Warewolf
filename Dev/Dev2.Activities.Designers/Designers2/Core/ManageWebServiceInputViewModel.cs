@@ -106,6 +106,7 @@ namespace Dev2.Activities.Designers2.Core
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
+                _viewmodel.OutputsRegion.RecordsetName = string.Empty;
                 var recSet = recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                 if (recSet != null)
                 {
