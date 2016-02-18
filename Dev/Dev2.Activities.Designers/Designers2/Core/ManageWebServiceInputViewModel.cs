@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _isVisible;
         IWebServiceGetViewModel _viewmodel;
         IWebServiceModel _serverModel;
-        private const double BaseHeight = 160;
+        private const double BaseHeight = 200;
 
         public ManageWebServiceInputViewModel(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
         {
@@ -302,10 +302,10 @@ namespace Dev2.Activities.Designers2.Core
 
         public void SetInitialVisibility()
         {
+            SetInitialHeight();
             IsVisible = true;
             InputArea.IsVisible = true;
             OutputArea.IsVisible = false;
-            SetInitialHeight();
         }
 
         [ExcludeFromCodeCoverage]

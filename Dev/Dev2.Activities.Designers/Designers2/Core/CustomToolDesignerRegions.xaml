@@ -300,7 +300,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <ScrollViewer Grid.Row="1" 
                               Grid.Column="0" 
                               VerticalAlignment="Top"
