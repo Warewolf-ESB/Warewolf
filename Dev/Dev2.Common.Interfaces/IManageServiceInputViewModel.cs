@@ -9,7 +9,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IManageServiceInputViewModel<T>
     {
-        ICollection<IServiceInput> Inputs { get; set; }
+     
         Action TestAction { get; set; }
         ICommand TestCommand { get; }
         bool TestResultsAvailable { get; set; }
@@ -29,6 +29,7 @@ namespace Dev2.Common.Interfaces
 
     public interface IManageDatabaseInputViewModel : IManageServiceInputViewModel<IDatabaseService>
     {
+        ICollection<IServiceInput> Inputs { get; set; }
         DataTable TestResults { get; set; }
         bool OkSelected { get; set; }
     }

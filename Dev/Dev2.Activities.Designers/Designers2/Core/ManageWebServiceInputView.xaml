@@ -68,7 +68,7 @@
                 <ListBox x:Name="InputsList" 
                          Grid.Row="1"
                          Grid.IsSharedSizeScope="True" 
-                         ItemsSource="{Binding Inputs}" 
+                         ItemsSource="{Binding InputArea}" 
                          BorderBrush="{StaticResource WarewolfPanelGreyBrush}" 
                          Height="Auto"
                          MaxHeight="300"

@@ -64,10 +64,10 @@
                         <RowDefinition.Style>
                             <Style>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=Outputs.IsVisible}" Value="True">
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
                                         <Setter Property="RowDefinition.Height" Value="*"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=Outputs.IsVisible}" Value="False">
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
                                         <Setter Property="RowDefinition.Height" Value="Auto"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -185,7 +185,7 @@
                 <Grid Grid.Row="2" 
                       VerticalAlignment="Stretch" 
                       x:Name="OutputsTemplate"
-                      Visibility="{Binding Outputs.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                      Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -200,13 +200,13 @@
                             </Grid.RowDefinitions>
 
                             <ig:XamGrid x:Name="OutputsMappingDataGrid"
-                                        ItemsSource="{Binding Outputs.Outputs}"
+                                        ItemsSource="{Binding OutputsRegion.Outputs}"
                                         IsAlternateRowsEnabled="False"
                                         AutoGenerateColumns="False"
-                                        IsEnabled="{Binding Outputs.IsVisible}"
+                                        IsEnabled="{Binding OutputsRegion.IsVisible}"
                                         Margin="-1,0,0,0"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        Visibility="{Binding Outputs.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                         MinHeight="100"
                                         ColumnWidth="*">
                                 <ig:XamGrid.Columns>
@@ -250,16 +250,16 @@
                                        VerticalAlignment="Bottom"
                                        Margin="0,0,0,-18"
                                        Style="{StaticResource MenuTextBlockStyle}"
-                                       Visibility="{Binding Outputs.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                       Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </Grid>
                     </Border>
-                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding Outputs.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Recordset Name" ></TextBlock>
-                        <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding Outputs.RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                        <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding OutputsRegion.RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
                             <i:Interaction.Behaviors>
                                 <core1:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
