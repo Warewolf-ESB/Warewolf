@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
+using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
@@ -53,7 +54,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             SetupCommonProperties();
         }
-
+        Guid UniqueID { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -63,6 +64,54 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
+            if (SourceRegion.SelectedSource == null)
+            {
+                UpdateLastValidationMemoWithSourceNotFoundError();
+            }
+            UpdateWorstError();
+        }
+
+        void UpdateLastValidationMemoWithSourceNotFoundError()
+        {
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = UniqueID,
+                IsValid = false,
+            };
+            memo.Errors.Add(new ErrorInfo
+            {
+                InstanceID = UniqueID,
+                ErrorType = ErrorType.Critical,
+                FixType = FixType.None,
+                Message = _sourceNotFoundMessage
+            });
+            UpdateDesignValidationErrors(memo.Errors);
+        }
+
+        void ClearValidationMemoWithNoFoundError()
+        {
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = UniqueID,
+                IsValid = false,
+            };
+            memo.Errors.Add(new ErrorInfo
+            {
+                InstanceID = UniqueID,
+                ErrorType = ErrorType.None,
+                FixType = FixType.None,
+                Message = ""
+            });
+            UpdateDesignValidationErrors(memo.Errors);
+        }
+
+        void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
+        {
+            DesignValidationErrors.Clear();
+            foreach (var error in errors)
+            {
+                DesignValidationErrors.Add(error);
+            }
             UpdateWorstError();
         }
 
@@ -96,7 +145,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 }
 
             }
+            if (Errors.Count <= 0)
+            {
+                ClearValidationMemoWithNoFoundError();
+            }
             UpdateWorstError();
+            InitializeProperties();
         }
 
         void UpdateWorstError()
@@ -151,6 +205,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
                 FixErrors();
+                IsWorstErrorReadOnly = true;
             });
 
             SetDisplayName("");
