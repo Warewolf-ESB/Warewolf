@@ -298,18 +298,10 @@ namespace Dev2.Runtime.Hosting
                 case ResourceType.Folder:
                     {
                         var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
-                        if (deleteResult.Status == ExecStatus.Success)
-                        {
-               
-                        }
                         return deleteResult;
                     }
                 default:
-                    ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.DisplayName, itemToDelete.ResourceType.ToString());
-                    if (result.Status == ExecStatus.Success)
-                    {
-        
-                    }
+                    ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType.ToString());
                     return new ExplorerRepositoryResult(result.Status, result.Message);
             }
         }

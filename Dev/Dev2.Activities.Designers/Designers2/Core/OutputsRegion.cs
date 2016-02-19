@@ -56,6 +56,8 @@ namespace Dev2.Activities.Designers2.Core
             CurrentHeight = BaseHeight;
         }
 
+        // ReSharper disable once UnusedMember.Global
+        //Needed for Deserialization
         public OutputsRegion()
         {
             ToolRegionName = "OutputsRegion";
