@@ -12,7 +12,7 @@ using Dev2.Services.Security;
 using Moq;
 using Newtonsoft.Json;
 
-namespace Warewolf.AcceptanceTesting.Core
+namespace Warewolf.Testing
 {
     public class ServerForTesting : Resource, IServer
     {
