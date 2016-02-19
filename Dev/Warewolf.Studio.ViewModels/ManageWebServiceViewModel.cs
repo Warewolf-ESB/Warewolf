@@ -349,7 +349,7 @@ namespace Warewolf.Studio.ViewModels
                 RemoveUnused();
                 return;
             }
-            var exp = WarewolfDataEvaluationCommon.ParseLanguageExpression(name, 0);
+            var exp = WarewolfDataEvaluationCommon.parseLanguageExpression(name, 0);
                 if (Variables == null || Variables.Any(a => a.Name == name))
             {
                 return;
@@ -357,12 +357,12 @@ namespace Warewolf.Studio.ViewModels
             if (exp.IsScalarExpression)
             {
                 var scalar = exp as LanguageAST.LanguageExpression.ScalarExpression;
-                Variables.Add(new NameValue { Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(scalar), Value = "" });
+                Variables.Add(new NameValue { Name = WarewolfDataEvaluationCommon.languageExpressionToString(scalar), Value = "" });
             }
             if (exp.IsRecordSetExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
-                Variables.Add(new NameValue { Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(rec), Value = "" });
+                Variables.Add(new NameValue { Name = WarewolfDataEvaluationCommon.languageExpressionToString(rec), Value = "" });
             }
             if (exp.IsComplexExpression)
             {
@@ -371,7 +371,7 @@ namespace Warewolf.Studio.ViewModels
                 foreach (var languageExpression in rec.Item)
                 // ReSharper restore PossibleNullReferenceException
                 {
-                    UpdateRequestVariables(WarewolfDataEvaluationCommon.LanguageExpressionToString(languageExpression));
+                    UpdateRequestVariables(WarewolfDataEvaluationCommon.languageExpressionToString(languageExpression));
                 }
             }
             RemoveUnused();
