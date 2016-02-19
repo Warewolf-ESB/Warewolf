@@ -197,7 +197,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateFolder = CanCreateFolder;
                 child.CanCreateDbSource = CanCreateDbSource;
                 child.CanShowVersions = CanShowVersions;
-                child.CanRename = CanRename;
+                child.CanRename = true;
                 child.CanCreatePluginSource = CanCreatePluginSource;
                 child.CanCreateEmailSource = CanCreateEmailSource;
                 child.CanCreateDropboxSource = CanCreateDropboxSource;
