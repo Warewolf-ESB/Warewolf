@@ -428,7 +428,8 @@ namespace Dev2.Services.Sql
             command.CommandText =
                 string.Format(
                     "SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
-                    dbName, procedureName);
+                    dbName, procedureName.Substring(procedureName.IndexOf(".") + 1));
+
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
