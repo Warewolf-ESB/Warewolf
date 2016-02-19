@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
         bool _candrop;
         bool _canDrag;
         bool? _isResource;
-        IPopupController _popupController;
+        readonly IPopupController _popupController;
         IVersionInfo _versionInfo;
         private IEnvironmentModel _environmentModel;
 
@@ -433,13 +433,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = newFolder + " " + count;
+                folderName = NewFolder + " " + count;
             }
             return folderName;
         }
