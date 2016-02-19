@@ -13,6 +13,7 @@ using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Warewolf.Testing;
 
 namespace Warewolf.AcceptanceTesting.SaveDialog
 {
