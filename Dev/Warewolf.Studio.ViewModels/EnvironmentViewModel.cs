@@ -159,7 +159,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool AreVersionsVisible { get; set; }
 
-        void CreateFolder()
+       public void CreateFolder()
         {
             IsExpanded = true;
             var id = Guid.NewGuid();
@@ -190,6 +190,25 @@ namespace Warewolf.Studio.ViewModels
                 child.CanDeploy = false;
                 child.CanShowDependencies = false;
             }
+            else
+            {
+                child.AllowResourceCheck = AllowResourceCheck;
+                child.IsResourceChecked = IsResourceChecked;
+                child.CanCreateFolder = CanCreateFolder;
+                child.CanCreateDbSource = CanCreateDbSource;
+                child.CanShowVersions = CanShowVersions;
+                child.CanRename = CanRename;
+                child.CanCreatePluginSource = CanCreatePluginSource;
+                child.CanCreateEmailSource = CanCreateEmailSource;
+                child.CanCreateDropboxSource = CanCreateDropboxSource;
+                child.CanCreateSharePointSource = CanCreateSharePointSource;
+                child.CanCreateServerSource = CanCreateServerSource;
+                child.CanCreateWebSource = CanCreateWebSource;
+                child.CanDeploy = CanDeploy;
+                child.CanCreateWorkflowService = CanCreateWorkflowService;
+
+                child.ShowContextMenu = ShowContextMenu;
+             }
             _children.Insert(0, child);
             OnPropertyChanged(() => Children);
         }
