@@ -19,6 +19,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
+// ReSharper disable FieldCanBeMadeReadOnly.Local
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -437,7 +440,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #endregion
 
-        protected virtual void OnHeightChanged(IToolRegion args)
+        protected void OnHeightChanged(IToolRegion args)
         {
             var handler = HeightChanged;
             if (handler != null)
@@ -448,7 +451,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)

@@ -86,6 +86,7 @@ using Infragistics.Windows.DockManager.Events;
 using ServiceStack.Common;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Resource = Dev2.Runtime.ServiceModel.Data.Resource;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -878,9 +879,9 @@ namespace Dev2.Studio.ViewModels
             }           
         }
 
-        public void SetActiveEnvironment(Guid environmentID)
+        public void SetActiveEnvironment(Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentID);
+            var environmentModel = EnvironmentRepository.Get(environmentId);
             ActiveEnvironment = environmentModel != null && (environmentModel.IsConnected || environmentModel.IsLocalHost) ? environmentModel : EnvironmentRepository.Get(Guid.Empty);
             if(ExplorerViewModel != null)
             {
@@ -888,7 +889,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(ExplorerViewModel.ConnectControlViewModel.Servers != null)
                     {
-                        var server =ExplorerViewModel.ConnectControlViewModel.Servers.FirstOrDefault(a => a.EnvironmentID == environmentID);
+                        var server =ExplorerViewModel.ConnectControlViewModel.Servers.FirstOrDefault(a => a.EnvironmentID == environmentId);
                         if(server != null)
                         {
                             SetActiveServer(server);
@@ -926,17 +927,38 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                DisplayResourceWizard(contextualResourceModel, true);
+                var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
+                CloseWorkSurfaceContext(wfscvm, null, true);
+       
             }
         }
-        
+
+        public void CloseResource(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
+                DeactivateItem(wfscvm, true);
+            }
+        }
+
+        public void CloseResource(IEnvironmentModel environmentModel, Guid resourceId)
+        {
+            var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == resourceId) as IContextualResourceModel;
+            var wfscvm = FindWorkSurfaceContextViewModel(resource);
+            DeactivateItem(wfscvm,true);
+        }
+
         public async void OpenResourceAsync(Guid resourceId, IServer server)
         {
             var environmentModel = EnvironmentRepository.Get(server.EnvironmentID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
-                DisplayResourceWizard(contextualResourceModel,true);
+                var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
+                DeactivateItem(wfscvm, true);
             }
         }
 
@@ -2139,7 +2161,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
+        public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt=false)
         {
             bool remove = true;
             if (context != null)
@@ -2176,6 +2198,8 @@ namespace Dev2.Studio.ViewModels
                                             return false;
                                     }
                                 }
+                                if (dontPrompt)
+                                    remove = true;
                                 if (!remove)
                                 {
                                     remove = ShowRemovePopup(workflowVm);
