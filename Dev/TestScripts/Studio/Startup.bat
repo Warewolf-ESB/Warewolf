@@ -22,7 +22,7 @@ REM ****************************************************************************
 REM ** Check for admin **
 echo Administrative permissions required. Detecting permissions...
 REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
-IF EXIST %windir%\nircmd.exe (net session >nul 2>&1) else (nircmd elevate net session >nul 2>&1)
+IF NOT EXIST %windir%\nircmd.exe (net session >nul 2>&1) else (nircmd elevate net session >nul 2>&1)
 if %errorLevel% == 0 (
 	echo Success: Administrative permissions confirmed.
 ) else (
