@@ -630,19 +630,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_NewWorkFlow_RibbonButton_Exists - Use 'Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_NewWorkFlow_RibbonButton_Exists()
-        {
-            #region Variable Declarations
-            WpfText newWorkflowIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon;
-            #endregion
-
-            // Verify that the 'Exists' property of '' label equals 'True'
-            Assert.AreEqual(this.Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues.NewWorkflowIconExists, newWorkflowIcon.Exists, "New Workflow Ribbon Button Does Not Exist!");
-        }
-        
-        /// <summary>
         /// Assert_Plugin_Connector_Exists_OnDesignSurface - Use 'Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Plugin_Connector_Exists_OnDesignSurface()
@@ -1242,32 +1229,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_New_Workflow_Ribbon_Button
-        /// </summary>
-        public void Click_New_Workflow_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfText newWorkflowIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewWorkflowIcon;
-            #endregion
-
-            // Click '' label
-            Mouse.Click(newWorkflowIcon, new Point(3, 8));
-        }
-        
-        /// <summary>
-        /// Click_Settings_Ribbon_Button
-        /// </summary>
-        public void Click_Settings_Ribbon_Button()
-        {
-            #region Variable Declarations
-            WpfText newScheduledTaskIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.NewScheduledTaskIcon;
-            #endregion
-
-            // Click '' label
-            Mouse.Click(newScheduledTaskIcon, new Point(7, 2));
-        }
-        
-        /// <summary>
         /// Close_New_Workflow_Tab_Without_Saving
         /// </summary>
         public void Close_New_Workflow_Tab_Without_Saving()
@@ -1282,19 +1243,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'No' button
             Mouse.Click(nOButton, new Point(32, 5));
-        }
-        
-        /// <summary>
-        /// DoubleClick_MainStudioWindow_Taskbar
-        /// </summary>
-        public void DoubleClick_MainStudioWindow_Taskbar()
-        {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
-            #endregion
-
-            // Double-Click 'Warewolf' window
-            Mouse.DoubleClick(mainStudioWindow, new Point(575, 14));
         }
         
         /// <summary>
@@ -3469,18 +3417,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_NewWorkFlow_RibbonButton_ExistsExpectedValues == null))
-                {
-                    this.mAssert_NewWorkFlow_RibbonButton_ExistsExpectedValues = new Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues();
-                }
-                return this.mAssert_NewWorkFlow_RibbonButton_ExistsExpectedValues;
-            }
-        }
-        
         public virtual Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -4379,8 +4315,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues mAssert_NewWorkFlow_RibbonButton_ExistsExpectedValues;
-        
         private Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues mAssert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Random_Exists_OnDesignSurfaceExpectedValues mAssert_Random_Exists_OnDesignSurfaceExpectedValues;
@@ -5204,21 +5138,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfMySqlDatabaseActivity' custom control equals 'True'
         /// </summary>
         public bool MySqlDatabaseExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_NewWorkFlow_RibbonButton_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '' label equals 'True'
-        /// </summary>
-        public bool NewWorkflowIconExists = true;
         #endregion
     }
     

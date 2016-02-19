@@ -28,8 +28,18 @@ namespace Warewolf.Studio.ViewModels
         private IEnvironmentViewModel _environmentViewModel;
         MessageBoxResult ViewResult { get; set; }
 
+        // ReSharper disable once EmptyConstructor
+        public RequestServiceNameViewModel()
+        {
+        }
+
         /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
-        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header)
+
+#pragma warning disable 1998
+#pragma warning disable 1998
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel,  string selectedPath, string header)
+#pragma warning restore 1998
+#pragma warning restore 1998
         {
             _environmentViewModel = environmentViewModel;
             _environmentViewModel.Connect();
@@ -37,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
           
             OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            CancelCommand = new DelegateCommand(CloseView);            
+            CancelCommand = new DelegateCommand(CloseView);
             Name = "";
             environmentViewModel.CanShowServerVersion = false;
             _environmentViewModel = environmentViewModel;
@@ -206,16 +216,16 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SingleEnvironmentExplorerViewModel != null)
             {
-                var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-                if (explorerTreeItem != null)
-                {
-                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-                }
+            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+            if (explorerTreeItem != null)
+            {
+                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+            }
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
-                {
-                    var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-                }
+            {
+                var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+            }
             }
             return false;
         }
