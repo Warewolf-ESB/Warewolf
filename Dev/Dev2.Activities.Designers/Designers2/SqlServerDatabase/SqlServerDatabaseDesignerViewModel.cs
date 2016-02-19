@@ -282,7 +282,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.Inputs = databaseService.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
                 ManageServiceInputViewModel.TestHeader = Warewolf.Studio.Resources.Languages.Core.SqlServerDbTestHeader;
-                ManageServiceInputViewModel.TestIconImageSource = Application.Current.TryFindResource("Explorer-DB-White") as DrawingImage;
+                if(Application.Current != null)
+                {
+                    ManageServiceInputViewModel.TestIconImageSource = Application.Current.TryFindResource("Explorer-DB-White") as DrawingImage;
+                }
                 ManageServiceInputViewModel.TestAction = () =>
                 {
                     ManageServiceInputViewModel.IsTesting = true;
