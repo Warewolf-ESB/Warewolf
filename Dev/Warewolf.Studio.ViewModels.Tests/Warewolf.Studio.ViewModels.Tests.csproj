@@ -95,6 +95,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />

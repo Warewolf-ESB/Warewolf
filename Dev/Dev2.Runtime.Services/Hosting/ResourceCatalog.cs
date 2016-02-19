@@ -866,12 +866,8 @@ namespace Dev2.Runtime.Hosting
                         throw new InvalidDataContractException("ResourceID or Type is missing from the request");
                     }
 
-                    var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
-
                     var workspaceResources = GetResources(workspaceID);
-                    var resources = workspaceResources.FindAll(r =>
-                        Equals(r.ResourceID, resourceID)
-                        && resourceTypes.Contains(r.ResourceType));
+                    var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
 
                     switch(resources.Count)
                     {
