@@ -255,8 +255,14 @@ namespace Warewolf.Studio.ViewModels
 
         public void Dispose()
         {
-            SingleEnvironmentExplorerViewModel.Dispose();
-            _environmentViewModel.Dispose();
+            if(SingleEnvironmentExplorerViewModel != null)
+            {
+                SingleEnvironmentExplorerViewModel.Dispose();
+            }
+            if(_environmentViewModel != null)
+            {
+                _environmentViewModel.Dispose();
+            }
         }
     }
 }
