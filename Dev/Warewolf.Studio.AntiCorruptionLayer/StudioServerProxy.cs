@@ -84,7 +84,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
             var graphGenerator = new DependencyGraphGenerator();
-            if (explorerItemViewModel.ResourceType != ResourceType.Version)
+            if (explorerItemViewModel.ResourceType != ResourceType.Version && explorerItemViewModel.ResourceType != ResourceType.Folder)
             {
                 var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
                 _popupController = CustomContainer.Get<IPopupController>();

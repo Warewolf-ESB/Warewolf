@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace Dev2.Activities.Designers2.Core
 {

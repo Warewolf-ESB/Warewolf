@@ -19,6 +19,17 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
+REM ** Check for admin **
+echo Administrative permissions required. Detecting permissions...
+REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
+IF EXIST %windir%\nircmd.exe (net session >nul 2>&1) else (nircmd elevate net session >nul 2>&1)
+if %errorLevel% == 0 (
+	echo Success: Administrative permissions confirmed.
+) else (
+	echo Failure: Current permissions inadequate.
+	exit 1
+)
+
 REM ** Kill The Warewolf ;) **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" /T /F) else (taskkill /im "Warewolf Studio.exe" /T /F)
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
@@ -31,8 +42,8 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warew
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces) else (elevate rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces)
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\")
 rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\"
-rd /S /Q %PROGRAMDATA%\Warewolf\Resources
-rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces
+rd /S /Q "%PROGRAMDATA%\Warewolf\Resources"
+rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces"
 
 REM Init paths to Warewolf server under test
 IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
