@@ -500,13 +500,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = newFolder + " " + count;
+                folderName = NewFolder + " " + count;
             }
             return folderName;
         }
