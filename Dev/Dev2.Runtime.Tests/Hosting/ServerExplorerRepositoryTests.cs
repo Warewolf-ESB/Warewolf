@@ -390,7 +390,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob", "", ""
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "dave", "DbSource", null,true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
 
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "bob");
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), "dave", "DbSource", null,true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.Verify(a=>a.Dispose());
         }
 
+        
 
         [TestMethod]
         public void TestDeleteClosesWindow()
@@ -50,23 +51,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             shell.Verify(a=>a.CloseResource(It.IsAny<Guid>(),It.IsAny<Guid>()));
         }
 
-    }
-
-
-    [TestClass]
-    public class EnvironmentViewModelTests
-    {
-        [TestMethod]
-        public void TestDispose()
-        {
-
-            var svr = new Mock<IServer>();
-            EnvironmentViewModel vm = new EnvironmentViewModel(svr.Object, new Mock<IShellViewModel>().Object);
-            var child = new Mock<IExplorerItemViewModel>();
-            vm.AddChild(child.Object);
-            vm.Dispose();
-            child.Verify(a => a.Dispose());
-        }
 
     }
 }
