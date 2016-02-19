@@ -18,7 +18,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf ESB")]
-[assembly: AssemblyCopyright("Copyright Warewolf 2015")]
+[assembly: AssemblyCopyright("Copyright Warewolf 2016")]
 
 
 // Version information for an assembly consists of the following four values:
