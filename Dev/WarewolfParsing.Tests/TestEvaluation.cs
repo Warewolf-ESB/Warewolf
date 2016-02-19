@@ -194,37 +194,6 @@ namespace WarewolfParsingTest
             var items = env.EvalWhere("[[rec()]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
             Assert.AreEqual(items.ToArray()[0], 1);
         }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WarewolfParse_EvalWhere")]
-        public void WarewolfParse_Eval_where_WithrecsetNonExistent()
-        {
-
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-            var assigns = new List<IAssignValue>
-             {
-                 new AssignValue("[[rec().a]]", "25"),
-                 new AssignValue("[[rec().b]]", "33"),
-                 new AssignValue("[[rec().b]]", "26"),
-                 new AssignValue("[[rec().a]]", "27"),
-
-             };
-            ExecutionEnvironment env = new ExecutionEnvironment();
-
-            // ReSharper disable UnusedVariable
-            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
-
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
-
-            // ReSharper restore UnusedVariable
-
-            var items = env.EvalWhere("[brec()]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
-            Assert.AreEqual(items.ToArray().Count(), 0);
-        }
 
 
         [TestMethod]
