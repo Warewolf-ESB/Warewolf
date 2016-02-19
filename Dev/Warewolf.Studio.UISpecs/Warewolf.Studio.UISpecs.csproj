@@ -130,10 +130,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-      "$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask "StudioUISpecs.feature.cs" --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
-      IF EXIST "%25vs120comntools%25" IF NOT EXIST "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"
-      IF EXIST "%25vs140comntools%25" IF NOT EXIST "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask "StudioUISpecs.feature.cs" --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -142,6 +139,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>REM IF EXIST "%25vs120comntools%25" IF NOT EXIST "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs120comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"
+REM IF EXIST "%25vs140comntools%25" IF NOT EXIST "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll" echo f | xcopy /Y /Q "$(TargetDir)Dev2.CodedUI.SpecGenerator.dll" "%25vs140comntools%25..\IDE\PrivateAssemblies\Dev2.CodedUI.SpecGenerator.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
