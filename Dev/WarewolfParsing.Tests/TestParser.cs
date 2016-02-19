@@ -14,7 +14,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestScalar()
         {
-            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[a]]", 0);
+            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[a]]", 0);
             Assert.IsTrue(ast.IsScalarExpression);
             var astval = ast as LanguageAST.LanguageExpression.ScalarExpression;
             if (astval != null)
@@ -34,7 +34,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_Nested_ExpectComplex()
         {
 
-            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[[[a]]]]", 0);
+            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[a]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -57,7 +57,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_Nested_ExpectComplex_MultiNested()
         {
 
-            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[[[[[a]]]]]]", 0);
+            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[[[a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -83,7 +83,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_NestedDataSet_ExpectComplex_MultiNested()
         {
 
-            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
+            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -1026,73 +1026,6 @@ namespace WarewolfParsingTest
 
         }
 
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WarewolfParse_Eval")]
-        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_MultipleEvals()
-        {
-
-
-            var assigns = new List<IAssignValue>
-             {
-                 new AssignValue("[[rec().a]]", "25"),
-                 new AssignValue("[[rec().b]]", "33"),
-                 new AssignValue("[[rec().b]]", "26"),
-                 new AssignValue("[[rec().a]]", "27"),
-
-             };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-
-            // ReSharper disable UnusedVariable
-            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
-            ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
-
-            var items = env.EvalWhere("[[rec(*).a]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
-            Assert.AreEqual(items.ToArray()[0], 1);
-
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WarewolfParse_Eval")]
-        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_Multipleresults()
-        {
-
-
-            var assigns = new List<IAssignValue>
-             {
-                 new AssignValue("[[rec().a]]", "25"),
-                 new AssignValue("[[rec().b]]", "33"),
-                 new AssignValue("[[rec().b]]", "25"),
-                 new AssignValue("[[rec().a]]", "27"),
-
-             };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-
-            // ReSharper disable UnusedVariable
-            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            // ReSharper restore UnusedVariable
-            ExecutionEnvironment env = new ExecutionEnvironment();
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
-            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
-
-            var items = env.EvalWhere("[[rec(*).a]]", a => PublicFunctions.AtomtoString(a) == "25", 0);
-
-            IEnumerable<int> enumerable = items as int[] ?? items.ToArray();
-            Assert.AreEqual(enumerable.ToArray()[0], 1);
-            Assert.AreEqual(enumerable.ToArray()[1], 3);
-
-        }
 
 
 
