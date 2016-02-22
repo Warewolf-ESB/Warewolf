@@ -48,7 +48,7 @@ using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IDisposable, IEnvironmentConnection
+    public class ServerProxyWithoutChunking : IEnvironmentConnection
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
@@ -102,7 +102,19 @@ namespace Dev2.Network
             }
         }
 
-        public bool IsLocalHost { get { return DisplayName == "localhost"; } }
+        public bool IsLocalHost
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(DisplayName))
+                {
+                    return false;
+                }
+                var displayName = DisplayName.ToLower();
+                var isLocalHost = (displayName == "localhost") || (displayName == "localhost (connected)");
+                return isLocalHost;
+            }
+        }
 
         protected void InitializeEsbProxy()
         {
