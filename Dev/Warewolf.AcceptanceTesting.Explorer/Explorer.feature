@@ -108,7 +108,6 @@ Scenario: Deleting Resource in localhost Server
    Given the explorer is visible
    When I open "localhost" server
    And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
-
    Then I should see "5" folders
    Then I should see the path "localhost\Folder 1\Resource 1"
     And I choose to "OK" Any Popup Messages
@@ -383,6 +382,23 @@ Scenario: Resource view permissions on a remote server
 	When I click "Debug"
 	Then "Remote Connection Integration\Hello World" tab is opened
 	And the Debug output window is populated
+
+#WOLF-1393 Possibly done using Coded UI
+@ignore
+Scenario: Deleting Resource with the same name in different location on localhost Server
+   Given the explorer is visible
+   When I open "localhost" server
+   And I create the "localhost\Folder 1\PLuginS" of type "PluginService" 
+   And I create the "localhost\PLuginS" of type "PluginService" 
+   Then I should see the path "localhost\Folder 1\PLuginS"
+   And I should see the path "localhost\PLuginS"
+   When I delete "localhost\Folder 1\PLuginS"
+   And I click "Refresh"
+   Then I should not see the path "localhost\Folder 1\PLuginS"
+
+#Scenario: Copying resources directly into the resource folder
+#	Given the explorer is visible
+#	When I open "localhost" server
 
 #@ignore UI Spec
 #Scenario: Resource view permissions on a remote server prohibit resource from being used in workflow
