@@ -1,10 +1,12 @@
-using Dev2.Common.Interfaces.Monitoring;
+using System;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.Common.Interfaces.Monitoring
 {
     public interface IWarewolfPerformanceCounterLocater
     {
         IPerformanceCounter GetCounter(string name);
         IPerformanceCounter GetCounter(WarewolfPerfCounterType type);
+        IPerformanceCounter GetCounter(Guid resourceId,string name);
+
     }
 }

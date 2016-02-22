@@ -100,6 +100,15 @@ namespace Dev2.Common
             }
         }
 
+        public static string ServerPerfmonSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "Perfmon.config");
+                return serverLogSettings;
+            }
+        }
+
         public static string ServerSecuritySettingsFile
         {
             get

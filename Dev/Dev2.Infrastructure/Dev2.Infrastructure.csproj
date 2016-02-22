@@ -111,6 +111,16 @@
     <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
+    <Compile Include="PerformanceCounters\PerformanceCounterPersistence.cs" />
+    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounter.cs" />
+    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounter.cs" />
+    <Compile Include="PerformanceCounters\WarewolfNumberOfAuthErrors.cs" />
+    <Compile Include="PerformanceCounters\WarewolfNumberOfErrors.cs" />
+    <Compile Include="PerformanceCounters\WarewolfPerfCounterSettings.cs" />
+    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterRegister.cs" />
+    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterLocater.cs" />
+    <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounter.cs" />
+    <Compile Include="PerformanceCounters\WarewolfServicesNotFoundCounter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />

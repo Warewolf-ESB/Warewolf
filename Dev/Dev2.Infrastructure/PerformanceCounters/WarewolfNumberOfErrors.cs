@@ -4,20 +4,20 @@ using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
-    public class WarewolfNumberOfAuthErrors : IPerformanceCounter
+    public class WarewolfNumberOfErrors : IPerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfNumberOfAuthErrors()
+        public WarewolfNumberOfErrors()
         {
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.NotAuthorisedErrors;
+            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -92,6 +92,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             Setup();
             if (IsActive)
+
                 try
                 {
                     _counter.Decrement();
@@ -101,7 +102,6 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
                     Dev2Logger.Error(err);
                 }
-
         }
 
         public string Category
@@ -115,7 +115,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             get
             {
-                return "Count of Not Authorised errors";
+                return "Total Errors";
             }
         }
 

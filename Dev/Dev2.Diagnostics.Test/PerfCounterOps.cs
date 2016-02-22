@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Diagnostics.PerformanceCounters;
+using Dev2.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 
@@ -27,7 +28,7 @@ namespace Dev2.Diagnostics.Test
 
                 }
 
-                WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),    
@@ -36,7 +37,7 @@ namespace Dev2.Diagnostics.Test
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
             }
             catch (Exception err)
             {

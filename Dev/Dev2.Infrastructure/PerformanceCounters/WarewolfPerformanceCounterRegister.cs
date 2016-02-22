@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
-using System;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
-    public class WarewolfPerformanceCounterBuilder
+    public class WarewolfPerformanceCounterRegister : IWarewolfPerformanceCounterRegister
     {
-        public  WarewolfPerformanceCounterBuilder(IList<IPerformanceCounter> counters )
+        public  WarewolfPerformanceCounterRegister(IList<IPerformanceCounter> counters )
         {
-            CreateCounters(counters);
+            RegisterCountersOnMachine(counters);
             Counters = counters;
         }
 
         public IList<IPerformanceCounter> Counters { get; set; }
+        public IList<IPerformanceCounter> DefaultCounters { get; set; }
 
-        private void CreateCounters(IList<IPerformanceCounter> counters)
+        public void RegisterCountersOnMachine(IList<IPerformanceCounter> counters)
         {
             try
             {
@@ -46,16 +47,16 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters)
         {
-            CounterCreationDataCollection coll = new CounterCreationDataCollection();
+            CounterCreationDataCollection counterCreationDataCollection = new CounterCreationDataCollection();
             foreach(var counterl in counters)
             {
                 foreach (var counter in counterl.CreationData())
                 {
-                    coll.Add(counter);
+                    counterCreationDataCollection.Add(counter);
                 }
                
             }
-            PerformanceCounterCategory.Create("Warewolf", "Warewolf Performance Counters", PerformanceCounterCategoryType.SingleInstance, coll);
+            PerformanceCounterCategory.Create("Warewolf", "Warewolf Performance Counters", PerformanceCounterCategoryType.SingleInstance, counterCreationDataCollection);
         }
     }
 }

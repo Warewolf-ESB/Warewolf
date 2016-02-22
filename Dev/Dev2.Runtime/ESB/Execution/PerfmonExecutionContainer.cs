@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics.PerformanceCounters;
 
 namespace Dev2.Runtime.ESB.Execution
 {
