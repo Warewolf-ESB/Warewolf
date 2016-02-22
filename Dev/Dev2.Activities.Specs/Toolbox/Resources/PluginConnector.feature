@@ -173,12 +173,3 @@ Scenario: Create new Plugin Tool and Select a Namespace and Action and test
 	| Age    | Age          |
 
 
-#Wolf-1265
-@ignore
-Scenario: backward Compatiblity
-	Given I have a workflow "PluginMigration"
-	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service      | To Variable          |
-      | [[s]]            | s             | [[PrimitiveReturnValue]] | PrimitiveReturnValue |
-	When "PluginMigration" is executed
-	Then the workflow execution has "NO" error
