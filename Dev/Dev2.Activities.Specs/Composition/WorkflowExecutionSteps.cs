@@ -463,9 +463,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
-
-
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);            
             var activity = GetServiceActivity(serviceType);
             if(activity != null)
             {
@@ -514,6 +512,7 @@ namespace Dev2.Activities.Specs.Composition
                     updatedActivity.QueryString = service.RequestUrl;
                     updatedActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
                     updatedActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    updatedActivity.DisplayName = serviceName;
                     if(source != null)
                     {
                         updatedActivity.SourceId = source.ResourceID;
