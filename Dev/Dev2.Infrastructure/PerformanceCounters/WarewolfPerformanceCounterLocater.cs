@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
     public class WarewolfPerformanceCounterLocater : IWarewolfPerformanceCounterLocater
     {
@@ -21,6 +22,11 @@ namespace Dev2.Diagnostics.PerformanceCounters
         public IPerformanceCounter GetCounter(WarewolfPerfCounterType type)
         {
             return _counters.First(a => a.PerfCounterType == type);
+        }
+
+        public IPerformanceCounter GetCounter(Guid resourceId, string name)
+        {
+            return null;
         }
     }
 }

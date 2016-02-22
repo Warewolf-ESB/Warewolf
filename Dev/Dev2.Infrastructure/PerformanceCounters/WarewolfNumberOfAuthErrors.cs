@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Monitoring;
 using System.Diagnostics;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounter : IPerformanceCounter
+    public class WarewolfNumberOfAuthErrors : IPerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfCurrentExecutionsPerformanceCounter()
+        public WarewolfNumberOfAuthErrors()
         {
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
+            _perfCounterType = WarewolfPerfCounterType.NotAuthorisedErrors;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -90,23 +90,18 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Decrement()
         {
-
+            Setup();
             if (IsActive)
-               
-                    try
-                    {
-                        Setup();
-                        if (_counter.RawValue > 0)
-                        {
-                          
-                            _counter.Decrement();
-                        }
-                    }
-                    catch (Exception err)
-                    {
+                try
+                {
+                    _counter.Decrement();
+                }
+                catch (Exception err)
+                {
 
-                        Dev2Logger.Error(err);
-                    }
+                    Dev2Logger.Error(err);
+                }
+
         }
 
         public string Category
@@ -120,11 +115,10 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             get
             {
-                return "Concurrent requests currently executing";
+                return "Count of Not Authorised errors";
             }
         }
 
         #endregion
     }
 }
-

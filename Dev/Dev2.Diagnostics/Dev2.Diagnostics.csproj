@@ -79,16 +79,6 @@
     <Compile Include="Logging\EnvironmentVariables.cs" />
     <Compile Include="Logging\Dev2Logger.cs" />
     <Compile Include="Logging\WorkflowLoggger.cs" />
-    <Compile Include="PerformanceCounters\IWarewolfPerformanceCounterLocater.cs" />
-    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounter.cs" />
-    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounter.cs" />
-    <Compile Include="PerformanceCounters\WarewolfNumberOfAuthErrors.cs" />
-    <Compile Include="PerformanceCounters\WarewolfNumberOfErrors.cs" />
-    <Compile Include="PerformanceCounters\WarewolfPerfCounterSettings.cs" />
-    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterBuilder.cs" />
-    <Compile Include="PerformanceCounters\WarewolfPerformanceCounterLocater.cs" />
-    <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounter.cs" />
-    <Compile Include="PerformanceCounters\WarewolfServicesNotFoundCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

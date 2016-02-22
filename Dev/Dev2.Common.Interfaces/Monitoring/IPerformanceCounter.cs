@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Dev2.Common.Interfaces.Monitoring
@@ -15,14 +16,8 @@ namespace Dev2.Common.Interfaces.Monitoring
         bool IsActive { get; set; }
     }
 
-    public enum WarewolfPerfCounterType
+    public interface IResourcePerformanceCounter
     {
-        ConcurrentRequests,
-        RequestsPerSecond,
-        AverageExecutionTime,
-        ExecutionErrors,
-        ServicesNotFound,
-        NotAuthorisedErrors,
-        WorkflowExecutionTime
+        Guid ResourceId { get; set; }
     }
 }

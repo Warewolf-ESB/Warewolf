@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
     public class WarewolfPerfCounterSetting
     {

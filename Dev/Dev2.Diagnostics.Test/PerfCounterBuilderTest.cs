@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Diagnostics.PerformanceCounters;
+using Dev2.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable RedundantAssignment
 // ReSharper disable InconsistentNaming
@@ -36,7 +36,7 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfServicesNotFoundCounter()
             };
             // ReSharper disable once ObjectCreationAsStatement
-            new WarewolfPerformanceCounterBuilder(lst);
+            new WarewolfPerformanceCounterRegister(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -73,13 +73,13 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(),
                 new WarewolfServicesNotFoundCounter()
             };
-            WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(lst);
-            foreach (var performanceCounter in builder.Counters)
+            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
+            foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.Increment();
             }
 
-            builder = new WarewolfPerformanceCounterBuilder(lst);
+            register = new WarewolfPerformanceCounterRegister(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -114,13 +114,13 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors()
             };
 
-            WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(lst);
-            foreach (var performanceCounter in builder.Counters)
+            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
+            foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.Increment();
             }
             lst.Add(new WarewolfServicesNotFoundCounter());
-            builder = new WarewolfPerformanceCounterBuilder(lst);
+            register = new WarewolfPerformanceCounterRegister(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)

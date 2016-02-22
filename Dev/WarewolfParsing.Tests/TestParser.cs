@@ -1562,6 +1562,88 @@ namespace WarewolfParsingTest
 
         }
 
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_ToExpression()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(2).a]]", "25"),
+                 new AssignValue("[[rec(3).a]]", "33"),
+                 new AssignValue("[[rec(44).a]]", "25"),
+                 new AssignValue("[[a]]", "1"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2,0,"[[rec([[a]]).a]]");
+            Assert.AreEqual(env3, "[[rec(1).a]]");
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_ToExpressionComplex()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(2).a]]", "25"),
+                 new AssignValue("[[rec(3).a]]", "33"),
+                 new AssignValue("[[rec(44).a]]", "25"),
+                 new AssignValue("[[a]]", "a"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[[[a]]]]");
+            Assert.AreEqual(env3, "[[a]]");
+
+
+            env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 1, "[[[[a]]]]");
+            Assert.AreEqual(env3, "[[a]]");
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_ToExpressionScalarAndRecset()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(2).a]]", "25"),
+                 new AssignValue("[[rec(3).a]]", "33"),
+                 new AssignValue("[[rec(44).a]]", "25"),
+                 new AssignValue("[[a]]", "a"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[a]]");
+            Assert.AreEqual(env3, "[[a]]");
+
+             env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[rec().a]]");
+            Assert.AreEqual(env3, "[[rec().a]]");
+
+        }
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]

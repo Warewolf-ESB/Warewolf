@@ -49,8 +49,8 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
-using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.Instrumentation;
+using Dev2.PerformanceCounters;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -1679,7 +1679,7 @@ namespace Dev2
         {
             try
             {
-                WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),    
@@ -1690,7 +1690,7 @@ namespace Dev2
                                                                  new WarewolfServicesNotFoundCounter()
                                                             });
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
             }
             catch (Exception err)
             {

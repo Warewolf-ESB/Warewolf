@@ -59,7 +59,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Diagnostics.PerformanceCounters;
+using Dev2.PerformanceCounters;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -240,7 +240,7 @@ namespace Dev2.Activities.Specs.Composition
                     // ReSharper disable once EmptyGeneralCatchClause
                     catch { }
 
-                    WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                    WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {   new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
                                                                 new WarewolfRequestsPerSecondPerformanceCounter(),
@@ -249,7 +249,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
 
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
                 }
                 catch 
                 {
