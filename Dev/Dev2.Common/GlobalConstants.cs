@@ -167,6 +167,8 @@ namespace Dev2.Common
         public const int MAX_BUFFER_SIZE = 35000;
         // ReSharper restore InconsistentNaming
 
+        public const double DesignHeightTolerance = 0.00000001;
+
         // Force Webserver Constants
         // ReSharper disable UnusedMember.Global
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded

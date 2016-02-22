@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
@@ -16,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         double _inputsHeight;
         double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
-        private const double BaseHeight = 200;
+        private const double BaseHeight = 90;
 
         public GenerateInputsRegion()
         {
@@ -60,6 +61,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public bool IsVisible { get; set; }
+        public bool IsInputCountEmpty { get; set; }
         public double MaxHeight
         {
             get
@@ -68,10 +70,13 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _maxHeight = value;
+                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
+                {
+                    _maxHeight = value;
 
-                OnPropertyChanged();
-                OnHeightChanged(this);
+                    OnPropertyChanged();
+                    OnHeightChanged(this);
+                }
             }
         }
         public event HeightChanged HeightChanged;
@@ -101,9 +106,10 @@ namespace Dev2.Activities.Designers2.Core
             MaxInputsHeight = InputsHeight;
             if (Inputs.Count >= 3)
             {
-                MinHeight = 260;
-                MaxHeight = 260;
-                MaxInputsHeight = 260;
+                MinHeight = BaseHeight;
+                MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+                InputsHeight = MinHeight;
+                MaxInputsHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
                 CurrentHeight = MinHeight;
             }
             else
