@@ -190,7 +190,7 @@
             </Grid>
 
             <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Control Template="{StaticResource GenerateOutputsView}"/>
+                <Control Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
             </Grid>
         </Grid>
     </Grid>
