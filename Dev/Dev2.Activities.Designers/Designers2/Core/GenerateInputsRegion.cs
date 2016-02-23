@@ -18,6 +18,7 @@ namespace Dev2.Activities.Designers2.Core
         double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
         private const double BaseHeight = 90;
+        private const double ListBoxHeight = 20;
 
         public GenerateInputsRegion()
         {
@@ -104,12 +105,20 @@ namespace Dev2.Activities.Designers2.Core
             SetInitialHeight();
             InputsHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
             MaxInputsHeight = InputsHeight;
-            if (Inputs.Count >= 3)
+            if (Inputs.Count == 3)
             {
                 MinHeight = BaseHeight;
-                MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+                MaxHeight = (Inputs.Count * GlobalConstants.RowHeight) + ListBoxHeight;
                 InputsHeight = MinHeight;
-                MaxInputsHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+                MaxInputsHeight = (Inputs.Count * GlobalConstants.RowHeight) + ListBoxHeight;
+                CurrentHeight = MinHeight;
+            }
+            else if (Inputs.Count > 3)
+            {
+                MinHeight = BaseHeight;
+                MaxHeight = (Inputs.Count * GlobalConstants.RowHeight) + 15;
+                InputsHeight = MinHeight;
+                MaxInputsHeight = (Inputs.Count * GlobalConstants.RowHeight) + 15;
                 CurrentHeight = MinHeight;
             }
             else
