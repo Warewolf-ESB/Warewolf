@@ -111,6 +111,7 @@
     <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
+    <Compile Include="PerformanceCounters\DefaultCounterTest.cs" />
     <Compile Include="PerformanceCounters\PerformanceCounterPersistence.cs" />
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounter.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounter.cs" />

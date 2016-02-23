@@ -6,7 +6,14 @@ namespace Dev2.Common.Interfaces.Monitoring
     {
         IPerformanceCounter GetCounter(string name);
         IPerformanceCounter GetCounter(WarewolfPerfCounterType type);
-        IPerformanceCounter GetCounter(Guid resourceId,string name);
+        IResourcePerformanceCounter GetCounter(Guid resourceId,string name);
 
     }
+
+    public interface IPerformanceCounterFactory
+    {
+        IResourcePerformanceCounter CreateCounter(Guid resourceId, WarewolfPerfCounterType type, string name);
+    }
+
+
 }

@@ -14,9 +14,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.PerformanceCounters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Diagnostics.Test
 {
@@ -65,7 +69,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterPersistence_Load")]
         public void CtorTest()
         {
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence();
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new Mock<IFile>().Object);
             Assert.IsNotNull(obj);
         }
         [TestMethod]
@@ -73,15 +77,16 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterPersistence_Load")]
         public void PerformanceCounterPersistence_SaveEmpty_ExpectCountersSaved()
         {
-            
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence();
+        
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new FileWrapper());
+
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             var fileName = Path.GetTempFileName();
             obj.Save(counters, fileName);
             var saved =  File.ReadAllText(fileName);
             Dev2JsonSerializer  serialiser = new Dev2JsonSerializer();
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
-
+            Assert.IsNotNull(persisted);
         }
 
 
@@ -91,7 +96,7 @@ namespace Dev2.Diagnostics.Test
         public void PerformanceCounterPersistence_Save_ExpectCountersSaved()
         {
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence();
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new FileWrapper());
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             counters.Add(new TestCounter());
             var fileName = Path.GetTempFileName();
@@ -110,16 +115,42 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterPersistence_Load")]
-        public void PerformanceCounterPersistence_Load_ExpectCountersLoaded()
+        public void PerformanceCounterPersistence_Load_ExpectCountersLoadedForExistingFile()
         {
+            var _file = new Mock<IFile>();
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( _file.Object);
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence();
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             counters.Add(new TestCounter());
             var fileName = Path.GetTempFileName();
+            _file.Setup(a => a.Exists(fileName)).Returns(true);
             obj.Save(counters, fileName);
-            var saved = File.ReadAllText(fileName);
+
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            File.WriteAllText(fileName,serialiser.Serialize(counters));
+            _file.Setup(a => a.ReadAllText(fileName)).Returns(File.ReadAllText(fileName));
+            var persisted = obj.LoadOrCreate(fileName);
+            Assert.AreEqual(persisted.Count, 1);
+            Assert.IsTrue(persisted.First() is TestCounter);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PerformanceCounterPersistence_Load")]
+        public void PerformanceCounterPersistence_Load_ExpectCountersRecreatedForNoFile()
+        {
+            var _file = new Mock<IFile>();
+            var register = new Mock<IWarewolfPerformanceCounterRegister>();
+
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( _file.Object);
+
+            IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
+            counters.Add(new TestCounter());
+            register.Setup(a => a.DefaultCounters).Returns(counters);
+            var fileName = Path.GetTempFileName();
+            _file.Setup(a => a.Exists(fileName)).Returns(false);
+            obj.Save(counters, fileName);
             var persisted = obj.LoadOrCreate(fileName);
             Assert.AreEqual(persisted.Count, 1);
             Assert.IsTrue(persisted.First() is TestCounter);

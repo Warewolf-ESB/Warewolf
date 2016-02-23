@@ -249,7 +249,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
 
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters, register));
                 }
                 catch 
                 {

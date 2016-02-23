@@ -38,7 +38,7 @@ namespace Dev2.Diagnostics.Test
                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters, register));
             }
             catch (Exception err)
             {
