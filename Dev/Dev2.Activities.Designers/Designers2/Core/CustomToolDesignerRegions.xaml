@@ -429,6 +429,13 @@
                         </ItemsControl>
                     </ScrollViewer>
                 </Border>
+                <TextBlock Text="None"
+                           Grid.Row="1" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-3"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding ManageServiceInputViewModel.IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                     <customControls:CircularProgressBar Width="25"
                                                     HorizontalAlignment="Right" 
