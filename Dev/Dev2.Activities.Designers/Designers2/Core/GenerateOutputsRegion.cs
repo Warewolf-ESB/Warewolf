@@ -17,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         ICollection<IServiceOutputMapping> _outputs;
         bool _isVisible;
 
-        private const double BaseHeight = 75;
+        private const double BaseHeight = 130;
 
         public GenerateOutputsRegion()
         {
@@ -111,10 +111,10 @@ namespace Dev2.Activities.Designers2.Core
             MaxOutputsHeight = OutputsHeight;
             if (Outputs.Count >= 3)
             {
-                MinHeight = 75;
-                MaxHeight = 75;
+                MinHeight = BaseHeight;
+                MaxHeight = BaseHeight;
                 OutputsHeight = MinHeight;
-                MaxOutputsHeight = 75;
+                MaxOutputsHeight = BaseHeight;
                 CurrentHeight = MinHeight;
             }
             else
