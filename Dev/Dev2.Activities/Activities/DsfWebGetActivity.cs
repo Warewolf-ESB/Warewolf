@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -22,79 +21,78 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "POST Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfWebPostActivity:DsfActivity
+    [ToolDescriptorInfo("Resources-Service", "GET Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    public class DsfWebGetActivity : DsfActivity
     {
+
         public IList<INameValue> Headers { get; set; }
+
         public string QueryString { get; set; }
+
         public IOutputDescription OutputDescription { get; set; }
-        public string PostData { get; set; }
 
-        public DsfWebPostActivity()
-        {
-            Type = "Web Post Request Connector";
-            DisplayName = "Web Post Request Connector";
-        }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        #region Overrides of DsfNativeActivity<bool>
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugInputs(env, update);
-            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a=>!(String.IsNullOrEmpty(a.Name)&&String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
-            var postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+            string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
 
             AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
             AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
-            AddDebugInputItem(new DebugEvalResult(postData, "Post Data", env, update));
             AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
-
+          
             return _debugInputs;
         }
 
-        #region Overrides of DsfActivity
-
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
-            tmpErrors = new ErrorResultTO();
-            IEnumerable<NameValue> head = null;
-            if (Headers != null)
+            errors = new ErrorResultTO();
+            if (Headers == null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+                errors.AddError("Headers Are Null");
+                return;
             }
-            var query = "";
-            if (QueryString != null)
+            if (QueryString == null)
             {
-                query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
+                errors.AddError("Query is Null");
+                return;
             }
-            var postData = "";
-            if (PostData!=null)
-            {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));    
-            }
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+            var query =  ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString,update));
+
+                     
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-            PushXmlIntoEnvironment(webRequestResult,update,dataObject);
+
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(query, "URL", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
+            }
+            var client = CreateClient(head, query, url);
+            var result = client.DownloadString(url.Address+query);
+            PushXmlIntoEnvironment(result, update,dataObject);
         }
 
         private void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
             int i = 0;
-            foreach (var serviceOutputMapping in Outputs)
+            foreach(var serviceOutputMapping in Outputs)
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = serviceOutputMapping.MappedTo;
                 i++;
             }
-            if (OutputDescription == null)
+            if(OutputDescription == null)
             {
                 dataObj.Environment.AddError("There are no outputs");
                 return;
@@ -191,31 +189,14 @@ namespace Dev2.Activities
             return innerXml;
         }
 
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source,string postData)
-        {
-            var webclient =  CreateClient(head, query, source);
-            if (webclient != null)
-            {
-                var address = source.Address;
-                if (query != null)
-                {
-                    address = address + query;
-                }
-                return webclient.UploadString(address, postData);
-            }
-            return null;
-        }
 
-        public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        private WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var webclient = new WebClient();
-            if(head != null)
+            foreach(var nameValue in head)
             {
-                foreach (var nameValue in head)
-                {
-                    if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
-                        webclient.Headers.Add(nameValue.Name, nameValue.Value);
-                }
+                if(!String.IsNullOrEmpty( nameValue.Name) && !String.IsNullOrEmpty( nameValue.Value))
+                webclient.Headers.Add(nameValue.Name,nameValue.Value);
             }
 
             if (source.AuthenticationType == AuthenticationType.User)
@@ -230,15 +211,22 @@ namespace Dev2.Activities
             }
             webclient.Headers["Content-Type"] = contentType;
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-            var address = source.Address;
-            if (query != null)
-            {
-                address = address + query;
-            }
-            webclient.BaseAddress = address;
+            webclient.BaseAddress = source.Address + query;
             return webclient;
         }
 
         #endregion
+
+        public DsfWebGetActivity()
+        {
+            Type = "Web Get Request Connector";
+            DisplayName = "Web Get Request Connector";
+        }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.DataGridActivity;
+        }
+
     }
 }
