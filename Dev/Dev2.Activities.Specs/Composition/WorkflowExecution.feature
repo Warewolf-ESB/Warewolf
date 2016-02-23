@@ -4265,7 +4265,7 @@ Scenario: Mappings from nested workflow
 
 #Wolf-1265
 @ignore
-Scenario: backward Compatiblity
+Scenario: backward Compatiblity2
 	Given I have a workflow "PluginMigration"
 	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service      | To Variable          |
