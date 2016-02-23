@@ -4100,7 +4100,7 @@ Scenario: Executing Asynchrounous testing workflow error
 @ignore
 Scenario: MYSQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedure"
-	And "NoStoredProceedure" contains "Testing/MySql/MySQLEmpty" from server "localhost" with mapping as
+	And "NoStoredProceedure" contains "Testing/MySQLEmpty" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedure" is executed
 	Then the workflow execution has "An" error
@@ -4177,7 +4177,7 @@ Scenario: MYSQL backward Compatiblity
 @ignore
 Scenario: SQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedureToLoad"
-	And "NoStoredProceedureToLoad" contains "Testing/SQL/NoSqlStoredProceedure" from server "localhost" with mapping as
+	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedureToLoad" is executed
 	Then the workflow execution has "An" error
@@ -4202,11 +4202,10 @@ Scenario: SQL Mapped To Recordsets incorrect
 	Given I have a workflow "BadSqlParameterName"
 	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	     |                            | a         | True          |
+	     |                            | ProductId | True          |
 	And And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with Mapping To as
-	| Mapped From      | Mapped To                                |
-	| id               | [[dbo_leon bob proc().id]]               |
-	| some column Name | [[dbo_leon bob proc().some column Name]] |
+	| Mapped From | Mapped To                      |
+	| Column1     | [[dbo_ImportOrder()..Column1]] |
 	When "BadSqlParameterName" is executed
 	Then the workflow execution has "An" error
 	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
