@@ -463,7 +463,11 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);            
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
+            if (resource == null)
+            {
+                throw new Exception("Local Warewolf service " + serviceName + " not found.");
+            }
             var activity = GetServiceActivity(serviceType);
             if(activity != null)
             {
@@ -571,6 +575,10 @@ namespace Dev2.Activities.Specs.Composition
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
+                }
+                else
+                {
+                    throw new Exception("Remote Warewolf service " + remoteWf + " not found on server " + server + ".");
                 }
             }
             else
@@ -1275,7 +1283,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity, DisplayName = nestedWF };
             forEachAct.DataFunc = activityFunction;
-            //ScenarioContext.Current.Pending();
         }
 
 
