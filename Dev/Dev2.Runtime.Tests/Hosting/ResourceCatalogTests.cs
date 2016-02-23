@@ -3102,36 +3102,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(depresource.ResourceID, message.UniqueID);
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
-
-        [TestMethod]
-        public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            Directory.CreateDirectory(path);
-            const string resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var xml = XmlResource.Fetch("WeatherWebSource");
-            var resource = new WebSource(xml);
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, Guid.Parse("518edc28-e348-4a52-a900-f6aa75cfe92b"));
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, dependants.Count);
-        }
-
-
+        
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
@@ -3196,36 +3167,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, dependants.Count);
             Assert.AreEqual("Bug6619", dependants[0].ResourceName);
         }
-
-        [TestMethod]
-        public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            Directory.CreateDirectory(path);
-            const string resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var xml = XmlResource.Fetch("WeatherWebSource");
-            var resource = new WebSource(xml);
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, Guid.Parse("518edc28-e348-4a52-a900-f6aa75cfe92b"));
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, dependants.Count);
-        }
-
-
+        
         [TestMethod]
         public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
         {
@@ -3241,12 +3183,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
-
-
-
-
-
-
+        
         [TestMethod]
         public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
