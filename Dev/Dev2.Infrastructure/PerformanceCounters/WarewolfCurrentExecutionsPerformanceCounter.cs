@@ -36,6 +36,7 @@ namespace Dev2.PerformanceCounters
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.NumberOfItems32
+
             };
             return new[] { totalOps };
         }
@@ -82,7 +83,8 @@ namespace Dev2.PerformanceCounters
                 _counter = new PerformanceCounter("Warewolf", Name)
                 {
                     MachineName = ".",
-                    ReadOnly = false
+                    ReadOnly = false,
+                    InstanceName = "Default"
                 };
                 _started = true;
             }

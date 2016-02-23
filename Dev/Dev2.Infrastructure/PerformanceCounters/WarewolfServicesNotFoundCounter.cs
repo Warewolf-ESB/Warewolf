@@ -83,7 +83,8 @@ namespace Dev2.PerformanceCounters
                 _counter = new PerformanceCounter("Warewolf", Name)
                 {
                     MachineName = ".",
-                    ReadOnly = false
+                    ReadOnly = false,
+                    InstanceName = "Default"
                 };
                 _started = true;
             }

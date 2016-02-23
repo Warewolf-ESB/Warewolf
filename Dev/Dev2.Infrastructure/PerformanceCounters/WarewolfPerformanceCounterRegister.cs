@@ -45,18 +45,39 @@ namespace Dev2.PerformanceCounters
 
         }
 
+        public void RegisterCounter(IResourcePerformanceCounter counter)
+        {
+            try
+            {
+                if (!PerformanceCounterCategory.Exists("Warewolf"))
+                {
+
+                    CreateAllCounters(DefaultCounters);
+                }
+            }
+            catch (Exception e)
+            {
+                Common.Dev2Logger.Error(e);
+            }
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            PerformanceCounter native = new PerformanceCounter("Warewolf",counter.Name,counter.CategoryInstanceName,false);
+            native.RawValue = 0;
+            
+            
+        }
+
         private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters)
         {
             CounterCreationDataCollection counterCreationDataCollection = new CounterCreationDataCollection();
             foreach(var counterl in counters)
             {
                 foreach (var counter in counterl.CreationData())
-                {
+                {   
                     counterCreationDataCollection.Add(counter);
                 }
                
             }
-            PerformanceCounterCategory.Create("Warewolf", "Warewolf Performance Counters", PerformanceCounterCategoryType.SingleInstance, counterCreationDataCollection);
+            PerformanceCounterCategory.Create("Warewolf", "Warewolf Performance Counters", PerformanceCounterCategoryType.MultiInstance, counterCreationDataCollection);
         }
     }
 }

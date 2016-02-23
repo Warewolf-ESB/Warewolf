@@ -37,6 +37,7 @@ namespace Dev2.PerformanceCounters
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.AverageTimer32,
+              
 
             };
             CounterCreationData avgDurationBase = new CounterCreationData
@@ -96,12 +97,14 @@ namespace Dev2.PerformanceCounters
                 {
                     MachineName = ".",
                     ReadOnly = false,
+                    InstanceName = "Default"
 
                 };
                 _baseCounter = new PerformanceCounter("Warewolf", "average time per operation base")
                 {
                     MachineName = ".",
                     ReadOnly = false,
+                    InstanceName = "Default"
 
                 };
                 _started = true;

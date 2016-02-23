@@ -1,51 +1,72 @@
 using System.Collections.Generic;
-using System.IO;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Communication;
 
 namespace Dev2.PerformanceCounters
 {
     public class PerformanceCounterPersistence :IPerformanceCounterPersistence
     {
-        private readonly IWarewolfPerformanceCounterRegister _register;
+   
+        private readonly IFile _file;
 
         #region Implementation of IPerformanceCounterPersistence
 
-        public  PerformanceCounterPersistence(IWarewolfPerformanceCounterRegister register)
+        public  PerformanceCounterPersistence(IFile file)
         {
-            _register = register;
+   
+            _file = file;
         }
 
         public void Save(IList<IPerformanceCounter> counters, string fileName)
         {
-           
+            var serialiser = new Dev2JsonSerializer();
+            _file.WriteAllText(fileName, serialiser.Serialize(counters));
         }
         public void Save(IList<IPerformanceCounter> counters)
         {
             var path = EnvironmentVariables.ServerPerfmonSettingsFile;
-            var serialiser = new Dev2JsonSerializer();
-            File.WriteAllText(path,serialiser.Serialize(counters));
+            Save(counters, path);
         }
+
+        public IList<IPerformanceCounter> LoadOrCreate()
+        {
+            return LoadOrCreate(EnvironmentVariables.ServerPerfmonSettingsFile);
+        }
+
         public IList<IPerformanceCounter> LoadOrCreate(string fileName)
         {
-            var path = fileName;
             var serialiser = new Dev2JsonSerializer();
-            if(!File.Exists(fileName))
+            if (!_file.Exists(fileName))
             {
                 return CreateDefaultPerfCounters();
             }
-            else
-            {
-                return serialiser.Deserialize<IList<IPerformanceCounter>>(File.ReadAllText(fileName));
-            }
+            return serialiser.Deserialize<IList<IPerformanceCounter>>(_file.ReadAllText(fileName));
         }
 
         private IList<IPerformanceCounter> CreateDefaultPerfCounters()
         {
-            var toSerialise =  _register.DefaultCounters;
+            var toSerialise =  DefaultCounters;
             Save(toSerialise);
             return toSerialise;
+        }
+
+        public IList<IPerformanceCounter> DefaultCounters
+        {
+            get
+            {
+                return new List<IPerformanceCounter>
+                                                            {
+                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                                new WarewolfNumberOfErrors(),    
+                                                               
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                 new WarewolfNumberOfAuthErrors(),
+                                                                 new WarewolfServicesNotFoundCounter()
+                                                            };
+            }
         }
 
         #endregion

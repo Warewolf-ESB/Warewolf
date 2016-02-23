@@ -16,8 +16,9 @@ namespace Dev2.Common.Interfaces.Monitoring
         bool IsActive { get; set; }
     }
 
-    public interface IResourcePerformanceCounter
+    public interface IResourcePerformanceCounter : IPerformanceCounter
     {
-        Guid ResourceId { get; set; }
+        Guid ResourceId { get;  }
+        string CategoryInstanceName { get; }
     }
 }

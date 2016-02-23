@@ -44,6 +44,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Reflection;
+using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -1679,18 +1680,11 @@ namespace Dev2
         {
             try
             {
-                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
-
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters));
+                PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate());
+                var locater = new WarewolfPerformanceCounterLocater(register.Counters, register);
+                locater.CreateCounter(Guid.NewGuid(), WarewolfPerfCounterType.ConcurrentRequests, "bob");
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
             }
             catch (Exception err)
             {

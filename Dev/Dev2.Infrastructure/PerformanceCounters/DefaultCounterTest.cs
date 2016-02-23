@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
@@ -6,18 +6,22 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters
 {
-    public class WarewolfNumberOfAuthErrors : IPerformanceCounter
+    public  class DefaultCounterTest :IResourcePerformanceCounter
     {
-
+        
+        
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
+        private readonly Guid _resourceId;
 
-        public WarewolfNumberOfAuthErrors()
+        public DefaultCounterTest(Guid resourceId, string name,WarewolfPerfCounterType type)
         {
+            _resourceId = resourceId;
+            CategoryInstanceName = name;
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.NotAuthorisedErrors;
+            _perfCounterType = type;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -35,7 +39,7 @@ namespace Dev2.PerformanceCounters
             {
                 CounterName = Name,
                 CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
+                CounterType = _perfCounterType.ToSystemType()
             };
             return new[] { totalOps };
         }
@@ -82,8 +86,7 @@ namespace Dev2.PerformanceCounters
                 _counter = new PerformanceCounter("Warewolf", Name)
                 {
                     MachineName = ".",
-                    ReadOnly = false,
-                    InstanceName = "Default"
+                    ReadOnly = false
                 };
                 _started = true;
             }
@@ -93,6 +96,7 @@ namespace Dev2.PerformanceCounters
         {
             Setup();
             if (IsActive)
+
                 try
                 {
                     _counter.Decrement();
@@ -102,7 +106,6 @@ namespace Dev2.PerformanceCounters
 
                     Dev2Logger.Error(err);
                 }
-
         }
 
         public string Category
@@ -116,9 +119,22 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return "Count of Not Authorised errors";
+                return "Total Errors";
             }
         }
+
+        #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+        }
+        public string CategoryInstanceName { get; private set; }
 
         #endregion
     }
