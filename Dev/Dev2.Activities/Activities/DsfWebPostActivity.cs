@@ -25,7 +25,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebPostActivity:DsfActivity
     {
         public IList<INameValue> Headers { get; set; }
