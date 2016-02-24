@@ -89,7 +89,7 @@ Scenario: Adding parameters in request headers is updating variables
 	And Inputs is Enabled
 	And Test is Enabled
 	And Paste is Enabled
-	And I Paste into "Request
+	And I Paste into Response
 	When Test Inputs is Successful
 	And I click Done
 	Then Mapping is Enabled
@@ -222,6 +222,7 @@ Scenario: Web Connector Tool cancel generate outputs for
 	And Mapping is Disabled
 	
  @ignore
+ #Wolf-1412
 Scenario: Web Connector Tool re-generate outputs for 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
