@@ -699,6 +699,16 @@
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Post\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebPostDesigner.xaml.cs">
+      <DependentUpon>WebPostDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
     <Compile Include="Designers2\WriteFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1400,6 +1410,18 @@
     <Page Include="Designers2\Web Service Get\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Post\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Post\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Post\WebPostDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\WriteFile\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
