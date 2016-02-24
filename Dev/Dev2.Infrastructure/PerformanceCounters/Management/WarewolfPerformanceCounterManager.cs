@@ -59,28 +59,32 @@ namespace Dev2.PerformanceCounters.Management
 
         public IResourcePerformanceCounter CreateCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
-            IResourcePerformanceCounter counter;
-            switch(type)
+            if (GetCounter(resourceId, type) == EmptyCounter)
             {
-                    case WarewolfPerfCounterType.ExecutionErrors: 
-                        counter =  new WarewolfNumberOfErrorsByResource(resourceId,name);
-                    break;
+                IResourcePerformanceCounter counter;
+                switch (type)
+                {
+                    case WarewolfPerfCounterType.ExecutionErrors:
+                        counter = new WarewolfNumberOfErrorsByResource(resourceId, name);
+                        break;
                     case WarewolfPerfCounterType.AverageExecutionTime:
-                    counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourceId, name);
-                    break;
+                        counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourceId, name);
+                        break;
                     case WarewolfPerfCounterType.ConcurrentRequests:
-                    counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourceId, name);
-                    break;
+                        counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourceId, name);
+                        break;
                     case WarewolfPerfCounterType.RequestsPerSecond:
-                    counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
-                    break;
-                default :
+                        counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
+                        break;
+                    default:
                         return new EmptyCounter();
-            }
+                }
 
-            _resourceCounters.Add(counter);
-            _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
-            return counter;
+                _resourceCounters.Add(counter);
+                _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
+                return counter;
+            }
+            else return (IResourcePerformanceCounter)GetCounter(resourceId, type).FromSafe();
         }
         public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
