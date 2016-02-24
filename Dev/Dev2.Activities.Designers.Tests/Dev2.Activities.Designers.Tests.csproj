@@ -196,6 +196,7 @@
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
+    <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
     <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
     <Compile Include="XPath\XPathDesignerViewModelTests.cs" />

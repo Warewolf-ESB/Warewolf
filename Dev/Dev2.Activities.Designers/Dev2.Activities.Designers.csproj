@@ -221,6 +221,7 @@
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\WebSourceRegion.cs" />
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
