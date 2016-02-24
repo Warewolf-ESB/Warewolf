@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -24,7 +25,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "POST Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebPostActivity:DsfActivity
     {
         public IList<INameValue> Headers { get; set; }
@@ -45,23 +46,65 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
+            if (env == null) return _debugInputs;
             base.GetDebugInputs(env, update);
-            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
-            var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
-            var postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
-            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
+            IEnumerable<NameValue> head = null;
+            string query = null;   
+            string postData = null;
+            if (Headers != null)
+            {
+                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            }
+            if (QueryString != null)
+            {
+                query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
+            }
 
-            AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
-            AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
-            AddDebugInputItem(new DebugEvalResult(postData, "Post Data", env, update));
-            AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
+            if (PostData != null)
+            {
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
+            }
+
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            string headerString=string.Empty;
+            if (head != null)
+                headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
+            AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Query String"), debugItem);
+            AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
+            AddDebugItem(new DebugEvalResult(postData, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
 
             return _debugInputs;
         }
 
         #region Overrides of DsfActivity
+
+        public IResourceCatalog ResourceCatalog
+        {
+            private get
+            {
+                return _resourceCatalog ?? Runtime.Hosting.ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
+            }
+        }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
@@ -77,35 +120,35 @@ namespace Dev2.Activities
                 query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
             }
             var postData = "";
-            if (PostData!=null)
+            if (PostData != null)
             {
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));    
             }
-            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-            PushXmlIntoEnvironment(webRequestResult,update,dataObject);
+            PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 
         private void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
+            if (OutputDescription == null)
+            {
+                dataObj.Environment.AddError("There are no outputs");
+                return;
+            }
             int i = 0;
             foreach (var serviceOutputMapping in Outputs)
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = serviceOutputMapping.MappedTo;
                 i++;
             }
-            if (OutputDescription == null)
-            {
-                dataObj.Environment.AddError("There are no outputs");
-                return;
-            }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-
-            input = formater.Format(input).ToString();
-            if (input != string.Empty)
+            try
             {
-                try
+                input = formater.Format(input).ToString();
+                if (input != string.Empty)
                 {
+
                     string toLoad = DataListUtil.StripCrap(input); // clean up the rubish ;)
                     XmlDocument xDoc = new XmlDocument();
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
@@ -119,10 +162,12 @@ namespace Dev2.Activities
                         TryConvert(children, outputDefs, indexCache, update, dataObj);
                     }
                 }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message, e);
-                }
+
+            }
+            catch (Exception e)
+            {
+                dataObj.Environment.AddError(e.Message);
+                Dev2Logger.Error(e.Message, e);
             }
         }
 
@@ -153,7 +198,7 @@ namespace Dev2.Activities
                                 {
                                     if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
                                     {
-                                        dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
+                                        dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
                                     }
                                 }
                             }
@@ -191,9 +236,10 @@ namespace Dev2.Activities
             return innerXml;
         }
 
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source,string postData)
+        [ExcludeFromCodeCoverage]
+        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
         {
-            var webclient =  CreateClient(head, query, source);
+            var webclient = CreateClient(head, query, source);
             if (webclient != null)
             {
                 var address = source.Address;
@@ -209,7 +255,7 @@ namespace Dev2.Activities
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var webclient = new WebClient();
-            if(head != null)
+            if (head != null)
             {
                 foreach (var nameValue in head)
                 {
