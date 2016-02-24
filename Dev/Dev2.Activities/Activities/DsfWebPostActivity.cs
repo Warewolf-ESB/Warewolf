@@ -25,7 +25,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfWebPostActivity:DsfActivity
+    public class DsfWebPostActivity : DsfActivity
     {
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
@@ -45,18 +45,36 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
+            if (env == null) return _debugInputs;
             base.GetDebugInputs(env, update);
-            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
-            var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
-            var postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
-            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
+            IEnumerable<NameValue> head = null;
+            string query = null;   
+            string postData = null;
+            if (Headers != null)
+            {
+                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            }
+            if (QueryString != null)
+            {
+                query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
+            }
+
+            if (PostData != null)
+            {
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
+            }
+
+            var url = _resourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            string headerString=string.Empty;
+            if (head != null)
+                headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
             AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
             AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
             AddDebugInputItem(new DebugEvalResult(postData, "Post Data", env, update));
             AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
+
 
             return _debugInputs;
         }
@@ -77,13 +95,13 @@ namespace Dev2.Activities
                 query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
             }
             var postData = "";
-            if (PostData!=null)
+            if (PostData != null)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));    
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));
             }
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-            PushXmlIntoEnvironment(webRequestResult,update,dataObject);
+            PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 
         private void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
@@ -191,9 +209,9 @@ namespace Dev2.Activities
             return innerXml;
         }
 
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source,string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
         {
-            var webclient =  CreateClient(head, query, source);
+            var webclient = CreateClient(head, query, source);
             if (webclient != null)
             {
                 var address = source.Address;
@@ -209,7 +227,7 @@ namespace Dev2.Activities
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var webclient = new WebClient();
-            if(head != null)
+            if (head != null)
             {
                 foreach (var nameValue in head)
                 {
