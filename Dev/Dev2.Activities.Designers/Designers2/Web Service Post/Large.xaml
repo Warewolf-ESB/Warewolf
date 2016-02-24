@@ -178,6 +178,7 @@
                                  VerticalScrollBarVisibility="Auto"
                                  HorizontalScrollBarVisibility="Auto"
                                  customControls:WatermarkTextBox.Watermark="Body" 
+                                 SizeChanged="RequestBody_OnSizeChanged"
                                  ToolTip="{x:Static languages:Core.ManageWebServiceRequestBodyTooltip}">
                             <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static languages:Core.WebServiceRequestBodyHelp}" DataContext="{Binding}" />

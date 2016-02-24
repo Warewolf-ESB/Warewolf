@@ -545,9 +545,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                     }
                 }
 
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight) + 115;
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight) + 115;
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight) + 115;
+                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
+                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
+                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
 
                 if (isInputVisible && !GenerateOutputsVisible)
                 {
