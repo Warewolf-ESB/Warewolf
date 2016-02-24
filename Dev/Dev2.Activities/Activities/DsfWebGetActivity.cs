@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
-using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -26,7 +25,7 @@ using WarewolfParserInterop;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Dev2
+namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Resources-Service", "GET Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebGetActivity : DsfActivity
