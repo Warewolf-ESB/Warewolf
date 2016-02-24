@@ -254,3 +254,44 @@ Scenario: Web Connector Tool re-generate outputs for
 	| Mapped From | Mapped To   |
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
+
+
+ @ignore
+Scenario: Web Connector Tool remember previous values
+	Given I open New Workflow
+	And I drag Web Get Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select WebHeloo as Source
+	Then Header is Enabled
+	And  Url is Visible 
+	And Generate Outputs is Enabled
+	And I click Generate Outputs
+	Then Generate Outputs window is Enabled
+	And I click Test
+	Then Outputs appear as
+	|                               |
+	| {"rec" : [{"a":"1","b":"a"}]} |
+	When I click Done
+	Then the response is loaded
+	And Mapping is Enabled
+	And output mappings are
+	| Mapped From | Mapped To   |
+	| a           | [[rec().a]] |
+	| b           | [[rec().b]] |
+	And Recordset Name equals rec
+	When I change Source from WebHeloo  to Google Address Lookup
+	Then Header is Enabled
+	And  Url is Visible 
+	And Generate Outputs is Enabled
+	And Mappings is Disabled
+	Then I change Source from Google Address Lookup  to WebHeloo
+	Then Header is Enabled
+	And  Url is Visible 
+	And Mapping is Enabled
+	And output mappings are
+	| Mapped From | Mapped To   |
+	| a           | [[rec().a]] |
+	| b           | [[rec().b]] |
+
