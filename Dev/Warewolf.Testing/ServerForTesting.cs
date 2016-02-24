@@ -70,6 +70,20 @@ namespace Warewolf.Testing
                 return _hasLoaded;
             }
         }
+        public bool CanDeployTo
+        {
+            get
+            {
+                return _canDeployTo;
+            }
+        }
+        public bool CanDeployFrom
+        {
+            get
+            {
+                return _canDeployFrom;
+            }
+        }
 
         public IServer Clone()
         {
@@ -127,6 +141,9 @@ namespace Warewolf.Testing
             return folders;
         }
         int i = 1;
+        private bool _canDeployTo;
+        private bool _canDeployFrom;
+
         private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
             

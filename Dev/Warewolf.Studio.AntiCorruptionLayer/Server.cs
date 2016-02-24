@@ -43,7 +43,23 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             EnvironmentConnection.NetworkStateChanged+=RaiseNetworkStateChangeEvent;
             EnvironmentConnection.ItemAddedMessageAction+=ItemAdded;
             environmentModel.WorkflowSaved += (sender, args) => UpdateRepository.FireItemSaved();
-            _environmentModel = environmentModel;
+            _environmentModel = environmentModel;            
+        }
+
+        public bool CanDeployTo
+        {
+            get
+            {
+                return _environmentModel.IsAuthorizedDeployTo;
+            }
+        }
+
+        public bool CanDeployFrom
+        {
+            get
+            {
+                return _environmentModel.IsAuthorizedDeployFrom;
+            }
         }
 
         public Server()
