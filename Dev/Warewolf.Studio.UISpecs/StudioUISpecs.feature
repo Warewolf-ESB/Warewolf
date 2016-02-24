@@ -124,6 +124,43 @@ Scenario: Drag toolbox Sql Tool onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When I 'Open_Sql_Server_Tool_small_View'
 
+
+Scenario: Drag toolbox Get Web Request Tool onto a new workflow
+	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
+	When I 'Click_New_Workflow_Ribbon_Button'
+	Then I 'Assert_StartNode_Exists'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Drag_GetWeb_RequestTool_Onto_DesignSurface'
+	Then I 'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Open_GetWeb_RequestTool_small_View'
+	Then I 'Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface'
+
+
+Scenario: Drag toolbox Post Web Request Tool onto a new workflow
+	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
+	When I 'Click_New_Workflow_Ribbon_Button'
+	Then I 'Assert_StartNode_Exists'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Drag_PostWeb_RequestTool_Onto_DesignSurface'
+	Then I 'Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurface'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Open_PostWeb_RequestTool_small_View'
+	Then I 'Assert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurface'
+
+
 Scenario: Drag toolbox Case_Conversion onto a new workflow
 	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
 	When I 'Click_New_Workflow_Ribbon_Button'
