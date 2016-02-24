@@ -42,12 +42,12 @@ namespace Dev2.Activities.Designers2.Core
         double _currentHeight;
         double _maxHeight;
         bool _isVisible;
-        IWebServiceGetViewModel _viewmodel;
+        IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private const double BaseHeight = 60;
 
-        public ManageWebServiceInputViewModel(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
+        public ManageWebServiceInputViewModel(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
         {
             PasteResponseAvailable = true;
             IsTesting = false;
