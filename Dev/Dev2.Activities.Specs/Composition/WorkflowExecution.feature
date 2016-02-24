@@ -82,7 +82,12 @@ Scenario: Workflow with an assign and webservice
 	  And the 'Inputs' in Workflow 'TestWebServiceWF' debug outputs as    
 	  | # |                      |
 	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |	  
+	  | 2 | [[prefix]] = a       |
+	   And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
+	  | #            |                                                  |
+	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
+	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
+	  | Headers      |                                                  |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |

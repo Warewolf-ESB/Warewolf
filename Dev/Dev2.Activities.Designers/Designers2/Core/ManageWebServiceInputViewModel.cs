@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Core
             var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
             var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
 
-            if (_generateInputArea.Inputs.Count < 1)
+            if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
             {
                 IsGenerateInputsEmptyRows = true;
                 maxInputHeight = BaseHeight;
