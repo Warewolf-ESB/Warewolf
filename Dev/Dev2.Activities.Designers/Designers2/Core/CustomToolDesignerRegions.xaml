@@ -27,59 +27,47 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="SelectionGrid">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <!--DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel }"-->
-            <Grid x:Name="SourcesGrid"  
-                  Grid.Row="0" 
+        <Grid x:Name="SourcesGrid"  
                   Visibility="{Binding SourceRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{Binding LabelWidth}"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="SourceLabel" Text="Source" />
-                <ComboBox x:Name="SourcesComboBox"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="SourceLabel" Text="Source" />
+            <ComboBox x:Name="SourcesComboBox"
                           Grid.Column="1"
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
                           ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
                           ItemsSource="{Binding SourceRegion.Sources}"
                           SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </ComboBox>
-                <Button x:Name="SourceEditButton" 
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="SourceEditButton" 
                         Grid.Column="2"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
                         ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
                         Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </Button>
-                <Button x:Name="SourceNewButton" 
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button x:Name="SourceNewButton" 
                         Grid.Column="3"
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
                         ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
                         Command="{Binding Path= SourceRegion.NewSourceCommand, Mode=TwoWay}">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </Button>
-            </Grid>
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="InputsGrid">

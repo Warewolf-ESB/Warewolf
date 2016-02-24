@@ -157,7 +157,7 @@
                         </Border>
                     </Grid>
 
-                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTopRight}" >
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
