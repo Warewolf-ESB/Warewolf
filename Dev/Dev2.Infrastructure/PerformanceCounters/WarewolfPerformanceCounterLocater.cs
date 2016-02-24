@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters
@@ -11,13 +12,16 @@ namespace Dev2.PerformanceCounters
     {
         private readonly IList<IPerformanceCounter> _counters;
         private readonly IWarewolfPerformanceCounterRegister _register;
-        private IList<IPerformanceCounter> _resourceCounters;
+        private readonly PerformanceCounterPersistence _perf;
+        private readonly IList<IPerformanceCounter> _resourceCounters;
 
-        public WarewolfPerformanceCounterLocater(IList<IPerformanceCounter> counters, IWarewolfPerformanceCounterRegister register)
+        public WarewolfPerformanceCounterLocater(IList<IPerformanceCounter> counters, IWarewolfPerformanceCounterRegister register, PerformanceCounterPersistence perf)
         {
             _counters = counters;
             _register = register;
+            _perf = perf;
             _resourceCounters = new List<IPerformanceCounter>();
+            EmptyCounter = new EmptyCounter();
         }
 
         public IPerformanceCounter GetCounter(string name)
@@ -32,8 +36,25 @@ namespace Dev2.PerformanceCounters
 
         public IResourcePerformanceCounter GetCounter(Guid resourceId, string name)
         {
-            return _counters.Where(a=> a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a=>a.ResourceId == resourceId);
+            return _counters.Where(a=> a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a=>a.ResourceId == resourceId && a.Name==name);
         }
+
+        public IResourcePerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
+        {
+            try
+            {
+                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a => a.ResourceId == resourceId && a.PerfCounterType==type);
+                return returnValue;
+            }
+            catch(Exception)
+            {
+                
+                return  EmptyCounter;
+            }
+            
+        }
+
+        public IResourcePerformanceCounter EmptyCounter { get; set; }
 
         #region Implementation of IPerformanceCounterFactory
 
@@ -43,17 +64,41 @@ namespace Dev2.PerformanceCounters
             switch(type)
             {
                     case WarewolfPerfCounterType.ExecutionErrors: 
-                        counter =  new DefaultCounterTest(resourceId,name,type);
+                        counter =  new WarewolfNumberOfErrorsByResource(resourceId,name);
+                    break;
+                    case WarewolfPerfCounterType.AverageExecutionTime:
+                    counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourceId, name);
+                    break;
+                    case WarewolfPerfCounterType.ConcurrentRequests:
+                    counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourceId, name);
+                    break;
+                    case WarewolfPerfCounterType.RequestsPerSecond:
+                    counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
                     break;
                 default :
-                        counter = new DefaultCounterTest(resourceId, name, type);
+                        counter = new EmptyCounter();
                     break;
             }
             _register.RegisterCounter(counter);
             _resourceCounters.Add(counter);
+            _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
             return counter;
         }
+        public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
+        {
+            var toRemove = _resourceCounters.FirstOrDefault(a =>
+            {
+                var resourcePerformanceCounter = a as IResourcePerformanceCounter;
+                return resourcePerformanceCounter != null && (resourcePerformanceCounter.ResourceId == resourceId && resourcePerformanceCounter.PerfCounterType == type);
+            });
 
+            if (toRemove != null)
+            {
+                _resourceCounters.Remove(toRemove);
+                _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
+            }
+       
+        }
         #endregion
     }
 }

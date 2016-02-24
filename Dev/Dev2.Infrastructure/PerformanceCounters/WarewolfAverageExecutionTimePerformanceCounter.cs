@@ -93,18 +93,18 @@ namespace Dev2.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name,GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
-                    InstanceName = "Default"
+                
 
                 };
-                _baseCounter = new PerformanceCounter("Warewolf", "average time per operation base")
+                _baseCounter = new PerformanceCounter(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
-                    InstanceName = "Default"
+                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
 
                 };
                 _started = true;

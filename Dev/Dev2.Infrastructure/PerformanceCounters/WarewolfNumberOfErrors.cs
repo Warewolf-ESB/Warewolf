@@ -79,11 +79,11 @@ namespace Dev2.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
-                    InstanceName = "Default"
+                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
                 };
                 _started = true;
             }

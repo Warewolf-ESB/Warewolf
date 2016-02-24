@@ -108,6 +108,14 @@ namespace Dev2.Common
                 return serverLogSettings;
             }
         }
+        public static string ServerResourcePerfmonSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "ResourcesPerfmon.config");
+                return serverLogSettings;
+            }
+        }
 
         public static string ServerSecuritySettingsFile
         {

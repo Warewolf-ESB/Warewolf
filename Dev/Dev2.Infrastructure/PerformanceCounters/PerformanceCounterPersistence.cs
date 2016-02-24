@@ -6,16 +6,16 @@ using Dev2.Communication;
 
 namespace Dev2.PerformanceCounters
 {
-    public class PerformanceCounterPersistence :IPerformanceCounterPersistence
+    public class PerformanceCounterPersistence : IPerformanceCounterPersistence
     {
-   
+
         private readonly IFile _file;
 
         #region Implementation of IPerformanceCounterPersistence
 
-        public  PerformanceCounterPersistence(IFile file)
+        public PerformanceCounterPersistence(IFile file)
         {
-   
+
             _file = file;
         }
 
@@ -47,7 +47,7 @@ namespace Dev2.PerformanceCounters
 
         private IList<IPerformanceCounter> CreateDefaultPerfCounters()
         {
-            var toSerialise =  DefaultCounters;
+            var toSerialise = DefaultCounters;
             Save(toSerialise);
             return toSerialise;
         }
@@ -56,16 +56,14 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
-                                                            };
+                return new List<IPerformanceCounter>{
+                                                       new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                       new WarewolfNumberOfErrors(),
+                                                       new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                       new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                       new WarewolfNumberOfAuthErrors(),
+                                                       new WarewolfServicesNotFoundCounter()
+                                                    };
             }
         }
 

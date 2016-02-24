@@ -83,7 +83,7 @@ namespace Dev2.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter("Warewolf", Name,CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false
