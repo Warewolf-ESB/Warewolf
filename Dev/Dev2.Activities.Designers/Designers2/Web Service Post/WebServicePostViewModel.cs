@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web Post must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
