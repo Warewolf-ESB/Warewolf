@@ -22,6 +22,9 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Mvvm;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -177,40 +180,35 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async void RefreshEnvironment(Guid environmentId)
+        public void RefreshEnvironment(Guid environmentId)
         {
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                IsRefreshing = true;
-                if (environmentViewModel.IsConnected)
-                {
-                    await environmentViewModel.Load();
-                    if (!string.IsNullOrEmpty(SearchText))
-                    {
-                        Filter(SearchText);
-                    }
-                }
-                IsRefreshing = false;
+                RefreshEnvironment(environmentViewModel);
             }
         }
 
         protected virtual void Refresh()
         {
             IsRefreshing = true;
-            Environments.ForEach(async model =>
-            {
-                if (model.IsConnected)
-                {
-                    await model.Load();
-                    if (!string.IsNullOrEmpty(SearchText))
-                    {
-                        Filter(SearchText);
-                    }
-                }
-            });
+            Environments.ForEach(RefreshEnvironment);
             IsRefreshing = false;
             ConnectControlViewModel.LoadNewServers();
+        }
+
+        private async void RefreshEnvironment(IEnvironmentViewModel environmentViewModel)
+        {
+            IsRefreshing = true;
+            if (environmentViewModel.IsConnected)
+            {
+                await environmentViewModel.Load();
+                if (!string.IsNullOrEmpty(SearchText))
+                {
+                    Filter(SearchText);
+                }
+            }
+            IsRefreshing = false;
         }
 
         public virtual void Filter(string filter)
@@ -292,12 +290,7 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
-        protected virtual void OnSelectedEnvironmentChanged(IEnvironmentViewModel e)
-        {
-            var handler = SelectedEnvironmentChanged;
-            if (handler != null) handler(this, e);
-        }
-
+       
         public void Dispose()
         {
             foreach (var environmentViewModel in Environments)
@@ -323,7 +316,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
-            // ReSharper disable once VirtualMemberCallInContructor
+            // ReSharper disable VirtualMemberCallInContructor
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
 #pragma warning disable 4014
@@ -368,7 +361,7 @@ namespace Warewolf.Studio.ViewModels
                });
         }
 
-        public virtual void AfterLoad(Guid environmentId)
+        protected virtual void AfterLoad(Guid environmentId)
         {
             if (ConnectControlViewModel != null)
             {
@@ -398,41 +391,12 @@ namespace Warewolf.Studio.ViewModels
 
         void ServerDisconnectDetected(object _, IServer server)
         {
-            if (server.EnvironmentID == Guid.Empty)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    IPopupController controller = CustomContainer.Get<IPopupController>();
-                    controller.ShowServerNotConnected(server.DisplayName);
-                    var environmentModel = _environments.FirstOrDefault(model => model.Server.EnvironmentID == server.EnvironmentID);
-                    if (environmentModel != null)
-                    {
-                        foreach (var a in environmentModel.AsList())
-                        {
-                            a.IsVisible = false;
-                        }
-                    }
-                    OnPropertyChanged(() => Environments);
-                    AfterLoad(server.EnvironmentID);
-                });
-            }
-            else
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    var environmentModel = _environments.FirstOrDefault(model => model.Server.EnvironmentID == server.EnvironmentID);
-
-                    _environments.Remove(environmentModel);
-                    if (environmentModel != null)
-                    {
-                        IPopupController controller = CustomContainer.Get<IPopupController>();
-                        controller.ShowServerNotConnected(server.DisplayName);
-                    }
-                    OnPropertyChanged(() => Environments);
-                    AfterLoad(server.EnvironmentID);
-                });
-            }
-
+                IPopupController controller = CustomContainer.Get<IPopupController>();
+                ServerDisconnected(_, server);
+                controller.ShowServerNotConnected(server.DisplayName);
+            });
         }
 
         void ServerDisconnected(object _, IServer server)
@@ -440,7 +404,14 @@ namespace Warewolf.Studio.ViewModels
             var environmentModel = _environments.FirstOrDefault(model => model.Server.EnvironmentID == server.EnvironmentID);
             if (environmentModel != null)
             {
-                _environments.Remove(environmentModel);
+                foreach (var a in environmentModel.AsList())
+                {
+                    a.IsVisible = false;
+                }
+                if (server.EnvironmentID != Guid.Empty)
+                {
+                    _environments.Remove(environmentModel);
+                }
             }
             OnPropertyChanged(() => Environments);
             AfterLoad(server.EnvironmentID);

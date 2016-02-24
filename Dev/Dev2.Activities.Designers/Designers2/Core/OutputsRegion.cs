@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         private ICollection<IServiceOutputMapping> _outputs;
         public OutputsRegion(ModelItem modelItem)
         {
+            ToolRegionName = "OutputsRegion";
             _modelItem = modelItem;
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
             {

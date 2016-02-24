@@ -29,5 +29,21 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         }
 
         #endregion
+
+        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var viewModel = DataContext as WebServicePostViewModel;
+
+            if (viewModel != null)
+            {
+                var dataContext = viewModel.InputArea;
+                if (dataContext.IsVisible)
+                {
+                    //MinHeight = dataContext.MinHeight + 25;
+                    //MaxHeight += e.NewSize.Height;
+                    //Height = MinHeight;
+                }
+            }
+        }
     }
 }
