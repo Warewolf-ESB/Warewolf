@@ -249,7 +249,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
+                                                            }, new List<IResourcePerformanceCounter>());
 
                     CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, register, new Mock<IPerformanceCounterPersistence>().Object));
                 }

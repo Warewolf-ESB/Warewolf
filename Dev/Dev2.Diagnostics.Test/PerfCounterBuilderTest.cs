@@ -39,7 +39,7 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfServicesNotFoundCounter()
             };
             // ReSharper disable once ObjectCreationAsStatement
-            new WarewolfPerformanceCounterRegister(lst);
+            new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
@@ -76,13 +76,13 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(),
                 new WarewolfServicesNotFoundCounter()
             };
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
+            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst,new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment();
             }
 
-            register = new WarewolfPerformanceCounterRegister(lst);
+            register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
@@ -117,13 +117,13 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors()
             };
 
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
+            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment();
             }
             lst.Add(new WarewolfServicesNotFoundCounter());
-            register = new WarewolfPerformanceCounterRegister(lst);
+            register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment(); // increment causes instance to be created on windows side

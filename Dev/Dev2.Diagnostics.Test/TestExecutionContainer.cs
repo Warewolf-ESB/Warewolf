@@ -39,9 +39,9 @@ namespace Dev2.Diagnostics.Test
                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
+                                                            }, new List<IResourcePerformanceCounter>());
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, register, new Mock<IPerformanceCounterPersistence>().Object));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(),  register, new Mock<IPerformanceCounterPersistence>().Object));
             }
             catch (Exception err)
             {

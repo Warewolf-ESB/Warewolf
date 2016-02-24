@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Wrappers;
@@ -31,9 +33,15 @@ namespace Dev2.PerformanceCounters.Management
             Save(counters, path);
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPerformanceCounter> LoadOrCreate()
         {
             return LoadOrCreate(EnvironmentVariables.ServerPerfmonSettingsFile);
+        }
+             [ExcludeFromCodeCoverage]
+        public IList<IResourcePerformanceCounter> LoadOrCreateResourcesCounters(IList<IResourcePerformanceCounter> resourcePerformanceCounters)
+        {
+            return LoadOrCreateResourceCounters(EnvironmentVariables.ServerResourcePerfmonSettingsFile);
         }
 
         public IList<IPerformanceCounter> LoadOrCreate(string fileName)
@@ -44,6 +52,15 @@ namespace Dev2.PerformanceCounters.Management
                 return CreateDefaultPerfCounters();
             }
             return serialiser.Deserialize<IList<IPerformanceCounter>>(_file.ReadAllText(fileName));
+        }
+        public IList<IResourcePerformanceCounter> LoadOrCreateResourceCounters(string fileName)
+        {
+            var serialiser = new Dev2JsonSerializer();
+            if (!_file.Exists(fileName))
+            {
+                return DefaultResourceCounters;
+            }
+            return serialiser.Deserialize<IList<IResourcePerformanceCounter>>(_file.ReadAllText(fileName));
         }
 
         private IList<IPerformanceCounter> CreateDefaultPerfCounters()
@@ -64,6 +81,19 @@ namespace Dev2.PerformanceCounters.Management
                                                        new WarewolfAverageExecutionTimePerformanceCounter(),
                                                        new WarewolfNumberOfAuthErrors(),
                                                        new WarewolfServicesNotFoundCounter()
+                                                    };
+            }
+        }
+        public IList<IResourcePerformanceCounter> DefaultResourceCounters
+        {
+            get
+            {
+                return new List<IResourcePerformanceCounter>{
+                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, ""),
+                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, ""),
+                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, ""),
+                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, ""),
+
                                                     };
             }
         }

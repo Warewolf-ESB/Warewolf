@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces.Monitoring
     {
         IList<IPerformanceCounter> Counters { get; set; }
         IList<IPerformanceCounter> DefaultCounters { get; set; }
-        void RegisterCountersOnMachine(IList<IPerformanceCounter> counters);
+        void RegisterCountersOnMachine(IList<IPerformanceCounter> counters, string Category);
 
 
     }

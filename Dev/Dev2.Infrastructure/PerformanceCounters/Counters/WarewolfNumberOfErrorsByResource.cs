@@ -32,9 +32,13 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-
-
-            return new List<CounterCreationData>();
+            CounterCreationData totalOps = new CounterCreationData
+            {
+                CounterName = Name,
+                CounterHelp = Name,
+                CounterType = PerformanceCounterType.NumberOfItems32
+            };
+            return new[] { totalOps };
         }
 
         public bool IsActive { get; set; }
@@ -60,7 +64,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -82,7 +86,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             get
             {
-                return "Warewolf";
+                return GlobalConstants.WarewolfServices;
             }
         }
         public string Name

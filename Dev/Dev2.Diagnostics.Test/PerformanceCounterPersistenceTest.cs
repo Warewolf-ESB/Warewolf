@@ -161,5 +161,55 @@ namespace Dev2.Diagnostics.Test
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PerformanceCounterPersistence_Load")]
+        public void PerformanceCounterPersistence_Load_ResourceCounters()
+        {
+            var _file = new Mock<IFile>();
+            var register = new Mock<IWarewolfPerformanceCounterRegister>();
+
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence(_file.Object);
+
+            IList<IResourcePerformanceCounter> counters = new List<IResourcePerformanceCounter>();
+            counters.Add(new TestResourceCounter());
+            var serialiser = new Dev2JsonSerializer();
+            var fileName = Path.GetTempFileName();
+            _file.Setup(a => a.Exists(fileName)).Returns(true);
+            _file.Setup(a => a.ReadAllText(fileName)).Returns(serialiser.Serialize(counters));
+            
+            File.WriteAllText(fileName, serialiser.Serialize(counters));
+
+            var persisted = obj.LoadOrCreateResourceCounters(fileName);
+            Assert.AreEqual(4,obj.DefaultResourceCounters.Count);
+            Assert.AreEqual(persisted.Count, 1);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PerformanceCounterPersistence_Load")]
+        public void PerformanceCounterPersistence_Load_ResourceCounters_NonExistLoadDefault()
+        {
+            var _file = new Mock<IFile>();
+            var register = new Mock<IWarewolfPerformanceCounterRegister>();
+
+            PerformanceCounterPersistence obj = new PerformanceCounterPersistence(_file.Object);
+
+            IList<IResourcePerformanceCounter> counters = new List<IResourcePerformanceCounter>();
+            counters.Add(new TestResourceCounter());
+            var serialiser = new Dev2JsonSerializer();
+            var fileName = Path.GetTempFileName();
+            _file.Setup(a => a.Exists(fileName)).Returns(false);
+
+
+            File.WriteAllText(fileName, serialiser.Serialize(counters));
+
+            var persisted = obj.LoadOrCreateResourceCounters(fileName);
+            Assert.AreEqual(4, obj.DefaultResourceCounters.Count);
+            Assert.AreEqual(persisted.Count, 4);
+
+        }
+
     }
 }

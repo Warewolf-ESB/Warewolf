@@ -25,6 +25,7 @@ namespace Dev2.Diagnostics.Test
                 try
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
+                    PerformanceCounterCategory.Delete("Warewolf Services");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
                 catch
@@ -41,8 +42,14 @@ namespace Dev2.Diagnostics.Test
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter(),
 
-                                                            });
-                var manager = new WarewolfPerformanceCounterManager(register.Counters,register,new Mock<IPerformanceCounterPersistence>().Object);
+                                                            }, new List<IResourcePerformanceCounter>{
+                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, ""),
+                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, ""),
+                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, ""),
+                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, ""),
+
+                                                    });
+                var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
                 manager.CreateCounter( guid,WarewolfPerfCounterType.ExecutionErrors, "bob");
                 manager.CreateCounter(guid, WarewolfPerfCounterType.AverageExecutionTime, "bob");
                 manager.CreateCounter(guid, WarewolfPerfCounterType.RequestsPerSecond, "bob");
@@ -90,7 +97,7 @@ namespace Dev2.Diagnostics.Test
         {
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
             Assert.AreEqual(counter.Name, "Concurrent requests currently executing");
-            Assert.AreEqual(counter.Category, "Warewolf");
+            Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
@@ -143,7 +150,7 @@ namespace Dev2.Diagnostics.Test
         {
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ExecutionErrors).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Total Errors");
-            Assert.AreEqual(counter.Category, "Warewolf");
+            Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
@@ -218,7 +225,7 @@ namespace Dev2.Diagnostics.Test
         {
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid, WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Request Per Second");
-            Assert.AreEqual(counter.Category, "Warewolf");
+            Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
@@ -334,7 +341,7 @@ namespace Dev2.Diagnostics.Test
             //------------Setup for test--------------------------
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Average workflow execution time");
-            Assert.AreEqual(counter.Category, "Warewolf");
+            Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;

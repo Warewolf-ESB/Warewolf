@@ -16,12 +16,13 @@ namespace Dev2.PerformanceCounters.Management
         private readonly IPerformanceCounterPersistence _perf;
         private readonly IList<IPerformanceCounter> _resourceCounters;
 
-        public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourceCounters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
         {
             _counters = counters;
             _register = register;
             _perf = perf;
-            _resourceCounters = new List<IPerformanceCounter>();
+            _resourceCounters = resourceCounters.Cast<IPerformanceCounter>().ToList();
             EmptyCounter = new EmptyCounter();
         }
 

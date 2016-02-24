@@ -36,7 +36,23 @@ namespace Dev2.PerformanceCounters.Counters
 
 
 
-            return new List<CounterCreationData>();
+
+            CounterCreationData totalOps = new CounterCreationData
+            {
+                CounterName = Name,
+                CounterHelp = Name,
+                CounterType = PerformanceCounterType.AverageTimer32,
+
+
+            };
+            CounterCreationData avgDurationBase = new CounterCreationData
+            {
+                CounterName = "average time per operation base",
+                CounterHelp = "Average duration per operation execution base",
+                CounterType = PerformanceCounterType.AverageBase
+            };
+
+            return new[] { totalOps, avgDurationBase };
 
         }
 
@@ -69,14 +85,14 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name,CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name,CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
                 
 
                 };
-                _baseCounter = new PerformanceCounter(GlobalConstants.Warewolf, "average time per operation base", CategoryInstanceName)
+                _baseCounter = new PerformanceCounter(GlobalConstants.WarewolfServices, "average time per operation base", CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -102,7 +118,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             get
             {
-                return "Warewolf";
+                return GlobalConstants.WarewolfServices;
             }
         }
         public string Name
