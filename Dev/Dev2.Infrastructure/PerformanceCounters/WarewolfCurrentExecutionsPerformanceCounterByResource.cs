@@ -6,15 +6,17 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounter : IPerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfCurrentExecutionsPerformanceCounter()
+        public WarewolfCurrentExecutionsPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
+            ResourceId = resourceId;
+            CategoryInstanceName = categoryInstanceName;
             _started = false;
             IsActive = true;
             _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
@@ -80,7 +82,7 @@ namespace Dev2.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -95,20 +97,20 @@ namespace Dev2.PerformanceCounters
 
             if (IsActive)
                
-                    try
+                try
+                {
+                    Setup();
+                    if (_counter.RawValue > 0)
                     {
-                        Setup();
-                        if (_counter.RawValue > 0)
-                        {
                           
-                            _counter.Decrement();
-                        }
+                        _counter.Decrement();
                     }
-                    catch (Exception err)
-                    {
+                }
+                catch (Exception err)
+                {
 
-                        Dev2Logger.Error(err);
-                    }
+                    Dev2Logger.Error(err);
+                }
         }
 
         public string Category
@@ -127,6 +129,12 @@ namespace Dev2.PerformanceCounters
         }
 
         #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId { get; private set; }
+        public string CategoryInstanceName { get; private set; }
+
+        #endregion
     }
 }
-

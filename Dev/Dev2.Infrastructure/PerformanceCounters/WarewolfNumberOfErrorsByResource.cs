@@ -6,18 +6,20 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounter : IPerformanceCounter
+    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfCurrentExecutionsPerformanceCounter()
+        public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName)
         {
+            ResourceId = resourceId;
+            CategoryInstanceName = categoryInstanceName;
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
+            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -31,14 +33,8 @@ namespace Dev2.PerformanceCounters
         public IList<CounterCreationData> CreationData()
         {
 
-            CounterCreationData totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
 
-            };
-            return new[] { totalOps };
+            return new List<CounterCreationData>();
         }
 
         public bool IsActive { get; set; }
@@ -80,7 +76,7 @@ namespace Dev2.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -92,23 +88,18 @@ namespace Dev2.PerformanceCounters
 
         public void Decrement()
         {
-
+            Setup();
             if (IsActive)
-               
-                    try
-                    {
-                        Setup();
-                        if (_counter.RawValue > 0)
-                        {
-                          
-                            _counter.Decrement();
-                        }
-                    }
-                    catch (Exception err)
-                    {
 
-                        Dev2Logger.Error(err);
-                    }
+                try
+                {
+                    _counter.Decrement();
+                }
+                catch (Exception err)
+                {
+
+                    Dev2Logger.Error(err);
+                }
         }
 
         public string Category
@@ -122,11 +113,17 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return "Concurrent requests currently executing";
+                return "Total Errors";
             }
         }
 
         #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId { get; private set; }
+        public string CategoryInstanceName { get; private set; }
+
+        #endregion
     }
 }
-

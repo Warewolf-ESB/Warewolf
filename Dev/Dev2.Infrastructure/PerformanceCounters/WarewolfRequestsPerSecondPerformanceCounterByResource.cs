@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounter : IPerformanceCounter
+    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter
     {
 
         private PerformanceCounter _counter;
@@ -14,8 +14,10 @@ namespace Dev2.PerformanceCounters
 
         // ReSharper disable once InconsistentNaming
         private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
-        public WarewolfRequestsPerSecondPerformanceCounter()
+        public WarewolfRequestsPerSecondPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
+            ResourceId = resourceId;
+            CategoryInstanceName = categoryInstanceName;
             IsActive = true;
         }
 
@@ -27,7 +29,7 @@ namespace Dev2.PerformanceCounters
             {
                 _stopwatch = new Stopwatch();
                 _stopwatch.Start();
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -42,34 +44,34 @@ namespace Dev2.PerformanceCounters
         public void Increment()
         {
             if (IsActive)
-            try
-            {
-                Setup();
-                _counter.Increment();
-            }
+                try
+                {
+                    Setup();
+                    _counter.Increment();
+                }
 
-            catch (Exception err)
-            {
+                catch (Exception err)
+                {
 
-                Dev2Logger.Error(err);
-            }
+                    Dev2Logger.Error(err);
+                }
         }
 
         public void IncrementBy(long ticks)
         {
             if (IsActive)
-            try
-            {
-                Setup();
+                try
+                {
+                    Setup();
 
-                _counter.IncrementBy(ticks);
-            }
+                    _counter.IncrementBy(ticks);
+                }
 
-            catch (Exception err)
-            {
+                catch (Exception err)
+                {
 
-                Dev2Logger.Error(err);
-            }
+                    Dev2Logger.Error(err);
+                }
         }
 
         public void Decrement()
@@ -124,6 +126,13 @@ namespace Dev2.PerformanceCounters
         }
 
         public bool IsActive { get; set; }
+
+        #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId { get; private set; }
+        public string CategoryInstanceName { get; private set; }
 
         #endregion
     }
