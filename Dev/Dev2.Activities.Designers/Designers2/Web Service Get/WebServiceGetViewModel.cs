@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
@@ -334,6 +335,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
 
         #endregion

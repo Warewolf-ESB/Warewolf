@@ -29,6 +29,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -1268,6 +1269,19 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             set
             {
                 _maxToolHeight = value;
+            }
+        }
+
+        #endregion
+
+        #region Overrides of CustomToolViewModelBase<IDbSource>
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
 

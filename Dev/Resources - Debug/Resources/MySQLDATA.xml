@@ -1,0 +1,43 @@
+
+<Service ID="034484d9-7617-4c7e-9373-c65794f56545" Name="MySQLDATA" ResourceType="DbService" IsValid="false" ServerVersion="0.5.1.294" ServerID="57c03131-8e99-4a76-8432-9845b795ac8c">
+  <Actions>
+    <Action Name="getCountries" Type="InvokeStoredProc" SourceID="cd3eedee-f38e-4401-8c27-6260d532f872" SourceName="mySQL" ExecuteAction="getCountries" SourceMethod="getCountries">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="id" Name="id" MapsTo="id" Value="[[getCountries().id]]" RecordsetName="getCountries" RecordsetAlias="getCountries" Recordset="getCountries" />
+        <Output OriginalName="value" Name="value" MapsTo="value" Value="[[getCountries().value]]" RecordsetName="getCountries" RecordsetAlias="getCountries" Recordset="getCountries" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">bob().id</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">bob().id</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[getCountries().id]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">123123123__COMMA__1212__COMMA__123123123__COMMA__1212__COMMA__123123123__COMMA__1212__COMMA__123123123__COMMA__1212__COMMA__123123123__COMMA__1212</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">bob().value</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">bob().value</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[getCountries().value]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">aasdasdasdasd__COMMA__ffff__COMMA__aasdasdasdasd__COMMA__ffff__COMMA__aasdasdasdasd__COMMA__ffff__COMMA__aasdasdasdasd__COMMA__ffff__COMMA__aasdasdasdasd__COMMA__ffff</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>MySQLDATA</DisplayName>
+  <Category>MySQLDATA</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <VersionInfo DateTimeStamp="2016-02-05T14:51:17.5636721+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="034484d9-7617-4c7e-9373-c65794f56545" VersionId="c0066232-9deb-45f4-bc56-4d4e02e968b6" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>g3/Msy6Lq6UPqKk+4QXUBrsT5Dw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>LTUU6aiYxcGMZS1zSz+C67/2ZCln4NAHDfqqgaTnLuPm/HVR4OtuWXlE7RCvJRp6x6z2kUs/1xW4TsrO734teiB0DyLslOrvRxdVoHfwCG1hniNbRz2NVp39U3M2RDzmQbGlpuEp3yvHEHKe9YskDe837Px2VED6K3msHKdKcvY=</SignatureValue>
+  </Signature>
+</Service>

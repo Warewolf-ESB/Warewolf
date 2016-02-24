@@ -8,6 +8,6 @@ namespace Dev2.Common.Interfaces.Monitoring
         IList<IPerformanceCounter> DefaultCounters { get; set; }
         void RegisterCountersOnMachine(IList<IPerformanceCounter> counters);
 
-        void RegisterCounter(IResourcePerformanceCounter counter);
+
     }
 }

@@ -3,8 +3,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Communication;
+using Dev2.PerformanceCounters.Counters;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Management
 {
     public class PerformanceCounterPersistence : IPerformanceCounterPersistence
     {

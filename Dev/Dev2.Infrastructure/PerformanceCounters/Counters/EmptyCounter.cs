@@ -1,12 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
     public class EmptyCounter : IResourcePerformanceCounter
     {
+
+        public  EmptyCounter()
+        {
+            Name = "Empty";
+            Category = GlobalConstants.Warewolf;
+        }
         #region Implementation of IPerformanceCounter
 
         public void Increment()
@@ -31,6 +38,10 @@ namespace Dev2.PerformanceCounters
         }
 
         public bool IsActive { get; set; }
+
+        public void Setup()
+        {
+        }
 
         #endregion
 

@@ -297,24 +297,24 @@
 
             <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
-                              Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
+                    Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                     Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-            <ScrollViewer 
-                              VerticalAlignment="Top"
+                <ScrollViewer VerticalAlignment="Top"
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
+                              Height="110"
                               Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                    <TextBlock Text="{Binding ManageServiceInputViewModel.TestResults}" 
+                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                        <TextBlock Text="{Binding ManageServiceInputViewModel.TestResults}" 
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
-                    </TextBlock>
-                </Grid>
-            </ScrollViewer>
+                        </TextBlock>
+                    </Grid>
+                </ScrollViewer>
             </Border>
             <TextBlock Grid.Row="1"
                            Text="None" 
@@ -337,6 +337,7 @@
             <TextBlock Text="Paste Response" FontWeight="Bold" />
 
             <TextBox Grid.Row="1"
+                     Height="110"
                          Text="{Binding ManageServiceInputViewModel.TestResults}" 
                          x:Name="ResponseTextbox"
                          Style="{StaticResource StretchedTextBoxStyle}"
@@ -355,77 +356,94 @@
     <ControlTemplate x:Key="GenerateOutputsView"  d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Margin="0">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
 
-                <TextBlock Grid.Row="0" Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
+                <Border Grid.Row="1" 
+                        Grid.Column="0"  BorderThickness="1" >
+                    <Border.Style>
+                        <Style>
+                            <Setter Property="Border.BorderBrush" Value="{StaticResource WarewolfHeaderWatermarkGreyBrush}"/>
+                            <Style.Triggers>
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Setter Property="Border.BorderBrush" Value="{StaticResource WareWolfOrangeBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
-                <ListBox x:Name="InputsList" 
-                         Grid.Row="1"
-                         Grid.IsSharedSizeScope="True" 
-                         ItemsSource="{Binding ManageServiceInputViewModel.InputArea.Inputs}" 
-                         BorderBrush="{StaticResource WareWolfWhiteBrush}" 
-                         Height="Auto"
-                         MaxHeight="100"
-                         HorizontalContentAlignment="Stretch"
-                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}" 
-                         Background="{StaticResource WareWolfWhiteBrush}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="True" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock x:Name="InputName" 
-                                           Text="{Binding Path=Name}" 
-                                           TextTrimming="CharacterEllipsis" 
-                                           MinWidth="25"
-                                           MaxWidth="125"
-                                           HorizontalAlignment="Stretch" 
-                                           ToolTip="{Binding Path=Name}"/>
-                                <TextBox Margin="{StaticResource ControlBorderRight}" 
-                                         Grid.Column="1"
-                                         Text="{Binding Path=Value}" 
-                                         HorizontalAlignment="Stretch" 
-                                         AcceptsReturn="True"
-                                         Height="Auto"
-                                         MaxHeight="45"
-                                         MinWidth="50"
-                                         TextWrapping="Wrap"
-                                         VerticalAlignment="Stretch"
-                                         VerticalScrollBarVisibility="Auto"
-                                         HorizontalScrollBarVisibility="Auto"
-                                         customControls:WatermarkTextBox.Watermark="Test Data"
-                                         ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                    <!--<i:Interaction.Behaviors>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" CanContentScroll="True" >
+                        <ItemsControl x:Name="InputsList" 
+                                      Margin="{StaticResource ControlBorderTop}"
+                                      Grid.IsSharedSizeScope="True" 
+                                      ItemsSource="{Binding ManageServiceInputViewModel.InputArea.Inputs}" 
+                                      BorderBrush="{StaticResource WareWolfWhiteBrush}" 
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalAlignment="Top"
+                                      Background="{StaticResource WareWolfWhiteBrush}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="True" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="InputName" 
+                                                   Margin="{StaticResource ControlBorderTop}" 
+                                                   Text="{Binding Path=Name}" 
+                                                   TextTrimming="CharacterEllipsis" 
+                                                   MinWidth="25"
+                                                   MaxWidth="125"
+                                                   HorizontalAlignment="Stretch" 
+                                                   ToolTip="{Binding Path=Name}"/>
+                                        <TextBox Margin="{StaticResource ControlBorderTopRight}" 
+                                                 Grid.Column="1"
+                                                 Text="{Binding Path=Value}" 
+                                                 HorizontalAlignment="Stretch" 
+                                                 AcceptsReturn="True"
+                                                 Height="Auto"
+                                                 MaxHeight="45"
+                                                 MinWidth="50"
+                                                 TextWrapping="Wrap"
+                                                 VerticalAlignment="Stretch"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Auto"
+                                                 customControls:WatermarkTextBox.Watermark="Test Data"
+                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                            <!--<i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
                                     </i:Interaction.Behaviors>-->
-                                </TextBox>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-            </Grid>
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
-                <customControls:CircularProgressBar Width="25"
+                                        </TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+                <TextBlock Text="None"
+                           Grid.Row="1" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-3"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding ManageServiceInputViewModel.IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <customControls:CircularProgressBar Width="25"
                                                     HorizontalAlignment="Right" 
                                                     Margin="{StaticResource ControlBorderRight}"
                                                     Height="25"
                                                     Padding="2.5"
                                                     Visibility="{Binding Path=ManageServiceInputViewModel.IsTesting,Converter={StaticResource BoolToVis}}" />
-                <Button Width="25" 
+                    <Button Width="25" 
                         Height="25"
                         x:Name="PasteButton"
                         Margin="{StaticResource ControlBorderRight}"
@@ -433,48 +451,56 @@
                         ToolTip="{x:Static languages:Core.ManageWebServicePasteTooltip}"
                         Visibility="{Binding ManageServiceInputViewModel.PasteResponseAvailable, Converter={StaticResource BoolToVis}}"
                         VerticalAlignment="Top">
-                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     FontWeight="DemiBold" 
                                     Icon="Pencil" 
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Center"/>
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </Button>
-                <Button x:Name="TestActionButton" 
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                    <Button x:Name="TestActionButton" 
                         HorizontalAlignment="Right" 
                         Command="{Binding ManageServiceInputViewModel.TestCommand}" 
                         ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                         Content="Test"
                         Width="46">
-                    <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
-                    </i:Interaction.Behaviors>
-                </Button>
-            </StackPanel>
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </Grid>
 
-            <Control Grid.Row="2" Template="{StaticResource GenerateOutputsTextTemplate}" 
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding ManageServiceInputViewModel.OutputsHeight}"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
                      Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
-            <Control Grid.Row="2" Template="{StaticResource GenerateResponseTemplate}" 
+                <Control Grid.Row="0" Template="{StaticResource GenerateResponseTemplate}" 
                      Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
-                <Button x:Name="GenerateOutputsDoneButton" 
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
+                    <Button x:Name="GenerateOutputsDoneButton" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"
                         Margin="{StaticResource ControlBorderRight}"
                         Command="{Binding ManageServiceInputViewModel.OkCommand}"
                         Width="46"
                         Content="Done"/>
-                <Button HorizontalAlignment="Right" 
+                    <Button HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"
                         Command="{Binding ManageServiceInputViewModel.CloseCommand}"
                         Width="46"
                         Content="Cancel"/>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
     </ControlTemplate>
 

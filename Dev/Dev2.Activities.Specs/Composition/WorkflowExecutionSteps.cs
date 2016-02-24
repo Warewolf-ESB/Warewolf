@@ -60,6 +60,8 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Counters;
+using Dev2.PerformanceCounters.Management;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -249,7 +251,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                 new WarewolfServicesNotFoundCounter()
                                                             });
 
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(register.Counters, register));
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, register, new Mock<IPerformanceCounterPersistence>().Object));
                 }
                 catch 
                 {
@@ -464,8 +466,10 @@ namespace Dev2.Activities.Specs.Composition
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
             var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
-
-
+            if (resource == null)
+            {
+                throw new Exception("Local Warewolf service " + serviceName + " not found.");
+            }
             var activity = GetServiceActivity(serviceType);
             if(activity != null)
             {
@@ -514,6 +518,7 @@ namespace Dev2.Activities.Specs.Composition
                     updatedActivity.QueryString = service.RequestUrl;
                     updatedActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
                     updatedActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    updatedActivity.DisplayName = serviceName;
                     if(source != null)
                     {
                         updatedActivity.SourceId = source.ResourceID;
@@ -572,6 +577,10 @@ namespace Dev2.Activities.Specs.Composition
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
+                }
+                else
+                {
+                    throw new Exception("Remote Warewolf service " + remoteWf + " not found on server " + server + ".");
                 }
             }
             else
@@ -1276,7 +1285,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity, DisplayName = nestedWF };
             forEachAct.DataFunc = activityFunction;
-            //ScenarioContext.Current.Pending();
         }
 
 

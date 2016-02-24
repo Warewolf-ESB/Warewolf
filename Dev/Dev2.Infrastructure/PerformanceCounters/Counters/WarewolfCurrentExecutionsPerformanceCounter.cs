@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounter : IPerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfCurrentExecutionsPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
+        public WarewolfCurrentExecutionsPerformanceCounter()
         {
-            ResourceId = resourceId;
-            CategoryInstanceName = categoryInstanceName;
             _started = false;
             IsActive = true;
             _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
@@ -49,40 +46,25 @@ namespace Dev2.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+   
                 if (IsActive)
                     _counter.Increment();
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
-                Setup();
+
+            if(IsActive)
                 _counter.IncrementBy(ticks);
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -96,21 +78,12 @@ namespace Dev2.PerformanceCounters
         {
 
             if (IsActive)
-               
-                try
-                {
-                    Setup();
-                    if (_counter.RawValue > 0)
-                    {
+                        if (_counter.RawValue > 0)
+                        {
                           
-                        _counter.Decrement();
-                    }
-                }
-                catch (Exception err)
-                {
-
-                    Dev2Logger.Error(err);
-                }
+                            _counter.Decrement();
+                        }
+        
         }
 
         public string Category
@@ -129,12 +102,6 @@ namespace Dev2.PerformanceCounters
         }
 
         #endregion
-
-        #region Implementation of IResourcePerformanceCounter
-
-        public Guid ResourceId { get; private set; }
-        public string CategoryInstanceName { get; private set; }
-
-        #endregion
     }
 }
+

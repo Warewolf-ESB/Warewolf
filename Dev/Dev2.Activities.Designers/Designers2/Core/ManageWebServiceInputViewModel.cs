@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -43,7 +44,8 @@ namespace Dev2.Activities.Designers2.Core
         bool _isVisible;
         IWebServiceGetViewModel _viewmodel;
         IWebServiceModel _serverModel;
-        private const double BaseHeight = 200;
+        bool _isGenerateInputsEmptyRows;
+        private const double BaseHeight = 60;
 
         public ManageWebServiceInputViewModel(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
         {
@@ -60,21 +62,34 @@ namespace Dev2.Activities.Designers2.Core
             Errors = new List<string>();
             _viewmodel = model;
             _serverModel = serviceModel;
-            SetInitialHeight();
         }
 
         private void SetInitialHeight()
         {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
+            var maxInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MaxHeight : 0;
+            var minInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MinHeight : 0;
+            var inputHeight = _generateInputArea.IsVisible ? _generateInputArea.CurrentHeight : 0;
+
+            var maxOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MaxHeight : 0;
+            var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
+            var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
+
+            if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
+            {
+                IsGenerateInputsEmptyRows = true;
+                maxInputHeight = BaseHeight;
+                minInputHeight = BaseHeight;
+                inputHeight = BaseHeight;
+            }
+
+            MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
+            MinHeight = BaseHeight + minInputHeight + minOutputHeight;
+            CurrentHeight = BaseHeight + inputHeight + outputHeight;
         }
 
         void GenerateAreaHeightChanged(object sender, IToolRegion args)
         {
-            MaxHeight = _generateInputArea.MaxHeight + _generateOutputArea.MaxHeight;
-            MinHeight = _generateInputArea.MinHeight + _generateOutputArea.MinHeight;
-            CurrentHeight = _generateInputArea.CurrentHeight + _generateOutputArea.CurrentHeight;
+            SetInitialHeight();
             OnHeightChanged(this);
         }
 
@@ -308,6 +323,19 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public bool IsGenerateInputsEmptyRows
+        {
+            get
+            {
+                return _isGenerateInputsEmptyRows;
+            }
+            set
+            {
+                _isGenerateInputsEmptyRows = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void SetInitialVisibility()
         {
             SetInitialHeight();
@@ -381,9 +409,13 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _minHeight = value;
-                OnHeightChanged(this);
-                OnPropertyChanged();
+
+                if (Math.Abs(_minHeight - value) > GlobalConstants.DesignHeightTolerance)
+                {
+                    _minHeight = value;
+                    OnHeightChanged(this);
+                    OnPropertyChanged();
+                }
             }
         }
         public double CurrentHeight
@@ -394,9 +426,12 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _currentHeight = value;
-                OnHeightChanged(this);
-                OnPropertyChanged();
+                if (Math.Abs(_currentHeight - value) > GlobalConstants.DesignHeightTolerance)
+                {
+                    _currentHeight = value;
+                    OnHeightChanged(this);
+                    OnPropertyChanged();
+                }
             }
         }
         public bool IsVisible
@@ -420,9 +455,12 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _maxHeight = value;
-                OnHeightChanged(this);
-                OnPropertyChanged();
+                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
+                {
+                    _maxHeight = value;
+                    OnHeightChanged(this);
+                    OnPropertyChanged();
+                }
             }
         }
         public event HeightChanged HeightChanged;

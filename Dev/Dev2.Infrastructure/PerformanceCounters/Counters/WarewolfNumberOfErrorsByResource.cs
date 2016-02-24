@@ -4,20 +4,22 @@ using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfServicesNotFoundCounter : IPerformanceCounter
+    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfServicesNotFoundCounter()
+        public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName)
         {
+            ResourceId = resourceId;
+            CategoryInstanceName = categoryInstanceName;
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ServicesNotFound;
+            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -31,13 +33,8 @@ namespace Dev2.PerformanceCounters
         public IList<CounterCreationData> CreationData()
         {
 
-            CounterCreationData totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
-            };
-            return new[] { totalOps };
+
+            return new List<CounterCreationData>();
         }
 
         public bool IsActive { get; set; }
@@ -46,41 +43,24 @@ namespace Dev2.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+
                 if (IsActive)
                     _counter.Increment();
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
-
-                Setup();
+          if(IsActive)
                 _counter.IncrementBy(ticks);
-            }
-
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
+     
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -88,24 +68,14 @@ namespace Dev2.PerformanceCounters
                 };
                 _started = true;
             }
-
         }
 
         public void Decrement()
         {
+   
             if (IsActive)
-            {
-                Setup();
-                try
-                {
                     _counter.Decrement();
-                }
-                catch (Exception err)
-                {
-
-                    Dev2Logger.Error(err);
-                }
-            }
+         
         }
 
         public string Category
@@ -119,9 +89,16 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return "Count of requests for workflows which don’t exist";
+                return "Total Errors";
             }
         }
+
+        #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId { get; private set; }
+        public string CategoryInstanceName { get; private set; }
 
         #endregion
     }
