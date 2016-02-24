@@ -1,18 +1,17 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WebServiceGet.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Service_Post.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
                                xmlns:ig="http://schemas.infragistics.com/xaml"
-                               xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
-                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -21,9 +20,8 @@
                                MaxHeight="{Binding DesignMaxHeight}"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
-                               d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webServiceGet1:WebServiceGetViewModel}">
-
+                               d:DesignWidth="350">
+    
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -42,6 +40,7 @@
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
+
 
     <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
         <Grid>
@@ -74,10 +73,12 @@
                 </Grid.RowDefinitions>
 
                 <Control Template="{StaticResource SelectionGrid}"/>
-
+                
+                <!-- INPUTS -->
                 <Grid Grid.Row="1" Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -108,8 +109,8 @@
                                         MaxHeight="{Binding InputArea.MaxHeadersHeight}"
                                         ColumnWidth="*">
                                 <ig:XamGrid.Columns>
-                                    <customControls1:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
-                                        <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                    <customControls:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
+                                        <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
                                             <DataTemplate DataType="interfaces:INameValue">
                                                 <ui:IntellisenseTextBox Text="{Binding Name}" ToolTip="{Binding Path=Name}">
                                                     <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -119,10 +120,10 @@
                                                     </ui:IntellisenseTextBox.IntellisenseProvider>
                                                 </ui:IntellisenseTextBox>
                                             </DataTemplate>
-                                        </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                    </customControls1:IntellisenseTextBoxColumn>
-                                    <customControls1:IntellisenseTextBoxColumn Key="Value" HeaderText="Value"  MinimumWidth="100" Watermark="Value">
-                                        <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                        </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                    </customControls:IntellisenseTextBoxColumn>
+                                    <customControls:IntellisenseTextBoxColumn Key="Value" HeaderText="Value"  MinimumWidth="100" Watermark="Value">
+                                        <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
                                             <DataTemplate DataType="interfaces:INameValue">
                                                 <ui:IntellisenseTextBox Text="{Binding Value}" ToolTip="{Binding Path=Value}">
                                                     <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -132,8 +133,8 @@
                                                     </ui:IntellisenseTextBox.IntellisenseProvider>
                                                 </ui:IntellisenseTextBox>
                                             </DataTemplate>
-                                        </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                    </customControls1:IntellisenseTextBoxColumn>
+                                        </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
+                                    </customControls:IntellisenseTextBoxColumn>
                                 </ig:XamGrid.Columns>
                                 <ig:XamGrid.SortingSettings>
                                     <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
@@ -152,7 +153,15 @@
                         </Border>
                     </Grid>
 
-                    <Grid x:Name="UrlGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid x:Name="BodyGrid" Grid.Row="1">
+                        <TextBox Text="{Binding PostBodyText}" 
+                                 MinHeight="25"
+                                 MaxHeight="75"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"/>
+                    </Grid>
+                    
+                    <Grid x:Name="UrlGrid" Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -178,7 +187,7 @@
                                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
                     </Grid>
                 </Grid>
-                
+
                 <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
