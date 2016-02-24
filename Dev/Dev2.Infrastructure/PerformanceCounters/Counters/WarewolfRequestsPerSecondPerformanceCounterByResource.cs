@@ -29,7 +29,7 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _stopwatch = new Stopwatch();
                 _stopwatch.Start();
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -69,7 +69,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             get
             {
-                return "Warewolf";
+                return GlobalConstants.WarewolfServices;
             }
         }
         public string Name
@@ -89,7 +89,6 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-
             CounterCreationData totalOps = new CounterCreationData
             {
                 CounterName = Name,

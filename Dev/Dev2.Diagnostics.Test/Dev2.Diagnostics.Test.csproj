@@ -66,6 +66,7 @@
     <Compile Include="PerformanceCounterPersistenceTest.cs" />
     <Compile Include="TestExecutionContainer.cs" />
     <Compile Include="TestPerfCounterManager.cs" />
+    <Compile Include="TestResourceCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

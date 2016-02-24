@@ -66,7 +66,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name, CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
@@ -92,7 +92,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             get
             {
-                return "Warewolf";
+                return GlobalConstants.WarewolfServices;
             }
         }
         public string Name
