@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrors : IPerformanceCounter
+    public class WarewolfServicesNotFoundCounter : IPerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfNumberOfErrors()
+        public WarewolfServicesNotFoundCounter()
         {
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
+            _perfCounterType = WarewolfPerfCounterType.ServicesNotFound;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -46,36 +45,21 @@ namespace Dev2.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+ 
+    
                 if (IsActive)
                     _counter.Increment();
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
-                Setup();
+
                 _counter.IncrementBy(ticks);
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
@@ -87,22 +71,17 @@ namespace Dev2.PerformanceCounters
                 };
                 _started = true;
             }
+
         }
 
         public void Decrement()
         {
-            Setup();
             if (IsActive)
+            {
 
-                try
-                {
-                    _counter.Decrement();
-                }
-                catch (Exception err)
-                {
-
-                    Dev2Logger.Error(err);
-                }
+                _counter.Decrement();
+            }
+  
         }
 
         public string Category
@@ -116,7 +95,7 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return "Total Errors";
+                return "Count of requests for workflows which don’t exist";
             }
         }
 

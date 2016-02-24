@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Management
 {
     public class WarewolfPerformanceCounterRegister : IWarewolfPerformanceCounterRegister
     {
@@ -45,26 +45,7 @@ namespace Dev2.PerformanceCounters
 
         }
 
-        public void RegisterCounter(IResourcePerformanceCounter counter)
-        {
-            try
-            {
-                if (!PerformanceCounterCategory.Exists("Warewolf"))
-                {
 
-                    CreateAllCounters(DefaultCounters);
-                }
-            }
-            catch (Exception e)
-            {
-                Common.Dev2Logger.Error(e);
-            }
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            PerformanceCounter native = new PerformanceCounter("Warewolf",counter.Name,counter.CategoryInstanceName,false);
-            native.RawValue = 0;
-            
-            
-        }
 
         private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters)
         {

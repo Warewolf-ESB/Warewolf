@@ -4,22 +4,23 @@ using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter
     {
 
         private PerformanceCounter _counter;
+        private PerformanceCounter _baseCounter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName)
+        public WarewolfAverageExecutionTimePerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
             ResourceId = resourceId;
             CategoryInstanceName = categoryInstanceName;
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
+            _perfCounterType = WarewolfPerfCounterType.AverageExecutionTime;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -34,7 +35,9 @@ namespace Dev2.PerformanceCounters
         {
 
 
+
             return new List<CounterCreationData>();
+
         }
 
         public bool IsActive { get; set; }
@@ -43,44 +46,42 @@ namespace Dev2.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+
                 if (IsActive)
+                {
                     _counter.Increment();
-            }
-
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
+                    _baseCounter.Increment();
+                }
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
-                Setup();
-                _counter.IncrementBy(ticks);
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
+                if (IsActive)
+                {
+                    _counter.IncrementBy(ticks);
+                    _baseCounter.Increment();
+                }
+     
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, CategoryInstanceName)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name,CategoryInstanceName)
+                {
+                    MachineName = ".",
+                    ReadOnly = false,
+                
+
+                };
+                _baseCounter = new PerformanceCounter(GlobalConstants.Warewolf, "average time per operation base", CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
                     InstanceLifetime = PerformanceCounterInstanceLifetime.Global
+
                 };
                 _started = true;
             }
@@ -88,18 +89,13 @@ namespace Dev2.PerformanceCounters
 
         public void Decrement()
         {
-            Setup();
+            
             if (IsActive)
-
-                try
-                {
+            {
                     _counter.Decrement();
-                }
-                catch (Exception err)
-                {
-
-                    Dev2Logger.Error(err);
-                }
+                    _baseCounter.Decrement();
+                    
+            }
         }
 
         public string Category
@@ -113,7 +109,7 @@ namespace Dev2.PerformanceCounters
         {
             get
             {
-                return "Total Errors";
+                return "Average workflow execution time";
             }
         }
 

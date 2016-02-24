@@ -83,43 +83,15 @@ Scenario: Workflow with an assign and webservice
 	  | # |                      |
 	  | 1 | [[extension]] = json |
 	  | 2 | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  |                      |
-	  | [[extension]] = json |
-	  | [[prefix]] = a       |
+	   And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
+	  | #            |                                                  |
+	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
+	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
+	  | Headers      |                                                  |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
-
-Scenario: Workflow with an assign and webservice different mappings
-	 Given I have a workflow "TestWebServiceDiffMappings"
-	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
-	  | variable      | value |
-	  | [[extension]] | json  |
-	  | [[prefix]]    | a     |
-	 And "TestWebServiceDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable          |
-	  | extension        | [[extension]] | Countries(*).CountryID   | [[MyCountries().ID]] |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]]             |
-	  When "TestWebServiceDiffMappings" is executed
-	  Then the workflow execution has "NO" error
-	   And the 'Inputs' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[extension]] = | json      |
-	  | 2 | [[prefix]] =    | a         |
-	  And the 'Inputs' in Workflow 'TestWebServiceDiffMappings' debug outputs as    
-	  | # |                      |
-	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  |                      |
-	  | [[extension]] = json |
-	  | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
-	  |                             |
-	  | [[MyCountries(10).ID]] = 10 |
-	  | [[Name]] = Azerbaijan       |
 
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteNoError1"
@@ -4094,6 +4066,183 @@ Scenario: Executing Asynchrounous testing workflow error
 	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+
+# MySQL Execution specs
+@ignore
+Scenario: MYSQL No Action to be loaded Error
+	Given I have a workflow "NoStoredProceedure"
+	And "NoStoredProceedure" contains "Testing/MySQLEmpty" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "NoStoredProceedure" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySQLEmpty' in Workflow 'NoStoredProceedure' debug outputs as
+	  |                                                                  |
+	  | Error: The selected database does not contain actions to perform |
+
+@ignore
+Scenario: MYSQL Passing Null Input value
+	Given I have a workflow "PassingNullValue"
+	And "PassingNullValue" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | [[value]]                  | a         | True          |
+	When "PassingNullValue" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'PassingNullValue' debug outputs as
+	  |                                       |
+	  | Error: Scalar value { value } is NULL |
+
+@ignore
+Scenario: MYSQL Mapped To Recordsets incorrect
+	Given I have a workflow "WillAlwaysError"
+	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	And And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with Mapping To as
+	| Mapped From | Mapped To               |
+	| 1           | [[willalwayserror().1]] |
+	When "WillAlwaysError" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'WillAlwaysError' debug outputs as
+	  |                                                                    |
+	  | [[willalwayserror()]]: Recordset must contain one or more field(s) |
+
+
+@ignore
+Scenario: MYSQL Parameter not found in the collection
+	Given I have a workflow "BadMySqlParameterName"
+	And "BadMySqlParameterName" contains "Testing/MySql/MySqlParameters" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
+	     |                            | `p_startswith` | false         |
+	When "BadMySqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	  |                                                      |
+	  | Parameter 'p_startswith' not found in the collection |
+
+
+@ignore
+Scenario: MYSQL Recordset has invalid character
+	Given I have a workflow "RenameRecordsetIncorrectly"
+	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "RenameRecordsetIncorrectly" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'RenameRecordsetIncorrectly' debug outputs as
+	  |                                                              |
+	  | [[getCountrie.s().id]] : Recordset name has invalid format   |
+	  | [[getCountrie.s().value]]: Recordset name has invalid format |
+
+
+#Wolf-1262
+
+Scenario: MYSQL backward Compatiblity
+	Given I have a workflow "MySQLMigration"
+	And "MySQLMigration" contains "MySQLDATA" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      |                  |               | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "MySQLMigration" is executed
+	Then the workflow execution has "NO" error
+
+
+# SQL Tool Execution specs
+@ignore
+Scenario: SQL No Action to be loaded Error
+	Given I have a workflow "NoStoredProceedureToLoad"
+	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "NoStoredProceedureToLoad" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/SQL/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
+	  |                                                                  |
+	  | Error: The selected database does not contain actions to perform |
+
+@ignore
+Scenario: SQL Passing Null Input values
+	Given I have a workflow "PassingNullInputValue"
+	And "PassingNullInputValue" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | [[value]]                  | a         | True          |
+	When "PassingNullInputValue" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'PassingNullInputValue' debug outputs as
+	  |                                       |
+	  | Error: Scalar value { value } is NULL |
+
+@ignore
+Scenario: SQL Mapped To Recordsets incorrect
+	Given I have a workflow "BadSqlParameterName"
+	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     |                            | ProductId | True          |
+	And And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with Mapping To as
+	| Mapped From | Mapped To                      |
+	| Column1     | [[dbo_ImportOrder()..Column1]] |
+	When "BadSqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
+	  |                               |
+	  | Error: Sql Error: parse error |
+
+
+@ignore
+#Needs Work
+Scenario: Parameter not found in the collection
+	Given I have a workflow "BadMySqlParameterName"
+	And "BadMySqlParameterName" contains "Testing/MySql/MySqlParameters" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
+	     |                            | `p_startswith` | false         |
+	When "BadMySqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	  |                                                      |
+	  | Parameter 'p_startswith' not found in the collection |
+
+
+@ignore
+Scenario: SQL Recordset has invalid character
+	Given I have a workflow "MappingHasIncorrectCharacter"
+	And "MappingHasIncorrectCharacter" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | 1                          | charValue | True          |
+	When "MappingHasIncorrectCharacter" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'MappingHasIncorrectCharacter' debug outputs as
+	  |                                                                    |
+	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
+	  
+
+
+#Wolf-1262
+@ignore
+Scenario: backward Compatiblity
+	Given I have a workflow "DataMigration"
+	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      | [[ProductId]]    | productId     | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "DataMigration" is executed
+	Then the workflow execution has "NO" error
+
+#Wolf-1371
+
+Scenario: Mappings from nested workflow
+	Given I have a workflow "OutterWolf1371"
+	And "OutterWolf1371" contains "Wolf-1371" from server "localhost" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable |
+         | [[b]]            | b             | a                   | [[a]]       |
+	When "OutterWolf1371" is executed
+	Then the workflow execution has "NO" error
+
+#Wolf-1265
+@ignore
+Scenario: backward Compatiblity2
+	Given I have a workflow "PluginMigration"
+	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service      | To Variable          |
+      | [[s]]            | s             | [[PrimitiveReturnValue]] | PrimitiveReturnValue |
+	When "PluginMigration" is executed
+	Then the workflow execution has "NO" error
 
 #Scenario: Server Persisted Connection
 ## Note that the result is viewed in the browser

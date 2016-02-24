@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
@@ -56,6 +57,10 @@ namespace Dev2.Diagnostics.Test
         }
 
         public bool IsActive { get; set; }
+
+        public void Setup()
+        {
+        }
 
         #endregion
     }
@@ -152,8 +157,8 @@ namespace Dev2.Diagnostics.Test
             _file.Setup(a => a.Exists(fileName)).Returns(false);
             obj.Save(counters, fileName);
             var persisted = obj.LoadOrCreate(fileName);
-            Assert.AreEqual(persisted.Count, 1);
-            Assert.IsTrue(persisted.First() is TestCounter);
+            Assert.AreEqual(persisted.Count, 6);
+
         }
 
     }

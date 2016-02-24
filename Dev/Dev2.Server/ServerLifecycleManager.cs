@@ -52,6 +52,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
 using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -1682,7 +1683,7 @@ namespace Dev2
             {
                 PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
                 WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate());
-                var locater = new WarewolfPerformanceCounterLocater(register.Counters, register,perf);
+                var locater = new WarewolfPerformanceCounterManager(register.Counters, register,perf);
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");

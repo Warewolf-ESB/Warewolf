@@ -204,9 +204,11 @@
     <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />
     <Compile Include="Activities\DsfSwitch.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
+    <Compile Include="Activities\DsfWebPostActivity.cs" />
     <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
@@ -259,7 +261,6 @@
     <Compile Include="BussinessLogic\RsOpNotHex.cs" />
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
-    <Compile Include="DsfWebGetActivity.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />

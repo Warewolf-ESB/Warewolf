@@ -257,6 +257,120 @@ namespace Dev2.Core.Tests.Network
             StringAssert.Contains(result.ToString(), ExMessage);
             Assert.IsTrue(task.IsFaulted);
             Assert.IsTrue(serverProxy.IsConnected);
+        } 
+        
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNamelocalhost_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = "localhost"
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsTrue(isLocalHost);
+        }
+
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNameLoCaLhOst_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = "LoCaLhOst"
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsTrue(isLocalHost);
+        }
+
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNamelocalhostConnected_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = "localhost (Connected)"
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsTrue(isLocalHost);
+        }
+
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNamelocalhost2_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = "localhost 2"
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsFalse(isLocalHost);
+        }
+
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNameEmpty_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = ""
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsFalse(isLocalHost);
+        }
+        
+        [TestMethod, Timeout(3000)]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_IsLocalhost")]
+        public void ServerProxy_IsLocalHost_DisplayNameNull_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true,
+                DisplayName = null
+            };
+            //------------Execute Test---------------------------
+            var isLocalHost = serverProxy.IsLocalHost;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serverProxy.IsConnected);
+            Assert.IsFalse(isLocalHost);
         }
 
     }

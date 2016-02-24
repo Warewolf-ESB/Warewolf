@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.PerformanceCounters.Counters;
 
-namespace Dev2.PerformanceCounters
+namespace Dev2.PerformanceCounters.Management
 {
     
 
-    public class WarewolfPerformanceCounterLocater : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory
+    public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory
     {
         private readonly IList<IPerformanceCounter> _counters;
         private readonly IWarewolfPerformanceCounterRegister _register;
-        private readonly PerformanceCounterPersistence _perf;
+        private readonly IPerformanceCounterPersistence _perf;
         private readonly IList<IPerformanceCounter> _resourceCounters;
 
-        public WarewolfPerformanceCounterLocater(IList<IPerformanceCounter> counters, IWarewolfPerformanceCounterRegister register, PerformanceCounterPersistence perf)
+        public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
         {
             _counters = counters;
             _register = register;
@@ -26,24 +27,21 @@ namespace Dev2.PerformanceCounters
 
         public IPerformanceCounter GetCounter(string name)
         {
-            return _counters.First(a => a.Name == name);
+            return _counters.First(a => a.Name == name).ToSafe();
         }
 
         public IPerformanceCounter GetCounter(WarewolfPerfCounterType type)
         {
-            return _counters.First(a => a.PerfCounterType == type);
+            return _counters.First(a => a.PerfCounterType == type).ToSafe();
         }
 
-        public IResourcePerformanceCounter GetCounter(Guid resourceId, string name)
-        {
-            return _counters.Where(a=> a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a=>a.ResourceId == resourceId && a.Name==name);
-        }
 
-        public IResourcePerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
+
+        public IPerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
         {
             try
             {
-                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a => a.ResourceId == resourceId && a.PerfCounterType==type);
+                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a => a.ResourceId == resourceId && a.PerfCounterType==type).ToSafe();
                 return returnValue;
             }
             catch(Exception)
@@ -76,10 +74,9 @@ namespace Dev2.PerformanceCounters
                     counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
                     break;
                 default :
-                        counter = new EmptyCounter();
-                    break;
+                        return new EmptyCounter();
             }
-            _register.RegisterCounter(counter);
+
             _resourceCounters.Add(counter);
             _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
             return counter;

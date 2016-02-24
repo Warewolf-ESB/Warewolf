@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
-using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -25,7 +25,7 @@ using WarewolfParserInterop;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Dev2
+namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Resources-Service", "GET Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebGetActivity : DsfActivity
@@ -48,11 +48,19 @@ namespace Dev2
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
             string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
-
-            AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
-            AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
-            AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
-          
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("","URL"), debugItem);
+            AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Query String"), debugItem);
+            AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            
             return _debugInputs;
         }
 

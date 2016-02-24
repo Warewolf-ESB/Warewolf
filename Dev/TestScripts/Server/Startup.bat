@@ -22,7 +22,7 @@ REM ****************************************************************************
 REM ** Check for admin **
 echo Administrative permissions required. Detecting permissions...
 REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
-IF NOT EXIST %windir%\nircmd.exe (net session >nul 2>&1) else (nircmd elevate net session >nul 2>&1)
+IF EXIST %windir%\nircmd.exe (nircmd elevate net session >nul 2>&1) else (net session >nul 2>&1)
 if %errorLevel% == 0 (
 	echo Success: Administrative permissions confirmed.
 ) else (
@@ -37,8 +37,8 @@ REM  Wait 5 seconds ;)
 ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM ** Delete the Warewolf ProgramData folder
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warewolf\Resources) else (rd /S /Q %PROGRAMDATA%\Warewolf\Resources)
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces) else (rd /S /Q %PROGRAMDATA%\Warewolf\Workspaces)
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\")
 rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\"
 rd /S /Q "%PROGRAMDATA%\Warewolf\Resources"

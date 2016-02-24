@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Counters;
+using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable RedundantAssignment
 // ReSharper disable InconsistentNaming
@@ -43,7 +46,7 @@ namespace Dev2.Diagnostics.Test
             {
                 if (performanceCounter.CounterName != "average time per operation base")
                 {
-                    Assert.AreEqual(performanceCounter.RawValue, 0);
+                    //Assert.AreEqual(performanceCounter.RawValue, 0);
                     Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName));
                     Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
                 }
@@ -76,12 +79,12 @@ namespace Dev2.Diagnostics.Test
             WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
             foreach (var performanceCounter in register.Counters)
             {
-                performanceCounter.Increment();
+                performanceCounter.ToSafe().Increment();
             }
 
             register = new WarewolfPerformanceCounterRegister(lst);
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
-            var counters = cat.GetCounters();
+            var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {
                 if (performanceCounter.CounterName != "average time per operation base")
@@ -117,21 +120,27 @@ namespace Dev2.Diagnostics.Test
             WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst);
             foreach (var performanceCounter in register.Counters)
             {
-                performanceCounter.Increment();
+                performanceCounter.ToSafe().Increment();
             }
             lst.Add(new WarewolfServicesNotFoundCounter());
             register = new WarewolfPerformanceCounterRegister(lst);
+            foreach (var performanceCounter in register.Counters)
+            {
+                performanceCounter.ToSafe().Increment(); // increment causes instance to be created on windows side
+            }
             PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
-            var counters = cat.GetCounters();
+            var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {
                 if (performanceCounter.CounterName != "average time per operation base")
                 {
-                    Assert.AreEqual(performanceCounter.RawValue, 0);
+
                     Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName));
                     Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
                 }
             }
         }
+      
+    
     }
 }
