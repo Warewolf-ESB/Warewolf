@@ -7,15 +7,13 @@ namespace Dev2.Common.Interfaces
 {
     public interface IConnectControlViewModel
     {
-        IServer Server { get; set; }
-        ObservableCollection<IServer> Servers { get; set; }
+        ObservableCollection<IServer> Servers { get; }
         IServer SelectedConnection { get; set; }
-        ICommand EditConnectionCommand { get; set; }
-        ICommand ToggleConnectionStateCommand { get; set; }
-
-        bool AllowConnection { get; set; }
-        bool IsConnected { get;set; }
-        bool IsConnecting { get; set; }
+        ICommand EditConnectionCommand { get; }
+        ICommand ToggleConnectionStateCommand { get; }
+        bool AllowConnection { get; }
+        bool IsConnected { get; }
+        bool IsConnecting { get;  }
         bool IsLoading { get; set; }
         string ToggleConnectionToolTip { get; }
         string EditConnectionToolTip { get; }
@@ -25,17 +23,7 @@ namespace Dev2.Common.Interfaces
         EventHandler<IServer> ServerHasDisconnected { get; set; }
          EventHandler<IServer> ServerReConnected { get; set; }
         Task<bool> Connect(IServer connection);
-
-        void Disconnect(IServer connection);
-
-        void Refresh();
-
-        void Edit();
-
         event SelectedServerChanged SelectedEnvironmentChanged;
-
-        void ConnectOrDisconnect();
-
         void LoadNewServers();
     }
 }
