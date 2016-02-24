@@ -4069,7 +4069,7 @@ Scenario: Executing Asynchrounous testing workflow error
 
 
 # MySQL Execution specs
-@ignore
+
 Scenario: MYSQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedure"
 	And "NoStoredProceedure" contains "Testing/MySQLEmpty" from server "localhost" with mapping as
@@ -4080,7 +4080,7 @@ Scenario: MYSQL No Action to be loaded Error
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
-@ignore
+
 Scenario: MYSQL Passing Null Input value
 	Given I have a workflow "PassingNullValue"
 	And "PassingNullValue" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
@@ -4097,7 +4097,7 @@ Scenario: MYSQL Mapped To Recordsets incorrect
 	Given I have a workflow "WillAlwaysError"
 	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	And And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with Mapping To as
+	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with Mapping To as
 	| Mapped From | Mapped To               |
 	| 1           | [[willalwayserror().1]] |
 	When "WillAlwaysError" is executed
@@ -4110,7 +4110,7 @@ Scenario: MYSQL Mapped To Recordsets incorrect
 @ignore
 Scenario: MYSQL Parameter not found in the collection
 	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySql/MySqlParameters" from server "localhost" with mapping as
+	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
 	     |                            | `p_startswith` | false         |
 	When "BadMySqlParameterName" is executed
@@ -4189,7 +4189,7 @@ Scenario: SQL Mapped To Recordsets incorrect
 #Needs Work
 Scenario: Parameter not found in the collection
 	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySql/MySqlParameters" from server "localhost" with mapping as
+	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
 	     |                            | `p_startswith` | false         |
 	When "BadMySqlParameterName" is executed
