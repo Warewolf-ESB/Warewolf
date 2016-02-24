@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.Core
         double _maxHeadersHeight;
         bool _isVisible;
         string _bodyString;
-        private const double BaseHeight = 60;
+        private const double BaseHeight = 215;
 
         public WebPostInputRegion()
         {
@@ -249,17 +249,28 @@ namespace Dev2.Activities.Designers2.Core
             MaxHeadersHeight = HeadersHeight;
             if (Headers.Count >= 3)
             {
-                MinHeight = 115;
-                MaxHeight = 115;
-                MaxHeadersHeight = 115;
+                MinHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
+                MaxHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
+                MaxHeadersHeight = 120;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
+                var count = 0;
+                if (Headers.Count > 0)
+                {
+                    // Remove the header from the count
+                    count = Headers.Count - 1;
+                }
+                CurrentHeight = GlobalConstants.RowHeaderHeight + count * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;
+                    // Check if the count is greater than 0 before adding the RowHeight
+                    if (count > 0)
+                    {
+                        CurrentHeight += GlobalConstants.RowHeight;
+                    }
                 }
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
