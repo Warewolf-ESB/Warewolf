@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.Core
         double _maxHeadersHeight;
         bool _isVisible;
         string _bodyString;
-        private const double BaseHeight = 215;
+        private const double BaseHeight = 265;
 
         public WebPostInputRegion()
         {
