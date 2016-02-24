@@ -1684,6 +1684,11 @@ namespace Dev2
                 PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
                 WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(),perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
                 var locater = new WarewolfPerformanceCounterManager(register.Counters,register.ResourceCounters ,register,perf);
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
+
 
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
             }

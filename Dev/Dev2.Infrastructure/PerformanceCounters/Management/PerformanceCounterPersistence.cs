@@ -44,23 +44,43 @@ namespace Dev2.PerformanceCounters.Management
             return LoadOrCreateResourceCounters(EnvironmentVariables.ServerResourcePerfmonSettingsFile);
         }
 
-        public IList<IPerformanceCounter> LoadOrCreate(string fileName)
-        {
-            var serialiser = new Dev2JsonSerializer();
-            if (!_file.Exists(fileName))
-            {
-                return CreateDefaultPerfCounters();
-            }
-            return serialiser.Deserialize<IList<IPerformanceCounter>>(_file.ReadAllText(fileName));
-        }
+             public IList<IPerformanceCounter> LoadOrCreate(string fileName)
+             {
+                 try
+                 {
+
+
+                     var serialiser = new Dev2JsonSerializer();
+                     if (!_file.Exists(fileName))
+                     {
+                         return CreateDefaultPerfCounters();
+                     }
+                     return serialiser.Deserialize<IList<IPerformanceCounter>>(_file.ReadAllText(fileName));
+                 }
+                 catch (Exception e)
+                 {
+                     Dev2Logger.Error(e);
+                     return CreateDefaultPerfCounters();
+                 }
+             }
         public IList<IResourcePerformanceCounter> LoadOrCreateResourceCounters(string fileName)
         {
-            var serialiser = new Dev2JsonSerializer();
-            if (!_file.Exists(fileName))
+            try
             {
+
+                var serialiser = new Dev2JsonSerializer();
+                if (!_file.Exists(fileName))
+                {
+                    return DefaultResourceCounters;
+                }
+                return serialiser.Deserialize<IList<IResourcePerformanceCounter>>(_file.ReadAllText(fileName));
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
                 return DefaultResourceCounters;
             }
-            return serialiser.Deserialize<IList<IResourcePerformanceCounter>>(_file.ReadAllText(fileName));
+
         }
 
         private IList<IPerformanceCounter> CreateDefaultPerfCounters()
