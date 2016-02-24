@@ -433,10 +433,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\WebConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\GetWebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WebConnector.feature</DependentUpon>
+      <DependentUpon>GetWebConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
@@ -668,9 +668,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\WebConnector.feature">
+    <None Include="Toolbox\Resources\GetWebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+      <LastGenOutput>GetWebConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

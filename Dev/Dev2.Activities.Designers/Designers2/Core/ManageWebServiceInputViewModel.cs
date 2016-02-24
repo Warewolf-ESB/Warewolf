@@ -42,12 +42,12 @@ namespace Dev2.Activities.Designers2.Core
         double _currentHeight;
         double _maxHeight;
         bool _isVisible;
-        IWebServiceGetViewModel _viewmodel;
+        IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private const double BaseHeight = 60;
 
-        public ManageWebServiceInputViewModel(IWebServiceGetViewModel model, IWebServiceModel serviceModel)
+        public ManageWebServiceInputViewModel(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
         {
             PasteResponseAvailable = true;
             IsTesting = false;
@@ -74,6 +74,7 @@ namespace Dev2.Activities.Designers2.Core
             var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
             var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
 
+            IsGenerateInputsEmptyRows = false;
             if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
             {
                 IsGenerateInputsEmptyRows = true;
