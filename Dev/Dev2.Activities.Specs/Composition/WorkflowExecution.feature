@@ -82,44 +82,11 @@ Scenario: Workflow with an assign and webservice
 	  And the 'Inputs' in Workflow 'TestWebServiceWF' debug outputs as    
 	  | # |                      |
 	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  |                      |
-	  | [[extension]] = json |
-	  | [[prefix]] = a       |
+	  | 2 | [[prefix]] = a       |	  
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
-
-Scenario: Workflow with an assign and webservice different mappings
-	 Given I have a workflow "TestWebServiceDiffMappings"
-	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
-	  | variable      | value |
-	  | [[extension]] | json  |
-	  | [[prefix]]    | a     |
-	 And "TestWebServiceDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable          |
-	  | extension        | [[extension]] | Countries(*).CountryID   | [[MyCountries().ID]] |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]]             |
-	  When "TestWebServiceDiffMappings" is executed
-	  Then the workflow execution has "NO" error
-	   And the 'Inputs' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[extension]] = | json      |
-	  | 2 | [[prefix]] =    | a         |
-	  And the 'Inputs' in Workflow 'TestWebServiceDiffMappings' debug outputs as    
-	  | # |                      |
-	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  |                      |
-	  | [[extension]] = json |
-	  | [[prefix]] = a       |
-	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
-	  |                             |
-	  | [[MyCountries(10).ID]] = 10 |
-	  | [[Name]] = Azerbaijan       |
 
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteNoError1"
@@ -4100,7 +4067,7 @@ Scenario: Executing Asynchrounous testing workflow error
 @ignore
 Scenario: MYSQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedure"
-	And "NoStoredProceedure" contains "Testing/MySql/MySQLEmpty" from server "localhost" with mapping as
+	And "NoStoredProceedure" contains "Testing/MySQLEmpty" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedure" is executed
 	Then the workflow execution has "An" error
@@ -4177,7 +4144,7 @@ Scenario: MYSQL backward Compatiblity
 @ignore
 Scenario: SQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedureToLoad"
-	And "NoStoredProceedureToLoad" contains "Testing/SQL/NoSqlStoredProceedure" from server "localhost" with mapping as
+	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedureToLoad" is executed
 	Then the workflow execution has "An" error
@@ -4202,11 +4169,10 @@ Scenario: SQL Mapped To Recordsets incorrect
 	Given I have a workflow "BadSqlParameterName"
 	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	     |                            | a         | True          |
+	     |                            | ProductId | True          |
 	And And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with Mapping To as
-	| Mapped From      | Mapped To                                |
-	| id               | [[dbo_leon bob proc().id]]               |
-	| some column Name | [[dbo_leon bob proc().some column Name]] |
+	| Mapped From | Mapped To                      |
+	| Column1     | [[dbo_ImportOrder()..Column1]] |
 	When "BadSqlParameterName" is executed
 	Then the workflow execution has "An" error
 	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
