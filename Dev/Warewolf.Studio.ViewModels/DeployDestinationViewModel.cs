@@ -9,7 +9,7 @@ namespace Warewolf.Studio.ViewModels
     public class DeployDestinationViewModel : ExplorerViewModel, IDeployDestinationExplorerViewModel
     {
         bool _isLoading;
-        public IDeployStatsViewerViewModel StatsArea { get; set; }
+        public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
         #region Implementation of IDeployDestinationExplorerViewModel
 
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of ExplorerViewModel
 
-        public override void AfterLoad(Guid environmentId)
+        protected override void AfterLoad(Guid environmentId)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             SelectedEnvironment = environmentViewModel;

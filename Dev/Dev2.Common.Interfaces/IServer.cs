@@ -41,6 +41,8 @@ namespace Dev2.Common.Interfaces
         Task<bool> ConnectAsync();
         string DisplayName { get; set; }
         bool HasLoaded { get;  }
+        bool CanDeployTo { get; }
+        bool CanDeployFrom { get; }
 
         IServer Clone();
 
