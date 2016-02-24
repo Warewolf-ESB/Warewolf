@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -47,11 +48,19 @@ namespace Dev2.Activities
             var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
             string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
-
-            AddDebugInputItem(new DebugEvalResult(url.Address, "URL", env, update));
-            AddDebugInputItem(new DebugEvalResult(query, "Query String", env, update));
-            AddDebugInputItem(new DebugEvalResult(headerString, "Headers", env, update));
-          
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("","URL"), debugItem);
+            AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Query String"), debugItem);
+            AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            
             return _debugInputs;
         }
 
