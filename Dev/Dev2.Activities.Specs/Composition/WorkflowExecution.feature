@@ -4387,6 +4387,7 @@ Scenario: ForEach Acceptance Tests
 	  | [[Result]] = Pass |
 
 #show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
+#Wolf-1415
 @ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
@@ -4400,6 +4401,7 @@ Scenario: View Dependancies on a workflow with no dependancies
 	And "Hello World" has no dependancies
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow with multiple dependancies
 	Given I have a workflow "11365_WebService"	
@@ -4414,6 +4416,7 @@ Scenario: View workflow with multiple dependancies
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow based on nested levels
 	Given I have a workflow "11365_WebService"	
@@ -4431,6 +4434,7 @@ Scenario: View workflow based on nested levels
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Viewing Depenancies
 	Given I have a workflow "11365_WebService"	
@@ -4442,6 +4446,7 @@ Scenario: Viewing Depenancies
 	Then the "Edit - Dev2GetCountriesWebService" tab is opened
 
 #studio persist possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Studio persistence 
 	Given I  have the Warewolf studio opened
