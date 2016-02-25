@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Designers2.Web_Service_Get;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
 using TechTalk.SpecFlow;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Specs
 {
     public class WebModel :IWebServiceModel
     {
 
-        public System.Collections.Generic.ICollection<Common.Interfaces.ServerProxyLayer.IWebServiceSource> RetrieveSources()
+        public ICollection<Common.Interfaces.ServerProxyLayer.IWebServiceSource> RetrieveSources()
         {
-            
-            return new List<IWebServiceSource> { new WebServiceSourceDefinition() { Name = "Heloo", AuthenticationType = AuthenticationType.Windows } };
+
+            return new List<IWebServiceSource> { new WebServiceSourceDefinition() { Name = "WebHeloo", AuthenticationType = AuthenticationType.Windows }, new WebServiceSourceDefinition() { Name = "Dev2CountriesWebService" } };
         }
 
         public void CreateNewSource()
@@ -72,9 +74,17 @@ namespace Dev2.Activities.Specs
             var webmodel = new WebModel();
             WebServiceGetViewModel web = new WebServiceGetViewModel(modelItem,webmodel);
             ScenarioContext.Current.Add("viewModel", web);
-            ScenarioContext.Current.Add("model", mockDbServiceModel);
+            ScenarioContext.Current.Add("model", webmodel);
         }
-        
+
+        [When(@"I Select ""(.*)"" as web Source")]
+        public void WhenISelectAsWebSource(string p0)
+        {
+            var vm = GetViewModel();
+            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a => a.Name == p0);
+            Assert.IsTrue(vm.InputArea.IsVisible);
+        }
+
         [When(@"I Select WebHeloo as Source")]
         public void WhenISelectWebHelooAsSource()
         {
@@ -102,37 +112,48 @@ namespace Dev2.Activities.Specs
         public void WhenGenerateOutputsIsEnabled()
         {
             var vm = GetViewModel();
-            Assert.IsTrue(vm.GenerateOutputsVisible);
+            Assert.IsTrue(vm.TestInputCommand.CanExecute());
         }
         
         [When(@"Outputs are")]
         public void WhenOutputsAre(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var outputs = GetViewModel().OutputsRegion.Outputs;
+            foreach(var row in table.Rows)
+            {
+                Assert.IsTrue(outputs.Any(a=>a.MappedFrom==row[0] && a.MappedTo==row[1]));
+       
+            }
         }
         
         [When(@"Recordset is ""(.*)""")]
         public void WhenRecordsetIs(string p0)
         {
-            ScenarioContext.Current.Pending();
+            if(p0=="")
+            {
+                Assert.IsTrue(String.IsNullOrEmpty(GetViewModel().OutputsRegion.RecordsetName));
+            }
+            else
+            Assert.AreEqual(GetViewModel().OutputsRegion.RecordsetName,p0);
         }
         
         [When(@"there are ""(.*)"" validation errors of ""(.*)""")]
         public void WhenThereAreValidationErrorsOf(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            if(p0.ToLower()=="no")
+                Assert.IsTrue(GetViewModel().Errors == null || GetViewModel().Errors.Count == 0);
         }
         
         [When(@"I Select Dev(.*)CountriesWebService as Source")]
         public void WhenISelectDevCountriesWebServiceAsSource(int p0)
         {
-            ScenarioContext.Current.Pending();
+
         }
         
         [When(@"I click Generate Outputs")]
         public void WhenIClickGenerateOutputs()
         {
-            ScenarioContext.Current.Pending();
+            GetViewModel().TestInputCommand.Execute();
         }
         
         [When(@"Test Request Variables is Successful")]
@@ -223,7 +244,7 @@ namespace Dev2.Activities.Specs
 
         private static WebServiceGetViewModel GetViewModel()
         {
-           return; ScenarioContext.Current["ViewModel"] as WebServiceGetViewModel;
+            return ScenarioContext.Current["viewModel"] as WebServiceGetViewModel;
         }
 
         [Then(@"New is Enabled")]
@@ -231,7 +252,7 @@ namespace Dev2.Activities.Specs
         {
             var vm = GetViewModel();
 
-            Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute());
+            Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute(null));
         }
         
         [Then(@"Edit is Enabled")]
@@ -239,7 +260,7 @@ namespace Dev2.Activities.Specs
         {
             var vm = GetViewModel();
 
-            Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute());
+            Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute(null));
         }
         
         [Then(@"Header is Enabled")]
@@ -249,7 +270,17 @@ namespace Dev2.Activities.Specs
 
             Assert.IsTrue(vm.InputArea.IsVisible);
         }
-        
+
+        [Then(@"Header is added as")]
+        public void ThenHeaderIsAddedAs(Table table)
+        {
+            foreach(var header in table.Rows)
+            {
+                GetViewModel().InputArea.Headers.Add(new NameValue( header[0],header[1]));
+            }
+        }
+
+
         [Then(@"Header appears as")]
         public void ThenHeaderAppearsAs(Table table)
         {
@@ -277,7 +308,7 @@ namespace Dev2.Activities.Specs
         {
             var vm = GetViewModel();
 
-            Assert.IsTrue(vm.OutputsRegion.IsVisible);
+            Assert.IsTrue(vm.TestInputCommand.CanExecute());
         }
         
         [Then(@"the Generate Outputs window is opened")]
@@ -285,13 +316,18 @@ namespace Dev2.Activities.Specs
         {
             var vm = GetViewModel();
 
-            Assert.IsTrue(vm.GenerateOutputsVisible.IsVisible);
+            Assert.IsTrue(vm.GenerateOutputsVisible);
         }
         
         [Then(@"Variables to test appear as")]
         public void ThenVariablesToTestAppearAs(Table table)
         {
-            ScenarioContext.Current.Pending();
+           var vm = GetViewModel();
+            foreach(var row in table.Rows)
+            {
+                Assert.IsTrue(vm.ManageServiceInputViewModel.InputArea.Inputs.Any(a=>a.Name==row[0]));
+                vm.ManageServiceInputViewModel.InputArea.Inputs.First(a => a.Name == row[0]).Value=row[1];
+            }
         }
         
         [Then(@"the response is loaded")]

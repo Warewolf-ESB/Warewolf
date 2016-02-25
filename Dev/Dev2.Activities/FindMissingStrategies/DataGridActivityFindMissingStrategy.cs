@@ -184,6 +184,46 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if (activityType == typeof(DsfWebPostActivity))
+            {
+                var maAct = activity as DsfWebPostActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                    if (maAct.QueryString != null)
+                    {
+                        results.Add(maAct.QueryString);
+                    }
+                    if (maAct.PostData != null)
+                    {
+                        results.Add(maAct.PostData);
+                    }
+                    if (maAct.Headers != null)
+                    {
+                        foreach(var nameValue in maAct.Headers)
+                        {
+                            results.Add(nameValue.Name);
+                            results.Add(nameValue.Value);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
+
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }
 
             return results;
         }

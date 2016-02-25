@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string RequestUrl { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public Dev2.Data.ServiceModel.WebRequestMethod RequestMethod { get; set; }
+        public WebRequestMethod RequestMethod { get; set; }
 
         public string RequestHeaders { get; set; }
         public string RequestBody { get; set; }
@@ -89,8 +89,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             RequestUrl = action.AttributeSafe("RequestUrl");
             JsonPath = action.AttributeSafe("JsonPath");
-            Dev2.Data.ServiceModel.WebRequestMethod requestMethod;
-            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : Dev2.Data.ServiceModel.WebRequestMethod.Get;
+            WebRequestMethod requestMethod;
+            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : WebRequestMethod.Get;
             RequestHeaders = action.ElementSafe("RequestHeaders");
             RequestBody = action.ElementSafe("RequestBody");
 
