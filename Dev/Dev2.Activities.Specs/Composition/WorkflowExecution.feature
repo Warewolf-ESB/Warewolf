@@ -4092,7 +4092,7 @@ Scenario: MYSQL Passing Null Input value
 	  |                                       |
 	  | Error: Scalar value { value } is NULL |
 
-@ignore
+
 Scenario: MYSQL Mapped To Recordsets incorrect
 	Given I have a workflow "WillAlwaysError"
 	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
@@ -4107,7 +4107,7 @@ Scenario: MYSQL Mapped To Recordsets incorrect
 	  | [[willalwayserror()]]: Recordset must contain one or more field(s) |
 
 
-@ignore
+
 Scenario: MYSQL Parameter not found in the collection
 	Given I have a workflow "BadMySqlParameterName"
 	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
@@ -4120,7 +4120,7 @@ Scenario: MYSQL Parameter not found in the collection
 	  | Parameter 'p_startswith' not found in the collection |
 
 
-@ignore
+
 Scenario: MYSQL Recordset has invalid character
 	Given I have a workflow "RenameRecordsetIncorrectly"
 	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
@@ -4146,7 +4146,7 @@ Scenario: MYSQL backward Compatiblity
 
 
 # SQL Tool Execution specs
-@ignore
+
 Scenario: SQL No Action to be loaded Error
 	Given I have a workflow "NoStoredProceedureToLoad"
 	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
@@ -4157,7 +4157,7 @@ Scenario: SQL No Action to be loaded Error
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
-@ignore
+
 Scenario: SQL Passing Null Input values
 	Given I have a workflow "PassingNullInputValue"
 	And "PassingNullInputValue" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
@@ -4169,7 +4169,7 @@ Scenario: SQL Passing Null Input values
 	  |                                       |
 	  | Error: Scalar value { value } is NULL |
 
-@ignore
+
 Scenario: SQL Mapped To Recordsets incorrect
 	Given I have a workflow "BadSqlParameterName"
 	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
@@ -4185,7 +4185,7 @@ Scenario: SQL Mapped To Recordsets incorrect
 	  | Error: Sql Error: parse error |
 
 
-@ignore
+
 #Needs Work
 Scenario: Parameter not found in the collection
 	Given I have a workflow "BadMySqlParameterName"
@@ -4199,7 +4199,7 @@ Scenario: Parameter not found in the collection
 	  | Parameter 'p_startswith' not found in the collection |
 
 
-@ignore
+
 Scenario: SQL Recordset has invalid character
 	Given I have a workflow "MappingHasIncorrectCharacter"
 	And "MappingHasIncorrectCharacter" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
@@ -4214,7 +4214,6 @@ Scenario: SQL Recordset has invalid character
 
 
 #Wolf-1262
-@ignore
 Scenario: backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
@@ -4225,7 +4224,6 @@ Scenario: backward Compatiblity
 	Then the workflow execution has "NO" error
 
 #Wolf-1371
-
 Scenario: Mappings from nested workflow
 	Given I have a workflow "OutterWolf1371"
 	And "OutterWolf1371" contains "Wolf-1371" from server "localhost" with mapping as
@@ -4235,7 +4233,6 @@ Scenario: Mappings from nested workflow
 	Then the workflow execution has "NO" error
 
 #Wolf-1265
-@ignore
 Scenario: backward Compatiblity2
 	Given I have a workflow "PluginMigration"
 	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
@@ -4386,8 +4383,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-#FOREACH - Huggs: @Leroy Please check MasterTest workflow and ensure it is correct. Once correct unignore this test and commit the code.
-@ignore
+
 Scenario: ForEach Acceptance Tests
 	  Given I have a workflow "ForEachMasterTest"
 	  And "ForEachMasterTest" contains "Testing/For Each/MasterTest" from server "localhost" with mapping as
@@ -4399,7 +4395,8 @@ Scenario: ForEach Acceptance Tests
 	  And the 'Testing/For Each/MasterTest' in Workflow 'ForEachMasterTest' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
-#show dependacies
+
+#show dependacies possibly meant to be coded ui
 @ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
@@ -4412,6 +4409,7 @@ Scenario: View Dependancies on a workflow with no dependancies
 	And "Hello World" is visible
 	And "Hello World" has no dependancies
 
+#show dependacies possibly meant to be coded ui
 	@ignore
 Scenario: View workflow with multiple dependancies
 	Given I have a workflow "11365_WebService"	
@@ -4425,6 +4423,7 @@ Scenario: View workflow with multiple dependancies
 	Then "FetchCities" is shown as the first level of dependancy
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
+#show dependacies possibly meant to be coded ui
 	@ignore
 Scenario: View workflow based on nested levels
 	Given I have a workflow "11365_WebService"	
@@ -4441,6 +4440,7 @@ Scenario: View workflow based on nested levels
 	Then "FetchCities" is shown as the first level of dependancy
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
+#show dependacies possibly meant to be coded ui
 	@ignore
 Scenario: Viewing Depenancies
 	Given I have a workflow "11365_WebService"	
@@ -4451,6 +4451,7 @@ Scenario: Viewing Depenancies
 	And I double click "Dev2GetCountriesWebService"
 	Then the "Edit - Dev2GetCountriesWebService" tab is opened
 
+#studio persist possibly meant to be coded ui
 	@ignore
 Scenario: Studio persistence 
 	Given I  have the Warewolf studio opened
@@ -4463,7 +4464,6 @@ Scenario: Studio persistence
 
 
 #Wolf-1102
-@ignore
 Scenario: Recordsets in Debug Output windpw
 	Given I have a workflow "RecordsetDebugOutput"
 	And "RecordsetDebugOutput" contains "Testing/For Each/DateTimeDifference" from server "localhost" with mapping as
@@ -4478,7 +4478,7 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Date(2).Difference]] = 13  |
 
 #Wolf-402
-@ignore
+
 Scenario: Ensure that End this Workflow is working 
 	  Given I have a workflow "EndNestedWorkflows"
 	  And "EndNestedWorkflows" contains "Testing/Bugs/wolf-402" from server "localhost" with mapping as
@@ -4489,7 +4489,7 @@ Scenario: Ensure that End this Workflow is working
 
 
 #Wolf-829
-@ignore
+
 Scenario: Xml Serialisation bug when returning xml
 	Given I have a workflow "XmlSerialisation"
 	And "XmlSerialisation" contains "Testing/Bugs/wolf-829" from server "localhost" with mapping as
@@ -4499,7 +4499,7 @@ Scenario: Xml Serialisation bug when returning xml
 	Then the workflow execution has "NO" error
 
 #Wolf-860
-@ignore
+
 Scenario: Mixing Scalar And Recordset bug 
 	Given I have a workflow "MixingScalarAndRecordset"
 	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
@@ -4559,7 +4559,6 @@ Scenario: ForEach using * and Database Connector
 
 
 #Wolf-1370
-@ignore
 Scenario: Mixing Scalar And Recordset bug 2
 	Given I have a workflow "OutterWorkflow"
 	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
