@@ -12,7 +12,6 @@ namespace Dev2.PerformanceCounters.Management
     public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory
     {
         private readonly IList<IPerformanceCounter> _counters;
-        private readonly IWarewolfPerformanceCounterRegister _register;
         private readonly IPerformanceCounterPersistence _perf;
         private readonly IList<IPerformanceCounter> _resourceCounters;
 
@@ -20,7 +19,6 @@ namespace Dev2.PerformanceCounters.Management
         public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourceCounters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
         {
             _counters = counters;
-            _register = register;
             _perf = perf;
             _resourceCounters = resourceCounters.Cast<IPerformanceCounter>().ToList();
             EmptyCounter = new EmptyCounter();
