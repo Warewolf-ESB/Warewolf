@@ -22,7 +22,7 @@ namespace Dev2.Data
     {
         readonly Timer _timer;
 
-        public PulseLogger(int intervalMs)
+        public PulseLogger(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
@@ -69,7 +69,7 @@ namespace Dev2.Data
             
         }
 
-        public int Interval { get; private set; }
+        public double Interval { get; private set; }
 
         #endregion
     }
@@ -78,7 +78,7 @@ namespace Dev2.Data
     {
         readonly Timer _timer;
 
-        public PulseTracker(int intervalMs)
+        public PulseTracker(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
@@ -121,7 +121,7 @@ namespace Dev2.Data
             
         }
 
-        public int Interval { get; private set; }
+        public double Interval { get; private set; }
 
         #endregion
     }
