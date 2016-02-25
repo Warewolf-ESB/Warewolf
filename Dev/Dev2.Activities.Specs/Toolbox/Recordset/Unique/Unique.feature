@@ -298,7 +298,8 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| InField                        | Return                          |
 	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
 
-#Complex Types
+#Complex Types WOLF-1042
+@ignore
 Scenario: Find unique records in a complex type
 	Given I have the following duplicated recordset
 	| rs             | val |

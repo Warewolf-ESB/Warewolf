@@ -145,7 +145,7 @@ Scenario Outline: Read File at location using incorrect directory
 	| 3  | UNC Secure | 45454        | 45454          | dev2.local\IntegrationTester | I73573r0 | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Read File at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'

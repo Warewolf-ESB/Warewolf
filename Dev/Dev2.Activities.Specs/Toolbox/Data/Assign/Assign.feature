@@ -748,7 +748,7 @@ Scenario: Removing variable and value from assign
 	Then the assign tool row index is update
 
 
-#Complex types
+#Complex types WOLF-1042
 @ignore
 Scenario Outline:  Assigning value to a complex type
 	Given I assign the value "<value>" to a variable "<object>"	

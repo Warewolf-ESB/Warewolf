@@ -266,7 +266,7 @@ Scenario Outline: Sort recordset
 	| [[rs([[int]]).a]], [[int]] = 2 | Forward   | America, Australia |
 
 
-#Complex Types
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline: Sort recordset using complex types
 	Given I have the following recordset to sort
