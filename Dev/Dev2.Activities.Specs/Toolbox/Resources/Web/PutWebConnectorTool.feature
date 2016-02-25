@@ -3,6 +3,9 @@
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Put Request.
 
+#Tool Not created. Wolf-1416
+
+
 # layout of tool not ready
 @ignore
 Scenario: Open new Web Tool
@@ -21,7 +24,7 @@ Scenario: Open new Web Tool
 	And there are "no" validation errors of "" 
 	
 
-
+#Wolf-1416
 @ignore
 Scenario: Create Web Service with different methods
 	Given I open New Workflow
@@ -50,7 +53,7 @@ Scenario: Create Web Service with different methods
 	| Description | Description  |
 	And "Done" is "Enabled"
 	
-	
+#Wolf-1416	
 @ignore
  Scenario: Editing Web Service
 	Given I open New Workflow
@@ -64,6 +67,7 @@ Scenario: Create Web Service with different methods
 	When I click Edit
 	Then the Dev2CountriesWebService Source tab is opened
 
+#Wolf-1416
  @ignore
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Workflow
@@ -97,7 +101,7 @@ Scenario: Adding parameters in request headers is updating variables
 	| prefix    | a             |                |               |
 	| [[a]]     | T             |                |               |
 
- 	
+ #Wolf-1416	
 # Is this still relevant because nothing will change
  @ignore
 Scenario: Changing Sources 
@@ -118,7 +122,7 @@ Scenario: Changing Sources
 	And Generate Outputs is Enabled
 	And Mappings is Disabled 
 
-
+#Wolf-1416
 @ignore
 #wolf-1034
 Scenario: Web Connector Tool returns text

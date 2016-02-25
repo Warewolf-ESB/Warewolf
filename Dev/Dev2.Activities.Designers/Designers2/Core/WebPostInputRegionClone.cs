@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.Core
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }
         public ObservableCollection<INameValue> Headers { get; set; }
-        public string BodyString { get; set; }
+        public string PostData { get; set; }
         public string QueryString { get; set; }
         public string RequestUrl { get; set; }
         [ExcludeFromCodeCoverage]

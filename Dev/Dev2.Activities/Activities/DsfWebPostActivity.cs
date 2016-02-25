@@ -88,7 +88,6 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
-
             return _debugInputs;
         }
 
@@ -139,7 +138,7 @@ namespace Dev2.Activities
             int i = 0;
             foreach (var serviceOutputMapping in Outputs)
             {
-                OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = serviceOutputMapping.MappedTo;
+                OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
@@ -176,57 +175,69 @@ namespace Dev2.Activities
             // spin through each element in the XML
             foreach (XmlNode c in children)
             {
-                if (c.Name != GlobalConstants.NaughtyTextNode)
+                // scalars and recordset fetch
+                if (level > 0)
                 {
-                    // scalars and recordset fetch
-                    if (level > 0)
+                    var c1 = c;
+                    var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
+                    var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
+                    if (dev2Definitions.Length != 0)
                     {
-                        var c1 = c;
-                        var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
-                        var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                        if (dev2Definitions.Length != 0)
+                        // fetch recordset index
+                        int fetchIdx;
+                        var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                        // process recordset
+                        var nl = c.ChildNodes;
+                        foreach (XmlNode subc in nl)
                         {
-                            // fetch recordset index
-                            int fetchIdx;
-                            var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
-                            // process recordset
-                            var nl = c.ChildNodes;
-                            foreach (XmlNode subc in nl)
+                            // Extract column being mapped to ;)
+                            foreach (var definition in dev2Definitions)
                             {
-                                // Extract column being mapped to ;)
-                                foreach (var definition in dev2Definitions)
+                                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
                                 {
-                                    if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
-                                    {
-                                        dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
-                                    }
+                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
                                 }
                             }
-                            // update this recordset index
-                            dataObj.Environment.CommitAssign();
-                            indexCache[c.Name] = ++idx;
                         }
-                        else
-                        {
-                            var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
-                            if (scalarName != null)
-                            {
-                                dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml)), update);
-                            }
-                        }
+                        // update this recordset index
+                        dataObj.Environment.CommitAssign();
+                        indexCache[c.Name] = ++idx;
                     }
                     else
                     {
-                        if (level == 0)
+                        var nameToMatch = c1.Name;
+                        var useValue = false;
+                        if (c.Name == GlobalConstants.NaughtyTextNode)
                         {
-                            // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
+                            if (c1.ParentNode != null)
+                            {
+                                nameToMatch = c1.ParentNode.Name;
+                                useValue = true;
+                            }
                         }
+                        var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == nameToMatch);
+                        if (scalarName != null)
+                        {
+                            var value = UnescapeRawXml(c1.InnerXml);
+                            if (useValue)
+                            {
+                                value = UnescapeRawXml(c1.Value);
+                            }
+                            dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.MapsTo), value), update);
+                        }
+                    }
+                }
+                else
+                {
+                    if (level == 0)
+                    {
+                        // Only recurse if we're at the first level!!
+                        TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
                     }
                 }
             }
         }
-
+        
         string UnescapeRawXml(string innerXml)
         {
             if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
