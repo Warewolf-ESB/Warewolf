@@ -228,7 +228,8 @@ Examples:
 | [[rec(1).a]]       | [[rec(1).a]] = 3                   |
 
 
-#Complex Types
+#Complex Types WOLF-1042
+@ignore
 Scenario Outline: Ensure the correct values are returned using complex types
 	Given I have a complex type with this shape
 	| complex types  |   |

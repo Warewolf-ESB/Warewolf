@@ -396,7 +396,7 @@ Scenario: Recordset with * multiple fields and  scalar values different length f
 
 
 @ignore
-#COmplex Types
+#COmplex Types WOLF-1042
 Scenario Outline: Simple object with single field
 	Given I have a variable "<object>" with value "<value>"
 	And I select variable "<object>" with name "a"

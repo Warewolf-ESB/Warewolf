@@ -91,7 +91,7 @@ Scenario Outline: Execute a command that requires recordsets
 
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Execute a command that requires complex types
 	Given I have this command script to execute '<object>' with '<val>'
 	When the command tool is executed

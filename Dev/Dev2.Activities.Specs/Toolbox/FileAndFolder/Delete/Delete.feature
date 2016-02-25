@@ -142,7 +142,7 @@ Scenario Outline: Delete file at location with incorrect directories
 	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | An           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Delete file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
