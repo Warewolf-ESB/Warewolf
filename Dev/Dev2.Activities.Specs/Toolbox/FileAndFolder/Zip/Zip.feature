@@ -106,6 +106,7 @@ Scenario Outline: Zip file at location Null
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
 
 @ignore
+#Audit
 Scenario Outline: Zip file at location with invalid directories
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>' for zip tests
@@ -132,8 +133,8 @@ Scenario Outline: Zip file at location with invalid directories
 		| 3  | FTP to Local   | 4554   | 4554           | ""       | ""       | [[path1]]   | c:\My New2.zip      | ""           | ""           | True     |                 | Default     | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
 
 	
-#Complex Types		
-															
+#Complex Types	WOLF-1042	
+@ignore												
 Scenario Outline: Zip file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>' for zip tests

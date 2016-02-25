@@ -286,7 +286,7 @@ Examples:
 	| [[b]]                     |            | [[a]]                     |            |             | [[d]]                     |           | [[c]]                               | 07-31-2015 |
 
 
-#Complex Types
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline: Ensure Date and Time Input and outputs accepts complex types
        Given I have a date '<Date>'  with '<DateVal>'
