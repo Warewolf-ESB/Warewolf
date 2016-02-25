@@ -59,7 +59,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.PerformanceCounters;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 
