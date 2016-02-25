@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Services.Security;
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.Security
         public static IAuthorizationService Instance { get { return TheInstance.Value; } }
 
         readonly TimeSpan _timeOutPeriod;
-        private IPerformanceCounter _perfCounter;
+        private readonly IPerformanceCounter _perfCounter;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
