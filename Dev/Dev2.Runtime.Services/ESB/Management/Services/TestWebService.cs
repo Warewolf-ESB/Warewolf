@@ -48,6 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,
+                    RequestMethod = src.Method,
                     RequestResponse = src.Response,
                     Source = new WebSource
                     {
