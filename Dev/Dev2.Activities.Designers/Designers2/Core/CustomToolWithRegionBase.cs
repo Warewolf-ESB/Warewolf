@@ -5,12 +5,14 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.ToolBase;
+// ReSharper disable InconsistentNaming
+// ReSharper disable VirtualMemberCallInContructor
 
 namespace Dev2.Activities.Designers2.Core
 {
     public abstract class CustomToolWithRegionBase : ActivityDesignerViewModel, INotifyPropertyChanged, ICustomToolViewModelWithRegionBase
     {
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
         protected IList<IToolRegion> _regions;
         protected double _designHeight;
         protected double _designMinHeight;
@@ -34,16 +36,12 @@ namespace Dev2.Activities.Designers2.Core
         // ReSharper disable once PublicConstructorInAbstractClass
         public CustomToolWithRegionBase(ModelItem modelItem)
             : base(modelItem)
-        {
-            // ReSharper disable once VirtualMemberCallInContructor
-            //_regions = BuildRegions();
-            //SubscribeToRegions();
-            //ReCalculateHeight();
+        {         
         }
 
         public abstract IList<IToolRegion> BuildRegions();
         
-        // ReSharper disable once PublicConstructorInAbstractClass
+        // ReSharper disable PublicConstructorInAbstractClass
         public CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem)
         {
@@ -140,65 +138,3 @@ namespace Dev2.Activities.Designers2.Core
         #endregion
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
