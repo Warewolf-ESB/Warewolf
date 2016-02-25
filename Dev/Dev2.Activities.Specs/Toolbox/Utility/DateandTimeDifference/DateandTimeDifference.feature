@@ -511,10 +511,10 @@ Scenario Outline: Calculate the number of months using complex types
 	And the execution has "<error>" error
 	And the result variable '<res>' will be '<result>'
 Examples: 
-	| input1                      | Val1       | input2                 | Val2       | inputformat          | Val3       | res                              | error | result            |
-	| [[rec().row(*).set]]        | 30/07/2015 | [[rs(*).date().value]] | 01/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
-	| [[rec(1).row([[int]]).set]] | 31/07/2015 | [[rs(*).date().value]] | 02/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
-		| now() = !!DateWithMS!! | 2014/01/06 08:00:01.00 | ""           | Years     |
+	| input1                      | Val1                   | input2                 | Val2       | inputformat          | Val3       | res                              | error | result            |
+	| [[rec().row(*).set]]        | 30/07/2015             | [[rs(*).date().value]] | 01/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
+	| [[rec(1).row([[int]]).set]] | 31/07/2015             | [[rs(*).date().value]] | 02/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
+	| now() = !!DateWithMS!!      | 2014/01/06 08:00:01.00 | ""                     | Years      |                      |            |                                  |       |                   |
 
 
 
