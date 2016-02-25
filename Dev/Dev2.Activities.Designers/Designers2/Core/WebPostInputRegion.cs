@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _headersHeight;
         double _maxHeadersHeight;
         bool _isVisible;
-        string _bodyString;
+        string _postData;
         private const double BaseHeight = 265;
 
         public WebPostInputRegion()
@@ -57,6 +57,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
+                PostData = string.Empty;
                 Headers.Clear();
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
@@ -185,9 +186,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebGetInputRegionClone()
+            return new WebPostInputRegionClone()
             {
                 Headers = headers2,
+                BodyString = PostData,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsVisible = IsVisible
@@ -196,10 +198,11 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebGetInputRegionClone;
+            var region = toRestore as WebPostInputRegionClone;
             if (region != null)
             {
                 IsVisible = region.IsVisible;
+                PostData = region.BodyString;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
@@ -293,15 +296,16 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IWebPostInputArea
 
-        public string BodyString
+        public string PostData
         {
             get
             {
-                return _bodyString;
+                return _modelItem.GetProperty<string>("PostData") ?? string.Empty;
             }
             set
             {
-                _bodyString = value;
+                _postData = value ?? string.Empty;
+                _modelItem.SetProperty("PostData", value ?? string.Empty);
                 OnPropertyChanged();
             }
         }

@@ -451,7 +451,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-                PostData = InputArea.BodyString,
+                PostData = InputArea.PostData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
