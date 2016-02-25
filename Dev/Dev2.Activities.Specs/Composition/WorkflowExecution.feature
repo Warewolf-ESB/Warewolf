@@ -4076,7 +4076,7 @@ Scenario: MYSQL No Action to be loaded Error
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedure" is executed
 	Then the workflow execution has "An" error
-	And the 'Testing/MySql/MySQLEmpty' in Workflow 'NoStoredProceedure' debug outputs as
+	And the 'Testing/MySQLEmpty' in Workflow 'NoStoredProceedure' debug outputs as
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
@@ -4115,7 +4115,7 @@ Scenario: MYSQL Parameter not found in the collection
 	     |                            | `p_startswith` | false         |
 	When "BadMySqlParameterName" is executed
 	Then the workflow execution has "An" error
-	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	And the 'Testing/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
 	  |                                                      |
 	  | Parameter 'p_startswith' not found in the collection |
 
@@ -4153,7 +4153,7 @@ Scenario: SQL No Action to be loaded Error
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedureToLoad" is executed
 	Then the workflow execution has "An" error
-	And the 'Testing/SQL/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
+	And the 'Testing/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 

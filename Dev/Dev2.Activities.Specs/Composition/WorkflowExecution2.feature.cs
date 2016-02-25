@@ -14962,7 +14962,7 @@ this.FeatureBackground();
             table817.AddRow(new string[] {
                         "Error: The selected database does not contain actions to perform"});
 #line 4079
- testRunner.And("the \'Testing/MySql/MySQLEmpty\' in Workflow \'NoStoredProceedure\' debug outputs as", ((string)(null)), table817, "And ");
+ testRunner.And("the \'Testing/MySQLEmpty\' in Workflow \'NoStoredProceedure\' debug outputs as", ((string)(null)), table817, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -15090,8 +15090,8 @@ this.FeatureBackground();
             table824.AddRow(new string[] {
                         "Parameter \'p_startswith\' not found in the collection"});
 #line 4118
- testRunner.And("the \'Testing/MySql/MySqlParameters\' in Workflow \'BadMySqlParameterName\' debug out" +
-                    "puts as", ((string)(null)), table824, "And ");
+ testRunner.And("the \'Testing/MySqlParameters\' in Workflow \'BadMySqlParameterName\' debug outputs a" +
+                    "s", ((string)(null)), table824, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -15205,8 +15205,8 @@ this.FeatureBackground();
             table829.AddRow(new string[] {
                         "Error: The selected database does not contain actions to perform"});
 #line 4156
- testRunner.And("the \'Testing/SQL/NoSqlStoredProceedure\' in Workflow \'NoStoredProceedureToLoad\' de" +
-                    "bug outputs as", ((string)(null)), table829, "And ");
+ testRunner.And("the \'Testing/NoSqlStoredProceedure\' in Workflow \'NoStoredProceedureToLoad\' debug " +
+                    "outputs as", ((string)(null)), table829, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
