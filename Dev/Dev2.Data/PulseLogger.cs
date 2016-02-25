@@ -22,7 +22,7 @@ namespace Dev2.Data
     {
         readonly Timer _timer;
 
-        public PulseLogger(int intervalMs)
+        public PulseLogger(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
