@@ -329,7 +329,7 @@ namespace Dev2
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
-            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).Milliseconds);
+            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
             _pulseTracker.Start();
             _arguments = arguments ?? new string[0];
             _configFile = DefaultConfigFileName;
