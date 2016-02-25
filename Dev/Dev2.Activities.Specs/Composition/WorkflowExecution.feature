@@ -4306,7 +4306,6 @@ Scenario: Workflow with Performance counters
 	| Count of requests for workflows which don’t exist | 9     |
 
 #flickering test
-@ignore
 Scenario: Time Zone Changes
 	  Given I have a workflow "TimeZoneChangeTest"
 	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
@@ -4387,7 +4386,7 @@ Scenario: ForEach Acceptance Tests
 	  |                   |
 	  | [[Result]] = Pass |
 
-#show dependacies possibly meant to be coded ui
+#show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
 @ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
