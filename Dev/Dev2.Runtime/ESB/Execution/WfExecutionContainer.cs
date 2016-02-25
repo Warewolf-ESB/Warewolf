@@ -216,6 +216,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 return;
             }
+            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
             var next = resource.Execute(dsfDataObject, update);
             while(next != null)
             {

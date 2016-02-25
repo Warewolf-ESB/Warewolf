@@ -247,7 +247,7 @@ Scenario Outline: Sort 2 columns backwards
 	| 99                       | Forward   | Only recordsets can be sorted            |
 	| [[a]]                    | Forward   | Only recordsets can be sorted            |
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Sort recordset
 	Given I have the following recordset to sort
@@ -266,7 +266,7 @@ Scenario Outline: Sort recordset
 	| [[rs([[int]]).a]], [[int]] = 2 | Forward   | America, Australia |
 
 
-#Complex Types
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline: Sort recordset using complex types
 	Given I have the following recordset to sort

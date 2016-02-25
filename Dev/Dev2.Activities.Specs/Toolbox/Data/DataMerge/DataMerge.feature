@@ -346,7 +346,7 @@ Scenario: Merge a variable inside the invalid varaible
 	| [[result]] = |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario: Merge a scalar to a scalar using merge type none 2
 	Given a merge variable "[[a]]" equal to "Warewolf " 
 	And a merge variable "[[b]]" equal to "Rocks"		

@@ -3844,7 +3844,7 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
-@ignore
+
 #Need steps to create the source as the service will not be created for this
 Scenario Outline: Database SqlDB  service using * indexes 
      Given I have a workflow "<WorkflowName>"
@@ -4035,7 +4035,7 @@ Examples:
      | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
 
-@ignore
+
  Scenario: Executing Asynchrounous testing workflow volume
 	  Given I have a workflow "Testing - Async Test Master Testv"
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
@@ -4241,17 +4241,8 @@ Scenario: backward Compatiblity2
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
-#Scenario: Server Persisted Connection
-## Note that the result is viewed in the browser
-#Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
-#When "SQL Persisted DB Connection Test" is exceuted
-#Then the execution has "NO" error
-#And the debug Result is <Result>
-#Examples: 
-# | #     | DbService | Result |
-# | SQL   | SQL       | Pass   |
-# | MySQL | MySQL     | Pass   |  
-#
+#Unknown spec possibly made by Leon
+
 # Scenario: Exceution Engine Test with number of runs
 #	 Given I have a workflow "Exceution Engine Test"
 #	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
@@ -4315,7 +4306,6 @@ Scenario: Workflow with Performance counters
 	| Count of requests for workflows which don’t exist | 9     |
 
 #flickering test
-@ignore
 Scenario: Time Zone Changes
 	  Given I have a workflow "TimeZoneChangeTest"
 	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
@@ -4396,7 +4386,8 @@ Scenario: ForEach Acceptance Tests
 	  |                   |
 	  | [[Result]] = Pass |
 
-#show dependacies possibly meant to be coded ui
+#show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
+#Wolf-1415
 @ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
@@ -4410,6 +4401,7 @@ Scenario: View Dependancies on a workflow with no dependancies
 	And "Hello World" has no dependancies
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow with multiple dependancies
 	Given I have a workflow "11365_WebService"	
@@ -4424,6 +4416,7 @@ Scenario: View workflow with multiple dependancies
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow based on nested levels
 	Given I have a workflow "11365_WebService"	
@@ -4441,6 +4434,7 @@ Scenario: View workflow based on nested levels
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
 #show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Viewing Depenancies
 	Given I have a workflow "11365_WebService"	
@@ -4452,6 +4446,7 @@ Scenario: Viewing Depenancies
 	Then the "Edit - Dev2GetCountriesWebService" tab is opened
 
 #studio persist possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Studio persistence 
 	Given I  have the Warewolf studio opened
@@ -4545,7 +4540,7 @@ Scenario: Error not bubbling up error message
 	  |                   |
 	  | [[Result]] = Pass |
 
-@ignore
+
 Scenario: ForEach using * and Database Connector
 	  Given I have a workflow "DBConnInForEach_3"
 	  And "DBConnInForEach_3" contains "ForeachDBCon" from server "localhost" with mapping as

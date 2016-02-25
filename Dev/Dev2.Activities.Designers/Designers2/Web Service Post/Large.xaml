@@ -167,7 +167,7 @@
 
                         <TextBox Grid.Row="1"
                                  x:Name="RequestBody"
-                                 Text="{Binding InputArea.BodyString}" 
+                                 Text="{Binding InputArea.PostData}" 
                                  HorizontalAlignment="Stretch" 
                                  AcceptsReturn="True"
                                  Height="Auto"

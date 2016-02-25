@@ -68,7 +68,7 @@ Scenario: Execute cmd with negative recordset index
 	| [[result]] = |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Execute a command that requires recordsets
 	Given I have this command script to execute '<variable>' with '<val>'
 	When the command tool is executed
@@ -91,7 +91,7 @@ Scenario Outline: Execute a command that requires recordsets
 
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Execute a command that requires complex types
 	Given I have this command script to execute '<object>' with '<val>'
 	When the command tool is executed
