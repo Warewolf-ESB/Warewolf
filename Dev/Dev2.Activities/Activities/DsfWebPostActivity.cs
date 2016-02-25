@@ -15,7 +15,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
@@ -50,20 +49,9 @@ namespace Dev2.Activities
             base.GetDebugInputs(env, update);
 
             IEnumerable<NameValue> head = null;
-            string query = null;   
-            string postData = null;
             if (Headers != null)
             {
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
-            }
-            if (QueryString != null)
-            {
-                query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
-            }
-
-            if (PostData != null)
-            {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(PostData, update));
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
@@ -77,11 +65,11 @@ namespace Dev2.Activities
             _debugInputs.Add(debugItem);
             debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Query String"), debugItem);
-            AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
+            AddDebugItem(new DebugEvalResult(QueryString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
-            AddDebugItem(new DebugEvalResult(postData, "", env, update), debugItem);
+            AddDebugItem(new DebugEvalResult(PostData, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
@@ -92,18 +80,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfActivity
-
-        public IResourceCatalog ResourceCatalog
-        {
-            private get
-            {
-                return _resourceCatalog ?? Runtime.Hosting.ResourceCatalog.Instance;
-            }
-            set
-            {
-                _resourceCatalog = value;
-            }
-        }
+       
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
