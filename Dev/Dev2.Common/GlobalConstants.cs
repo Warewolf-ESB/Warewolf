@@ -551,6 +551,9 @@ public static int MinCompressVersionMinor
             }
    
         }
+        public static string GlobalCounterName = "All";
+        public static string Warewolf = "Warewolf";
+        public static string WarewolfServices = "Warewolf Services";
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

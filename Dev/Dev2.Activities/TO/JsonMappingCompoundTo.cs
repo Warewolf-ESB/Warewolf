@@ -41,7 +41,7 @@ namespace Dev2.TO
 
         string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            LanguageAST.LanguageExpression parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName,0);
+            LanguageAST.LanguageExpression parsed = WarewolfDataEvaluationCommon.parseLanguageExpression(sourceName,0);
             if (parsed.IsScalarExpression)
             {
                 return ((LanguageAST.LanguageExpression.ScalarExpression)parsed).Item;
@@ -69,7 +69,7 @@ namespace Dev2.TO
                 if (_evalResultAsObject == null)
                 {
                     WarewolfDataEvaluationCommon.WarewolfEvalResult e = EvalResult;
-                    _evalResultAsObject = WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(e);
+                    _evalResultAsObject = WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(e);
                     if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                     {
                         _evalResultAsObject = new object[] { null };
@@ -132,7 +132,7 @@ namespace Dev2.TO
             }
             else
             {
-                if (WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
+                if (WarewolfDataEvaluationCommon.parseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
                 {
                     Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(_env, Compound.SourceName) };
                 }
@@ -141,10 +141,10 @@ namespace Dev2.TO
                     // we know this is a comma seperated list of expressions
                     Evaluations =
                         // ReSharper disable MaximumChainedReferences
-                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName,0))
+                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.parseLanguageExpression(Compound.SourceName,0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomAtomExpression)
-                            .Select(WarewolfDataEvaluationCommon.LanguageExpressionToString)
+                            .Select(WarewolfDataEvaluationCommon.languageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
                             .ToList();
@@ -167,9 +167,9 @@ namespace Dev2.TO
             {
                 if (_isCompound == null)
                 {
-                    _isCompound = WarewolfDataEvaluationCommon.ParseLanguageExpression(
+                    _isCompound = WarewolfDataEvaluationCommon.parseLanguageExpression(
                         Compound.SourceName,0)
-                        .IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpression(
+                        .IsComplexExpression || WarewolfDataEvaluationCommon.parseLanguageExpression(
                             Compound.SourceName,0)
                             .IsRecordSetNameExpression;
 
@@ -223,7 +223,7 @@ namespace Dev2.TO
             {
                 a.Add(new JProperty(
                     jsonMappingEvaluated.Simple.DestinationName,
-                    WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(jsonMappingEvaluated.EvalResult))
+                    WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(jsonMappingEvaluated.EvalResult))
                     );
             }
         }
@@ -263,13 +263,13 @@ namespace Dev2.TO
                 {
                     return null;
                 }
-                return WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(lst[i]);
+                return WarewolfDataEvaluationCommon.atomToJsonCompatibleObject(lst[i]);
             }
             if (evalResult.IsWarewolfAtomResult)
             {
                 if (i == 0)
                 {
-                    return WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(evalResult);
+                    return WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(evalResult);
                 }
                 return null;
             }
@@ -288,7 +288,7 @@ namespace Dev2.TO
                         {
                             try
                             {
-                                a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(pair.Value[j])));
+                                a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.atomToJsonCompatibleObject(pair.Value[j])));
                             }
                             catch (Exception)
                             {
@@ -317,7 +317,7 @@ namespace Dev2.TO
         {
             try
             {
-                var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName,0);
+                var parsed = WarewolfDataEvaluationCommon.parseLanguageExpression(sourceName,0);
                 if (parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
@@ -333,7 +333,7 @@ namespace Dev2.TO
                            .Where(i => i % 2 == 1)
                            .Select(i =>
 
-                                        WarewolfDataEvaluationCommon.LanguageExpressionToString(
+                                        WarewolfDataEvaluationCommon.languageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
@@ -364,7 +364,7 @@ namespace Dev2.TO
                 return
                     IsCompound &&
                     Evaluations.Any(x =>
-                    WarewolfDataEvaluationCommon.ParseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
+                    WarewolfDataEvaluationCommon.parseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
             }
         }
     }

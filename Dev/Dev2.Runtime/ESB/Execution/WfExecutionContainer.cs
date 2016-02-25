@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
@@ -32,12 +33,13 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-          
+        private IWarewolfPerformanceCounterLocater _performanceCounterLocater;
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            _performanceCounterLocater = CustomContainer.Get<IWarewolfPerformanceCounterLocater>();
         }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
         /// <returns></returns>
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
+          
             errors = new ErrorResultTO();
            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
@@ -96,6 +99,11 @@ namespace Dev2.Runtime.ESB.Execution
             foreach (var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err);
+            }
+            var errorCounter = _performanceCounterLocater.GetCounter(DataObject.ResourceID, WarewolfPerfCounterType.ExecutionErrors);
+            foreach(var error in errors.FetchErrors())
+            {
+               errorCounter.Increment();
             }
             Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;

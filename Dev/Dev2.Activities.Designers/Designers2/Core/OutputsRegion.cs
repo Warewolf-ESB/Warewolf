@@ -273,7 +273,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return Outputs.Where(a => WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                return Outputs.Where(a => WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
             }
         }
 
