@@ -192,7 +192,7 @@ Scenario Outline: Write file at location with invalid directories
 
 	
 @Ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Write file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'	

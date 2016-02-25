@@ -343,7 +343,7 @@ Examples:
 	| Letters |           |           | [[q]]  | [[rec().a]]                   | The expression [[u]] has no value assigned                    |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Generate numbers using complex types
 	Given I have a type as '<Type>'
 	And I have a range from '<From>' to '<To>' 

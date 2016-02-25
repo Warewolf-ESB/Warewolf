@@ -2452,7 +2452,7 @@ Scenario Outline:Find index using valid inputs
 
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline:Find index using valid inputs complex types
 	Given I have the following in field '<inField>' equals '<values>'
 	And the fields to search is '<Match>'

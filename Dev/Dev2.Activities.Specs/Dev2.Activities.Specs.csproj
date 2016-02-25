@@ -332,6 +332,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rename.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
@@ -546,7 +551,6 @@
     </None>
     <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -598,6 +602,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Rename\Rename.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Rename2.feature.cs</LastGenOutput>
     </None>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
     <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">

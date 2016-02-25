@@ -267,7 +267,7 @@ Scenario Outline: Sending an email
 	| warewolf@dev2.co.za                         | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               | 121                                        | AN    | [[result]] = Attachment is not the valid format :121    |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Sending an email using complex types
 	Given the from account is '<from>' equals '<FromVal>'
 	And to address is '<To>' equals '<ToVal>'

@@ -240,7 +240,7 @@ Scenario Outline: Assign a DateTime into a recordset
 	| [[rec([[int]]).a]],[[int]] =2 | DateTime | 2015/08/05 11:42:36.934 AM |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Assign a DateTime into a complex types
 	Given I have a variable '<object>' and I selected '<Type>'	
 	When the gather system infomartion tool is executed
