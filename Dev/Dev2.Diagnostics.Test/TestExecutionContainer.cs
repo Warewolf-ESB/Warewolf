@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics.PerformanceCounters;
+using Dev2.DynamicServices;
+using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Counters;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,7 +31,7 @@ namespace Dev2.Diagnostics.Test
                 // ReSharper disable once EmptyGeneralCatchClause
                 catch { }
 
-                WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
@@ -35,9 +39,9 @@ namespace Dev2.Diagnostics.Test
                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
+                                                            }, new List<IResourcePerformanceCounter>());
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(),  register, new Mock<IPerformanceCounterPersistence>().Object));
             }
             catch (Exception err)
             {
@@ -88,7 +92,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(1, cont.CallCount);
             Assert.AreEqual(perfmonContainer.InstanceInputDefinition, "bob");
             Assert.AreEqual(perfmonContainer.InstanceOutputDefinition, "dave");
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond);
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
 
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
@@ -96,7 +100,7 @@ namespace Dev2.Diagnostics.Test
             Assert.IsNotNull(innerCounter);
             Assert.AreNotEqual(0, innerCounter.RawValue);
 
-            counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.AverageExecutionTime);
+            counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.AverageExecutionTime).FromSafe();
 
             po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
@@ -167,6 +171,12 @@ namespace Dev2.Diagnostics.Test
             {
                 _instanceInputDefinition = value;
             }
+        }
+
+        public IDSFDataObject GetDataObject()
+        {
+
+            return new DsfDataObject(string.Empty, Guid.NewGuid());
         }
 
         #endregion

@@ -42,6 +42,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Runtime.DurableInstancing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -61,12 +63,19 @@
     </Compile>
     <Compile Include="PerfCounterBuilderTest.cs" />
     <Compile Include="PerfCounterOps.cs" />
+    <Compile Include="PerformanceCounterPersistenceTest.cs" />
     <Compile Include="TestExecutionContainer.cs" />
+    <Compile Include="TestPerfCounterManager.cs" />
+    <Compile Include="TestResourceCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
@@ -79,6 +88,10 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>

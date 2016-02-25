@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfServicesNotFoundCounter : IPerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounter : IPerformanceCounter
     {
 
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfServicesNotFoundCounter()
+        public WarewolfCurrentExecutionsPerformanceCounter()
         {
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ServicesNotFound;
+            _perfCounterType = WarewolfPerfCounterType.ConcurrentRequests;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -36,6 +35,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.NumberOfItems32
+
             };
             return new[] { totalOps };
         }
@@ -46,65 +46,44 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+   
                 if (IsActive)
                     _counter.Increment();
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
 
-                Setup();
+            if(IsActive)
                 _counter.IncrementBy(ticks);
-            }
 
-            catch (Exception err)
-            {
-
-                Dev2Logger.Error(err);
-            }
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
-                    ReadOnly = false
+                    ReadOnly = false,
+                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
                 };
                 _started = true;
             }
-
         }
 
         public void Decrement()
         {
-            if (IsActive)
-            {
-                Setup();
-                try
-                {
-                    _counter.Decrement();
-                }
-                catch (Exception err)
-                {
 
-                    Dev2Logger.Error(err);
-                }
-            }
+            if (IsActive)
+                        if (_counter.RawValue > 0)
+                        {
+                          
+                            _counter.Decrement();
+                        }
+        
         }
 
         public string Category
@@ -118,10 +97,11 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             get
             {
-                return "Count of requests for workflows which don’t exist";
+                return "Concurrent requests currently executing";
             }
         }
 
         #endregion
     }
 }
+

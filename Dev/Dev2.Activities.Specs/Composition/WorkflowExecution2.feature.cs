@@ -14935,11 +14935,9 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("MYSQL No Action to be loaded Error")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void MYSQLNoActionToBeLoadedError()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MYSQL No Action to be loaded Error", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MYSQL No Action to be loaded Error", ((string[])(null)));
 #line 4073
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -14973,11 +14971,9 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("MYSQL Passing Null Input value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void MYSQLPassingNullInputValue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MYSQL Passing Null Input value", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MYSQL Passing Null Input value", ((string[])(null)));
 #line 4084
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -15043,8 +15039,8 @@ this.FeatureBackground();
                         "1",
                         "[[willalwayserror().1]]"});
 #line 4100
- testRunner.And("And \"WillAlwaysError\" contains \"Acceptance Testing Resources/mysqlSource\" from se" +
-                    "rver \"localhost\" with Mapping To as", ((string)(null)), table821, "And ");
+ testRunner.And("\"WillAlwaysError\" contains \"Acceptance Testing Resources/mysqlSource\" from server" +
+                    " \"localhost\" with Mapping To as", ((string)(null)), table821, "And ");
 #line 4103
  testRunner.When("\"WillAlwaysError\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4104
@@ -15086,8 +15082,8 @@ this.FeatureBackground();
                         "`p_startswith`",
                         "false"});
 #line 4113
- testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySql/MySqlParameters\" from server \"loc" +
-                    "alhost\" with mapping as", ((string)(null)), table823, "And ");
+ testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySqlParameters\" from server \"localhost" +
+                    "\" with mapping as", ((string)(null)), table823, "And ");
 #line 4116
  testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4117
@@ -15344,8 +15340,8 @@ this.FeatureBackground();
                         "`p_startswith`",
                         "false"});
 #line 4192
- testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySql/MySqlParameters\" from server \"loc" +
-                    "alhost\" with mapping as", ((string)(null)), table835, "And ");
+ testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySqlParameters\" from server \"localhost" +
+                    "\" with mapping as", ((string)(null)), table835, "And ");
 #line 4195
  testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4196

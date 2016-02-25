@@ -11,5 +11,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         String InstanceOutputDefinition { get; set; }
         String InstanceInputDefinition { get; set; }
+        IDSFDataObject GetDataObject();
     }
 }

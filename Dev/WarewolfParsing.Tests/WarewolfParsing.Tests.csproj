@@ -65,6 +65,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="TestDataStructure.cs" />
+    <Compile Include="TestEvaluation.cs" />
     <Compile Include="TestParser.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>

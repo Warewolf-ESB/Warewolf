@@ -59,7 +59,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Diagnostics.PerformanceCounters;
+using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Counters;
+using Dev2.PerformanceCounters.Management;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -240,16 +242,16 @@ namespace Dev2.Activities.Specs.Composition
                     // ReSharper disable once EmptyGeneralCatchClause
                     catch { }
 
-                    WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
+                    WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {   new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
                                                                 new WarewolfRequestsPerSecondPerformanceCounter(),
                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
                                                                 new WarewolfNumberOfAuthErrors(),
                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
+                                                            }, new List<IResourcePerformanceCounter>());
 
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
                 }
                 catch 
                 {

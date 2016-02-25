@@ -6,14 +6,15 @@
 # layout of tool not ready
 @ignore
 Scenario: Open new Web Tool
-	Given I open New Web Service Tool
-	Then "Sources" combobox is enabled
-	And Selected Source is null
-	And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	And "Request header" is enabled
-	And "Request Url" is enabled
-	And "Validate" is enabled
+	Given I open New Workflow
+	And I drag Web Post Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select WebHeloo as Source
+	And Request header is enabled
+	And Request Url is enabled
+	And Generate Outputs is enabled
 	And Outputs are
 	| Output | Output Alias |
 	And Recordset is ""
@@ -23,21 +24,26 @@ Scenario: Open new Web Tool
 
 @ignore
 Scenario: Create Web Service with different methods
-	Given I open New Web Service Connector
-	Then "Sources" combobox is enabled
-	And Selected Source is null
-	And I select "Dev2CountriesWebService" as data source
-	Then "Request Header" is "Enabled"
-	And "Request Url" is "Enabled"
-	And "Validate" is "Enabled"
-	When I click "Validate"
-	Then the "Test" window is opened
-	And "Request Variables" is "Enabled" 
-	Then "Response Body" is "Enabled" 
-	When Test "Request Variables" is "Successful"
+	Given I open New Workflow
+	And I drag Web Get Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select Dev2CountriesWebService as Source
+	Then Header is Enabled
+	And  Header appears as
+	| Header | Value |
+	And  Body is Enabled 
+	And Url is Enabled
+	And Query is Enabled
+	And Generate Outputs is Enabled
+	When I click "Generate Outputs"
+	Then the Generate Outputs window is opened
+	And Variables is Enabled
+	When Test Variables is Successful
 	Then the response is loaded
-	When I click "Done"
-	Then "Mapping" is "Enabled" 
+	When I click Done
+	Then Mapping is Enabled
 	And output mappings are
 	| Output      | Output Alias |
 	| CountryID   | CountryID    |
@@ -47,48 +53,44 @@ Scenario: Create Web Service with different methods
 	
 @ignore
  Scenario: Editing Web Service
-	Given I open "Dev2GetCountriesWebService" 
-	Then "Dev2GetCountriesWebService" tab is opened	
-	And method is selected as "Get"
-	And "Dev2CountriesWebService" selected as data source
-	And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	Then "Request Header" is "Enabled"
-	And "Request Url" is "Enabled" 
-	And "4 Response" is "Enabled" 
-	Then input mappings are
-	| Input | Default Value | Required Field | Empty is Null |
-	And output mappings are
-	| Output      | Output Alias |
-	| CountryID   | CountryID    |
-	| Description | Description  |
-	And "Save" is "Enabled" 
+	Given I open New Workflow
+	And I drag Web Put Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select Dev2CountriesWebService as Source
+	And New is Enabled
+	And Edit is Enabled
+	When I click Edit
+	Then the Dev2CountriesWebService Source tab is opened
 
  @ignore
 Scenario: Adding parameters in request headers is updating variables 
-	Given I open New Web Service Tool
-	Then "Sources" combobox is enabled
-	And Selected Source is null
-	And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	And "Request header" is enabled
-	And "Request Url" is enabled
-	And "Validate" is enabled
-	And I select "Dev2CountriesWebService" as "Source"
-	And "Query String" equals "?extension=[[extension]]&prefix=[[prefix]]' 
-	And "Request URL" as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx" 
-	And I edit the "Request Header" as
+	Given I open New Workflow
+	And I drag Web Post Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select Dev2CountriesWebService as Source
+	Then Header is Enabled
+	And Body is Visible 
+	And Url is Visible 
+	And Query is Visible 
+	And Generate Outputs is Enabled
+	And Query String equals ?extension=[[extension]]&prefix=[[prefix]]
+	And Url as http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx 
+	And I edit the Header as
          | name  | Value |
          | [[a]] | T     |
-	When I click "Validate"
-	Then "Request Variables" is "Enabled" 
-	And "Test" is "Enabled"
-	Then "Response Body" is "Enabled" 
-	And "Response"  is "Enabled" 
-	And I "Paste" into "Request
-	When Test "Request Variables" is "Successful"
-	And I click "Done"
-	Then "Mapping" is "Enabled"
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
+	And Inputs is Enabled
+	And Test is Enabled
+	And Paste is Enabled
+	And I Paste into Response
+	When Test Inputs is Successful
+	And I click Done
+	Then Mapping is Enabled
     Then service input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
 	| extension | json          |                |               |
@@ -96,49 +98,48 @@ Scenario: Adding parameters in request headers is updating variables
 	| [[a]]     | T             |                |               |
 
  	
- @ignore
-Scenario: Edit Web source
-	Given I open New Web Service Tool
-	And I select "Dev2CountriesWebService" as "Source"
-	And "Edit" is "Enabled"
-	And I click "Edit"
-	Then "Dev2CountriesWebService" tab is opened
-
 # Is this still relevant because nothing will change
  @ignore
 Scenario: Changing Sources 
-	Given I click "New Web Service Tool"
-	Then "Sources" combobox is enabled
-	And Selected Source is null
-	And "New" is "Enabled"
-	And I select "Dev2CountriesWebService" as "Source"
-	And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	Then "Request header" is "Enabled"
-	And "Request Url" is "Enabled" 
-	And "Validate" is "Enabled"
-	When I change "Source" from "Dev2CountriesWebService"  to "Google Address Lookup" 
-	Then "Request header" is "Enabled"
-	And "Request Url" is "Enabled" 
+	Given I open New Workflow
+	And I drag Web Put Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select Dev2CountriesWebService as Source
+	And  Body is Visible 
+	Then Header is Enabled
+	And  Url is Visible 
+	And Generate Outputs is Enabled
+	When I change Source from Dev2CountriesWebService  to Google Address Lookup 
+	And  Body is Visible 
+	Then Header is Enabled
+	And Url is Enabled 
+	And Generate Outputs is Enabled
+	And Mappings is Disabled 
 
 
 @ignore
 #wolf-1034
 Scenario: Web Connector Tool returns text
-	Given I open New Web Service Connector Tool
-	And I select "Testing Return Text" as "Source"
-    And "New" is "Enabled"
-	And "Edit" is "Enabled"
-	Then "Request header" is "Enabled"
-	And "Request Url" is "Enabled" 
-	And "Validate" is "Enabled"
-	And I click "Validate"
-	And "Response Variables" is "Enabled" 
-	And "Response Body" is "Enabled" 
-	When Test "Response Variables" is "Successful"
+	Given I open New Workflow
+	And I drag Web Post Request Connector Tool onto the design surface
+	Then Source is Enabled
+    And New is Enabled
+	And Edit is Enabled
+	When I Select TestingReturnText as Source
+	Then Header is Enabled
+	And  Url is Visible 
+	And Generate Outputs is Enabled
+	And I click Generate Outputs
+	Then Generate Outputs window is Enabled
+	And Variables is Enabled 
+	And I click Test
+	When Test is Successful
+	And Outputs is Enabled 
 	Then the response is loaded
-	And I click "Done"
-	And "Mapping" is "Enabled"
+	And I click Done
+	And Mapping is Enabled
 	And output mappings are
 	| Output   | Output Alias |
 	| Response | Response     |
