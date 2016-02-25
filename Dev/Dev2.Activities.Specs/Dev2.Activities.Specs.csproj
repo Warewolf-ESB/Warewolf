@@ -400,40 +400,40 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
-    <Compile Include="Toolbox\Resources\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\DeleteWebConnectorTool.feature.cs">
+    <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\GetWebServiceToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\MySqlConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Database\MySqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\PluginConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Plugin\PluginConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\PluginConnectorToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostWebConnectorTool.feature.cs">
+    <Compile Include="Toolbox\Resources\Plugin\PluginConnectorToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\PutWebConnectorTool.feature.cs">
+    <Compile Include="Toolbox\Resources\Web\PutWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PutWebConnectorTool.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\SqlServerConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Database\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\GetWebConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Web\GetWebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GetWebConnector.feature</DependentUpon>
@@ -644,31 +644,31 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\DeleteWebConnectorTool.feature">
+    <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\MySqlConnector.feature">
+    <None Include="Toolbox\Resources\Database\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\PluginConnector.feature">
+    <None Include="Toolbox\Resources\Plugin\PluginConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\PostWebConnectorTool.feature">
+    <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PostWebConnectorTool.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\PutWebConnectorTool.feature">
+    <None Include="Toolbox\Resources\Web\PutWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PutWebConnectorTool.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\SqlServerConnector.feature">
+    <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\GetWebConnector.feature">
+    <None Include="Toolbox\Resources\Web\GetWebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GetWebConnector.feature.cs</LastGenOutput>
     </None>
