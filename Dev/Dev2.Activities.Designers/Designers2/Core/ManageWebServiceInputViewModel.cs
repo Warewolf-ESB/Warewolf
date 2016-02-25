@@ -148,6 +148,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
+                _generateOutputArea.IsVisible = false;
+                _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
             OnHeightChanged(this);
