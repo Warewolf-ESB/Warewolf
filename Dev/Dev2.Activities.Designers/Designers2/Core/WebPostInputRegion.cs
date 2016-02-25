@@ -185,7 +185,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebGetInputRegionClone()
+            return new WebGetInputRegionClone
             {
                 Headers = headers2,
                 QueryString = QueryString,
@@ -297,11 +297,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _bodyString;
+                return _modelItem.GetProperty<string>("PostData") ?? string.Empty;
             }
             set
             {
-                _bodyString = value;
+                _bodyString = value ?? string.Empty;
+                _modelItem.SetProperty("PostData", value ?? string.Empty);
                 OnPropertyChanged();
             }
         }
