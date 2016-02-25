@@ -1,5 +1,5 @@
 ﻿$TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
-$SolutionDir = (get-item $PSScriptRoot ).parent.FullName
+$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
 <TestSettings name=`"UI Test`" id=`"6091E338-CE48-49F7-BC78-B459A768335A`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
