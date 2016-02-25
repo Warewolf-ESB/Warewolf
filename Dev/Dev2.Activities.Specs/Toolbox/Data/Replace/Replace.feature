@@ -149,7 +149,7 @@ Examples:
 #| 7  | [[a]]         | 54575    | 5                                                     | 2                                                     | 3     | 24272                   |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline:  Ensuring recordsets work as a Result
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
 	And I have a sentence "[[sentence]]"
@@ -188,7 +188,7 @@ Examples:
 | 7  | [[rs(1).set]]                 | Wahewolf | [[rs().set]]        | h                                         | [[rec(*).set]]              | [[rec(1).set]] = "r",[[rec(2).set]] = "t" } | 1     | Wahewolf               |
 
 
-#Complex types
+#Complex types WOLF-1042
 @ignore
 Scenario Outline: Replace values using complex types
 	Given I have a replace variable "<var>" equal to "<value>"

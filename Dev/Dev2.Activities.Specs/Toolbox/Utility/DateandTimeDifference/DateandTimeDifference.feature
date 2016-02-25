@@ -470,7 +470,7 @@ Scenario: Calculate the number of Years by using default system date Input 1
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Calculate the number of months between two given dates using variables and recordsets
 	Given I have a first date '<input1>' equals '<Val1>' 
 	And I have a second date '<input2>' equals '<Val2>' 
@@ -499,7 +499,7 @@ Scenario: Variables that do not exist
 	|            |                                            |
 	| [[result]] | The expression [[a]] has no value assigned |
 
-#Complex Types 
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline: Calculate the number of months using complex types
 	Given I have a first date '<input1>' equals '<Val1>' 

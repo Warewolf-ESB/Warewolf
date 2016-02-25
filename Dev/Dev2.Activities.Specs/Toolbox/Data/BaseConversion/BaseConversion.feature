@@ -745,7 +745,7 @@ Examples:
 	| 48 | [[rs().row]]        |       | Base 64 | Base 64 | Invalid Recordset |
  
  @ignore
- #Complex types
+ #Complex types WOLF-1042
 Scenario Outline: Convert from text to binary using complex types
 	Given I have a convert variable '<variable>' with a value of '<value>'
 	And I convert a variable '<variable>' from type "Text" to type '<types>' 
