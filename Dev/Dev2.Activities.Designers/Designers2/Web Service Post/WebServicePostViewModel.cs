@@ -446,6 +446,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
+                Method = WebRequestMethod.Post
 
             };
             return webServiceDefinition;
