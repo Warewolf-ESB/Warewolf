@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics.PerformanceCounters;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -14,15 +13,17 @@ namespace Dev2.Runtime.ESB.Execution
         private readonly IPerformanceCounter _avgTime;
         private readonly Stopwatch _stopwatch;
         private readonly IPerformanceCounter _totalErrors;
+        private readonly IWarewolfPerformanceCounterLocater _locater;
 
         public  PerfmonExecutionContainer(IEsbExecutionContainer container)
         {
             VerifyArgument.IsNotNull("Container",container);
             _container = container;
-            _recPerSecondCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
-            _currentConnections = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Concurrent requests currently executing");
-           _avgTime =  CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Average workflow execution time");
-           _totalErrors = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Total Errors");
+            _locater = CustomContainer.Get<IWarewolfPerformanceCounterLocater>();
+            _recPerSecondCounter = _locater.GetCounter("Request Per Second");
+            _currentConnections = _locater.GetCounter("Concurrent requests currently executing");
+            _avgTime = _locater.GetCounter("Average workflow execution time");
+            _totalErrors = _locater.GetCounter("Total Errors");
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
             //_counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
@@ -33,12 +34,17 @@ namespace Dev2.Runtime.ESB.Execution
         public Guid Execute(out ErrorResultTO errors, int update)
         {
             var start = _stopwatch.ElapsedTicks;
+            var errorsInstanceCounter = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.ExecutionErrors);
+            var concurrentInstanceCounter = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.ConcurrentRequests);
+            var avgExecutionsInstance = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.AverageExecutionTime);
+            var reqPerSecond = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.RequestsPerSecond);
             ErrorResultTO outErrors = new ErrorResultTO();
             try
             {
                 _recPerSecondCounter.Increment();
                 _currentConnections.Increment();
-               
+                reqPerSecond.Increment();
+                concurrentInstanceCounter.Increment();
                 var ret = Container.Execute(out outErrors, update);
                 errors = outErrors;
                 return ret;
@@ -47,10 +53,15 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 
                 _currentConnections.Decrement();
-                _avgTime.IncrementBy(_stopwatch.ElapsedTicks-start);
+                concurrentInstanceCounter.Decrement();
+                var time = _stopwatch.ElapsedTicks-start;
+                _avgTime.IncrementBy(time);
+                avgExecutionsInstance.IncrementBy(time);
                 if(outErrors != null)
                 {
                     _totalErrors.IncrementBy(outErrors.FetchErrors().Count);
+                    errorsInstanceCounter.IncrementBy(outErrors.FetchErrors().Count);
+                    
                 }
             }
             
@@ -83,6 +94,12 @@ namespace Dev2.Runtime.ESB.Execution
                 Container.InstanceInputDefinition = value;
             }
         }
+
+        public IDSFDataObject GetDataObject()
+        {
+            return _container.GetDataObject();
+        }
+
         public IEsbExecutionContainer Container
         {
             get

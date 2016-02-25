@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters.Counters
 {
     public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter
     {
@@ -37,6 +36,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.AverageTimer32,
+              
 
             };
             CounterCreationData avgDurationBase = new CounterCreationData
@@ -56,52 +56,42 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Increment()
         {
-            try
-            {
-                Setup();
+         
                 if (IsActive)
                 {
                     _counter.Increment();
                     _baseCounter.Increment();
                 }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error(exception);
-            }
+           
         }
 
         public void IncrementBy(long ticks)
         {
-            try
-            {
-                Setup();
+
                 if (IsActive)
                 {
                     _counter.IncrementBy(ticks);
                     _baseCounter.Increment();
                 }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error(exception);
-            }
+         
         }
 
-        private void Setup()
+        public void Setup()
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name,GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
+                
 
                 };
-                _baseCounter = new PerformanceCounter("Warewolf", "average time per operation base")
+                _baseCounter = new PerformanceCounter(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
                     ReadOnly = false,
+                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
 
                 };
                 _started = true;
@@ -110,19 +100,12 @@ namespace Dev2.Diagnostics.PerformanceCounters
 
         public void Decrement()
         {
-            Setup();
+
             if (IsActive)
             {
-                try
-                {
+ 
                     _counter.Decrement();
                     _baseCounter.Decrement();
-                }
-                catch (Exception err)
-                {
-
-                    Dev2Logger.Error(err);
-                }
 
             }
         }

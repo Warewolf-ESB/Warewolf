@@ -44,13 +44,15 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Reflection;
+using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
-using Dev2.Diagnostics.PerformanceCounters;
 using Dev2.Instrumentation;
+using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -1679,18 +1681,16 @@ namespace Dev2
         {
             try
             {
-                WarewolfPerformanceCounterBuilder builder = new WarewolfPerformanceCounterBuilder(new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                               
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                 new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                 new WarewolfNumberOfAuthErrors(),
-                                                                 new WarewolfServicesNotFoundCounter()
-                                                            });
+                PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(),perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
+                var locater = new WarewolfPerformanceCounterManager(register.Counters,register.ResourceCounters ,register,perf);
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterLocater(builder.Counters));
+
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
             }
             catch (Exception err)
             {

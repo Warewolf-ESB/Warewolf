@@ -476,11 +476,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
 
         private static void GetValue(string s, List<IServiceInput> dt)
         {
-            var exp = WarewolfDataEvaluationCommon.ParseLanguageExpressionWithoutUpdate(s);
+            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
             if (exp.IsComplexExpression)
             {
                 var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.LanguageExpressionToString);
+                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
                 dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
             }
             if (exp.IsScalarExpression)
