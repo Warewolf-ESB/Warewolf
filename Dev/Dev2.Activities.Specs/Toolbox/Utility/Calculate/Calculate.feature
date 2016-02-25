@@ -335,7 +335,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 #	| 169                 | TRUE                                                       | TRUE                     |
 
 @Ignore
-	#Audit
+	#Audit Wolf-1419
 Scenario: Calculate using Recordset ([[val]]) input in an agregate function like SUM
 	Given I have a calculate variable "[[var([[val]]).int]]" equal to 
 	| var().int	|

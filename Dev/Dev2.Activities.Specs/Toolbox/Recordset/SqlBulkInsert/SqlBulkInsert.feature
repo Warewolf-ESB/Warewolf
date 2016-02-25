@@ -376,7 +376,7 @@ Scenario: Edit DB Source
 	When I click "Edit"
 	Then the "DemoDB" tab is opened
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Saving results in recordsets
 	Given I have "DB Source" as "DemoDB"

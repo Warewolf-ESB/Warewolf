@@ -181,7 +181,7 @@ Scenario: Executing Count with two variables in result field
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Ensure variables of different types produce desired results
 	Given I have a recordset with this shape
 	| [[rs]]   |   |

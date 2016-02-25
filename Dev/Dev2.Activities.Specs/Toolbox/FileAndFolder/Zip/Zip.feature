@@ -106,7 +106,7 @@ Scenario Outline: Zip file at location Null
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Zip file at location with invalid directories
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>' for zip tests
