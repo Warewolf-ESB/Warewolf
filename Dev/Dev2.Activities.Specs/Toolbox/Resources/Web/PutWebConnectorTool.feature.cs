@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Resources
+namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Put Web Connector Tool")))
             {
-                Dev2.Activities.Specs.Toolbox.Resources.PutWebConnectorToolFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Resources.Web.PutWebConnectorToolFeature.FeatureSetup(null);
             }
         }
         

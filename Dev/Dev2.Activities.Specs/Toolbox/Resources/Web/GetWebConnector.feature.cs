@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Resources
+namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Get Web Service Tool")))
             {
-                Dev2.Activities.Specs.Toolbox.Resources.GetWebServiceToolFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Resources.Web.GetWebServiceToolFeature.FeatureSetup(null);
             }
         }
         
