@@ -18,6 +18,7 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -136,13 +137,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web Post must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Web Post must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
                 {
-                    DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
+                    DesignValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
 
             }
@@ -205,12 +206,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
-                FixErrors();
                 IsWorstErrorReadOnly = true;
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
@@ -289,16 +288,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         public DelegateCommand TestInputCommand { get; set; }
 
         private string Type { get { return GetProperty<string>(); } }
-        // ReSharper disable InconsistentNaming
-
-        [ExcludeFromCodeCoverage]
-        private void FixErrors()
-        {
-        }
-
-        void InitializeImageSource()
-        {
-        }
+      
 
         void AddTitleBarMappingToggle()
         {
@@ -371,14 +361,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             Regions = regions;
             foreach (var toolRegion in regions)
             {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
+                toolRegion.HeightChanged += ToolRegionHeightChanged;
             }
             ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
 
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
+        private void ToolRegionHeightChanged(object sender, IToolRegion args)
         {
             ReCalculateHeight();
             if (TestInputCommand != null)
@@ -456,6 +446,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
+                Method = WebRequestMethod.Post
 
             };
             return webServiceDefinition;
@@ -465,7 +456,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
+            string postValue = InputArea.BodyString;
             GetValue(s, dt);
+            GetValue(postValue, dt);
             foreach (var nameValue in InputArea.Headers)
             {
                 GetValue(nameValue.Name, dt);

@@ -65,27 +65,23 @@ namespace Dev2.Instrumentation
         static void Start(string productId, string callHomeUrl)
         // ReSharper restore UnusedMember.Local
         {
-            
-                Perform(() =>
-                {
-                    var location = Assembly.GetExecutingAssembly().Location;
-                    var filePath = Path.GetDirectoryName(location);
+
+            Perform(() =>
+            {
+                var location = Assembly.GetExecutingAssembly().Location;
+                var filePath = Path.GetDirectoryName(location);
 #if ! DEBUG && ! TEST
                 var fvi = VersionInfo.FetchVersionInfo();
                 var productVersion = fvi;
 #else
-                    // ReSharper disable ConvertToConstant.Local
-                    var productVersion = "0.0.9999.0";
-                    // ReSharper restore ConvertToConstant.Local
+                // ReSharper disable ConvertToConstant.Local
+                var productVersion = "0.0.9999.0";
+                // ReSharper restore ConvertToConstant.Local
 #endif
-                    if (AppSettings.CollectUsageStats)
-                    {
-                        TBConfig.SetFilePath(filePath);
-                        TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
-                        return TBApp.Start();
-                    }
-                    return GenericReturn.OK;
-                });
+                TBConfig.SetFilePath(filePath);
+                TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
+                return TBApp.Start();
+            });
             
         }
 
@@ -123,7 +119,10 @@ namespace Dev2.Instrumentation
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = "")
         {
 #if ! DEBUG
-            Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
+            if (AppSettings.CollectUsageStats)
+            {
+                Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
+            }
 #endif
         }
 
@@ -147,26 +146,23 @@ namespace Dev2.Instrumentation
 
         static void Perform(Func<GenericReturn> action, bool async = false)
         {
-            if (AppSettings.CollectUsageStats)
+            try
             {
-                try
+                if (async)
                 {
-                    if (async)
-                    {
-                        Task.Run(action).ContinueWith(t => WriteError(t.Result));
-                    }
-                    else
-                    {
-                        var result = action();
-                        WriteError(result);
-                    }
+                    Task.Run(action).ContinueWith(t => WriteError(t.Result));
                 }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch
-                // ReSharper restore EmptyGeneralCatchClause
+                else
                 {
-                    // this is a tracker issue ;(
+                    var result = action();
+                    WriteError(result);
                 }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                // this is a tracker issue ;(
             }
         }
 
