@@ -224,7 +224,7 @@ Scenario Outline:Executing with Incorrect Recordsets
 	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Assign a DateTime into a recordset
 	Given I have a variable '<variable>' and I selected '<Type>'	
 	When the gather system infomartion tool is executed
