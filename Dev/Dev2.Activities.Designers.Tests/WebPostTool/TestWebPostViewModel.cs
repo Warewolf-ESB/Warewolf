@@ -12,6 +12,8 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
+// ReSharper disable All
 
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
