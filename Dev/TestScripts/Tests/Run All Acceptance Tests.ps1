@@ -1,5 +1,5 @@
 ﻿$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
-$SolutionDir = (get-item $PSScriptRoot ).parent.FullName
+$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
 <TestSettings name=`"Local Acceptance Run`" id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
