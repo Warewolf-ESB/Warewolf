@@ -3,7 +3,8 @@
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Delete Request.
 
-# layout of tool not ready
+
+# layout of tool not ready #Wolf-1416
 @ignore
 Scenario: Open new Web Tool
 	Given I open New Web Service Tool
@@ -20,7 +21,7 @@ Scenario: Open new Web Tool
 	And there are "no" validation errors of "" 
 	
 
-
+#Wolf-1416
 @ignore
 Scenario: Create Web Service with different methods
 	Given I open New Web Service Connector
@@ -44,7 +45,7 @@ Scenario: Create Web Service with different methods
 	| Description | Description  |
 	And "Done" is "Enabled"
 	
-	
+#Wolf-1416	
 @ignore
  Scenario: Editing Web Service
 	Given I open "Dev2GetCountriesWebService" 
@@ -64,6 +65,7 @@ Scenario: Create Web Service with different methods
 	| Description | Description  |
 	And "Save" is "Enabled" 
 
+#Wolf-1416
  @ignore
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Web Service Tool
@@ -95,7 +97,7 @@ Scenario: Adding parameters in request headers is updating variables
 	| prefix    | a             |                |               |
 	| [[a]]     | T             |                |               |
 
- 	
+ #Wolf-1416	
  @ignore
 Scenario: Edit Web source
 	Given I open New Web Service Tool
@@ -104,6 +106,7 @@ Scenario: Edit Web source
 	And I click "Edit"
 	Then "Dev2CountriesWebService" tab is opened
 
+#Wolf-1416
 # Is this still relevant because nothing will change
  @ignore
 Scenario: Changing Sources 
@@ -121,7 +124,7 @@ Scenario: Changing Sources
 	Then "Request header" is "Enabled"
 	And "Request Url" is "Enabled" 
 
-
+#Wolf-1416
 @ignore
 #wolf-1034
 Scenario: Web Connector Tool returns text
