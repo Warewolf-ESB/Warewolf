@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers2.Core
             return new WebPostInputRegionClone()
             {
                 Headers = headers2,
-                BodyString = PostData,
+                PostData = PostData,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsVisible = IsVisible
@@ -202,7 +202,7 @@ namespace Dev2.Activities.Designers2.Core
             if (region != null)
             {
                 IsVisible = region.IsVisible;
-                PostData = region.BodyString;
+                PostData = region.PostData;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();

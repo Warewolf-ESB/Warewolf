@@ -3,8 +3,7 @@
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Get Request.
 
-# layout of tool not ready
-@ignore
+
 Scenario: Open new Web Tool
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -22,7 +21,7 @@ Scenario: Open new Web Tool
 	
 
 
-@ignore
+
 Scenario: Create Web Service 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -52,8 +51,7 @@ Scenario: Create Web Service
 	| Description | Description  |
 	And "Done" is "Enabled"
 	
-	
-@ignore
+
  Scenario: Editing Web Service
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -67,7 +65,7 @@ Scenario: Create Web Service
 	Then the Dev2CountriesWebService Source tab is opened
 	
 
- @ignore
+
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -103,18 +101,31 @@ Scenario: Adding parameters in request headers is updating variables
 
 
 
- @ignore
+
 Scenario: Changing Sources 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
 	Then Source is Enabled
     And New is Enabled
 	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	When I Select WebHeloo as Source
 	Then Header is Enabled
-	And  Url is Visible 
+	And Url is Visible 
 	And Generate Outputs is Enabled
-	When I change Source from Dev2CountriesWebService  to Google Address Lookup 
+	And I click Generate Outputs
+	Then Generate Outputs window is Enabled
+	And I click Test
+	Then Outputs appear as
+	|                               |
+	| {"rec" : [{"a":"1","b":"a"}]} |
+	When I click Done
+	Then the response is loaded
+	And Mapping is Enabled
+	And output mappings are
+	| Mapped From | Mapped To   |
+	| a           | [[rec().a]] |
+	| b           | [[rec().b]] |
+	When I change Source from WebHeloo  to Google Address Lookup 
 	Then Header is Enabled
 	And Url is Enabled 
 	And Generate Outputs is Enabled
@@ -147,7 +158,7 @@ Scenario: Web Connector Tool returns text
 	| Output   | Output Alias |
 	| Response | Response     |
 
- @ignore
+ 
 Scenario: Web Connector Tool generate outputs incorrectly for xml
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -174,7 +185,7 @@ Scenario: Web Connector Tool generate outputs incorrectly for xml
 	| DataListrecb   | [[DataListreca]]     |
 	And Recordset Name equals ""
 
- @ignore
+
 Scenario: Web Connector Tool generate outputs for json
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -200,7 +211,7 @@ Scenario: Web Connector Tool generate outputs for json
 	| b           | [[rec().b]] |
 	And Recordset Name equals rec
 
- @ignore
+
 Scenario: Web Connector Tool cancel generate outputs for 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -221,7 +232,7 @@ Scenario: Web Connector Tool cancel generate outputs for
 	Then the response is loaded
 	And Mapping is Disabled
 	
- @ignore
+
  #Wolf-1412
 Scenario: Web Connector Tool re-generate outputs for 
 	Given I open New Workflow
@@ -257,7 +268,7 @@ Scenario: Web Connector Tool re-generate outputs for
 	| b           | [[rec().b]] |
 
 
- @ignore
+
 Scenario: Web Connector Tool remember previous values
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface

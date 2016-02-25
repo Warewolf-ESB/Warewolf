@@ -33,9 +33,6 @@ namespace Dev2.Data
         {
             try
             {
-
-
-
                 Dev2Logger.Info(String.Format(@"
     Process Memory Usage(mb): {0}
     Number of Requests: {1} 
