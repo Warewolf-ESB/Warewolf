@@ -4241,17 +4241,8 @@ Scenario: backward Compatiblity2
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
-#Scenario: Server Persisted Connection
-## Note that the result is viewed in the browser
-#Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
-#When "SQL Persisted DB Connection Test" is exceuted
-#Then the execution has "NO" error
-#And the debug Result is <Result>
-#Examples: 
-# | #     | DbService | Result |
-# | SQL   | SQL       | Pass   |
-# | MySQL | MySQL     | Pass   |  
-#
+#Unknown spec possibly made by Leon
+
 # Scenario: Exceution Engine Test with number of runs
 #	 Given I have a workflow "Exceution Engine Test"
 #	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
@@ -4545,7 +4536,7 @@ Scenario: Error not bubbling up error message
 	  |                   |
 	  | [[Result]] = Pass |
 
-@ignore
+
 Scenario: ForEach using * and Database Connector
 	  Given I have a workflow "DBConnInForEach_3"
 	  And "DBConnInForEach_3" contains "ForeachDBCon" from server "localhost" with mapping as
