@@ -1,6 +1,6 @@
 namespace Dev2.Common
 {
-    public class WorkflowExecutionWatcher
+    public static class WorkflowExecutionWatcher
     {
         public static bool HasAWorkflowBeenExecuted { get; set; }
     }
