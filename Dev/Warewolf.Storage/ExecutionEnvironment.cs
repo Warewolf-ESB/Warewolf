@@ -132,7 +132,7 @@ namespace Warewolf.Storage
 
         public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
         {
-            return WarewolfDataEvaluationCommon.EvalForDataMerge( _env, update,exp);
+            return WarewolfDataEvaluationCommon.evalForDataMerge( _env, update,exp);
         }
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
@@ -204,7 +204,7 @@ namespace Warewolf.Storage
 
         public bool HasRecordSet(string recordsetName)
         {
-            var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(recordsetName,0);
+            var x = WarewolfDataEvaluationCommon.parseLanguageExpression(recordsetName,0);
             if(x.IsRecordSetNameExpression)
             {
                 var recsetName = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
@@ -269,7 +269,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(a,0);
+                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(a,0);
                 return x.IsRecordSetNameExpression;
             }
             catch(Exception)
@@ -284,7 +284,7 @@ namespace Warewolf.Storage
             errorMessage = "";
             try
             {
-                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(expression,update);
+                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(expression,update);
                 if (x.IsRecordSetExpression || x.IsScalarExpression)
                 {
                     return true;
@@ -386,7 +386,7 @@ namespace Warewolf.Storage
 
         public string ToStar(string expression)
         {
-            var exp = WarewolfDataEvaluationCommon.ParseLanguageExpression(expression,0);
+            var exp = WarewolfDataEvaluationCommon.parseLanguageExpression(expression,0);
             if(exp.IsRecordSetExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
@@ -478,12 +478,12 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            return string.IsNullOrEmpty(exp) ? "" : WarewolfDataEvaluationCommon.EvalToExpression(_env,update,exp);
+            return string.IsNullOrEmpty(exp) ? "" : WarewolfDataEvaluationCommon.evalToExpression(_env,update,exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
         {
-            var output =  WarewolfDataEvaluationCommon.ParseLanguageExpression(outputVar,0);
+            var output =  WarewolfDataEvaluationCommon.parseLanguageExpression(outputVar,0);
             if(output.IsRecordSetExpression)
             {
                 
@@ -498,7 +498,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(assignVar,0);
+                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(assignVar,0);
                 return x.IsRecordSetExpression;
             }
             catch (Exception)
@@ -512,7 +512,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(assignVar,0);
+                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(assignVar,0);
                 return x.IsScalarExpression;
             }
             catch (Exception)
@@ -524,12 +524,12 @@ namespace Warewolf.Storage
 
         public static bool IsNothing(WarewolfDataEvaluationCommon.WarewolfEvalResult evalInp1)
         {
-            return WarewolfDataEvaluationCommon.IsNothing(evalInp1);
+            return WarewolfDataEvaluationCommon.isNothing(evalInp1);
         }
 
         public static string GetPositionColumnExpression(string recordset)
         {
-            var rec = WarewolfDataEvaluationCommon.ParseLanguageExpression(recordset,0);
+            var rec = WarewolfDataEvaluationCommon.parseLanguageExpression(recordset,0);
             if(rec.IsRecordSetExpression)
             {
                 var index = (rec as LanguageAST.LanguageExpression.RecordSetExpression).Item;

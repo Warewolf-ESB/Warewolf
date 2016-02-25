@@ -1,23 +1,27 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
-namespace Dev2.Diagnostics.PerformanceCounters
+namespace Dev2.PerformanceCounters
 {
-    public class WarewolfNumberOfErrors : IPerformanceCounter
+    public  class DefaultCounterTest :IResourcePerformanceCounter
     {
-
+        
+        
         private PerformanceCounter _counter;
         private bool _started;
         private readonly WarewolfPerfCounterType _perfCounterType;
+        private readonly Guid _resourceId;
 
-        public WarewolfNumberOfErrors()
+        public DefaultCounterTest(Guid resourceId, string name,WarewolfPerfCounterType type)
         {
+            _resourceId = resourceId;
+            CategoryInstanceName = name;
             _started = false;
             IsActive = true;
-            _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
+            _perfCounterType = type;
         }
 
         public WarewolfPerfCounterType PerfCounterType
@@ -35,7 +39,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
             {
                 CounterName = Name,
                 CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
+                CounterType = _perfCounterType.ToSystemType()
             };
             return new[] { totalOps };
         }
@@ -79,7 +83,7 @@ namespace Dev2.Diagnostics.PerformanceCounters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter("Warewolf", Name)
+                _counter = new PerformanceCounter("Warewolf", Name,CategoryInstanceName)
                 {
                     MachineName = ".",
                     ReadOnly = false
@@ -118,6 +122,19 @@ namespace Dev2.Diagnostics.PerformanceCounters
                 return "Total Errors";
             }
         }
+
+        #endregion
+
+        #region Implementation of IResourcePerformanceCounter
+
+        public Guid ResourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+        }
+        public string CategoryInstanceName { get; private set; }
 
         #endregion
     }
