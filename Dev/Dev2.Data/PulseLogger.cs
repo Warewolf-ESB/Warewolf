@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
@@ -42,6 +43,58 @@ namespace Dev2.Data
                     ServerStats.TotalRequests,
                     ServerStats.TotalTime,
                     DateTime.Now - Process.GetCurrentProcess().StartTime));
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch
+                // ReSharper restore EmptyGeneralCatchClause
+            {
+                // cant have any errors here
+            }
+        }
+
+        #region Implementation of IPulseLogger
+
+        public bool Start()
+        {
+            try
+            {
+                _timer.Start();
+                return true;
+            }
+            catch(Exception)
+            {
+
+                return false;
+            }
+            
+        }
+
+        public int Interval { get; private set; }
+
+        #endregion
+    }
+
+    public class PulseTracker : IPulseLogger
+    {
+        readonly Timer _timer;
+
+        public PulseTracker(int intervalMs)
+        {
+            Interval = intervalMs;
+            _timer = new Timer(Interval);
+            _timer.Elapsed += _timer_Elapsed;
+       
+        }
+
+        void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                if (WorkflowExecutionWatcher.HasAWorkflowBeenExecuted)
+                {
+                    Tracker.OverriddenTrackEvent(TrackerEventGroup.ActivityExecution, TrackerEventName.Executed, "Server is executing");
+                    WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
+                }
             }
                 // ReSharper disable EmptyGeneralCatchClause
             catch
