@@ -3844,7 +3844,7 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
-@ignore
+
 #Need steps to create the source as the service will not be created for this
 Scenario Outline: Database SqlDB  service using * indexes 
      Given I have a workflow "<WorkflowName>"
@@ -4035,7 +4035,7 @@ Examples:
      | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
 
-@ignore
+
  Scenario: Executing Asynchrounous testing workflow volume
 	  Given I have a workflow "Testing - Async Test Master Testv"
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
