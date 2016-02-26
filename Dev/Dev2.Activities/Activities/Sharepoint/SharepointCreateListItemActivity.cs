@@ -13,7 +13,6 @@ using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.TO;
 using Dev2.Util;
 using Microsoft.SharePoint.Client;
@@ -87,11 +86,11 @@ namespace Dev2.Activities.Sharepoint
                 var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
-                    var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                    var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
                     Dictionary<string, IWarewolfIterator> listOfIterators = new Dictionary<string, IWarewolfIterator>();
                     if (sharepointSource == null)
                     {
-                        var contents = ResourceCatalog.Instance.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                        var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
                         sharepointSource = new SharepointSource(contents.ToXElement());
                     }
                     var env = dataObject.Environment;

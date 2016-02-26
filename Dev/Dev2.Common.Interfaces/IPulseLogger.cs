@@ -13,7 +13,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IPulseLogger
     {
-        int Interval { get; }
+        double Interval { get; }
         bool Start();
     }
 }

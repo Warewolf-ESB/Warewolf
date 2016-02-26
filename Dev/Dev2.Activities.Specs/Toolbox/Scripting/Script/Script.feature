@@ -333,7 +333,7 @@ Scenario: Execute Python with a negative recordset index
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline:Excute Javascript with incorrect values
 	Given I have the script to execute '<script>'
 	And I have selected the language as "JavaScript"
@@ -370,7 +370,7 @@ Scenario Outline:Execute Javascript using recordsets
 	| [[rec(*).a]]                  | return "a message"; | [[rs(*).a]]                 | a message |
 	| [[rec([[int]]).a]],[[int]] =1 | return "a message"; | [[rs([[int]]).a]],[[int]]=1 | a message |
 
-#Complex Types
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline:Execute Javascript using complex types
 	Given I have the script to execute '<script>' equals to '<val>'

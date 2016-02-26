@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
@@ -45,7 +44,7 @@ namespace Dev2.Activities
             base.GetDebugInputs(env, update);
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a=>!(String.IsNullOrEmpty(a.Name)&&String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
-            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
             DebugItem debugItem = new DebugItem();
@@ -81,7 +80,7 @@ namespace Dev2.Activities
             var query =  ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString,update));
 
                      
-            var url = ResourceCatalog.Instance.GetResource<WebSource>(Guid.Empty, SourceId);
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
 
             if (dataObject.IsDebugMode())
             {

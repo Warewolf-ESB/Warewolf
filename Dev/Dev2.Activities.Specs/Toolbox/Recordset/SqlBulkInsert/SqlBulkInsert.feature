@@ -376,7 +376,7 @@ Scenario: Edit DB Source
 	When I click "Edit"
 	Then the "DemoDB" tab is opened
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Saving results in recordsets
 	Given I have "DB Source" as "DemoDB"
@@ -397,7 +397,8 @@ Scenario Outline: Saving results in recordsets
 	| [[rec([[int]]).a]],[[int]] =3 | Success |
 
 
-#Complex Types
+#Complex Types WOLF-1042
+@ignore
 Scenario Outline: Saving results in complex types
 	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"

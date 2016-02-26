@@ -121,7 +121,7 @@ Scenario: Enter a URL that is a negative index recordset
 	|              |
 	| [[result]] = |
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Enter a number or variable that does not exist as URL
 	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
