@@ -1253,7 +1253,7 @@ Scenario: Runtime invalid recordset variable positve test
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Ensuring all inputs work as expected
 	Given a decision variable '<variable1>' value '<Var1>'	
 	And a decision variable '<variable2>' value '<Var2>'
@@ -1293,7 +1293,7 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	| False |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Ensuring all complex type inputs work as expected
 	Given a decision variable '<variable1>' value '<Var1>'	
 	And a decision variable '<variable2>' value '<Var2>'

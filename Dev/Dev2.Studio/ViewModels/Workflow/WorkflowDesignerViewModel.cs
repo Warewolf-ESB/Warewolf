@@ -34,6 +34,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -1612,20 +1613,21 @@ namespace Dev2.Studio.ViewModels.Workflow
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
-            var item = sender as Grid;
-
-            if (item != null)
+            if (!(e.OriginalSource is Path) && !(e.OriginalSource is Rectangle))
             {
-                var context = item.DataContext as WorkflowDesignerViewModel;
-                if (context != null)
+                var item = sender as Grid;
+                if (item != null)
                 {
-                    var selectedModelItem = context.SelectedModelItem as ModelItem;
-
-                    ClearSelection();
-                    Selection.Subscribe(_wd.Context, SelectedItemChanged);
-                    if (selectedModelItem != null)
+                    var context = item.DataContext as WorkflowDesignerViewModel;
+                    if (context != null)
                     {
-                        Selection.Union(_wd.Context, selectedModelItem);
+                        var selectedModelItem = context.SelectedModelItem as ModelItem;
+                        if (selectedModelItem != null)
+                        {
+                            ClearSelection();
+                            Selection.Subscribe(_wd.Context, SelectedItemChanged);
+                            Selection.Union(_wd.Context, selectedModelItem);
+                        }
                     }
                 }
             }

@@ -27,7 +27,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
@@ -126,7 +125,7 @@ namespace Dev2.Activities
                 var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr, update);
 
                 var currentOptions = BuildSqlBulkCopyOptions();
-                var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
+                var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if(runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
                 {
                     DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList, update);

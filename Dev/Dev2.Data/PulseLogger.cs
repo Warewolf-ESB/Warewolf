@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
@@ -21,7 +22,7 @@ namespace Dev2.Data
     {
         readonly Timer _timer;
 
-        public PulseLogger(int intervalMs)
+        public PulseLogger(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
@@ -68,7 +69,59 @@ namespace Dev2.Data
             
         }
 
-        public int Interval { get; private set; }
+        public double Interval { get; private set; }
+
+        #endregion
+    }
+
+    public class PulseTracker : IPulseLogger
+    {
+        readonly Timer _timer;
+
+        public PulseTracker(double intervalMs)
+        {
+            Interval = intervalMs;
+            _timer = new Timer(Interval);
+            _timer.Elapsed += _timer_Elapsed;
+       
+        }
+
+        void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                if (WorkflowExecutionWatcher.HasAWorkflowBeenExecuted)
+                {
+                    Tracker.OverriddenTrackEvent(TrackerEventGroup.ActivityExecution, TrackerEventName.Executed, "Server is executing");
+                    WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
+                }
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch
+                // ReSharper restore EmptyGeneralCatchClause
+            {
+                // cant have any errors here
+            }
+        }
+
+        #region Implementation of IPulseLogger
+
+        public bool Start()
+        {
+            try
+            {
+                _timer.Start();
+                return true;
+            }
+            catch(Exception)
+            {
+
+                return false;
+            }
+            
+        }
+
+        public double Interval { get; private set; }
 
         #endregion
     }

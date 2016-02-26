@@ -346,7 +346,7 @@ Scenario: Merge a variable inside the invalid varaible
 	| [[result]] = |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario: Merge a scalar to a scalar using merge type none 2
 	Given a merge variable "[[a]]" equal to "Warewolf " 
 	And a merge variable "[[b]]" equal to "Rocks"		
@@ -397,20 +397,6 @@ Scenario Outline: Merging data using recordsets
 	| [[rec().a]]  | This       | [[rs(1).a]] | workflow    | Index | [[rec().count]]                  | 4          | [[rj(*).padding]]                 | 5,10         | Left  | [[rj([[int]]).a]],[[int]] =1 | ThisWorkflowThisWorkflow |
 	| [[rec().a]]  | This       | [[rs(1).a]] | workflow    | Index | [[rec([[int]]).count]],[[int]]=1 | 4          | [[rj([[int]]).padding]],[[int]]=1 | 5            | Left  | [[rj(*).a]]                  | ThisWorkflow             |
 
-
-Scenario Outline: Merge a variable that does not exist
-	Given an Input "[[rec([[a]]).set]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is ""
-	And the execution has "AN" error
-	And the execution has "Variable { rec } is NULL." error
-Examples: 
-	| No | Type     |
-	| 1  | None     |
-	| 2  | Index    |
-	| 3  | Chars    |
-	| 4  | New Line |
-	| 5  | Tab      | 
 
 #----------------->
 #Scenario: Merge a scalar to a scalar using merge type none 2
