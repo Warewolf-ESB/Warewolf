@@ -114,6 +114,8 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Test Result -----------------------
             Assert.IsNull(postViewModel.Errors);
             Assert.AreEqual(postViewModel.DesignValidationErrors.Count, 1);
+            Assert.IsTrue(postViewModel.IsWorstErrorReadOnly);
+
         }
 
         [TestMethod]
