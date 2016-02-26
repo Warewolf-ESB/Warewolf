@@ -9,8 +9,11 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
-using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -152,8 +155,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            var ser = new Dev2JsonSerializer();
-            return new WebSourceRegion()
+            return new WebSourceRegion
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
