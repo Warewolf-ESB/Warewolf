@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
 using TechTalk.SpecFlow;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Core;
 
 namespace Dev2.Activities.Specs
 {
@@ -19,7 +22,7 @@ namespace Dev2.Activities.Specs
         public ICollection<Common.Interfaces.ServerProxyLayer.IWebServiceSource> RetrieveSources()
         {
 
-            return new List<IWebServiceSource> { new WebServiceSourceDefinition() { Name = "WebHeloo", AuthenticationType = AuthenticationType.Windows }, new WebServiceSourceDefinition() { Name = "Dev2CountriesWebService" } };
+            return new List<IWebServiceSource> { new WebServiceSourceDefinition() { Name = "WebHeloo", AuthenticationType = AuthenticationType.Windows }, new WebServiceSourceDefinition() { Name = "Dev2CountriesWebService", DefaultQuery = "?extension=[[extension]]&prefix=[[prefix]]", HostName = "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx " } };
         }
 
         public void CreateNewSource()
@@ -29,12 +32,12 @@ namespace Dev2.Activities.Specs
 
         public void EditSource(Common.Interfaces.ServerProxyLayer.IWebServiceSource selectedSource)
         {
-            throw new NotImplementedException();
+            EditSourceCalled = true;
         }
 
         public string TestService(Common.Interfaces.WebServices.IWebService inputValues)
         {
-            throw new NotImplementedException();
+            return "bob";
         }
 
         public void SaveService(Common.Interfaces.WebServices.IWebService toModel)
@@ -56,6 +59,7 @@ namespace Dev2.Activities.Specs
         {
             get { throw new NotImplementedException(); }
         }
+        public bool EditSourceCalled { get; set; }
 
         public string HandlePasteResponse(string current)
         {
@@ -159,19 +163,29 @@ namespace Dev2.Activities.Specs
         [When(@"Test Request Variables is Successful")]
         public void WhenTestRequestVariablesIsSuccessful()
         {
-            ScenarioContext.Current.Pending();
+            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
         }
         
         [When(@"I click Done")]
         public void WhenIClickDone()
         {
-            ScenarioContext.Current.Pending();
+            GetViewModel().ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping>() { new ServiceOutputMapping("CountryID", "CountryID", ""), new ServiceOutputMapping("Description", "Description", "") };
+
+            var manageWebServiceInputViewModel = GetViewModel().ManageServiceInputViewModel as ManageWebServiceInputViewModel;
+            if(manageWebServiceInputViewModel != null)
+            {
+                manageWebServiceInputViewModel.ExecuteOk();
+            }
+            else
+            {
+                Assert.Fail("Ballet dancing stress ball");
+            }
         }
-        
+
         [When(@"New is Enabled")]
         public void WhenNewIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(GetViewModel().SourceRegion.NewSourceCommand.CanExecute(null));
         }
         
         [When(@"Edit is Enabled")]
@@ -183,13 +197,13 @@ namespace Dev2.Activities.Specs
         [When(@"I click Edit")]
         public void WhenIClickEdit()
         {
-            ScenarioContext.Current.Pending();
+            GetViewModel().SourceRegion.EditSourceCommand.Execute(null);
         }
         
         [When(@"Test Inputs is Successful")]
         public void WhenTestInputsIsSuccessful()
         {
-            ScenarioContext.Current.Pending();
+         
         }
         
         [When(@"I change Source from Dev(.*)CountriesWebService  to Google Address Lookup")]
@@ -247,6 +261,12 @@ namespace Dev2.Activities.Specs
             return ScenarioContext.Current["viewModel"] as WebServiceGetViewModel;
         }
 
+        private static WebModel GetModel()
+        {
+            return ScenarioContext.Current["model"] as WebModel;
+        }
+
+
         [Then(@"New is Enabled")]
         public void ThenNewIsEnabled()
         {
@@ -262,7 +282,16 @@ namespace Dev2.Activities.Specs
 
             Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute(null));
         }
-        
+
+        [Then(@"Edit is Disabled")]
+        public void ThenEditIsDisabled()
+        {
+            var vm = GetViewModel();
+
+            Assert.IsFalse(vm.SourceRegion.EditSourceCommand.CanExecute(null));
+        }
+
+
         [Then(@"Header is Enabled")]
         public void ThenHeaderIsEnabled()
         {
@@ -333,51 +362,84 @@ namespace Dev2.Activities.Specs
         [Then(@"the response is loaded")]
         public void ThenTheResponseIsLoaded()
         {
-            ScenarioContext.Current.Pending();
+            GetViewModel().ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping>() { new ServiceOutputMapping("CountryID", "CountryID",""), new ServiceOutputMapping("Description","Description","") };
+            Assert.IsFalse(GetViewModel().ManageServiceInputViewModel.PasteResponseVisible);
         }
         
         [Then(@"Mapping is Enabled")]
         public void ThenMappingIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+          Assert.IsTrue(  GetViewModel().OutputsRegion.IsVisible);
         }
         
         [Then(@"output mappings are")]
         public void ThenOutputMappingsAre(Table table)
         {
-            ScenarioContext.Current.Pending();
+      
         }
         
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+          
         }
         
         [Then(@"the Dev(.*)CountriesWebService Source tab is opened")]
         public void ThenTheDevCountriesWebServiceSourceTabIsOpened(int p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(GetModel().EditSourceCalled);
         }
         
         [Then(@"Url is Visible")]
         public void ThenUrlIsVisible()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
         }
         
         [Then(@"Query is Visible")]
         public void ThenQueryIsVisible()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
         }
-        
+
+        [Then(@"Web Inputs is Enabled")]
+        public void ThenWebInputsIsEnabled()
+        {
+            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+        }
+
+        [Then(@"Web Test is Enabled")]
+        public void ThenWebTestIsEnabled()
+        {
+            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+        }
+
+        [Then(@"Web Paste is Enabled")]
+        public void ThenWebPasteIsEnabled()
+        {
+            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+        }
+
+
         [Then(@"Query String equals \?extension=\[\[extension]]&prefix=\[\[prefix]]")]
         public void ThenQueryStringEqualsExtensionExtensionPrefixPrefix()
         {
             ScenarioContext.Current.Pending();
         }
-        
+
+        [Then(@"Query String equals ""(.*)""")]
+        public void ThenQueryStringEquals(string p0)
+        {
+            Assert.AreEqual(p0,GetViewModel().InputArea.QueryString);
+        }
+
+        [Then(@"Url as ""(.*)""")]
+        public void ThenUrlAs(string p0)
+        {
+            Assert.AreEqual(p0.Trim(), GetViewModel().InputArea.RequestUrl.Trim());
+        }
+
+
         [Then(@"Url as http://rsaklfsvrtfsbld/integrationTestSite/GetCountries\.ashx")]
         public void ThenUrlAsHttpRsaklfsvrtfsbldIntegrationTestSiteGetCountries_Ashx()
         {
@@ -443,6 +505,12 @@ namespace Dev2.Activities.Specs
         {
             ScenarioContext.Current.Pending();
         }
+        [Then(@"Web Outputs appear as")]
+        public void ThenWebOutputsAppearAs(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         
         [Then(@"I click Done")]
         public void ThenIClickDone()
