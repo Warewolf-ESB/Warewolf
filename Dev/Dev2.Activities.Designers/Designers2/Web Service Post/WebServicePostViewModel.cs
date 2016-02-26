@@ -441,7 +441,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-                PostData = InputArea.BodyString,
+                PostData = InputArea.PostData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -456,7 +456,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
-            string postValue = InputArea.BodyString;
+            string postValue = InputArea.PostData;
             GetValue(s, dt);
             GetValue(postValue, dt);
             foreach (var nameValue in InputArea.Headers)

@@ -100,11 +100,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 errors.AddError(err);
             }
-            var errorCounter = _performanceCounterLocater.GetCounter(DataObject.ResourceID, WarewolfPerfCounterType.ExecutionErrors);
-            foreach(var error in errors.FetchErrors())
-            {
-               errorCounter.Increment();
-            }
+
             Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
@@ -216,6 +212,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 return;
             }
+            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
             var next = resource.Execute(dsfDataObject, update);
             while(next != null)
             {

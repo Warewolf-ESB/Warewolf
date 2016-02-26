@@ -394,7 +394,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         public void SaveService(IWebService toModel)
         {
         }
-
+        [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {
             get
@@ -402,6 +402,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 return _updateRepository;
             }
         }
+        [ExcludeFromCodeCoverage]
         public IQueryManager QueryProxy
         {
             get
@@ -416,7 +417,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 return _sources;
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public string HandlePasteResponse(string current)
         {
             return null;

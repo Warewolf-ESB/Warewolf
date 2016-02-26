@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.PerformanceCounters.Management
 {
@@ -44,7 +45,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             catch (Exception e)
             {
-                Common.Dev2Logger.Error(e);
+                Dev2Logger.Error(e);
             }
 
           

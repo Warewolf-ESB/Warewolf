@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
-            act.SetResourceCatalog(cat.Object);
+            act.ResourceCatalog = cat.Object;
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
-            act.SetResourceCatalog(cat.Object);
+            act.ResourceCatalog = cat.Object;
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
-            act.SetResourceCatalog(cat.Object);
+            act.ResourceCatalog = cat.Object;
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
