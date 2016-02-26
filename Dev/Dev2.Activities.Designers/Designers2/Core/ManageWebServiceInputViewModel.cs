@@ -247,6 +247,10 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResults = value;
+                if (!string.IsNullOrEmpty(_testResults))
+                {
+                    Model.Response = _testResults;
+                }
                 OnPropertyChanged();
             }
         }

@@ -4,6 +4,8 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedParameter.Local
 
 namespace Dev2.PerformanceCounters.Management
 {
@@ -82,7 +84,7 @@ namespace Dev2.PerformanceCounters.Management
                 _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
                 return counter;
             }
-            else return (IResourcePerformanceCounter)GetCounter(resourceId, type).FromSafe();
+            return (IResourcePerformanceCounter)GetCounter(resourceId, type).FromSafe();
         }
         public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
