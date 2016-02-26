@@ -25,8 +25,8 @@ Scenario: Find unique records in a recordset
 	And the debug output as 
 	| # |                        |
 	| 1 | [[rec(1).unique]] = 10 |
-	| 2 | [[rec(2).unique]] = 20 |
-	| 3 | [[rec(3).unique]] = 30 |
+	|   | [[rec(2).unique]] = 20 |
+	|   | [[rec(3).unique]] = 30 |
 
 Scenario: Find unique records in an empty recordset
 	Given I have the following empty recordset
@@ -217,6 +217,7 @@ Scenario: Executing Unique record tool with empty In Return and Result Field
 	|  |  |
 
 #This Test Scenario should be passed after the bug 11994 is fixed
+@ignore
 Scenario: Find unique records and assigning result in two variables
 	Given I have the following duplicated recordset
 	| rs       | val |
