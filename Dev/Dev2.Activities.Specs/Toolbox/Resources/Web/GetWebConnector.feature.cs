@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Get Web Service Tool", "In order to create New Web Get Request Tool in Warewolf\nAs a Warewolf User\nI want" +
-                    " to Create or Edit Warewolf Web Get Request.", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Get Web Service Tool", "In order to create New Web Get Request Tool in Warewolf\r\nAs a Warewolf User\r\nI wa" +
+                    "nt to Create or Edit Warewolf Web Get Request.", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -321,9 +321,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 114
  testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 115
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 116
- testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
@@ -350,7 +350,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 123
  testRunner.And("output mappings are", ((string)(null)), table8, "And ");
 #line 127
- testRunner.When("I change Source from WebHeloo  to Google Address Lookup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I change Source from \"WebHeloo\"  to \"Dev2CountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
  testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 129
@@ -423,178 +423,49 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool generate outputs incorrectly for xml")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Get Web Service Tool")]
-        public virtual void WebConnectorToolGenerateOutputsIncorrectlyForXml()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool generate outputs incorrectly for xml", ((string[])(null)));
-#line 161
-this.ScenarioSetup(scenarioInfo);
-#line 162
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 163
- testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
- testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 165
-    testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
- testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
- testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 168
- testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 169
- testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
- testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
- testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table10.AddRow(new string[] {
-                        "<DataList><rec Index=\"1\"><a>1</a><b>a</b></rec></DataList>"});
-#line 174
- testRunner.Then("Outputs appear as", ((string)(null)), table10, "Then ");
-#line 177
- testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
- testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
- testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table11.AddRow(new string[] {
-                        "DataList:Index",
-                        "[[DataListrecIndex]]"});
-            table11.AddRow(new string[] {
-                        "DataListreca",
-                        "[[DataListreca]]"});
-            table11.AddRow(new string[] {
-                        "DataListrecb",
-                        "[[DataListreca]]"});
-#line 180
- testRunner.And("output mappings are", ((string)(null)), table11, "And ");
-#line 185
- testRunner.And("Recordset Name equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool generate outputs for json")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Get Web Service Tool")]
-        public virtual void WebConnectorToolGenerateOutputsForJson()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool generate outputs for json", ((string[])(null)));
-#line 188
-this.ScenarioSetup(scenarioInfo);
-#line 189
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 190
- testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
- testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
-    testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
- testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
- testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
- testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 196
- testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
- testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 200
- testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table12.AddRow(new string[] {
-                        "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
-#line 201
- testRunner.Then("Outputs appear as", ((string)(null)), table12, "Then ");
-#line 204
- testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 205
- testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 206
- testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table13.AddRow(new string[] {
-                        "a",
-                        "[[rec().a]]"});
-            table13.AddRow(new string[] {
-                        "b",
-                        "[[rec().b]]"});
-#line 207
- testRunner.And("output mappings are", ((string)(null)), table13, "And ");
-#line 211
- testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool cancel generate outputs for")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Get Web Service Tool")]
         public virtual void WebConnectorToolCancelGenerateOutputsFor()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool cancel generate outputs for", ((string[])(null)));
-#line 214
+#line 163
 this.ScenarioSetup(scenarioInfo);
-#line 215
+#line 164
  testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 216
+#line 165
  testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 166
  testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 218
+#line 167
     testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 168
  testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 169
  testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 221
+#line 170
  testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 222
+#line 171
  testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
- testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 226
+#line 172
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 173
+ testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 174
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
  testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table14.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
-#line 227
- testRunner.Then("Outputs appear as", ((string)(null)), table14, "Then ");
-#line 230
+#line 176
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table10, "Then ");
+#line 179
  testRunner.When("I click Cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 231
+#line 180
  testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 232
+#line 181
  testRunner.And("Mapping is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -606,44 +477,159 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WebConnectorToolRe_GenerateOutputsFor()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool re-generate outputs for", ((string[])(null)));
-#line 236
+#line 185
 this.ScenarioSetup(scenarioInfo);
-#line 237
+#line 186
  testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 238
+#line 187
  testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 239
+#line 188
  testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 240
+#line 189
     testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
+#line 190
  testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
+#line 191
  testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 243
+#line 192
  testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 244
+#line 193
  testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 194
  testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 248
- testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 195
+ testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 196
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
+ testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table11.AddRow(new string[] {
+                        "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
+#line 198
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table11, "Then ");
+#line 201
+ testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 202
+ testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 203
+ testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table12.AddRow(new string[] {
+                        "a",
+                        "[[rec().a]]"});
+            table12.AddRow(new string[] {
+                        "b",
+                        "[[rec().b]]"});
+#line 204
+ testRunner.And("output mappings are", ((string)(null)), table12, "And ");
+#line 208
+ testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 209
+ testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 210
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 211
+ testRunner.And("I click Cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 212
+ testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table13.AddRow(new string[] {
+                        "a",
+                        "[[rec().a]]"});
+            table13.AddRow(new string[] {
+                        "b",
+                        "[[rec().b]]"});
+#line 213
+ testRunner.And("output mappings are", ((string)(null)), table13, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool remember previous values")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Get Web Service Tool")]
+        public virtual void WebConnectorToolRememberPreviousValues()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool remember previous values", ((string[])(null)));
+#line 220
+this.ScenarioSetup(scenarioInfo);
+#line 221
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 222
+ testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 223
+ testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 224
+    testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 225
+ testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 226
+ testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 227
+ testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 228
+ testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+ testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+ testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 231
+ testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 232
+ testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table14.AddRow(new string[] {
+                        "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
+#line 233
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table14, "Then ");
+#line 236
+ testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 237
+ testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 238
+ testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "Mapped From",
+                        "Mapped To"});
             table15.AddRow(new string[] {
-                        "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
+                        "a",
+                        "[[rec().a]]"});
+            table15.AddRow(new string[] {
+                        "b",
+                        "[[rec().b]]"});
+#line 239
+ testRunner.And("output mappings are", ((string)(null)), table15, "And ");
+#line 243
+ testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 244
+ testRunner.When("I change Source from \"WebHeloo\"  to \"Dev2CountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 245
+ testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 246
+ testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 247
+ testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
+ testRunner.And("Mappings is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
- testRunner.Then("Outputs appear as", ((string)(null)), table15, "Then ");
+ testRunner.When("I change Source from \"Dev2CountriesWebService\"  to \"WebHeloo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 250
+ testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 251
+ testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
- testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 253
- testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 254
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -655,123 +641,8 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
-#line 255
+#line 253
  testRunner.And("output mappings are", ((string)(null)), table16, "And ");
-#line 259
- testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 262
- testRunner.And("I click Cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
- testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table17.AddRow(new string[] {
-                        "a",
-                        "[[rec().a]]"});
-            table17.AddRow(new string[] {
-                        "b",
-                        "[[rec().b]]"});
-#line 264
- testRunner.And("output mappings are", ((string)(null)), table17, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool remember previous values")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Get Web Service Tool")]
-        public virtual void WebConnectorToolRememberPreviousValues()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool remember previous values", ((string[])(null)));
-#line 271
-this.ScenarioSetup(scenarioInfo);
-#line 272
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 273
- testRunner.And("I drag Web Get Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 274
- testRunner.Then("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 275
-    testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
- testRunner.And("Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
- testRunner.When("I Select WebHeloo as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 278
- testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 279
- testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
- testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
- testRunner.And("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
- testRunner.Then("Generate Outputs window is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 283
- testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table18.AddRow(new string[] {
-                        "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
-#line 284
- testRunner.Then("Outputs appear as", ((string)(null)), table18, "Then ");
-#line 287
- testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 288
- testRunner.Then("the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 289
- testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table19.AddRow(new string[] {
-                        "a",
-                        "[[rec().a]]"});
-            table19.AddRow(new string[] {
-                        "b",
-                        "[[rec().b]]"});
-#line 290
- testRunner.And("output mappings are", ((string)(null)), table19, "And ");
-#line 294
- testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
- testRunner.When("I change Source from WebHeloo  to Google Address Lookup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 296
- testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 297
- testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 298
- testRunner.And("Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 299
- testRunner.And("Mappings is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 300
- testRunner.Then("I change Source from Google Address Lookup  to WebHeloo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 301
- testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 302
- testRunner.And("Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
- testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table20.AddRow(new string[] {
-                        "a",
-                        "[[rec().a]]"});
-            table20.AddRow(new string[] {
-                        "b",
-                        "[[rec().b]]"});
-#line 304
- testRunner.And("output mappings are", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

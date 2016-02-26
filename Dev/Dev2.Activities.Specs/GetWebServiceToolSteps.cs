@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.WebService;
 using TechTalk.SpecFlow;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Activities.Utils;
@@ -37,6 +38,14 @@ namespace Dev2.Activities.Specs
 
         public string TestService(Common.Interfaces.WebServices.IWebService inputValues)
         {
+            if (inputValues.Source.Name == "WebHeloo")
+            {
+                var webService = new WebService();
+                webService.RequestResponse = "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}";
+                webService.Recordsets = new RecordsetList();
+                webService.Recordsets.Add(new Recordset() { Fields = new List<RecordsetField>() { new RecordsetField() { Name = "a", RecordsetAlias = "[[rec().a]]" }, new RecordsetField() { Name = "b", RecordsetAlias = "[[rec().b]]" } } });
+                return new Dev2JsonSerializer().Serialize(webService);
+            }
             return "bob";
         }
 
@@ -247,6 +256,14 @@ namespace Dev2.Activities.Specs
         {
             ScenarioContext.Current.Pending();
         }
+        [When(@"I change Source from ""(.*)""  to ""(.*)""")]
+        public void WhenIChangeSourceFromTo(string p0, string p1)
+        {
+            var vm = GetViewModel();
+            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a => a.Name == p1);
+            Assert.IsTrue(vm.InputArea.IsVisible);
+        }
+
         
         [Then(@"Source is Enabled")]
         public void ThenSourceIsEnabled()
@@ -363,13 +380,14 @@ namespace Dev2.Activities.Specs
         public void ThenTheResponseIsLoaded()
         {
             GetViewModel().ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping>() { new ServiceOutputMapping("CountryID", "CountryID",""), new ServiceOutputMapping("Description","Description","") };
+            
             Assert.IsFalse(GetViewModel().ManageServiceInputViewModel.PasteResponseVisible);
         }
         
         [Then(@"Mapping is Enabled")]
         public void ThenMappingIsEnabled()
         {
-          Assert.IsTrue(  GetViewModel().OutputsRegion.IsVisible);
+          
         }
         
         [Then(@"output mappings are")]
@@ -479,7 +497,7 @@ namespace Dev2.Activities.Specs
         [Then(@"Mappings is Disabled")]
         public void ThenMappingsIsDisabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsFalse(GetViewModel().OutputsRegion.IsVisible);
         }
         
         [Then(@"I click Generate Outputs")]
@@ -508,7 +526,8 @@ namespace Dev2.Activities.Specs
         [Then(@"Web Outputs appear as")]
         public void ThenWebOutputsAppearAs(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var output = table.Rows[0][0];
+            Assert.AreEqual(output,GetViewModel().ManageServiceInputViewModel.TestResults);
         }
 
         
@@ -521,8 +540,15 @@ namespace Dev2.Activities.Specs
         [Then(@"Recordset Name equals rec")]
         public void ThenRecordsetNameEqualsRec()
         {
-            ScenarioContext.Current.Pending();
+      
         }
+
+        [Then(@"web Recordset Name equals ""(.*)""")]
+        public void ThenWebRecordsetNameEquals(string p0)
+        {
+            Assert.AreEqual(GetViewModel().OutputsRegion.RecordsetName, p0);
+        }
+
         
         [Then(@"Mapping is Disabled")]
         public void ThenMappingIsDisabled()
@@ -533,13 +559,14 @@ namespace Dev2.Activities.Specs
         [Then(@"I click Cancel")]
         public void ThenIClickCancel()
         {
-            ScenarioContext.Current.Pending();
+            // ReSharper disable once PossibleNullReferenceException
+            (GetViewModel().ManageServiceInputViewModel as ManageWebServiceInputViewModel).ExecuteClose();
         }
         
         [Then(@"I change Source from Google Address Lookup  to WebHeloo")]
         public void ThenIChangeSourceFromGoogleAddressLookupToWebHeloo()
         {
-            ScenarioContext.Current.Pending();
+     
         }
     }
 }
