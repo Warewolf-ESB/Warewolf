@@ -207,7 +207,7 @@ Scenario: Format number with unknown scalar for rounding
 Scenario: Format number rounding with unknown scalar decimals value to show 
 	Given I have a number 788.894564545645
 	And I selected rounding "Normal" to 0 
-	And I want to show "[[var]]" decimals with value ""
+	And I want to show "[[var]]" decimals with values ""
 	When the format number is executed
 	Then the result 789 will be returned
 	And the execution has "NO" error
