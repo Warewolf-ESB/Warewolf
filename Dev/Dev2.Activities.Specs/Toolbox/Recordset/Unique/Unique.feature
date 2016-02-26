@@ -242,7 +242,7 @@ Scenario: Find unique records and assigning result in two variables
 	| 2 | [[b]] = 10,20,30 |
 
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Invalid expressions
 Given I have the following duplicated recordset
@@ -298,7 +298,8 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| InField                        | Return                          |
 	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
 
-#Complex Types
+#Complex Types WOLF-1042
+@ignore
 Scenario: Find unique records in a complex type
 	Given I have the following duplicated recordset
 	| rs             | val |

@@ -578,7 +578,7 @@ Examples:
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Split data using scalars and recordsets
 	Given A string to split with value '<String>'	
 	And assign to variable '<Variable>' split type '<Type>' at '<Using>' and Include 'Selected' and Escape ''

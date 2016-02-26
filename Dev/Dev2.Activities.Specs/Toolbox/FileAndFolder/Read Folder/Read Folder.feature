@@ -128,7 +128,7 @@ Scenario Outline: Read Folder file validation
 
 
 @ignore
-#Audit	
+#Audit Wolf-1419	
 Scenario Outline: Read Folder file at location with invalid directories	
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
@@ -153,7 +153,7 @@ Scenario Outline: Read Folder file at location with invalid directories
 	
 	
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Read Folder file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'

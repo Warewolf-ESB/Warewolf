@@ -296,6 +296,7 @@ namespace Dev2
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
         private int _daysToKeepTempFiles;
+        private PulseTracker _pulseTracker;
 
         // END OF GC MANAGEMENT
 
@@ -328,6 +329,8 @@ namespace Dev2
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
+            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
+            _pulseTracker.Start();
             _arguments = arguments ?? new string[0];
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
@@ -515,6 +518,7 @@ namespace Dev2
         void StartPulseLogger()
         {
             _pulseLogger.Start();
+            _pulseTracker.Start();
         }
 
         void PerformTimerActions(object state)

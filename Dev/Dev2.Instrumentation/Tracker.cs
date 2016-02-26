@@ -174,5 +174,12 @@ namespace Dev2.Instrumentation
                 Trace.WriteLine(format);
             }
         }
+
+        public static void OverriddenTrackEvent(TrackerEventGroup eventGroup, TrackerEventName executed, string eventValue)
+        {
+#if ! DEBUG
+            Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), executed.ToString(), eventValue, null));
+#endif
+        }
     }
 }

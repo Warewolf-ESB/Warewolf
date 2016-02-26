@@ -128,7 +128,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected DsfNativeActivity(bool isExecuteAsync, string displayName, IDebugDispatcher debugDispatcher)
         {
-            _resourceCatalog = ResourceCatalog.Instance;
             if(debugDispatcher == null)
             {
                 throw new ArgumentNullException("debugDispatcher");
@@ -147,6 +146,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public IResourceCatalog ResourceCatalog
+        {
+            protected get
+            {
+                return _resourceCatalog ?? Dev2.Runtime.Hosting.ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
+            }
+        }
 
         #region CacheMetadata
 
@@ -644,7 +655,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Guid remoteID;
                 Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
-                var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                var res = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 string name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
                 _debugState.Server = name;
             }
@@ -667,7 +678,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string name;
             if(remoteID != Guid.Empty)
             {
-                var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 if(resource != null)
                 {
                     name = resource.ResourceName;
@@ -720,10 +731,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-        public  void SetResourceCatalog(IResourceCatalog catalogue)
-        {
-            _resourceCatalog = catalogue;
-        }
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
         {
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
