@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FormatNumber", "In order to round off numbers\r\nAs a Warewolf user\r\nI want a tool that will aid me" +
-                    " to do so", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FormatNumber", "In order to round off numbers\nAs a Warewolf user\nI want a tool that will aid me t" +
+                    "o do so", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -688,7 +688,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 209
  testRunner.And("I selected rounding \"Normal\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
- testRunner.And("I want to show \"[[var]]\" decimals with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I want to show \"[[var]]\" decimals with values \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 212
