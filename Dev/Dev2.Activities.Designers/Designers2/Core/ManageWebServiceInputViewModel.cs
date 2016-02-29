@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
                     TestResults = responseService.RequestResponse;
-                    _recordsetList =  responseService.Recordsets;
+                    _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
                         var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
@@ -125,9 +125,9 @@ namespace Dev2.Activities.Designers2.Core
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
+                _generateOutputArea.IsVisible = true;
                 _generateOutputArea.Outputs = outputMapping;
                 
-                _generateOutputArea.IsVisible = true;
                 
                 if (TestResults != null)
                 {
@@ -168,7 +168,6 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 _viewmodel.OutputsRegion.RecordsetName = string.Empty;
-                _viewmodel.OutputsRegion.Outputs.Clear();
                 if(_recordsetList != null)
                 {
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
@@ -220,17 +219,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            if (_viewmodel.OutputsRegion.Outputs != null)
+            _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+            if (TestResults != null)
             {
-                _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
-                if (TestResults != null)
-                {
-                    TestResultsAvailable = TestResults != null;
-                    IsTesting = false;
-                }
-                ResetOutputsView();
-                OnHeightChanged(this);
+                TestResultsAvailable = TestResults != null;
+                IsTesting = false;
             }
+            ResetOutputsView();
+            OnHeightChanged(this);
         }
 
         public IGenerateInputArea InputArea
