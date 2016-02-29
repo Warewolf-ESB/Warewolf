@@ -4241,6 +4241,49 @@ Scenario: backward Compatiblity2
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
+
+Scenario: Dual Query
+	Given I have a workflow "DualSelectStatements"
+	And "DualSelectStatements" contains "Testing\DbIFQuery" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                         | To Variable |
+      | [[ID]]           | rowID         | [[dbo_DuelQueryReturnMultiple().firstName]] | firstName   |
+      |                  |               | [[dbo_DuelQueryReturnMultiple().lastName]]  | lastName    |
+	When "DualSelectStatements" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Dual Query MYSQL
+	Given I have a workflow "DualQuery"
+	And "DualQuery" contains "Testing\DualQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| CountryID                 | Description                 | ID                 |
+	| [[DualQuery().CountryID]] | [[DualQuery().Description]] | [[DualQuery().ID]] |
+	When "DualQuery" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | username                     | password                     | lastAccessDate                     |
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | [[dbo_DualQuery().username]] | [[dbo_DualQuery().password]] | [[dbo_DualQuery().lastAccessDate]] |
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement which returns different results based on input
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 1     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | 
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | 
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
 #Unknown spec possibly made by Leon
 
 # Scenario: Exceution Engine Test with number of runs
