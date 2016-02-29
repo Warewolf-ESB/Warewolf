@@ -8,123 +8,115 @@
 Scenario: Open new Web Tool
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
+	And Edit is Disabled
+	When I Select "WebHeloo" as a web Source
+	Then Header is Enabled
+	And  Header appears as
+	| Header | Value |
 	And Edit is Enabled
-	When I Select WebHeloo as Source
-	And Request header is enabled
-	And Request Url is enabled
-	And Generate Outputs is enabled
-	And Outputs are
+	And  Body is Enabled 
+	And Url is Visible
+	And Query is Enabled
+	And Generate Outputs is Enabled
+	And mapped outputs are
 	| Output | Output Alias |
-	And Recordset is ""
-	And there are "no" validation errors of "" 
-	
-
-
 
 Scenario: Create Web Service with different methods
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
-	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	And Edit is Disabled
+	When I Select "Dev2CountriesWebService" as a web Source
 	Then Header is Enabled
 	And  Header appears as
 	| Header | Value |
-	And  Body is Enabled 
-	And Url is Enabled
+	And Body is Enabled 
+	And Url is Visible
+	And Edit is Enabled
 	And Query is Enabled
 	And Generate Outputs is Enabled
-	When I click "Generate Outputs"
-	Then the Generate Outputs window is opened
-	And Variables is Enabled
-	When Test Variables is Successful
+	When I click Generate Outputs
+	Then the Generate Outputs window is shown
+	And Variables are Enabled
+	When Test Inputs is Successful
 	Then the response is loaded
 	When I click Done
 	Then Mapping is Enabled
-	And output mappings are
-	| Output      | Output Alias |
-	| CountryID   | CountryID    |
-	| Description | Description  |
-	And "Done" is "Enabled"
+	And mapped outputs are
+	| Output      | Output Alias    |
+	| CountryID   | [[CountryID]]   |
+	| Description | [[Description]] |
 	
 
 
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
-	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	When I Select "Dev2CountriesWebService" as a web Source
 	Then Header is Enabled
-	And Body is Visible 
-	And Url is Visible 
-	And Query is Visible 
+	And Body is Enabled 
+	And Url is Visible
+	And Query is Enabled
 	And Generate Outputs is Enabled
-	And Query String equals ?extension=[[extension]]&prefix=[[prefix]]
-	And Url as http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx 
-	And I edit the Header as
-         | name  | Value |
+	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Query String
+	And Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
+	And I add Header as
+         | Name  | Value |
          | [[a]] | T     |
 	When I click Generate Outputs
-	Then the Generate Outputs window is opened
-	And Inputs is Enabled
+	Then the Generate Outputs window is shown
+	And Input variables are
+	| Name  |
+	| [[a]] |
+	| [[extension]] |
+	| [[prefix]] |
 	And Test is Enabled
 	And Paste is Enabled
-	And I Paste into Response
 	When Test Inputs is Successful
 	And I click Done
 	Then Mapping is Enabled
-    Then service input mappings are
-	| Input     | Default Value | Required Field | Empty is Null |
-	| extension | json          |                |               |
-	| prefix    | a             |                |               |
-	| [[a]]     | T             |                |               |
-
- 	
+    And mapped outputs are
+	| Output      | Output Alias    |
+	| CountryID   | [[CountryID]]   |
+	| Description | [[Description]] |
 
  Scenario: Editing Web Service
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
-	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	When I Select "Dev2CountriesWebService" as a web Source
 	And New is Enabled
 	And Edit is Enabled
 	When I click Edit
-	Then the Dev2CountriesWebService Source tab is opened
-
+	Then the "Dev2CountriesWebService" Source tab is opened
 
 Scenario: Changing Sources 
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
-	And Edit is Enabled
-	When I Select WebHeloo as Source
+	When I Select "WebHeloo" as a web Source
 	Then Header is Enabled
-	And Url is Visible 
+	And Body is Enabled 
+	And Url is Visible
+	And Query is Enabled
 	And Generate Outputs is Enabled
 	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
-	|                               |
-	| {"rec" : [{"a":"1","b":"a"}]} |
+	Then the Generate Outputs window is shown
+	When Test Inputs is Successful
+	Then Response appears as "{"rec" : [{"a":"1","b":"a"}]}"
 	When I click Done
-	Then the response is loaded
-	And Mapping is Enabled
-	And output mappings are
+	Then Mapping is Enabled
+	And mapped outputs are
 	| Mapped From | Mapped To   |
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
-	When I change Source from WebHeloo  to Google Address Lookup 
+	When I Select "Google Address Lookup" as a web Source
 	Then Header is Enabled
-	And Url is Enabled 
+	And Body is Enabled 
+	And Url is Visible
+	And Query is Enabled
 	And Generate Outputs is Enabled
 	And Mappings is Disabled
 
@@ -134,22 +126,17 @@ Scenario: Changing Sources
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-	Then Source is Enabled
     And New is Enabled
 	And Edit is Enabled
-	When I Select TestingReturnText as Source
+	When I Select "TestingReturnText" as a web Source
 	Then Header is Enabled
 	And  Url is Visible 
 	And Generate Outputs is Enabled
 	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And Variables is Enabled 
-	And I click Test
-	When Test is Successful
-	And Outputs is Enabled 
-	Then the response is loaded
+	Then the Generate Outputs window is shown
+	When Test Inputs is Successful
 	And I click Done
-	And Mapping is Enabled
-	And output mappings are
+	Then Mapping is Enabled
+	And mapped outputs are
 	| Output   | Output Alias |
 	| Response | Response     |

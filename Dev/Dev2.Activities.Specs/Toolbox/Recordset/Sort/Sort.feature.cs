@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Sort", "In order to sort a recordset\r\nAs a Warewolf user\r\nI want a tool I can use to arra" +
-                    "nge records in either ascending or descending order", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Sort", "In order to sort a recordset\nAs a Warewolf user\nI want a tool I can use to arrang" +
+                    "e records in either ascending or descending order", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -750,10 +750,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs(*).a]],[[rs(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Backwards")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "You can only sort on one field at a time")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant0()
         {
-            this.Sort2ColumnsBackwards("[[rs(*).a]],[[rs(*).a]]", "Backwards", "You can only sort on one field at a time", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[rs(*).a]],[[rs(*).a]]", "Backwards", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -762,10 +762,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs(*).a]],[[rs(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "You can only sort on one field at a time")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant1()
         {
-            this.Sort2ColumnsBackwards("[[rs(*).a]],[[rs(*).a]]", "Forward", "You can only sort on one field at a time", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[rs(*).a]],[[rs(*).a]]", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -774,10 +774,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs(*)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Backwards")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Please provide a field to sort on")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant2()
         {
-            this.Sort2ColumnsBackwards("[[rs(*)]]", "Backwards", "Please provide a field to sort on", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[rs(*)]]", "Backwards", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -786,10 +786,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs(*)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Please provide a field to sort on")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant3()
         {
-            this.Sort2ColumnsBackwards("[[rs(*)]]", "Forward", "Please provide a field to sort on", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[rs(*)]]", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -798,10 +798,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[va]] = tree")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets can be sorted")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant4()
         {
-            this.Sort2ColumnsBackwards("[[va]] = tree", "Forward", "Only recordsets can be sorted", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[va]] = tree", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -810,10 +810,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "No recordset given")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant5()
         {
-            this.Sort2ColumnsBackwards("\"\"", "Forward", "No recordset given", ((string[])(null)));
+            this.Sort2ColumnsBackwards("\"\"", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -822,10 +822,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "asdas")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets can be sorted")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant6()
         {
-            this.Sort2ColumnsBackwards("asdas", "Forward", "Only recordsets can be sorted", ((string[])(null)));
+            this.Sort2ColumnsBackwards("asdas", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -834,10 +834,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets can be sorted")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant7()
         {
-            this.Sort2ColumnsBackwards("99", "Forward", "Only recordsets can be sorted", ((string[])(null)));
+            this.Sort2ColumnsBackwards("99", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -846,10 +846,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:direction", "Forward")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets can be sorted")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordsets that contain recordset columns can be sorted")]
         public virtual void Sort2ColumnsBackwards_Variant8()
         {
-            this.Sort2ColumnsBackwards("[[a]]", "Forward", "Only recordsets can be sorted", ((string[])(null)));
+            this.Sort2ColumnsBackwards("[[a]]", "Forward", "Only recordsets that contain recordset columns can be sorted", ((string[])(null)));
         }
         
         public virtual void SortRecordset(string input, string direction, string result, string[] exampleTags)

@@ -756,7 +756,7 @@ and sortRecset (exp:string) (desc:bool) (update:int)  (env:WarewolfEnvironment) 
                                                           let recset = Map.remove b.Name env.RecordSets  
                                                           let recsets =   Map.add  b.Name sorted recset        
                                                           {env with RecordSets = recsets }
-                |_-> failwith "only recordsets can be sorted"
+                |_-> failwith "Only recordsets that contain recordset columns can be sorted"
 
 let isNothing (a:WarewolfEvalResult) =
    match a with
