@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.UniqueRecords
         public UniqueRecordsDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
         }
 
         public override void Validate()
