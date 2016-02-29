@@ -28,9 +28,9 @@ Scenario: Create Web Service
 	Then Source is Enabled
     And New is Enabled
 	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	When I Select "Dev2CountriesWebService" as web Source
 	Then Header is Enabled
-	And  Header appears as
+	And  Header is added as
 	| Header | Value |
 	| [[a]]  | test  |
 	And Url is Enabled
@@ -52,14 +52,14 @@ Scenario: Create Web Service
 	And "Done" is "Enabled"
 	
 
- Scenario: Editing Web Service
+ Scenario: Editing Web Service Source
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
 	Then Source is Enabled
     And New is Enabled
-	And Edit is Enabled
+	And Edit is Disabled
 	When I Select Dev2CountriesWebService as Source
-	And New is Enabled
+	Then New is Enabled
 	And Edit is Enabled
 	When I click Edit
 	Then the Dev2CountriesWebService Source tab is opened
@@ -72,30 +72,29 @@ Scenario: Adding parameters in request headers is updating variables
 	Then Source is Enabled
     And New is Enabled
 	And Edit is Enabled
-	When I Select Dev2CountriesWebService as Source
+	When I Select "Dev2CountriesWebService" as web Source
 	Then Header is Enabled
 	And  Url is Visible 
 	And  Query is Visible 
 	And Generate Outputs is Enabled
-	And Query String equals ?extension=[[extension]]&prefix=[[prefix]]
-	And Url as http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx 
-	And I edit the Header as
-         | name  | Value |
-         | [[a]] | T     |
+	And Query String equals "?extension=[[extension]]&prefix=[[prefix]]"
+	And Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx" 
+	And  Header is added as
+	| Header | Value |
+	| [[a]]  | test  |
 	When I click Generate Outputs
 	Then the Generate Outputs window is opened
-	And Inputs is Enabled
-	And Test is Enabled
-	And Paste is Enabled
-	And I Paste into Response
-	When Test Inputs is Successful
+	And Web Inputs is Enabled
+	And Web Test is Enabled
+	And Web Paste is Enabled
+	When Test Request Variables is Successful
 	And I click Done
 	Then Mapping is Enabled
-    Then service input mappings are
-	| Input     | Default Value | Required Field | Empty is Null |
-	| extension | json          |                |               |
-	| prefix    | a             |                |               |
-	| [[a]]     | T             |                |               |
+		And output mappings are
+	| Output      | Output Alias |
+	| CountryID   | CountryID    |
+	| Description | Description  |
+	And "Done" is "Enabled"
 
  	
 
@@ -112,10 +111,10 @@ Scenario: Changing Sources
 	Then Header is Enabled
 	And Url is Visible 
 	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
+	When Test Request Variables is Successful
+	Then Web Outputs appear as
 	|                               |
 	| {"rec" : [{"a":"1","b":"a"}]} |
 	When I click Done
@@ -125,7 +124,7 @@ Scenario: Changing Sources
 	| Mapped From | Mapped To   |
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
-	When I change Source from WebHeloo  to Google Address Lookup 
+	When I change Source from "WebHeloo"  to "Dev2CountriesWebService" 
 	Then Header is Enabled
 	And Url is Enabled 
 	And Generate Outputs is Enabled
@@ -159,57 +158,6 @@ Scenario: Web Connector Tool returns text
 	| Response | Response     |
 
  
-Scenario: Web Connector Tool generate outputs incorrectly for xml
-	Given I open New Workflow
-	And I drag Web Get Request Connector Tool onto the design surface
-	Then Source is Enabled
-    And New is Enabled
-	And Edit is Enabled
-	When I Select WebHeloo as Source
-	Then Header is Enabled
-	And  Url is Visible 
-	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
-	|                                                            |
-	| <DataList><rec Index="1"><a>1</a><b>a</b></rec></DataList> |
-	When I click "Done"
-	Then the response is loaded
-	And "Mapping" is "Enabled"
-	And output mappings are
-	| Mapped From    | Mapped To            |
-	| DataList:Index | [[DataListrecIndex]] |
-	| DataListreca   | [[DataListreca]]     |
-	| DataListrecb   | [[DataListreca]]     |
-	And Recordset Name equals ""
-
-
-Scenario: Web Connector Tool generate outputs for json
-	Given I open New Workflow
-	And I drag Web Get Request Connector Tool onto the design surface
-	Then Source is Enabled
-    And New is Enabled
-	And Edit is Enabled
-	When I Select WebHeloo as Source
-	Then Header is Enabled
-	And  Url is Visible 
-	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
-	|                               |
-	| {"rec" : [{"a":"1","b":"a"}]} |
-	When I click Done
-	Then the response is loaded
-	And Mapping is Enabled
-	And output mappings are
-	| Mapped From | Mapped To   |
-	| a           | [[rec().a]] |
-	| b           | [[rec().b]] |
-	And Recordset Name equals rec
 
 
 Scenario: Web Connector Tool cancel generate outputs for 
@@ -221,11 +169,11 @@ Scenario: Web Connector Tool cancel generate outputs for
 	When I Select WebHeloo as Source
 	Then Header is Enabled
 	And Url is Visible 
-	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
+	Then the Generate Outputs window is opened
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
 	And I click Test
-	Then Outputs appear as
+	Then Web Outputs appear as
 	|                               |
 	| {"rec" : [{"a":"1","b":"a"}]} |
 	When I click Cancel
@@ -244,10 +192,10 @@ Scenario: Web Connector Tool re-generate outputs for
 	Then Header is Enabled
 	And  Url is Visible 
 	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
+	When Test Request Variables is Successful
+	Then Web Outputs appear as
 	|                               |
 	| {"rec" : [{"a":"1","b":"a"}]} |
 	When I click Done
@@ -258,8 +206,8 @@ Scenario: Web Connector Tool re-generate outputs for
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
 	And Recordset Name equals rec
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
 	And I click Cancel
 	And Mapping is Enabled
 	And output mappings are
@@ -279,10 +227,10 @@ Scenario: Web Connector Tool remember previous values
 	Then Header is Enabled
 	And  Url is Visible 
 	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then Generate Outputs window is Enabled
-	And I click Test
-	Then Outputs appear as
+	When I click Generate Outputs
+	Then the Generate Outputs window is opened
+	When Test Request Variables is Successful
+	Then Web Outputs appear as
 	|                               |
 	| {"rec" : [{"a":"1","b":"a"}]} |
 	When I click Done
@@ -293,12 +241,12 @@ Scenario: Web Connector Tool remember previous values
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
 	And Recordset Name equals rec
-	When I change Source from WebHeloo  to Google Address Lookup
+	When I change Source from "WebHeloo"  to "Dev2CountriesWebService" 
 	Then Header is Enabled
 	And  Url is Visible 
 	And Generate Outputs is Enabled
 	And Mappings is Disabled
-	Then I change Source from Google Address Lookup  to WebHeloo
+	When I change Source from "Dev2CountriesWebService"  to "WebHeloo" 
 	Then Header is Enabled
 	And  Url is Visible 
 	And Mapping is Enabled
