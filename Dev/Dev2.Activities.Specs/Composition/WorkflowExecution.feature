@@ -3848,7 +3848,7 @@ Examples:
 #Need steps to create the source as the service will not be created for this
 Scenario Outline: Database SqlDB  service using * indexes 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
 	  |                  |               | [[rec(*).email]]    | <emailVariable> |
@@ -4038,10 +4038,10 @@ Examples:
 
  Scenario: Executing Asynchrounous testing workflow volume
 	  Given I have a workflow "Testing - Async Test Master Testv"
-	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
+	  And "Testing - Async Test Master Testv" contains "Volume Async Test" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |
 	  | Volume           | 1000          |                     |             |
-	  When "Testing - Async Test Master Testc" is executed
+	  When "Testing - Async Test Master Testv" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
 	  |                      |
@@ -4472,37 +4472,6 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Date(1).Difference]] = -14 |
 	  | [[Date(2).Difference]] = 13  |
 
-#Wolf-402
-
-Scenario: Ensure that End this Workflow is working 
-	  Given I have a workflow "EndNestedWorkflows"
-	  And "EndNestedWorkflows" contains "Testing/Bugs/wolf-402" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "EndNestedWorkflows" is executed
-	Then the workflow execution has "NO" error
-
-
-#Wolf-829
-
-Scenario: Xml Serialisation bug when returning xml
-	Given I have a workflow "XmlSerialisation"
-	And "XmlSerialisation" contains "Testing/Bugs/wolf-829" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	When "XmlSerialisation" is executed
-	Then the workflow execution has "NO" error
-
-#Wolf-860
-
-Scenario: Mixing Scalar And Recordset bug 
-	Given I have a workflow "MixingScalarAndRecordset"
-	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	When "MixingScalarAndRecordset" is executed
-	Then the workflow execution has "NO" error
-
 Scenario: ForEach using * and web get request with error
 	  Given I have a workflow "Spec - Test For Each  Get"
 	  And "Spec - Test For Each  Get" contains "GetRequestErrorHandling" from server "localhost" with mapping as
@@ -4551,13 +4520,3 @@ Scenario: ForEach using * and Database Connector
 	  And the 'ForeachDBCon' in Workflow 'DBConnInForEach_3' debug outputs as
 	  |                   |
 	  | [[Result]] = pass |
-
-
-#Wolf-1370
-Scenario: Mixing Scalar And Recordset bug 2
-	Given I have a workflow "OutterWorkflow"
-	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-      | [[reg(*).a]]     | [[a]]         | [[rec().a]]         | [[re]]      |
-	When "OutterWorkflow" is executed
-	Then the workflow execution has "NO" error
