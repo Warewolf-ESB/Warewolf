@@ -169,10 +169,13 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _viewmodel.OutputsRegion.RecordsetName = string.Empty;
                 _viewmodel.OutputsRegion.Outputs.Clear();
-                var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
-                if (recSet != null)
+                if(_recordsetList != null)
                 {
-                    _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
+                    var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
+                    if (recSet != null)
+                    {
+                        _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
+                    }
                 }
                 if (OutputArea != null)
                 {
