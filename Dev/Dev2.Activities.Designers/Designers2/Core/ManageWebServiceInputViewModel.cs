@@ -45,6 +45,7 @@ namespace Dev2.Activities.Designers2.Core
         IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
+        private RecordsetList _recordsetList;
         private const double BaseHeight = 60;
 
         public ManageWebServiceInputViewModel(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
@@ -105,35 +106,29 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var testResult = _serverModel.TestService(Model);
                 var serializer = new Dev2JsonSerializer();
-                RecordsetList recordsetList;
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
                     TestResults = responseService.RequestResponse;
-                    recordsetList = responseService.Recordsets;
-                    if (recordsetList.Any(recordset => recordset.HasErrors))
+                    _recordsetList =  responseService.Recordsets;
+                    if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
-                        var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
+                        var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
                         throw new Exception(errorMessage);
                     }
 
                     Description = responseService.GetOutputDescription();
                 }
                 // ReSharper disable MaximumChainedReferences
-                var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
-                _viewmodel.OutputsRegion.RecordsetName = string.Empty;
-                var recSet = recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
-                if (recSet != null)
-                {
-                    _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
-                }
-
-                _generateOutputArea.IsVisible = true;
                 _generateOutputArea.Outputs = outputMapping;
+                
+                _generateOutputArea.IsVisible = true;
+                
                 if (TestResults != null)
                 {
                     TestResultsAvailable = TestResults != null;
@@ -172,7 +167,13 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
+                _viewmodel.OutputsRegion.RecordsetName = string.Empty;
                 _viewmodel.OutputsRegion.Outputs.Clear();
+                var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
+                if (recSet != null)
+                {
+                    _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
+                }
                 if (OutputArea != null)
                 {
                     foreach (var serviceOutputMapping in OutputArea.Outputs)
@@ -216,15 +217,17 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.Outputs.Clear();
-            _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
-            if (TestResults != null)
+            if (_viewmodel.OutputsRegion.Outputs != null)
             {
-                TestResultsAvailable = TestResults != null;
-                IsTesting = false;
+                _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                if (TestResults != null)
+                {
+                    TestResultsAvailable = TestResults != null;
+                    IsTesting = false;
+                }
+                ResetOutputsView();
+                OnHeightChanged(this);
             }
-            ResetOutputsView();
-            OnHeightChanged(this);
         }
 
         public IGenerateInputArea InputArea

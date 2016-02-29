@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -47,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             bool calledOk = false;
 
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity()
+            var act = new DsfWebGetActivity
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
@@ -303,6 +304,50 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ManageWebServiceInputViewModel_ExecuteClose")]
+        public void ManageWebServiceInputViewModel_ExecuteClose_WhenHasOutputs_ShouldNotClearOutputs()
+        {
+            //------------Setup for test--------------------------
+            var mod = new MyWebModel();
+
+            var act = new DsfWebGetActivity();
+
+            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var inputview = new ManageWebServiceInputViewModel(webget, mod);
+            inputview.Model = new WebServiceDefinition();
+            //-----------Preconditions-----------------------
+            inputview.ExecuteTest();
+            Assert.IsTrue(inputview.InputArea.IsVisible);
+            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsNotNull(inputview.OutputArea.Outputs);
+            inputview.ExecuteOk();
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+            Assert.AreEqual(405, webget.DesignMaxHeight);
+            Assert.AreEqual(405, webget.DesignMinHeight);
+            Assert.AreEqual(405, webget.DesignHeight);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            //------------Execute Test---------------------------
+            inputview.ExecuteTest();
+            inputview.ExecuteClose();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+            Assert.AreEqual(405, webget.DesignMaxHeight);
+            Assert.AreEqual(405, webget.DesignMinHeight);
+            Assert.AreEqual(405, webget.DesignHeight);
+            Assert.IsTrue(webget.SourceRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
         }
 
         [TestMethod]
