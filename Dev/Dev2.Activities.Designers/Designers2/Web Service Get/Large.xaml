@@ -13,6 +13,8 @@
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -165,7 +167,11 @@
                         <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
                         <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
-                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
                         <Button x:Name="TestInputButton"
                                 Grid.Row="2"
                                 Grid.Column="1"
@@ -175,7 +181,11 @@
                                 ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                                 Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                 HorizontalAlignment="Right"
-                                Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
+                                Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:Core.WebServiceTestCommandHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                     </Grid>
                 </Grid>
                 
