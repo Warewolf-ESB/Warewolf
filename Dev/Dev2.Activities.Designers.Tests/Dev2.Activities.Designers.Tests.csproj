@@ -113,6 +113,7 @@
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />

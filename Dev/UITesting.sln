@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionSc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CodedUI.SpecGenerator", "Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj", "{0D2942AB-2C34-43F9-BB49-8BABA58A660A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UITestExtension", "Warewolf.Studio.UITestExtension\Warewolf.Studio.UITestExtension.csproj", "{4278D2F3-3E9F-4031-9983-DD88C77F6119}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
