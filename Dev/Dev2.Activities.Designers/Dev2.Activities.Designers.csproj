@@ -266,6 +266,9 @@
       <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
+    <Compile Include="Designers2\DropBox\Upload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -576,6 +579,9 @@
     </Compile>
     <Compile Include="Designers2\Replace\ReplaceDesignerViewModel.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Replace\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Replace\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
@@ -1036,6 +1042,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DropBox\Upload\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DropBox\Upload\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1319,6 +1329,10 @@
     <Page Include="Designers2\Replace\ReplaceDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Replace\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Replace\Small.xaml">
       <SubType>Designer</SubType>
