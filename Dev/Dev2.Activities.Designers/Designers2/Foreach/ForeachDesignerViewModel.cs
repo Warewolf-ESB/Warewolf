@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.Foreach
         {
             ForeachTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enForEachType>();
             SelectedForeachType = Dev2EnumConverter.ConvertEnumValueToString(ForEachType);
+            AddTitleBarLargeToggle();
         }
 
         public IList<string> ForeachTypes { get; private set; }
