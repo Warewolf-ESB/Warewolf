@@ -446,7 +446,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
-                Method = WebRequestMethod.Post
+                Method = WebRequestMethod.Delete
 
             };
             return webServiceDefinition;
