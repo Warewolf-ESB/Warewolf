@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.Script
         {
             ScriptTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             SelectedScriptType = Dev2EnumConverter.ConvertEnumValueToString(ScriptType);
+            AddTitleBarLargeToggle();
         }
 
         public IList<string> ScriptTypes { get; private set; }
