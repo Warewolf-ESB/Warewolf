@@ -388,12 +388,19 @@
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
     <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">
+      <DependentUpon>PerfCounterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
     <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
@@ -596,6 +603,10 @@
     <Page Include="Settings\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Perfcounters\PerfCounterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Scheduler\SchedulerView.xaml">
       <SubType>Designer</SubType>
@@ -814,6 +825,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

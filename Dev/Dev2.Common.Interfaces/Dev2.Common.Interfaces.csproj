@@ -230,6 +230,8 @@
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPasteView.cs" />
+    <Compile Include="IPerformanceCountersByMachine.cs" />
+    <Compile Include="IPerformanceCountersByResource.cs" />
     <Compile Include="IPluginAction.cs" />
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
@@ -257,7 +259,10 @@
     <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
     <Compile Include="Monitoring\IPerformanceCounterPersistence.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterRepository.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterTo.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterRegister.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterLocater.cs" />
     <Compile Include="Monitoring\WarewolfPerfCounterType.cs" />

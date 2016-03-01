@@ -27,6 +27,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
+using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Scheduler;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
@@ -391,6 +392,7 @@ namespace Dev2.Settings
                 IsLoading = false;
                 SecurityViewModel = CreateSecurityViewModel();
                 LogSettingsViewModel = CreateLoggingViewModel();
+                PerfmonViewModel = CreatePerfmonViewModel();
 
                 AddPropertyChangedHandlers();
 
@@ -401,10 +403,18 @@ namespace Dev2.Settings
             });            
         }
 
+        public PerfcounterViewModel PerfmonViewModel { get; set; }
+
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
             return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
         }
+
+        protected virtual PerfcounterViewModel CreatePerfmonViewModel()
+        {
+            return new PerfcounterViewModel(Settings.PerfCounters, _parentWindow, CurrentEnvironment);
+        }
+
 
         protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
@@ -612,6 +622,13 @@ namespace Dev2.Settings
             get
             {
                 return ResourceType.Settings;
+            }
+        }
+        public string PerfmonHeader
+        {
+            get
+            {
+                return "Performance Counters";
             }
         }
     }
