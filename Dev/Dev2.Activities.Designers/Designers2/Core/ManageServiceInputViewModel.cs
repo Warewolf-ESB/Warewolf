@@ -14,14 +14,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Common.Interfaces;
+//using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ToolBase;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManageServiceInputViewModel : BindableBase, IManageDatabaseInputViewModel
+    public class ManageServiceInputViewModel : BindableBase
     {
         private ICollection<IServiceInput> _inputs;
         private DataTable _testResults;
@@ -87,6 +89,14 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged(() => OkSelected);
             }
         }
+        public IGenerateOutputArea OutputArea { get; set; }
+        public IOutputDescription Description { get; set; }
+        public IGenerateInputArea InputArea { get; set; }
+
+        public void SetInitialVisibility()
+        {
+        }
+
         public Action TestAction
         {
             get
@@ -164,5 +174,27 @@ namespace Dev2.Activities.Designers2.Core
                 _manageServiceInputView.RequestClose();
             }
         }
+
+        #region Implementation of IToolRegion
+
+        public string ToolRegionName { get; set; }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
+        //public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
+        //public IList<string> Errors { get; private set; }
+
+        public IToolRegion CloneRegion()
+        {
+            return null;
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+        }
+
+        #endregion
     }
 }

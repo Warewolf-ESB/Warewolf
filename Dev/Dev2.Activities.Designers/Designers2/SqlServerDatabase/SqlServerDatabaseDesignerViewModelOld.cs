@@ -41,15 +41,14 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Warewolf.Core;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 // ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
-namespace Dev2.Activities.Designers2.MySqlDatabase
+namespace Dev2.Activities.Designers2.SqlServerDatabase
 {
-    public class MySqlDatabaseDesignerViewModel : CustomToolViewModelBase<IDbSource>, IHandle<UpdateResourceMessage>
+    public class SqlServerDatabaseDesignerViewModelOld : CustomToolViewModelBase<IDbSource>, IHandle<UpdateResourceMessage>
     {
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
         readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
@@ -57,36 +56,50 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
-        
+
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
-        readonly IEventAggregator _eventPublisher;
+        IEventAggregator _eventPublisher;
 
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _isDisposed;
         const string DoneText = "Done";
         const string FixText = "Fix";
-        readonly bool _isInitializing;
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel())
-        {
-        }
-
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
-                                        IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel())
-        {
-        }
-
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,ManageServiceInputViewModel manageServiceInputViewModel)
+        bool _isInitializing;
+        public SqlServerDatabaseDesignerViewModelOld(ModelItem modelItem, IContextualResourceModel rootModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+        }
 
+        public SqlServerDatabaseDesignerViewModelOld(ModelItem modelItem, IContextualResourceModel rootModel,
+                                        IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
+            : base(modelItem)
+        {
+            AddTitleBarMappingToggle();
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+        }
+
+        public SqlServerDatabaseDesignerViewModelOld(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, ManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+            : base(modelItem)
+        {
+            AddTitleBarMappingToggle();
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, asyncWorker, manageServiceInputViewModel, dbServiceModel);
+        }
+
+        private void InitialiseViewModel(IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, ManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)
+        {
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -142,41 +155,41 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             InitializeValidationService(_environment);
             InitializeLastValidationMemo(_environment);
             ManageServiceInputViewModel = manageServiceInputViewModel;
-            if(_environment != null)
+            if (_environment != null)
             {
                 _isInitializing = true;
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var server = shellViewModel.ActiveServer;
-                _dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository,server.QueryProxy,shellViewModel,server);
+
+
+                _dbServiceModel = dbServiceModel;
                 NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(_dbServiceModel.CreateNewSource);
-                EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource),CanEditSource);               
+                EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => _dbServiceModel.EditSource(SelectedSource), CanEditSource);
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    if(_selectedProcedure != null)
+                    if (_selectedProcedure != null)
                     {
                         var keepSelectedProcedure = _selectedProcedure.Name;
                         Procedures = _dbServiceModel.GetActions(_selectedSource);
-                        if(keepSelectedProcedure != null)
+                        if (keepSelectedProcedure != null)
                         {
                             SelectedProcedure = Procedures.FirstOrDefault(action => action.Name == ProcedureName);
                         }
                     }
                     IsRefreshing = false;
-                },CanRefresh);
+                }, CanRefresh);
                 var dbSources = _dbServiceModel.RetrieveSources();
-                Sources = dbSources.Where(source => source!=null && source.Type==enSourceType.MySqlDatabase).ToObservableCollection();
+                Sources = dbSources.Where(source => source != null && source.Type == enSourceType.SqlDatabase).ToObservableCollection();
                 SourceVisible = true;
-                if(SourceId != Guid.Empty)
+                if (SourceId != Guid.Empty)
                 {
                     SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
-                    if(SelectedSource != null)
+                    if (SelectedSource != null)
                     {
                         FriendlySourceNameValue = SelectedSource.Name;
-                        if(!string.IsNullOrEmpty(ProcedureName))
+                        if (!string.IsNullOrEmpty(ProcedureName))
                         {
                             SelectedProcedure = Procedures.FirstOrDefault(action => action.Name == ProcedureName);
-                            if(SelectedProcedure == null)
+                            if (SelectedProcedure == null)
                             {
                                 Inputs = new List<IServiceInput>();
                                 Outputs = new List<IServiceOutputMapping>();
@@ -202,33 +215,32 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 }
             }
             InitializeProperties();
-            if(IsItemDragged.Instance.IsDragged)
+            if (IsItemDragged.Instance.IsDragged)
             {
                 Expand();
                 IsItemDragged.Instance.IsDragged = false;
             }
-            
+
             if (_environment != null)
             {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
             InitializeResourceModel(_environment);
-            if(Inputs != null )
+            if (Inputs != null)
             {
                 InputsVisible = true;
             }
-            if(Outputs != null)
+            if (Outputs != null)
             {
                 OutputsVisible = true;
                 TestComplete = true;
                 var recordsetItem = Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
-                if(recordsetItem != null)
+                if (recordsetItem != null)
                 {
                     RecordsetName = recordsetItem.RecordSetName;
                 }
             }
-
             _isInitializing = false;
             SetToolHeight();
             ResetHeightValues(DefaultToolHeight);
@@ -236,7 +248,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         private bool CanRefresh()
         {
-            return SelectedSource!=null;
+            return SelectedSource != null;
         }
 
         private bool CanEditSource()
@@ -244,7 +256,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             return SelectedSource != null;
         }
 
-        ManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public ManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {
@@ -252,11 +264,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             {
                 Action = SelectedProcedure,
                 Source = SelectedSource,
-                Inputs = new List<IServiceInput>()
+                Inputs = new List<IServiceInput>(),
             };
-            foreach(var serviceInput in Inputs)
+            foreach (var serviceInput in Inputs)
             {
-                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name,""));
+                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
             }
             return databaseService;
         }
@@ -270,8 +282,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ManageServiceInputViewModel.Model = databaseService;
                 ManageServiceInputViewModel.Inputs = databaseService.Inputs;
                 ManageServiceInputViewModel.TestResults = null;
-                ManageServiceInputViewModel.TestHeader = Warewolf.Studio.Resources.Languages.Core.MySqlTestHeader;
-                ManageServiceInputViewModel.TestIconImageSource = Application.Current.TryFindResource("Explorer-DB-White") as DrawingImage;
+                ManageServiceInputViewModel.TestHeader = Warewolf.Studio.Resources.Languages.Core.SqlServerDbTestHeader;
+                if(Application.Current != null)
+                {
+                    ManageServiceInputViewModel.TestIconImageSource = Application.Current.TryFindResource("Explorer-DB-White") as DrawingImage;
+                }
                 ManageServiceInputViewModel.TestAction = () =>
                 {
                     ManageServiceInputViewModel.IsTesting = true;
@@ -285,7 +300,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                             ManageServiceInputViewModel.IsTesting = false;
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         ErrorMessage(e);
                         ManageServiceInputViewModel.IsTesting = false;
@@ -295,7 +310,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ManageServiceInputViewModel.OkAction = () =>
                 {
                     Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(ManageServiceInputViewModel.TestResults));
-                    if (Outputs !=null)
+                    if (Outputs != null)
                     {
                         OutputsVisible = true;
                     }
@@ -330,19 +345,22 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             IsTesting = false;
             TestResults = null;
         }
-
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            RecordsetName = ProcedureName.Replace(".","_");
-            for (int i = 0; i < testResults.Columns.Count; i++)
+            RecordsetName = ProcedureName.Replace(".", "_");
+            if (testResults != null)
             {
-                var column = testResults.Columns[i];
-                var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), RecordsetName);
-                mappings.Add(dbOutputMapping);
+                for (int i = 0; i < testResults.Columns.Count; i++)
+                {
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), RecordsetName);
+                    mappings.Add(dbOutputMapping);
+                }
+                return mappings;
             }
-            return mappings;
+            return new List<IServiceOutputMapping>();
         }
 
         public string ErrorText
@@ -463,17 +481,17 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             set { SetValue(IsFixedProperty, value); }
         }
 
-        public static readonly DependencyProperty IsFixedProperty = 
-            DependencyProperty.Register("IsFixed", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsFixedProperty =
+            DependencyProperty.Register("IsFixed", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(true));
 
         public ICommand FixErrorsCommand { get; private set; }
 
         public ICommand DoneCommand { get; private set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
-        
+
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-       
+
 
         public IContextualResourceModel RootModel { get; private set; }
 
@@ -488,7 +506,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty WorstErrorProperty =
-            DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
+            DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(ErrorType.None));
 
         public bool IsWorstErrorReadOnly
         {
@@ -509,12 +527,12 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty FriendlySourceNameValueProperty =
-           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(null,OnFriendlyNameChanged));
-        
+           DependencyProperty.Register("FriendlySourceNameValue", typeof(string), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(null, OnFriendlyNameChanged));
+
         private static void OnFriendlyNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (MySqlDatabaseDesignerViewModel)d;
-            if(viewModel != null)
+            var viewModel = (SqlServerDatabaseDesignerViewModelOld)d;
+            if (viewModel != null)
             {
                 viewModel.FriendlySourceName = e.NewValue as string;
                 viewModel.InitializeProperties();
@@ -522,7 +540,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(false));
 
         public bool IsDeleted
         {
@@ -531,7 +549,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
-            DependencyProperty.Register("IsDeleted", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsDeleted", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(false));
 
         public bool IsEditable
         {
@@ -546,10 +564,10 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty OutputMappingEnabledProperty =
-            DependencyProperty.Register("OutputMappingEnabled", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(true));
+            DependencyProperty.Register("OutputMappingEnabled", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(true));
 
         public static readonly DependencyProperty IsEditableProperty =
-            DependencyProperty.Register("IsEditable", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsEditable", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(false));
 
         public string ImageSource
         {
@@ -558,7 +576,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty ImageSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(string), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("ImageSource", typeof(string), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(null));
 
         public bool ShowParent
         {
@@ -567,11 +585,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public static readonly DependencyProperty ShowParentProperty =
-            DependencyProperty.Register("ShowParent", typeof(bool), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(false, OnShowParentChanged));
+            DependencyProperty.Register("ShowParent", typeof(bool), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(false, OnShowParentChanged));
 
         static void OnShowParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (MySqlDatabaseDesignerViewModel)d;
+            var viewModel = (SqlServerDatabaseDesignerViewModelOld)d;
             var showParent = (bool)e.NewValue;
             if (showParent)
             {
@@ -594,7 +612,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         public string ServiceName { get { return GetProperty<string>(); } }
-      
+
         string ProcedureName
         {
             get { return GetProperty<string>(); }
@@ -616,7 +634,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             set
             {
                 SetProperty(value);
-            }    
+            }
         }
 
         public string Type { get { return GetProperty<string>(); } }
@@ -633,7 +651,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         }
 
         // Using a DependencyProperty as the backing store for ButtonDisplayValue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(SqlServerDatabaseDesignerViewModelOld), new PropertyMetadata(default(string)));
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         IEnvironmentModel _environment;
         private IDbServiceModel _dbServiceModel;
@@ -704,9 +722,16 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             {
                 InstanceID = uniqueId,
                 ServiceID = ResourceID,
-                IsValid = RootModel.Errors.Count == 0
+                IsValid = RootModel != null && RootModel.Errors != null && RootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
+            if (RootModel != null)
+            {
+                var errorInfos = RootModel.GetErrors(uniqueId);
+                if (errorInfos != null)
+                {
+                    designValidationMemo.Errors.AddRange(errorInfos.Cast<ErrorInfo>());
+                }
+            }
 
             if (environmentModel == null)
             {
@@ -739,7 +764,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         // ReSharper disable InconsistentNaming
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
         // ReSharper restore InconsistentNaming
-        {            
+        {
         }
 
 
@@ -812,11 +837,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
             set
             {
-                if(!Equals(value, _selectedSource))
+                if (!Equals(value, _selectedSource))
                 {
                     IsRefreshing = true;
                     Errors = new List<IActionableErrorInfo>();
-
+                    
                     TestComplete = false;
                     InputsVisible = false;
                     _selectedSource = value;
@@ -831,11 +856,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                             InputsVisible = false;
                             OutputsVisible = false;
                         }
-                        ActionVisible = Procedures.Count != 0 && Procedures != null;
                         if (Procedures.Count <= 0)
                         {
                             ErrorMessage(new Exception("The selected database does not contain actions to perform"));
                         }
+                        ActionVisible = Procedures.Count != 0 && Procedures != null;
                         SourceId = _selectedSource.Id;
                         if (SourceId != Guid.Empty)
                         {
@@ -845,7 +870,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                         SetToolHeight();
                         ResetHeightValues(DefaultToolHeight);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Procedures = new List<IDbAction>();
                         SelectedProcedure = null;
@@ -901,22 +926,22 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
             set
             {
-                if(!Equals(value, _selectedProcedure))
+                if (!Equals(value, _selectedProcedure))
                 {
                     TestComplete = false;
                     _selectedProcedure = value;
-                    if(_selectedProcedure != null)
+                    if (_selectedProcedure != null)
                     {
-                        if(!_isInitializing)
+                        if (!_isInitializing)
                         {
                             Outputs = new List<IServiceOutputMapping>();
                             RecordsetName = "";
                             Inputs = _selectedProcedure.Inputs;
-                        }                        
+                        }
                         RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
                     }
                     OutputsVisible = false;
-                    ProcedureName = _selectedProcedure!=null?_selectedProcedure.Name:"";
+                    ProcedureName = _selectedProcedure != null ? _selectedProcedure.Name : "";
                     InitializeProperties();
                     InputsVisible = _selectedProcedure != null;
                     SetToolHeight();
@@ -972,7 +997,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             ResourceType = Common.Interfaces.Data.ResourceType.DbService.ToString();
             return "DatabaseService-32";
         }
-        
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -998,7 +1023,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 if (checkSource && CheckSourceMissing())
                 {
                 }
-            }            
+            }
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -1017,7 +1042,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             });
             UpdateDesignValidationErrors(memo.Errors);
         }
-        
+
         void UpdateLastValidationMemoWithProcedureNotSelectedError()
         {
             var memo = new DesignValidationMemo
@@ -1197,7 +1222,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
         }
 
-        ~MySqlDatabaseDesignerViewModel()
+        ~SqlServerDatabaseDesignerViewModelOld()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -1236,6 +1261,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                     if (_environment != null)
                     {
                         _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
+                        _environment.AuthorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsChanged;
+                        _environment.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
                     }
                 }
 
