@@ -5,11 +5,7 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:fa="http://schemas.fontawesome.io/icons/"
-                               xmlns:customControls1="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:sqlServerDatabase="clr-namespace:Dev2.Activities.Designers2.SqlServerDatabase"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
@@ -26,13 +22,14 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
-                <ResourceDictionary Source="../Core/CustomToolDesigner.xaml"/>
+                <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                      Content="{Binding ButtonDisplayValue}"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
@@ -44,102 +41,60 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition>
-                <RowDefinition.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InputsHasItems}" Value="True">
-                                <Setter Property="RowDefinition.Height" Value="*"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=InputsHasItems}" Value="False">
-                                <Setter Property="RowDefinition.Height" Value="Auto"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
-            </RowDefinition>
-            <RowDefinition>
-                <RowDefinition.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=OutputsHasItems}" Value="True">
-                                <Setter Property="RowDefinition.Height" Value="*"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=OutputsHasItems}" Value="False">
-                                <Setter Property="RowDefinition.Height" Value="Auto"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
-            </RowDefinition>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <Grid Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <Control Template="{StaticResource SelectionGrid}"/>
+            <Control Template="{StaticResource SelectionActionGrid}"/>
 
-                <Grid x:Name="ActionsGrid" 
-                      Grid.Row="2" 
-                      Margin="{StaticResource ControlBorderTop}" 
-                      IsEnabled="{Binding ActionVisible}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
-                    <ComboBox x:Name="ActionsComboBox"
-                              Grid.Column="1"
-                              Margin="{StaticResource ControlBorderRight}"
-                              ItemsSource="{Binding Procedures}"
-                              DisplayMemberPath="Name" 
-                              IsEnabled="{Binding ActionVisible}"
-                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
-                              IsEditable="False"
-                              SelectedItem="{Binding SelectedProcedure}"/>
-                    <Button x:Name="ActionRefreshButton" 
-                            Grid.Column="2"
-                            Command="{Binding Path=RefreshActionsCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                        <Button.Content>
-                            <fa:FontAwesome Icon="Refresh"/>
-                        </Button.Content>
-                    </Button>
-                    <customControls1:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
-                                                        Grid.Column="2"
-                                                        Width="25"
-                                                        Height="25"
-                                                        Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
-                </Grid>
+            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource InputsGrid}"/>
 
+            <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
+
+            <Grid x:Name="ErrorGrid"
+                      Grid.Row="3"
+                      Margin="{StaticResource ControlBorderTop}"
+                      Visibility="{Binding OnErrorVisible}">
+                <errors:OnError />
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" 
-              Height="{Binding ElementName=InputsControl, Path=Height}" 
-              x:Name="InputsTemplate" 
-              Visibility="{Binding InputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Control x:Name="InputsControl" Template="{StaticResource InputsGrid}"></Control>
-        </Grid>
-        <Grid Grid.Row="2" 
-              Height="{Binding ElementName=InputsControl, Path=Height}" 
-              x:Name="OutputsTemplate" 
-              Visibility="{Binding TestComplete, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Control x:Name="OutputsControl" Template="{StaticResource OutputsGrid}"></Control>
-        </Grid>
-        <Grid x:Name="ErrorGrid" 
-              Grid.Row="3"
-              Margin="{StaticResource ControlBorderTop}" 
-              Visibility="{Binding OnErrorVisible}">
-            <errors:OnError />
+
+        <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Control Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>
