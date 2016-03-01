@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UITest.Extension;
 namespace Warewolf.Studio.UITestExtension
 {
     [ComVisible(true)]
-    internal class WorkflowDesignerViewModelChildTechnologyManager : UITechnologyManager
+    internal class WorkflowDesignSurfaceChildTechnologyManager : UITechnologyManager
     {
         public override IUITechnologyElement GetParent(IUITechnologyElement element)
         {
