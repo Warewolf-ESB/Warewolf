@@ -49,5 +49,7 @@ namespace Dev2.Tests
             }
             return body;
         }
+
+        public static string ExampleURL { get { return "http://www.example.com"; } }
     }
 }

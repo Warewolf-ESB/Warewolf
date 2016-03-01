@@ -225,8 +225,10 @@
     <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\WebDeleteInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\WebPostDeleteRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebSourceRegion.cs" />
@@ -735,6 +737,16 @@
     <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\WebServiceDeleteViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
+      <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
       <DependentUpon>WebGetDesigner.xaml</DependentUpon>
@@ -1506,6 +1518,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Web Service Delete\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1589,6 +1613,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
