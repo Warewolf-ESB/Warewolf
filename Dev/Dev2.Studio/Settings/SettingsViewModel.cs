@@ -58,6 +58,7 @@ namespace Dev2.Settings
         private bool _showLog;
         private IEnvironmentModel _currentEnvironment;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
+        private PerfcounterViewModel _perfmonViewModel;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -403,7 +404,18 @@ namespace Dev2.Settings
             });            
         }
 
-        public PerfcounterViewModel PerfmonViewModel { get; set; }
+        public PerfcounterViewModel PerfmonViewModel
+        {
+            get
+            {
+                return _perfmonViewModel;
+            }
+            set
+            {
+                _perfmonViewModel = value;
+                NotifyOfPropertyChange(() => PerfmonViewModel);
+            }
+        }
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
