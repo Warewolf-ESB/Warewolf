@@ -6,7 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
+                               xmlns:webServiceDelete="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
                                xmlns:ig="http://schemas.infragistics.com/xaml"
                                xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
@@ -24,7 +24,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webServiceGet1:WebServiceDeleteViewModel}">
+                               d:DataContext="{d:DesignInstance webServiceDelete:WebServiceDeleteViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>

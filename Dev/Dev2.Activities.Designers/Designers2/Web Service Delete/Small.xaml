@@ -4,13 +4,13 @@
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:webServiceGet="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
+                               xmlns:webServiceGet="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance webServiceGet:WebServiceGetViewModel}">
+                               d:DataContext="{d:DesignInstance webServiceGet:WebServiceDeleteViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
