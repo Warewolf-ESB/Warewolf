@@ -48,10 +48,11 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             //exe
-            new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+            var viewModel = new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
 
             //assert
             prop.Verify(c => c.SetValue(expected), Times.Once(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

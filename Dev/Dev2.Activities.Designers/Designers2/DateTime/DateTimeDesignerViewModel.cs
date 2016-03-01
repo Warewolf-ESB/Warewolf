@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.DateTime
         {
             TimeModifierTypes = new List<string>(DateTimeFormatter.TimeModifierTypes);
             SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
+            AddTitleBarLargeToggle();
         }
 
         public List<string> TimeModifierTypes { get; private set; }

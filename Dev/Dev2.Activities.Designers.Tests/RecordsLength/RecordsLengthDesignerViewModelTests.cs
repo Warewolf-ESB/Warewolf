@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.RecordsLength
             const string ExcpectedVal = "[[Table_Records()]]";
             viewModel.RecordsetNameValue = ExcpectedVal;
             Assert.AreEqual(ExcpectedVal, viewModel.RecordsetName);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         static ModelItem CreateModelItem()

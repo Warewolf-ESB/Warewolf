@@ -17,10 +17,8 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="315"
                                Width="315"
-                               MaxWidth="600"
                                MinHeight="283"
                                Height="283"
-                               MaxHeight="283"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:DeleteDesignerViewModel}">
