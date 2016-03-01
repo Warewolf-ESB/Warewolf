@@ -259,6 +259,9 @@
     <Compile Include="Designers2\Decision\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
       <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
     </Compile>
@@ -1010,6 +1013,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Decision\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
