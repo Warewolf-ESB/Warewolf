@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
             Assert.AreEqual("Years", viewModel.OutputType);
             Assert.AreEqual("Years", viewModel.SelectedOutputType);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]
