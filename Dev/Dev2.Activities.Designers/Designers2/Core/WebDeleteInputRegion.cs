@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _headersHeight;
         double _maxHeadersHeight;
         bool _isVisible;
-        private const double BaseHeight = 265;
+        private const double BaseHeight = 180;
 
         public WebDeleteInputRegion()
         {

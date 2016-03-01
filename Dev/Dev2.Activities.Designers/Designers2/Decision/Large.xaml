@@ -60,6 +60,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:Dev2DataGrid Grid.Row="0"
@@ -394,6 +395,8 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="7"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
