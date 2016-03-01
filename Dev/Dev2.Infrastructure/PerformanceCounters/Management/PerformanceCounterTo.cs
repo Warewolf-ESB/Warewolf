@@ -12,6 +12,12 @@ namespace Dev2.PerformanceCounters.Management
             ResourceCounters = resourceCounters.Cast<IResourcePerformanceCounter>().ToList();
         }
 
+        public PerformanceCounterTo()
+        {
+            NativeCounters = new List<IPerformanceCounter>();
+            ResourceCounters = new List<IResourcePerformanceCounter>();
+        }
+
         #region Implementation of IPerformanceCounterTo
 
         public IList<IPerformanceCounter> NativeCounters { get;  set; }

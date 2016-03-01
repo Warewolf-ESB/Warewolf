@@ -88,7 +88,7 @@
                         ItemsSource="{Binding ServerCounters}">
 
                     <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="WindowsGroupColumn" Key="CounterNameGroup" HeaderText="CounterName" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch"
+                    <!--<ig:TemplateColumn x:Name="WindowsGroupColumn" Key="CounterNameGroup" HeaderText="CounterName" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch"
                                         d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
@@ -114,7 +114,7 @@
                                    </Grid>
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                        </ig:TemplateColumn>-->
                     <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="AverageExecutionTime" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
@@ -176,16 +176,12 @@
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
                                                     <MultiBinding StringFormat="UI_{0}_AdministratorPermissionCheckBox_AutoID">
-                                                        <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                    <Binding Path="RequestPerSecond" FallbackValue="New" />
                                                     </MultiBinding>
                                                 </AutomationProperties.AutomationId>
                                             </CheckBox>
                                         </StackPanel>
-                                        <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                          Data="M0,0.5 L1,0.5"
-                                          Stretch="Fill"
-                                          Stroke="Red"
-                                          StrokeThickness="1"/>
+
                                     </Grid>
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
@@ -296,7 +292,7 @@
                         ColumnSorting="ResourceColumnSorting"
                         ItemsSource="{Binding ResourceCounters}">
                     <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="ResourceName" HeaderText="Resources" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
+                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
@@ -323,7 +319,7 @@
                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
                                             <AutomationProperties.AutomationId>
                                                 <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
-                                                    <Binding Path="ResourceName" FallbackValue="New" />
+                                                <Binding Path="CounterName" FallbackValue="New" />
                                                 </MultiBinding>
                                             </AutomationProperties.AutomationId>
                                         </Button>

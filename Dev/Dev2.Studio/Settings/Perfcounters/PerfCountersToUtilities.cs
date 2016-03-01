@@ -29,15 +29,15 @@ namespace Dev2.Settings.Perfcounters
                 var current = res.FirstOrDefault(a => a.ResourceId == resourcePerformanceCounter.ResourceId);
                 if (current == null)
                 {
-                    current = new PerformanceCountersByResource() { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.Name };
+                    current = new PerformanceCountersByResource() { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.CategoryInstanceName };
                     res.Add(current);
                 }
                 switch(resourcePerformanceCounter.PerfCounterType)
                 {
                     case WarewolfPerfCounterType.AverageExecutionTime: current.AverageExecutionTime = true; break;
-                    case WarewolfPerfCounterType.NotAuthorisedErrors: current.AverageExecutionTime = true; break;
-                    case WarewolfPerfCounterType.ConcurrentRequests: current.AverageExecutionTime = true; break;
-                    case WarewolfPerfCounterType.RequestsPerSecond: current.AverageExecutionTime = true; break;
+                    case WarewolfPerfCounterType.ExecutionErrors: current.TotalErrors = true; break;
+                    case WarewolfPerfCounterType.ConcurrentRequests: current.ConcurrentRequests = true; break;
+                    case WarewolfPerfCounterType.RequestsPerSecond: current.RequestPerSecond = true; break;
 
                 }
             }
