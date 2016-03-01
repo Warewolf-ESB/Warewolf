@@ -51,6 +51,7 @@ namespace Dev2.Activities.Designers.Tests.BaseConvert
             CollectionAssert.AreEqual(expectedOptions, viewModel.ConvertTypes.ToList());
 
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
 
