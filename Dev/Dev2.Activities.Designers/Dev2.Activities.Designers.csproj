@@ -160,6 +160,9 @@
     <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
       <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\BaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -884,6 +887,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\BaseConvert\BaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\BaseConvert\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

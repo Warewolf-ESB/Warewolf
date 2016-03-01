@@ -168,6 +168,7 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 _viewmodel.OutputsRegion.RecordsetName = string.Empty;
+                _viewmodel.OutputsRegion.Outputs.Clear();
                 if(_recordsetList != null)
                 {
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
