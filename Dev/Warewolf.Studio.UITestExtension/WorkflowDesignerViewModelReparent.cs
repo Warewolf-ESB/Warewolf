@@ -10,7 +10,7 @@ namespace Warewolf.Studio.UITestExtension
     {
         public override object GetService(Type serviceType)
         {
-            return new WorkflowDesignerViewModelChildTechnologyManager();
+            return new WorkflowDesignSurfaceChildTechnologyManager();
         }
 
         public override void Dispose()
@@ -18,10 +18,40 @@ namespace Warewolf.Studio.UITestExtension
             throw new NotImplementedException();
         }
 
-        public override string PackageName => "Workflow Designer View Model Reparent";
-        public override string PackageDescription => "Reparents children of the Warewolf Workflow Designer Viewmodel";
-        public override Version PackageVersion => new Version(1, 0, 0, 0);
-        public override string PackageVendor => "Dev2";
-        public override Version VSVersion => new Version(12, 0, 0, 0);
+        public override string PackageName
+        {
+            get
+            {
+                return "Workflow Designer View Model Reparent";
+            }
+        }
+        public override string PackageDescription
+        {
+            get
+            {
+                return "Reparents children of the Warewolf Workflow Designer Viewmodel";
+            }
+        }
+        public override Version PackageVersion
+        {
+            get
+            {
+                return new Version(1, 0, 0, 0);
+            }
+        }
+        public override string PackageVendor
+        {
+            get
+            {
+                return "Dev2";
+            }
+        }
+        public override Version VSVersion
+        {
+            get
+            {
+                return new Version(12, 0, 0, 0);
+            }
+        }
     }
 }

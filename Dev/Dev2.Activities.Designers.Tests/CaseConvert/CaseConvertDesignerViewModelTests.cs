@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             var items = new List<CaseConvertTO> { new CaseConvertTO() };
             var viewModel = new CaseConvertDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual(4, viewModel.ItemsList.Count);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

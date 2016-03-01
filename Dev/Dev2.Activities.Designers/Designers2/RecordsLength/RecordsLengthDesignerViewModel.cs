@@ -23,6 +23,7 @@ namespace Dev2.Activities.Designers2.RecordsLength
             : base(modelItem)
         {
             RecordsetNameValue = RecordsetName;
+            AddTitleBarLargeToggle();
         }
         
         public string RecordsetNameValue { get { return (string)GetValue(RecordsetNameValueProperty); } set { SetValue(RecordsetNameValueProperty, value); } }
