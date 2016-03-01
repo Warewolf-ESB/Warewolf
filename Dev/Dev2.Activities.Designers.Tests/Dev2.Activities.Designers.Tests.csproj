@@ -122,7 +122,7 @@
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
-    <Compile Include="RecordsLength\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
+    <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
     <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
