@@ -12,6 +12,7 @@
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Interfaces;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace Dev2.Activities.Designers2.DeleteRecords
 {
