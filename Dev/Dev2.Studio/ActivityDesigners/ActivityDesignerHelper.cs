@@ -59,6 +59,7 @@ using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WebServiceGet;
+using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
@@ -121,6 +122,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                  { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
+                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },

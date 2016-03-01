@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.FindIndex
             var viewModel = new TestFindIndexDesignerViewModel(modelItem);
             Assert.AreEqual("First Occurrence", viewModel.Index);
             Assert.AreEqual("First Occurrence", viewModel.SelectedIndex);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

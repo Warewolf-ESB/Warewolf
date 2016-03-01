@@ -45,4 +45,4 @@ foreach ($file in Get-ChildItem $SolutionDir | ? {$_.PSIsContainer -and ((($_.Na
 }
 $FullArgsList = $TestAssembliesList + "/logger:trx /Settings:`"" + $TestSettingsFile + "`""
 Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
-Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir
+Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait

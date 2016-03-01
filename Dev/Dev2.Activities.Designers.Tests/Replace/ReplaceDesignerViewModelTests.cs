@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Replace
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
 

@@ -18,7 +18,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class StudioUISpecsFeature
     {
         
@@ -1952,6 +1952,20 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("I \'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1184
  testRunner.Then("I \'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test New Action Recording")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        public virtual void TestNewActionRecording()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test New Action Recording", ((string[])(null)));
+#line 1186
+this.ScenarioSetup(scenarioInfo);
+#line 1188
+ testRunner.When("I double click the 5th item in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
