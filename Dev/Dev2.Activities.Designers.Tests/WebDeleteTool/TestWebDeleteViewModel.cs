@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             return new DsfWebDeleteActivity();
         }
 
-        private WebServiceDeleteViewModel GetWebServicePostViewModel()
+        private WebServiceDeleteViewModel GetWebServicedeleteViewModel()
         {
             return new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
         }
@@ -65,19 +65,19 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(570, postViewModel.DesignMinHeight);
-            Assert.AreEqual(570, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            postViewModel.ValidateTestComplete();
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
+            Assert.AreEqual(485, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(485, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(485, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
+            deleteViewModel.ValidateTestComplete();
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
         }
 
         [TestMethod]
@@ -89,14 +89,14 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(postViewModel);
+            Assert.IsNotNull(deleteViewModel);
             //---------------Execute Test ----------------------
-            postViewModel.Validate();
+            deleteViewModel.Validate();
             //---------------Test Result -----------------------
-            Assert.AreEqual(postViewModel.Errors.Count, 1);
-            Assert.AreEqual(postViewModel.DesignValidationErrors.Count, 2);
+            Assert.AreEqual(deleteViewModel.Errors.Count, 1);
+            Assert.AreEqual(deleteViewModel.DesignValidationErrors.Count, 2);
         }
 
         [TestMethod]
@@ -107,14 +107,14 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            postViewModel.ClearValidationMemoWithNoFoundError();
+            deleteViewModel.ClearValidationMemoWithNoFoundError();
             //---------------Test Result -----------------------
-            Assert.IsNull(postViewModel.Errors);
-            Assert.AreEqual(postViewModel.DesignValidationErrors.Count, 1);
-            Assert.IsTrue(postViewModel.IsWorstErrorReadOnly);
+            Assert.IsNull(deleteViewModel.Errors);
+            Assert.AreEqual(deleteViewModel.DesignValidationErrors.Count, 1);
+            Assert.IsTrue(deleteViewModel.IsWorstErrorReadOnly);
 
         }
 
@@ -126,16 +126,16 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(150, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(150, postViewModel.DesignMinHeight);
-            Assert.AreEqual(150, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsFalse(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.AreEqual(150, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(150, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(150, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsFalse(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsFalse(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
 
             //---------------Test Result -----------------------
         }
@@ -148,18 +148,18 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(415, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(415, postViewModel.DesignMinHeight);
-            Assert.AreEqual(415, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.AreEqual(330, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(330, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(330, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsFalse(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
 
             //---------------Test Result -----------------------
         }
@@ -173,27 +173,27 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(545, postViewModel.DesignMinHeight);
-            Assert.AreEqual(545, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            Assert.IsFalse(postViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.AreEqual(485, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(460, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(460, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
+            Assert.IsFalse(deleteViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
             //---------------Test Result -----------------------
         }
 
@@ -205,21 +205,21 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
             //---------------Test Result -----------------------
         }
 
@@ -232,19 +232,19 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var mod = GetMockModel();
             mod.IsTextResponse = true;
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(postViewModel.OutputsRegion.Outputs.First().MappedFrom, "Result");
+            Assert.AreEqual(deleteViewModel.OutputsRegion.Outputs.First().MappedFrom, "Result");
 
             //---------------Test Result -----------------------
         }
@@ -257,29 +257,29 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(600, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(575, postViewModel.DesignMinHeight);
-            Assert.AreEqual(575, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            Assert.AreEqual(1, postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(515, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
+            Assert.AreEqual(1, deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
 
             //---------------Test Result -----------------------
         }
@@ -292,32 +292,32 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
-            postViewModel.InputArea.QueryString = "the [[b]]";
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            deleteViewModel.InputArea.QueryString = "the [[b]]";
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(600, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(575, postViewModel.DesignMinHeight);
-            Assert.AreEqual(575, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(515, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             //---------------Test Result -----------------------
         }
 
@@ -329,32 +329,32 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
-            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
-            postViewModel.InputArea.QueryString = "the [[b().a]]";
+            var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
+            deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            deleteViewModel.InputArea.QueryString = "the [[b().a]]";
 #pragma warning disable 4014
-            postViewModel.TestInputCommand.Execute();
-            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
-            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
-            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            deleteViewModel.TestInputCommand.Execute();
+            deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
+            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(600, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(575, postViewModel.DesignMinHeight);
-            Assert.AreEqual(575, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
-            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(515, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(490, deleteViewModel.DesignHeight);
+            Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
+            Assert.IsTrue(deleteViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
+            Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             //---------------Test Result -----------------------
         }
 
