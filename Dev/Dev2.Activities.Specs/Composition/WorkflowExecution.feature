@@ -4500,6 +4500,43 @@ Scenario: Studio persistence
 	Then the studio side menu is "Locked"
 	And the Tool Box window is in the right panel in the studio 
 
+#Wolf-1415
+	@ignore
+Scenario: Rename workflow 
+	Given I have a workflow "11365_WebService"	
+	When I right-click on "11365_WebService" to view the context menu
+	Then I click "Rename"
+	And I change "11365_WebService" to "WebService_11365"
+	When I double click "WebService_11365"
+	Then "WebService_11365" tab is opened 
+
+#Wolf-1415
+	@ignore
+Scenario: Create a nested folder 
+	Given I have a folder "My Category"	
+	When I right-click on "My Category" to view the context menu
+	Then I click "New Folder"
+	And a New Folder is visible in "My Category" in the "Edit" State
+	When I name the Folder "My Sub Category"
+	Then "My Sub Category" is visible in path "localhost\My Category\My Sub Category" 
+
+#Wolf-1415
+	@ignore
+Scenario: Move workflow 
+	Given I have a workflow "Hello World"
+	And "Hello World" is visible on "Localhost"
+	And I move "Hello World" to folder "My Category"
+	Then "Hello World" is visible as "My Category\Hello World"
+
+#Wolf-1415
+	@ignore
+Scenario: Delete workflow 
+	Given I have a workflow "Test"
+	And "Test" is visible on "Localhost"
+	When I right-click on "Test" to view the context menu
+	And I click "Delete"
+	Then "Test" is "Not" visible 
+
 
 #Wolf-1102
 Scenario: Recordsets in Debug Output windpw
