@@ -203,8 +203,10 @@
     <Compile Include="Designers2\Comment\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Core\ActionRegion\ActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
@@ -212,6 +214,8 @@
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
+    <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs">
       <DependentUpon>ManageWebServiceInputView.xaml</DependentUpon>
     </Compile>
@@ -225,6 +229,7 @@
     <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebDeleteInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
@@ -706,10 +711,11 @@
     <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.xaml.cs">
       <DependentUpon>SqlServerDatabaseDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModelOld.cs" />
     <Compile Include="Designers2\SqlServerDatabase\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModel.cs" />
     <Compile Include="Designers2\Switch\ConfigureSwitch.xaml.cs">
       <DependentUpon>ConfigureSwitch.xaml</DependentUpon>
     </Compile>
