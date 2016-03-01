@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.DeleteRecords
         public DeleteRecordsDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
         }
 
         public override void Validate()
