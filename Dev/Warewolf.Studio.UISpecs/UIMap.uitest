@@ -1666,7 +1666,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.DatabaseConnector">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.DatabaseConnector">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1684,7 +1684,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1738,7 +1738,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.PluginConnector">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.PluginConnector">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1756,7 +1756,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1792,7 +1792,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.ServerSource">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.ServerSource">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1810,7 +1810,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.SharepointSource">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.SharepointSource">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2728,7 +2728,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.WebConnector">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.WebConnector">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2746,7 +2746,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2764,7 +2764,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem1">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2818,7 +2818,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem16">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem16">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3705,7 +3705,6 @@
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
             <WindowTitle>Warewolf</WindowTitle>
-            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
           </WindowTitles>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
@@ -7594,7 +7593,7 @@
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
                 </UIObject>
-                <UIObject ControlType="Tree" Id="UIExplorerTreeTree" FriendlyName="ExplorerTree" SpecialControlType="None">
+                <UIObject ControlType="Tree" Id="ExplorerTree" FriendlyName="ExplorerTree" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf</WindowTitle>
@@ -7606,7 +7605,7 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                    <UIObject ControlType="TreeItem" Id="TreeItems" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf</WindowTitle>

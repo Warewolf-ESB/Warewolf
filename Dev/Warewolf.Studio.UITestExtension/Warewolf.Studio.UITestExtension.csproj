@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WorkflowDesignerViewModelChildTechnologyManager.cs" />
-    <Compile Include="WorkflowDesignerViewModelReparent.cs" />
+    <Compile Include="WorkflowDesignSurfaceChildTechnologyManager.cs" />
+    <Compile Include="WorkflowDesignSurfaceReparent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
