@@ -160,6 +160,9 @@
     <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
       <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\BaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,9 @@
       <DependentUpon>CaseConvertDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\CaseConvert\CaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\CaseConvert\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -224,11 +230,16 @@
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\WebDeleteInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\WebPostDeleteRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebSourceRegion.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -238,6 +249,12 @@
     <Compile Include="Designers2\CreateJSON\CreateJsonDesignerViewModel.cs" />
     <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Decision\DecisionDesigner.xaml.cs">
       <DependentUpon>DecisionDesigner.xaml</DependentUpon>
@@ -249,12 +266,21 @@
     <Compile Include="Designers2\Decision\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
       <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
     <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
@@ -270,6 +296,9 @@
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -679,6 +708,9 @@
       <DependentUpon>ConfigureSwitchArm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Switch\SwitchDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml.cs">
       <DependentUpon>UniqueRecordsDesigner.xaml</DependentUpon>
     </Compile>
@@ -696,6 +728,16 @@
     <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\WebServiceDeleteViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
+      <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
       <DependentUpon>WebGetDesigner.xaml</DependentUpon>
@@ -887,6 +929,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\BaseConvert\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\BaseConvert\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -900,6 +946,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\CaseConvert\CaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CaseConvert\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -951,6 +1001,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\CountRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\CreateJSON\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -960,6 +1014,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\CreateJSON\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimeDifference\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTime\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -975,11 +1037,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DeleteRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\DropBox\Upload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FindIndex\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FormatNumber\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -996,6 +1070,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1387,6 +1465,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\UniqueRecords\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1404,6 +1486,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1490,6 +1584,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

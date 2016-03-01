@@ -4241,6 +4241,49 @@ Scenario: backward Compatiblity2
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
+
+Scenario: Dual Query
+	Given I have a workflow "DualSelectStatements"
+	And "DualSelectStatements" contains "Testing\DbIFQuery" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                         | To Variable |
+      | [[ID]]           | rowID         | [[dbo_DuelQueryReturnMultiple().firstName]] | firstName   |
+      |                  |               | [[dbo_DuelQueryReturnMultiple().lastName]]  | lastName    |
+	When "DualSelectStatements" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Dual Query MYSQL
+	Given I have a workflow "DualQuery"
+	And "DualQuery" contains "Testing\DualQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| CountryID                 | Description                 | ID                 |
+	| [[DualQuery().CountryID]] | [[DualQuery().Description]] | [[DualQuery().ID]] |
+	When "DualQuery" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | username                     | password                     | lastAccessDate                     |
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | [[dbo_DualQuery().username]] | [[dbo_DualQuery().password]] | [[dbo_DualQuery().lastAccessDate]] |
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement which returns different results based on input
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 1     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | 
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | 
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
 #Unknown spec possibly made by Leon
 
 # Scenario: Exceution Engine Test with number of runs
@@ -4456,6 +4499,43 @@ Scenario: Studio persistence
 	When I close and re-open the studio
 	Then the studio side menu is "Locked"
 	And the Tool Box window is in the right panel in the studio 
+
+#Wolf-1415
+	@ignore
+Scenario: Rename workflow 
+	Given I have a workflow "11365_WebService"	
+	When I right-click on "11365_WebService" to view the context menu
+	Then I click "Rename"
+	And I change "11365_WebService" to "WebService_11365"
+	When I double click "WebService_11365"
+	Then "WebService_11365" tab is opened 
+
+#Wolf-1415
+	@ignore
+Scenario: Create a nested folder 
+	Given I have a folder "My Category"	
+	When I right-click on "My Category" to view the context menu
+	Then I click "New Folder"
+	And a New Folder is visible in "My Category" in the "Edit" State
+	When I name the Folder "My Sub Category"
+	Then "My Sub Category" is visible in path "localhost\My Category\My Sub Category" 
+
+#Wolf-1415
+	@ignore
+Scenario: Move workflow 
+	Given I have a workflow "Hello World"
+	And "Hello World" is visible on "Localhost"
+	And I move "Hello World" to folder "My Category"
+	Then "Hello World" is visible as "My Category\Hello World"
+
+#Wolf-1415
+	@ignore
+Scenario: Delete workflow 
+	Given I have a workflow "Test"
+	And "Test" is visible on "Localhost"
+	When I right-click on "Test" to view the context menu
+	And I click "Delete"
+	Then "Test" is "Not" visible 
 
 
 #Wolf-1102

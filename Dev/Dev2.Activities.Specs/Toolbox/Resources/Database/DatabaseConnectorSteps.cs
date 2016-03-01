@@ -72,7 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             if(sourceName == "GreenPoint")
             {
-                GetViewModel().SelectedSource = _greenPointSource;
+                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
 
@@ -81,21 +81,21 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             if(procName == "dbo.ImportOrder")
             {
-                GetViewModel().SelectedProcedure = _importOrderAction;
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
             }
         }
 
         [When(@"Recordset Name is changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
-            GetViewModel().RecordsetName = recSetName;
+            GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
 
         [Given(@"Source is Enabled")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.SourceVisible);
+            Assert.IsTrue(viewModel.SourceRegion.IsVisible);
         }
 
         private static SqlServerDatabaseDesignerViewModel GetViewModel()
@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenActionIsDisabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.ActionVisible);
+            Assert.IsFalse(viewModel.ActionRegion.IsVisible);
         }
 
         [Given(@"Inputs is Disabled")]
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoInputs = viewModel.Inputs == null || viewModel.Inputs.Count == 0 || !viewModel.InputsVisible;
+            var hasNoInputs = viewModel.InputArea.Inputs == null || viewModel.InputArea.Inputs.Count == 0 || !viewModel.InputArea.IsVisible;
             Assert.IsTrue(hasNoInputs);
         }
 
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoOutputs = viewModel.Outputs == null || viewModel.Outputs.Count == 0 || !viewModel.OutputsVisible;
+            var hasNoOutputs = viewModel.OutputsRegion.Outputs == null || viewModel.OutputsRegion.Outputs.Count == 0 || !viewModel.OutputsRegion.IsVisible;
             Assert.IsTrue(hasNoOutputs);
         }
 
@@ -146,7 +146,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenValidateIsDisabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
+            //Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
+            Assert.Fail();
         }
 
         [Given(@"Action is Enabled")]
@@ -155,7 +156,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.ActionVisible);
+            Assert.IsTrue(viewModel.ActionRegion.IsVisible);
         }
 
         [Given(@"Inputs is Enabled")]
@@ -164,7 +165,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.Inputs != null  || viewModel.InputsVisible;
+            var hasInputs = viewModel.InputArea.Inputs != null  || viewModel.InputArea.IsVisible;
             Assert.IsTrue(hasInputs);
         }
 
@@ -174,7 +175,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+            //Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+            Assert.Fail();
         }
 
         [Given(@"Inputs appear as")]
@@ -188,7 +190,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             {
                 var inputValue = row["Input"];
                 var value = row["Value"];
-                var serviceInputs = viewModel.Inputs.ToList();
+                var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
                 Assert.AreEqual(inputValue,serviceInput.Name);
                 Assert.AreEqual(value,serviceInput.Value);
@@ -260,7 +262,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Source is ""(.*)""")]
         public void GivenSourceIs(string sourceName)
         {
-            var selectedSource = GetViewModel().SelectedSource;
+            var selectedSource = GetViewModel().SourceRegion.SelectedSource;
             Assert.IsNotNull(selectedSource);
             Assert.AreEqual(sourceName,selectedSource.Name);
         }
@@ -268,7 +270,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Action is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
-            var selectedProcedure = GetViewModel().SelectedProcedure;
+            var selectedProcedure = GetViewModel().ActionRegion.SelectedAction;
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual(actionName,selectedProcedure.Name);
         }
@@ -283,7 +285,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 _importOrderAction.Name = "dbo.ImportOrder";
                 _importOrderAction.Inputs = new List<IServiceInput>{new ServiceInput("ProductId","")};
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SelectedSource = _greenPointSource;
+                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
         
@@ -296,7 +298,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 dataTable.Columns.Add(new DataColumn("Column1"));
                 dataTable.ImportRow(dataTable.LoadDataRow(new object[]{1},true));
                 GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().SelectedProcedure = _importOrderAction;
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
             }
         }
         
@@ -316,7 +318,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click Validate")]
         public void WhenIClickValidate()
         {
-            GetViewModel().TestInputCommand.Execute(null);
+            //GetViewModel().TestInputCommand.Execute(null);
+            Assert.Fail();
         }
 
 
@@ -358,7 +361,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Outputs appear as")]
         public void ThenOutputsAppearAs(Table table)
         {
-            var outputMappings = GetViewModel().Outputs;
+            var outputMappings = GetViewModel().OutputsRegion.Outputs;
             Assert.IsNotNull(outputMappings);
             var rowIdx = 0;
             foreach(var tableRow in table.Rows)
@@ -375,7 +378,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual(recsetName,GetViewModel().RecordsetName);
+            Assert.AreEqual(recsetName,GetViewModel().OutputsRegion.RecordsetName);
         }        
     }
 }

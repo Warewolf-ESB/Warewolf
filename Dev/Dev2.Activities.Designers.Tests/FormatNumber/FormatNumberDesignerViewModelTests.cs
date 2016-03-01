@@ -30,6 +30,7 @@ namespace Dev2.Activities.Designers.Tests.FormatNumber
             var viewModel = new TestFormatNumberDesignerViewModel(modelItem);
             Assert.AreEqual("None", viewModel.SelectedRoundingType);
             Assert.AreEqual("None", viewModel.RoundingType);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

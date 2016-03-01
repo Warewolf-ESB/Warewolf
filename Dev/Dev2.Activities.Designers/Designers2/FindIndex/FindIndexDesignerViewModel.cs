@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.FindIndex
             DirectionList = new List<string> { "Left to Right", "Right to Left" };
             SelectedIndex = string.IsNullOrEmpty(Index) ? IndexList[0] : Index;
             SelectedDirection = string.IsNullOrEmpty(Direction) ? DirectionList[0] : Direction;
+            AddTitleBarLargeToggle();
         }
 
         public IList<string> IndexList { get; private set; }
