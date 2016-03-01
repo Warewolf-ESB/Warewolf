@@ -25,6 +25,7 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
         {
             OutputTypes = new List<string>(DateTimeComparer.OutputFormatTypes);
             SelectedOutputType = string.IsNullOrEmpty(OutputType) ? OutputTypes[0] : OutputType;
+            AddTitleBarLargeToggle();
         }
 
         public List<string> OutputTypes { get; private set; }
