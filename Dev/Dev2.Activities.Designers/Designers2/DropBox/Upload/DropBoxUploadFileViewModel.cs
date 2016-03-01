@@ -56,6 +56,7 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), o => IsDropboxSourceSelected);
             Sources = LoadOAuthSources();
             SetSelectedOAuthSource(SelectedSource);
+            AddTitleBarLargeToggle();
         }
 
         ObservableCollection<OauthSource> LoadOAuthSources()
