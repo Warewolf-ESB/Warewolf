@@ -21,11 +21,15 @@
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>
             <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+            <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
             <quickVariableInput:QuickVariableInputView x:Key="QuickVariableInput" AutomationProperties.AutomationId="QuickVariableInputContent" />
 
             <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
                 <Setter Property="Content" Value="{DynamicResource Small}" />
                 <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
+                        <Setter Property="Content" Value="{DynamicResource Large}" />
+                    </DataTrigger>
                     <DataTrigger Binding="{Binding Path=ShowQuickVariableInput, Mode=TwoWay}" Value="true">
                         <Setter Property="Content" Value="{DynamicResource QuickVariableInput}" />
                     </DataTrigger>

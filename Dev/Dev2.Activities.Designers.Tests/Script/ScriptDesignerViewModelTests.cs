@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Script
             var viewModel = new TestScriptDesignerViewModel(modelItem);
             var expected = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
             CollectionAssert.AreEqual(expected.ToList(), viewModel.ScriptTypes.ToList());
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
 
