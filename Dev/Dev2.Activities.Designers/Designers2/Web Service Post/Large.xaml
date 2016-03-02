@@ -15,6 +15,8 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:webServicePost="clr-namespace:Dev2.Activities.Designers2.Web_Service_Post"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -103,57 +105,90 @@
                                 Grid.Row="1" 
                                 BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
                                 BorderThickness="1" >
-                            <ig:XamGrid ItemsSource="{Binding InputArea.Headers}"
-                                        IsAlternateRowsEnabled="False"
-                                        AutoGenerateColumns="False"
-                                        IsEnabled="{Binding InputArea.IsVisible}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        Margin="-1,0,0,0"
-                                        Height="Auto"
-                                        MaxHeight="{Binding InputArea.MaxHeadersHeight}"
-                                        ColumnWidth="*">
-                                <ig:XamGrid.Columns>
-                                    <customControls:IntellisenseTextBoxColumn Key="Name" HeaderText="Header"  MinimumWidth="100" Watermark="Header">
-                                        <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                            <DataTemplate DataType="interfaces:INameValue">
-                                                <ui:IntellisenseTextBox Text="{Binding Name}" ToolTip="{Binding Path=Name}">
-                                                    <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                        <interfaceImplementors:CompositeIntellisenseProvider>
-                                                            <interfaceImplementors:DefaultIntellisenseProvider />
-                                                        </interfaceImplementors:CompositeIntellisenseProvider>
-                                                    </ui:IntellisenseTextBox.IntellisenseProvider>
+                            <controls:Dev2DataGrid x:Name="Headers"
+                                   Grid.Row="0"
+                                   ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Height="Auto"
+                                   IsEnabled="{Binding InputArea.IsVisible}"
+                                   MaxHeight="{Binding InputArea.MaxHeadersHeight}"
+                                   ColumnWidth="*"
+                                   Margin="{StaticResource ControlBorderTop}">
+
+                                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="Header"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:IntellisenseTextBox DefaultText="Header"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="Name"
+                                                         SourcePropertyValue="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    </i:Interaction.Behaviors>
+                                                    <AutomationProperties.AutomationId>
+                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                            <Binding Path="IndexNumber" />
+                                                        </MultiBinding>
+                                                    </AutomationProperties.AutomationId>
                                                 </ui:IntellisenseTextBox>
                                             </DataTemplate>
-                                        </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                    </customControls:IntellisenseTextBoxColumn>
-                                    <customControls:IntellisenseTextBoxColumn Key="Value" HeaderText="Value"  MinimumWidth="100" Watermark="Value">
-                                        <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                            <DataTemplate DataType="interfaces:INameValue">
-                                                <ui:IntellisenseTextBox Text="{Binding Value}" ToolTip="{Binding Path=Value}">
-                                                    <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                        <interfaceImplementors:CompositeIntellisenseProvider>
-                                                            <interfaceImplementors:DefaultIntellisenseProvider />
-                                                        </interfaceImplementors:CompositeIntellisenseProvider>
-                                                    </ui:IntellisenseTextBox.IntellisenseProvider>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="100"
+                                            Header="Value"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:IntellisenseTextBox DefaultText="Value"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    <i:Interaction.Behaviors>
+                                                        <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="Value"
+                                                         SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    </i:Interaction.Behaviors>
+                                                    <AutomationProperties.AutomationId>
+                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                            <Binding Path="IndexNumber" />
+                                                        </MultiBinding>
+                                                    </AutomationProperties.AutomationId>
                                                 </ui:IntellisenseTextBox>
                                             </DataTemplate>
-                                        </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                    </customControls:IntellisenseTextBoxColumn>
-                                </ig:XamGrid.Columns>
-                                <ig:XamGrid.SortingSettings>
-                                    <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-                                </ig:XamGrid.SortingSettings>
-                                <ig:XamGrid.EditingSettings>
-                                    <ig:EditingSettings AllowEditing="Cell"
-                                                        IsMouseActionEditingEnabled="SingleClick"
-                                                        IsEnterKeyEditingEnabled="True"
-                                                        IsF2EditingEnabled="True"
-                                                        IsOnCellActiveEditingEnabled="True" />
-                                </ig:XamGrid.EditingSettings>
-                                <ig:XamGrid.ConditionalFormattingSettings>
-                                    <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                                </ig:XamGrid.ConditionalFormattingSettings>
-                            </ig:XamGrid>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </controls:Dev2DataGrid>
                         </Border>
                     </Grid>
 
