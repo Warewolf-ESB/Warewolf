@@ -230,13 +230,19 @@
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
-    <Compile Include="Designers2\Core\WebDeleteInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Base\IRegionClone.cs" />
+    <Compile Include="Designers2\Core\Web\Base\WebRegionBase.cs" />
+    <Compile Include="Designers2\Core\Web\Base\WebRegionCloneBase.cs" />
+    <Compile Include="Designers2\Core\Web\Base\WebTooRegionDisplayInfo.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
-    <Compile Include="Designers2\Core\WebDeleteRegionClone.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
     <Compile Include="Designers2\CountRecords\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -744,6 +750,16 @@
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebPutDesigner.xaml.cs">
+      <DependentUpon>WebPutDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebServicePutViewModel.cs" />
     <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1524,6 +1540,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Web Service Put\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Put\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Put\WebPutDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Web Service Delete\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1619,7 +1647,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Designers2\Core\Web\Get\" />
+    <Folder Include="Designers2\Core\Web\Post\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

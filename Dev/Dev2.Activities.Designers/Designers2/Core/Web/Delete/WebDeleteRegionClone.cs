@@ -7,7 +7,7 @@ using Dev2.Activities.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 
-namespace Dev2.Activities.Designers2.Core
+namespace Dev2.Activities.Designers2.Core.Web.Delete
 {
     public class WebDeleteRegionClone : IToolRegion
     {
