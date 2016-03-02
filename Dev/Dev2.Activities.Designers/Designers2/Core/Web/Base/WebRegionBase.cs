@@ -1,40 +1,28 @@
-﻿using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Studio.Core.Activities.Utils;
-
-namespace Dev2.Activities.Designers2.Core
+﻿namespace Dev2.Activities.Designers2.Core.Web.Base
 {
-    public class WebDeleteInputRegion:IWebDeleteInputArea
+    /*   public abstract class WebRegionInputBase<TRegionClone>
+        where TRegionClone : IToolRegion, new()
     {
+        private const double BaseHeight = 165;
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
+        private double _currentHeight;
+        private ObservableCollection<INameValue> _headers;
+        private double _headersHeight;
+        bool _isVisible;
+        double _maxHeadersHeight;
+        private double _maxHeight;
+        private double _minHeight;
         private string _queryString;
         private string _requestUrl;
-        private ObservableCollection<INameValue> _headers;
-        private double _minHeight;
-        private double _currentHeight;
-        private double _maxHeight;
-        private double _headersHeight;
-        double _maxHeadersHeight;
-        bool _isVisible;
-        private const double BaseHeight = 165;
 
-        public WebDeleteInputRegion()
+        protected WebRegionInputBase(WebTooRegionDisplayInfo regionDisplayInfo)
         {
-            ToolRegionName = "DeleteInputRegion";
+            ToolRegionName = regionDisplayInfo.ToolRegionName;
             SetInitialHeight();
         }
 
-        public WebDeleteInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
+        protected WebRegionInputBase(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
         {
             ToolRegionName = "DeleteInputRegion";
             _modelItem = modelItem;
@@ -49,6 +37,7 @@ namespace Dev2.Activities.Designers2.Core
                 IsVisible = true;
             }
         }
+
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
@@ -66,8 +55,9 @@ namespace Dev2.Activities.Designers2.Core
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
+            OnHeightChanged((IRegionClone)this);
         }
+
         private void SetupHeaders(ModelItem modelItem)
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
@@ -122,7 +112,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public virtual double MinHeight
         {
             get
             {
@@ -134,7 +124,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public double CurrentHeight
+        public virtual double CurrentHeight
         {
             get
             {
@@ -146,7 +136,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public bool IsVisible
+        public virtual bool IsVisible
         {
             get
             {
@@ -158,7 +148,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public double MaxHeight
+        public virtual double MaxHeight
         {
             get
             {
@@ -169,33 +159,40 @@ namespace Dev2.Activities.Designers2.Core
                 _maxHeight = value;
 
                 OnPropertyChanged();
-                OnHeightChanged(this);
+
+                OnHeightChanged((IRegionClone)this);
             }
         }
 
-        public IList<IToolRegion> Dependants { get; set; }
+        public virtual IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public virtual IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
             var headers2 = new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebDeleteRegionClone()
-            {
-                Headers = headers2,
-                QueryString = QueryString,
-                RequestUrl = RequestUrl,
-                IsVisible = IsVisible
-            };
+            var regionClone = (IRegionClone)new TRegionClone();
+
+            regionClone.Headers = headers2;
+            regionClone.QueryString = QueryString;
+            regionClone.RequestUrl = RequestUrl;
+            regionClone.IsVisible = IsVisible;
+
+            return regionClone;
+
         }
+
+
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebDeleteRegionClone;
+        }
+
+        public virtual void RestoreRegion(IRegionClone toRestore)
+        {
+            var region = toRestore;
             if (region != null)
             {
                 IsVisible = region.IsVisible;
@@ -224,7 +221,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public IList<string> Errors
+        public virtual IList<string> Errors
         {
             get
             {
@@ -241,7 +238,7 @@ namespace Dev2.Activities.Designers2.Core
             MaxHeadersHeight = BaseHeight;
         }
 
-        void ResetInputsHeight()
+        protected virtual void ResetInputsHeight()
         {
             SetInitialHeight();
             HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
@@ -273,26 +270,25 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
+                OnHeightChanged((IRegionClone)this);
             }
         }
 
         public event HeightChanged HeightChanged;
 
-        protected virtual void OnHeightChanged(IToolRegion args)
+        private void OnHeightChanged(IToolRegion args)
         {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            //var handler = Common.Interfaces.ToolBase.HeightChanged;
+            //if (handler != null)
+            //{
+            //    handler(this, args);
+            //}
         }
 
         #endregion
 
-        #region Implementation of IWebBeleteInputArea
+        #region Implementation of IWebInputArea
 
-        
         public string QueryString
         {
             get
@@ -301,7 +297,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _queryString = value ?? string.Empty;
+                _queryString = value ?? String.Empty;
                 _modelItem.SetProperty("QueryString", value ?? string.Empty);
                 OnPropertyChanged();
             }
@@ -357,5 +353,5 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         #endregion
-    }
+    }*/
 }
