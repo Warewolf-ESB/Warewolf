@@ -10,7 +10,6 @@
 */
 
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 
