@@ -6,16 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Tests.Activities.ActivityTests;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Storage;
 
@@ -24,8 +21,12 @@ namespace Dev2.Tests.Activities
     //"This Test class tests WebBaseActivity using a Delete implemantation as an example "    
     [TestClass]
     [ExcludeFromCodeCoverage]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class DsfWebBaseActivityTests
     {
+        private const string userAgent1 = "Mozilla/4.0";
+        private const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebActivity_GivenDeleteInstance_ShouldNotBenull()
@@ -72,10 +73,11 @@ namespace Dev2.Tests.Activities
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
-            var httpClient = dsfWebActivity.CreateClient(new List<NameValue>(new[] { new NameValue("a", "b") }),"Wrong.com.", new WebSource(){Address = "Wrong.com."});
+            var httpClient = dsfWebActivity.CreateClient(new List<NameValue>(new[] { new NameValue("a", "b") }), "Wrong.com.", new WebSource() { Address = "Wrong.com." });
             //---------------Test Result -----------------------
             Assert.IsNull(httpClient.BaseAddress);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Constructer_GivenHasInstance_ShouldHaveType()
@@ -134,10 +136,6 @@ namespace Dev2.Tests.Activities
             Assert.AreEqual(3, actualHeaderCount);
         }
 
-
-        string userAgent1 = "Mozilla/4.0";
-        string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
@@ -162,7 +160,6 @@ namespace Dev2.Tests.Activities
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebDeleteActivityFromBase();
             var webSource = CreateTestWebSource();
-
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -190,7 +187,6 @@ namespace Dev2.Tests.Activities
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsNull(httpClient.DefaultRequestHeaders.Authorization);
-
         }
 
         [TestMethod]
@@ -202,7 +198,7 @@ namespace Dev2.Tests.Activities
 
             var headers = new List<NameValue>
             {
-                new NameValue("Content","text/json")
+                new NameValue("Content", "text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(deleteActivityFromBase);
@@ -235,20 +231,20 @@ namespace Dev2.Tests.Activities
         {
             //---------------Set up test pack-------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
-                                  "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
-                                  "\"Visibility\": \"greater than 7 mile(s):0\"," +
-                                  "\"Temperature\": \"59 F (15 C)\"," +
-                                  "\"DewPoint\": \"41 F (5 C)\"," +
-                                  "\"RelativeHumidity\": \"51%\"," +
-                                  "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
-                                  "\"Status\": \"Success\"" +
-                                  "}";
+                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                    "\"Temperature\": \"59 F (15 C)\"," +
+                                    "\"DewPoint\": \"41 F (5 C)\"," +
+                                    "\"RelativeHumidity\": \"51%\"," +
+                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                    "\"Status\": \"Success\"" +
+                                    "}";
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = CreateWebDeleteActivityFromBase();
-            dsfWebPostActivity.Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")};
+            dsfWebPostActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
             dsfWebPostActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             dsfWebPostActivity.Outputs = serviceOutputs;
@@ -297,7 +293,6 @@ namespace Dev2.Tests.Activities
         }
     }
 
-
     public class TestDsfWebBaseActivity : DsfWebActivityBase
     {
         #region Overrides of DsfWebPostActivity
@@ -310,11 +305,11 @@ namespace Dev2.Tests.Activities
         }
 
         protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source,
-            string postData)
+            string putData)
         {
             Head = head;
             QueryRes = query;
-            PostValue = postData;
+            PostValue = putData;
             return ResponseFromWeb;
         }
 
