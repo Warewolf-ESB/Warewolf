@@ -30,9 +30,11 @@ namespace Dev2.Activities.Designers2.Core.Source
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
+        private double _labelWidth;
 
         public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem)
         {
+            LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
@@ -98,6 +100,18 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
         public event SomethingChanged SomethingChanged;
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 

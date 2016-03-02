@@ -30,7 +30,7 @@
         <Grid x:Name="SourcesGrid"  
                   Visibility="{Binding SourceRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding LabelWidth}"/>
+                <ColumnDefinition Width="{Binding SourceRegion.LabelWidth}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -74,7 +74,7 @@
         <Grid x:Name="ActionsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{Binding ActionRegion.LabelWidth}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -103,11 +103,44 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="DotNetActionGrid">
+        <Grid x:Name="ActionsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ActionRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="ActionsComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding ActionRegion.Actions}"
+                              DisplayMemberPath="FullName" 
+                              IsEnabled="{Binding ActionRegion.IsActionEnabled}"
+                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding ActionRegion.SelectedAction}"/>
+            <Button x:Name="ActionRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=ActionRegion.RefreshActionsCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="25"
+                                                        Height="25"
+                                                        Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NamespaceGrid">
         <Grid x:Name="ActionsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{Binding NamespaceRegion.LabelWidth}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -124,7 +157,7 @@
             <Button x:Name="NamespaceRefreshButton" 
                             Grid.Column="2"
                             Command="{Binding Path=NamespaceRegion.RefreshNamespaceCommand, Mode=TwoWay}"
-                            Visibility="{Binding Path=NamespaceRegion.IsNamespaceRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                            Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <Button.Content>
                     <fa:FontAwesome Icon="Refresh"/>
                 </Button.Content>
@@ -133,7 +166,7 @@
                                                         Grid.Column="2"
                                                         Width="25"
                                                         Height="25"
-                                                        Visibility="{Binding Path=NamespaceRegion.IsNamespaceRefreshing, Converter={StaticResource BoolToVis}}"/>
+                                                        Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
     
@@ -160,8 +193,8 @@
             <Control Template="{StaticResource SelectionGrid}"/>
 
             <Control Template="{StaticResource NamespaceGrid}" Grid.Row="1"/>
-            
-            <Control Template="{StaticResource ActionGrid}" Grid.Row="2"/>
+
+            <Control Template="{StaticResource DotNetActionGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
     

@@ -9,6 +9,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
@@ -25,9 +26,11 @@ namespace Dev2.Activities.Designers2.Core.Source
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
+        private double _labelWidth;
 
         public DotNetSourceRegion(IPluginServiceModel model, ModelItem modelItem)
         {
+            LabelWidth = 70;
             ToolRegionName = "DotNetSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
@@ -41,6 +44,19 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (SourceId != Guid.Empty)
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
+            }
+        }
+
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
             }
         }
 
