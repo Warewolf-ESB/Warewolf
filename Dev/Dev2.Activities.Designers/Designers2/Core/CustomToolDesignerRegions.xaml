@@ -331,53 +331,80 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
-                    <ig:XamGrid x:Name="OutputsMappingDataGrid"
-                                        ItemsSource="{Binding OutputsRegion.Outputs}"
-                                        IsAlternateRowsEnabled="False"
-                                        AutoGenerateColumns="False"
+                    <controls:Dev2DataGrid x:Name="OutputsMappingDataGrid"
+                                   Grid.Row="0"
+                                   ItemsSource="{Binding OutputsRegion.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Height="Auto"
+                                   MinHeight="{Binding InputArea.MinHeight}"
+                                   MaxHeight="{Binding InputArea.MaxHeight}"
                                         IsEnabled="{Binding OutputsRegion.IsVisible}"
-                                        Margin="-1,0,0,0"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                                         Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        MinHeight="100"
-                                        ColumnWidth="*">
-                        <ig:XamGrid.Columns>
-                            <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">
-                                <ig:TextColumn.AddNewRowEditorTemplate>
-                                    <DataTemplate DataType="db:IServiceOutputMapping">
-                                        <ui:IntellisenseTextBox WrapInBrackets="True" IsEnabled="False" Text="{Binding MappedFrom}" ToolTip="{Binding Path=MappedFrom}"/>
+                                   Margin="{StaticResource ControlBorderTop}">
+
+                        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="100"
+                                            Header="Mapped From"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                            <TextBlock Text="{Binding Path=MappedFrom}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"
+                                           Padding="3,0"
+                                           ToolTip="{Binding OutputColumn.ColumnName}">                               
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                                            </TextBlock>
+                                        </Grid>
                                     </DataTemplate>
-                                </ig:TextColumn.AddNewRowEditorTemplate>
-                            </ig:TextColumn>
-                            <customControls1:IntellisenseTextBoxColumn Key="MappedTo" HeaderText="Mapped To"  MinimumWidth="100" Watermark="Mapped To">
-                                <customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                                    <DataTemplate DataType="db:IServiceOutputMapping">
-                                        <ui:IntellisenseTextBox Text="{Binding MappedTo}" ToolTip="{Binding Path=MappedTo}">
-                                            <ui:IntellisenseTextBox.IntellisenseProvider>
-                                                <interfaceImplementors:CompositeIntellisenseProvider>
-                                                    <interfaceImplementors:DefaultIntellisenseProvider />
-                                                </interfaceImplementors:CompositeIntellisenseProvider>
-                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="Mapped To"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:IntellisenseTextBox DefaultText="[[Variable]]"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static languages:Core.MappingsDefaultValueHelp}"
+                                                    Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:Core.MappingsDefaultValueHelp}" DataContext="{Binding}" />
+                                                <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="MappedTo"
+                                                         SourcePropertyValue="{Binding Path=MappedTo, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                    <Binding Path="IndexNumber" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
                                         </ui:IntellisenseTextBox>
                                     </DataTemplate>
-                                </customControls1:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                            </customControls1:IntellisenseTextBoxColumn>
-                        </ig:XamGrid.Columns>
-                        <ig:XamGrid.SortingSettings>
-                            <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-                        </ig:XamGrid.SortingSettings>
-                        <ig:XamGrid.EditingSettings>
-                            <ig:EditingSettings AllowEditing="Cell"
-                                                        IsMouseActionEditingEnabled="SingleClick"
-                                                        IsEnterKeyEditingEnabled="True"
-                                                        IsF2EditingEnabled="True"
-                                                        IsOnCellActiveEditingEnabled="True" />
-                        </ig:XamGrid.EditingSettings>
-                        <ig:XamGrid.ConditionalFormattingSettings>
-                            <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                        </ig:XamGrid.ConditionalFormattingSettings>
-                    </ig:XamGrid>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </controls:Dev2DataGrid>                   
                     <TextBlock Text="None"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Bottom"
@@ -411,7 +438,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
@@ -448,9 +475,7 @@
             <TextBlock Grid.Row="1"
                        Text="None" 
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Margin="0,0,0,-3"
-                       Style="{StaticResource MenuTextBlockStyle}"
+                           VerticalAlignment="Center" 
                        Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
@@ -465,17 +490,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
-                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                    Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                 <ScrollViewer VerticalAlignment="Top"
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
                               Height="110"
-                              Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                              Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                     <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                        <TextBlock Text="{Binding TestResults}" 
+                        <TextBlock Text="{Binding ManageServiceInputViewModel.TestResults}" 
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch">
@@ -489,10 +514,8 @@
             <TextBlock Grid.Row="1"
                        Text="None" 
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Margin="0,0,0,-3"
-                       Style="{StaticResource MenuTextBlockStyle}"
-                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                           VerticalAlignment="Center" 
+                           Visibility="{Binding ManageServiceInputViewModel.IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
 
@@ -604,7 +627,7 @@
                 <TextBlock Text="None"
                            Grid.Row="1" 
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
+                           VerticalAlignment="Bottom"
                            Margin="0,0,0,-3"
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding ManageServiceInputViewModel.IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -653,7 +676,7 @@
                 </Grid.RowDefinitions>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsDataTableTemplate}" 
-                     Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
                      Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
@@ -678,7 +701,133 @@
             </Grid>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="GenerateOutputsViewDB"  d:DataContext="{d:DesignInstance core1:ManageDatabaseServiceInputViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
 
+                <Border Grid.Row="1" 
+                        Grid.Column="0"  BorderThickness="1" >
+                    <Border.Style>
+                        <Style>
+                            <Setter Property="Border.BorderBrush" Value="{StaticResource WarewolfHeaderWatermarkGreyBrush}"/>
+                            <Style.Triggers>
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Setter Property="Border.BorderBrush" Value="{StaticResource WareWolfOrangeBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" CanContentScroll="True" >
+                        <ItemsControl x:Name="InputsList" 
+                                      Margin="{StaticResource ControlBorderTop}"
+                                      Grid.IsSharedSizeScope="True" 
+                                      ItemsSource="{Binding InputArea.Inputs}" 
+                                      BorderBrush="{StaticResource WareWolfWhiteBrush}" 
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalAlignment="Top"
+                                      Background="{StaticResource WareWolfWhiteBrush}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="True" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="InputName" 
+                                                   Margin="{StaticResource ControlBorderTop}" 
+                                                   Text="{Binding Path=Name}" 
+                                                   TextTrimming="CharacterEllipsis" 
+                                                   MinWidth="25"
+                                                   MaxWidth="125"
+                                                   HorizontalAlignment="Stretch" 
+                                                   ToolTip="{Binding Path=Name}"/>
+                                        <TextBox Margin="{StaticResource ControlBorderTopRight}" 
+                                                 Grid.Column="1"
+                                                 Text="{Binding Path=Value}" 
+                                                 HorizontalAlignment="Stretch" 
+                                                 AcceptsReturn="True"
+                                                 Height="Auto"
+                                                 MaxHeight="45"
+                                                 MinWidth="50"
+                                                 TextWrapping="Wrap"
+                                                 VerticalAlignment="Stretch"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Auto"
+                                                 customControls:WatermarkTextBox.Watermark="Test Data"
+                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                            <!--<i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>-->
+                                        </TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+                <TextBlock Text="None"
+                           Grid.Row="1" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-3"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <customControls:CircularProgressBar Width="25"
+                                                    HorizontalAlignment="Right" 
+                                                    Margin="{StaticResource ControlBorderRight}"
+                                                    Height="25"
+                                                    Padding="2.5"
+                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
+                    <Button x:Name="TestActionButton" 
+                        HorizontalAlignment="Right" 
+                        Command="{Binding TestCommand}" 
+                        ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                        Content="Test"
+                        Width="46">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding OutputArea.OutputsHeight}"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Row="0" Template="{StaticResource GenerateOutputsDataTableTemplate}" 
+                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
+                    <Button x:Name="GenerateOutputsDoneButton" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Command="{Binding OkCommand}"
+                        Width="46"
+                        Content="Done"/>
+                    <Button HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Command="{Binding CloseCommand}"
+                        Width="46"
+                        Content="Cancel"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
 </ResourceDictionary>

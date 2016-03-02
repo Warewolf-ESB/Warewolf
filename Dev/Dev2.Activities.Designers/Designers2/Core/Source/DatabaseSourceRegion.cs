@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
@@ -32,7 +33,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         private Action _sourceChangedAction;
         private double _labelWidth;
 
-        public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem)
+        public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
         {
             LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
@@ -41,7 +42,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
-            Sources = sources.ToObservableCollection();
+            Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
             IsVisible = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");

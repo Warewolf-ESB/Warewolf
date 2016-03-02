@@ -1182,3 +1182,8 @@ Scenario: Get Web Request tool
 	#Given The test is initialized using low level binding calls
 	#When I 'Open_Move_Tool_Large_View'
 	Then I 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
+
+Scenario: Testing New Custom Action Recordings
+	#Given I 'Assert the control exists'
+	When I right click 'localhost\Examples' in the explorer tree
+	#Then I 'Assert something happenned'
