@@ -1277,7 +1277,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Database_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem databaseConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.DatabaseConnector;
+            WpfTreeItem databaseConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.DatabaseConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1341,7 +1341,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Plugin_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem pluginConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.PluginConnector;
+            WpfTreeItem pluginConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.PluginConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1389,7 +1389,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Server_Source_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem serverSource = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.ServerSource;
+            WpfTreeItem serverSource = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.ServerSource;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1405,7 +1405,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Sharepoint_Source_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem sharepointSource = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.SharepointSource;
+            WpfTreeItem sharepointSource = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.SharepointSource;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2213,7 +2213,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Web_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem webConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.WebConnector;
+            WpfTreeItem webConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.WebConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2245,7 +2245,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Workflow_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem1 = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem1;
+            WpfTreeItem uIInfragisticsControlsTreeItem1 = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.UIInfragisticsControlsTreeItem1;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom uIDsfActivityCustom = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UIDsfActivityCustom;
             #endregion
@@ -2277,12 +2277,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Expand_Tree_Item
+        /// </summary>
+        public void Expand_Tree_Item()
+        {
+            #region Variable Declarations
+            WpfCheckBox uIExpansionIndicatorCheckBox = this.UIWarewolfDEV2ASHLEYLEWindow1.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIExpansionIndicatorCheckBox;
+            #endregion
+
+            // Click 'ExpansionIndicator' check box
+            Mouse.Click(uIExpansionIndicatorCheckBox, new Point(18, 3));
+        }
+        
+        /// <summary>
         /// Move_Resource_Into_Folder
         /// </summary>
         public void Move_Resource_Into_Folder()
         {
             #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem16 = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem16;
+            WpfTreeItem uIInfragisticsControlsTreeItem16 = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.UIInfragisticsControlsTreeItem16;
             WpfWindow uIWpfWindow2 = this.UIWarewolfDEV2LEROYWARWindow.UIWpfWindow2;
             #endregion
 
@@ -4315,6 +4328,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfDEV2LEROYWARWindow1;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow1 UIWarewolfDEV2ASHLEYLEWindow1
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow1 == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow1 = new UIWarewolfDEV2ASHLEYLEWindow1();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow1;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4547,6 +4572,8 @@ namespace Warewolf.Studio.UISpecs
         private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         
         private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow1 mUIWarewolfDEV2ASHLEYLEWindow1;
         #endregion
     }
     
@@ -12456,29 +12483,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public TreeItems TreeItems
+        public LocalhostTreeItem LocalhostTreeItem
         {
             get
             {
-                if ((this.mTreeItems == null))
+                if ((this.mLocalhostTreeItem == null))
                 {
-                    this.mTreeItems = new TreeItems(this);
+                    this.mLocalhostTreeItem = new LocalhostTreeItem(this);
                 }
-                return this.mTreeItems;
+                return this.mLocalhostTreeItem;
             }
         }
         #endregion
         
         #region Fields
-        private TreeItems mTreeItems;
+        private LocalhostTreeItem mLocalhostTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class TreeItems : WpfTreeItem
+    public class LocalhostTreeItem : WpfTreeItem
     {
         
-        public TreeItems(UITestControl searchLimitContainer) : 
+        public LocalhostTreeItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -16837,6 +16864,174 @@ namespace Warewolf.Studio.UISpecs
         private WpfCustom mUIFlowchartCustom;
         
         private WpfCustom mUIFlowchartCustom1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow1 : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow1()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom2 UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom2(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom2 mUIUI_ExplorerControl_ACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIUI_ExplorerControl_ACustom2 : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIExplorerTreeTree1 UIExplorerTreeTree
+        {
+            get
+            {
+                if ((this.mUIExplorerTreeTree == null))
+                {
+                    this.mUIExplorerTreeTree = new UIExplorerTreeTree1(this);
+                }
+                return this.mUIExplorerTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIExplorerTreeTree1 mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIExplorerTreeTree1 : WpfTree
+    {
+        
+        public UIExplorerTreeTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem2 UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem2(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem2 mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIInfragisticsControlsTreeItem2 : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem1 UIInfragisticsControlsTreeItem1
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem1 == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem1 = new UIInfragisticsControlsTreeItem1(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem1 mUIInfragisticsControlsTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox UIExpansionIndicatorCheckBox
+        {
+            get
+            {
+                if ((this.mUIExpansionIndicatorCheckBox == null))
+                {
+                    this.mUIExpansionIndicatorCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIExpansionIndicatorCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ExpansionIndicator";
+                    this.mUIExpansionIndicatorCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIExpansionIndicatorCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIExpansionIndicatorCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mUIExpansionIndicatorCheckBox;
         #endregion
     }
 }
