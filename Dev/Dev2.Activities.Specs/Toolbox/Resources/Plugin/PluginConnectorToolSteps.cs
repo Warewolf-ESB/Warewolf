@@ -56,8 +56,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var resource = new Mock<IContextualResourceModel>();
             resource.Setup(a => a.GetErrors(It.IsAny<Guid>())).Returns(new ObservableReadOnlyList<IErrorInfo>());
-            var sqlServerDesignerViewModel = new DotNetDllViewModel(modelItem, resource.Object,
-                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+            var sqlServerDesignerViewModel = new DotNetDllViewModel(modelItem, mockDbServiceModel.Object);
            //PrivateObject po = new PrivateObject(sqlServerDesignerViewModel.RootModel);
            //po.SetField("_errors",new  ObservableReadOnlyList<IErrorInfo>());
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
@@ -69,28 +68,28 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenComboboxIsEnabled(string p0)
         {
             var vm =ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsTrue(vm.SourceVisible);
+            Assert.IsTrue(vm.SourceRegion.IsVisible);
         }
 
         [Then(@"Selected Source is null")]
         public void ThenSelectedSourceIsNull()
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsNull(vm.SelectedSource);
+            Assert.IsNull(vm.SourceRegion.SelectedSource);
         }
 
         [Then(@"Selected Namespace is Null")]
         public void ThenSelectedNamespaceIsNull()
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsNull(vm.SelectedNamespace);
+            Assert.IsNull(vm.NamespaceRegion.SelectedNamespace);
         }
 
         [Then(@"Selected Method is Null")]
         public void ThenSelectedMethodIsNull()
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsNull(vm.SelectedMethod);
+            Assert.IsNull(vm.ActionRegion.SelectedAction);
         }
 
         [Then(@"Inputs are")]
@@ -99,12 +98,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
             if (table.Rows.Count == 0)
             {
-                if (vm.Inputs!= null)
-                Assert.IsTrue(vm.Inputs.Count==0);
+                if (vm.InputArea.Inputs!= null)
+                Assert.IsTrue(vm.InputArea.Inputs.Count==0);
             }
             else
             {
-                var matched = table.Rows.Zip(vm.Inputs, (a, b) => new Tuple<TableRow, IServiceInput>(a, b));
+                var matched = table.Rows.Zip(vm.InputArea.Inputs, (a, b) => new Tuple<TableRow, IServiceInput>(a, b));
                 foreach (var a in matched)
                 {
                     Assert.AreEqual(a.Item1[0], a.Item2.Name);
@@ -121,12 +120,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
             if (table.Rows.Count == 0)
             {
-                if(vm.Outputs!=null)
-                Assert.AreEqual(vm.Outputs.Count,0);
+                if(vm.OutputsRegion.Outputs!=null)
+                Assert.AreEqual(vm.OutputsRegion.Outputs.Count,0);
             }
             else
             {
-                var matched = table.Rows.Zip(vm.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
                 foreach (var a in matched)
                 {
                     Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
@@ -140,7 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsTrue(String.IsNullOrEmpty(vm.RecordsetName));
+            Assert.IsTrue(String.IsNullOrEmpty(vm.OutputsRegion.RecordsetName));
         }
 
         [Then(@"there are ""(.*)"" validation errors of ""(.*)""")]
@@ -164,14 +163,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenISelectTheSource(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            vm.SelectedSource = vm.Sources.FirstOrDefault(a => a.Name == p0);
+            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.FirstOrDefault(a => a.Name == p0);
         }
 
         [Then(@"Selected Source is ""(.*)""")]
         public void ThenSelectedSourceIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-           Assert.AreEqual(vm.SelectedSource.Name,p0);
+           Assert.AreEqual(vm.SourceRegion.SelectedSource.Name,p0);
         }
 
         [Then(@"the Namespaces are")]
@@ -181,7 +180,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             int i = 0;
             foreach(var tableRow in table.Rows)
             {
-                Assert.AreEqual(tableRow[0] ,    vm.Namespaces.ToArray()[i].FullName               );
+                Assert.AreEqual(tableRow[0] ,    vm.NamespaceRegion.Namespaces.ToArray()[i].FullName               );
                 i++;
             }
         }
@@ -190,14 +189,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenISelectTheNameSpace(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            vm.SelectedNamespace = vm.Namespaces.FirstOrDefault(a => a.FullName == p0);
+            vm.NamespaceRegion.SelectedNamespace = vm.NamespaceRegion.Namespaces.FirstOrDefault(a => a.FullName == p0);
         }
 
         [Then(@"Selected Namespace is ""(.*)""")]
         public void ThenSelectedNamespaceIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.AreEqual(vm.SelectedNamespace.FullName,p0);
+            Assert.AreEqual(vm.NamespaceRegion.SelectedNamespace.FullName,p0);
         }
 
         [Then(@"the available methods in the dropdown are")]
@@ -207,7 +206,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             int i = 0;
             foreach (var tableRow in table.Rows)
             {
-                Assert.AreEqual(tableRow[0], vm.Methods.ToArray()[i].FullName);
+                Assert.AreEqual(tableRow[0], vm.ActionRegion.Actions.ToArray()[i].FullName);
                 i++;
             }
         }
@@ -217,14 +216,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenISelectTheMethod(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            vm.SelectedMethod = vm.Methods.FirstOrDefault(a => a.FullName == p0);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(a => a.FullName == p0);
         }
 
         [Then(@"Selected Method is ""(.*)""")]
         public void ThenSelectedMethodIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.AreEqual(vm.SelectedMethod.FullName, p0);
+            Assert.AreEqual(vm.ActionRegion.SelectedAction.FullName, p0);
         }
 
         [Then(@"The available methods are")]
@@ -237,7 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.AreEqual(vm.InputsVisible, p0.ToLower()=="enabled");
+            Assert.AreEqual(vm.InputArea.IsVisible, p0.ToLower()=="enabled");
         }
 
         [Given(@"I open Saved Plugin Tool")]
@@ -262,7 +261,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenIValidateSucessfully()
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            vm.TestAction();
+            vm.TestProcedure();
          
         }
 

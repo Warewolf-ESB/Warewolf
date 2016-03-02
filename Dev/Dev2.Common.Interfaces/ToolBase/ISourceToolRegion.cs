@@ -12,6 +12,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         ICommand EditSourceCommand { get; }
         ICommand NewSourceCommand { get; }
         Action SourceChangedAction { get; set; }
-        event SomethingChanged SomethingChanged; 
+        event SomethingChanged SomethingChanged;
+        double LabelWidth { get; set; }
     }
 }

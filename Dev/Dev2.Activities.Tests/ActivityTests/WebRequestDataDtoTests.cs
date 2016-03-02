@@ -1,6 +1,7 @@
 ﻿using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -38,7 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CreateRequestDataDto_GivenDisplayNameB_ShouldReturnDtoWithDisplayNameB()
         {
             //---------------Set up test pack-------------------
-            var displayName = "DisplayNameB";
+            const string displayName = "DisplayNameB";
             var webRequestDataDto = WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Get, "A", displayName);
             //---------------Assert Precondition----------------
             Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A");

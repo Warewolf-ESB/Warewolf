@@ -30,9 +30,11 @@ namespace Dev2.Activities.Designers2.Core
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
+        private double _labelWidth;
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
+            LabelWidth = 46;
             ToolRegionName = "SourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
@@ -98,6 +100,18 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public event SomethingChanged SomethingChanged;
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 
