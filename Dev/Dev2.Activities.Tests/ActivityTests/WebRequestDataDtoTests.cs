@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(webRequestDataDto.WebRequestMethod, WebRequestMethod.Get);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A".ToString());
+            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A");
         }
 
         [TestMethod]
@@ -46,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var displayName = "DisplayNameB";
             var webRequestDataDto = WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Get, "A", displayName);
             //---------------Assert Precondition----------------
-            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A".ToString());
+            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A");
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.AreEqual(webRequestDataDto.DisplayName, displayName);

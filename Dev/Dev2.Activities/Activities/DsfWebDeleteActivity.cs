@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.ServiceModel.Security;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -23,13 +19,6 @@ namespace Dev2.Activities
         {
 
         }
-
-        #region Properties
-
-
-
-        #endregion
-
 
         #region Overrides
 
@@ -50,7 +39,7 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData: string.Empty);
+            var webRequestResult = PerformWebPostRequest(head, query, url, putData: string.Empty);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 
