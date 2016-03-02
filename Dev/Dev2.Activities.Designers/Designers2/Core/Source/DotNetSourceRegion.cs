@@ -6,41 +6,35 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
-    public class DatabaseSourceRegion : ISourceToolRegion<IDbSource>
+    class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
         private double _minHeight;
         private double _currentHeight;
         private bool _isVisible;
         private double _maxHeight;
         private const double BaseHeight = 25;
-        private IDbSource _selectedSource;
-        private ICollection<IDbSource> _sources;
+        private IPluginSource _selectedSource;
+        private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
 
-        public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
+        public DotNetSourceRegion(IPluginServiceModel model, ModelItem modelItem)
         {
-            ToolRegionName = "DatabaseSourceRegion";
+            ToolRegionName = "DotNetSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
-            Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
+            Sources = sources.ToObservableCollection();
             IsVisible = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
@@ -58,7 +52,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             IsVisible = true;
         }
 
-        public DatabaseSourceRegion()
+        public DotNetSourceRegion()
         {
             SetInitialValues();
         }
@@ -156,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public IToolRegion CloneRegion()
         {
-            return new DatabaseSourceRegion
+            return new DotNetSourceRegion
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
@@ -168,7 +162,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DatabaseSourceRegion;
+            var region = toRestore as DotNetSourceRegion;
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
@@ -181,9 +175,9 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         #endregion
 
-        #region Implementation of ISourceToolRegion<IDbSource>
+        #region Implementation of ISourceToolRegion<IPluginSource>
 
-        public IDbSource SelectedSource
+        public IPluginSource SelectedSource
         {
             get
             {
@@ -193,7 +187,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
-                    if (!String.IsNullOrEmpty(_selectedSource.DbName))
+                    if (!String.IsNullOrEmpty(_selectedSource.Name))
                         StorePreviousValues(_selectedSource.Id);
                 }
 
@@ -216,7 +210,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetSelectedSource(IDbSource value)
+        private void SetSelectedSource(IPluginSource value)
         {
             if (value != null)
             {
@@ -235,7 +229,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IDbSource value)
+        private void RestorePreviousValues(IPluginSource value)
         {
             var toRestore = _previousRegions[value.Id];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -244,12 +238,12 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private bool IsAPreviousValue(IDbSource value)
+        private bool IsAPreviousValue(IPluginSource value)
         {
             return _previousRegions.Keys.Any(a => a == value.Id);
         }
 
-        public ICollection<IDbSource> Sources
+        public ICollection<IPluginSource> Sources
         {
             get
             {
@@ -270,11 +264,11 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public IDbSource SavedSource
+        public IPluginSource SavedSource
         {
             get
             {
-                return _modelItem.GetProperty<IDbSource>("SavedSource");
+                return _modelItem.GetProperty<IPluginSource>("SavedSource");
             }
             set
             {
