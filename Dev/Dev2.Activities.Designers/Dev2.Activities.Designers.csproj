@@ -203,7 +203,7 @@
     <Compile Include="Designers2\Comment\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Core\ActionRegion\ActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
@@ -216,6 +216,10 @@
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageServiceInputView.xaml.cs">
+      <DependentUpon>ManageServiceInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs">
       <DependentUpon>ManageWebServiceInputView.xaml</DependentUpon>
     </Compile>
@@ -223,10 +227,6 @@
       <DependentUpon>ManagePluginServiceInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
-    <Compile Include="Designers2\Core\ManageServiceInputView.xaml.cs">
-      <DependentUpon>ManageServiceInputView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
@@ -1004,15 +1004,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\Core\ManageServiceInputView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Core\ManageWebServiceInputView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Core\ManagePluginServiceInputView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\Core\ManageServiceInputView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
