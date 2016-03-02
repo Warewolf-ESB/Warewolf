@@ -124,6 +124,7 @@
     <Compile Include="PerformanceCounters\Counters\WarewolfServicesNotFoundCounter.cs" />
     <Compile Include="PerformanceCounters\Counters\EmptyCounter.cs" />
     <Compile Include="PerformanceCounters\Management\PerformanceCounterPersistence.cs" />
+    <Compile Include="PerformanceCounters\Management\PerformanceCounterTo.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterManager.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

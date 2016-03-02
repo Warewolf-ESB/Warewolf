@@ -36,6 +36,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
@@ -615,10 +616,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         string ProcedureName
         {
-            get { return GetProperty<string>(); }
+            get { return ModelItem.GetProperty<string>("ProcedureName"); }
             set
             {
-                SetProperty(value);
+                ModelItem.SetProperty("ProcedureName",value);
             }
         }
 

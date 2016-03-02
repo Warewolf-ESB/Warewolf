@@ -313,8 +313,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(vm.IsTestResultsEmptyRows);
             vm.IsTesting = true;
             Assert.IsTrue(vm.IsTesting);
-            vm.PasteResponseAvailable = false;
-            Assert.IsFalse(vm.PasteResponseAvailable);
             //var b = new DatabaseService() { Headers = new List<NameValue>() { new NameValue("a", "b") } };
             //vm.Model = b;
             Assert.IsNotNull(vm.Model);

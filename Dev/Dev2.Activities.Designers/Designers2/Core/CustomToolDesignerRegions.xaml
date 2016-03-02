@@ -566,7 +566,7 @@
                 </Grid.RowDefinitions>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsDataTableTemplate}" 
-                     Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
                      Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
@@ -591,7 +591,133 @@
             </Grid>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="GenerateOutputsViewDB"  d:DataContext="{d:DesignInstance core1:ManageDatabaseServiceInputViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
 
+                <Border Grid.Row="1" 
+                        Grid.Column="0"  BorderThickness="1" >
+                    <Border.Style>
+                        <Style>
+                            <Setter Property="Border.BorderBrush" Value="{StaticResource WarewolfHeaderWatermarkGreyBrush}"/>
+                            <Style.Triggers>
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Setter Property="Border.BorderBrush" Value="{StaticResource WareWolfOrangeBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" CanContentScroll="True" >
+                        <ItemsControl x:Name="InputsList" 
+                                      Margin="{StaticResource ControlBorderTop}"
+                                      Grid.IsSharedSizeScope="True" 
+                                      ItemsSource="{Binding InputArea.Inputs}" 
+                                      BorderBrush="{StaticResource WareWolfWhiteBrush}" 
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalAlignment="Top"
+                                      Background="{StaticResource WareWolfWhiteBrush}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ElementName=InputsList, Path=ActualWidth}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="True" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="InputName" 
+                                                   Margin="{StaticResource ControlBorderTop}" 
+                                                   Text="{Binding Path=Name}" 
+                                                   TextTrimming="CharacterEllipsis" 
+                                                   MinWidth="25"
+                                                   MaxWidth="125"
+                                                   HorizontalAlignment="Stretch" 
+                                                   ToolTip="{Binding Path=Name}"/>
+                                        <TextBox Margin="{StaticResource ControlBorderTopRight}" 
+                                                 Grid.Column="1"
+                                                 Text="{Binding Path=Value}" 
+                                                 HorizontalAlignment="Stretch" 
+                                                 AcceptsReturn="True"
+                                                 Height="Auto"
+                                                 MaxHeight="45"
+                                                 MinWidth="50"
+                                                 TextWrapping="Wrap"
+                                                 VerticalAlignment="Stretch"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Auto"
+                                                 customControls:WatermarkTextBox.Watermark="Test Data"
+                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
+                                            <!--<i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
+                                    </i:Interaction.Behaviors>-->
+                                        </TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+                <TextBlock Text="None"
+                           Grid.Row="1" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-3"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <customControls:CircularProgressBar Width="25"
+                                                    HorizontalAlignment="Right" 
+                                                    Margin="{StaticResource ControlBorderRight}"
+                                                    Height="25"
+                                                    Padding="2.5"
+                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
+                    <Button x:Name="TestActionButton" 
+                        HorizontalAlignment="Right" 
+                        Command="{Binding TestCommand}" 
+                        ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                        Content="Test"
+                        Width="46">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding OutputArea.OutputsHeight}"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Row="0" Template="{StaticResource GenerateOutputsDataTableTemplate}" 
+                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+               
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
+                    <Button x:Name="GenerateOutputsDoneButton" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Command="{Binding OkCommand}"
+                        Width="46"
+                        Content="Done"/>
+                    <Button HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Command="{Binding CloseCommand}"
+                        Width="46"
+                        Content="Cancel"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
 </ResourceDictionary>
