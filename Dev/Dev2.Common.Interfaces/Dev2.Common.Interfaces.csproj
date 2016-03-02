@@ -312,6 +312,8 @@
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\INamespaceToolRegion.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />

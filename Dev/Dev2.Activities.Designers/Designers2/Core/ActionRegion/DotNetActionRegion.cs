@@ -7,8 +7,10 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -16,6 +18,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IPluginSource> _source;
+        private readonly INamespaceToolRegion<INamespaceItem> _namespace;
         private double _minHeight;
         private double _currentHeight;
         private double _maxHeight;
@@ -30,26 +33,29 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private int _actionId;
+        private double _labelWidth;
 
         public DotNetActionRegion()
         {
-            ToolRegionName = "ActionRegion";
+            ToolRegionName = "DotNetActionRegion";
             SetInitialValues();
         }
 
-        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, NamespaceItem _namespace)
+        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
         {
-            ToolRegionName = "ActionRegion";
+            LabelWidth = 70;
+            ToolRegionName = "DotNetActionRegion";
             _modelItem = modelItem;
             _model = model;
             _source = source;
-            _source.SomethingChanged += SourceOnSomethingChanged;
+            _namespace = namespaceItem;
+            _namespace.SomethingChanged += SourceOnSomethingChanged;
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
             if (_source.SelectedSource != null)
             {
-                Actions = model.GetActions(_source.SelectedSource, _namespace);
+                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
             }
             ActionId = modelItem.GetProperty<int>("ActionId");
             if (ActionId != 0)
@@ -62,7 +68,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsRefreshing = true;
                 if(_source.SelectedSource != null)
                 {
-                    Actions = model.GetActions(_source.SelectedSource, _namespace);
+                    Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 }
                 IsRefreshing = false;
             }, CanRefresh);
@@ -71,12 +77,25 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _modelItem = modelItem;
         }
 
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null)
+            if (_source != null && _source.SelectedSource != null && _namespace != null && _namespace.SelectedNamespace != null)
             {
-                //Actions = _model.GetActions(_source.SelectedSource);
+                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
                 IsActionEnabled = true;
                 IsVisible = true;
@@ -319,7 +338,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return _previousRegions.Keys.Any(a => a == value.FullName.GetHashCode());
+            return _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName.GetHashCode()));
         }
 
         public IList<string> Errors

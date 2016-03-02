@@ -7,13 +7,18 @@ using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IManagePluginServiceInputViewModel : IManageServiceInputViewModel<IPluginService>
+    public interface IManagePluginServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IPluginService>
     {
         ICollection<IServiceInput> Inputs { get; set; }
         string TestResults { get; set; }
         bool OkSelected { get; set; }
-        List<IServiceOutputMapping> OutputMappings { get; set; }
+        IGenerateOutputArea OutputArea { get; set; }
         IOutputDescription Description { get; set; }
+        IGenerateInputArea InputArea { get; set; }
+        bool PasteResponseVisible { get; set; }
+        bool PasteResponseAvailable { get; }
+
+        void SetInitialVisibility();
     }
 
     public interface IManageWebServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IWebService>
