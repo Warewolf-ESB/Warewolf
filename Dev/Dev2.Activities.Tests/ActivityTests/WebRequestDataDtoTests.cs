@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -35,7 +31,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(webRequestDataDto.WebRequestMethod, WebRequestMethod.Get);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A".ToString());
+            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A");
         }
 
         [TestMethod]
@@ -43,10 +39,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CreateRequestDataDto_GivenDisplayNameB_ShouldReturnDtoWithDisplayNameB()
         {
             //---------------Set up test pack-------------------
-            var displayName = "DisplayNameB";
+            const string displayName = "DisplayNameB";
             var webRequestDataDto = WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Get, "A", displayName);
             //---------------Assert Precondition----------------
-            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A".ToString());
+            Assert.AreEqual(webRequestDataDto.Type.Expression.ToString(), "A");
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.AreEqual(webRequestDataDto.DisplayName, displayName);

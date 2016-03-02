@@ -1,8 +1,6 @@
-using System;
 using System.Activities;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 

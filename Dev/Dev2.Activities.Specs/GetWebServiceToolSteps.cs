@@ -164,9 +164,9 @@ namespace Dev2.Activities.Specs
         }
         
         [When(@"I click Generate Outputs")]
-        public void WhenIClickGenerateOutputs()
+        public async void WhenIClickGenerateOutputs()
         {
-            GetViewModel().TestInputCommand.Execute();
+            await GetViewModel().TestInputCommand.Execute();
         }
         
         [When(@"Test Request Variables is Successful")]
