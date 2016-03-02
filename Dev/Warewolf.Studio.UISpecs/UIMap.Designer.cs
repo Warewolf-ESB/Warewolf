@@ -1255,6 +1255,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Yes_DeleteConfirmDialog
+        /// </summary>
+        public void Click_Yes_DeleteConfirmDialog()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(36, 6));
+        }
+        
+        /// <summary>
         /// Close_New_Workflow_Tab_Without_Saving
         /// </summary>
         public void Close_New_Workflow_Tab_Without_Saving()
@@ -3592,6 +3605,149 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_Delete_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Delete_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(87, 12));
+        }
+        
+        /// <summary>
+        /// Select_Deploy_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Deploy_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
+            #endregion
+
+            // Click 'Deploy' menu item
+            Mouse.Click(deploy, new Point(57, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewDatabaseSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewDatabaseSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDatabaseSource = this.MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
+            #endregion
+
+            // Click 'New Database Source' menu item
+            Mouse.Click(newDatabaseSource, new Point(72, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewDropboxSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewDropboxSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDropboxSource = this.MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
+            #endregion
+
+            // Click 'New Dropbox Source' menu item
+            Mouse.Click(newDropboxSource, new Point(119, 15));
+        }
+        
+        /// <summary>
+        /// Select_NewEmailSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewEmailSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
+            #endregion
+
+            // Click 'New Email Source' menu item
+            Mouse.Click(newEmailSource, new Point(101, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewFolder_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewFolder_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
+            #endregion
+
+            // Click 'New Folder' menu item
+            Mouse.Click(newFolder, new Point(87, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewPluginSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewPluginSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newPluginSource = this.MainStudioWindow.ExplorerContextMenu.NewPluginSource;
+            #endregion
+
+            // Click 'New Plugin Source' menu item
+            Mouse.Click(newPluginSource, new Point(78, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewServerSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewServerSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newServerSource = this.MainStudioWindow.ExplorerContextMenu.NewServerSource;
+            #endregion
+
+            // Click 'New Server Source' menu item
+            Mouse.Click(newServerSource, new Point(44, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewSharepointSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newSharepointSource = this.MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
+            #endregion
+
+            // Click 'New Sharepoint Source' menu item
+            Mouse.Click(newSharepointSource, new Point(126, 17));
+        }
+        
+        /// <summary>
+        /// Select_NewWebSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewWebSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWebServiceSource = this.MainStudioWindow.ExplorerContextMenu.NewWebServiceSource;
+            #endregion
+
+            // Click 'New Web Service Source' menu item
+            Mouse.Click(newWebServiceSource, new Point(82, 20));
+        }
+        
+        /// <summary>
+        /// Select_NewWorkflow_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewWorkflow_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
+            #endregion
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflow, new Point(30, 11));
+        }
+        
+        /// <summary>
         /// Select_Plugin_Connector_Action_Droplist
         /// </summary>
         public void Select_Plugin_Connector_Action_Droplist()
@@ -3640,6 +3796,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Email Plugin' custom control
             Mouse.Click(uIEmailPluginCustom, new Point(193, 5));
+        }
+        
+        /// <summary>
+        /// Select_Rename_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Rename_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            #endregion
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(73, 15));
         }
         
         /// <summary>
@@ -7062,25 +7231,223 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfMenuItem NewWorkflowService
+        public WpfMenuItem NewWorkflow
         {
             get
             {
-                if ((this.mNewWorkflowService == null))
+                if ((this.mNewWorkflow == null))
                 {
-                    this.mNewWorkflowService = new WpfMenuItem(this);
+                    this.mNewWorkflow = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewWorkflowService.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
-                    this.mNewWorkflowService.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflow.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mNewWorkflowService;
+                return this.mNewWorkflow;
+            }
+        }
+        
+        public WpfMenuItem NewServerSource
+        {
+            get
+            {
+                if ((this.mNewServerSource == null))
+                {
+                    this.mNewServerSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewServerSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServerSource";
+                    this.mNewServerSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewServerSource;
+            }
+        }
+        
+        public WpfMenuItem NewDatabaseSource
+        {
+            get
+            {
+                if ((this.mNewDatabaseSource == null))
+                {
+                    this.mNewDatabaseSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDatabaseSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDataBaseSource";
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewDatabaseSource;
+            }
+        }
+        
+        public WpfMenuItem NewWebServiceSource
+        {
+            get
+            {
+                if ((this.mNewWebServiceSource == null))
+                {
+                    this.mNewWebServiceSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWebServiceSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewWebSource";
+                    this.mNewWebServiceSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewWebServiceSource;
+            }
+        }
+        
+        public WpfMenuItem NewPluginSource
+        {
+            get
+            {
+                if ((this.mNewPluginSource == null))
+                {
+                    this.mNewPluginSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewPluginSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewPluginSource";
+                    this.mNewPluginSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewPluginSource;
+            }
+        }
+        
+        public WpfMenuItem NewEmailSource
+        {
+            get
+            {
+                if ((this.mNewEmailSource == null))
+                {
+                    this.mNewEmailSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewEmailSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewEmailSource";
+                    this.mNewEmailSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewEmailSource;
+            }
+        }
+        
+        public WpfMenuItem NewDropboxSource
+        {
+            get
+            {
+                if ((this.mNewDropboxSource == null))
+                {
+                    this.mNewDropboxSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDropboxSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDropboxSource";
+                    this.mNewDropboxSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewDropboxSource;
+            }
+        }
+        
+        public WpfMenuItem NewSharepointSource
+        {
+            get
+            {
+                if ((this.mNewSharepointSource == null))
+                {
+                    this.mNewSharepointSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewSharepointSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewSharepointSource";
+                    this.mNewSharepointSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewSharepointSource;
+            }
+        }
+        
+        public WpfMenuItem NewFolder
+        {
+            get
+            {
+                if ((this.mNewFolder == null))
+                {
+                    this.mNewFolder = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
+                    this.mNewFolder.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewFolder;
+            }
+        }
+        
+        public WpfMenuItem Rename
+        {
+            get
+            {
+                if ((this.mRename == null))
+                {
+                    this.mRename = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mRename.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Rename";
+                    this.mRename.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRename;
+            }
+        }
+        
+        public WpfMenuItem Delete
+        {
+            get
+            {
+                if ((this.mDelete == null))
+                {
+                    this.mDelete = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDelete.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Delete";
+                    this.mDelete.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDelete;
+            }
+        }
+        
+        public WpfMenuItem Deploy
+        {
+            get
+            {
+                if ((this.mDeploy == null))
+                {
+                    this.mDeploy = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Deploy";
+                    this.mDeploy.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDeploy;
             }
         }
         #endregion
         
         #region Fields
-        private WpfMenuItem mNewWorkflowService;
+        private WpfMenuItem mNewWorkflow;
+        
+        private WpfMenuItem mNewServerSource;
+        
+        private WpfMenuItem mNewDatabaseSource;
+        
+        private WpfMenuItem mNewWebServiceSource;
+        
+        private WpfMenuItem mNewPluginSource;
+        
+        private WpfMenuItem mNewEmailSource;
+        
+        private WpfMenuItem mNewDropboxSource;
+        
+        private WpfMenuItem mNewSharepointSource;
+        
+        private WpfMenuItem mNewFolder;
+        
+        private WpfMenuItem mRename;
+        
+        private WpfMenuItem mDelete;
+        
+        private WpfMenuItem mDeploy;
         #endregion
     }
     

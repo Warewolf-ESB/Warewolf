@@ -24,34 +24,18 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(getTreeItem, new Point(40, 12));
         }
 
+        [When(@"I double click '(.*)' in the explorer tree")]
+        public void WhenIDoubleClickTheItemInTheExplorerTree(string path)
+        {
+            UITestControl getTreeItem = GetTreeItemFromPath(path);
+            Mouse.DoubleClick(getTreeItem, new Point(40, 12));
+        }
+
         [When(@"I right click '(.*)' in the explorer tree")]
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
-        }
-
-        [When(@"I double click '(.*)' in the explorer tree")]
-        public void WhenIDoubleClickTheItemInTheExplorerTree(string path)
-        {
-            UITestControl getTreeItem = GetTreeItemFromPath(path);
-            Mouse.Click(getTreeItem, new Point(40, 12));
-        }
-
-        [When(@"I select '(.*)' from the explorer context menu")]
-        public void WhenISelectFromTheExplorerContextMenu(string MenuOption)
-        {
-            UITestControlCollection getContextMenuItems = Uimap.MainStudioWindow.ExplorerContextMenu.GetChildren();
-            var getContextMenuItem = getContextMenuItems.FirstOrDefault(item => item.Name == MenuOption);
-            Mouse.Click(getContextMenuItem, new Point(48, 14));
-        }
-
-        [When(@"I select '(.*)' from the context menu")]
-        public void WhenISelectFromTheContextMenu(string MenuOption)
-        {
-            UITestControlCollection getContextMenuItems = Uimap.MainStudioWindow.GenericContextMenu.GetChildren();
-            var getContextMenuItem = getContextMenuItems.FirstOrDefault(item => item.Name == MenuOption);
-            Mouse.Click(getContextMenuItem, new Point(48, 14));
         }
 
         [When(@"I expand '(.*)' in the explorer tree")]
