@@ -1,6 +1,7 @@
 ﻿namespace Dev2.Common.Interfaces.ToolBase
 {
-    public interface IWebDeleteInputArea : IWebInput
+    public interface IWebPutInputArea : IWebInput
     {
+
     }
 }
