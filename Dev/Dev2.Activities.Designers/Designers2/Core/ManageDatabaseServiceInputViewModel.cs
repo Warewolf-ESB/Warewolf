@@ -70,9 +70,15 @@ namespace Dev2.Activities.Designers2.Core
             if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
             {
                 IsGenerateInputsEmptyRows = true;
-                maxInputHeight = BaseHeight;
-                minInputHeight = BaseHeight;
-                inputHeight = BaseHeight;
+                maxInputHeight = 30;
+                minInputHeight = 30;
+                inputHeight = 30;
+            }
+            if (OutputArea.IsVisible && (_generateOutputArea.Outputs == null || _generateOutputArea.Outputs.Count < 2))
+            {
+                maxOutputHeight = BaseHeight;
+                minOutputHeight = BaseHeight;
+                outputHeight = BaseHeight;
             }
 
             MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
@@ -157,11 +163,12 @@ namespace Dev2.Activities.Designers2.Core
                 if (TestResults != null)
                 {
                     TestResultsAvailable = TestResults.Rows.Count != 0;
-                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                    IsTestResultsEmptyRows = TestResults.Rows.Count < 2;
                     _generateOutputArea.IsVisible = true;
 
                     IsTesting = false;
                 }
+                SetInitialHeight();
             }
             catch (Exception e)
             {

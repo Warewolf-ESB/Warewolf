@@ -378,7 +378,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
@@ -413,10 +413,12 @@
                 </ScrollViewer>
             </Border>
             <TextBlock Grid.Row="1"
-                           Text="None" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" 
-                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                       Text="None" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="0,0,0,-3"
+                       Style="{StaticResource MenuTextBlockStyle}"
+                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
     
@@ -430,17 +432,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
-                    Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                 <ScrollViewer VerticalAlignment="Top"
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
                               Height="110"
-                              Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                              Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                     <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                        <TextBlock Text="{Binding ManageServiceInputViewModel.TestResults}" 
+                        <TextBlock Text="{Binding TestResults}" 
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch">
@@ -452,10 +454,12 @@
                 </ScrollViewer>
             </Border>
             <TextBlock Grid.Row="1"
-                           Text="None" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" 
-                           Visibility="{Binding ManageServiceInputViewModel.IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                       Text="None" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="0,0,0,-3"
+                       Style="{StaticResource MenuTextBlockStyle}"
+                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
 
@@ -567,7 +571,7 @@
                 <TextBlock Text="None"
                            Grid.Row="1" 
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Bottom"
+                           VerticalAlignment="Top"
                            Margin="0,0,0,-3"
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding ManageServiceInputViewModel.IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
