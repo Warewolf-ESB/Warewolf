@@ -5,21 +5,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
-    public class ActionRegion : IActionToolRegion<IDbAction>
+    public class DotNetActionRegion : IActionToolRegion<IPluginAction>
     {
         private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IDbSource> _source;
+        private readonly ISourceToolRegion<IPluginSource> _source;
         private double _minHeight;
         private double _currentHeight;
         private double _maxHeight;
@@ -28,20 +24,20 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         readonly Dictionary<int, IList<IToolRegion>> _previousRegions = new Dictionary<int, IList<IToolRegion>>();
         private Action _sourceChangedAction;
-        private IDbAction _selectedAction;
-        private IDbServiceModel _model;
-        private ICollection<IDbAction> _actions;
+        private IPluginAction _selectedAction;
+        private IPluginServiceModel _model;
+        private ICollection<IPluginAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private int _actionId;
 
-        public ActionRegion()
+        public DotNetActionRegion()
         {
             ToolRegionName = "ActionRegion";
             SetInitialValues();
         }
 
-        public ActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
+        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, NamespaceItem _namespace)
         {
             ToolRegionName = "ActionRegion";
             _modelItem = modelItem;
@@ -53,7 +49,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             IsRefreshing = false;
             if (_source.SelectedSource != null)
             {
-                Actions = model.GetActions(_source.SelectedSource);
+                Actions = model.GetActions(_source.SelectedSource, _namespace);
             }
             ActionId = modelItem.GetProperty<int>("ActionId");
             if (ActionId != 0)
@@ -66,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsRefreshing = true;
                 if(_source.SelectedSource != null)
                 {
-                    Actions = model.GetActions(_source.SelectedSource);
+                    Actions = model.GetActions(_source.SelectedSource, _namespace);
                 }
                 IsRefreshing = false;
             }, CanRefresh);
@@ -80,7 +76,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             // ReSharper disable once ExplicitCallerInfoArgument
             if (_source != null && _source.SelectedSource != null)
             {
-                Actions = _model.GetActions(_source.SelectedSource);
+                //Actions = _model.GetActions(_source.SelectedSource);
                 SelectedAction = null;
                 IsActionEnabled = true;
                 IsVisible = true;
@@ -103,7 +99,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             return SelectedAction != null;
         }
 
-        public IDbAction SelectedAction
+        public IPluginAction SelectedAction
         {
             get
             {
@@ -113,8 +109,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
-                    if (!String.IsNullOrEmpty(_selectedAction.Name))
-                    StorePreviousValues(_selectedAction.Name.GetHashCode());
+                    if (!String.IsNullOrEmpty(_selectedAction.FullName))
+                        StorePreviousValues(_selectedAction.FullName.GetHashCode());
                 }
 
                 if (IsAPreviousValue(value) && _selectedAction != null)
@@ -138,7 +134,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
-        public ICollection<IDbAction> Actions
+        public ICollection<IPluginAction> Actions
         {
             get
             {
@@ -245,7 +241,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new ActionRegion
+            return new DotNetActionRegion
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
@@ -257,7 +253,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ActionRegion;
+            var region = toRestore as DotNetActionRegion;
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
@@ -270,14 +266,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public int GetId()
         {
-            return SelectedAction.Name.GetHashCode();
+            return SelectedAction.FullName.GetHashCode();
         }
 
         #endregion
 
-        #region Implementation of IActionToolRegion<IDbAction>
+        #region Implementation of IActionToolRegion<IPluginAction>
 
-        private void SetSelectedAction(IDbAction value)
+        private void SetSelectedAction(IPluginAction value)
         {
             if (value != null)
             {
@@ -312,18 +308,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IDbAction value)
+        private void RestorePreviousValues(IPluginAction value)
         {
-            var toRestore = _previousRegions[value.Name.GetHashCode()];
+            var toRestore = _previousRegions[value.FullName.GetHashCode()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
             }
         }
 
-        private bool IsAPreviousValue(IDbAction value)
+        private bool IsAPreviousValue(IPluginAction value)
         {
-            return _previousRegions.Keys.Any(a => a == value.Name.GetHashCode());
+            return _previousRegions.Keys.Any(a => a == value.FullName.GetHashCode());
         }
 
         public IList<string> Errors
@@ -334,11 +330,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public IDbAction SavedAction
+        public IPluginAction SavedAction
         {
             get
             {
-                return _modelItem.GetProperty<IDbAction>("SavedAction");
+                return _modelItem.GetProperty<IPluginAction>("SavedAction");
             }
             set
             {
