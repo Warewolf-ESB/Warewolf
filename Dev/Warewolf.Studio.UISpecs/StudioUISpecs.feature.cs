@@ -1965,7 +1965,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1186
 this.ScenarioSetup(scenarioInfo);
 #line 1188
- testRunner.When("I click \'localhost\\Examples\' in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I right click \'localhost\\Examples\' in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
