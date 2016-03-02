@@ -31,18 +31,19 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
         }
 
-        [When(@"I select '(.*)' from the context menu")]
-        public void WhenISelectFromTheContextMenu(string path)
-        {
-            UITestControl getContextMenuItem = Uimap.MainStudioWindow.ExplorerContextMenu.NewWorkflowService;
-            Mouse.Click(getContextMenuItem, new Point(48, 14));
-        }
-
         [When(@"I double click '(.*)' in the explorer tree")]
         public void WhenIDoubleClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.Click(getTreeItem, new Point(40, 12));
+        }
+
+        [When(@"I select '(.*)' from the explorer context menu")]
+        public void WhenISelectFromTheContextMenu(string MenuOption)
+        {
+            UITestControlCollection getContextMenuItems = Uimap.MainStudioWindow.ExplorerContextMenu.GetChildren();
+            var getContextMenuItem = getContextMenuItems.FirstOrDefault(item => item.Name == MenuOption);
+            Mouse.Click(getContextMenuItem, new Point(48, 14));
         }
 
         [When(@"I expand '(.*)' in the explorer tree")]
@@ -66,10 +67,11 @@ namespace Warewolf.Studio.UISpecs
             UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
             foreach (var folder in pathAsArray)
             {
-                var LocalhostTreeItemChildren = CurrentTreeItem.GetChildren().Where(control => control.ControlType == ControlType.TreeItem);
-                CurrentTreeItem = LocalhostTreeItemChildren.FirstOrDefault(LocalhostChild =>
+                var getNextChildren = CurrentTreeItem.GetChildren();
+                var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
+                CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
                 {
-                    var GetNameFromLabel = LocalhostChild.GetChildren();
+                    var GetNameFromLabel = treeitem.GetChildren();
                     var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
                     return label.DisplayText == folder;
                 });
