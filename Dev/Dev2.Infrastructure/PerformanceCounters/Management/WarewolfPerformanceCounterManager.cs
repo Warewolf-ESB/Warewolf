@@ -11,7 +11,7 @@ namespace Dev2.PerformanceCounters.Management
 {
     
 
-    public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory
+    public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory,IPerformanceCounterRepository
     {
         private readonly IList<IPerformanceCounter> _counters;
         private readonly IPerformanceCounterPersistence _perf;
@@ -101,6 +101,16 @@ namespace Dev2.PerformanceCounters.Management
             }
        
         }
+        #endregion
+
+        #region Implementation of IPerformanceCounterRepository
+
+        public IPerformanceCounterTo Counters { get{ return new PerformanceCounterTo(_counters,_resourceCounters);}}
+
+        public void Save(IPerformanceCounterTo toSave)
+        {
+        }
+
         #endregion
     }
 }

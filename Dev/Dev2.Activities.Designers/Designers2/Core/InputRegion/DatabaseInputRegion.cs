@@ -7,6 +7,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
+using Dev2.Studio.Core.Activities.Utils;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ExplicitCallerInfoArgument
@@ -75,22 +77,28 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action.SomethingChanged += SourceOnSomethingChanged;
             SetInitialHeight();
             Inputs = new List<IServiceInput>();
-            IsVisible = action != null && action.SelectedAction != null;
+            UpdateOnActionSelection();
+            IsVisible = _action != null && _action.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_action != null && _action.SelectedAction != null)
+            UpdateOnActionSelection();
+            // ReSharper disable once ExplicitCallerInfoArgument
+            OnPropertyChanged(@"IsVisible");
+            OnHeightChanged(this);
+        }
+
+        private void UpdateOnActionSelection()
+        {
+            if(_action != null && _action.SelectedAction != null)
             {
                 Inputs.Clear();
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsVisible = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
         }
 
         public bool IsInputsEmptyRows
@@ -259,13 +267,14 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         {
             get
             {
-                return _inputs;
+                return _modelItem.GetProperty<List<IServiceInput>>("Inputs") ?? new List<IServiceInput>();
             }
             set
             {
                 _inputs = value;
                 ResetInputsHeight();
                 OnPropertyChanged();
+                _modelItem.SetProperty("Inputs",value);
             }
         }
 

@@ -94,7 +94,7 @@
         </Grid>
 
         <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-            <Control Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
+            <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource GenerateOutputsViewDB}" Margin="0,0,0,-5"/>
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>
