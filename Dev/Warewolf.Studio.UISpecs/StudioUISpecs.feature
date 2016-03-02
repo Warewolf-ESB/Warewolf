@@ -1186,5 +1186,4 @@ Scenario: Get Web Request tool
 Scenario: Testing New Custom Action Recordings
 	#Given I 'Assert the control exists'
 	When I right click 'localhost\Examples' in the explorer tree
-	When I select 'New Workflow Service' from the explorer context menu
 	#Then I 'Assert something happenned'
