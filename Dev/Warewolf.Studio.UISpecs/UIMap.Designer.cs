@@ -1255,6 +1255,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Yes_DeleteConfirmDialog
+        /// </summary>
+        public void Click_Yes_DeleteConfirmDialog()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(36, 6));
+        }
+        
+        /// <summary>
         /// Close_New_Workflow_Tab_Without_Saving
         /// </summary>
         public void Close_New_Workflow_Tab_Without_Saving()
@@ -2384,6 +2397,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_CountRecords_Large_View
+        /// </summary>
+        public void Open_CountRecords_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom countRecordset = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
+            #endregion
+
+            // Double-Click 'DsfCountRecordsetActivity' custom control
+            Mouse.DoubleClick(countRecordset, new Point(130, 11));
+        }
+        
+        /// <summary>
+        /// Open_Create_JSON_Large_View
+        /// </summary>
+        public void Open_Create_JSON_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom createJson = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            #endregion
+
+            // Double-Click 'DsfCreateJsonActivity' custom control
+            Mouse.DoubleClick(createJson, new Point(124, 9));
+        }
+        
+        /// <summary>
         /// Open_Create_Tool_Large_View
         /// </summary>
         public void Open_Create_Tool_Large_View()
@@ -2462,6 +2501,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_DropboxFileOperation_Large_View
+        /// </summary>
+        public void Open_DropboxFileOperation_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom dropBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox;
+            #endregion
+
+            // Double-Click 'DsfDropBoxFileActivity' custom control
+            Mouse.DoubleClick(dropBox, new Point(174, 14));
+        }
+        
+        /// <summary>
         /// Open_Email_Tool_Large_View
         /// </summary>
         public void Open_Email_Tool_Large_View()
@@ -2475,6 +2527,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_ExecuteCommandline_LargeView
+        /// </summary>
+        public void Open_ExecuteCommandline_LargeView()
+        {
+            #region Variable Declarations
+            WpfCustom executeCommandLine = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            #endregion
+
+            // Double-Click 'DsfExecuteCommandLineActivity' custom control
+            Mouse.DoubleClick(executeCommandLine, new Point(178, 10));
+        }
+        
+        /// <summary>
         /// Open_Find_Record_Index_Tool_Large_View
         /// </summary>
         public void Open_Find_Record_Index_Tool_Large_View()
@@ -2485,6 +2550,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Double-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
             Mouse.DoubleClick(findRecordsIndex, new Point(172, 5));
+        }
+        
+        /// <summary>
+        /// Open_ForEach_Large_View
+        /// </summary>
+        public void Open_ForEach_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom forEach = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            #endregion
+
+            // Double-Click 'DsfForEachActivity' custom control
+            Mouse.DoubleClick(forEach, new Point(131, 14));
         }
         
         /// <summary>
@@ -2657,6 +2735,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_SortRecords_Large_View
+        /// </summary>
+        public void Open_SortRecords_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom sortRecords = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            #endregion
+
+            // Double-Click 'DsfSortRecordsActivity' custom control
+            Mouse.DoubleClick(sortRecords, new Point(114, 13));
+        }
+        
+        /// <summary>
         /// Open_SQL_Bulk_Insert_Tool_Large_View
         /// </summary>
         public void Open_SQL_Bulk_Insert_Tool_Large_View()
@@ -2709,6 +2800,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Open_UniqueRecords_Large_View
+        /// </summary>
+        public void Open_UniqueRecords_Large_View()
+        {
+            #region Variable Declarations
+            WpfCustom unique = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            #endregion
+
+            // Double-Click 'DsfUniqueActivity' custom control
+            Mouse.DoubleClick(unique, new Point(134, 10));
+        }
+        
+        /// <summary>
         /// Open_Unzip_Tool_Large_View
         /// </summary>
         public void Open_Unzip_Tool_Large_View()
@@ -2718,7 +2822,20 @@ namespace Warewolf.Studio.UISpecs
             #endregion
 
             // Double-Click 'DsfUnZip' custom control
-            Mouse.DoubleClick(unZip, new Point(102, 12));
+            Mouse.DoubleClick(unZip, new Point(102, 14));
+        }
+        
+        /// <summary>
+        /// Open_WebRequest_LargeView
+        /// </summary>
+        public void Open_WebRequest_LargeView()
+        {
+            #region Variable Declarations
+            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            #endregion
+
+            // Double-Click 'DsfWebGetActivity' custom control
+            Mouse.DoubleClick(webGet, new Point(126, 13));
         }
         
         /// <summary>
@@ -2817,6 +2934,643 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// RightClick_Assign_OnDesignSurface
+        /// </summary>
+        public void RightClick_Assign_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom multiAssign = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            // Right-Click 'DsfMultiAssignActivity' custom control
+            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_BaseConvert_OnDesignSurface
+        /// </summary>
+        public void RightClick_BaseConvert_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom baseConvert = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert;
+            #endregion
+
+            // Right-Click 'DsfBaseConvertActivity' custom control
+            Mouse.Click(baseConvert, MouseButtons.Right, ModifierKeys.None, new Point(148, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_Calculate_OnDesignSurface
+        /// </summary>
+        public void RightClick_Calculate_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom calculate = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate;
+            #endregion
+
+            // Right-Click 'DsfCalculateActivity' custom control
+            Mouse.Click(calculate, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CaseConvert_OnDesignSurface
+        /// </summary>
+        public void RightClick_CaseConvert_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom caseConvert = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert;
+            #endregion
+
+            // Right-Click 'DsfCaseConvertActivity' custom control
+            Mouse.Click(caseConvert, MouseButtons.Right, ModifierKeys.None, new Point(156, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Comment_OnDesignSurface
+        /// </summary>
+        public void RightClick_Comment_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom comment = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment;
+            #endregion
+
+            // Right-Click 'DsfCommentActivity' custom control
+            Mouse.Click(comment, MouseButtons.Right, ModifierKeys.None, new Point(121, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Copy_OnDesignSurface
+        /// </summary>
+        public void RightClick_Copy_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathCopy = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy;
+            #endregion
+
+            // Right-Click 'DsfPathCopy' custom control
+            Mouse.Click(pathCopy, MouseButtons.Right, ModifierKeys.None, new Point(104, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CountRecords_OnDesignSurface
+        /// </summary>
+        public void RightClick_CountRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom countRecordset = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CountRecordset;
+            #endregion
+
+            // Right-Click 'DsfCountRecordsetActivity' custom control
+            Mouse.Click(countRecordset, MouseButtons.Right, ModifierKeys.None, new Point(131, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_CreateJSON_OnDesignSurface
+        /// </summary>
+        public void RightClick_CreateJSON_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom createJson = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson;
+            #endregion
+
+            // Right-Click 'DsfCreateJsonActivity' custom control
+            Mouse.Click(createJson, MouseButtons.Right, ModifierKeys.None, new Point(128, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_CreateTool_OnDesignSurface
+        /// </summary>
+        public void RightClick_CreateTool_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathCreate = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate;
+            #endregion
+
+            // Right-Click 'DsfPathCreate' custom control
+            Mouse.Click(pathCreate, MouseButtons.Right, ModifierKeys.None, new Point(108, 14));
+        }
+        
+        /// <summary>
+        /// RightClick_DataMerge_OnDesignSurface
+        /// </summary>
+        public void RightClick_DataMerge_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dataMerge = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge;
+            #endregion
+
+            // Right-Click 'DsfDataMergeActivity' custom control
+            Mouse.Click(dataMerge, MouseButtons.Right, ModifierKeys.None, new Point(140, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_DataSplit_OnDesignSurface
+        /// </summary>
+        public void RightClick_DataSplit_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dataSplit = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit;
+            #endregion
+
+            // Right-Click 'DsfDataSplitActivity' custom control
+            Mouse.Click(dataSplit, MouseButtons.Right, ModifierKeys.None, new Point(153, 6));
+        }
+        
+        /// <summary>
+        /// RightClick_DateTime_OnDesignSurface
+        /// </summary>
+        public void RightClick_DateTime_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dateTime = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTime;
+            #endregion
+
+            // Right-Click 'DsfDateTimeActivity' custom control
+            Mouse.Click(dateTime, MouseButtons.Right, ModifierKeys.None, new Point(145, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_DateTimeDifference_OnDesignSurface
+        /// </summary>
+        public void RightClick_DateTimeDifference_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dateTimeDifference = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DateTimeDifference;
+            #endregion
+
+            // Right-Click 'DsfDateTimeDifferenceActivity' custom control
+            Mouse.Click(dateTimeDifference, MouseButtons.Right, ModifierKeys.None, new Point(174, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Decision_OnDesignSurface
+        /// </summary>
+        public void RightClick_Decision_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom decision = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision;
+            #endregion
+
+            // Right-Click 'FlowDecision' custom control
+            Mouse.Click(decision, MouseButtons.Right, ModifierKeys.None, new Point(28, 22));
+        }
+        
+        /// <summary>
+        /// RightClick_Delete_OnDesignSurface
+        /// </summary>
+        public void RightClick_Delete_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathDelete = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            #endregion
+
+            // Right-Click 'DsfPathDelete' custom control
+            Mouse.Click(pathDelete, MouseButtons.Right, ModifierKeys.None, new Point(100, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_DeleteRecord_OnDesignSurface
+        /// </summary>
+        public void RightClick_DeleteRecord_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom deleteRecord = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DeleteRecord;
+            #endregion
+
+            // Right-Click 'DsfDeleteRecordActivity' custom control
+            Mouse.Click(deleteRecord, MouseButtons.Right, ModifierKeys.None, new Point(116, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_DotNetDllConnector_OnDesignSurface
+        /// </summary>
+        public void RightClick_DotNetDllConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            #endregion
+
+            // Right-Click 'DsfDotNetDllActivity' custom control
+            Mouse.Click(dotNetDll, MouseButtons.Right, ModifierKeys.None, new Point(164, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_DropboxFileOperation_OnDesignSurface
+        /// </summary>
+        public void RightClick_DropboxFileOperation_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dropBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox;
+            #endregion
+
+            // Right-Click 'DsfDropBoxFileActivity' custom control
+            Mouse.Click(dropBox, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Email_OnDesignSurface
+        /// </summary>
+        public void RightClick_Email_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sendEmail = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SendEmail;
+            #endregion
+
+            // Right-Click 'DsfSendEmailActivity' custom control
+            Mouse.Click(sendEmail, MouseButtons.Right, ModifierKeys.None, new Point(129, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_ExecuteCommandLine_OnDesignSurface
+        /// </summary>
+        public void RightClick_ExecuteCommandLine_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom executeCommandLine = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine;
+            #endregion
+
+            // Right-Click 'DsfExecuteCommandLineActivity' custom control
+            Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_FindIndex_OnDesignSurface
+        /// </summary>
+        public void RightClick_FindIndex_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom findIndex = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindIndex;
+            #endregion
+
+            // Right-Click 'DsfIndexActivity' custom control
+            Mouse.Click(findIndex, MouseButtons.Right, ModifierKeys.None, new Point(113, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_FindRecordIndex_OnDesignSurface
+        /// </summary>
+        public void RightClick_FindRecordIndex_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom findRecordsIndex = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex;
+            #endregion
+
+            // Right-Click 'DsfFindRecordsMultipleCriteriaActivity' custom control
+            Mouse.Click(findRecordsIndex, MouseButtons.Right, ModifierKeys.None, new Point(191, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_ForEach_OnDesignSurface
+        /// </summary>
+        public void RightClick_ForEach_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom forEach = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach;
+            #endregion
+
+            // Right-Click 'DsfForEachActivity' custom control
+            Mouse.Click(forEach, MouseButtons.Right, ModifierKeys.None, new Point(137, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_FormatNumber_OnDesignSurface
+        /// </summary>
+        public void RightClick_FormatNumber_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom formatNumber = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber;
+            #endregion
+
+            // Right-Click 'DsfNumberFormatActivity' custom control
+            Mouse.Click(formatNumber, MouseButtons.Right, ModifierKeys.None, new Point(143, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_Length_OnDesignSurface
+        /// </summary>
+        public void RightClick_Length_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom length = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Length;
+            #endregion
+
+            // Right-Click 'DsfRecordsetLengthActivity' custom control
+            Mouse.Click(length, MouseButtons.Right, ModifierKeys.None, new Point(97, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Move_OnDesignSurface
+        /// </summary>
+        public void RightClick_Move_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathMove = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove;
+            #endregion
+
+            // Right-Click 'DsfPathMove' custom control
+            Mouse.Click(pathMove, MouseButtons.Right, ModifierKeys.None, new Point(98, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_MySqlConnector_OnDesignSurface
+        /// </summary>
+        public void RightClick_MySqlConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            #endregion
+
+            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_MySQLConnector_OnDesignSurface1
+        /// </summary>
+        public void RightClick_MySQLConnector_OnDesignSurface1()
+        {
+            #region Variable Declarations
+            WpfCustom mySqlDatabase = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
+            #endregion
+
+            // Right-Click 'DsfMySqlDatabaseActivity' custom control
+            Mouse.Click(mySqlDatabase, MouseButtons.Right, ModifierKeys.None, new Point(202, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_Random_OnDesignSurface
+        /// </summary>
+        public void RightClick_Random_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom random = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random;
+            #endregion
+
+            // Right-Click 'DsfRandomActivity' custom control
+            Mouse.Click(random, MouseButtons.Right, ModifierKeys.None, new Point(107, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_ReadFile_OnDesignSurface
+        /// </summary>
+        public void RightClick_ReadFile_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom fileRead = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead;
+            #endregion
+
+            // Right-Click 'DsfFileRead' custom control
+            Mouse.Click(fileRead, MouseButtons.Right, ModifierKeys.None, new Point(99, 14));
+        }
+        
+        /// <summary>
+        /// RightClick_ReadFolder_OnDesignSurface
+        /// </summary>
+        public void RightClick_ReadFolder_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom folderRead = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FolderRead;
+            #endregion
+
+            // Right-Click 'DsfFolderRead' custom control
+            Mouse.Click(folderRead, MouseButtons.Right, ModifierKeys.None, new Point(115, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_Rename_OnDesignSurface
+        /// </summary>
+        public void RightClick_Rename_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathRename = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathRename;
+            #endregion
+
+            // Right-Click 'DsfPathRename' custom control
+            Mouse.Click(pathRename, MouseButtons.Right, ModifierKeys.None, new Point(103, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_Replace_OnDesignSurface
+        /// </summary>
+        public void RightClick_Replace_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom replace = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Replace;
+            #endregion
+
+            // Right-Click 'DsfReplaceActivity' custom control
+            Mouse.Click(replace, MouseButtons.Right, ModifierKeys.None, new Point(100, 7));
+        }
+        
+        /// <summary>
+        /// RightClick_ScriptTool_OnDesignSurface
+        /// </summary>
+        public void RightClick_ScriptTool_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom scripting = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Scripting;
+            #endregion
+
+            // Right-Click 'DsfScriptingActivity' custom control
+            Mouse.Click(scripting, MouseButtons.Right, ModifierKeys.None, new Point(110, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Sequence_OnDesignSurface
+        /// </summary>
+        public void RightClick_Sequence_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sequence = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence;
+            #endregion
+
+            // Right-Click 'DsfSequenceActivity' custom control
+            Mouse.Click(sequence, MouseButtons.Right, ModifierKeys.None, new Point(119, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointCreateListItem_OnDesignSurface
+        /// </summary>
+        public void RightClick_SharepointCreateListItem_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointCreate = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreate;
+            #endregion
+
+            // Right-Click 'SharepointCreateListItemActivity' custom control
+            Mouse.Click(sharepointCreate, MouseButtons.Right, ModifierKeys.None, new Point(199, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointDelete_OnDesignSurface
+        /// </summary>
+        public void RightClick_SharepointDelete_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointDelete = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDelete;
+            #endregion
+
+            // Right-Click 'SharepointDeleteListItemActivity' custom control
+            Mouse.Click(sharepointDelete, MouseButtons.Right, ModifierKeys.None, new Point(217, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointRead_OnDesignSurface
+        /// </summary>
+        public void RightClick_SharepointRead_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointRead = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointRead;
+            #endregion
+
+            // Right-Click 'SharepointReadListActivity' custom control
+            Mouse.Click(sharepointRead, MouseButtons.Right, ModifierKeys.None, new Point(203, 9));
+        }
+        
+        /// <summary>
+        /// RightClick_SharepointUpdate_OnDesignSurface
+        /// </summary>
+        public void RightClick_SharepointUpdate_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sharepointUpdate = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUpdate;
+            #endregion
+
+            // Right-Click 'SharepointUpdateListItemActivity' custom control
+            Mouse.Click(sharepointUpdate, MouseButtons.Right, ModifierKeys.None, new Point(210, 5));
+        }
+        
+        /// <summary>
+        /// RightClick_SortRecords_OnDesignSurface
+        /// </summary>
+        public void RightClick_SortRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sortRecords = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords;
+            #endregion
+
+            // Right-Click 'DsfSortRecordsActivity' custom control
+            Mouse.Click(sortRecords, MouseButtons.Right, ModifierKeys.None, new Point(118, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_SQLConnector_OnDesignSurface
+        /// </summary>
+        public void RightClick_SQLConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sqlBulkInsert = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert;
+            #endregion
+
+            // Right-Click 'DsfSqlBulkInsertActivity' custom control
+            Mouse.Click(sqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+        }
+        
+        /// <summary>
+        /// RightClick_Switch_OnDesignSurface
+        /// </summary>
+        public void RightClick_Switch_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom switch1 = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            #endregion
+
+            // Right-Click 'FlowSwitch`1[String]' custom control
+            Mouse.Click(switch1, MouseButtons.Right, ModifierKeys.None, new Point(46, 15));
+        }
+        
+        /// <summary>
+        /// RightClick_SystemInformation_OnDesignSurface
+        /// </summary>
+        public void RightClick_SystemInformation_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom gatherSystemInfo = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo;
+            #endregion
+
+            // Right-Click 'DsfGatherSystemInformationActivity' custom control
+            Mouse.Click(gatherSystemInfo, MouseButtons.Right, ModifierKeys.None, new Point(217, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_UniqueRecords_OnDesignSurface
+        /// </summary>
+        public void RightClick_UniqueRecords_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom unique = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique;
+            #endregion
+
+            // Right-Click 'DsfUniqueActivity' custom control
+            Mouse.Click(unique, MouseButtons.Right, ModifierKeys.None, new Point(133, 11));
+        }
+        
+        /// <summary>
+        /// RightClick_Unzip_OnDesignSurface
+        /// </summary>
+        public void RightClick_Unzip_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom unZip = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UnZip;
+            #endregion
+
+            // Right-Click 'DsfUnZip' custom control
+            Mouse.Click(unZip, MouseButtons.Right, ModifierKeys.None, new Point(101, 10));
+        }
+        
+        /// <summary>
+        /// RightClick_WebRequest_OnDesignSurface
+        /// </summary>
+        public void RightClick_WebRequest_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
+            #endregion
+
+            // Right-Click 'DsfWebGetActivity' custom control
+            Mouse.Click(webGet, MouseButtons.Right, ModifierKeys.None, new Point(165, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_WriteFile_OnDesignSurface
+        /// </summary>
+        public void RightClick_WriteFile_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom fileWrite = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileWrite;
+            #endregion
+
+            // Right-Click 'DsfFileWrite' custom control
+            Mouse.Click(fileWrite, MouseButtons.Right, ModifierKeys.None, new Point(96, 12));
+        }
+        
+        /// <summary>
+        /// RightClick_XPath_OnDesignSurface
+        /// </summary>
+        public void RightClick_XPath_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom xPath = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath;
+            #endregion
+
+            // Right-Click 'DsfXPathActivity' custom control
+            Mouse.Click(xPath, MouseButtons.Right, ModifierKeys.None, new Point(99, 8));
+        }
+        
+        /// <summary>
+        /// RightClick_Zip_OnDesignSurface
+        /// </summary>
+        public void RightClick_Zip_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom zip = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip;
+            #endregion
+
+            // Right-Click 'DsfZip' custom control
+            Mouse.Click(zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
+        }
+        
+        /// <summary>
         /// Select_Action_Droplist
         /// </summary>
         public void Select_Action_Droplist()
@@ -2848,6 +3602,149 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'GreenPoint' custom control
             Mouse.Click(uIGreenPointCustom, new Point(187, 8));
+        }
+        
+        /// <summary>
+        /// Select_Delete_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Delete_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
+            #endregion
+
+            // Click 'Delete' menu item
+            Mouse.Click(delete, new Point(87, 12));
+        }
+        
+        /// <summary>
+        /// Select_Deploy_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Deploy_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem deploy = this.MainStudioWindow.ExplorerContextMenu.Deploy;
+            #endregion
+
+            // Click 'Deploy' menu item
+            Mouse.Click(deploy, new Point(57, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewDatabaseSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewDatabaseSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDatabaseSource = this.MainStudioWindow.ExplorerContextMenu.NewDatabaseSource;
+            #endregion
+
+            // Click 'New Database Source' menu item
+            Mouse.Click(newDatabaseSource, new Point(72, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewDropboxSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewDropboxSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newDropboxSource = this.MainStudioWindow.ExplorerContextMenu.NewDropboxSource;
+            #endregion
+
+            // Click 'New Dropbox Source' menu item
+            Mouse.Click(newDropboxSource, new Point(119, 15));
+        }
+        
+        /// <summary>
+        /// Select_NewEmailSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewEmailSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newEmailSource = this.MainStudioWindow.ExplorerContextMenu.NewEmailSource;
+            #endregion
+
+            // Click 'New Email Source' menu item
+            Mouse.Click(newEmailSource, new Point(101, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewFolder_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewFolder_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newFolder = this.MainStudioWindow.ExplorerContextMenu.NewFolder;
+            #endregion
+
+            // Click 'New Folder' menu item
+            Mouse.Click(newFolder, new Point(87, 14));
+        }
+        
+        /// <summary>
+        /// Select_NewPluginSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewPluginSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newPluginSource = this.MainStudioWindow.ExplorerContextMenu.NewPluginSource;
+            #endregion
+
+            // Click 'New Plugin Source' menu item
+            Mouse.Click(newPluginSource, new Point(78, 11));
+        }
+        
+        /// <summary>
+        /// Select_NewServerSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewServerSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newServerSource = this.MainStudioWindow.ExplorerContextMenu.NewServerSource;
+            #endregion
+
+            // Click 'New Server Source' menu item
+            Mouse.Click(newServerSource, new Point(44, 13));
+        }
+        
+        /// <summary>
+        /// Select_NewSharepointSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewSharepointSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newSharepointSource = this.MainStudioWindow.ExplorerContextMenu.NewSharepointSource;
+            #endregion
+
+            // Click 'New Sharepoint Source' menu item
+            Mouse.Click(newSharepointSource, new Point(126, 17));
+        }
+        
+        /// <summary>
+        /// Select_NewWebSource_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewWebSource_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWebServiceSource = this.MainStudioWindow.ExplorerContextMenu.NewWebServiceSource;
+            #endregion
+
+            // Click 'New Web Service Source' menu item
+            Mouse.Click(newWebServiceSource, new Point(82, 20));
+        }
+        
+        /// <summary>
+        /// Select_NewWorkflow_FromExplorerContextMenu
+        /// </summary>
+        public void Select_NewWorkflow_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem newWorkflow = this.MainStudioWindow.ExplorerContextMenu.NewWorkflow;
+            #endregion
+
+            // Click 'New Workflow Service' menu item
+            Mouse.Click(newWorkflow, new Point(30, 11));
         }
         
         /// <summary>
@@ -2899,6 +3796,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Email Plugin' custom control
             Mouse.Click(uIEmailPluginCustom, new Point(193, 5));
+        }
+        
+        /// <summary>
+        /// Select_Rename_FromExplorerContextMenu
+        /// </summary>
+        public void Select_Rename_FromExplorerContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem rename = this.MainStudioWindow.ExplorerContextMenu.Rename;
+            #endregion
+
+            // Click 'Rename' menu item
+            Mouse.Click(rename, new Point(73, 15));
         }
         
         /// <summary>
@@ -6167,6 +7077,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public GenericContextMenu GenericContextMenu
+        {
+            get
+            {
+                if ((this.mGenericContextMenu == null))
+                {
+                    this.mGenericContextMenu = new GenericContextMenu(this);
+                }
+                return this.mGenericContextMenu;
+            }
+        }
+        
         public SideMenuBar SideMenuBar
         {
             get
@@ -6275,6 +7197,8 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private ExplorerContextMenu mExplorerContextMenu;
         
+        private GenericContextMenu mGenericContextMenu;
+        
         private SideMenuBar mSideMenuBar;
         
         private SplitPane mSplitPane;
@@ -6307,25 +7231,259 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfMenuItem NewWorkflowService
+        public WpfMenuItem NewWorkflow
         {
             get
             {
-                if ((this.mNewWorkflowService == null))
+                if ((this.mNewWorkflow == null))
                 {
-                    this.mNewWorkflowService = new WpfMenuItem(this);
+                    this.mNewWorkflow = new WpfMenuItem(this);
                     #region Search Criteria
-                    this.mNewWorkflowService.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
-                    this.mNewWorkflowService.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mNewWorkflow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflow.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mNewWorkflowService;
+                return this.mNewWorkflow;
+            }
+        }
+        
+        public WpfMenuItem NewServerSource
+        {
+            get
+            {
+                if ((this.mNewServerSource == null))
+                {
+                    this.mNewServerSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewServerSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewServerSource";
+                    this.mNewServerSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewServerSource;
+            }
+        }
+        
+        public WpfMenuItem NewDatabaseSource
+        {
+            get
+            {
+                if ((this.mNewDatabaseSource == null))
+                {
+                    this.mNewDatabaseSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDatabaseSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDataBaseSource";
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewDatabaseSource;
+            }
+        }
+        
+        public WpfMenuItem NewWebServiceSource
+        {
+            get
+            {
+                if ((this.mNewWebServiceSource == null))
+                {
+                    this.mNewWebServiceSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWebServiceSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewWebSource";
+                    this.mNewWebServiceSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewWebServiceSource;
+            }
+        }
+        
+        public WpfMenuItem NewPluginSource
+        {
+            get
+            {
+                if ((this.mNewPluginSource == null))
+                {
+                    this.mNewPluginSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewPluginSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewPluginSource";
+                    this.mNewPluginSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewPluginSource;
+            }
+        }
+        
+        public WpfMenuItem NewEmailSource
+        {
+            get
+            {
+                if ((this.mNewEmailSource == null))
+                {
+                    this.mNewEmailSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewEmailSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewEmailSource";
+                    this.mNewEmailSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewEmailSource;
+            }
+        }
+        
+        public WpfMenuItem NewDropboxSource
+        {
+            get
+            {
+                if ((this.mNewDropboxSource == null))
+                {
+                    this.mNewDropboxSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewDropboxSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewDropboxSource";
+                    this.mNewDropboxSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewDropboxSource;
+            }
+        }
+        
+        public WpfMenuItem NewSharepointSource
+        {
+            get
+            {
+                if ((this.mNewSharepointSource == null))
+                {
+                    this.mNewSharepointSource = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewSharepointSource.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewSharepointSource";
+                    this.mNewSharepointSource.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewSharepointSource;
+            }
+        }
+        
+        public WpfMenuItem NewFolder
+        {
+            get
+            {
+                if ((this.mNewFolder == null))
+                {
+                    this.mNewFolder = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewFolder.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewFolderFromItem";
+                    this.mNewFolder.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewFolder;
+            }
+        }
+        
+        public WpfMenuItem Rename
+        {
+            get
+            {
+                if ((this.mRename == null))
+                {
+                    this.mRename = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mRename.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Rename";
+                    this.mRename.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRename;
+            }
+        }
+        
+        public WpfMenuItem Delete
+        {
+            get
+            {
+                if ((this.mDelete == null))
+                {
+                    this.mDelete = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDelete.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Delete";
+                    this.mDelete.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDelete;
+            }
+        }
+        
+        public WpfMenuItem Deploy
+        {
+            get
+            {
+                if ((this.mDeploy == null))
+                {
+                    this.mDeploy = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeploy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "Deploy";
+                    this.mDeploy.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDeploy;
             }
         }
         #endregion
         
         #region Fields
-        private WpfMenuItem mNewWorkflowService;
+        private WpfMenuItem mNewWorkflow;
+        
+        private WpfMenuItem mNewServerSource;
+        
+        private WpfMenuItem mNewDatabaseSource;
+        
+        private WpfMenuItem mNewWebServiceSource;
+        
+        private WpfMenuItem mNewPluginSource;
+        
+        private WpfMenuItem mNewEmailSource;
+        
+        private WpfMenuItem mNewDropboxSource;
+        
+        private WpfMenuItem mNewSharepointSource;
+        
+        private WpfMenuItem mNewFolder;
+        
+        private WpfMenuItem mRename;
+        
+        private WpfMenuItem mDelete;
+        
+        private WpfMenuItem mDeploy;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class GenericContextMenu : WpfMenu
+    {
+        
+        public GenericContextMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem Cut
+        {
+            get
+            {
+                if ((this.mCut == null))
+                {
+                    this.mCut = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mCut.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "CutMenuItem";
+                    this.mCut.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCut;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mCut;
         #endregion
     }
     

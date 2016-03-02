@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Core.Web.Delete;
+using Dev2.Activities.Designers2.Core.Web.Put;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -25,30 +25,21 @@ using Warewolf.Core;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Dev2.Activities.Designers2.Web_Service_Delete
+namespace Dev2.Activities.Designers2.Web_Service_Put
 {
-    public class WebServiceDeleteViewModel : CustomToolWithRegionBase, IWebServiceDeleteViewModel
+    public class WebServicePutViewModel : CustomToolWithRegionBase, IWebServicePutViewModel
     {
+        const string DoneText = "Done";
+        const string FixText = "Fix";
+        const string OutputDisplayName = " - Outputs";
+        private IWebPutInputArea _inputArea;
         private IOutputsToolRegion _outputsRegion;
-        private IWebDeleteInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _sourceRegion;
 
         private IErrorInfo _worstDesignError;
 
-        const string DoneText = "Done";
-        const string FixText = "Fix";
-        const string OutputDisplayName = " - Outputs";
-        // ReSharper disable UnusedMember.Local
-        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-
-        readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
-        readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
-        readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
-        readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
-        readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
-        // ReSharper restore UnusedMember.Local
         [ExcludeFromCodeCoverage]
-        public WebServiceDeleteViewModel(ModelItem modelItem)
+        public WebServicePutViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -58,7 +49,22 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
             SetupCommonProperties();
         }
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
+
+        public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)
+            : base(modelItem)
+        {
+            Model = model;
+            SetupCommonProperties();
+        }
+
+        Guid UniqueID
+        {
+            get
+            {
+                return GetProperty<Guid>();
+            }
+        }
+
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -68,7 +74,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 ErrorType = ErrorType.None,
                 Message = "Service Working Normally"
             };
-            if (SourceRegion.SelectedSource == null)
+            if(SourceRegion.SelectedSource == null)
             {
                 UpdateLastValidationMemoWithSourceNotFoundError();
             }
@@ -112,44 +118,46 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
-            foreach (var error in errors)
+            foreach(var error in errors)
             {
                 DesignValidationErrors.Add(error);
             }
             UpdateWorstError();
         }
 
-        public WebServiceDeleteViewModel(ModelItem modelItem, IWebServiceModel model)
-            : base(modelItem)
-        {
-            Model = model;
-            SetupCommonProperties();
-        }
+        // ReSharper disable UnusedMember.Local
+        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+
+        readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
+        readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
+        readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
+        readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
+        readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
+        // ReSharper restore UnusedMember.Local
 
         #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
         {
-            if (Errors == null)
+            if(Errors == null)
             {
                 Errors = new List<IActionableErrorInfo>();
             }
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsVisible)
+            if(!OutputsRegion.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Web Delete must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Web Put must be validated before minimising" } };
             }
-            if (SourceRegion.Errors.Count > 0)
+            if(SourceRegion.Errors.Count > 0)
             {
-                foreach (var designValidationError in SourceRegion.Errors)
+                foreach(var designValidationError in SourceRegion.Errors)
                 {
                     DesignValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
-
             }
-            if (Errors.Count <= 0)
+            if(Errors.Count <= 0)
             {
                 ClearValidationMemoWithNoFoundError();
             }
@@ -159,17 +167,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         void UpdateWorstError()
         {
-            if (DesignValidationErrors.Count == 0)
+            if(DesignValidationErrors.Count == 0)
             {
                 DesignValidationErrors.Add(NoError);
             }
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };
 
-            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            foreach(var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
             {
                 worstError[0] = error;
-                if (error.ErrorType == ErrorType.Critical)
+                if(error.ErrorType == ErrorType.Critical)
                 {
                     break;
                 }
@@ -180,10 +188,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         IErrorInfo WorstDesignError
         {
             // ReSharper disable once UnusedMember.Local
-            get { return _worstDesignError; }
+            get
+            {
+                return _worstDesignError;
+            }
             set
             {
-                if (_worstDesignError != value)
+                if(_worstDesignError != value)
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
@@ -206,10 +217,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             ShowExampleWorkflowLink = Visibility.Collapsed;
 
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
-            {
-                IsWorstErrorReadOnly = true;
-            });
+            FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o => { IsWorstErrorReadOnly = true; });
 
             SetDisplayName("");
             OutputsRegion.OutputMappingEnabled = true;
@@ -217,10 +225,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
             InitializeProperties();
 
-            if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if(OutputsRegion != null && OutputsRegion.IsVisible)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
-                if (recordsetItem != null)
+                if(recordsetItem != null)
                 {
                     OutputsRegion.IsVisible = true;
                 }
@@ -231,6 +239,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
+
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
@@ -241,7 +250,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         void AddProperty(string key, string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if(!string.IsNullOrEmpty(value))
             {
                 Properties.Add(new KeyValuePair<string, string>(key, value));
             }
@@ -251,7 +260,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         public void TestProcedure()
         {
-            if (SourceRegion.SelectedSource != null)
+            if(SourceRegion.SelectedSource != null)
             {
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
@@ -267,7 +276,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         public bool IsWorstErrorReadOnly
         {
-            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
+            get
+            {
+                return (bool)GetValue(IsWorstErrorReadOnlyProperty);
+            }
             private set
             {
                 ButtonDisplayValue = value ? DoneText : FixText;
@@ -275,22 +287,33 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServiceDeleteViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServicePutViewModel), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
-            get { return (ErrorType)GetValue(WorstErrorProperty); }
-            private set { SetValue(WorstErrorProperty, value); }
+            get
+            {
+                return (ErrorType)GetValue(WorstErrorProperty);
+            }
+            private set
+            {
+                SetValue(WorstErrorProperty, value);
+            }
         }
         public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceDeleteViewModel), new PropertyMetadata(ErrorType.None));
+            DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServicePutViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type { get { return GetProperty<string>(); } }
-      
+        private string Type
+        {
+            get
+            {
+                return GetProperty<string>();
+            }
+        }
 
         void AddTitleBarMappingToggle()
         {
@@ -301,18 +324,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
-            if (index > 0)
+            if(index > 0)
             {
                 DisplayName = DisplayName.Remove(index);
             }
 
             var displayName = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if(!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
             {
                 DisplayName = displayName;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if(!string.IsNullOrWhiteSpace(outputFieldName))
             {
                 DisplayName = displayName + outputFieldName;
             }
@@ -328,7 +351,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
+            if(mainViewModel != null)
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
@@ -341,18 +364,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
-            if (SourceRegion == null)
+            if(SourceRegion == null)
             {
                 SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
                 regions.Add(SourceRegion);
-                InputArea = new WebDeleteInputRegion(ModelItem, SourceRegion);
+                //InputArea = new WebDeleteInputRegion(ModelItem, SourceRegion);
+                InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem);
                 regions.Add(OutputsRegion);
-                if (OutputsRegion.Outputs.Count > 0)
+                if(OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsVisible = true;
-
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -361,19 +384,20 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
+            foreach(var toolRegion in regions)
             {
                 toolRegion.HeightChanged += ToolRegionHeightChanged;
             }
             ReCalculateHeight();
             return regions;
         }
+
         public ErrorRegion ErrorRegion { get; private set; }
 
         private void ToolRegionHeightChanged(object sender, IToolRegion args)
         {
             ReCalculateHeight();
-            if (TestInputCommand != null)
+            if(TestInputCommand != null)
             {
                 TestInputCommand.RaiseCanExecuteChanged();
             }
@@ -381,7 +405,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         #endregion
 
-        #region Implementation of IWebServiceDeleteViewModel
+        #region Implementation of IWebServicePutViewModel
 
         public IOutputsToolRegion OutputsRegion
         {
@@ -395,7 +419,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 OnPropertyChanged();
             }
         }
-        public IWebDeleteInputArea InputArea
+        public IWebPutInputArea InputArea
         {
             get
             {
@@ -424,8 +448,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         public void ErrorMessage(Exception exception, bool hasError)
         {
             Errors = new List<IActionableErrorInfo>();
-            if (hasError)
+            if(hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void ValidateTestComplete()
@@ -447,8 +473,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
-                Method = WebRequestMethod.Delete
-
+                Method = WebRequestMethod.Put
             };
             return webServiceDefinition;
         }
@@ -458,7 +483,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
             GetValue(s, dt);
-            foreach (var nameValue in InputArea.Headers)
+            foreach(var nameValue in InputArea.Headers)
             {
                 GetValue(nameValue.Name, dt);
                 GetValue(nameValue.Value, dt);
@@ -469,20 +494,18 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         private static void GetValue(string s, List<IServiceInput> dt)
         {
             var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
-            if (exp.IsComplexExpression)
+            if(exp.IsComplexExpression)
             {
                 var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
                 var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
                 dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
             }
-            if (exp.IsScalarExpression)
+            if(exp.IsScalarExpression)
             {
-
                 dt.Add(new ServiceInput(s, ""));
             }
-            if (exp.IsRecordSetExpression)
+            if(exp.IsRecordSetExpression)
             {
-
                 dt.Add(new ServiceInput(s, ""));
             }
         }
@@ -497,12 +520,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             set
             {
                 _generateOutputsVisible = value;
-                if (value)
+                if(value)
                 {
                     ManageServiceInputViewModel.InputArea.IsVisible = true;
                     ManageServiceInputViewModel.OutputArea.IsVisible = false;
                     SetRegionVisibility(false);
-
                 }
                 else
                 {
@@ -526,17 +548,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         public override void ReCalculateHeight()
         {
-            if (_regions != null)
+            if(_regions != null)
             {
                 bool isInputVisible = false;
                 bool isOutputVisible = false;
-                foreach (var toolRegion in _regions)
+                foreach(var toolRegion in _regions)
                 {
-                    if (toolRegion.ToolRegionName == "GetInputRegion")
+                    if(toolRegion.ToolRegionName == "GetInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }
-                    if (toolRegion.ToolRegionName == "OutputsRegion")
+                    if(toolRegion.ToolRegionName == "OutputsRegion")
                     {
                         isOutputVisible = toolRegion.IsVisible;
                     }
@@ -546,14 +568,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
                 DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
 
-                if (isOutputVisible)
+                if(isOutputVisible)
                 {
                     DesignMaxHeight += 20;
                     DesignHeight += 20;
                     DesignMinHeight += 20;
                 }
 
-                if (isInputVisible && !GenerateOutputsVisible)
+                if(isInputVisible && !GenerateOutputsVisible)
                 {
                     DesignMaxHeight += BaseHeight;
                     DesignHeight += BaseHeight;

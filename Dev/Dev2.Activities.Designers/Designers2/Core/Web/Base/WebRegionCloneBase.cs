@@ -7,10 +7,22 @@ using Dev2.Activities.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 
-namespace Dev2.Activities.Designers2.Core
+namespace Dev2.Activities.Designers2.Core.Web.Base
 {
-    public class WebDeleteRegionClone : IToolRegion
+    [ExcludeFromCodeCoverage]
+    public class WebRegionCloneBase : IRegionClone
     {
+        #region IRegionClone Members
+
+        public ObservableCollection<INameValue> Headers { get; set; }
+        public string QueryString { get; set; }
+        public string RequestUrl { get; set; }
+
+        [ExcludeFromCodeCoverage]
+        public void RestoreRegion(IRegionClone toRestore)
+        {
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
         public double MinHeight { get; set; }
@@ -21,31 +33,39 @@ namespace Dev2.Activities.Designers2.Core
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }
-        public ObservableCollection<INameValue> Headers { get; set; }
-        public string QueryString { get; set; }
-        public string RequestUrl { get; set; }
+
         [ExcludeFromCodeCoverage]
         public IToolRegion CloneRegion()
         {
             return this;
         }
+
         [ExcludeFromCodeCoverage]
         public void RestoreRegion(IToolRegion toRestore)
         {
-
         }
+
+        #endregion
+
         [ExcludeFromCodeCoverage]
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
+
         [ExcludeFromCodeCoverage]
         private void OnHeightChanged(IToolRegion args)
         {
             var handler = HeightChanged;
-            if (handler != null) handler(this, args);
+            if(handler != null)
+            {
+                handler(this, args);
+            }
         }
     }
 }
