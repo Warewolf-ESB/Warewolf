@@ -39,9 +39,17 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [When(@"I select '(.*)' from the explorer context menu")]
-        public void WhenISelectFromTheContextMenu(string MenuOption)
+        public void WhenISelectFromTheExplorerContextMenu(string MenuOption)
         {
             UITestControlCollection getContextMenuItems = Uimap.MainStudioWindow.ExplorerContextMenu.GetChildren();
+            var getContextMenuItem = getContextMenuItems.FirstOrDefault(item => item.Name == MenuOption);
+            Mouse.Click(getContextMenuItem, new Point(48, 14));
+        }
+
+        [When(@"I select '(.*)' from the context menu")]
+        public void WhenISelectFromTheContextMenu(string MenuOption)
+        {
+            UITestControlCollection getContextMenuItems = Uimap.MainStudioWindow.GenericContextMenu.GetChildren();
             var getContextMenuItem = getContextMenuItems.FirstOrDefault(item => item.Name == MenuOption);
             Mouse.Click(getContextMenuItem, new Point(48, 14));
         }
