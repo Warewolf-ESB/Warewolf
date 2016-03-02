@@ -1,8 +1,8 @@
-git -C "%~dp0." reset --hard
+git -C "%~dp0..\.." reset --hard
 if not %errorlevel%==0 pause & exit 1
-git -C "%~dp0." clean -xdf
+git -C "%~dp0..\.." clean -xdf
 if not %errorlevel%==0 pause & exit 1
-git -C "%~dp0." pull
+git -C "%~dp0..\.." pull
 if not %errorlevel%==0 pause & exit 1
 "%~dp0..\.nuget\nuget.exe" restore "%~dp0..\AcceptanceTesting.sln"
 if not %errorlevel%==0 pause & exit 1
