@@ -2277,19 +2277,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Expand_Tree_Item
-        /// </summary>
-        public void Expand_Tree_Item()
-        {
-            #region Variable Declarations
-            WpfCheckBox uIExpansionIndicatorCheckBox = this.UIWarewolfDEV2ASHLEYLEWindow1.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UIInfragisticsControlsTreeItem1.UIExpansionIndicatorCheckBox;
-            #endregion
-
-            // Click 'ExpansionIndicator' check box
-            Mouse.Click(uIExpansionIndicatorCheckBox, new Point(18, 3));
-        }
-        
-        /// <summary>
         /// Move_Resource_Into_Folder
         /// </summary>
         public void Move_Resource_Into_Folder()
@@ -4305,18 +4292,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
-        
         public UIWarewolfDEV2LEROYWARWindow1 UIWarewolfDEV2LEROYWARWindow1
         {
             get
@@ -4326,18 +4301,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mUIWarewolfDEV2LEROYWARWindow1 = new UIWarewolfDEV2LEROYWARWindow1();
                 }
                 return this.mUIWarewolfDEV2LEROYWARWindow1;
-            }
-        }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow1 UIWarewolfDEV2ASHLEYLEWindow1
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow1 == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow1 = new UIWarewolfDEV2ASHLEYLEWindow1();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow1;
             }
         }
         #endregion
@@ -4569,11 +4532,7 @@ namespace Warewolf.Studio.UISpecs
         
         private SplashPageWindow mSplashPageWindow;
         
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
-        
         private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow1 mUIWarewolfDEV2ASHLEYLEWindow1;
         #endregion
     }
     
@@ -6196,6 +6155,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public ExplorerContextMenu ExplorerContextMenu
+        {
+            get
+            {
+                if ((this.mExplorerContextMenu == null))
+                {
+                    this.mExplorerContextMenu = new ExplorerContextMenu(this);
+                }
+                return this.mExplorerContextMenu;
+            }
+        }
+        
         public SideMenuBar SideMenuBar
         {
             get
@@ -6302,6 +6273,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private ExplorerContextMenu mExplorerContextMenu;
+        
         private SideMenuBar mSideMenuBar;
         
         private SplitPane mSplitPane;
@@ -6317,6 +6290,42 @@ namespace Warewolf.Studio.UISpecs
         private ToolBox mToolBox;
         
         private WpfButton mMaximiseStudioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ExplorerContextMenu : WpfMenu
+    {
+        
+        public ExplorerContextMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem NewWorkflowService
+        {
+            get
+            {
+                if ((this.mNewWorkflowService == null))
+                {
+                    this.mNewWorkflowService = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWorkflowService.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflowService.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewWorkflowService;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mNewWorkflowService;
         #endregion
     }
     
@@ -16710,75 +16719,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WinWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WinWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
-                    #region Search Criteria
-                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIWarewolfDEV2LEROYWARWindow1 : WpfWindow
     {
         
@@ -16864,174 +16804,6 @@ namespace Warewolf.Studio.UISpecs
         private WpfCustom mUIFlowchartCustom;
         
         private WpfCustom mUIFlowchartCustom1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow1 : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow1()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ExplorerControl_ACustom2 UIUI_ExplorerControl_ACustom
-        {
-            get
-            {
-                if ((this.mUIUI_ExplorerControl_ACustom == null))
-                {
-                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom2(this);
-                }
-                return this.mUIUI_ExplorerControl_ACustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ExplorerControl_ACustom2 mUIUI_ExplorerControl_ACustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_ExplorerControl_ACustom2 : WpfCustom
-    {
-        
-        public UIUI_ExplorerControl_ACustom2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIExplorerTreeTree1 UIExplorerTreeTree
-        {
-            get
-            {
-                if ((this.mUIExplorerTreeTree == null))
-                {
-                    this.mUIExplorerTreeTree = new UIExplorerTreeTree1(this);
-                }
-                return this.mUIExplorerTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIExplorerTreeTree1 mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExplorerTreeTree1 : WpfTree
-    {
-        
-        public UIExplorerTreeTree1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem2 UIInfragisticsControlsTreeItem
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem2(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem2 mUIInfragisticsControlsTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInfragisticsControlsTreeItem2 : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem1 UIInfragisticsControlsTreeItem1
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem1 == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem1 = new UIInfragisticsControlsTreeItem1(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem1 mUIInfragisticsControlsTreeItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInfragisticsControlsTreeItem1 : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCheckBox UIExpansionIndicatorCheckBox
-        {
-            get
-            {
-                if ((this.mUIExpansionIndicatorCheckBox == null))
-                {
-                    this.mUIExpansionIndicatorCheckBox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mUIExpansionIndicatorCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "ExpansionIndicator";
-                    this.mUIExpansionIndicatorCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIExpansionIndicatorCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIExpansionIndicatorCheckBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCheckBox mUIExpansionIndicatorCheckBox;
         #endregion
     }
 }
