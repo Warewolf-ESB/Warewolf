@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private ICollection<IDbAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
+        private double _labelWidth;
 
         public DbActionRegion()
         {
@@ -42,6 +43,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
         {
+            LabelWidth = 46;
+            ToolRegionName = "ActionRegion";
             ToolRegionName = "DbActionRegion";
             _modelItem = modelItem;
             _model = model;
@@ -195,6 +198,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
         public event SomethingChanged SomethingChanged;
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 

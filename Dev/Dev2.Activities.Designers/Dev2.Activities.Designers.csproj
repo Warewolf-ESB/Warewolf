@@ -203,11 +203,12 @@
     <Compile Include="Designers2\Comment\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-        <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageServiceInputView.xaml.cs">
       <DependentUpon>ManageServiceInputView.xaml</DependentUpon>
@@ -229,8 +231,10 @@
     </Compile>
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
     <Compile Include="Designers2\Core\Web\Base\IRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Base\WebRegionBase.cs" />
     <Compile Include="Designers2\Core\Web\Base\WebRegionCloneBase.cs" />

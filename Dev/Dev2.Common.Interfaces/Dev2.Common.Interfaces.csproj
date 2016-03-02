@@ -62,6 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Windows.Design.Interaction">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -312,6 +315,8 @@
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\INamespaceToolRegion.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />
@@ -325,7 +330,6 @@
     <Compile Include="ToolBase\IWebGetInputArea.cs" />
     <Compile Include="ToolBase\IWebInput.cs" />
     <Compile Include="ToolBase\IWebPostInputArea.cs" />
-    <Compile Include="ToolBase\IWebPutInputArea.cs" />
     <Compile Include="ToolBase\IWebServiceBaseViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceDeleteViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceGetViewModel.cs" />

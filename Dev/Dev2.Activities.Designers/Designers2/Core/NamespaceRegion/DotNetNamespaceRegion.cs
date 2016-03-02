@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,16 +9,16 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable FieldCanBeMadeReadOnly.Local
 
-namespace Dev2.Activities.Designers2.Core.ActionRegion
+// ReSharper disable FieldCanBeMadeReadOnly.Local
+// ReSharper disable ExplicitCallerInfoArgument
+
+namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 {
-    public class DotNetActionRegion : IActionToolRegion<IPluginAction>
+    public class DotNetNamespaceRegion : INamespaceToolRegion<INamespaceItem>
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IPluginSource> _source;
-        private readonly INamespaceToolRegion<INamespaceItem> _namespace;
         private double _minHeight;
         private double _currentHeight;
         private double _maxHeight;
@@ -26,43 +26,42 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private const double BaseHeight = 25;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IPluginAction _selectedAction;
+        private Action _sourceChangedNamespace;
+        private INamespaceItem _selectedNamespace;
         private IPluginServiceModel _model;
-        private ICollection<IPluginAction> _actions;
-        private bool _isActionEnabled;
+        private ICollection<INamespaceItem> _namespaces;
         private bool _isRefreshing;
         private double _labelWidth;
+        private bool _isNamespaceEnabled;
 
-        public DotNetActionRegion()
+        public DotNetNamespaceRegion()
         {
-            ToolRegionName = "DotNetActionRegion";
+            ToolRegionName = "DotNetNamespaceRegion";
             SetInitialValues();
         }
 
-        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
+        public DotNetNamespaceRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source)
         {
             LabelWidth = 70;
-            ToolRegionName = "DotNetActionRegion";
+            ToolRegionName = "DotNetNamespaceRegion";
             _modelItem = modelItem;
             _model = model;
             _source = source;
-            _namespace = namespaceItem;
-            _namespace.SomethingChanged += SourceOnSomethingChanged;
+            _source.SomethingChanged += SourceOnSomethingChanged;
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
-            UpdateBasedOnNamespace();
-            if (Method != null)
+            UpdateBasedOnSource();
+            if (Namespace != null)
             {
-                SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
+                SelectedNamespace = Namespaces.FirstOrDefault(item => item.FullName == Namespace.FullName);
             }
-            RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+            RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
                 IsRefreshing = true;
                 if(_source.SelectedSource != null)
                 {
-                    Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                    Namespaces = model.GetNameSpaces(_source.SelectedSource);
                 }
                 IsRefreshing = false;
             }, CanRefresh);
@@ -70,19 +69,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             IsVisible = true;
             _modelItem = modelItem;
         }
-
-        IPluginAction Method
+        INamespaceItem Namespace
         {
             get
             {
-                return _modelItem.GetProperty<IPluginAction>("Method");
+                return _modelItem.GetProperty<INamespaceItem>("Namespace");
             }
             set
             {
-                _modelItem.SetProperty("Method",value);
+                _modelItem.SetProperty("Namespace",value);
             }
         }
-
         public double LabelWidth
         {
             get
@@ -99,19 +96,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateBasedOnNamespace();
-            SelectedAction = null;
+            UpdateBasedOnSource();
+            SelectedNamespace = null;
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
             OnHeightChanged(this);
         }
 
-        private void UpdateBasedOnNamespace()
+        private void UpdateBasedOnSource()
         {
-            if(_source != null && _source.SelectedSource != null && _namespace != null && _namespace.SelectedNamespace != null)
+            if(_source != null && _source.SelectedSource != null)
             {
-                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                IsActionEnabled = true;
+                Namespaces = _model.GetNameSpaces(_source.SelectedSource);                
+                IsNamespaceEnabled = true;
                 IsVisible = true;
             }
         }
@@ -126,66 +123,66 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            return SelectedAction != null;
+            return SelectedNamespace != null;
         }
 
-        public IPluginAction SelectedAction
+        public INamespaceItem SelectedNamespace
         {
             get
             {
-                return _selectedAction;
+                return _selectedNamespace;
             }
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
+                if (!Equals(value, _selectedNamespace) && _selectedNamespace != null)
                 {
-                    if (!String.IsNullOrEmpty(_selectedAction.FullName))
-                        StorePreviousValues(_selectedAction.FullName);
+                    if (!String.IsNullOrEmpty(_selectedNamespace.FullName))
+                        StorePreviousValues(_selectedNamespace.FullName);
                 }
 
-                if (IsAPreviousValue(value) && _selectedAction != null)
+                if (IsAPreviousValue(value) && _selectedNamespace != null)
                 {
                     RestorePreviousValues(value);
-                    SetSelectedAction(value);
+                    SetSelectedNamespace(value);
                 }
                 else
                 {
-                    SetSelectedAction(value);
-                    SourceChangedAction();
+                    SetSelectedNamespace(value);
+                    SourceChangedNamespace();
                     OnSomethingChanged(this);
                 }
-                var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
                     delegateCommand.RaiseCanExecuteChanged();
                 }
 
-                _selectedAction = value;
+                _selectedNamespace = value;
                 OnPropertyChanged();
             }
         }
-        public ICollection<IPluginAction> Actions
+        public ICollection<INamespaceItem> Namespaces
         {
             get
             {
-                return _actions;
+                return _namespaces;
             }
             set
             {
-                _actions = value;
+                _namespaces = value;
                 OnPropertyChanged();
             }
         }
-        public ICommand RefreshActionsCommand { get; set; }
-        public bool IsActionEnabled
+        public ICommand RefreshNamespaceCommand { get; set; }
+        public bool IsNamespaceEnabled
         {
             get
             {
-                return _isActionEnabled;
+                return _isNamespaceEnabled;
             }
             set
             {
-                _isActionEnabled = value;
+                _isNamespaceEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -202,15 +199,15 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public Action SourceChangedAction
+        public Action SourceChangedNamespace
         {
             get
             {
-                return _sourceChangedAction ?? (() => { });
+                return _sourceChangedNamespace ?? (() => { });
             }
             set
             {
-                _sourceChangedAction = value;
+                _sourceChangedNamespace = value;
             }
         }
         public event SomethingChanged SomethingChanged;
@@ -271,23 +268,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new DotNetActionRegion
+            return new DotNetNamespaceRegion
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
                 IsVisible = IsVisible,
-                SelectedAction = SelectedAction,
+                SelectedNamespace = SelectedNamespace,
                 CurrentHeight = CurrentHeight
             };
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetActionRegion;
+            var region = toRestore as DotNetNamespaceRegion;
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
-                SelectedAction = region.SelectedAction;
+                SelectedNamespace = region.SelectedNamespace;
                 MinHeight = region.MinHeight;
                 CurrentHeight = region.CurrentHeight;
                 IsVisible = region.IsVisible;
@@ -296,34 +293,33 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public int GetId()
         {
-            return SelectedAction.FullName.GetHashCode();
+            return SelectedNamespace.FullName.GetHashCode();
         }
 
         #endregion
 
-        #region Implementation of IActionToolRegion<IPluginAction>
+        #region Implementation of INamespaceToolRegion<INamespaceItem>
 
-        private void SetSelectedAction(IPluginAction value)
+        private void SetSelectedNamespace(INamespaceItem value)
         {
             if (value != null)
             {
-                _selectedAction = value;
-                SavedAction = value;
-                Method = value;
+                _selectedNamespace = value;
+                SavedNamespace = value;
+                Namespace = value;
             }
 
             OnHeightChanged(this);
-            OnPropertyChanged("SelectedAction");
+            OnPropertyChanged("SelectedNamespace");
         }
-      
 
-        private void StorePreviousValues(string actionName)
+        private void StorePreviousValues(string fullName)
         {
-            _previousRegions.Remove(actionName);
-            _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
+            _previousRegions.Remove(fullName);
+            _previousRegions[fullName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IPluginAction value)
+        private void RestorePreviousValues(INamespaceItem value)
         {
             var toRestore = _previousRegions[value.FullName];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -332,28 +328,28 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IPluginAction value)
+        private bool IsAPreviousValue(INamespaceItem value)
         {
-            return _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName));
+            return _previousRegions.Keys.Any(a => a == value.FullName);
         }
 
         public IList<string> Errors
         {
             get
             {
-                return SelectedAction == null ? new List<string> { "Invalid Action Selected" } : new List<string>();
+                return SelectedNamespace == null ? new List<string> { "Invalid Namespace Selected" } : new List<string>();
             }
         }
 
-        public IPluginAction SavedAction
+        public INamespaceItem SavedNamespace
         {
             get
             {
-                return _modelItem.GetProperty<IPluginAction>("SavedAction");
+                return _modelItem.GetProperty<INamespaceItem>("SavedNamespace");
             }
             set
             {
-                _modelItem.SetProperty("SavedAction", value);
+                _modelItem.SetProperty("SavedNamespace", value);
             }
         }
 
@@ -383,7 +379,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             var handler = SomethingChanged;
             if (handler != null)
-            {
+    {
                 handler(this, args);
             }
         }
