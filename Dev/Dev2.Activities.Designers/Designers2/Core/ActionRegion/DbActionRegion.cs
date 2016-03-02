@@ -16,7 +16,7 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
-    public class ActionRegion : IActionToolRegion<IDbAction>
+    public class DbActionRegion : IActionToolRegion<IDbAction>
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IDbSource> _source;
@@ -26,24 +26,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isVisible;
         private const double BaseHeight = 25;
 
-        readonly Dictionary<int, IList<IToolRegion>> _previousRegions = new Dictionary<int, IList<IToolRegion>>();
+        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IDbAction _selectedAction;
-        private IDbServiceModel _model;
+        private readonly IDbServiceModel _model;
         private ICollection<IDbAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
-        private int _actionId;
 
-        public ActionRegion()
+        public DbActionRegion()
         {
-            ToolRegionName = "ActionRegion";
+            ToolRegionName = "DbActionRegion";
             SetInitialValues();
         }
 
-        public ActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
+        public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
         {
-            ToolRegionName = "ActionRegion";
+            ToolRegionName = "DbActionRegion";
             _modelItem = modelItem;
             _model = model;
             _source = source;
@@ -55,12 +54,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Actions = model.GetActions(_source.SelectedSource);
             }
-            ActionId = modelItem.GetProperty<int>("ActionId");
-            if (ActionId != 0)
+            if (!string.IsNullOrEmpty(ProcedureName))
             {
-                SelectedAction = Actions.FirstOrDefault(action => source.GetHashCode() == ActionId);
+                IsActionEnabled = true;
+                SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);                
             }
-
             RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
                 IsRefreshing = true;
@@ -90,6 +88,15 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             OnHeightChanged(this);
         }
 
+        string ProcedureName
+        {
+            get { return _modelItem.GetProperty<string>("ProcedureName"); }
+            set
+            {
+                _modelItem.SetProperty("ProcedureName", value);
+            }
+        }
+
         private void SetInitialValues()
         {
             MinHeight = BaseHeight;
@@ -114,7 +121,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Name))
-                    StorePreviousValues(_selectedAction.Name.GetHashCode());
+                    StorePreviousValues(_selectedAction.Name);
                 }
 
                 if (IsAPreviousValue(value) && _selectedAction != null)
@@ -245,7 +252,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new ActionRegion
+            return new DbActionRegion
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
@@ -257,7 +264,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ActionRegion;
+            var region = toRestore as DbActionRegion;
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
@@ -283,38 +290,21 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _selectedAction = value;
                 SavedAction = value;
-                ActionId = value.GetHashCode();
+                ProcedureName = value.Name;
             }
 
             OnHeightChanged(this);
             OnPropertyChanged("SelectedAction");
         }
-
-        int ActionId
+        private void StorePreviousValues(string name)
         {
-            get
-            {
-                return _actionId;
-            }
-            set
-            {
-                _actionId = value;
-                if (_modelItem != null)
-                {
-                    _modelItem.SetProperty("ActionId", value);
-                }
-            }
-        }
-
-        private void StorePreviousValues(int id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
+            _previousRegions.Remove(name);
+            _previousRegions[name] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
         private void RestorePreviousValues(IDbAction value)
         {
-            var toRestore = _previousRegions[value.Name.GetHashCode()];
+            var toRestore = _previousRegions[value.Name];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -323,7 +313,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IDbAction value)
         {
-            return _previousRegions.Keys.Any(a => a == value.Name.GetHashCode());
+            return _previousRegions.Keys.Any(a => a == value.Name);
         }
 
         public IList<string> Errors
