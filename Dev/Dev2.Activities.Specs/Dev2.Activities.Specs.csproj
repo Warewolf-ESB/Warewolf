@@ -419,7 +419,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Database\MySqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
