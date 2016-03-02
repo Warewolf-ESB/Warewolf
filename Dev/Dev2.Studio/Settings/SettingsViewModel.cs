@@ -27,6 +27,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
+using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Scheduler;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
@@ -57,6 +58,7 @@ namespace Dev2.Settings
         private bool _showLog;
         private IEnvironmentModel _currentEnvironment;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
+        private PerfcounterViewModel _perfmonViewModel;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -391,6 +393,7 @@ namespace Dev2.Settings
                 IsLoading = false;
                 SecurityViewModel = CreateSecurityViewModel();
                 LogSettingsViewModel = CreateLoggingViewModel();
+                PerfmonViewModel = CreatePerfmonViewModel();
 
                 AddPropertyChangedHandlers();
 
@@ -401,10 +404,29 @@ namespace Dev2.Settings
             });            
         }
 
+        public PerfcounterViewModel PerfmonViewModel
+        {
+            get
+            {
+                return _perfmonViewModel;
+            }
+            set
+            {
+                _perfmonViewModel = value;
+                NotifyOfPropertyChange(() => PerfmonViewModel);
+            }
+        }
+
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
             return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
         }
+
+        protected virtual PerfcounterViewModel CreatePerfmonViewModel()
+        {
+            return new PerfcounterViewModel(Settings.PerfCounters, _parentWindow, CurrentEnvironment);
+        }
+
 
         protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
@@ -612,6 +634,13 @@ namespace Dev2.Settings
             get
             {
                 return ResourceType.Settings;
+            }
+        }
+        public string PerfmonHeader
+        {
+            get
+            {
+                return "Performance Counters";
             }
         }
     }
