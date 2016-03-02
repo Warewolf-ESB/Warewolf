@@ -3588,6 +3588,45 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_Copy_FromContextMenu
+        /// </summary>
+        public void Select_Copy_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem copy = this.MainStudioWindow.GenericContextMenu.Copy;
+            #endregion
+
+            // Click 'Copy' menu item
+            Mouse.Click(copy, new Point(27, 18));
+        }
+        
+        /// <summary>
+        /// Select_CopyAsImage_FromContextMenu
+        /// </summary>
+        public void Select_CopyAsImage_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem copyasImage = this.MainStudioWindow.GenericContextMenu.CopyasImage;
+            #endregion
+
+            // Click 'Copy as Image' menu item
+            Mouse.Click(copyasImage, new Point(62, 22));
+        }
+        
+        /// <summary>
+        /// Select_Cut_FromContextMenu
+        /// </summary>
+        public void Select_Cut_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem cut = this.MainStudioWindow.GenericContextMenu.Cut;
+            #endregion
+
+            // Click 'Cut' menu item
+            Mouse.Click(cut, new Point(53, 16));
+        }
+        
+        /// <summary>
         /// Select_Data_Source_Droplist
         /// </summary>
         public void Select_Data_Source_Droplist()
@@ -3618,6 +3657,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_DeleteRow_FromContextMenu
+        /// </summary>
+        public void Select_DeleteRow_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem deleteRow = this.MainStudioWindow.GenericContextMenu.DeleteRow;
+            #endregion
+
+            // Click 'Delete Row' menu item
+            Mouse.Click(deleteRow, new Point(74, 9));
+        }
+        
+        /// <summary>
         /// Select_Deploy_FromExplorerContextMenu
         /// </summary>
         public void Select_Deploy_FromExplorerContextMenu()
@@ -3628,6 +3680,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Deploy' menu item
             Mouse.Click(deploy, new Point(57, 11));
+        }
+        
+        /// <summary>
+        /// Select_InsertRow_FromContextMenu
+        /// </summary>
+        public void Select_InsertRow_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem insertRow = this.MainStudioWindow.GenericContextMenu.InsertRow;
+            #endregion
+
+            // Click 'Insert Row' menu item
+            Mouse.Click(insertRow, new Point(66, 19));
         }
         
         /// <summary>
@@ -3748,6 +3813,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_Paste_FromContextMenu
+        /// </summary>
+        public void Select_Paste_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem paste = this.MainStudioWindow.GenericContextMenu.Paste;
+            #endregion
+
+            // Click 'Paste' menu item
+            Mouse.Click(paste, new Point(52, 16));
+        }
+        
+        /// <summary>
         /// Select_Plugin_Connector_Action_Droplist
         /// </summary>
         public void Select_Plugin_Connector_Action_Droplist()
@@ -3809,6 +3887,45 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Rename' menu item
             Mouse.Click(rename, new Point(73, 15));
+        }
+        
+        /// <summary>
+        /// Select_SaveAsImage_FromContextMenu
+        /// </summary>
+        public void Select_SaveAsImage_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem saveasImage = this.MainStudioWindow.GenericContextMenu.SaveasImage;
+            #endregion
+
+            // Click 'Save as Image' menu item
+            Mouse.Click(saveasImage, new Point(38, 15));
+        }
+        
+        /// <summary>
+        /// Select_SetAsStartNode_FromContextMenu
+        /// </summary>
+        public void Select_SetAsStartNode_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem setasStartNode = this.MainStudioWindow.GenericContextMenu.SetasStartNode;
+            #endregion
+
+            // Click 'Set as Start Node' menu item
+            Mouse.Click(setasStartNode, new Point(67, 16));
+        }
+        
+        /// <summary>
+        /// Select_ShowLargeView_FromContextMenu
+        /// </summary>
+        public void Select_ShowLargeView_FromContextMenu()
+        {
+            #region Variable Declarations
+            WpfMenuItem showLargeView = this.MainStudioWindow.GenericContextMenu.ShowLargeView;
+            #endregion
+
+            // Click 'Show Large View' menu item
+            Mouse.Click(showLargeView, new Point(43, 15));
         }
         
         /// <summary>
@@ -7480,10 +7597,154 @@ namespace Warewolf.Studio.UISpecs
                 return this.mCut;
             }
         }
+        
+        public WpfMenuItem Paste
+        {
+            get
+            {
+                if ((this.mPaste == null))
+                {
+                    this.mPaste = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mPaste.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "PasteMenuItem";
+                    this.mPaste.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mPaste;
+            }
+        }
+        
+        public WpfMenuItem Copy
+        {
+            get
+            {
+                if ((this.mCopy == null))
+                {
+                    this.mCopy = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mCopy.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "CopyMenuItem";
+                    this.mCopy.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCopy;
+            }
+        }
+        
+        public WpfMenuItem CopyasImage
+        {
+            get
+            {
+                if ((this.mCopyasImage == null))
+                {
+                    this.mCopyasImage = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mCopyasImage.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "CopyAsImageMenuItem";
+                    this.mCopyasImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCopyasImage;
+            }
+        }
+        
+        public WpfMenuItem SaveasImage
+        {
+            get
+            {
+                if ((this.mSaveasImage == null))
+                {
+                    this.mSaveasImage = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mSaveasImage.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "SaveAsImageMenuItem";
+                    this.mSaveasImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSaveasImage;
+            }
+        }
+        
+        public WpfMenuItem SetasStartNode
+        {
+            get
+            {
+                if ((this.mSetasStartNode == null))
+                {
+                    this.mSetasStartNode = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mSetasStartNode.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "SetAsStartNodeMenuItem";
+                    this.mSetasStartNode.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSetasStartNode;
+            }
+        }
+        
+        public WpfMenuItem ShowLargeView
+        {
+            get
+            {
+                if ((this.mShowLargeView == null))
+                {
+                    this.mShowLargeView = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mShowLargeView.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "UI_ShowLargeViewMenuItem_AutoID";
+                    this.mShowLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mShowLargeView;
+            }
+        }
+        
+        public WpfMenuItem InsertRow
+        {
+            get
+            {
+                if ((this.mInsertRow == null))
+                {
+                    this.mInsertRow = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mInsertRow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "UI_InsertRowMenuItem_AutoID";
+                    this.mInsertRow.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mInsertRow;
+            }
+        }
+        
+        public WpfMenuItem DeleteRow
+        {
+            get
+            {
+                if ((this.mDeleteRow == null))
+                {
+                    this.mDeleteRow = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mDeleteRow.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "UI_DeleteRowMenuItem_AutoID";
+                    this.mDeleteRow.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDeleteRow;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfMenuItem mCut;
+        
+        private WpfMenuItem mPaste;
+        
+        private WpfMenuItem mCopy;
+        
+        private WpfMenuItem mCopyasImage;
+        
+        private WpfMenuItem mSaveasImage;
+        
+        private WpfMenuItem mSetasStartNode;
+        
+        private WpfMenuItem mShowLargeView;
+        
+        private WpfMenuItem mInsertRow;
+        
+        private WpfMenuItem mDeleteRow;
         #endregion
     }
     
