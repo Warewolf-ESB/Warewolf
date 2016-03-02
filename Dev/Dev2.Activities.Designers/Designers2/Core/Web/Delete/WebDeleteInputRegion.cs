@@ -11,9 +11,10 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 
-namespace Dev2.Activities.Designers2.Core
+namespace Dev2.Activities.Designers2.Core.Web.Delete
 {
-    public class WebDeleteInputRegion:IWebDeleteInputArea
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    public class WebDeleteInputRegion : IWebDeleteInputArea
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
@@ -292,7 +293,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Implementation of IWebBeleteInputArea
 
-        
+
         public string QueryString
         {
             get

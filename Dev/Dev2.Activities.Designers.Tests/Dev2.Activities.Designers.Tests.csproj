@@ -203,6 +203,7 @@
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
     <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
