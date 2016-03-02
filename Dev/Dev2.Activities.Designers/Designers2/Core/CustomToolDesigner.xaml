@@ -18,7 +18,7 @@
                     xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesigner"
-                    d:DataContext="{d:DesignInstance core1:CustomToolViewModelBase}">
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>

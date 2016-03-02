@@ -6,16 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Tests.Activities.ActivityTests;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Storage;
 
