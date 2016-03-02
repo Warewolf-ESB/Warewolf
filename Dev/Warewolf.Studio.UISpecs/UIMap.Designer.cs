@@ -1277,7 +1277,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Database_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem databaseConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.DatabaseConnector;
+            WpfTreeItem databaseConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.DatabaseConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1341,7 +1341,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Plugin_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem pluginConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.PluginConnector;
+            WpfTreeItem pluginConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.PluginConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1389,7 +1389,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Server_Source_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem serverSource = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.ServerSource;
+            WpfTreeItem serverSource = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.ServerSource;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1405,7 +1405,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Sharepoint_Source_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem sharepointSource = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.SharepointSource;
+            WpfTreeItem sharepointSource = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.SharepointSource;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2213,7 +2213,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Web_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem webConnector = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.WebConnector;
+            WpfTreeItem webConnector = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.WebConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2245,7 +2245,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Workflow_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem1 = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem1;
+            WpfTreeItem uIInfragisticsControlsTreeItem1 = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.UIInfragisticsControlsTreeItem1;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             WpfCustom uIDsfActivityCustom = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UIDsfActivityCustom;
             #endregion
@@ -2282,7 +2282,7 @@ namespace Warewolf.Studio.UISpecs
         public void Move_Resource_Into_Folder()
         {
             #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem16 = this.MainStudioWindow.Explorer.ExplorerTree.TreeItems.UIInfragisticsControlsTreeItem16;
+            WpfTreeItem uIInfragisticsControlsTreeItem16 = this.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.UIInfragisticsControlsTreeItem16;
             WpfWindow uIWpfWindow2 = this.UIWarewolfDEV2LEROYWARWindow.UIWpfWindow2;
             #endregion
 
@@ -4292,18 +4292,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
-        
         public UIWarewolfDEV2LEROYWARWindow1 UIWarewolfDEV2LEROYWARWindow1
         {
             get
@@ -4543,8 +4531,6 @@ namespace Warewolf.Studio.UISpecs
         private ServicePickerWindow mServicePickerWindow;
         
         private SplashPageWindow mSplashPageWindow;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         
         private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
         #endregion
@@ -6169,6 +6155,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public ExplorerContextMenu ExplorerContextMenu
+        {
+            get
+            {
+                if ((this.mExplorerContextMenu == null))
+                {
+                    this.mExplorerContextMenu = new ExplorerContextMenu(this);
+                }
+                return this.mExplorerContextMenu;
+            }
+        }
+        
         public SideMenuBar SideMenuBar
         {
             get
@@ -6275,6 +6273,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private ExplorerContextMenu mExplorerContextMenu;
+        
         private SideMenuBar mSideMenuBar;
         
         private SplitPane mSplitPane;
@@ -6290,6 +6290,42 @@ namespace Warewolf.Studio.UISpecs
         private ToolBox mToolBox;
         
         private WpfButton mMaximiseStudioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ExplorerContextMenu : WpfMenu
+    {
+        
+        public ExplorerContextMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem NewWorkflowService
+        {
+            get
+            {
+                if ((this.mNewWorkflowService == null))
+                {
+                    this.mNewWorkflowService = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mNewWorkflowService.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "NewService";
+                    this.mNewWorkflowService.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewWorkflowService;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mNewWorkflowService;
         #endregion
     }
     
@@ -12456,29 +12492,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public TreeItems TreeItems
+        public LocalhostTreeItem LocalhostTreeItem
         {
             get
             {
-                if ((this.mTreeItems == null))
+                if ((this.mLocalhostTreeItem == null))
                 {
-                    this.mTreeItems = new TreeItems(this);
+                    this.mLocalhostTreeItem = new LocalhostTreeItem(this);
                 }
-                return this.mTreeItems;
+                return this.mLocalhostTreeItem;
             }
         }
         #endregion
         
         #region Fields
-        private TreeItems mTreeItems;
+        private LocalhostTreeItem mLocalhostTreeItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class TreeItems : WpfTreeItem
+    public class LocalhostTreeItem : WpfTreeItem
     {
         
-        public TreeItems(UITestControl searchLimitContainer) : 
+        public LocalhostTreeItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -16680,75 +16716,6 @@ namespace Warewolf.Studio.UISpecs
             this.WindowTitles.Add("SplashPage");
             #endregion
         }
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WinWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WinWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WinWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
-                    #region Search Criteria
-                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]

@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class WebPostDeleteRegionClone : IToolRegion
+    public class WebDeleteRegionClone : IToolRegion
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
