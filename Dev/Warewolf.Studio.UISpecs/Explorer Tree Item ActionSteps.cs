@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Input;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.Studio.UISpecs
@@ -21,6 +22,13 @@ namespace Warewolf.Studio.UISpecs
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.Click(getTreeItem, new Point(40, 12));
+        }
+
+        [When(@"I right click '(.*)' in the explorer tree")]
+        public void WhenIRightClickTheItemInTheExplorerTree(string path)
+        {
+            UITestControl getTreeItem = GetTreeItemFromPath(path);
+            Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
         }
 
         [When(@"I double click '(.*)' in the explorer tree")]

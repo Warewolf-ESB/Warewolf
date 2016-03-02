@@ -1185,5 +1185,5 @@ Scenario: Get Web Request tool
 
 Scenario: Test New Action Recording
 	#Given I 'Assert the control exists'
-	When I click 'localhost\Examples' in the explorer tree
+	When I right click 'localhost\Examples' in the explorer tree
 	#Then I 'Assert something happenned'
