@@ -1,5 +1,8 @@
 ﻿namespace Warewolf.Studio.UISpecs
 {
+    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System;
     using System.Collections.Generic;
     using System.CodeDom.Compiler;

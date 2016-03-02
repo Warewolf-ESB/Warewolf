@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
         private double _headersHeight;
         double _maxHeadersHeight;
         bool _isVisible;
-        private const double BaseHeight = 180;
+        private const double BaseHeight = 165;
 
         public WebDeleteInputRegion()
         {
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPostDeleteRegionClone()
+            return new WebDeleteRegionClone()
             {
                 Headers = headers2,
                 QueryString = QueryString,
@@ -195,7 +195,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebPostDeleteRegionClone;
+            var region = toRestore as WebDeleteRegionClone;
             if (region != null)
             {
                 IsVisible = region.IsVisible;
