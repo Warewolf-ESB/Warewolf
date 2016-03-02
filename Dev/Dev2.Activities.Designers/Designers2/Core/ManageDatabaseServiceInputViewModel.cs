@@ -173,7 +173,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (TestResults != null)
                 {
                     TestResultsAvailable = TestResults.Rows.Count != 0;
-                    IsTestResultsEmptyRows = TestResults.Rows.Count < 2;
+                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
                     _generateOutputArea.IsVisible = true;                    
                     IsTesting = false;
                 }
