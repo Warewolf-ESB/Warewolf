@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers.Tests.SortRecords
             var viewModel = new TestSortRecordsDesignerViewModel(modelItem);
             Assert.AreEqual("Forward", viewModel.SelectedSort);
             Assert.AreEqual("Forward", viewModel.SelectedSelectedSort);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

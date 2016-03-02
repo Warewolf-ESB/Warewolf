@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Replace
         public ReplaceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
         }
        
         public override void Validate()

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Common.Interfaces
 {
@@ -27,10 +29,17 @@ namespace Dev2.Common.Interfaces
         void CloseView();
     }
 
-    public interface IManageDatabaseInputViewModel : IManageServiceInputViewModel<IDatabaseService>
+    public interface IManageDatabaseInputViewModel : IToolRegion, IManageServiceInputViewModel<IDatabaseService>
     {
         ICollection<IServiceInput> Inputs { get; set; }
         DataTable TestResults { get; set; }
         bool OkSelected { get; set; }
+        IGenerateOutputArea OutputArea { get; set; }
+        IOutputDescription Description { get; set; }
+        IGenerateInputArea InputArea { get; set; }
+        bool PasteResponseVisible { get; set; }
+        bool PasteResponseAvailable { get; }
+
+        void SetInitialVisibility();
     }
 }
