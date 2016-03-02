@@ -14,6 +14,7 @@
              xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
+             Height="Auto" Width="Auto"
              d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance switch:SwitchDesignerViewModel}">
 
@@ -27,9 +28,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
             <TextBlock Margin="5" Text="Switch Flow" Style="{StaticResource SourceHeader}" />
         </StackPanel>
 
@@ -72,7 +74,7 @@
             <TextBox Grid.Column="1" x:Name="DisplayText" Grid.Row="1" MinWidth="200" MaxWidth="200" HorizontalAlignment="Left" Margin="{StaticResource ControlBorderTop}" Text="{Binding DisplayText}"/>
         </Grid>
         <errors:OnError Grid.Column="0"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

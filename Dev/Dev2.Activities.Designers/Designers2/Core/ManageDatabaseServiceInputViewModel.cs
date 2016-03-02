@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
@@ -10,7 +11,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Microsoft.Practices.Prism.Commands;
@@ -20,15 +20,14 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageDatabaseServiceInputViewModel : IManageDatabaseInputViewModel
     {
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         double _minHeight;
         double _currentHeight;
         double _maxHeight;
         bool _isVisible;
-        bool _pasteResponseAvailable;
-        IDatabaseServiceViewModel _viewmodel;
-        IDbServiceModel _serverModel;
+        readonly IDatabaseServiceViewModel _viewmodel;
+        readonly IDbServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private DataTable _testResults;
@@ -36,13 +35,10 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
         private IDatabaseService _model;
-        private bool _pasteResponseVisible;
         private const double BaseHeight = 60;
 
         public ManageDatabaseServiceInputViewModel(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
         {
-            PasteResponseAvailable = false;
-            PasteResponseVisible = false;
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
@@ -107,7 +103,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.Outputs.Clear();
             _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
@@ -123,13 +118,10 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 _viewmodel.OutputsRegion.Outputs.Clear();
-                if (OutputArea != null)
+                if (TestResults != null)
                 {
-                    foreach (var serviceOutputMapping in OutputArea.Outputs)
-                    {
-                        _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
-                    }
-                }
+                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                }                
                 else
                 {
                     throw new Exception("No Outputs detected");
@@ -150,9 +142,27 @@ namespace Dev2.Activities.Designers2.Core
             OnHeightChanged(this);
         }
 
+        List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
+        {
+            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            var recordsetName = Model.Action.Name.Replace(".", "_");
+            _viewmodel.OutputsRegion.RecordsetName = recordsetName;
+            if (testResults != null)
+            {
+                for (int i = 0; i < testResults.Columns.Count; i++)
+                {
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), recordsetName);
+                    mappings.Add(dbOutputMapping);
+                }
+                return mappings;
+            }
+            return new List<IServiceOutputMapping>();
+        }
+
         public void ExecuteTest()
         {
-            ViewErrors = new List<IActionableErrorInfo>();
             OutputArea.IsVisible = true;
             TestResults = null;
             IsTesting = true;
@@ -163,9 +173,8 @@ namespace Dev2.Activities.Designers2.Core
                 if (TestResults != null)
                 {
                     TestResultsAvailable = TestResults.Rows.Count != 0;
-                    IsTestResultsEmptyRows = TestResults.Rows.Count < 2;
-                    _generateOutputArea.IsVisible = true;
-
+                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                    _generateOutputArea.IsVisible = true;                    
                     IsTesting = false;
                 }
                 SetInitialHeight();
@@ -194,7 +203,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public List<IActionableErrorInfo> ViewErrors { get; set; }
 
         #region Implementation of IToolRegion
 
@@ -397,33 +405,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 
             }
-        }
-        public bool PasteResponseVisible
-        {
-            get
-            {
-                return _pasteResponseVisible;
-            }
-            set
-            {
-                _pasteResponseVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool PasteResponseAvailable
-        {
-            get
-            {
-                return _pasteResponseAvailable;
-            }
-            set
-            {
-                _pasteResponseAvailable = value;
-                OnPropertyChanged();
-            }
-        }
-
+        }    
+        
         public void SetInitialVisibility()
         {
             SetInitialHeight();
