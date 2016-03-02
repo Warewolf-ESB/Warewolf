@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.SortRecords
         {
             SortOrderTypes = new List<string> { "Forward", "Backwards" };
             SelectedSelectedSort = string.IsNullOrEmpty(SelectedSort) ? SortOrderTypes[0] : SelectedSort;
+            AddTitleBarLargeToggle();
         }
 
         public List<string> SortOrderTypes { get; private set; }

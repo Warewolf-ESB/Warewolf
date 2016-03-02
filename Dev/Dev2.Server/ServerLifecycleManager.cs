@@ -1695,6 +1695,7 @@ namespace Dev2
 
 
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
+                CustomContainer.Register<IPerformanceCounterRepository>(locater);
             }
             catch (Exception err)
             {

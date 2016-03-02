@@ -82,7 +82,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         {
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,IManageDatabaseInputViewModel manageServiceInputViewModel)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker,ManageServiceInputViewModel manageServiceInputViewModel)
             : base(modelItem)
         {
             AddTitleBarMappingToggle();
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             return SelectedSource != null;
         }
 
-        IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
+        ManageServiceInputViewModel ManageServiceInputViewModel { get; set; }
 
         IDatabaseService ToModel()
         {

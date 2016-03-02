@@ -40,6 +40,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             Assert.AreEqual(viewModel.CsvIndexesVisibility, Visibility.Hidden);
             Assert.AreEqual(viewModel.NumberVisibility, Visibility.Hidden);
             Assert.AreEqual(viewModel.RecordsetVisibility, Visibility.Hidden);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

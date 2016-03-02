@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
@@ -72,6 +73,8 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Display text:" Margin="{StaticResource ControlBorderTop}" />
             <TextBox Grid.Column="1" x:Name="DisplayText" Grid.Row="1" MinWidth="200" MaxWidth="200" HorizontalAlignment="Left" Margin="{StaticResource ControlBorderTop}" Text="{Binding DisplayText}"/>
         </Grid>
-
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>
