@@ -103,6 +103,40 @@
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NamespaceGrid">
+        <Grid x:Name="ActionsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="NamespaceLabel" Text="Namespace" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="NamespaceComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding NamespaceRegion.Namespaces}"
+                              DisplayMemberPath="FullName" 
+                              IsEnabled="{Binding NamespaceRegion.IsNamespaceEnabled}"
+                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding NamespaceRegion.SelectedNamespace}"/>
+            <Button x:Name="NamespaceRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=NamespaceRegion.RefreshNamespaceCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=NamespaceRegion.IsNamespaceRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="25"
+                                                        Height="25"
+                                                        Visibility="{Binding Path=NamespaceRegion.IsNamespaceRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
+    
     <ControlTemplate x:Key="SelectionActionGrid">
         <Grid>
             <Grid.RowDefinitions>
@@ -115,6 +149,22 @@
             <Control Template="{StaticResource ActionGrid}" Grid.Row="1"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="SelectionNamespaceGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource SelectionGrid}"/>
+
+            <Control Template="{StaticResource NamespaceGrid}" Grid.Row="1"/>
+            
+            <Control Template="{StaticResource ActionGrid}" Grid.Row="2"/>
+        </Grid>
+    </ControlTemplate>
+    
     <ControlTemplate x:Key="InputsGrid">
         <Grid Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
