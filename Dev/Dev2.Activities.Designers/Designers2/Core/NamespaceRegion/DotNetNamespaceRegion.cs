@@ -25,14 +25,13 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         private bool _isVisible;
         private const double BaseHeight = 25;
 
-        readonly Dictionary<int, IList<IToolRegion>> _previousRegions = new Dictionary<int, IList<IToolRegion>>();
+        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedNamespace;
         private INamespaceItem _selectedNamespace;
         private IPluginServiceModel _model;
         private ICollection<INamespaceItem> _namespaces;
         private bool _isRefreshing;
         private double _labelWidth;
-        private int _namespaceId;
         private bool _isNamespaceEnabled;
 
         public DotNetNamespaceRegion()
@@ -52,16 +51,11 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
-            if (_source.SelectedSource != null)
+            UpdateBasedOnSource();
+            if (Namespace != null)
             {
-                Namespaces = model.GetNameSpaces(source.SelectedSource);
+                SelectedNamespace = Namespaces.FirstOrDefault(item => item.FullName == Namespace.FullName);
             }
-            NamespaceId = modelItem.GetProperty<int>("NamespaceId");
-            if (NamespaceId != 0)
-            {
-                SelectedNamespace = Namespaces.FirstOrDefault(action => source.GetHashCode() == NamespaceId);
-            }
-
             RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
                 IsRefreshing = true;
@@ -75,7 +69,17 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             IsVisible = true;
             _modelItem = modelItem;
         }
-
+        INamespaceItem Namespace
+        {
+            get
+            {
+                return _modelItem.GetProperty<INamespaceItem>("Namespace");
+            }
+            set
+            {
+                _modelItem.SetProperty("Namespace",value);
+            }
+        }
         public double LabelWidth
         {
             get
@@ -92,16 +96,21 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null)
-            {
-                Namespaces = _model.GetNameSpaces(_source.SelectedSource);
-                SelectedNamespace = null;
-                IsNamespaceEnabled = true;
-                IsVisible = true;
-            }
+            UpdateBasedOnSource();
+            SelectedNamespace = null;
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
             OnHeightChanged(this);
+        }
+
+        private void UpdateBasedOnSource()
+        {
+            if(_source != null && _source.SelectedSource != null)
+            {
+                Namespaces = _model.GetNameSpaces(_source.SelectedSource);                
+                IsNamespaceEnabled = true;
+                IsVisible = true;
+            }
         }
 
         private void SetInitialValues()
@@ -128,7 +137,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 if (!Equals(value, _selectedNamespace) && _selectedNamespace != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedNamespace.FullName))
-                        StorePreviousValues(_selectedNamespace.FullName.GetHashCode());
+                        StorePreviousValues(_selectedNamespace.FullName);
                 }
 
                 if (IsAPreviousValue(value) && _selectedNamespace != null)
@@ -297,38 +306,22 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 _selectedNamespace = value;
                 SavedNamespace = value;
-                NamespaceId = value.GetHashCode();
+                Namespace = value;
             }
 
             OnHeightChanged(this);
             OnPropertyChanged("SelectedNamespace");
         }
 
-        int NamespaceId
+        private void StorePreviousValues(string fullName)
         {
-            get
-            {
-                return _namespaceId;
-            }
-            set
-            {
-                _namespaceId = value;
-                if (_modelItem != null)
-                {
-                    _modelItem.SetProperty("NamespaceId", value);
-                }
-            }
-        }
-
-        private void StorePreviousValues(int id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
+            _previousRegions.Remove(fullName);
+            _previousRegions[fullName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
         private void RestorePreviousValues(INamespaceItem value)
         {
-            var toRestore = _previousRegions[value.FullName.GetHashCode()];
+            var toRestore = _previousRegions[value.FullName];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -337,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private bool IsAPreviousValue(INamespaceItem value)
         {
-            return _previousRegions.Keys.Any(a => a == value.FullName.GetHashCode());
+            return _previousRegions.Keys.Any(a => a == value.FullName);
         }
 
         public IList<string> Errors

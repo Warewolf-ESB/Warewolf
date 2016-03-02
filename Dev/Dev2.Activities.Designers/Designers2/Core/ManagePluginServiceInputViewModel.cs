@@ -123,7 +123,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.Outputs.Clear();
+           
             _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
@@ -144,6 +144,11 @@ namespace Dev2.Activities.Designers2.Core
                     foreach (var serviceOutputMapping in OutputArea.Outputs)
                     {
                         _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
+                    }
+                    var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
+                    if (recSet != null)
+                    {
+                        _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
                     }
                 }
                 else
@@ -177,30 +182,33 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var testResult = _serverModel.TestService(Model);
                 var serializer = new Dev2JsonSerializer();
-                using (var responseService = serializer.Deserialize<WebService>(testResult))
+                var responseService = serializer.Deserialize<RecordsetListWrapper>(testResult);
+                if (responseService != null)
                 {
-                    TestResults = responseService.RequestResponse;
-                    _recordsetList = responseService.Recordsets;
+                    if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                    {
+                        var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
+                        throw new Exception(errorMessage);
+                    }
+                    TestResults = testResult;
+                    _recordsetList = responseService.RecordsetList;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
                         var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
                         throw new Exception(errorMessage);
                     }
-
-                    Description = responseService.GetOutputDescription();
+                    Description = responseService.Description;
+                    // ReSharper disable MaximumChainedReferences
+                    var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                    {
+                        var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                        return serviceOutputMapping;
+                    }).Cast<IServiceOutputMapping>().ToList();
+                    // ReSharper restore MaximumChainedReferences
+                    _generateOutputArea.IsVisible = true;
+                    _generateOutputArea.Outputs = outputMapping;
                 }
-                // ReSharper disable MaximumChainedReferences
-                var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
-                {
-                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
-                    return serviceOutputMapping;
-                }).Cast<IServiceOutputMapping>().ToList();
-                // ReSharper restore MaximumChainedReferences
-                _generateOutputArea.IsVisible = true;
-                _generateOutputArea.Outputs = outputMapping;
-
-
-                if (TestResults != null)
+                if(TestResults != null)
                 {
                     TestResultsAvailable = TestResults != null;
                     IsTesting = false;
