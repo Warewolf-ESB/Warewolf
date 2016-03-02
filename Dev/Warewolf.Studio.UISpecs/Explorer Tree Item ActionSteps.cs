@@ -31,6 +31,13 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
         }
 
+        [When(@"I select '(.*)' from the context menu")]
+        public void WhenISelectFromTheContextMenu(string path)
+        {
+            UITestControl getContextMenuItem = Uimap.MainStudioWindow.ExplorerContextMenu.NewWorkflowService;
+            Mouse.Click(getContextMenuItem, new Point(48, 14));
+        }
+
         [When(@"I double click '(.*)' in the explorer tree")]
         public void WhenIDoubleClickTheItemInTheExplorerTree(string path)
         {
@@ -68,22 +75,6 @@ namespace Warewolf.Studio.UISpecs
                 });
             }
             return CurrentTreeItem;
-        }
-
-        [When("I press add")]
-        public void WhenIPressAdd()
-        {
-            //TODO: implement act (action) logic
-
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then("the result should be (.*) on the screen")]
-        public void ThenTheResultShouldBe(int result)
-        {
-            //TODO: implement assert (verification) logic
-
-            ScenarioContext.Current.Pending();
         }
 
         #region Properties and Fields
