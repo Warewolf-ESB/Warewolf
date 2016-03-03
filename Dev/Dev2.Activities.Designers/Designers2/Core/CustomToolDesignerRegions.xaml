@@ -7,9 +7,6 @@
                     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                     xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                     xmlns:ig="http://schemas.infragistics.com/xaml"
-                    xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
-                    xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-                    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                     xmlns:core1="clr-namespace:Dev2.Activities.Designers2.Core"
                     xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
@@ -326,12 +323,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Border BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" Margin="{StaticResource ControlBorderTop}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <controls:Dev2DataGrid x:Name="OutputsMappingDataGrid"
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <controls:Dev2DataGrid x:Name="OutputsMappingDataGrid"
                                    Grid.Row="0"
                                    ItemsSource="{Binding OutputsRegion.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
@@ -342,17 +339,17 @@
                                         Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                    Margin="{StaticResource ControlBorderTop}">
 
-                        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="SizeToCells"
+                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="SizeToCells"
                                             MinWidth="100"
                                             Header="Mapped From"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                            <TextBlock Text="{Binding Path=MappedFrom}"
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <TextBlock Text="{Binding Path=MappedFrom}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center"
                                            Padding="3,0"
@@ -363,19 +360,19 @@
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                                            </TextBlock>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Width="*"
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="Mapped To"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ui:IntellisenseTextBox DefaultText="[[Variable]]"
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ui:IntellisenseTextBox DefaultText="[[Variable]]"
                                                     AllowMultilinePaste="True"
                                                     AcceptsReturn="True"
                                                     AllowUserInsertLine="True"
@@ -386,33 +383,32 @@
                                                     ToolTip="{x:Static languages:Core.MappingsDefaultValueHelp}"
                                                     Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                            <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static languages:Core.MappingsDefaultValueHelp}" DataContext="{Binding}" />
-                                                <errors:ErrorsSetter Source="{Binding}"
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:Core.MappingsDefaultValueHelp}" DataContext="{Binding}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="MappedTo"
                                                          SourcePropertyValue="{Binding Path=MappedTo, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
-                                            </i:Interaction.Behaviors>
-                                            <AutomationProperties.AutomationId>
-                                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
-                                                    <Binding Path="IndexNumber" />
-                                                </MultiBinding>
-                                            </AutomationProperties.AutomationId>
-                                        </ui:IntellisenseTextBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </controls:Dev2DataGrid>                   
-                    <TextBlock Text="None"
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </controls:Dev2DataGrid>
+                <TextBlock Text="None"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Bottom"
                                        Margin="0,0,0,-18"
                                        Style="{StaticResource MenuTextBlockStyle}"
                                        Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
-                </Grid>
-            </Border>
+            </Grid>
             <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -551,8 +547,34 @@
     <ControlTemplate x:Key="GenerateOutputsView"  d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid>
@@ -580,7 +602,7 @@
                         <ItemsControl x:Name="InputsList" 
                                       Margin="{StaticResource ControlBorderTop}"
                                       Grid.IsSharedSizeScope="True" 
-                                      ItemsSource="{Binding ManageServiceInputViewModel.InputArea.Inputs}" 
+                                      ItemsSource="{Binding InputArea.Inputs}" 
                                       BorderBrush="{StaticResource WareWolfWhiteBrush}" 
                                       HorizontalContentAlignment="Stretch"
                                       VerticalAlignment="Top"
@@ -630,21 +652,21 @@
                            VerticalAlignment="Bottom"
                            Margin="0,0,0,-3"
                            Style="{StaticResource MenuTextBlockStyle}"
-                           Visibility="{Binding ManageServiceInputViewModel.IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                           Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                     <customControls:CircularProgressBar Width="25"
                                                     HorizontalAlignment="Right" 
                                                     Margin="{StaticResource ControlBorderRight}"
                                                     Height="25"
                                                     Padding="2.5"
-                                                    Visibility="{Binding Path=ManageServiceInputViewModel.IsTesting,Converter={StaticResource BoolToVis}}" />
+                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
                     <Button Width="25" 
                         Height="25"
                         x:Name="PasteButton"
                         Margin="{StaticResource ControlBorderRight}"
-                        Command="{Binding ManageServiceInputViewModel.PasteResponseCommand}" 
+                        Command="{Binding PasteResponseCommand}" 
                         ToolTip="{x:Static languages:Core.ManageWebServicePasteTooltip}"
-                        Visibility="{Binding ManageServiceInputViewModel.PasteResponseAvailable, Converter={StaticResource BoolToVis}}"
+                        Visibility="{Binding PasteResponseAvailable, Converter={StaticResource BoolToVis}}"
                         VerticalAlignment="Top">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
@@ -658,7 +680,7 @@
                     </Button>
                     <Button x:Name="TestActionButton" 
                         HorizontalAlignment="Right" 
-                        Command="{Binding ManageServiceInputViewModel.TestCommand}" 
+                        Command="{Binding TestCommand}" 
                         ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                         Content="Test"
                         Width="46">
@@ -671,13 +693,10 @@
 
             <Grid Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{Binding ManageServiceInputViewModel.OutputsHeight}"/>
+                    <RowDefinition Height="{Binding OutputsHeight}"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Control Grid.Row="0" Template="{StaticResource GenerateOutputsDataTableTemplate}" 
-                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-                
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
                      Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
 
@@ -704,8 +723,34 @@
     <ControlTemplate x:Key="GenerateOutputsViewDB"  d:DataContext="{d:DesignInstance core1:ManageDatabaseServiceInputViewModel}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid>
@@ -806,7 +851,7 @@
 
             <Grid Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{Binding OutputArea.OutputsHeight}"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
