@@ -55,6 +55,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
                 MaxHeadersHeight = 115;
                 CurrentHeight = MinHeight;
+                OnPropertyChanged("Inputs");
             }
             else
             {
@@ -66,6 +67,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
                 OnHeightChanged(this);
+                OnPropertyChanged("Inputs");
             }
         }
 
@@ -86,15 +88,18 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             // ReSharper disable once ExplicitCallerInfoArgument
             UpdateOnActionSelection();
             // ReSharper disable once ExplicitCallerInfoArgument
+            OnPropertyChanged(@"Inputs");
             OnPropertyChanged(@"IsVisible");
             OnHeightChanged(this);
         }
 
         private void UpdateOnActionSelection()
         {
+            Inputs.Clear();
+            IsVisible = false;
             if(_action != null && _action.SelectedAction != null)
             {
-                Inputs.Clear();
+            
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsVisible = true;
@@ -204,7 +209,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         {
             //var ser = new Dev2JsonSerializer();
             //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
-            var inputs2 = new List<IServiceInput>();
+            var inputs2 = new List<IServiceInput>(Inputs);
             return new DatabaseInputRegionClone
             {
                 Inputs = inputs2,
@@ -272,9 +277,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             set
             {
                 _inputs = value;
-                ResetInputsHeight();
                 OnPropertyChanged();
                 _modelItem.SetProperty("Inputs",value);
+                ResetInputsHeight();
             }
         }
 
