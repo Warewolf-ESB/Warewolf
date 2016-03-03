@@ -52,5 +52,8 @@ namespace Dev2.Diagnostics.Test
         public string CategoryInstanceName { get; private set; }
 
         #endregion
+        public void Reset()
+        {
+        }
     }
 }

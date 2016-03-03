@@ -224,7 +224,7 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="GetWebServiceToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -434,6 +434,7 @@
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Plugin\PluginConnectorToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
