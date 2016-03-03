@@ -315,7 +315,7 @@
     <ControlTemplate x:Key="OutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
         <Grid VerticalAlignment="Stretch" 
                       x:Name="OutputsTemplate"
-                      Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                      Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -330,13 +330,13 @@
                 </Grid.RowDefinitions>
                 <controls:Dev2DataGrid x:Name="OutputsMappingDataGrid"
                                    Grid.Row="0"
-                                   ItemsSource="{Binding OutputsRegion.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   ItemsSource="{Binding Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
-                                   MinHeight="{Binding InputArea.MinHeight}"
-                                   MaxHeight="{Binding InputArea.MaxHeight}"
-                                        IsEnabled="{Binding OutputsRegion.IsVisible}"
-                                        Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   MinHeight="{Binding MinHeight}"
+                                   MaxHeight="{Binding MaxHeight}"
+                                        IsEnabled="{Binding IsVisible}"
+                                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                    Margin="{StaticResource ControlBorderTop}">
 
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -407,15 +407,15 @@
                                        VerticalAlignment="Bottom"
                                        Margin="0,0,0,-18"
                                        Style="{StaticResource MenuTextBlockStyle}"
-                                       Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                       Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
             </Grid>
-            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Recordset Name" ></TextBlock>
-                <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding OutputsRegion.RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
