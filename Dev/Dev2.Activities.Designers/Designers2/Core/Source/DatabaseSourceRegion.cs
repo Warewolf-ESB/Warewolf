@@ -205,23 +205,23 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedSource.DbName))
-                        StorePreviousValues(_selectedSource.Id);
-                }
+                //if (!Equals(value, _selectedSource) && _selectedSource != null)
+                //{
+                //    if (!String.IsNullOrEmpty(_selectedSource.DbName))
+                //        StorePreviousValues(_selectedSource.Id);
+                //}
 
-                if (IsAPreviousValue(value) && _selectedSource != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedSource(value);
-                }
-                else
-                {
+                //if (IsAPreviousValue(value) && _selectedSource != null)
+                //{
+                //    RestorePreviousValues(value);
+                //    SetSelectedSource(value);
+                //}
+                //else
+                //{
                     SetSelectedSource(value);
                     SourceChangedAction();
                     OnSomethingChanged(this);
-                }
+                //}
                 var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
