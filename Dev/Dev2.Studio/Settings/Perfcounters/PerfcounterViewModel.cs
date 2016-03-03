@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -12,14 +13,17 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
-
+// ReSharper disable RedundantArgumentDefaultValue
+// ReSharper disable RedundantOverload.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 namespace Dev2.Settings.Perfcounters
 {
     public class PerfcounterViewModel : SettingsItemViewModel, IHelpSource
@@ -29,13 +33,16 @@ namespace Dev2.Settings.Perfcounters
      
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
+        private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
+        private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
-        public PerfcounterViewModel(IPerformanceCounterTo counters, IWin32Window parentWindow, IEnvironmentModel environment)
+        
+        internal PerfcounterViewModel(IPerformanceCounterTo counters, IWin32Window parentWindow, IEnvironmentModel environment)
             : this(counters, parentWindow, environment,null)
         {
         }
 
-        public IResourcePickerDialog CreateResourcePickerDialog()
+        IResourcePickerDialog CreateResourcePickerDialog()
         {
             var env = GetEnvironment();
             var res =  new ResourcePickerDialog(enDsfActivityType.All, env);
@@ -58,7 +65,7 @@ namespace Dev2.Settings.Perfcounters
             return env;
         }
 
-        public PerfcounterViewModel(IPerformanceCounterTo securitySettings,  IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        public PerfcounterViewModel(IPerformanceCounterTo counters,  IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
         {
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             VerifyArgument.IsNotNull("environment", environment);
@@ -68,19 +75,19 @@ namespace Dev2.Settings.Perfcounters
 
             InitializeHelp();
 
-            InitializeTos(securitySettings );
+            InitializeTos(counters);
         }
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
         {
-            var performanceCountersByMachines = nativeCounters.FromTo();
+            var performanceCountersByMachines = nativeCounters.GetServerCountersTo();
             ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
             foreach(var performanceCountersByMachine in performanceCountersByMachines)
             {
                 RegisterPropertyChanged(performanceCountersByMachine);
                 ServerCounters.Add(performanceCountersByMachine);
             }
-            var performanceCountersByResources = nativeCounters.FromTO();
+            var performanceCountersByResources = nativeCounters.GetResourceCountersTo();
             ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
             foreach(var performanceCountersByResource in performanceCountersByResources)
             {
@@ -90,12 +97,68 @@ namespace Dev2.Settings.Perfcounters
             ResourceCounters.Add(CreateNewCounter());
         }
 
-        void RegisterPropertyChanged(IPerformanceCounters counter)
+        public virtual void Save(IPerformanceCounterTo perfCounterTo)
         {
-            counter.PropertyChanged += OnPermissionPropertyChanged;
+            UpdateServerCounter(perfCounterTo);
+            UpdateResourceCounter(perfCounterTo);
+
+            InitializeTos(perfCounterTo);
         }
 
-        void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void UpdateResourceCounter(IPerformanceCounterTo perfCounterTo)
+        {
+            perfCounterTo.ResourceCounters = ResourceCounters.ToList().GetResourceCounters();
+        }
+
+        private void UpdateServerCounter(IPerformanceCounterTo perfCounterTo)
+        {
+            var serverCounter = ServerCounters[0];
+            if(serverCounter != null)
+            {
+                var serverAvgExecTimePerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.AverageExecutionTime);
+                if(serverAvgExecTimePerfCounter != null)
+                {
+                    serverAvgExecTimePerfCounter.IsActive = serverCounter.AverageExecutionTime;
+                }
+
+                var serverConcurrentRequestsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ConcurrentRequests);
+                if(serverConcurrentRequestsPerfCounter != null)
+                {
+                    serverConcurrentRequestsPerfCounter.IsActive = serverCounter.ConcurrentRequests;
+                }
+
+                var serverExecutionErrorsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ExecutionErrors);
+                if(serverExecutionErrorsPerfCounter != null)
+                {
+                    serverExecutionErrorsPerfCounter.IsActive = serverCounter.TotalErrors;
+                }
+
+                var serverNotAuthorisedErrorsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.NotAuthorisedErrors);
+                if(serverNotAuthorisedErrorsPerfCounter != null)
+                {
+                    serverNotAuthorisedErrorsPerfCounter.IsActive = serverCounter.NotAuthorisedErrors;
+                }
+
+                var serverRequestsPerSecondPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.RequestsPerSecond);
+                if(serverRequestsPerSecondPerfCounter != null)
+                {
+                    serverRequestsPerSecondPerfCounter.IsActive = serverCounter.RequestPerSecond;
+                }
+
+                var serverServicesNotFoundPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ServicesNotFound);
+                if(serverServicesNotFoundPerfCounter != null)
+                {
+                    serverServicesNotFoundPerfCounter.IsActive = serverCounter.WorkFlowsNotFound;
+                }
+            }
+        }
+
+        void RegisterPropertyChanged(IPerformanceCounters counter)
+        {
+            counter.PropertyChanged += OnPerfCounterPropertyChanged;
+        }
+
+        void OnPerfCounterPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             IsDirty = true;
             if (args.PropertyName == "CounterName")
@@ -121,9 +184,31 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public ObservableCollection<IPerformanceCountersByMachine> ServerCounters { get;  set; }
+        public ObservableCollection<IPerformanceCountersByMachine> ServerCounters
+        {
+            get
+            {
+                return _serverCounters;
+            }
+            set
+            {
+                _serverCounters = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ObservableCollection<IPerformanceCountersByResource> ResourceCounters { get;  set; }
+        public ObservableCollection<IPerformanceCountersByResource> ResourceCounters
+        {
+            get
+            {
+                return _resourceCounters;
+            }
+            set
+            {
+                _resourceCounters = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ActivityDesignerToggle ServerHelpToggle { get; private set; }
 
@@ -157,11 +242,6 @@ namespace Dev2.Settings.Perfcounters
             ((PerfcounterViewModel)d).UpdateHelpText(HelpType.Resource);
         }
 
-        public virtual void Save(SecuritySettingsTO securitySettings)
-        {
-            VerifyArgument.IsNotNull("securitySettings", securitySettings);
-        }
-
         void InitializeHelp()
         {
             ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
@@ -183,7 +263,7 @@ namespace Dev2.Settings.Perfcounters
             }
 
             counter.ResourceId = resourceModel.ResourceId;
-            counter.CounterName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.ResourcePath, resourceModel.ResourceName);
+            counter.CounterName = resourceModel.ResourcePath+"\\"+resourceModel.ResourceName;
         }
 
         IExplorerTreeItem PickResource(IPerformanceCountersByResource counter)

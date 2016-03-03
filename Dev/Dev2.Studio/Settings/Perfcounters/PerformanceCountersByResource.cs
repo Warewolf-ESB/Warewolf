@@ -15,7 +15,6 @@ namespace Dev2.Settings.Perfcounters
         private bool _totalErrors;
         private bool _averageExecutionTime;
         private bool _concurrentRequests;
-        private bool _canEdit;
         private ICommand _removeRow;
         private bool _isNew;
 
@@ -41,6 +40,8 @@ namespace Dev2.Settings.Perfcounters
             {
                 _counterName = value;
                 OnPropertyChanged(()=>CounterName);
+                OnPropertyChanged(()=>CanRemove);
+                ((RelayCommand)RemoveRow).RaiseCanExecuteChanged();
             }
         }
         public bool RequestPerSecond
@@ -105,19 +106,6 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public bool CanEdit
-        {
-            get
-            {
-                return _canEdit;
-            }
-            set
-            {
-                _canEdit = value;
-                OnPropertyChanged(()=>CanEdit);
-            }
-        }
-
         public ICommand RemoveRow
         {
             get
@@ -127,7 +115,6 @@ namespace Dev2.Settings.Perfcounters
                        new RelayCommand(o =>
                        {
                            IsDeleted = !IsDeleted;
-                           CanEdit = !IsDeleted;
                        }, o => CanRemove));
             }
         }

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -532,6 +531,29 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(_wasCalled);
             Assert.IsTrue(viewModel.IsDirty);
         }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_WhenIsDirtyPerfCounterModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+            bool _wasCalled = false;
+            viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "IsDirty")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            viewModel.PerfmonViewModel.IsDirty = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
+            Assert.IsTrue(viewModel.IsDirty);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -578,6 +600,37 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             //------------Assert Results-------------------------
             Assert.AreEqual("LOGGING *", viewModel.LogHeader);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+
+            //------------Execute Test---------------------------
+            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors=true;
+            Assert.IsTrue(viewModel.IsDirty);
+            viewModel.PerfmonViewModel.IsDirty = false;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("PERFORMANCE COUNTERS", viewModel.PerfmonHeader);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_IsPerfCounterDirty_TruePerfCounterNameHasStar()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+
+            //------------Execute Test---------------------------
+            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
+            Assert.IsTrue(viewModel.IsDirty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("PERFORMANCE COUNTERS *", viewModel.PerfmonHeader);
         }
 
         [TestMethod]
@@ -712,6 +765,12 @@ You need Administrator permission.", viewModel.Errors);
         private static IPerformanceCounterTo CreatePerfCounterSettings()
         {
             var performanceCounterTo = new PerformanceCounterTo();
+            var testCounter = new TestCounter();
+            testCounter.IsActive = true;
+            performanceCounterTo.NativeCounters.Add(testCounter);
+            var resourcePerformanceCounter = new TestResourceCounter();
+            resourcePerformanceCounter.IsActive = true;
+            performanceCounterTo.ResourceCounters.Add(resourcePerformanceCounter);
             return performanceCounterTo;
         }
 

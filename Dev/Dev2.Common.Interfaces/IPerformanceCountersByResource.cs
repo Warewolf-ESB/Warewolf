@@ -17,7 +17,6 @@ namespace Dev2.Common.Interfaces
         bool AverageExecutionTime { get; set; }
         bool ConcurrentRequests { get; set; }
         bool IsDeleted { get; set; }
-        bool CanEdit { get; set; }
         ICommand RemoveRow { get; }
         bool CanRemove { get; }
         bool IsNew { get; set; }
