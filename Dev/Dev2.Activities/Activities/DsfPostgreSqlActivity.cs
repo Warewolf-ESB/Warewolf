@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 namespace Dev2.Activities
 {
+    [ToolDescriptorInfo("Resources-Service", "PostgreSql Connector", ToolType.Native, "8999E59B-38A3-43BB-A98F-6010H3C9ZA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfPostgreSqlActivity : DsfActivity
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

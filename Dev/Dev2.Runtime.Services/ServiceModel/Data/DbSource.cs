@@ -52,6 +52,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "ODBC":
                     ServerType = enSourceType.ODBC;
                     break;
+                case "PostgreSql":
+                    ServerType = enSourceType.PostgreSql;
+                    break;
                 default:
                     ServerType = enSourceType.Unknown;
                     break;
@@ -137,6 +140,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.ODBC:
                         return string.Format("DSN={0};", DatabaseName);
+
+                    case enSourceType.PostgreSql:
+
+                        if (string.IsNullOrEmpty(DatabaseName))
+                            DatabaseName = string.Empty;
+                        
+                        return string.Format("Host={0};Username={1};Password={2};Database={3}", Server, UserID, Password,
+                            DatabaseName);
 
                 }
                 return string.Empty;
