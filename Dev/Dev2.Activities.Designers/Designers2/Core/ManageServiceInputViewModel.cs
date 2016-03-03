@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common.Interfaces;
 //using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -23,7 +24,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManageServiceInputViewModel : BindableBase
+    public class ManageServiceInputViewModel : BindableBase,IManageServiceInputViewModel
     {
         private ICollection<IServiceInput> _inputs;
         private DataTable _testResults;
