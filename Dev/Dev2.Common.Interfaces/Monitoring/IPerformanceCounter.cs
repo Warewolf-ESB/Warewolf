@@ -14,8 +14,8 @@ namespace Dev2.Common.Interfaces.Monitoring
         WarewolfPerfCounterType PerfCounterType { get; }
         IList<CounterCreationData> CreationData();
         bool IsActive { get; set; }
-
         void Setup();
+        void Reset();
     }
 
     public interface IResourcePerformanceCounter : IPerformanceCounter

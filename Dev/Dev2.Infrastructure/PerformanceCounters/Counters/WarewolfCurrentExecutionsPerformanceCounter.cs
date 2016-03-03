@@ -41,7 +41,13 @@ namespace Dev2.PerformanceCounters.Counters
         }
 
         public bool IsActive { get; set; }
-
+        public void Reset()
+        {
+            if (_counter != null)
+            {
+                _counter.RawValue = 0;
+            }
+        }
         #region Implementation of IPerformanceCounter
 
         public void Increment()

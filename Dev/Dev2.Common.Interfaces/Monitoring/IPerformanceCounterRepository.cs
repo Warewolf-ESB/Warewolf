@@ -4,5 +4,7 @@ namespace Dev2.Common.Interfaces.Monitoring
     {
         IPerformanceCounterTo Counters { get; }
         void Save(IPerformanceCounterTo toSave);
+
+        void ResetCounters();
     }
 }

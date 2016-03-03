@@ -98,7 +98,13 @@ namespace Dev2.PerformanceCounters.Counters
                 return "Count of requests for workflows which don’t exist";
             }
         }
-
+        public void Reset()
+        {
+            if (_counter != null)
+            {
+                _counter.RawValue = 0;
+            }
+        }
         #endregion
     }
 }

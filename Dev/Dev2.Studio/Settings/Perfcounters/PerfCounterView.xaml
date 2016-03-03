@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:help1="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance perfcounters:PerfcounterViewModel}"
@@ -42,6 +43,7 @@
                 <RowDefinition Height="50*"/>
                 <RowDefinition Height="8" />
                 <RowDefinition Height="50*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -415,6 +417,12 @@
                     </ig:XamGrid.SortingSettings>
                 </ig:XamGrid>
             </Grid>
-        </Grid>
+
+        <TextBlock Grid.Row="3" >
+                        <Hyperlink Command="{Binding Path=ResetCountersCommand}" Style="{StaticResource HyperLinkStyle}">
+                            <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
+                            <TextBlock Text="Reset Counters" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                </Hyperlink></TextBlock>
+    </Grid>
 
 </UserControl>
