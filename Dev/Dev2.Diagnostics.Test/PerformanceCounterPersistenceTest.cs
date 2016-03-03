@@ -62,6 +62,10 @@ namespace Dev2.Diagnostics.Test
         }
 
         #endregion
+
+        public void Reset()
+        {            
+        }
     }
 
     [TestClass]

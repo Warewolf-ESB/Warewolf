@@ -11,6 +11,9 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
+using Dev2.Controller;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -71,11 +74,28 @@ namespace Dev2.Settings.Perfcounters
             VerifyArgument.IsNotNull("environment", environment);
             _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
             _environment = environment;
+            
             PickResourceCommand = new DelegateCommand(PickResource);
-
+            ResetCountersCommand = new DelegateCommand(ResetCounters);
             InitializeHelp();
-
             InitializeTos(counters);
+
+        }
+
+        public ICommand ResetCountersCommand { get; set; }
+
+        private void ResetCounters(object obj)
+        {
+            var controller = new CommunicationController { ServiceName = "ResetPerformanceCounters" };
+            var message = controller.ExecuteCommand<ExecuteMessage>(_environment.Connection, Guid.Empty);
+            if (!message.HasError)
+            {
+                CustomContainer.Get<IPopupController>().Show("Performance Counters have been reset.", "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.None, "", false, true, false, false);
+            }
+            else
+            {
+                CustomContainer.Get<IPopupController>().Show("Error reseting counters: "+Environment.NewLine+message.Message, "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
+            }
         }
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
