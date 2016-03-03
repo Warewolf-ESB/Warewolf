@@ -249,7 +249,7 @@
                     </Grid>
                 </Grid>
 
-                <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource OutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
                       Grid.Row="3"

@@ -532,7 +532,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 bool isOutputVisible = false;
                 foreach (var toolRegion in _regions)
                 {
-                    if (toolRegion.ToolRegionName == "GetInputRegion")
+                    if (toolRegion.ToolRegionName == "DeleteInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }

@@ -17,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         protected double _designHeight;
         protected double _designMinHeight;
         protected double _designMaxHeight;
-        protected const double BaseHeight = 120;
+        protected const double BaseHeight = 105;
 
         #region Implementation of INotifyPropertyChanged
 

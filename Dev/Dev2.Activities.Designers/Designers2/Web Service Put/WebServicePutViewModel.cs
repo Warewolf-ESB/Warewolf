@@ -554,7 +554,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 bool isOutputVisible = false;
                 foreach(var toolRegion in _regions)
                 {
-                    if(toolRegion.ToolRegionName == "GetInputRegion")
+                    if (toolRegion.ToolRegionName == "PutInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }
