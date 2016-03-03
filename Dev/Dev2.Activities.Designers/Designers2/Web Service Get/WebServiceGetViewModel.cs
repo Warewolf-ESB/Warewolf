@@ -538,11 +538,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             if (_regions != null)
             {
                 bool isInputVisible = false;
+                bool isOutputVisible = false;
                 foreach (var toolRegion in _regions)
                 {
                     if (toolRegion.ToolRegionName == "GetInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
+                    }
+                    if (toolRegion.ToolRegionName == "OutputsRegion")
+                    {
+                        isOutputVisible = toolRegion.IsVisible;
                     }
                 }
 
@@ -550,6 +555,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
                 DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
 
+                if (isOutputVisible)
+                {
+                    DesignMaxHeight += 20;
+                    DesignHeight += 20;
+                    DesignMinHeight += 20;
+                }
                 if (isInputVisible && !GenerateOutputsVisible)
                 {
                     DesignMaxHeight += BaseHeight;

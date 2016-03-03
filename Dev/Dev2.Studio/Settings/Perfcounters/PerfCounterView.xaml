@@ -16,29 +16,6 @@
            
         <UserControl.Resources>
 
-            <Style x:Key="PermissionsGridTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
-                <Setter Property="FontWeight" Value="{StaticResource DefaultFontWeight}" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="AcceptsReturn" Value="False" />
-                <Setter Property="Width" Value="Auto" />
-            </Style>
-
-            <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
-                <Setter Property="Content" Value="..." />
-                <Setter Property="Margin" Value="1" />
-                <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                <Setter Property="CommandParameter" Value="{Binding}" />
-                <Setter Property="AutomationProperties.AutomationId">
-                    <Setter.Value>
-                        <MultiBinding StringFormat="UI_Security_Row{1}_PickWindowsGroupButton" Converter="{StaticResource DataGridRowNumberConverter}">
-                            <Binding />
-                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
-                        </MultiBinding>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
             <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="Content" Value="..." />
                 <Setter Property="Margin" Value="1" />
@@ -78,7 +55,7 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Permissions</TextBlock>
+                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Counters</TextBlock>
                 </StackPanel>
 
                 <ig:XamGrid Grid.Row="1"
@@ -87,45 +64,18 @@
                         ColumnSorting="ServerColumnSorting"
                         ItemsSource="{Binding ServerCounters}">
 
-                    <ig:XamGrid.Columns>
-                    <!--<ig:TemplateColumn x:Name="WindowsGroupColumn" Key="CounterNameGroup" HeaderText="CounterName" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch"
-                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=WindowsGroupColumn, Path=ActualWidth}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Text="{Binding Path=MachineName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             IsEnabled="True"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}"
-                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
-                                            <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpWindowsGroup}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                            </i:Interaction.Behaviors>
-                                            <AutomationProperties.AutomationId>
-                                                <MultiBinding StringFormat="UI_{0}_AddWindowsGroupTextBox_AutoID">
-                                                <Binding Path="CounterName" FallbackValue="New" />
-                                                </MultiBinding>
-                                            </AutomationProperties.AutomationId>
-                                        </TextBox>
-                                   </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>-->
-                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="AverageExecutionTime" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
+                <ig:XamGrid.Columns>
+                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              IsEnabled="{Binding Path=true}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
+                                              IsEnabled="True"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipAvgExecTime}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -139,16 +89,16 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="ConcurrentRequests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=ConcurrentRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipConcurrentReq}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpConcurrentReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -162,16 +112,16 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="RequestPerSecond" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=RequestPerSecond, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}">
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipReqPerSec}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -186,16 +136,16 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="TotalErrors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=TotalErrors, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=TotalErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
+                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerTooltipTotalErrors}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
+                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpTotalErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -210,16 +160,16 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlowsNotFound" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=WorkFlowsNotFound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
+                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipWfNotFound}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
+                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpWfNotFound}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -233,16 +183,16 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="NotAuthorisedErrors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=NotAuthorisedErrors, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <CheckBox IsChecked="{Binding Path=NotAuthorisedErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="true"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}">
+                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipNotAuthErrors}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpContribute}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpNotAuthErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -283,7 +233,7 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Resource Permissions</TextBlock>
+                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Resource Counters</TextBlock>
                 </StackPanel>
 
                 <ig:XamGrid Grid.Row="1"
@@ -302,9 +252,9 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0"
                                                Text="{Binding Path=CounterName, Mode=TwoWay}"
-                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
                                       <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpResource}"
+                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpResource}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
@@ -315,8 +265,7 @@
                                         </TextBlock>
                                         <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            IsEnabled="{Binding Path=CounterName}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                            ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
                                             <AutomationProperties.AutomationId>
                                                 <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="CounterName" FallbackValue="New" />
@@ -334,7 +283,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumnResource" Key="AverageExecutionTime" HeaderText="AverageExecutionTime" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
+                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumnResource" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
                             <DataTemplate>
@@ -342,9 +291,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=true}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipAvgExecTime}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -354,20 +303,25 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumnResource" Key="ConcurrentRequests" HeaderText="ConcurrentRequests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
+                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumnResource" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=ConcurrentRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipConReq}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpConReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -377,20 +331,25 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="RequestPerSecondColumnResource" Key="RequestPerSecond" HeaderText="RequestPerSecond" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
+                    <ig:TemplateColumn x:Name="RequestPerSecondColumnResource" Key="RequestPerSecond" HeaderText="Request Per Second" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=RequestPerSecond, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}">
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipReqPerSec}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -409,16 +368,16 @@
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="TotalErrorsColumnResource" Key="TotalErrors" HeaderText="TotalErrors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
+                    <ig:TemplateColumn x:Name="TotalErrorsColumnResource" Key="TotalErrors" HeaderText="Total Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="{Binding ElementName=TotalErrors, Path=ActualWidth}">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=TotalErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
+                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipTotErrors}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
+                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpTotErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -428,12 +387,28 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
-
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>                        
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn Key="RemoveRow" HeaderStyle="{StaticResource EmptyHeaderCellControlStyle}" Width="Auto" MinimumWidth="20" HorizontalContentAlignment="Center" IsResizable="False" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Command="{Binding Path=RemoveRow}"
+                                        ToolTip="Removes Performance Counter">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                           Height="15"
+                                           Width="15" />
+                                </Button>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
-
                 </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
                         <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>

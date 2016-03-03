@@ -77,6 +77,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _recordsetName;
         private IOutputDescription _description;
         private bool _isOutputsEmptyRows;
+        private bool _outputCountExpandAllowed;
 
         #region Implementation of IToolRegion
 
@@ -181,20 +182,55 @@ namespace Dev2.Activities.Designers2.Core
         private void ReCalculateHeight()
         {
             // Need to add custom height due to Infragistics XamGrid doing its own thing again
-            const double XamGridHeight = 15;
-            MaxHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
-            MinHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
-            if(_outputs.Count == 0)
+            //const double XamGridHeight = 15;
+            //MaxHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
+            //MinHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
+            //OutputCountExpandAllowed = false;
+            //if(_outputs.Count == 0)
+            //{
+            //    MaxHeight = BaseHeight;
+            //    MinHeight = BaseHeight;
+            //}
+            //if(_outputs.Count >= 3)
+            //{
+            //    MinHeight = 110;
+            //    OutputCountExpandAllowed = true;
+            //}
+            //IsOutputsEmptyRows = _outputs == null || _outputs.Count == 0;
+            //CurrentHeight = MinHeight;
+
+            OutputCountExpandAllowed = false;
+            if (_outputs.Count >= 3)
             {
-                MaxHeight = BaseHeight;
-                MinHeight = BaseHeight;
+                MinHeight = 3 * GlobalConstants.RowHeight;
+                MaxHeight = (_outputs.Count * GlobalConstants.RowHeight) + 15;
+                CurrentHeight = MinHeight;
+                CurrentHeight = MinHeight;
+                OutputCountExpandAllowed = true;
             }
-            if(_outputs.Count >= 3)
+            else
             {
-                MinHeight = 110;
+                CurrentHeight = GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight;
+                if (CurrentHeight < BaseHeight)
+                {
+                    CurrentHeight = BaseHeight;
+                }
+                MinHeight = CurrentHeight;
+                MaxHeight = CurrentHeight + 15;
             }
-            IsOutputsEmptyRows = _outputs == null || _outputs.Count == 0;
-            CurrentHeight = MinHeight;
+        }
+
+        public bool OutputCountExpandAllowed
+        {
+            get
+            {
+                return _outputCountExpandAllowed;
+            }
+            set
+            {
+                _outputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool OutputMappingEnabled

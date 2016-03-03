@@ -330,6 +330,7 @@
     <Compile Include="ToolBase\IWebGetInputArea.cs" />
     <Compile Include="ToolBase\IWebInput.cs" />
     <Compile Include="ToolBase\IWebPostInputArea.cs" />
+    <Compile Include="ToolBase\IWebPutInputArea.cs" />
     <Compile Include="ToolBase\IWebServiceBaseViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceDeleteViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceGetViewModel.cs" />

@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -27,9 +28,6 @@ namespace Dev2.Activities.Designers2.Core
         double _maxHeadersHeight;
         bool _isVisible;
         private const double BaseHeight = 60;
-        //private ICommand _addRowCommand;
-        //private ICommand _removeRowCommand;
-
 
         public WebGetInputRegion()
         {
