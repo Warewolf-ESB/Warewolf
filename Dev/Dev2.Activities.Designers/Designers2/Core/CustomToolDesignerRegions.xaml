@@ -520,7 +520,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="GenerateOutputsTextTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="OutputsGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Grid x:Name="OutputsGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -529,18 +529,20 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                <ScrollViewer VerticalAlignment="Top"
-                              HorizontalScrollBarVisibility="Auto" 
-                              VerticalScrollBarVisibility="Auto"
-                              Height="{Binding CurrentHeight}"
-                              Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                <ScrollViewer VerticalAlignment="Top">
                     <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                         <TextBlock Text="{Binding TestResults}" 
+                                   Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
                                    TextWrapping="Wrap"
+                                   Height="{Binding OutputArea.CurrentHeight}"
+                                   MinHeight="{Binding OutputArea.MinHeight}"
+                                   MaxHeight="{Binding OutputArea.MaxHeight}"
+                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                    HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch">
                             <i:Interaction.Behaviors>
@@ -553,13 +555,13 @@
             <TextBlock Grid.Row="1"
                        Text="None" 
                        HorizontalAlignment="Center"
-                           VerticalAlignment="Center" 
-                           Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                       VerticalAlignment="Center" 
+                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="GenerateResponseTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="ResponseGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Grid x:Name="ResponseGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -594,10 +596,10 @@
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -608,10 +610,10 @@
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputArea.IsVisible}" Value="True">
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputArea.IsVisible}" Value="False">
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -741,7 +743,7 @@
                 </Grid.RowDefinitions>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
-                     Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                     Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateResponseTemplate}" 
                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>

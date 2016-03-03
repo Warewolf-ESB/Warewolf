@@ -107,14 +107,14 @@ namespace Dev2.Activities.Designers2.Core
             if (Inputs.Count >= 3)
             {
                 MinHeight = 3 * GlobalConstants.RowHeight;
-                MaxHeight = Inputs.Count * GlobalConstants.RowHeight;
+                MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
                 InputsHeight = MinHeight;
                 MaxInputsHeight = MaxHeight;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                CurrentHeight = Inputs.Count * GlobalConstants.RowHeight;
+                CurrentHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;

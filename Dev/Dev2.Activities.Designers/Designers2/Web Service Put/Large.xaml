@@ -7,10 +7,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:webServiceDelete="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
-                               xmlns:ig="http://schemas.infragistics.com/xaml"
-                               xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -88,7 +85,6 @@
 
                     <Grid x:Name="HeadersGrid" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -97,13 +93,8 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
-                        <Border Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Grid.Row="1" 
-                                BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
-                                BorderThickness="1" >
-                            <controls:Dev2DataGrid x:Name="Headers"
-                                   Grid.Row="0"
+                        <controls:Dev2DataGrid x:Name="Headers"
+                                   Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
@@ -112,16 +103,16 @@
                                    ColumnWidth="*"
                                    Margin="{StaticResource ControlBorderTop}">
 
-                                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Width="*"
+                            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="Header"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ui:IntellisenseTextBox DefaultText="Header"
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ui:IntellisenseTextBox DefaultText="Header"
                                                     AllowMultilinePaste="True"
                                                     AcceptsReturn="True"
                                                     AllowUserInsertLine="True"
@@ -132,31 +123,31 @@
                                                     ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                                    <i:Interaction.Behaviors>
-                                                        <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
-                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                <i:Interaction.Behaviors>
+                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                    <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Name"
                                                          SourcePropertyValue="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                                    </i:Interaction.Behaviors>
-                                                    <AutomationProperties.AutomationId>
-                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                                            <Binding Path="IndexNumber" />
-                                                        </MultiBinding>
-                                                    </AutomationProperties.AutomationId>
-                                                </ui:IntellisenseTextBox>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Width="SizeToCells"
+                                                </i:Interaction.Behaviors>
+                                                <AutomationProperties.AutomationId>
+                                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                        <Binding Path="IndexNumber" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.AutomationId>
+                                            </ui:IntellisenseTextBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="SizeToCells"
                                             MinWidth="100"
                                             Header="Value"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ui:IntellisenseTextBox DefaultText="Value"
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ui:IntellisenseTextBox DefaultText="Value"
                                                     AllowMultilinePaste="True"
                                                     AcceptsReturn="True"
                                                     AllowUserInsertLine="True"
@@ -167,26 +158,25 @@
                                                     ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                                    <i:Interaction.Behaviors>
-                                                        <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
-                                                        <errors:ErrorsSetter Source="{Binding}"
+                                                <i:Interaction.Behaviors>
+                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                    <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                                    </i:Interaction.Behaviors>
-                                                    <AutomationProperties.AutomationId>
-                                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                                            <Binding Path="IndexNumber" />
-                                                        </MultiBinding>
-                                                    </AutomationProperties.AutomationId>
-                                                </ui:IntellisenseTextBox>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </controls:Dev2DataGrid>
-                        </Border>
+                                                </i:Interaction.Behaviors>
+                                                <AutomationProperties.AutomationId>
+                                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                        <Binding Path="IndexNumber" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.AutomationId>
+                                            </ui:IntellisenseTextBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </controls:Dev2DataGrid>
                     </Grid>
 
                     <Grid x:Name="UrlGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
@@ -223,7 +213,7 @@
                         </Button>
                     </Grid>
                 </Grid>
-                
+
                 <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
@@ -235,7 +225,7 @@
             </Grid>
 
             <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Control Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
+                <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
             </Grid>
         </Grid>
     </Grid>
