@@ -15,8 +15,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-
-namespace Dev2.Tests.Activities.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]

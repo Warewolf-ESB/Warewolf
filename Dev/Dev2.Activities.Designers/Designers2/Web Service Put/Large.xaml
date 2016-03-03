@@ -6,17 +6,15 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:webServiceDelete="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
-                               xmlns:ig="http://schemas.infragistics.com/xaml"
-                               xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+    xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+    xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:webServicePut="clr-namespace:Dev2.Activities.Designers2.Web_Service_Put"
                                MinWidth="350"
                                Width="350"
                                MinHeight="{Binding DesignMinHeight}"
@@ -26,7 +24,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webServiceDelete:WebServiceDeleteViewModel}">
+                               d:DataContext="{d:DesignInstance webServicePut:WebServicePutViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -82,6 +80,7 @@
                 <Grid Grid.Row="1" Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -189,7 +188,37 @@
                         </Border>
                     </Grid>
 
-                    <Grid x:Name="UrlGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="BodyLabel" Text="Body" Grid.Row="0" />
+
+                        <TextBox Grid.Row="1"
+                                 x:Name="RequestBody"
+                                 Text="{Binding InputArea.PutData}" 
+                                 HorizontalAlignment="Stretch" 
+                                 AcceptsReturn="True"
+                                 Height="Auto"
+                                 MinHeight="75"
+                                 MaxHeight="75"
+                                 VerticalContentAlignment="Top"
+                                 TextWrapping="Wrap"
+                                 VerticalAlignment="Stretch"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 customControls1:WatermarkTextBox.Watermark="Body" 
+                                 SizeChanged="RequestBody_OnSizeChanged"
+                                 ToolTip="{x:Static languages:Core.ManageWebServiceRequestBodyTooltip}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestBodyHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                    </Grid>
+
+                    <Grid x:Name="UrlGrid" Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -223,7 +252,7 @@
                         </Button>
                     </Grid>
                 </Grid>
-                
+
                 <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"

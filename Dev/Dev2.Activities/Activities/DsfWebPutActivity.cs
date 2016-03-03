@@ -45,14 +45,14 @@ namespace Dev2.Activities
             {
                 query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
             }
-            var postData = "";
+            var putData = "";
             if (PutData != null)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PutData, update));
+                putData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PutData, update));
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData);
+            var webRequestResult = PerformWebPostRequest(head, query, url, putData);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 
