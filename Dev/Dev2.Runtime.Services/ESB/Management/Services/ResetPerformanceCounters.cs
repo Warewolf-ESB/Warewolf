@@ -7,17 +7,17 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SavePerformanceCounters : IEsbManagementEndpoint
+    public class ResetPerformanceCounters : IEsbManagementEndpoint
     {
 
         public string HandlesType()
         {
-            return "SavePerformanceCounters";
+            return "ResetPerformanceCounters";
         }
-
 
         /// <summary>
         /// Executes the service
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Manager.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
+                Manager.ResetCounters();
                 msg.HasError = false;
                 msg.Message = new StringBuilder();
             }
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(),  DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><PerformanceCounterTo ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService { Name = HandlesType(),  DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
