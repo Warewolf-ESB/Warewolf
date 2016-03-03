@@ -8,41 +8,41 @@
 Scenario: Open new Web Tool
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	And Edit is Disabled
-	When I Select "WebHeloo" as a web Source
-	Then Header is Enabled
-	And  Header appears as
+    And Post New is Enabled
+	And Post Edit is Disabled
+	When I Select "WebHeloo" as a Post web Source
+	Then Post Header is Enabled
+	And  Post Header appears as
 	| Header | Value |
-	And Edit is Enabled
-	And  Body is Enabled 
-	And Url is Visible
-	And Query is Enabled
-	And Generate Outputs is Enabled
-	And mapped outputs are
+	And Post Edit is Enabled
+	And  Post Body is Enabled 
+	And Post Url is Visible
+	And Post Query is Enabled
+	And Post Generate Outputs is Enabled
+	And Post mapped outputs are
 	| Output | Output Alias |
 
 Scenario: Create Web Service with different methods
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	And Edit is Disabled
-	When I Select "Dev2CountriesWebService" as a web Source
-	Then Header is Enabled
-	And  Header appears as
+    And Post New is Enabled
+	And Post Edit is Disabled
+	When I Select "Dev2CountriesWebService" as a Post web Source
+	Then Post Header is Enabled
+	And  Post Header appears as
 	| Header | Value |
 	And Body is Enabled 
-	And Url is Visible
-	And Edit is Enabled
-	And Query is Enabled
-	And Generate Outputs is Enabled
-	When I click Generate Outputs
-	Then the Generate Outputs window is shown
-	And Variables are Enabled
-	When Test Inputs is Successful
-	Then the response is loaded
-	When I click Done
-	Then Mapping is Enabled
+	And Post Url is Visible
+	And Post Edit is Enabled
+	And Post Query is Enabled
+	And Post Generate Outputs is Enabled
+	When I click Post Generate Outputs
+	Then the Post Generate Outputs window is shown
+	And Post Variables are Enabled
+	When Post Test Inputs is Successful
+	Then Post the response is loaded
+	When I click Post Done
+	Then Post Mapping is Enabled
 	And mapped outputs are
 	| Output      | Output Alias    |
 	| CountryID   | [[CountryID]]   |
@@ -53,30 +53,30 @@ Scenario: Create Web Service with different methods
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	When I Select "Dev2CountriesWebService" as a web Source
-	Then Header is Enabled
-	And Body is Enabled 
-	And Url is Visible
-	And Query is Enabled
-	And Generate Outputs is Enabled
-	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Query String
-	And Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
-	And I add Header as
+    And Post New is Enabled
+	When I Select "Dev2CountriesWebService" as a Post web Source
+	Then Post Header is Enabled
+	And Post Body is Enabled 
+	And Post Url is Visible
+	And Post Query is Enabled
+	And Post Generate Outputs is Enabled
+	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Post Query String
+	And Post Url as "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx"
+	And I add Post Header as
          | Name  | Value |
          | [[a]] | T     |
-	When I click Generate Outputs
-	Then the Generate Outputs window is shown
-	And Input variables are
+	When I click Post Generate Outputs
+	Then Post the Generate Outputs window is shown
+	And Post Input variables are
 	| Name  |
 	| [[a]] |
 	| [[extension]] |
 	| [[prefix]] |
-	And Test is Enabled
-	And Paste is Enabled
-	When Test Inputs is Successful
-	And I click Done
-	Then Mapping is Enabled
+	And Post Test is Enabled
+	And Post Paste is Enabled
+	When Post Test Inputs is Successful
+	And I click Post Done
+	Then Post Mapping is Enabled
     And mapped outputs are
 	| Output      | Output Alias    |
 	| CountryID   | [[CountryID]]   |
@@ -85,43 +85,43 @@ Scenario: Adding parameters in request headers is updating variables
  Scenario: Editing Web Service
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	When I Select "Dev2CountriesWebService" as a web Source
-	And New is Enabled
-	And Edit is Enabled
-	When I click Edit
-	Then the "Dev2CountriesWebService" Source tab is opened
+    And Post New is Enabled
+	When I Select "Dev2CountriesWebService" as a Post web Source
+	And Post New is Enabled
+	And Post Edit is Enabled
+	When I click Post Edit
+	Then the "Dev2CountriesWebService" Post Source tab is opened
 
 Scenario: Changing Sources 
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	When I Select "WebHeloo" as a web Source
-	Then Header is Enabled
-	And Body is Enabled 
-	And Url is Visible
-	And Query is Enabled
-	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then the Generate Outputs window is shown
-	When Test Inputs is Successful
-	Then Response appears as "{"rec" : [{"a":"1","b":"a"}]}"
-	When I click Done
-	Then Mapping is Enabled
-	And mapped outputs are
+    And Post New is Enabled
+	When I Select "WebHeloo" as a Post web Source
+	Then Post Header is Enabled
+	And Post Body is Enabled 
+	And Post Url is Visible
+	And Post Query is Enabled
+	And Post Generate Outputs is Enabled
+	And I click Post Generate Outputs
+	Then Post the Generate Outputs window is shown
+	When Post Test Inputs is Successful
+	Then Post Response appears as "{"rec" : [{"a":"1","b":"a"}]}"
+	When I click Post Done
+	Then Post Mapping is Enabled
+	And Post mapped outputs are
 	| Mapped From | Mapped To   |
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
-	When I Select "Google Address Lookup" as a web Source
-	Then Header is Enabled
-	And Body is Enabled 
-	And Url is Visible
-	And Query is Enabled
-	And Generate Outputs is Enabled
-	And Mappings is Disabled
+	When I Select "Google Address Lookup" as a Post web Source
+	Then Post Header is Enabled
+	And Post Body is Enabled 
+	And Post Url is Visible
+	And Post Query is Enabled
+	And Post Generate Outputs is Enabled
+	And Post Mappings is Disabled
 
 
-@ignore
+
 #wolf-1034
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow

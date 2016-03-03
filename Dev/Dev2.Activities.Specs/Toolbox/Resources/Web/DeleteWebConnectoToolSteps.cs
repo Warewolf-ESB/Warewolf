@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Dev2.Activities.Designers2.Web_Service_Post;
+using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
@@ -19,21 +19,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
     [Binding]
-    public class PostWebConnectorToolSteps
+    public sealed class DeleteWebConnectoToolSteps
     {
         private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
         private WebServiceSourceDefinition _webHelooWebSource;
         private WebServiceSourceDefinition _googleWebSource;
 
-        [Given(@"I drag Web Post Request Connector Tool onto the design surface")]
-        public void GivenIDragWebPostRequestConnectorToolOntoTheDesignSurface()
+        [Given(@"I drag Web Delete Request Connector Tool onto the design surface")]
+        public void GivenIDragWebDeleteRequestConnectorToolOntoTheDesignSurface()
         {
-            var activity = new DsfWebPostActivity();
+            var activity = new DsfWebDeleteActivity();
             var modelItem = ModelItemUtils.CreateModelItem(activity);
             var mockServiceInputViewModel = new Mock<IManageWebServiceInputViewModel>();
             var mockServiceModel = new Mock<IWebServiceModel>();
@@ -65,7 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             mockServiceModel.Setup(model => model.RetrieveSources()).Returns(sources);
             mockServiceModel.Setup(model => model.EditSource(It.IsAny<IWebServiceSource>())).Verifiable();
             mockServiceInputViewModel.SetupAllProperties();
-            var viewModel = new WebServicePostViewModel(modelItem, mockServiceModel.Object);
+            var viewModel = new WebServiceDeleteViewModel(modelItem, mockServiceModel.Object);
 
 
             ScenarioContext.Current.Add("viewModel", viewModel);
@@ -73,65 +72,65 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             ScenarioContext.Current.Add("mockServiceModel", mockServiceModel);
         }
 
-        private static WebServicePostViewModel PostViewModel()
+        private static WebServiceDeleteViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<WebServicePostViewModel>("viewModel");
+            return ScenarioContext.Current.Get<WebServiceDeleteViewModel>("viewModel");
         }
 
-        private static Mock<IWebServiceModel> PostServiceModel()
+        private static Mock<IWebServiceModel> GetServiceModel()
         {
             return ScenarioContext.Current.Get<Mock<IWebServiceModel>>("mockServiceModel");
         }
 
-        [When(@"Post Test Inputs is Successful")]
+        [When(@"Delete Test Inputs is Successful")]
         public void WhenTestInputsIsSuccessful()
         {
-            
-            PostViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
+
+            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 
-        [Given(@"Post New is Enabled")]
-        [When(@"Post New is Enabled")]
-        [Then(@"Post New is Enabled")]
-        public void WhenNewIsEnabled()
+        [Given(@"Delete New is Enabled")]
+        [When(@"Delete New is Enabled")]
+        [Then(@"Delete New is Enabled")]
+        public void WhenDeleteNewIsEnabled()
         {
-            var canExecuteNewCommand = PostViewModel().SourceRegion.NewSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = GetViewModel().SourceRegion.NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecuteNewCommand);
         }
 
-        [Given(@"Post Edit is Enabled")]
-        [When(@"Post Edit is Enabled")]
-        [Then(@"Post Edit is Enabled")]
-        public void WhenEditIsEnabled()
+        [Given(@"Delete Edit is Enabled")]
+        [When(@"Delete Edit is Enabled")]
+        [Then(@"Delete Edit is Enabled")]
+        public void WhenDeleteEditIsEnabled()
         {
-            var canExecuteNewCommand = PostViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = GetViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecuteNewCommand);
         }
 
-        [Given(@"Post Edit is Disabled")]
+        [Given(@"Delete Edit is Disabled")]
         public void GivenEditIsDisabled()
         {
-            var canExecuteNewCommand = PostViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = GetViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
             Assert.IsFalse(canExecuteNewCommand);
         }
 
-        [When(@"I click Post Edit")]
-        public void WhenIClickEdit()
+        [When(@"I click Delete Edit")]
+        public void WhenDeleteIClickEdit()
         {
-           PostViewModel().SourceRegion.EditSourceCommand.Execute(null);
+            GetViewModel().SourceRegion.EditSourceCommand.Execute(null);
         }
 
-        [Then(@"Post Header is Enabled")]
+        [Then(@"Delete Header is Enabled")]
         public void ThenHeaderIsEnabled()
         {
-            Assert.AreEqual(1, PostViewModel().InputArea.Headers.Count);
+            Assert.AreEqual(1, GetViewModel().InputArea.Headers.Count);
         }
 
-        [Then(@"Post Header appears as")]
+        [Then(@"Delete Header appears as")]
         public void ThenHeaderAppearsAs(Table table)
         {
-            var headers = PostViewModel().InputArea.Headers;
-            foreach(var tableRow in table.Rows)
+            var headers = GetViewModel().InputArea.Headers;
+            foreach (var tableRow in table.Rows)
             {
                 var name = tableRow["Header"];
                 var value = tableRow["Value"];
@@ -140,94 +139,94 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [Then(@"Post Body is Enabled")]
-        public void ThenBodyIsEnabled()
+        [Then(@"Delete Body is Enabled")]
+        public void ThenDeleteBodyIsEnabled()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
         }
 
-        [Then(@"Post Url is Visible")]
-        public void ThenUrlIsVisible()
+        [Then(@"Delete Url is Visible")]
+        public void ThenDeleteUrlIsVisible()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
         }
 
-        [Then(@"Post Query is Enabled")]
-        public void ThenQueryIsEnabled()
+        [Then(@"Delete Query is Enabled")]
+        public void ThenDeleteQueryIsEnabled()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
         }
 
-        [Then(@"Post Generate Outputs is Enabled")]
-        public void ThenGenerateOutputsIsEnabled()
+        [Then(@"Delete Generate Outputs is Enabled")]
+        public void ThenDeleteGenerateOutputsIsEnabled()
         {
-            var canGenerateOutputs = PostViewModel().TestInputCommand.CanExecute();
+            var canGenerateOutputs = GetViewModel().TestInputCommand.CanExecute();
             Assert.IsTrue(canGenerateOutputs);
         }
 
-        [Then(@"Post the Generate Outputs window is shown")]
-        public void ThenTheGenerateOutputsWindowIsShown()
+        [Then(@"the Delete Generate Outputs window is shown")]
+        public void ThenTheDeleteGenerateOutputsWindowIsShown()
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.GenerateOutputsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsVisible);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.IsTrue(webServiceDeleteViewModel.GenerateOutputsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsFalse(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.IsVisible);
         }
 
-        [Then(@"Post Variables are Enabled")]
-        public void ThenVariablesAreEnabled()
+        [Then(@"Delete Variables are Enabled")]
+        public void ThenDeleteVariablesAreEnabled()
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
         }
 
-        [Then(@"Post the response is loaded")]
-        public void ThenTheResponseIsLoaded()
+        [Then(@"the Delete response is loaded")]
+        public void ThenTheDeleteResponseIsLoaded()
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
         }
 
 
-        [Then(@"Post Mapping is Enabled")]
-        public void ThenMappingIsEnabled()
+        [Then(@"Delete Mapping is Enabled")]
+        public void ThenDeleteMappingIsEnabled()
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.OutputsRegion.IsVisible);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.IsTrue(webServiceDeleteViewModel.OutputsRegion.IsVisible);
         }
 
-        [Then(@"I enter ""(.*)"" as Post Query String")]
-        public void ThenIEnterAsQueryString(string queryString)
+        [Then(@"I enter ""(.*)"" as Delete Query String")]
+        public void ThenIEnterAsDeleteQueryString(string queryString)
         {
-            var webServicePostViewModel = PostViewModel();
-            webServicePostViewModel.InputArea.QueryString = queryString;
+            var webServiceDeleteViewModel = GetViewModel();
+            webServiceDeleteViewModel.InputArea.QueryString = queryString;
         }
 
-        [Then(@"Post Url as ""(.*)""")]
-        public void ThenUrlAs(string url)
+        [Then(@"Delete Url as ""(.*)""")]
+        public void ThenDeleteUrlAs(string url)
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.AreEqual(url,webServicePostViewModel.InputArea.RequestUrl);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.AreEqual(url, webServiceDeleteViewModel.InputArea.RequestUrl);
         }
 
-        [Then(@"I add Post Header as")]
-        public void ThenIAddHeaderAs(Table table)
+        [Then(@"I add Delete Header as")]
+        public void ThenIAddDeleteHeaderAs(Table table)
         {
-            var headers = PostViewModel().InputArea.Headers;
-            foreach(var tableRow in table.Rows)
+            var headers = GetViewModel().InputArea.Headers;
+            foreach (var tableRow in table.Rows)
             {
                 var name = tableRow["Name"];
                 var value = tableRow["Value"];
-                headers.Add(new NameValue(name,value));
+                headers.Add(new NameValue(name, value));
             }
         }
 
-        [Then(@"Post Input variables are")]
-        public void ThenInputVariablesAre(Table table)
+        [Then(@"Delete Input variables are")]
+        public void ThenDeleteInputVariablesAre(Table table)
         {
-            var serviceInputs = PostViewModel().ManageServiceInputViewModel.InputArea.Inputs;
-            foreach(var tableRow in table.Rows)
+            var serviceInputs = GetViewModel().ManageServiceInputViewModel.InputArea.Inputs;
+            foreach (var tableRow in table.Rows)
             {
                 var inputName = tableRow["Name"];
                 var found = serviceInputs.FirstOrDefault(input => input.Name == inputName);
@@ -235,67 +234,67 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [Then(@"Post Test is Enabled")]
-        public void ThenTestIsEnabled()
+        [Then(@"Delete Test is Enabled")]
+        public void ThenDeleteTestIsEnabled()
         {
-            var webServicePostViewModel = PostViewModel();
-            var canExecuteTest = webServicePostViewModel.ManageServiceInputViewModel.TestCommand.CanExecute(null);
+            var webServiceDeleteViewModel = GetViewModel();
+            var canExecuteTest = webServiceDeleteViewModel.ManageServiceInputViewModel.TestCommand.CanExecute(null);
             Assert.IsTrue(canExecuteTest);
         }
 
-        [Then(@"Post Paste is Enabled")]
-        public void ThenPasteIsEnabled()
+        [Then(@"Delete Paste is Enabled")]
+        public void ThenDeletePasteIsEnabled()
         {
-            var webServicePostViewModel = PostViewModel();
-            var canPaste = webServicePostViewModel.ManageServiceInputViewModel.PasteResponseCommand.CanExecute(null);
+            var webServiceDeleteViewModel = GetViewModel();
+            var canPaste = webServiceDeleteViewModel.ManageServiceInputViewModel.PasteResponseCommand.CanExecute(null);
             Assert.IsTrue(canPaste);
         }
 
-        [Then(@"the ""(.*)"" Post Source tab is opened")]
-        public void ThenTheSourceTabIsOpened(string p0)
+        [Then(@"the ""(.*)"" Delete Source tab is opened")]
+        public void ThenTheDeleteSourceTabIsOpened(string p0)
         {
-            PostServiceModel().Verify(model => model.EditSource(It.IsAny<IWebServiceSource>()));
+            GetServiceModel().Verify(model => model.EditSource(It.IsAny<IWebServiceSource>()));
         }
 
-        [Given(@"I click Post Generate Outputs")]
-        [When(@"I click Post Generate Outputs")]
-        [Then(@"I click Post Generate Outputs")]
-        public async Task ThenIClickGenerateOutputs()
+        [Given(@"I click Delete Generate Outputs")]
+        [When(@"I click Delete Generate Outputs")]
+        [Then(@"I click Delete Generate Outputs")]
+        public async Task ThenIClickDeleteGenerateOutputs()
         {
-            var webServicePostViewModel = PostViewModel();
-            await webServicePostViewModel.TestInputCommand.Execute();
+            var webServiceDeleteViewModel = GetViewModel();
+            await webServiceDeleteViewModel.TestInputCommand.Execute();
         }
 
-        [Then(@"Post Response appears as ""(.*)""")]
-        public void ThenResponseAppearsAs(string response)
+        [Then(@"Delete Response appears as ""(.*)""")]
+        public void ThenDeleteResponseAppearsAs(string response)
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.AreEqual(response,webServicePostViewModel.ManageServiceInputViewModel.TestResults);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.AreEqual(response, webServiceDeleteViewModel.ManageServiceInputViewModel.TestResults);
         }
 
-        [Then(@"Post Mappings is Disabled")]
-        public void ThenMappingsIsDisabled()
+        [Then(@"Delete Mappings is Disabled")]
+        public void ThenDeleteMappingsIsDisabled()
         {
-            var webServicePostViewModel = PostViewModel();
-            Assert.IsFalse(webServicePostViewModel.OutputsRegion.IsVisible);
+            var webServiceDeleteViewModel = GetViewModel();
+            Assert.IsFalse(webServiceDeleteViewModel.OutputsRegion.IsVisible);
         }
 
 
-        [Given(@"I click Post Done")]
-        [When(@"I click Post Done")]
-        [Then(@"I click Post Done")]
-        public void ThenIClickDone()
+        [Given(@"I click Delete Done")]
+        [When(@"I click Delete Done")]
+        [Then(@"I click Delete Done")]
+        public void ThenIClickDeleteDone()
         {
-            var webServicePostViewModel = PostViewModel();
-            webServicePostViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+            var webServiceDeleteViewModel = GetViewModel();
+            webServiceDeleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
 
-        [Then(@"Post output mappings are")]
-        public void ThenOutputMappingsAre(Table table)
+        [Then(@"Delete output mappings are")]
+        public void ThenDeleteOutputMappingsAre(Table table)
         {
-            var webServicePostViewModel = PostViewModel();
-            var outputs = webServicePostViewModel.OutputsRegion.Outputs;
-            foreach(var tableRow in table.Rows)
+            var webServiceDeleteViewModel = GetViewModel();
+            var outputs = webServiceDeleteViewModel.OutputsRegion.Outputs;
+            foreach (var tableRow in table.Rows)
             {
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];
@@ -304,12 +303,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [When(@"I Select ""(.*)"" as a Post web Source")]
-        public void WhenISelectAsAWebSource(string sourceName)
+        [When(@"I Select ""(.*)"" as a Delete web Source")]
+        public void WhenISelectAsADeleteWebSource(string sourceName)
         {
             if (sourceName == "Dev2CountriesWebService")
             {
-                var serviceModel = PostServiceModel();
+                var serviceModel = GetServiceModel();
                 var webService = new WebService
                 {
                     RequestResponse = "{\"CountryID\" : \"a\",\"Description\":\"a\"}",
@@ -339,15 +338,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
                 var serializer = new Dev2JsonSerializer();
                 var testResult = serializer.Serialize(webService);
                 serviceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
-                PostViewModel().SourceRegion.SelectedSource = _dev2CountriesWebServiceWebSource;
+                GetViewModel().SourceRegion.SelectedSource = _dev2CountriesWebServiceWebSource;
             }
             else if (sourceName == "Google Address Lookup")
             {
-                PostViewModel().SourceRegion.SelectedSource = _googleWebSource;
+                GetViewModel().SourceRegion.SelectedSource = _googleWebSource;
             }
             else
             {
-                var serviceModel = PostServiceModel();
+                var serviceModel = GetServiceModel();
                 var webService = new WebService
                 {
                     RequestResponse = "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}",
@@ -377,14 +376,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
                 var serializer = new Dev2JsonSerializer();
                 var testResult = serializer.Serialize(webService);
                 serviceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
-                PostViewModel().SourceRegion.SelectedSource = _webHelooWebSource;
+                GetViewModel().SourceRegion.SelectedSource = _webHelooWebSource;
             }
         }
 
-        [Then(@"Post mapped outputs are")]
-        public void ThenMappedOutputsAre(Table table)
+        [Then(@"Delete mapped outputs are")]
+        public void ThenDeleteMappedOutputsAre(Table table)
         {
-            var vm = PostViewModel();
+            var vm = GetViewModel();
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
@@ -401,6 +400,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
                 }
             }
         }
-
     }
 }
