@@ -30,7 +30,7 @@ namespace Dev2.Activities
         private const string MediaType = "application/x-www-form-urlencoded";
         private const string UserAgent = "User-Agent";
 
-        public DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
+        protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
             _method = webRequestDataDto.WebRequestMethod;
             Type = webRequestDataDto.Type;
@@ -43,7 +43,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            if(env == null)
+            if (env == null)
             {
                 return new List<DebugItem>();
             }
@@ -72,13 +72,13 @@ namespace Dev2.Activities
 
         protected void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
-            if(OutputDescription == null)
+            if (OutputDescription == null)
             {
                 dataObj.Environment.AddError("There are no outputs");
                 return;
             }
             int i = 0;
-            foreach(var serviceOutputMapping in Outputs)
+            foreach (var serviceOutputMapping in Outputs)
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
@@ -86,7 +86,7 @@ namespace Dev2.Activities
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try
             {
-                if(string.IsNullOrEmpty(input))
+                if (string.IsNullOrEmpty(input))
                 {
                     dataObj.Environment.AddError("No Web Response received");
                 }
@@ -99,7 +99,7 @@ namespace Dev2.Activities
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
                     xDoc.LoadXml(toLoad);
 
-                    if(xDoc.DocumentElement != null)
+                    if (xDoc.DocumentElement != null)
                     {
                         XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
@@ -112,7 +112,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 dataObj.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e);
@@ -122,15 +122,15 @@ namespace Dev2.Activities
         public HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
-            if(source.AuthenticationType == AuthenticationType.User)
+            if (source.AuthenticationType == AuthenticationType.User)
             {
                 var byteArray = Encoding.ASCII.GetBytes(String.Format("{0}:{1}", source.UserName, source.Password));
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             }
 
-            if(head != null)
+            if (head != null)
             {
-                foreach(var nameValue in head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value)))
+                foreach (var nameValue in head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value)))
                 {
                     httpClient.DefaultRequestHeaders.Add(nameValue.Name, nameValue.Value);
                 }
@@ -140,7 +140,7 @@ namespace Dev2.Activities
             httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
 
             var address = source.Address;
-            if(!string.IsNullOrEmpty(query))
+            if (!string.IsNullOrEmpty(query))
             {
                 address = address + query;
             }
@@ -149,7 +149,7 @@ namespace Dev2.Activities
                 var baseAddress = new Uri(address);
                 httpClient.BaseAddress = baseAddress;
             }
-            catch(UriFormatException e)
+            catch (UriFormatException e)
             {
                 //CurrentDataObject.Environment.AddError(e.Message);// To investigate this
                 Dev2Logger.Error(e.Message, e); // Error must be added on the environment
@@ -168,40 +168,34 @@ namespace Dev2.Activities
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             var httpClient = CreateClient(head, query, source);
-            if(httpClient != null)
+            if (httpClient != null)
             {
                 var address = source.Address;
-                if(query != null)
+                if (query != null)
                 {
                     address = address + query;
                 }
-                if(_method == WebRequestMethod.Get)
+                if (_method == WebRequestMethod.Get)
                 {
                     var taskOfString = httpClient.GetStringAsync(new Uri(address));
                     return taskOfString.Result;
                 }
-                else
+                Task<HttpResponseMessage> taskOfResponseMessage;
+                if (_method == WebRequestMethod.Delete)
                 {
-                    Task<HttpResponseMessage> taskOfResponseMessage;
-                    if(_method == WebRequestMethod.Delete)
-                    {
-                        taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                        bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
-                        return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
-                    }
-                    else if(_method == WebRequestMethod.Post)
-                    {
-                        taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
-                        var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
-                        return message;
-                    }
-                    else
-                    {
-                        taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(putData));
-                        var resultAsString = ((StringContent)taskOfResponseMessage.Result.Content).ReadAsStringAsync().Result;
-                        return resultAsString;
-                    }
+                    taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
+                    bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                    return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
                 }
+                if (_method == WebRequestMethod.Post)
+                {
+                    taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
+                    var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+                    return message;
+                }
+                taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(putData));
+                var resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+                return resultAsString;
             }
             return null;
         }
@@ -209,27 +203,27 @@ namespace Dev2.Activities
         void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
         {
             // spin through each element in the XML
-            foreach(XmlNode c in children)
+            foreach (XmlNode c in children)
             {
                 // scalars and recordset fetch
-                if(level > 0)
+                if (level > 0)
                 {
                     var c1 = c;
                     var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
                     var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                    if(dev2Definitions.Length != 0)
+                    if (dev2Definitions.Length != 0)
                     {
                         // fetch recordset index
                         int fetchIdx;
                         var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
                         // process recordset
                         var nl = c.ChildNodes;
-                        foreach(XmlNode subc in nl)
+                        foreach (XmlNode subc in nl)
                         {
                             // Extract column being mapped to ;)
-                            foreach(var definition in dev2Definitions)
+                            foreach (var definition in dev2Definitions)
                             {
-                                if(definition.MapsTo == subc.Name || definition.Name == subc.Name)
+                                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
                                 {
                                     dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
                                 }
@@ -243,19 +237,19 @@ namespace Dev2.Activities
                     {
                         var nameToMatch = c1.Name;
                         var useValue = false;
-                        if(c.Name == GlobalConstants.NaughtyTextNode)
+                        if (c.Name == GlobalConstants.NaughtyTextNode)
                         {
-                            if(c1.ParentNode != null)
+                            if (c1.ParentNode != null)
                             {
                                 nameToMatch = c1.ParentNode.Name;
                                 useValue = true;
                             }
                         }
                         var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == nameToMatch);
-                        if(scalarName != null)
+                        if (scalarName != null)
                         {
                             var value = UnescapeRawXml(c1.InnerXml);
-                            if(useValue)
+                            if (useValue)
                             {
                                 value = UnescapeRawXml(c1.Value);
                             }
@@ -265,7 +259,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    if(level == 0)
+                    if (level == 0)
                     {
                         // Only recurse if we're at the first level!!
                         TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
@@ -276,7 +270,7 @@ namespace Dev2.Activities
 
         string UnescapeRawXml(string innerXml)
         {
-            if(innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
+            if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
             {
                 return new StringBuilder(innerXml).Unescape().ToString();
             }

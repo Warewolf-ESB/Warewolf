@@ -1,9 +1,10 @@
 ﻿using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 // ReSharper disable InconsistentNaming
 
-namespace Dev2.Tests.Activities.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
     public class WebRequestDataDtoTests
