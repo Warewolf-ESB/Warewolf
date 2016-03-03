@@ -72,7 +72,7 @@
                                     <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              IsEnabled="{Binding Path=true}"
+                                              IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipAvgExecTime}">
                                                 <i:Interaction.Behaviors>
                                                 <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
@@ -183,12 +183,12 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=NotAuthorisedErrors, Path=ActualWidth}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <CheckBox IsChecked="{Binding Path=NotAuthorisedErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="true"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipNotAuthErrors}">
                                                 <i:Interaction.Behaviors>
@@ -265,7 +265,6 @@
                                         </TextBlock>
                                         <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            IsEnabled="{Binding Path=CanEdit}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
                                             <AutomationProperties.AutomationId>
                                                 <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
@@ -304,6 +303,11 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
@@ -327,6 +331,11 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
@@ -378,6 +387,11 @@
                                             </AutomationProperties.AutomationId>
                                         </CheckBox>
                                     </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>                        

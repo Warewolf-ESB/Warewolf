@@ -69,14 +69,13 @@ namespace Dev2.Settings.Perfcounters
         void Sort(object sender, SortingCancellableEventArgs e)
         {
             var dataGrid = (XamGrid)sender;
-            var column = e.Column;
             var direction = _previousServerDirection != ListSortDirection.Ascending ? ListSortDirection.Ascending : ListSortDirection.Descending;
             _previousServerDirection = direction;
             var collectionView = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
             var lcv = (ListCollectionView)collectionView;
 
-            var windowsGroupPermissionComparer = new WindowsGroupPermissionComparer(direction, column.Key);
-            lcv.CustomSort = windowsGroupPermissionComparer;
+            var comparer = new CounterByResoureEqualityComparer();
+            lcv.CustomSort = comparer;
             dataGrid.ItemsSource = lcv;
             e.Cancel = true;
         }
