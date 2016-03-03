@@ -10,5 +10,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         double OutputsHeight { get; set; }
         double MaxOutputsHeight { get; set; }
         int OutputRowCount { get; set; }
+        bool TextResults { get; set; }
     }
 }

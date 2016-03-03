@@ -41,7 +41,6 @@ namespace Dev2.Activities.Designers2.Core
         double _currentHeight;
         double _maxHeight;
         bool _isVisible;
-        bool _pasteResponseAvailable;
         IDotNetViewModel _viewmodel;
         IPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
@@ -51,14 +50,13 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
         private IPluginService _model;
-        private bool _pasteResponseVisible;
         private RecordsetList _recordsetList;
+        private bool _outputCountExpandAllowed;
+        private bool _inputCountExpandAllowed;
         private const double BaseHeight = 60;
 
         public ManagePluginServiceInputViewModel(IDotNetViewModel model, IPluginServiceModel serviceModel)
         {
-            PasteResponseAvailable = false;
-            PasteResponseVisible = false;
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
@@ -82,24 +80,47 @@ namespace Dev2.Activities.Designers2.Core
             var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
             var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
 
-            IsGenerateInputsEmptyRows = false;
-            if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
+            InputCountExpandAllowed = false;
+            if (_generateInputArea.Inputs != null)
             {
-                IsGenerateInputsEmptyRows = true;
-                maxInputHeight = 30;
-                minInputHeight = 30;
-                inputHeight = 30;
+                InputCountExpandAllowed = _generateInputArea.Inputs.Count > 3;
+                IsGenerateInputsEmptyRows = _generateInputArea.Inputs.Count < 1;
             }
-            if (OutputArea.IsVisible && (_generateOutputArea.Outputs == null || _generateOutputArea.Outputs.Count < 2))
+            OutputCountExpandAllowed = false;
+            if (_generateOutputArea.Outputs != null && OutputArea.IsVisible)
             {
-                maxOutputHeight = BaseHeight;
-                minOutputHeight = BaseHeight;
-                outputHeight = BaseHeight;
+                OutputCountExpandAllowed = _generateOutputArea.Outputs.Count > 0;
             }
 
             MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
             MinHeight = BaseHeight + minInputHeight + minOutputHeight;
             CurrentHeight = BaseHeight + inputHeight + outputHeight;
+        }
+
+        public bool OutputCountExpandAllowed
+        {
+            get
+            {
+                return _outputCountExpandAllowed;
+            }
+            set
+            {
+                _outputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool InputCountExpandAllowed
+        {
+            get
+            {
+                return _inputCountExpandAllowed;
+            }
+            set
+            {
+                _inputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
         }
 
         void GenerateAreaHeightChanged(object sender, IToolRegion args)
@@ -205,6 +226,7 @@ namespace Dev2.Activities.Designers2.Core
                         return serviceOutputMapping;
                     }).Cast<IServiceOutputMapping>().ToList();
                     // ReSharper restore MaximumChainedReferences
+                    _generateOutputArea.TextResults = true;
                     _generateOutputArea.IsVisible = true;
                     _generateOutputArea.Outputs = outputMapping;
                 }
@@ -444,31 +466,6 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 
-            }
-        }
-        public bool PasteResponseVisible
-        {
-            get
-            {
-                return _pasteResponseVisible;
-            }
-            set
-            {
-                _pasteResponseVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool PasteResponseAvailable
-        {
-            get
-            {
-                return _pasteResponseAvailable;
-            }
-            set
-            {
-                _pasteResponseAvailable = value;
-                OnPropertyChanged();
             }
         }
 

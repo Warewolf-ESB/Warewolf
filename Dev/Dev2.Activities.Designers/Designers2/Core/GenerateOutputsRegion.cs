@@ -17,6 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         ICollection<IServiceOutputMapping> _outputs;
         bool _isVisible;
         private int _outputRowCount;
+        private bool _textResults;
 
         private const double BaseHeight = 60;
 
@@ -108,25 +109,34 @@ namespace Dev2.Activities.Designers2.Core
         void ResetOutputsHeight()
         {
             SetInitialHeight();
-            OutputsHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
-            MaxOutputsHeight = OutputsHeight;
-            if (OutputRowCount >= 3)
+            if (TextResults)
             {
-                MinHeight = 3 * GlobalConstants.RowHeight;
-                MaxHeight = (OutputRowCount * GlobalConstants.RowHeight) + 15;
-                OutputsHeight = MinHeight;
-                MaxOutputsHeight = MaxHeight;
-                CurrentHeight = MinHeight;
+                MinHeight = BaseHeight;
+                CurrentHeight = BaseHeight;
+                MaxHeight = 100;
             }
             else
             {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
-                if (CurrentHeight < BaseHeight)
+                OutputsHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
+                MaxOutputsHeight = OutputsHeight;
+                if (OutputRowCount >= 3)
                 {
-                    CurrentHeight = BaseHeight;
+                    MinHeight = 3 * GlobalConstants.RowHeight;
+                    MaxHeight = (OutputRowCount * GlobalConstants.RowHeight) + 15;
+                    OutputsHeight = MinHeight;
+                    MaxOutputsHeight = MaxHeight;
+                    CurrentHeight = MinHeight;
                 }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight + 15;
+                else
+                {
+                    CurrentHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
+                    if (CurrentHeight < BaseHeight)
+                    {
+                        CurrentHeight = BaseHeight;
+                    }
+                    MinHeight = CurrentHeight;
+                    MaxHeight = CurrentHeight + 15;
+                }
             }
             OnHeightChanged(this);
         }
@@ -181,6 +191,18 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _outputRowCount = value;
                 ResetOutputsHeight();
+            }
+        }
+        public bool TextResults
+        {
+            get
+            {
+                return _textResults;
+            }
+            set
+            {
+                _textResults = value;
+                OnPropertyChanged();
             }
         }
 
