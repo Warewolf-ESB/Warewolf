@@ -424,7 +424,7 @@ namespace Dev2.Settings
 
         protected virtual PerfcounterViewModel CreatePerfmonViewModel()
         {
-            return new PerfcounterViewModel(Settings.PerfCounters, _parentWindow, CurrentEnvironment);
+            return new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
         }
 
 

@@ -249,6 +249,7 @@
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
     <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Services\ServerServiceConfigurationTest.cs" />
+    <Compile Include="Settings\PerfCounterViewModelTests.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSecurityViewModel.cs" />
     <Compile Include="Settings\TestSettingsItemViewModel.cs" />
