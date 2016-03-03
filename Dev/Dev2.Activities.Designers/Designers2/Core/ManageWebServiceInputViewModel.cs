@@ -46,6 +46,8 @@ namespace Dev2.Activities.Designers2.Core
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private RecordsetList _recordsetList;
+        private bool _outputCountExpandAllowed;
+        private bool _inputCountExpandAllowed;
         private const double BaseHeight = 60;
 
         public ManageWebServiceInputViewModel(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
@@ -75,18 +77,45 @@ namespace Dev2.Activities.Designers2.Core
             var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
             var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
 
-            IsGenerateInputsEmptyRows = false;
-            if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
+            if (_generateInputArea.Inputs != null)
             {
-                IsGenerateInputsEmptyRows = true;
-                maxInputHeight = BaseHeight;
-                minInputHeight = BaseHeight;
-                inputHeight = BaseHeight;
+                InputCountExpandAllowed = _generateInputArea.Inputs.Count > 3;
+                IsGenerateInputsEmptyRows = _generateInputArea.Inputs.Count < 1;
+            }
+            if (_generateOutputArea.Outputs != null)
+            {
+                OutputCountExpandAllowed = _generateOutputArea.Outputs.Count > 3;
             }
 
             MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
             MinHeight = BaseHeight + minInputHeight + minOutputHeight;
             CurrentHeight = BaseHeight + inputHeight + outputHeight;
+        }
+
+        public bool OutputCountExpandAllowed
+        {
+            get
+            {
+                return _outputCountExpandAllowed;
+            }
+            set
+            {
+                _outputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool InputCountExpandAllowed
+        {
+            get
+            {
+                return _inputCountExpandAllowed;
+            }
+            set
+            {
+                _inputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
         }
 
         void GenerateAreaHeightChanged(object sender, IToolRegion args)
