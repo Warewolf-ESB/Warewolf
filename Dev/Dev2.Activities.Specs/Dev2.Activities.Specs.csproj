@@ -451,6 +451,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GetWebConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Resources\Web\PutWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

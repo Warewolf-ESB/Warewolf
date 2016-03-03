@@ -20,6 +20,7 @@ using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace

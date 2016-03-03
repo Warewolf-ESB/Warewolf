@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable MaximumChainedReferences
                 ServiceModel.Services services = new ServiceModel.Services();
                 var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-                var methods = services.FetchMethods(src).Select(CreateDbAction).OrderBy(a=>a.Name);
+                var methods = services.FetchMethods(src).Select(a=>CreateDbAction(a,src)).OrderBy(a=>a.Name);
                 return serializer.SerializeToBuilder(new ExecuteMessage
                 {
                     HasError = false,
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        DbAction CreateDbAction(ServiceMethod a)
+        DbAction CreateDbAction(ServiceMethod a, DbSource src)
         {
             // ReSharper disable MaximumChainedReferences
             var inputs = a.Parameters.Select(b => new ServiceInput(b.Name, b.DefaultValue ?? "") as IServiceInput).ToList();
@@ -70,7 +70,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new DbAction
             {
                 Name = a.Name,
-                Inputs = inputs
+                Inputs = inputs,
+                SourceId =  src.ResourceID
+                
             };
         }
 
