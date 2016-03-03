@@ -339,8 +339,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
                 regions.Add(ActionRegion);
+           
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
+               
                 OutputsRegion = new OutputsRegion(ModelItem);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
@@ -350,8 +352,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
-                SourceRegion.Dependants.Add(InputArea);
-                SourceRegion.Dependants.Add(OutputsRegion);
+                SourceRegion.Dependants.Add(ActionRegion);
+                ActionRegion.Dependants.Add(InputArea);
+                ActionRegion.Dependants.Add(OutputsRegion);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;

@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Name))
-                    StorePreviousValues(_selectedAction.Name);
+                    StorePreviousValues( _selectedAction.GetHashCodeBySource(_source.SelectedSource.Id));
                 }
 
                 if (IsAPreviousValue(value) && _selectedAction != null)
@@ -301,10 +301,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void SetSelectedAction(IDbAction value)
         {
+            _selectedAction = value;
+            SavedAction = value;
             if (value != null)
             {
-                _selectedAction = value;
-                SavedAction = value;
+      
+               
                 ProcedureName = value.Name;
             }
 
@@ -319,7 +321,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestorePreviousValues(IDbAction value)
         {
-            var toRestore = _previousRegions[value.Name];
+            var toRestore = _previousRegions[value.GetHashCodeBySource(_source.SelectedSource.Id)];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -328,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IDbAction value)
         {
-            return _previousRegions.Keys.Any(a => a == value.Name);
+            return value!=null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource(_source.SelectedSource.Id));
         }
 
         public IList<string> Errors

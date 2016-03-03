@@ -22,7 +22,7 @@ namespace Warewolf.Core
 
         public IList<IServiceInput> Inputs { get; set; }
         public string Name { get; set; }
-
+        public Guid SourceId { get; set; }
         #endregion
 
         #region Equality members
@@ -101,6 +101,11 @@ namespace Warewolf.Core
             }
         }
 
+        public  string GetHashCodeBySource(Guid srcId)
+        {
+            return srcId + Name;
+            
+        }
         public static bool operator ==(DbAction left, DbAction right)
         {
             return Equals(left, right);
