@@ -25,14 +25,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isVisible;
         private const double BaseHeight = 25;
 
-        readonly Dictionary<int, IList<IToolRegion>> _previousRegions = new Dictionary<int, IList<IToolRegion>>();
+        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IPluginAction _selectedAction;
         private IPluginServiceModel _model;
         private ICollection<IPluginAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
-        private int _actionId;
         private double _labelWidth;
 
         public DotNetActionRegion()
@@ -53,16 +52,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
-            if (_source.SelectedSource != null)
+            UpdateBasedOnNamespace();
+            if (Method != null)
             {
-                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
             }
-            ActionId = modelItem.GetProperty<int>("ActionId");
-            if (ActionId != 0)
-            {
-                SelectedAction = Actions.FirstOrDefault(action => source.GetHashCode() == ActionId);
-            }
-
             RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
                 IsRefreshing = true;
@@ -75,6 +69,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             IsVisible = true;
             _modelItem = modelItem;
+        }
+
+        IPluginAction Method
+        {
+            get
+            {
+                return _modelItem.GetProperty<IPluginAction>("Method");
+            }
+            set
+            {
+                _modelItem.SetProperty("Method",value);
+            }
         }
 
         public double LabelWidth
@@ -93,16 +99,21 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null && _namespace != null && _namespace.SelectedNamespace != null)
-            {
-                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                SelectedAction = null;
-                IsActionEnabled = true;
-                IsVisible = true;
-            }
+            UpdateBasedOnNamespace();
+            SelectedAction = null;
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
             OnHeightChanged(this);
+        }
+
+        private void UpdateBasedOnNamespace()
+        {
+            if(_source != null && _source.SelectedSource != null && _namespace != null && _namespace.SelectedNamespace != null)
+            {
+                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                IsActionEnabled = true;
+                IsVisible = true;
+            }
         }
 
         private void SetInitialValues()
@@ -129,7 +140,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.FullName))
-                        StorePreviousValues(_selectedAction.FullName.GetHashCode());
+                        StorePreviousValues(_selectedAction.FullName);
                 }
 
                 if (IsAPreviousValue(value) && _selectedAction != null)
@@ -298,38 +309,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _selectedAction = value;
                 SavedAction = value;
-                ActionId = value.GetHashCode();
+                Method = value;
             }
 
             OnHeightChanged(this);
             OnPropertyChanged("SelectedAction");
         }
+      
 
-        int ActionId
+        private void StorePreviousValues(string actionName)
         {
-            get
-            {
-                return _actionId;
-            }
-            set
-            {
-                _actionId = value;
-                if (_modelItem != null)
-                {
-                    _modelItem.SetProperty("ActionId", value);
-                }
-            }
-        }
-
-        private void StorePreviousValues(int id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
+            _previousRegions.Remove(actionName);
+            _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
         private void RestorePreviousValues(IPluginAction value)
         {
-            var toRestore = _previousRegions[value.FullName.GetHashCode()];
+            var toRestore = _previousRegions[value.FullName];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -338,7 +334,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName.GetHashCode()));
+            return _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName));
         }
 
         public IList<string> Errors

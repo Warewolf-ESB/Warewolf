@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
@@ -14,13 +15,16 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class DsfWebDeleteActivityTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        
         public void DsfWebDeleteActivity_GivenInstance_ShouldNotBeNull()
         {
             //---------------Set up test pack-------------------
@@ -33,7 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         private static TestDsfWebDeleteActivity CreateTestDeleteActivity()
         {
-            var testDsfWebDeleteActivity = new TestDsfWebDeleteActivity() { };
+            var testDsfWebDeleteActivity = new TestDsfWebDeleteActivity();
             return testDsfWebDeleteActivity;
         }
 
@@ -137,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Delete_WithNoOutputDescription_ShouldAddError()
         {
@@ -167,7 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("There are no outputs", environment.Errors.ToList()[0]);
         }
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Delete_WithValidWebResponse_ShouldSetVariables()
         {
@@ -365,7 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             Head = head;
             QueryRes = query;

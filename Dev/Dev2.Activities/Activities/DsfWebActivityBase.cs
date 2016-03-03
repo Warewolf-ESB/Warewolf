@@ -27,8 +27,8 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private readonly string _mediaType = "application/x-www-form-urlencoded";
-        private readonly string _userAgent = "User-Agent";
+        private const string MediaType = "application/x-www-form-urlencoded";
+        private const string UserAgent = "User-Agent";
 
         public DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -136,8 +136,8 @@ namespace Dev2.Activities
                 }
             }
 
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_mediaType));
-            httpClient.DefaultRequestHeaders.Add(_userAgent, GlobalConstants.UserAgentString);
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaType));
+            httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
 
             var address = source.Address;
             if(!string.IsNullOrEmpty(query))
@@ -165,7 +165,7 @@ namespace Dev2.Activities
         }
 
         [ExcludeFromCodeCoverage]
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             var httpClient = CreateClient(head, query, source);
             if(httpClient != null)
@@ -191,13 +191,13 @@ namespace Dev2.Activities
                     }
                     else if(_method == WebRequestMethod.Post)
                     {
-                        taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(postData));
+                        taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
                         var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                         return message;
                     }
                     else
                     {
-                        taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(postData));
+                        taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(putData));
                         var resultAsString = ((StringContent)taskOfResponseMessage.Result.Content).ReadAsStringAsync().Result;
                         return resultAsString;
                     }
