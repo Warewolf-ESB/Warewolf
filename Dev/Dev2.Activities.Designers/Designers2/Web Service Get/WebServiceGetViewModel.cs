@@ -254,6 +254,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
+                ManageServiceInputViewModel.InputArea.IsWeb = true;
                 ManageServiceInputViewModel.Model = service;
 
                 GenerateOutputsVisible = true;

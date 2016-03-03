@@ -9,5 +9,6 @@ namespace Dev2.Common.Interfaces.ToolBase
 
         double InputsHeight { get; set; }
         double MaxInputsHeight { get; set; }
+        bool IsWeb { get; set; }
     }
 }
