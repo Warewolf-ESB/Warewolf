@@ -16,7 +16,7 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-namespace Dev2.Tests.Activities
+namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     //"This Test class tests WebBaseActivity using a Delete implemantation as an example "    
     [TestClass]
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
             var httpClient = dsfWebActivity.CreateClient(new List<NameValue>(new[] { new NameValue("a", "b") }),
-                TestUtils.ExampleURL, new WebSource());
+                Tests.TestUtils.ExampleURL, new WebSource());
 
             //---------------Test Result -----------------------
             Assert.IsNotNull(httpClient);
@@ -277,7 +277,7 @@ namespace Dev2.Tests.Activities
                 Password = "PasJun1",
                 UserName = "User1",
                 AuthenticationType = AuthenticationType.User,
-                Address = TestUtils.ExampleURL
+                Address = Tests.TestUtils.ExampleURL
             };
         }
 
@@ -288,7 +288,7 @@ namespace Dev2.Tests.Activities
                 Password = "PasJun1",
                 UserName = "User1",
                 AuthenticationType = AuthenticationType.Anonymous,
-                Address = TestUtils.ExampleURL
+                Address = Tests.TestUtils.ExampleURL
             };
         }
     }

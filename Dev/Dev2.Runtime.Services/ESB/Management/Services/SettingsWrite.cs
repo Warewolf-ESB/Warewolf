@@ -45,6 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var settings = serializer.Deserialize<Settings>(settingsJson.ToString());
                 WriteSecuritySettings(theWorkspace, settings, result);
                 WriteLoggingSettings(theWorkspace, settings, result);
+                WritePerfCounterSettings(theWorkspace, settings, result);
             }
             catch (Exception ex)
             {
@@ -66,6 +67,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
             catch(Exception ex)
+            {
+                Dev2Logger.Error("Error writing logging configuration.", ex);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing logging configuration.");
+            }
+        }
+
+        static void WritePerfCounterSettings(IWorkspace theWorkspace, Settings settings, ExecuteMessage result)
+        {
+            try
+            {
+                if (settings.Logging != null)
+                {
+                    var executionResult = ExecuteService(theWorkspace, new SavePerformanceCounters(), "PerformanceCounterTo", settings.PerfCounters);
+                    result.Message.AppendLine(executionResult);
+                }
+            }
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Error writing logging configuration.", ex);
                 result.HasError = true;

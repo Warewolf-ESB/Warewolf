@@ -10,16 +10,13 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-   public class SavePerformanceCounters
+    public class SavePerformanceCounters : IEsbManagementEndpoint
     {
-
-
 
         public string HandlesType()
         {
-            return "FetchPerformanceCounters";
+            return "SavePerformanceCounters";
         }
-
 
 
         /// <summary>

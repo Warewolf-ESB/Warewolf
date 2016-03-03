@@ -469,6 +469,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
+                PostData = InputArea.PutData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -482,7 +483,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
+            string postValue = InputArea.PutData;
             GetValue(s, dt);
+            GetValue(postValue, dt);
             foreach(var nameValue in InputArea.Headers)
             {
                 GetValue(nameValue.Name, dt);
@@ -554,11 +557,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 bool isOutputVisible = false;
                 foreach(var toolRegion in _regions)
                 {
-                    if(toolRegion.ToolRegionName == "GetInputRegion")
+                    if (toolRegion.ToolRegionName == "PutInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }
-                    if(toolRegion.ToolRegionName == "OutputsRegion")
+                    if (toolRegion.ToolRegionName != null && toolRegion.ToolRegionName.ToUpper() == "OutputsRegionKK".ToUpper())
                     {
                         isOutputVisible = toolRegion.IsVisible;
                     }
