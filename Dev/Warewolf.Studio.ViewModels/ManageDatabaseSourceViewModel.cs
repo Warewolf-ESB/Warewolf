@@ -72,7 +72,12 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
-            Types = new List<NameValue> { new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() }, new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() } };
+            Types = new List<NameValue>
+            {
+                new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
+                new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
+                new NameValue { Name = "PostgreSql Database", Value = enSourceType.PostgreSql.ToString() }
+            };
             ServerType = Types[0];
             _testPassed = false;
             _testFailed = false;

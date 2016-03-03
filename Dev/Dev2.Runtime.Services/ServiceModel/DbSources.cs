@@ -156,6 +156,10 @@ namespace Dev2.Runtime.ServiceModel
                     var odbcbroker = CreateODBCDatabaseBroker(dbSourceDetails.ServerType);
                     result.DatabaseList = odbcbroker.GetDatabases(dbSourceDetails);
                     break;
+                case enSourceType.PostgreSql:
+                    var postgreBroker = CreatePostgreDatabaseBroker(dbSourceDetails.ServerType);
+                    result.DatabaseList = postgreBroker.GetDatabases(dbSourceDetails);
+                    break;
                 default:
                     result.IsValid = false;
                     break;
@@ -167,23 +171,24 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual SqlDatabaseBroker CreateDatabaseBroker(enSourceType type)
         {
-
             return new SqlDatabaseBroker();
         }
         protected virtual MySqlDatabaseBroker CreateMySqlDatabaseBroker(enSourceType type)
         {
-
             return new MySqlDatabaseBroker();
         }
         protected virtual OracleDatabaseBroker CreateOracleDatabaseBroker(enSourceType type)
         {
-
             return new OracleDatabaseBroker();
         }
         protected virtual ODBCDatabaseBroker CreateODBCDatabaseBroker(enSourceType type)
         {
-
             return new ODBCDatabaseBroker();
+        }
+
+        protected virtual PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker(enSourceType type)
+        {
+            return new PostgreSqlDataBaseBroker();
         }
     }
 }

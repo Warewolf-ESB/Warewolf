@@ -108,7 +108,7 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             NpgsqlDataReader reader = null;
             List<string> result = new List<string>();
-            NpgsqlCommand cmd = new NpgsqlCommand("SHOW DATABASES", _connection);
+            NpgsqlCommand cmd = new NpgsqlCommand("select datname from pg_database", _connection);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -453,7 +453,7 @@ namespace Dev2.Services.Sql
 
         public PostgreServer()
         {
-            _factory = new MySqlDbFactory();
+            _factory = new PostgreFactory();
         }
 
         public PostgreServer(IDbFactory dbFactory)

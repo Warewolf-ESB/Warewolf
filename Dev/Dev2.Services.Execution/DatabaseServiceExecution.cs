@@ -27,6 +27,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using System.Security.Cryptography;
 using Dev2.Common.Interfaces.Data;
+using Npgsql;
 
 namespace Dev2.Services.Execution
 {
@@ -200,6 +201,12 @@ namespace Dev2.Services.Execution
                         ErrorResult.MergeErrors(invokeErrors);
                         return result;
                     }
+                case enSourceType.PostgreSql:
+                    {
+                        object result = PostgreSqlExecution(invokeErrors, update);
+                        ErrorResult.MergeErrors(invokeErrors);
+                        return result;
+                    }
             }
             return null;
         }
@@ -319,8 +326,6 @@ namespace Dev2.Services.Execution
             return false;
         }
 
-      
-
         private List<SqlParameter> GetSqlParameters()
         {
             var sqlParameters = new List<SqlParameter>();
@@ -366,9 +371,6 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
-
-        
-
 
         private OracleServer SetupOracleServer(ErrorResultTO errors)
         {
@@ -522,6 +524,84 @@ namespace Dev2.Services.Execution
                     else
                     {
                         sqlParameters.Add(new OdbcParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                    }
+                }
+            }
+            return sqlParameters;
+        }
+
+        private PostgreServer SetupPostgreServer(ErrorResultTO errors)
+        {
+            var server = new PostgreServer();
+            try
+            {
+                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
+                if (!connected)
+                {
+                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                        Source.ConnectionString));
+                }
+                return server;
+            }
+            catch (NpgsqlException ex)
+            {
+                var errorMessages = new StringBuilder();
+                errorMessages.Append(ex.Message);
+                errors.AddError(errorMessages.ToString());
+                Dev2Logger.Error(errorMessages.ToString());
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                Dev2Logger.Error(ex);
+            }
+            return server;
+        }
+
+        private bool PostgreSqlExecution(ErrorResultTO errors, int update)
+        {
+            try
+            {
+                List<NpgsqlParameter> parameters = GetPostgreSqlParameters(Inputs);
+                using (PostgreServer server = SetupPostgreServer(errors))
+                {
+
+                    if (parameters != null)
+                    {
+                        // ReSharper disable CoVariantArrayConversion
+                        using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName, Source.DatabaseName)))
+                        // ReSharper restore CoVariantArrayConversion
+                        {
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+            }
+            return false;
+        }
+
+        private static List<NpgsqlParameter> GetPostgreSqlParameters(ICollection<IServiceInput> methodParameters)
+        {
+            var sqlParameters = new List<NpgsqlParameter>();
+
+            if (methodParameters.Count > 0)
+            {
+                foreach (var parameter in methodParameters)
+                {
+                    if (parameter.EmptyIsNull &&
+                        (parameter.Value == null ||
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    {
+                        sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                    }
+                    else
+                    {
+                        sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
                     }
                 }
             }
