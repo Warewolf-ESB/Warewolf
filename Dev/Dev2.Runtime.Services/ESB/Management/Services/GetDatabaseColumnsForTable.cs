@@ -81,16 +81,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbColumnList("No database set.");
-                Dev2Logger.Log.Debug("No database set.");
+                Dev2Logger.Debug("No database set.");
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(tableName))
             {
                 var res = new DbColumnList("No table name set.");
-                Dev2Logger.Log.Debug("No table name set.");
+                Dev2Logger.Debug("No table name set.");
                 return serializer.SerializeToBuilder(res);
             }
-            Dev2Logger.Log.Info(String.Format("Get Database Columns For Table. Database:{0} Schema:{1} Table{2}" ,database,schema,tableName));
+            Dev2Logger.Info(String.Format("Get Database Columns For Table. Database:{0} Schema:{1} Table{2}" ,database,schema,tableName));
             try
             {
                 var dbSource = serializer.Deserialize<DbSource>(database);
@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
             }

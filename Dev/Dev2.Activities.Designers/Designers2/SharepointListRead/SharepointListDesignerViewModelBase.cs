@@ -20,6 +20,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.TO;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -27,17 +28,17 @@ namespace Dev2.Activities.Designers2.SharepointListRead
     {
         readonly IEventAggregator _eventPublisher;
         readonly bool _loadOnlyEditableFields;
-        static readonly SharepointSource NewSharepointSource = new SharepointSource
+        protected static readonly SharepointSource NewSharepointSource = new SharepointSource
         {
             ResourceID = Guid.NewGuid(),
             ResourceName = "New Sharepoint Server Source..."
         };
-        static readonly SharepointSource SelectSharepointSource = new SharepointSource
+        protected static readonly SharepointSource SelectSharepointSource = new SharepointSource
         {
             ResourceID = Guid.NewGuid(),
             ResourceName = "Select a Sharepoint Server Source..."
         };
-        static readonly SharepointListTo SelectSharepointList = new SharepointListTo
+        protected static readonly SharepointListTo SelectSharepointList = new SharepointListTo
         {
             FullName = "Select a List..."
         };
@@ -49,12 +50,12 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
             :base(modelItem)
         {
-            AddTitleBarLargeToggle();
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            _environmentModel = environmentModel;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _asyncWorker = asyncWorker;
+            _environmentModel = environmentModel;
+            AddTitleBarLargeToggle();
             _eventPublisher = eventPublisher;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 
@@ -96,7 +97,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             set
             {
                 SetValue(SelectedSharepointServerProperty, value);
-
                 EditSharepointServerCommand.RaiseCanExecuteChanged();
             }
         }
@@ -112,7 +112,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 if (!_isInitializing)
                 {
                     SetProperty(value);
-
                 } 
             }
         }
@@ -214,10 +213,10 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             SelectedList = selectedTable;
         }
 
-        List<SharepointListTo> GetSharepointLists(SharepointSource dbSource)
+        List<SharepointListTo> GetSharepointLists(SharepointSource sharepointSource)
         {
-            var tables = _environmentModel.ResourceRepository.GetSharepointLists(dbSource);
-            return tables ?? new List<SharepointListTo>();
+            var sharepointLists = _environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            return sharepointLists ?? new List<SharepointListTo>();
         }
 
         void LoadLists(System.Action continueWith = null)
@@ -316,7 +315,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             return table == null ? null : table.FullName;
         }
 
-        protected virtual void OnSharepointServerChanged()
+        protected void OnSharepointServerChanged()
         {
             if (SelectedSharepointServer == NewSharepointSource)
             {
@@ -351,7 +350,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             viewModel.RefreshListsCommand.RaiseCanExecuteChanged();
         }
 
-        protected virtual void OnSelectedListChanged()
+        protected void OnSelectedListChanged()
         {
             if (SelectedList != null)
             {
@@ -465,12 +464,12 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
+            return ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
         }
 
         public override void RemoveAt(int indexNumber)
         {
-            if (!CanRemoveAt(indexNumber))
+            if (!CanRemoveAt(indexNumber) || indexNumber==0)
             {
                 return;
             }

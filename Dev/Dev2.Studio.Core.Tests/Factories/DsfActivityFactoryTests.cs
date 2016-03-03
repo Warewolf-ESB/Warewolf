@@ -85,7 +85,7 @@ namespace Dev2.Core.Tests.Factories
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("WebService", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("WebService", ((Literal<string>)activity.Type.Expression).Value);
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace Dev2.Core.Tests.Factories
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("DbService", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("DbService", ((Literal<string>)activity.Type.Expression).Value);
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests.Factories
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("PluginService", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("PluginService", ((Literal<string>)activity.Type.Expression).Value);
         }
 
         [TestMethod]
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests.Factories
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
-            StringAssert.Contains(((Literal<string>)(activity.Type.Expression)).Value, "Workflow");
+            StringAssert.Contains(((Literal<string>)activity.Type.Expression).Value, "Workflow");
             Assert.AreEqual(Guid.Empty.ToString(), activity.EnvironmentID.Expression.ToString());
         }
 
@@ -198,7 +198,7 @@ namespace Dev2.Core.Tests.Factories
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, true);
 
             //------------Assert Results-------------------------
-            StringAssert.Contains(((Literal<string>)(activity.Type.Expression)).Value, "Workflow");
+            StringAssert.Contains(((Literal<string>)activity.Type.Expression).Value, "Workflow");
             Assert.AreEqual(expectedEnvironmentID.ToString(), activity.EnvironmentID.Expression.ToString());
         }
 

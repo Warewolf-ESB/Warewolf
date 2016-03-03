@@ -20,7 +20,6 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -49,22 +48,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Log.Debug("Start Security Read");
-            if(File.Exists(ServerSecurityService.FileName))
+            Dev2Logger.Debug("Start Security Read");
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            if(File.Exists(serverSecuritySettingsFile))
             {
                 string encryptedData;
-                using(var inStream = new FileStream(ServerSecurityService.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var inStream = new FileStream(serverSecuritySettingsFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     using(var reader = new StreamReader(inStream))
                     {
                         encryptedData = reader.ReadToEnd();
                     }
                 }
-                Dev2Logger.Log.Debug("Security Data Read");
+                Dev2Logger.Debug("Security Data Read");
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                    Dev2Logger.Log.Debug(decryptData);
+                    Dev2Logger.Debug(decryptData);
                     var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
                     if(currentSecuritySettingsTo.WindowsGroupPermissions.Any(a=>a.ResourceID!= Guid.Empty))
                     {
@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error("SecurityRead", e);
+                    Dev2Logger.Error("SecurityRead", e);
                 }
             }
 

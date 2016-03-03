@@ -15,7 +15,6 @@ using System.Activities.Presentation.Model;
 using System.Globalization;
 using System.Windows.Data;
 using Dev2.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters

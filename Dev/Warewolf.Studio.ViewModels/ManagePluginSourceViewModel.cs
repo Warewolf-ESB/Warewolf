@@ -31,7 +31,7 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IDisposable, IManagePluginSourceViewModel
+    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
     {
         IDllListingModel _selectedDll;
         readonly IManagePluginSourceModel _updateManager;
@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
         string _searchTerm;
         private IDllListingModel _gacItem;
         string _assemblyName;
-        readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
@@ -224,6 +224,11 @@ namespace Warewolf.Studio.ViewModels
             PerformLoadAll(() => FromModel(_pluginSource));
 
             ToItem();
+        }
+
+        public ManagePluginSourceViewModel() : base(ResourceType.PluginSource)
+        {
+          
         }
 
         public override void FromModel(IPluginSource pluginSource)
@@ -418,6 +423,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = _pluginSource.Path, 
                 SelectedDll = SelectedDll
             };
+            AssemblyName = _pluginSource.SelectedDll.FullName;
         }
 
         void Save(IPluginSource source)
@@ -441,22 +447,26 @@ namespace Warewolf.Studio.ViewModels
             return _pluginSource;
         }
 
-        IRequestServiceNameViewModel RequestServiceNameViewModel
+        public IRequestServiceNameViewModel RequestServiceNameViewModel
         {
             get
             {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception==null)
+                if(_requestServiceNameViewModel != null)
                 {
-                    return _requestServiceNameViewModel.Result;
+                    _requestServiceNameViewModel.Wait();
+                    if (_requestServiceNameViewModel.Exception==null)
+                    {
+                        return _requestServiceNameViewModel.Result;
+                    }
+                    // ReSharper disable once RedundantIfElseBlock
+                    else
+                    {
+                        throw _requestServiceNameViewModel.Exception;
+                    }
                 }
-                // ReSharper disable once RedundantIfElseBlock
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
-                
+                return null;
             }
+            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start();}
         }
 
         public ICommand OkCommand { get; set; }
@@ -472,16 +482,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void Dispose()
+        protected override void OnDispose()
         {
-            Dispose(true);
+            if (RequestServiceNameViewModel != null)
+            {
+                if (RequestServiceNameViewModel != null) RequestServiceNameViewModel.Dispose();
 
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
+            }
+            Dispose(true);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.

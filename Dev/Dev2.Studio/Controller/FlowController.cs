@@ -267,7 +267,7 @@ namespace Dev2.Studio.Controller
                                 {
                                     start += 2;
                                     end -= 1;
-                                    switchExpressionValue = tmp.Substring(start, (end - start));
+                                    switchExpressionValue = tmp.Substring(start, end - start);
                                 }
                             }
                         }

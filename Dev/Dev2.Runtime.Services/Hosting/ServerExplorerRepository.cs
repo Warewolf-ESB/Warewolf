@@ -298,18 +298,10 @@ namespace Dev2.Runtime.Hosting
                 case ResourceType.Folder:
                     {
                         var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
-                        if (deleteResult.Status == ExecStatus.Success)
-                        {
-               
-                        }
                         return deleteResult;
                     }
                 default:
-                    ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.DisplayName, itemToDelete.ResourceType.ToString());
-                    if (result.Status == ExecStatus.Success)
-                    {
-        
-                    }
+                    ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType.ToString());
                     return new ExplorerRepositoryResult(result.Status, result.Message);
             }
         }
@@ -353,7 +345,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (itemToAdd == null)
             {
-                Dev2Logger.Log.Info("Invalid Item");
+                Dev2Logger.Info("Invalid Item");
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to add was null");
             }
             switch (itemToAdd.ResourceType)
@@ -375,7 +367,7 @@ namespace Dev2.Runtime.Hosting
                         }
                         catch (Exception err)
                         {
-                            Dev2Logger.Log.Error("Add Folder Error", err);
+                            Dev2Logger.Error("Add Folder Error", err);
                             return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                         }
                     }
@@ -397,7 +389,7 @@ namespace Dev2.Runtime.Hosting
                         }
                         catch (Exception err)
                         {
-                            Dev2Logger.Log.Error("Add Item Error", err);
+                            Dev2Logger.Error("Add Item Error", err);
                             return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                         }
                     }
@@ -439,7 +431,7 @@ namespace Dev2.Runtime.Hosting
                 IEnumerable<IResource> item = ResourceCatalogue.GetResourceList(workSpaceId)
         .Where(
             a =>
-                (a.ResourcePath == newPath));
+                a.ResourcePath == newPath);
                 if (item.Any())
                 {
                     return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");

@@ -9,23 +9,30 @@
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                        xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                        xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                       xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                       xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
     <sap:ActivityDesigner.Resources>
-        <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
-        <core1:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
-        <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
-        <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
+        <ResourceDictionary>
+            <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
+            <core1:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+            <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
 
-        <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
-            <Setter Property="Content" Value="{DynamicResource Small}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
-                    <Setter Property="Content" Value="{DynamicResource Large}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
+                <Setter Property="Content" Value="{DynamicResource Small}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">
+                        <Setter Property="Content" Value="{DynamicResource Large}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>

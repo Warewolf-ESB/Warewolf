@@ -160,9 +160,6 @@
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageDatabaseServiceControl.xaml.cs">
-      <DependentUpon>ManageDatabaseServiceControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
     </Compile>
@@ -221,10 +218,6 @@
     <Compile Include="WindowBorderLess.xaml.cs">
       <DependentUpon>WindowBorderLess.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XamGridEx\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
-    <Compile Include="XamGrid\ContextMenuSettings.cs" />
-    <Compile Include="XamGrid\XamGridEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="CircularProgressBar.xaml">
@@ -240,10 +233,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HelpView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageDatabaseServiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,6 +338,10 @@
       <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
       <Name>Dev2.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
@@ -361,7 +354,7 @@
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>

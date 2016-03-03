@@ -11,11 +11,21 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="200"
                                MaxWidth="200"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:ReplaceDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
 
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
@@ -29,9 +39,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="In Field(s)" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -51,9 +59,7 @@
 
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="1"
-               Margin="{StaticResource ControlBorderTop}"
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" 
                Text="Find"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
@@ -78,10 +84,7 @@
 
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0"
-               Grid.Row="2"
-               Margin="{StaticResource ControlBorderTop}"
-               Text="Replace With" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Text="Replace With" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 DefaultText="New Text"
@@ -104,10 +107,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0"
-                Grid.Row="3"
-                Margin="{StaticResource ControlBorderTop}"
-               Text="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Margin="{StaticResource ControlBorderTop}" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Grid.Row="3"

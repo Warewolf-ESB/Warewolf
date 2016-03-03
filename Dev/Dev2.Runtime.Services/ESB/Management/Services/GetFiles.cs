@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            Dev2Logger.Log.Info("Get Files");
+            Dev2Logger.Info("Get Files");
             StringBuilder currentFolder;
 
             values.TryGetValue("fileListing", out currentFolder);
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                     msg.HasError = true;
                     msg.SetMessage(ex.Message);
                 }
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(e.Message);
+                    Dev2Logger.Error(e.Message);
                 }
 
             }
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("Error enumerating directory.", e);
+                Dev2Logger.Error("Error enumerating directory.", e);
             }
             return null;
         }
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("Error enumerating directory.", e);
+                Dev2Logger.Error("Error enumerating directory.", e);
             }
             return dllListing;
         }

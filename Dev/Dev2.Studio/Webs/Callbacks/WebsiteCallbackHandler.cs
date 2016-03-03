@@ -83,7 +83,7 @@ namespace Dev2.Webs.Callbacks
                 {
                     var resourceWithContext = new ResourceModel(environmentModel);
                     resourceWithContext.Update(resource);
-                    Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateResourceMessage));
+                    Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
                     EventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                 }
             }

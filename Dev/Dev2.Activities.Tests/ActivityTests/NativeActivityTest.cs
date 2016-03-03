@@ -348,7 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
             cat.Setup(a => a.GetResource(Guid.Empty, It.IsAny<Guid>())).Returns(res.Object);
-            activity.SetResourceCatalog(cat.Object);
+            activity.ResourceCatalog = cat.Object;
             var actual = activity.TestInitializeDebugState(StateType, dataObj, remoteID, HasError, ErrorMessage);
 
             Assert.AreEqual(activity.UniqueGuid, actual.ID, "DispatchDebugState did not set the DebugState's ID.");

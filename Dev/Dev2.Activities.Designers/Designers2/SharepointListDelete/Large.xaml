@@ -19,6 +19,8 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="350"
                                MinWidth="350"
                                MinHeight="380"
@@ -29,6 +31,14 @@
                                d:DataContext="{d:DesignInstance sharepointListDelete:SharepointListDeleteDesignerViewModel}"
                                d:DesignWidth="280">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -56,9 +66,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="Server" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
             <ComboBox Grid.Column="1"
                       Grid.Row="0"
                       x:Name="InitialFocusElement"
@@ -81,10 +89,8 @@
                     Command="{Binding EditSharepointServerCommand}"
                     ToolTip="Edit Sharepoint Server Source"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
-            <TextBlock Grid.Column="0"
-                       Grid.Row="1"
-                       Text="List"
-                       Margin="{StaticResource ControlBorderTop}" />
+            
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
             <ComboBox Grid.Column="1"
                       Grid.Row="1"
                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -112,20 +118,20 @@
                 </Button.Content>
             </Button>
             <customControls:CircularProgressBar Grid.Column="2" 
-                                            Grid.Row="1"
-                                            Height="22" 
-                                            Width="22"
-                                            Margin="0,0,2,0"
-                                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                            AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+                                                Grid.Row="1"
+                                                Height="22" 
+                                                Width="22"
+                                                Margin="0,0,2,0"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
             <controls:Dev2DataGrid Grid.Row="2"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               x:Name="LargeDataGrid"
-                               ItemsSource="{Binding ModelItem.FilterCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               Margin="0,3">
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   x:Name="LargeDataGrid"
+                                   ItemsSource="{Binding ModelItem.FilterCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Margin="0,3">
                 <i:Interaction.Behaviors>
                     <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                         <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -138,10 +144,10 @@
                 </i:Interaction.Behaviors>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="25"
-                                        Header="#"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        IsReadOnly="True"
-                                        d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
+                                            Header="#"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            IsReadOnly="True"
+                                            d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}" />
@@ -149,31 +155,31 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Width="30*"
-                                        Header="Field Name"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
+                                            Header="Field Name"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                      Margin="0,0,1,1"
-                                      DisplayMemberPath="FieldName"
-                                      SelectedValuePath="InternalName"
-                                      ItemsSource="{Binding DataContext.ListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
-                                      SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
+                                          Margin="0,0,1,1"
+                                          DisplayMemberPath="FieldName"
+                                          SelectedValuePath="InternalName"
+                                          ItemsSource="{Binding DataContext.ListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                          SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                          SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                          ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpFieldToMatchOn}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="FieldName"
-                                                         SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                             SourcePropertyName="FieldName"
+                                                             SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
+                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_Row{1}_SearchType_AutoID">
                                             <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                     RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                             <Binding Path="IndexNumber" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
@@ -182,9 +188,9 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Width="30*"
-                                        Header="Match Type"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
+                                            Header="Match Type"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -194,7 +200,7 @@
                                           ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="SearchType"
                                                              SourcePropertyValue="{Binding SearchType, UpdateSourceTrigger=PropertyChanged}"
@@ -241,7 +247,7 @@
                                                             ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
                                         <i:Interaction.Behaviors>
                                             <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                                  SourcePropertyName="ValueToMatch"
                                                                  SourcePropertyValue="{Binding ValueToMatch, UpdateSourceTrigger=PropertyChanged}"
@@ -272,10 +278,8 @@
                     <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-            <TextBlock Grid.Row="4"
-                       Grid.Column="0"
-                       Text="Result"
-                       Margin="{StaticResource ControlBorderTop}" />
+            
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Result" Margin="{StaticResource ControlBorderTop}" />
             <ui:IntellisenseTextBox Grid.Row="4"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"

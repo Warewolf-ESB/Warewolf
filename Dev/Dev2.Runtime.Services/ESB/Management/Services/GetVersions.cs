@@ -52,13 +52,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 // ReSharper restore NotResolvedInText
                 }
                 var id = Guid.Parse( values["resourceId"].ToString());
-                Dev2Logger.Log.Info("Get Versions. " + id);
+                Dev2Logger.Info("Get Versions. " + id);
                 var item = ServerVersionRepo.GetVersions(id);
                 return serializer.SerializeToBuilder(item);
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

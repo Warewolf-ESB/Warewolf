@@ -1,15 +1,29 @@
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
-using Dev2.Common.Interfaces;
+using System.Windows.Media;
+//using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ToolBase;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManageServiceInputViewModel : BindableBase,IManageServiceInputViewModel
+    public class ManageServiceInputViewModel : BindableBase
     {
         private ICollection<IServiceInput> _inputs;
         private DataTable _testResults;
@@ -18,13 +32,14 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTesting;
         private ManageServiceInputView _manageServiceInputView;
         private Action _testAction;
+        private bool _okSelected;
 
         public ManageServiceInputViewModel()
         {
             IsTesting = false;
             CloseCommand = new DelegateCommand(() =>
             {
-                if(_manageServiceInputView != null)
+                if (_manageServiceInputView != null)
                 {
                     _manageServiceInputView.RequestClose();
                 }
@@ -34,6 +49,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (_manageServiceInputView != null)
                 {
                     OkAction();
+                    OkSelected = true;
                     _manageServiceInputView.RequestClose();
                 }
             });
@@ -48,7 +64,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _inputs = value;
-                OnPropertyChanged(()=>Inputs);
+                OnPropertyChanged(() => Inputs);
             }
         }
         public DataTable TestResults
@@ -60,9 +76,27 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResults = value;
-                OnPropertyChanged(()=>TestResults);
+                OnPropertyChanged(() => TestResults);
             }
         }
+
+        public bool OkSelected
+        {
+            get { return _okSelected; }
+            set
+            {
+                _okSelected = value;
+                OnPropertyChanged(() => OkSelected);
+            }
+        }
+        public IGenerateOutputArea OutputArea { get; set; }
+        public IOutputDescription Description { get; set; }
+        public IGenerateInputArea InputArea { get; set; }
+
+        public void SetInitialVisibility()
+        {
+        }
+
         public Action TestAction
         {
             get
@@ -85,7 +119,11 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _testResultsAvailable = value;
-                OnPropertyChanged(()=>TestResultsAvailable);
+                if (_testResultsAvailable)
+                {
+                    _manageServiceInputView.OutputDataGridResize();
+                }
+                OnPropertyChanged(() => TestResultsAvailable);
             }
         }
         public bool IsTestResultsEmptyRows
@@ -97,7 +135,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _isTestResultsEmptyRows = value;
-                OnPropertyChanged(()=>IsTestResultsEmptyRows);
+                OnPropertyChanged(() => IsTestResultsEmptyRows);
             }
         }
 
@@ -114,15 +152,49 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public ImageSource TestIconImageSource { get; set; }
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
+        public Action CloseAction { get; set; }
         public IDatabaseService Model { get; set; }
         public Action OkAction { get; set; }
+
+        public string TestHeader { get; set; }
 
         public void ShowView()
         {
             _manageServiceInputView = new ManageServiceInputView { DataContext = this };
             _manageServiceInputView.ShowView();
         }
+
+        public void CloseView()
+        {
+            if (_manageServiceInputView != null)
+            {
+                _manageServiceInputView.RequestClose();
+            }
+        }
+
+        #region Implementation of IToolRegion
+
+        public string ToolRegionName { get; set; }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
+        //public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
+        //public IList<string> Errors { get; private set; }
+
+        public IToolRegion CloneRegion()
+        {
+            return null;
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+        }
+
+        #endregion
     }
 }

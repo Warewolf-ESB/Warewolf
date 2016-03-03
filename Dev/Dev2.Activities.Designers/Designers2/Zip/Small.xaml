@@ -9,14 +9,24 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Zip"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-    xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-    MaxWidth="200"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               MaxWidth="200"
                                Width="200"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:ZipDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -34,7 +44,6 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                AllowUserInsertLine="False" 
                                 DefaultText="[[PathToZip]]" 
                                 FilterType="All" 
                                 WrapInBrackets="False" 
@@ -45,7 +54,7 @@
             <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />
-                      <provider:FileSystemIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
@@ -64,7 +73,6 @@
                Text="Destination" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
-                                AllowUserInsertLine="False" 
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
                                 DefaultText="[[ZipFileName]]"
@@ -73,7 +81,7 @@
                                 ToolTip="{x:Static help:HelpTextResources.ZipToolTipDestination}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ZipNametxt_AutoID}">
-              <ui:IntellisenseTextBox.IntellisenseProvider>
+            <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />
                     <provider:FileSystemIntellisenseProvider />
@@ -88,14 +96,13 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
         <TextBlock Grid.Column="0"
                Grid.Row="2"
                Margin="{StaticResource ControlBorderTop}"
                Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
-                                AllowUserInsertLine="False"
                                 FilterType="All"
                                 DefaultText="[[Success]]"
                                 Margin="{StaticResource ControlBorderTop}"

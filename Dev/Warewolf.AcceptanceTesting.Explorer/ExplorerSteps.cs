@@ -21,6 +21,7 @@ using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Warewolf.Testing;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {    
@@ -129,7 +130,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenEnvironment(servername);
-            Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&(!a.CanEdit) && (!a.CanExecute)) );
+            Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&!a.CanEdit && !a.CanExecute) );
         }
 
         [Then(@"the option to ""(.*)"" is ""(.*)"" on server '(.*)'")]
@@ -591,7 +592,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
             var explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object, mockEventAggregator.Object);
             var view = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
-            view.DataContext = explorerViewModel;
+            try
+            {
+                view.DataContext = explorerViewModel;
+            }
+            catch(Exception e)
+            {
+                view.DataContext = null;
+                view.DataContext = explorerViewModel;
+            }
             ScenarioContext.Current.Remove(Utils.ViewModelNameKey);
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, explorerViewModel);
         }

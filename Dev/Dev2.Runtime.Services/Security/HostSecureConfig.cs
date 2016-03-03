@@ -40,7 +40,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Dev2.Runtime.Security
             // We need to check both the live and development paths ;)
             if(!File.Exists(FileName))
             {
-                Dev2Logger.Log.Info("File not found: " + FileName);
+                Dev2Logger.Info("File not found: " + FileName);
                 var newSettings = new NameValueCollection();
                 newSettings["ServerID"] = "";
                 newSettings["ServerKey"] = "";
@@ -181,7 +181,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

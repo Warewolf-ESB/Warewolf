@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 
@@ -32,6 +33,7 @@ namespace Dev2.Data.Settings
 
         public bool HasError { get; set; }
         public string Error { get; set; }
+        public IPerformanceCounterTo PerfCounters { get; set; }
 
         public override string ToString()
         {

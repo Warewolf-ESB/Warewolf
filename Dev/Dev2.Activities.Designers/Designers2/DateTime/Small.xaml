@@ -11,12 +11,22 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="270"
                                MaxWidth="270"
                                mc:Ignorable="d"
                                d:DesignWidth="270"
                                d:DataContext="{d:DesignInstance local:DateTimeDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -44,8 +54,7 @@
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                        Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeToolTipDatetime}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>

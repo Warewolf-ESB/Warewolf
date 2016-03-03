@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void DeployResources(IEnvironmentModel sourceEnviroment, IEnvironmentModel targetEnviroment, IDeployDto dto, IEventAggregator eventPublisher)
         {
 
-            Dev2Logger.Log.Info(String.Format("Deploy Resources. Source:{0} Destination:{1}", sourceEnviroment.DisplayName, targetEnviroment.Name));
+            Dev2Logger.Info(String.Format("Deploy Resources. Source:{0} Destination:{1}", sourceEnviroment.DisplayName, targetEnviroment.Name));
             _deployService.Deploy(dto, targetEnviroment);
 
 
@@ -413,6 +413,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
+           
             Func<IResourceModel, bool> func = expression.Compile();
             return ResourceModels.FindAll(func.Invoke);
         }
@@ -437,7 +438,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Log.Error("Multiple Resources found for Resource ID: "+resourceID);
+            Dev2Logger.Error("Multiple Resources found for Resource ID: "+resourceID);
             return null;
         }
         
@@ -456,7 +457,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Log.Error("Multiple Resources found for Resource ID: "+resourceID);
+            Dev2Logger.Error("Multiple Resources found for Resource ID: "+resourceID);
             return null;
         }
 
@@ -519,7 +520,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory)
         {
-            Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
 
             if(workflow == null)
@@ -553,7 +554,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage SaveToServer(IResourceModel instanceObj)
         {
-            Dev2Logger.Log.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Save Resource: {0}  Environment:{1}", instanceObj.Category, _environmentModel.Name));
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if(workflow == null)
@@ -603,7 +604,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentNullException("resource");
             }
-            Dev2Logger.Log.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("Deploy Resource. Resource:{0} Environment:{1}", resource.DisplayName, _environmentModel.Name));
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             if(theResource != null)
@@ -656,7 +657,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
-            Dev2Logger.Log.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, _environmentModel.Name));
+            Dev2Logger.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, _environmentModel.Name));
             IResourceModel res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if(res == null)
@@ -696,7 +697,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return null;
             }
 
-            if(!(resource.ResourceName.Contains("Unsaved")))
+            if(!resource.ResourceName.Contains("Unsaved"))
             {
             }
             return result;
@@ -822,7 +823,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected virtual void LoadResources()
         {
-            Dev2Logger.Log.Warn("Loading Resources - Start");
+            Dev2Logger.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
@@ -837,12 +838,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
-            Dev2Logger.Log.Warn("Loading Resources - End");
+            Dev2Logger.Warn("Loading Resources - End");
         }
 
         protected virtual async Task<bool> LoadResourcesAsync()
         {
-            Dev2Logger.Log.Warn("Loading Resources - Start");
+            Dev2Logger.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
@@ -909,7 +910,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 catch
                     // ReSharper restore EmptyGeneralCatchClause
                 {
-                    Dev2Logger.Log.Warn(string.Format("Resource Not Loaded - {0} - {1}", item.ResourceName, item.ResourceID));
+                    Dev2Logger.Warn(string.Format("Resource Not Loaded - {0} - {1}", item.ResourceName, item.ResourceID));
                     // Ignore malformed resource
                 }
             }
@@ -1150,7 +1151,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceId", resourceModel.ID.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
-            var workspaceId = (resourceModel.Environment.Connection).WorkspaceID;
+            var workspaceId = resourceModel.Environment.Connection.WorkspaceID;
             var payload = comsController.ExecuteCommand<ExecuteMessage>(resourceModel.Environment.Connection, workspaceId);
 
             if(payload == null)
@@ -1172,7 +1173,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceId", resourceModel.ID.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
-            var workspaceId = (resourceModel.Environment.Connection).WorkspaceID;
+            var workspaceId = resourceModel.Environment.Connection.WorkspaceID;
             var payload = await comsController.ExecuteCommandAsync<ExecuteMessage>(resourceModel.Environment.Connection, workspaceId);
 
             if(payload == null)
@@ -1366,7 +1367,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
 
             // log the trace for fetch ;)
-            Dev2Logger.Log.Debug(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));
+            Dev2Logger.Debug(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));
 
             return result;
         }
@@ -1465,7 +1466,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         void RefreshServer(Permissions serverPermissions)
         {
             StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
-            StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
+            StudioResourceRepository.UpdateItem(Guid.Empty, x =>
             {
                 if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
                 {
@@ -1481,14 +1482,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     var allResources = x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None);
                     var allPermissions = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => !permission.IsBuiltInAdministrators).All(permission => permission.Permissions == Permissions.None);
-                    if((allResources && serverPermissions == Permissions.None) && allPermissions)
+                    if(allResources && serverPermissions == Permissions.None && allPermissions)
                     {
                         StudioResourceRepository.Disconnect(_environmentModel.ID);
                         ConnectControlSingleton.Instance.SetConnectionState(_environmentModel.ID, ConnectionEnumerations.ConnectedState.Disconnected);
                     }
                 }
                 x.Permissions = serverPermissions;
-            }), _environmentModel.ID);
+            }, _environmentModel.ID);
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
@@ -1501,7 +1502,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var resourceId = model.ID;
                 model.UserPermissions = serverPermissions;
-                StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = serverPermissions; }), _environmentModel.ID);
+                StudioResourceRepository.UpdateItem(resourceId, a => { a.Permissions = serverPermissions; }, _environmentModel.ID);
             });
 
             foreach(var perm in windowsGroupPermissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer))
@@ -1515,7 +1516,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         var resourceId = resourceModel.ID;
                         var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
                         resourceModel.UserPermissions = resourcePermissions;
-                        StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = permission.Permissions; }), _environmentModel.ID);
+                        StudioResourceRepository.UpdateItem(resourceId, a => { a.Permissions = permission.Permissions; }, _environmentModel.ID);
                     }
                     catch(SystemException exception)
                     {

@@ -459,7 +459,7 @@ namespace Dev2.Collections
             {
                 throw new ArgumentOutOfRangeException("index");
             }
-            if((array.Length - index) < KeyedEntryCollection.Count)
+            if(array.Length - index < KeyedEntryCollection.Count)
             {
                 throw new ArgumentException("CopyTo() failed:  supplied array was too small");
             }

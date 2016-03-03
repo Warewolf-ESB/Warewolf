@@ -68,7 +68,7 @@ namespace Dev2.Util
         private StringBuilder ReplaceChangedNamespaces(StringBuilder def)
         {
             StringBuilder result = def;
-            for (int i = 0; i < (replaceNamespaces.Length/2); i++)
+            for (int i = 0; i < replaceNamespaces.Length/2; i++)
             {
                 result = result.Replace(replacePrefix + replaceNamespaces[i, 0],
                     replacePrefix + replaceNamespaces[i, 1]);

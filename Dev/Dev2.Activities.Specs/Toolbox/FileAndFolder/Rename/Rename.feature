@@ -166,7 +166,7 @@ Scenario Outline: Rename file validation
 		| 81 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile78.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed78.txt          | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 	
 @ignore
-#Audit			  	  																																																																				 
+#Audit Wolf-1419			  	  																																																																				 
 Scenario Outline: Rename file at location with invalid directories
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'
@@ -194,7 +194,7 @@ Scenario Outline: Rename file at location with invalid directories
 	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                               | integrationtester | I73573r0     | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
 		
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Rename file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'

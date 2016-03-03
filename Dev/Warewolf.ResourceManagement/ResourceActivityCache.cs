@@ -38,7 +38,7 @@ namespace Warewolf.ResourceManagement
                 catch(Exception err) //errors caught inside
                     // ReSharper restore EmptyGeneralCatchClause
                 {
-                    Dev2Logger.Log.Error(err);
+                    Dev2Logger.Error(err);
                     if(failOnException)
                     throw;
                 }

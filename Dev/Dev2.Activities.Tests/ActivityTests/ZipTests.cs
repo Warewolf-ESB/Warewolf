@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;

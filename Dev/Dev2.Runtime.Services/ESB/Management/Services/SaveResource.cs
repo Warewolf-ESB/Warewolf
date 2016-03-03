@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
               
                 string workspaceIdString = string.Empty;
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception err)
                 {
-                    Dev2Logger.Log.Error(err);
+                    Dev2Logger.Error(err);
                     CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }

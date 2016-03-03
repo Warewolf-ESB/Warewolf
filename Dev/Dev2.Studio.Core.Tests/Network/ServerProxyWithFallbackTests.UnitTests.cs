@@ -3,11 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Dev2.Core.Tests.Utils;
 using Dev2.Network;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests.Network
 {

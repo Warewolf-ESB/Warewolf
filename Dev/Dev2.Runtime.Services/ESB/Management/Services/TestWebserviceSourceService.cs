@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Test WebserviceSource");
+                Dev2Logger.Info("Test WebserviceSource");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("WebserviceSource", out resourceDefinition);
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
 
             }
 

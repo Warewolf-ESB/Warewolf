@@ -99,6 +99,7 @@
     <Compile Include="ToolDescriptor.cs" />
     <Compile Include="ToolDescriptorCore.cs" />
     <Compile Include="ToolDescriptorInfo.cs" />
+    <Compile Include="WarewolfWebClient.cs" />
     <Compile Include="WebServiceDefinition.cs" />
   </ItemGroup>
   <ItemGroup>

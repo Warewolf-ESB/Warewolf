@@ -93,7 +93,7 @@ namespace Dev2.Data.SystemTemplates.Models
             {
                 result.Append(dd.GenerateUserFriendlyModel(env, Mode, out errors));
                 // append mode if not at end
-                if((cnt + 1) < TheStack.Count)
+                if(cnt + 1 < TheStack.Count)
                 {
                     result.Append(Mode);
                 }
@@ -171,7 +171,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Dev2DecisionStack", ex);
+                Dev2Logger.Error("Dev2DecisionStack", ex);
                 // Best effort ;)
             }
 

@@ -12,6 +12,8 @@
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Zip"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="315"
                                Width="315"
                                MaxWidth="600"
@@ -22,6 +24,14 @@
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:ZipDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -56,7 +66,6 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                AllowUserInsertLine="False"
                                 DefaultText="[[PathToZip]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
@@ -149,7 +158,6 @@
         <TextBlock Grid.Column="0" Grid.Row="4" Margin="{StaticResource ActivityBorderTop}" Text="{Binding OutputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
-                                AllowUserInsertLine="False"
                                 FilterType="All"
                                 DefaultText="[[ZipFileName]]"
                                 Margin="{StaticResource ActivityBorderTop}"

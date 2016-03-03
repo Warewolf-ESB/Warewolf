@@ -48,7 +48,7 @@ using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IDisposable, IEnvironmentConnection
+    public class ServerProxyWithoutChunking : IEnvironmentConnection
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
@@ -77,8 +77,8 @@ namespace Dev2.Network
             Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
-            Dev2Logger.Log.Debug(credentials);
-            Dev2Logger.Log.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
+            Dev2Logger.Debug(credentials);
+            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name);
             HubConnection = new HubConnectionWrapper(uriString){ Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
@@ -102,7 +102,19 @@ namespace Dev2.Network
             }
         }
 
-        public bool IsLocalHost { get { return DisplayName == "localhost"; } }
+        public bool IsLocalHost
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(DisplayName))
+                {
+                    return false;
+                }
+                var displayName = DisplayName.ToLower();
+                var isLocalHost = (displayName == "localhost") || (displayName == "localhost (connected)");
+                return isLocalHost;
+            }
+        }
 
         protected void InitializeEsbProxy()
         {
@@ -138,7 +150,7 @@ namespace Dev2.Network
 
         void HasDisconnected()
         {
-            Dev2Logger.Log.Debug("*********** Hub connection down");
+            Dev2Logger.Debug("*********** Hub connection down");
             IsConnected = false;
             if (IsShuttingDown)
             {
@@ -226,7 +238,7 @@ namespace Dev2.Network
                 {
                     if(ex.Message.Contains("1.4"))
                         throw new FallbackException();
-                    Dev2Logger.Log.Error(this, aex);
+                    Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -299,7 +311,7 @@ namespace Dev2.Network
                 {
                     if(ex.Message.Contains("1.4"))
                         throw new FallbackException();
-                    Dev2Logger.Log.Error(this, aex);
+                    Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -361,7 +373,7 @@ namespace Dev2.Network
 
         void HandleConnectError(Exception e)
         {
-            Dev2Logger.Log.Error(this, e);
+            Dev2Logger.Error(this, e);
             StartReconnectTimer();
         }
 
@@ -417,7 +429,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    Dev2Logger.Log.Error(this, aex);
+                    Dev2Logger.Error(this, aex);
                     var hex = ex as HttpClientException;
                     if (hex != null)
                     {
@@ -434,7 +446,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(this, e);
+                Dev2Logger.Error(this, e);
             }
         }
 
@@ -479,7 +491,7 @@ namespace Dev2.Network
 
         void OnHubConnectionError(Exception exception)
         {
-            Dev2Logger.Log.Error(this, exception);
+            Dev2Logger.Error(this, exception);
         }
 
         void OnMemoReceived(string objString)
@@ -504,7 +516,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(this, e);
+                Dev2Logger.Error(this, e);
             }
             RaisePermissionsChanged();
         }
@@ -613,7 +625,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException("payload");
             }
 
-            Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
+            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
             var messageId = Guid.NewGuid();
@@ -651,11 +663,11 @@ namespace Dev2.Network
                 if (start > 0)
                 {
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start < end && (end - start) > 1)
+                    if (start < end && end - start > 1)
                     {
                         // we can return the trimmed payload instead
-                        start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                        return new StringBuilder(result.Substring(start, (end - start)));
+                        start += GlobalConstants.ManagementServicePayload.Length + 2;
+                        return new StringBuilder(result.Substring(start, end - start));
                     }
                 }
             }
@@ -669,7 +681,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException("payload");
             }
 
-            Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
+            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
             var messageId = Guid.NewGuid();
@@ -695,18 +707,18 @@ namespace Dev2.Network
                     if (start > 0)
                     {
                         var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                        if (start < end && (end - start) > 1)
+                        if (start < end && end - start > 1)
                         {
                             // we can return the trimmed payload instead
-                            start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                            return new StringBuilder(result.Substring(start, (end - start)));
+                            start += GlobalConstants.ManagementServicePayload.Length + 2;
+                            return new StringBuilder(result.Substring(start, end - start));
                         }
                     }
                 }
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
                 {
@@ -743,21 +755,21 @@ namespace Dev2.Network
                     var ioex = ex as InvalidOperationException;
                     if (ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
                     {
-                        Dev2Logger.Log.Debug("Connection is reconnecting");
+                        Dev2Logger.Debug("Connection is reconnecting");
                         return true; // This we know how to handle this
                     }
                     // handle 403 errors when permissions have been removed ;)
                     var hce = ex as HttpClientException;
                     if (hce != null && hce.Message.Contains("StatusCode: 403"))
                     {
-                        Dev2Logger.Log.Debug("Forbidden - Most Likely Permissions Changed.");
+                        Dev2Logger.Debug("Forbidden - Most Likely Permissions Changed.");
                         // Signal not-authorized anymore ;)
                         UpdateIsAuthorized(false);
                         return true;
                     }
 
                     // handle generic errors ;)                   
-                    Dev2Logger.Log.Error(this, ex);
+                    Dev2Logger.Error(this, ex);
                     return true; // Let anything else stop the application.
                 });
                 if (hasDisconnected)

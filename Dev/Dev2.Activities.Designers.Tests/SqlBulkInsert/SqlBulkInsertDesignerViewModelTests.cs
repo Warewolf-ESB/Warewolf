@@ -21,6 +21,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Threading;
@@ -551,21 +552,18 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("TableName", selectedTable.TableName);
             modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
-            ShowEditResourceWizardMessage message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>())).Callback((object m) => message = m as ShowEditResourceWizardMessage).Verifiable();
-
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>()));
+            CustomContainer.Register(mockShellViewModel.Object);
             var resourceModel = new Mock<IResourceModel>();
 
             var viewModel = CreateViewModel(modelItem, databases, eventPublisher.Object, resourceModel.Object, true);
-
+            viewModel.SelectedDatabase = selectedDatabase;
             //------------Execute Test---------------------------
             viewModel.EditDatabaseCommand.Execute(null);
-
-
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
-            Assert.AreSame(resourceModel.Object, message.ResourceModel);
+            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(),It.IsAny<Guid>()));
         }
 
         [TestMethod]
@@ -1214,7 +1212,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 for (var j = 0; j < 10; j++)
                 {
                     var columns = new List<IDbColumn>();
-                    var colCount = ((j % 4) + 1) * (i + 1);
+                    var colCount = (j % 4 + 1) * (i + 1);
                     for (var k = 0; k < colCount; k++)
                     {
                         var t = k % 4;

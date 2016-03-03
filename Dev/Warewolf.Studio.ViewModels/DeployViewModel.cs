@@ -8,7 +8,6 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -40,7 +39,6 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
-        bool _isConnecting;
 
         #region Implementation of IDeployViewModel
 
@@ -66,7 +64,7 @@ namespace Warewolf.Studio.ViewModels
                 ConflictItems = _stats.Conflicts;
                 NewItems = _stats.New;
                 ShowConflicts = false;
-                if (_stats.RenameErrors.Length > 0)
+                if (!string.IsNullOrEmpty(_stats.RenameErrors))
                 {
                     _popupController.ShowDeployNameConflict(_stats.RenameErrors);
                 }
@@ -94,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanSelectDependencies
+        private bool CanSelectDependencies
         {
             get
             {
@@ -108,7 +106,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _newItems;
             }
-            set
+            private set
             {
                 _newItems = value;
                 OnPropertyChanged(() => NewItems);
@@ -121,7 +119,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _conflictItems;
             }
-            set
+            private set
             {
                 _conflictItems = value;
                 OnPropertyChanged(() => ConflictItems);
@@ -155,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _showConflictItemsList;
             }
-            set
+            private set
             {
                 _showConflictItemsList = value;
                 OnPropertyChanged(() => ShowConflictItemsList);
@@ -168,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _showNewItemsList;
             }
-            set
+            private set
             {
                 _showNewItemsList = value;
                 OnPropertyChanged(() => ShowNewItemsList);
@@ -181,7 +179,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _conflictNewResourceText;
             }
-            set
+            private set
             {
                 _conflictNewResourceText = value;
                 OnPropertyChanged(() => ConflictNewResourceText);
@@ -194,7 +192,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _showConflicts;
             }
-            set
+            private set
             {
                 _showConflicts = value;
                 OnPropertyChanged(() => ShowConflicts);
@@ -318,7 +316,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        public void SelectDependencies()
+        private void SelectDependencies()
         {
             if (Source != null && Source.SelectedEnvironment != null && Source.SelectedEnvironment.Server != null)
             {
@@ -336,7 +334,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _deploySuccessfull;
             }
-            set
+            private set
             {
                 _deploySuccessfull = value;
                 OnPropertyChanged(() => DeploySuccessfull);
@@ -352,29 +350,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _isDeploying;
             }
-            set
+            private set
             {
                 _isDeploying = value;
                 OnPropertyChanged(() => IsDeploying);
                 OnPropertyChanged(() => CanDeploy);
             }
         }
-        public bool IsConnecting
-        {
-            get
-            {
-                return _isConnecting;
-            }
-            set
-            {
-                _isConnecting = value;
-                OnPropertyChanged(() => IsConnecting);
-            }
-        }
         /// <summary>
         /// Can Deploy test to enable button
         /// </summary>
-        public bool CanDeploy
+        private bool CanDeploy
         {
             get
             {
@@ -407,12 +393,12 @@ namespace Warewolf.Studio.ViewModels
                     return false;
                 }
                 
-                if (Source.ConnectControlViewModel.SelectedConnection.Permissions == null || !SetSourceFromServer(Source.ConnectControlViewModel.SelectedConnection.Permissions.Last()))
+                if (Source.ConnectControlViewModel.SelectedConnection.Permissions == null || !Source.ConnectControlViewModel.SelectedConnection.CanDeployFrom)
                 {
                     ErrorMessage = StringResources.SourcePermission_Error;
                     return false;
                 }
-                if (Destination.ConnectControlViewModel.SelectedConnection.Permissions == null || !SetDestinationFromServer(Destination.ConnectControlViewModel.SelectedConnection.Permissions.Last()))
+                if (Destination.ConnectControlViewModel.SelectedConnection.Permissions == null || !Destination.ConnectControlViewModel.SelectedConnection.CanDeployTo)
                 {
                     ErrorMessage = StringResources.DestinationPermission_Error;
                     return false;
@@ -421,21 +407,6 @@ namespace Warewolf.Studio.ViewModels
                 return true;
             }
         }
-
-        static bool SetSourceFromServer(IWindowsGroupPermission serverPermission)
-        {
-            return serverPermission.DeployFrom || serverPermission.Administrator;
-        }
-
-        static bool SetDestinationFromServer(IWindowsGroupPermission serverPermission)
-        {
-            return serverPermission.DeployTo || serverPermission.Administrator;
-        }
-
-        /// <summary>
-        /// check is source and destination are the same
-        /// </summary>
-        public bool ServersAreNotTheSame { get; set; }
 
         public string OverridesCount
         {
@@ -533,7 +504,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _sourceconnectControlViewModel;
             }
-            set
+            private set
             {
                 if (Equals(value, _sourceconnectControlViewModel))
                 {
@@ -552,7 +523,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _destinationConnectControlViewModel;
             }
-            set
+            private set
             {
                 if (Equals(value, _destinationConnectControlViewModel))
                 {
@@ -601,12 +572,12 @@ namespace Warewolf.Studio.ViewModels
         /// Overrides Hyperlink Clicked
         /// Must show list of New Resources conflicts
         /// </summary>
-        public ICommand NewResourcesViewCommand { get; set; }
+        public ICommand NewResourcesViewCommand { get; private set; }
         /// <summary>
         /// Overrides Hyperlink Clicked
         /// Must show list of Override conflicts
         /// </summary>
-        public ICommand OverridesViewCommand { get; set; }
+        public ICommand OverridesViewCommand { get; private set; }
         /// <summary>
         /// Deploy Button Clicked
         /// Must bring up conflict screen. Conflict screen can modify collection

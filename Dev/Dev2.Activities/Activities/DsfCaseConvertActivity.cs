@@ -170,7 +170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             return DataASTMutable.WarewolfAtom.Nothing;
                         }
 
-                        return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                        return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.evalResultToString(evalled));
                     };
                 }
             }

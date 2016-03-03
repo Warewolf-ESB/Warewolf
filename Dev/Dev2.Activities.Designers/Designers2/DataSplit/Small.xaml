@@ -13,16 +13,25 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="280"
                                MaxWidth="280"
                                mc:Ignorable="d"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:DataSplitDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -34,10 +43,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0"
-                       Grid.Column="0"
-                       Text="String To Split"
-                       VerticalAlignment="Top" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="String To Split" VerticalAlignment="Top" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                     Grid.Column="1"
                                     Grid.Row="0"
@@ -87,14 +93,10 @@
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -102,8 +104,7 @@
                 <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
                                                     DefaultText="{Binding WatermarkTextVariable}"
@@ -130,8 +131,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
@@ -167,8 +167,7 @@
                 <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
                                                     WrapInBrackets="False"

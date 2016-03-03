@@ -182,6 +182,7 @@
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
+    <Compile Include="Services\FetchPerformanceCountersTests.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
     <Compile Include="Services\GetVersionTest.cs" />
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
@@ -201,7 +202,6 @@
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
-    <Compile Include="ESB\PluginServiceContainerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />
     <Compile Include="ServiceModel\Data\ResultListTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\TestDatabaseBroker.cs" />

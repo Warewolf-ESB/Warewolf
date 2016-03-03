@@ -19,7 +19,6 @@ namespace Warewolf.Studio.ViewModels
 
         readonly IShellViewModel _shellViewModel;
         readonly Action<IExplorerItemViewModel> _selectAction;
-        bool _isLoading;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
 
@@ -65,27 +64,14 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of ExplorerViewModel
 
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(() => IsLoading);
-            }
-        }
-
-        public void AfterLoad(Guid environmentID)
+        protected void AfterLoad(Guid environmentID)
         {
             _loaded = true;
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentID);
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
-                environmentViewModel.SelectAll = (() => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList()));
+                environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
             }
             CheckPreselectedItems(environmentID);
             if(ConnectControlViewModel != null)
@@ -150,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
                     a.CanEdit = false;
                     a.CanView = false;
                     a.ShowContextMenu = false;
-                    a.SelectAction = (SelectAction);
+                    a.SelectAction = SelectAction;
                     a.AllowResourceCheck = true;
                     a.CanDrop = false;
                     a.CanDrag = false;
@@ -234,19 +220,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public Version MinSupportedVersion
-        {
-            get
-            {
-                return Version.Parse( SelectedServer.GetServerVersion());
-            }
-        }
-
         /// <summary>
         /// used to select a list of items from the explorer
         /// </summary>
         /// <param name="selectedItems"></param>
-        public void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
+        private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
             SelectedEnvironment.AsList().Apply(a => a.IsResourceChecked = selectedItems.Contains(a));
         }
@@ -262,7 +240,7 @@ namespace Warewolf.Studio.ViewModels
             AfterLoad(server.EnvironmentID);
         }
 
-        public bool IsDeploy { get; set; }
+        private bool IsDeploy { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {
@@ -272,8 +250,7 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Remove(environmentModel);
             }
             OnPropertyChanged(() => Environments);
-            AfterLoad(server.EnvironmentID);
-            
+            AfterLoad(server.EnvironmentID);            
         }
 
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)

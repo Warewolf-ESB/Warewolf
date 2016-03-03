@@ -51,6 +51,18 @@
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -208,6 +220,7 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
+    <Compile Include="GetWebServiceToolSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -220,12 +233,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
+    <Compile Include="Settings Permissions.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings Permissions.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
+      <DependentUpon>Sequence.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Sequence\SequenceSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
       <AutoGen>True</AutoGen>
@@ -390,6 +413,8 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
+    <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
     <Compile Include="Toolbox\Resources\DatabaseConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
       <AutoGen>True</AutoGen>
@@ -405,6 +430,11 @@
     <Compile Include="Toolbox\Resources\MySqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Database\MySqlConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
@@ -413,15 +443,27 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\SqlServerConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Plugin\PluginConnectorToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Web\PostWebConnectorToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\PutWebConnectorTool.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PutWebConnectorTool.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Database\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\WebConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\Web\GetWebConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WebConnector.feature</DependentUpon>
+      <DependentUpon>GetWebConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
@@ -509,9 +551,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
     </None>
+    <None Include="Settings Permissions.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Sequence\Sequence.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Sequence.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -523,7 +573,6 @@
     </None>
     <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -575,6 +624,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Rename\Rename.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Rename2.feature.cs</LastGenOutput>
     </None>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
     <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
@@ -630,20 +680,33 @@
       <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\MySqlConnector.feature">
+    <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Database\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\PluginConnector.feature">
+    <None Include="Toolbox\Resources\Plugin\PluginConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\SqlServerConnector.feature">
+    <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PostWebConnectorTool.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Web\PutWebConnectorTool.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PutWebConnectorTool.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\WebConnector.feature">
+    <None Include="Toolbox\Resources\Web\GetWebConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WebConnector.feature.cs</LastGenOutput>
+      <LastGenOutput>GetWebConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -771,6 +834,10 @@
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
+      <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
+      <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
       <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
       <Name>Warewolf.Sharepoint</Name>
@@ -778,6 +845,10 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>

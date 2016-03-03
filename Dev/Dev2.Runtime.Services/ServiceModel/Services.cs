@@ -221,7 +221,6 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ArgumentNullException("dbService");
             }
                         var  source = dbService.Source as DbSource;
-          
             if(source != null)
             {
                 switch(source.ServerType)
@@ -278,46 +277,6 @@ namespace Dev2.Runtime.ServiceModel
                             return dbService.Recordset;
                         
                     }
-                    case enSourceType.Oracle:
-                        {
-
-                            var broker = new OracleDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception("Error retrieving shape from service output.");
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
-
-                            smh.OracleMapDbOutputs(outputDescription, ref dbService, addFields);
-
-                            return dbService.Recordset;
-
-                        }
-                    case enSourceType.ODBC:
-                        {
-
-                            var broker = new ODBCDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception("Error retrieving shape from service output.");
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
-
-                            smh.ODBCMapDbOutputs(outputDescription, ref dbService, addFields);
-
-                            return dbService.Recordset;
-
-                        }
                     default: return null;
 
                 }
@@ -342,7 +301,38 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            return outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            if (recSet != null)
+            {
+                foreach (var recordset in recSet)
+                {
+                    foreach(var field in recordset.Fields)
+                    {
+                        if(String.IsNullOrEmpty(field.Name))
+                        {
+                            continue;
+                        }
+                        var path = field.Path;
+                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                        var value = string.Empty;
+                        if(!string.IsNullOrEmpty(field.Alias))
+                        {
+                            value = string.IsNullOrEmpty(rsAlias)
+                                        ? string.Format("[[{0}]]", field.Alias)
+                                        : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
+                        }
+
+                        if(path != null)
+                        {
+                            path.OutputExpression = value;
+                            dataSourceShape.Paths.Add(path);
+                        }
+                    }
+                }
+            }            
+            return recSet;
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
@@ -369,16 +359,6 @@ namespace Dev2.Runtime.ServiceModel
                     var broker = new  MySqlDatabaseBroker();
                     return broker.GetServiceMethods(dbSource);
                 }
-                case enSourceType.Oracle:
-                    {
-                        var broker = new OracleDatabaseBroker();
-                        return broker.GetServiceMethods(dbSource);
-                    }
-                case enSourceType.ODBC:
-                    {
-                        var broker = new ODBCDatabaseBroker();
-                        return broker.GetServiceMethods(dbSource);
-                    }
                 default:
                 {
                             var broker = CreateDatabaseBroker();

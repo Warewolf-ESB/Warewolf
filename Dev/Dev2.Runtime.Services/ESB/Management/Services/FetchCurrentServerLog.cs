@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         readonly string _serverLogPath;
 
         public FetchCurrentServerLog()
-            : this(Path.Combine(EnvironmentVariables.ApplicationPath, "WareWolf-Server.log"))
+            : this(EnvironmentVariables.ServerLogFile)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Fetch Server Log Started");
+                Dev2Logger.Info("Fetch Server Log Started");
                 var result = new ExecuteMessage { HasError = false };
                 if (File.Exists(_serverLogPath))
                 {
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Fetch Server Log Error", err);
+                Dev2Logger.Error("Fetch Server Log Error", err);
                 throw;
             }
         }

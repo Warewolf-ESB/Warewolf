@@ -19,7 +19,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
-using ServiceStack.Common.Extensions;
 using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
@@ -182,7 +181,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                     result = e.Message;
                 }
             }
@@ -200,7 +199,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error(e);
+                        Dev2Logger.Error(e);
                         result = e.Message;
                     }
                 }
@@ -335,7 +334,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error(e.Message);
+                    Dev2Logger.Error(e.Message);
                 }
             }
             else
@@ -362,7 +361,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error(e);
+                        Dev2Logger.Error(e);
                     }
                 }
                 try
@@ -378,7 +377,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                 }
             }
             return false;

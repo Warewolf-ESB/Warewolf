@@ -99,7 +99,7 @@ namespace Warewolf.Core
         {
             unchecked
             {
-                var hashCode = (Source != null ? Source.GetHashCode() : 0);
+                var hashCode = Source != null ? Source.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Action != null ? Action.GetHashCode() : 0);

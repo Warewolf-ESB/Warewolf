@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
          
-            Dev2Logger.Log.Info("Fetch Remote Debug Messages");
+            Dev2Logger.Info("Fetch Remote Debug Messages");
             string invokerId = null;
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Fetch Remote Debug Messages Error", err);
+                Dev2Logger.Error("Fetch Remote Debug Messages Error", err);
                 throw;
             }
         }

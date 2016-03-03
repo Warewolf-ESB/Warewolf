@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Dev2
 {
@@ -20,6 +19,7 @@ namespace Dev2
         public static List<Type> LoadedTypes { get; set; }
 
         static readonly Dictionary<Type, object> RegisterdTypes = new Dictionary<Type, object>();
+        static readonly Dictionary<Type, Func<object>> RegisterdPerRequestTypes = new Dictionary<Type, Func<object>>();
 
         public static int EntiresCount
         {
@@ -112,6 +112,45 @@ namespace Dev2
                 }
             }
             return default(T);
+        }
+
+        public static void RegisterInstancePerRequestType<T>(Func<object> constructorFunc)
+        {
+            if (RegisterdPerRequestTypes.ContainsKey(typeof(T)))
+            {
+                DeRegisterInstancePerRequestType<T>();
+            }
+            RegisterdPerRequestTypes.Add(typeof(T), constructorFunc);
+        }
+
+        public static object GetInstancePerRequestType(Type type)
+        {
+            var requestedType = type;
+            if (RegisterdPerRequestTypes.ContainsKey(requestedType))
+            {
+                var registerdType = RegisterdPerRequestTypes[requestedType];
+                return registerdType.Invoke();
+            }
+            return null;
+        }
+
+        public static T GetInstancePerRequestType<T>() where T : class
+        {
+            var requestedType = typeof(T);
+            if (RegisterdPerRequestTypes.ContainsKey(requestedType))
+            {
+                var registerdType = RegisterdPerRequestTypes[requestedType];
+                return registerdType.Invoke() as T;
+            }
+            return null;
+        }
+
+        static void DeRegisterInstancePerRequestType<T>()
+        {
+            if (RegisterdPerRequestTypes.ContainsKey(typeof(T)))
+            {
+                RegisterdPerRequestTypes.Remove(typeof(T));
+            }
         }
     }
 }

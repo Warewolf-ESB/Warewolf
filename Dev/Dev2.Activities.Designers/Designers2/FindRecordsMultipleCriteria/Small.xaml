@@ -14,12 +14,22 @@
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="290"
                                MaxWidth="290"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:FindRecordsMultipleCriteriaDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -69,14 +79,10 @@
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}"
-                                        IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -114,8 +120,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -162,7 +167,6 @@
                                                         FilterType="All"
                                                         Grid.Column="0"                                                        
                                                         AllowUserCalculateMode="False"
-                                                        AllowUserInsertLine="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
                                                         TextWrapping="NoWrap"

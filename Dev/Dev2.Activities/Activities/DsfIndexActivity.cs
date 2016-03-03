@@ -235,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("DSFFindActivity", e);
+                Dev2Logger.Error("DSFFindActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

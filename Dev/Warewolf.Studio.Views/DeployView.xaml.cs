@@ -23,7 +23,7 @@ namespace Warewolf.Studio.Views
         {
             get
             {
-                return (SourceNavigationView).SelectedServer;
+                return SourceNavigationView.SelectedServer;
             }            
         }
         public IServer SelectedDestinationServer
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.Views
 
         public string VerifySelectPathVisibility(string path)
         {
-            var res = ((IDeployViewModel)DataContext).Source.SelectedEnvironment.AsList().FirstOrDefault(a => (a.ResourcePath == path) );
+            var res = ((IDeployViewModel)DataContext).Source.SelectedEnvironment.AsList().FirstOrDefault(a => a.ResourcePath == path );
             if (res == null)
             {
                 return "Not Visible";

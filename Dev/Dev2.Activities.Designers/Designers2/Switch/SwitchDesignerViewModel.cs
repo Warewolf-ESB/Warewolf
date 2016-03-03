@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Switch
                     DisplayText = "Switch";
                     DisplayName = "Switch";
                 }
-                else if((!_hascustomeDisplayText) ||string.IsNullOrEmpty(DisplayText) )
+                else if(!_hascustomeDisplayText ||string.IsNullOrEmpty(DisplayText) )
                 {
                     DisplayText = value;
                     DisplayName = value;

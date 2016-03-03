@@ -10,6 +10,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -20,5 +21,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return JsonConvert.SerializeObject(this);
         }
+        public IOutputDescription Description { get; set; }
+    }
+    public class RecordsetListWrapper
+    {
+       public  RecordsetList RecordsetList { get; set; }
+       public  IOutputDescription Description { get; set; }
     }
 }

@@ -73,7 +73,7 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = (HostName != null ? HostName.GetHashCode() : 0);
+                var hashCode = HostName != null ? HostName.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 return hashCode;

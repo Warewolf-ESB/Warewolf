@@ -130,14 +130,14 @@ namespace Dev2.Activities.Sharepoint
                 case SharepointFieldType.Boolean:
                     returnValue = Convert.ToBoolean(value);
                     break;
+                case SharepointFieldType.Number:
                 case SharepointFieldType.Currency:
                     returnValue = Convert.ToDecimal(value, CultureInfo.CurrentCulture.NumberFormat);
                     break;
                 case SharepointFieldType.DateTime:
                     returnValue = Convert.ToDateTime(value, CultureInfo.CurrentCulture.DateTimeFormat);
                     break;
-                case SharepointFieldType.Integer:
-                case SharepointFieldType.Number:
+                case SharepointFieldType.Integer:                
                     returnValue = Convert.ToInt32(value);
                     break;
                 case SharepointFieldType.Text:

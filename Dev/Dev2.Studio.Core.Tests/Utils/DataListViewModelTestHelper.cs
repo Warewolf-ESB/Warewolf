@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.Utils {
             }
             else {
                 for(int i = 0; i < numberOfChildren; i++) {
-                    IDataListItemModel dLVM = CreateDataListItemViewModel((string.Format("{0}{1}", name, (i + 1))), dataListVM);
+                    IDataListItemModel dLVM = CreateDataListItemViewModel(string.Format("{0}{1}", name, i + 1), dataListVM);
                     dataListItemViewModels.Add(dLVM);
                 }
             }
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.Utils {
         internal IDataListItemModel CreateRecordSetDataListItem(string name, int numberOfRecords, string recordSetPrefix, IDataListViewModel dLVM) {
             string[] records = new string[numberOfRecords];
             for(int i = 0; i < numberOfRecords; i++) {
-                records[i] = string.Format("{0}{1}", recordSetPrefix, (i + 1));
+                records[i] = string.Format("{0}{1}", recordSetPrefix, i + 1);
             }
             IDataListItemModel dLIVM = CreateRecordSetDataListItem(name, records, dLVM);
 

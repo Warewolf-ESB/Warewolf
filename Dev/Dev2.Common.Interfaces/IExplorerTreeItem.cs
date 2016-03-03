@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IExplorerTreeItem
+    public interface IExplorerTreeItem:IDisposable
     {
         ResourceType ResourceType { get; set; }
         string ResourcePath { get; set; }

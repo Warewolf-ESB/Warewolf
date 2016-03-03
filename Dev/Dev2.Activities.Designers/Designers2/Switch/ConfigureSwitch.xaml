@@ -11,12 +11,20 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+             xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
              Height="Auto" Width="Auto"
              d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance switch:SwitchDesignerViewModel}">
+
+    <UserControl.Resources>
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+    </UserControl.Resources>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -40,7 +48,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Variable to Switch on:" />
-       
+
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Grid.Row="0"
                                     Margin="{StaticResource ControlBorderTop}"
@@ -64,7 +72,9 @@
             </ui:IntellisenseTextBox>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Display text:" Margin="{StaticResource ControlBorderTop}" />
             <TextBox Grid.Column="1" x:Name="DisplayText" Grid.Row="1" MinWidth="200" MaxWidth="200" HorizontalAlignment="Left" Margin="{StaticResource ControlBorderTop}" Text="{Binding DisplayText}"/>
-        </Grid>      
-        
+        </Grid>
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

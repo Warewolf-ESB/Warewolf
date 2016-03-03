@@ -111,7 +111,7 @@ namespace Dev2.DataList.Contract
                 catch(Exception)
                 {
                     //Do Something usefull like log
-                    Dev2Logger.Log.Info("Error parsing");
+                    Dev2Logger.Info("Error parsing");
                 }
             }
             return allValidRegions;

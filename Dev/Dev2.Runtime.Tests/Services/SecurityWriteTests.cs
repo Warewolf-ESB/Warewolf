@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -85,12 +85,13 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(securitySettingsValue) } }, null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
-            var fileData = File.ReadAllText("secure.config");
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
+            var fileData = File.ReadAllText(serverSecuritySettingsFile);
             Assert.IsFalse(fileData.StartsWith("{"));
             Assert.IsFalse(fileData.EndsWith("}"));
             Assert.IsFalse(fileData.Contains("IsServer"));
-            File.Delete("secure.config");
+            File.Delete(serverSecuritySettingsFile);
         }
 
         #endregion Exeute
@@ -146,9 +147,9 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityWrite_Write_SecuritySettingsIsNotNull_PersistsSecuritySettings()
         {
             //------------Setup for test--------------------------
-            if(File.Exists(ServerSecurityService.FileName))
+            if(File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
             {
-                File.Delete(ServerSecurityService.FileName);
+                File.Delete(EnvironmentVariables.ServerSecuritySettingsFile);
             }
 
             var securitySettings = new SecuritySettingsTO();
@@ -157,8 +158,8 @@ namespace Dev2.Tests.Runtime.Services
             SecurityWrite.Write(securitySettings);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists(ServerSecurityService.FileName));
-            File.Delete(ServerSecurityService.FileName);
+            Assert.IsTrue(File.Exists(EnvironmentVariables.ServerSecuritySettingsFile));
+            File.Delete(EnvironmentVariables.ServerSecuritySettingsFile);
         }
     }
 }

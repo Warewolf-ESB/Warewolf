@@ -5,7 +5,6 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
-using Dev2.Studio.Controller;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
@@ -39,6 +38,13 @@ namespace Dev2.ViewModels
             };
         }
 
+        protected override void OnDispose()
+        {
+            _eventPublisher.Unsubscribe(this);
+            base.OnDispose();
+            if (ViewModel != null) ViewModel.Dispose();
+        }
+
         public override object GetView(object context = null)
         {
             return View;
@@ -67,7 +73,9 @@ namespace Dev2.ViewModels
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+
+
+// ReSharper disable once UnusedMember.Global
         public ResourceType ResourceType
         {
             get

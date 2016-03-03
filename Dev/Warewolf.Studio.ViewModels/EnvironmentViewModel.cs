@@ -38,7 +38,6 @@ namespace Warewolf.Studio.ViewModels
         bool _allowResourceCheck;
         bool? _isResourceChecked;
         bool _isVisible;
-        bool _isFolderChecked;
         bool _showContextMenu;
         readonly IPopupController _controller;
         private bool _isLoading;
@@ -160,12 +159,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool AreVersionsVisible { get; set; }
 
-        IExplorerItemViewModel Find(string resourcePath)
-        {
-            return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(resourcePath)).FirstOrDefault(found => found != null);
-        }
-
-        void CreateFolder()
+       public void CreateFolder()
         {
             IsExpanded = true;
             var id = Guid.NewGuid();
@@ -196,6 +190,25 @@ namespace Warewolf.Studio.ViewModels
                 child.CanDeploy = false;
                 child.CanShowDependencies = false;
             }
+            else
+            {
+                child.AllowResourceCheck = AllowResourceCheck;
+                child.IsResourceChecked = IsResourceChecked;
+                child.CanCreateFolder = CanCreateFolder;
+                child.CanCreateDbSource = CanCreateDbSource;
+                child.CanShowVersions = CanShowVersions;
+                child.CanRename = true;
+                child.CanCreatePluginSource = CanCreatePluginSource;
+                child.CanCreateEmailSource = CanCreateEmailSource;
+                child.CanCreateDropboxSource = CanCreateDropboxSource;
+                child.CanCreateSharePointSource = CanCreateSharePointSource;
+                child.CanCreateServerSource = CanCreateServerSource;
+                child.CanCreateWebSource = CanCreateWebSource;
+                child.CanDeploy = CanDeploy;
+                child.CanCreateWorkflowService = CanCreateWorkflowService;
+
+                child.ShowContextMenu = ShowContextMenu;
+             }
             _children.Insert(0, child);
             OnPropertyChanged(() => Children);
         }
@@ -506,13 +519,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = newFolder + " " + count;
+                folderName = NewFolder + " " + count;
             }
             return folderName;
         }
@@ -729,7 +742,9 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        async Task<ObservableCollection<IExplorerItemViewModel>> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+#pragma warning disable 1998
+        public async Task<ObservableCollection<IExplorerItemViewModel>> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+#pragma warning restore 1998
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return null;
@@ -783,10 +798,10 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        ObservableCollection<IExplorerItemViewModel> CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+        void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
-            if (explorerItems == null) return null;
+            if (explorerItems == null) return;
             var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
             if (parent != null)
             {
@@ -834,7 +849,6 @@ namespace Warewolf.Studio.ViewModels
                 ShowContextMenu = false;
             }
             //return explorerItemModels;
-            return null;
         }
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
@@ -863,6 +877,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 return Resources.Languages.Core.EnvironmentExplorerRefreshToolTip;
             }
+        }
+
+        public void Dispose()
+        {
+            if (Children != null)
+                foreach (var explorerItemViewModel in _children)
+                {
+                    if (explorerItemViewModel != null) explorerItemViewModel.Dispose();
+                }
         }
     }
 }

@@ -12,14 +12,12 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -141,7 +139,7 @@ namespace Dev2.Activities
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
                         int timeoutval;
-                        if (int.TryParse(WarewolfDataEvaluationCommon.EvalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
+                        if (int.TryParse(WarewolfDataEvaluationCommon.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
                         {
                             if (timeoutval < 0)
                             {
@@ -182,7 +180,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("DSFWebGetRequest", e);
+                Dev2Logger.Error("DSFWebGetRequest", e);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -315,11 +315,11 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _showCollapseLargeView.Click -= ShowCollapseFromContextMenu;
             }
-//            if(Context != null)
-//            {
-//                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
-//                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
-//            }
+            if (Context != null)
+            {
+                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
+                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
+            }
 
             if(_zIndexProperty != null)
             {
@@ -333,8 +333,8 @@ namespace Dev2.Activities.Designers2.Core
             Loaded -= OnRoutedEventHandler;
 
             Unloaded -= ActivityDesignerUnloaded;
-//            CEventHelper.RemoveAllEventHandlers(this);
-//            CEventHelper.RemoveAllEventHandlers(this);
+            CEventHelper.RemoveAllEventHandlers(this);
+            CEventHelper.RemoveAllEventHandlers(this);
            GC.SuppressFinalize(this);
         }
 

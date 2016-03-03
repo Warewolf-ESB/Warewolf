@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string domain = string.Empty;
             string password = string.Empty;
             StringBuilder tmp;
-            Dev2Logger.Log.Info("Find Drive");
+            Dev2Logger.Info("Find Drive");
             values.TryGetValue("Username", out tmp);
             if(tmp != null)
             {
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 result.Append(ex.Message);
             }
 

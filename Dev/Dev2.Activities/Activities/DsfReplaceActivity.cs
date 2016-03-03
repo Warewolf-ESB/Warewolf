@@ -211,7 +211,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // ReSharper disable EmptyGeneralCatchClause
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("DSFReplace", ex);
+                Dev2Logger.Error("DSFReplace", ex);
                 allErrors.AddError(ex.Message);
             }
             finally

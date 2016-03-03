@@ -772,7 +772,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Error(e.Message, e);
+                        Dev2Logger.Error(e.Message, e);
                     }
                 }
             }
@@ -790,7 +790,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error(e.Message, e);
+                        Dev2Logger.Error(e.Message, e);
                     }
                 }
             }

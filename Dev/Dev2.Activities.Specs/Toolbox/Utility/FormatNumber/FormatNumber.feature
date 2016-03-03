@@ -193,7 +193,7 @@ Scenario: Format number with negative recordset index for decimals to show
 	Then the execution has "AN" error
 
 
-#Audit 
+#Audit Wolf-1419 
 @ignore
 Scenario: Format number with unknown scalar for rounding
 	Given I have a formatnumber variable "[[int]]" equal to ""
@@ -207,7 +207,7 @@ Scenario: Format number with unknown scalar for rounding
 Scenario: Format number rounding with unknown scalar decimals value to show 
 	Given I have a number 788.894564545645
 	And I selected rounding "Normal" to 0 
-	And I want to show "[[var]]" decimals with value ""
+	And I want to show "[[var]]" decimals with values ""
 	When the format number is executed
 	Then the result 789 will be returned
 	And the execution has "NO" error
@@ -239,7 +239,7 @@ Examples:
 | [[rec([[int]]).a]] = 788.894564545645, [[int]] = 2 | Normal   | [[rs().set]] =  0                   | [[a]]                          | 0          | [[rec([[int]]).a]] = 789, [[int]] = 1 |
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Format number using complex types 
 	Given I have a number '<Number>'
 	And I selected rounding '<Rounding>' to '<RoundingValue>' 

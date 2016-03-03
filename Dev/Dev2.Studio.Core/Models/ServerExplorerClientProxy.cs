@@ -43,7 +43,7 @@ namespace Dev2.Models
         public IExplorerItem Load(Guid workSpaceId)
         {
             var controller = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
-            return (controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId));
+            return controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId);
         }
 
         public IExplorerItem Load(ResourceType type, Guid workSpaceId)

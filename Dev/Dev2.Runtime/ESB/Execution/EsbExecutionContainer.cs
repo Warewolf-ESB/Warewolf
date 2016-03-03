@@ -14,14 +14,13 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     /// <summary>
     /// Wrapper class for all executable types in our ESB
     /// </summary>
-    public abstract class EsbExecutionContainer
+    public abstract class EsbExecutionContainer : IEsbExecutionContainer
     {
         protected ServiceAction ServiceAction { get; private set; }
         protected IDSFDataObject DataObject { get; private set; }
@@ -31,6 +30,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public String InstanceOutputDefinition { get; set; }
         public String InstanceInputDefinition { get; set; }
+
+        public IDSFDataObject GetDataObject()
+        {
+            return DataObject;
+        }
 
         protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObject, theWorkspace, esbChannel, null)
@@ -53,6 +57,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         public abstract Guid Execute(out ErrorResultTO errors, int update);
 
-        public abstract IExecutionEnvironment Execute(IDSFDataObject inputs,IDev2Activity activity);
+        public abstract IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity);
     }
 }

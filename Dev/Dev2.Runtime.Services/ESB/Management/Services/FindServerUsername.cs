@@ -29,13 +29,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                Dev2Logger.Log.Info("Find Server User Name");
+                Dev2Logger.Info("Find Server User Name");
          
                 return new StringBuilder(Environment.UserDomainName + "\\" + Environment.UserName);
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 throw;
             }
         }

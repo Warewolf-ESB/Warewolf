@@ -13,12 +13,22 @@
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:CalculateDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -30,11 +40,11 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               Text="fx =" 
-               FontWeight="Normal"
-               FontStyle="Italic" 
-               VerticalAlignment="Top"/>
+                   Grid.Row="0"
+                   Text="fx =" 
+                   FontWeight="Normal"
+                   FontStyle="Italic" 
+                   VerticalAlignment="Top"/>
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -63,8 +73,7 @@
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.CalculateHelpFx}" DataContext="{Binding}" />
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CalculateHelpFx}"
-                                 DataContext="{Binding}" />
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CalculateHelpFx}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Expression"
                                      SourcePropertyValue="{Binding  ModelItem.Expression, UpdateSourceTrigger=PropertyChanged}"

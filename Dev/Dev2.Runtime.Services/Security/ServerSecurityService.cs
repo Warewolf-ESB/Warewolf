@@ -22,12 +22,11 @@ namespace Dev2.Runtime.Security
 {
     public class ServerSecurityService : SecurityServiceBase
     {
-        public const string FileName = "secure.config";
         private bool _disposing;
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
-            : this(FileName)
+            : this(EnvironmentVariables.ServerSecuritySettingsFile)
         {
         }
 
@@ -131,13 +130,13 @@ namespace Dev2.Runtime.Security
         protected override void LogStart([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            Dev2Logger.Log.Info("SecurityService"+ methodName);
+            Dev2Logger.Info("SecurityService"+ methodName);
         }
 
         protected override void LogEnd([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            Dev2Logger.Log.Info("SecurityService"+ methodName);
+            Dev2Logger.Info("SecurityService"+ methodName);
         }
     }
 }

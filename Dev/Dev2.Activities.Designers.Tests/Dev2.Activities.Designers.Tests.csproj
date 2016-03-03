@@ -52,6 +52,18 @@
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -66,6 +78,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
@@ -81,7 +94,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -94,10 +109,20 @@
     </Compile>
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="Core\Database\DatabaseSourceRegionTest.cs" />
+    <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
+    <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
+    <Compile Include="Core\Database\ManageDatabaseServiceInputViewModelTests.cs" />
+    <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
+    <Compile Include="Core\WebInputRegionTest.cs" />
+    <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebPostInputRegionTest.cs" />
+    <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
-    <Compile Include="RecordsLength\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
@@ -164,14 +189,22 @@
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointReadListTests.cs" />
+    <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
+    <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
+    <Compile Include="TestToolBaseViewModel.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
+    <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
+    <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
     <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
     <Compile Include="XPath\XPathDesignerViewModelTests.cs" />
@@ -234,6 +267,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

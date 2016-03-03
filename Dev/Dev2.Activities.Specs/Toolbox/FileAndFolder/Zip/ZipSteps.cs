@@ -72,7 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Debug("Error Setting Up Zip",e);
+                Dev2Logger.Debug("Error Setting Up Zip",e);
             }
         }
     }

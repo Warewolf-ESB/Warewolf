@@ -42,13 +42,17 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Reflection;
+using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
+using Dev2.PerformanceCounters;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -60,6 +64,9 @@ using Dev2.Workspaces;
 using log4net.Config;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable InconsistentNaming
 namespace Dev2
@@ -125,88 +132,88 @@ namespace Dev2
                 bool commandLineParameterProcessed = false;
                 if(options.Install)
                 {
-                    Dev2Logger.Log.Info("Starting Install");
+                    Dev2Logger.Info("Starting Install");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        Dev2Logger.Log.Info("Cannot install because the server is not running as an admin user");
+                        Dev2Logger.Info("Cannot install because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.Install())
                     {
                         result = 81;
-                        Dev2Logger.Log.Info("Install Success Result is 81");
+                        Dev2Logger.Info("Install Success Result is 81");
                     }
                 }
 
                 if(options.StartService)
                 {
-                    Dev2Logger.Log.Info("Starting Service");
+                    Dev2Logger.Info("Starting Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        Dev2Logger.Log.Info("Cannot start because the server is not running as an admin user");
+                        Dev2Logger.Info("Cannot start because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.StartService(null))
                     {
-                        Dev2Logger.Log.Info("Starting Service success. result 83");
+                        Dev2Logger.Info("Starting Service success. result 83");
                         result = 83;
                     }
                 }
 
                 if(options.StopService)
                 {
-                    Dev2Logger.Log.Info("Stopping Service");
+                    Dev2Logger.Info("Stopping Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        Dev2Logger.Log.Info("Cannot stop because the server is not running as an admin user");
+                        Dev2Logger.Info("Cannot stop because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.StopService(null))
                     {
-                        Dev2Logger.Log.Info("Stopping Service success. result 84");
+                        Dev2Logger.Info("Stopping Service success. result 84");
                         result = 84;
                     }
                 }
 
                 if(options.Uninstall)
                 {
-                    Dev2Logger.Log.Info("Uninstall Service");
+                    Dev2Logger.Info("Uninstall Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        Dev2Logger.Log.Info("Cannot uninstall because the server is not running as an admin user");
+                        Dev2Logger.Info("Cannot uninstall because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.Uninstall())
                     {
-                        Dev2Logger.Log.Info("Uninstall Service success. result 92");
+                        Dev2Logger.Info("Uninstall Service success. result 92");
                         result = 82;
                     }
                 }
 
                 if(commandLineParameterProcessed)
                 {
-                    Dev2Logger.Log.Info("Command line processed. Returning");
+                    Dev2Logger.Info("Command line processed. Returning");
                     return result;
                 }
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
-                    Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+                    Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
                 };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
-                    Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                    Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
                     using(_singleton = new ServerLifecycleManager(arguments))
                     {
                         result = _singleton.Run(true);
@@ -216,7 +223,7 @@ namespace Dev2
                 }
                 else
                 {
-                    Dev2Logger.Log.Info("** Starting In Service Mode **");
+                    Dev2Logger.Info("** Starting In Service Mode **");
                     // running as service
                     using(var service = new ServerLifecycleManagerService())
                     {
@@ -226,9 +233,9 @@ namespace Dev2
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Error Starting Server", err);
+                Dev2Logger.Error("Error Starting Server", err);
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Log.Error("Error Starting Server. Stack trace", err);
+                Dev2Logger.Error("Error Starting Server. Stack trace", err);
                 // ReSharper restore InvokeAsExtensionMethod
                 throw;
             }
@@ -249,14 +256,14 @@ namespace Dev2
 
             protected override void OnStart(string[] args)
             {
-                Dev2Logger.Log.Info("** Service Started **");
+                Dev2Logger.Info("** Service Started **");
                 _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
             protected override void OnStop()
             {
-                Dev2Logger.Log.Info("** Service Stopped **");
+                Dev2Logger.Info("** Service Stopped **");
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
@@ -289,6 +296,7 @@ namespace Dev2
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
         private int _daysToKeepTempFiles;
+        private PulseTracker _pulseTracker;
 
         // END OF GC MANAGEMENT
 
@@ -321,18 +329,22 @@ namespace Dev2
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
+            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
+            _pulseTracker.Start();
             _arguments = arguments ?? new string[0];
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
             SetWorkingDirectory();
-            const string settingsConfigFile = "Settings.config";
+            MoveSettingsFiles();
+            var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
             if (!File.Exists(settingsConfigFile))
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
             }
             try
             {
+                Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Server");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
             catch(Exception e)
@@ -343,6 +355,33 @@ namespace Dev2
             SetupTempCleanupSetting();
             InitializeCommandLineArguments();
         }
+
+        private static void MoveSettingsFiles()
+        {
+            if(File.Exists("Settings.config"))
+            {
+                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                {
+                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
+                }
+                if(!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
+                {
+                    File.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
+                }
+            }
+            if(File.Exists("secure.config"))
+            {
+                if(!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
+                {
+                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
+                }
+                if(!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
+                {
+                    File.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
+                }
+            }
+        }
+
         private void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
@@ -425,13 +464,14 @@ namespace Dev2
                 result = 3;
                 didBreak = true;
             }
-
+            LoadPerformanceCounters();
             if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
                 didBreak = true;
             }
 
+       
 
             // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadServerWorkspace())
@@ -478,6 +518,7 @@ namespace Dev2
         void StartPulseLogger()
         {
             _pulseLogger.Start();
+            _pulseTracker.Start();
         }
 
         void PerformTimerActions(object state)
@@ -730,14 +771,10 @@ namespace Dev2
             return result;
         }
 
-        internal bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
+        internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
-            bool output = false;
-
             if(String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
             {
-                output = true;
-
                 if(!String.IsNullOrEmpty(section.InnerText))
                 {
                     if(String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
@@ -760,8 +797,6 @@ namespace Dev2
                     result = false;
                 }
             }
-
-            return output;
         }
 
 
@@ -1225,7 +1260,7 @@ namespace Dev2
                     }
                     else
                     {
-                        bool shouldCollect = (_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet;
+                        bool shouldCollect = _lastKnownWorkingSet / 1024L / 1024L > _minimumWorkingSet;
 
                         if(shouldCollect)
                         {
@@ -1421,10 +1456,8 @@ namespace Dev2
         /// workflow execution.
         /// </summary>
         /// <returns>false if the cleanup failed, otherwise true</returns>
-        internal bool CleanupServer()
+        internal void CleanupServer()
         {
-            bool result = true;
-
             try
             {
                 if(_owinServer != null)
@@ -1436,9 +1469,7 @@ namespace Dev2
             catch(Exception ex)
             {
                 LogException(ex);
-                result = false;
             }
-
             try
             {
                 DebugDispatcher.Instance.Shutdown();
@@ -1446,22 +1477,8 @@ namespace Dev2
             catch(Exception ex)
             {
                 LogException(ex);
-                result = false;
             }
-
-            // shutdown the storage layer ;)
-            try
-            {
-   
-            }
-            catch(Exception e)
-            {
-                LogException(e);
-            }
-
             TerminateGcManager();
-
-            return result;
         }
 
         #endregion
@@ -1664,6 +1681,29 @@ namespace Dev2
 
         #region External Services
 
+        void LoadPerformanceCounters()
+        {
+            try
+            {
+                PerformanceCounterPersistence perf = new PerformanceCounterPersistence(new FileWrapper());
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(),perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
+                var locater = new WarewolfPerformanceCounterManager(register.Counters,register.ResourceCounters ,register,perf);
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
+
+
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
+                CustomContainer.Register<IPerformanceCounterRepository>(locater);
+            }
+            catch (Exception err)
+            {
+                // ignored
+                Dev2Logger.Error(err);
+            }
+        }
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
@@ -1689,94 +1729,261 @@ namespace Dev2
             return true;
         }
 
-        private void SplitDatabaseActivityOnTypeOfSource() {
+        private void SplitDatabaseActivityOnTypeOfSource()
+        {
             var resources = ResourceCatalog.Instance.GetResources(GlobalConstants.ServerWorkspaceID);
-            for (int index = resources.Count - 1; index >= 0; index--) {
+            for(int index = resources.Count - 1; index >= 0; index--)
+            {
                 var resource = resources[index];
                 var resourceID = resource.ResourceID;
                 var workflowActivity = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceID, resource.ResourceName);
-                if (workflowActivity != null) {
+                if(workflowActivity != null)
+                {
                     var sa = workflowActivity.Actions.FirstOrDefault();
                     ResourceCatalog.Instance.MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
                     var activity = ResourceCatalog.Instance.GetActivity(sa);
-                    if (activity != null) {
-                        try {
+                    if(activity != null)
+                    {
+                        try
+                        {
                             var chart = WorkflowInspectionServices.GetActivities(activity).FirstOrDefault() as Flowchart;
-                            if (chart != null) {
-                                if (chart.Nodes.Count > 0) {
-                                    var updated = false;
-                                    foreach (var flowNode in chart.Nodes) {
+                            if(chart != null)
+                            {
+                                if(chart.Nodes.Count > 0)
+                                {
+                                    var mustUpdate = false;
+                                    foreach(var flowNode in chart.Nodes)
+                                    {
                                         var flowStep = flowNode as FlowStep;
-                                        if (flowStep != null) {
-                                            var dbActivity = flowStep.Action as DsfDatabaseActivity;
-                                            var forEachActivity = flowStep.Action as DsfForEachActivity;
-                                            if (dbActivity == null) {
-
-                                                if (forEachActivity != null) {
-                                                    dbActivity = forEachActivity.DataFunc.Handler as DsfDatabaseActivity;
-                                                }
-                                            }
-                                            DbService service = null;
-                                            if (dbActivity != null) {
-                                                updated = true;
-                                                var dbId = dbActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivity.ResourceID.Expression.ToString());
-                                                service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId);
-                                            } else {
-                                                var dbActivityAsActivity = flowStep.Action as DsfActivity;
-                                                if (dbActivityAsActivity == null) {
-                                                    forEachActivity = flowStep.Action as DsfForEachActivity;
-                                                    if (forEachActivity != null) {
-                                                        dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
-                                                    }
-                                                }
-                                                if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc") {
-                                                    updated = true;
-                                                    var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
-                                                    service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId) ??
-                                                              ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbActivityAsActivity.ServiceName);
-                                                }
-                                            }
-                                            if (service != null) {
-                                                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
-                                                             ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
-                                                if (source != null) {
-                                                    if (source.ServerType == enSourceType.MySqlDatabase) {
-                                                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
-                                                        if (forEachActivity != null) {
-                                                            forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
-                                                        } else {
-                                                            flowStep.Action = dsfMySqlDatabaseActivity;
-                                                        }
-                                                    } else if (source.ServerType == enSourceType.SqlDatabase) {
-                                                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
-                                                        if (forEachActivity != null) {
-                                                            forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
-                                                        } else {
-                                                            flowStep.Action = dsfSqlServerDatabaseActivity;
-                                                        }
-                                                    } else if (source.ServerType == enSourceType.Oracle) {
-                                                        var dsfOracleDatabaseActivity = ActivityUtils.GetDsfOracleDatabaseActivity(dbActivity, source, service);
-                                                        if (forEachActivity != null) {
-                                                            forEachActivity.DataFunc.Handler = dsfOracleDatabaseActivity;
-                                                        } else {
-                                                            flowStep.Action = dsfOracleDatabaseActivity;
-                                                        }
-                                                    }
-                                                }
+                                        if(flowStep != null)
+                                        {
+                                            var updated = MigrateDatabaseActivity(flowStep) || MigratePluginActivity(flowStep);
+                                            if(updated)
+                                            {
+                                                mustUpdate = true;
                                             }
                                         }
                                     }
-                                    if (updated) {
+                                    if (mustUpdate)
+                                    {
                                         UpdateXaml(chart, resource);
                                     }
                                 }
                             }
-                        } catch (Exception ex) {
-                            Dev2Logger.Log.Debug(ex.Message, ex);
+                        }
+                        catch(Exception ex)
+                        {
+                            Dev2Logger.Debug(ex.Message,ex);
                         }
                     }
                 }
             }
+        }
+
+        private bool MigratePluginActivity(FlowStep flowStep)
+        {
+            var pluginActivity = flowStep.Action as DsfPluginActivity;
+            var forEachActivity = flowStep.Action as DsfForEachActivity;
+            DsfActivity pluginActivityAsActivity = null;
+            var updated = false;
+            if (pluginActivity == null)
+            {
+                if (forEachActivity != null)
+                {
+                    pluginActivity = forEachActivity.DataFunc.Handler as DsfPluginActivity;
+                }
+            }
+            PluginService service = null;
+             if (pluginActivity != null)
+            {
+                updated = true;
+                var dbId = pluginActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(pluginActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, dbId);
+            }
+            else
+            {
+                pluginActivityAsActivity = flowStep.Action as DsfActivity;
+                if(pluginActivityAsActivity == null)
+                {
+                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                    if(forEachActivity != null)
+                    {
+                        pluginActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if (pluginActivityAsActivity != null && pluginActivityAsActivity.Type.Expression.ToString() == "Plugin")
+                {
+                    updated = true;
+                    var dbId = pluginActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(pluginActivityAsActivity.ResourceID.Expression.ToString());
+                    service = ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, dbId) ??
+                              ResourceCatalog.Instance.GetResource<PluginService>(GlobalConstants.ServerWorkspaceID, pluginActivityAsActivity.ServiceName);
+                }
+            }
+            if(service != null)
+            {
+                var source = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                             ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                if(source != null)
+                {
+                    string inputMapping;
+                    string outputMapping;
+                    DsfDotNetDllActivity dotNetActivity;
+                    var pluginAction = new PluginAction
+                    {
+                        FullName = service.Method.FullName,
+                        Method = service.Method.ExecuteAction,
+                        Inputs = service.Method.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),
+                        Variables = service.Method.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList()
+                    };
+                    var namespaceItem = new NamespaceItem
+                    {
+                        FullName = service.Namespace,
+                        AssemblyLocation = source.AssemblyLocation,
+                        AssemblyName = source.AssemblyName,
+                        MethodName = service.Method.Name
+                    };
+                    if(pluginActivity != null)
+                    {
+                        inputMapping = pluginActivity.InputMapping;
+                        outputMapping = pluginActivity.OutputMapping;
+                        dotNetActivity = new DsfDotNetDllActivity
+                        {
+                            UniqueID = pluginActivity.UniqueID,
+                            ToolboxFriendlyName = pluginActivity.ToolboxFriendlyName,
+                            IconPath = pluginActivity.IconPath,
+                            ServiceName = pluginActivity.ServiceName,
+                            DataTags = pluginActivity.DataTags,
+                            ResultValidationRequiredTags = pluginActivity.ResultValidationRequiredTags,
+                            ResultValidationExpression = pluginActivity.ResultValidationExpression,
+                            FriendlySourceName = pluginActivity.FriendlySourceName,
+                            EnvironmentID = pluginActivity.EnvironmentID,
+                            Type = pluginActivity.Type,
+                            RunWorkflowAsync = pluginActivity.RunWorkflowAsync,
+                            Category = pluginActivity.Category,
+                            ServiceUri = pluginActivity.ServiceUri,
+                            ServiceServer = pluginActivity.ServiceServer,
+                            ParentServiceName = pluginActivity.ParentServiceName,
+                            ParentServiceID = pluginActivity.ParentServiceID,
+                            ParentWorkflowInstanceId = pluginActivity.ParentWorkflowInstanceId,
+                            ParentInstanceID = pluginActivity.ParentInstanceID,
+                        };
+                    }
+                    else
+                    {
+                        inputMapping = pluginActivityAsActivity.InputMapping;
+                        outputMapping = pluginActivityAsActivity.OutputMapping;
+                        dotNetActivity = new DsfDotNetDllActivity
+                        {
+                            UniqueID = pluginActivityAsActivity.UniqueID,
+                            ToolboxFriendlyName = pluginActivityAsActivity.ToolboxFriendlyName,
+                            IconPath = pluginActivityAsActivity.IconPath,
+                            ServiceName = pluginActivityAsActivity.ServiceName,
+                            DataTags = pluginActivityAsActivity.DataTags,
+                            ResultValidationRequiredTags = pluginActivityAsActivity.ResultValidationRequiredTags,
+                            ResultValidationExpression = pluginActivityAsActivity.ResultValidationExpression,
+                            FriendlySourceName = pluginActivityAsActivity.FriendlySourceName,
+                            EnvironmentID = pluginActivityAsActivity.EnvironmentID,
+                            Type = pluginActivityAsActivity.Type,
+                            RunWorkflowAsync = pluginActivityAsActivity.RunWorkflowAsync,
+                            Category = pluginActivityAsActivity.Category,
+                            ServiceUri = pluginActivityAsActivity.ServiceUri,
+                            ServiceServer = pluginActivityAsActivity.ServiceServer,
+                            ParentServiceName = pluginActivityAsActivity.ParentServiceName,
+                            ParentServiceID = pluginActivityAsActivity.ParentServiceID,
+                            ParentWorkflowInstanceId = pluginActivityAsActivity.ParentWorkflowInstanceId,
+                            ParentInstanceID = pluginActivityAsActivity.ParentInstanceID,
+                        };
+                    }
+                    dotNetActivity.ActionName = service.Method.ExecuteAction;
+                    dotNetActivity.Method = pluginAction;
+                    dotNetActivity.Namespace = namespaceItem;
+                    dotNetActivity.SourceId = source.ResourceID;
+                    dotNetActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                    dotNetActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    if(forEachActivity != null)
+                    {
+                        forEachActivity.DataFunc.Handler = dotNetActivity;
+                    }
+                    else
+                    {
+                        flowStep.Action = dotNetActivity;
+                    }
+                }
+            }
+            return updated;
+        }
+
+        private static bool MigrateDatabaseActivity(FlowStep flowStep)
+        {
+            var dbActivity = flowStep.Action as DsfDatabaseActivity;
+            var forEachActivity = flowStep.Action as DsfForEachActivity;
+            var updated = false;
+            if(dbActivity == null)
+            {
+                if(forEachActivity != null)
+                {
+                    dbActivity = forEachActivity.DataFunc.Handler as DsfDatabaseActivity;
+                }
+            }
+            DbService service = null;
+            if(dbActivity != null)
+            {
+                updated = true;
+                var dbId = dbActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId);
+            }
+            else
+            {
+                var dbActivityAsActivity = flowStep.Action as DsfActivity;
+                if(dbActivityAsActivity == null)
+                {
+                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                    if(forEachActivity != null)
+                    {
+                        dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if(dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
+                {
+                    updated = true;
+                    var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
+                    service = ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbId) ??
+                              ResourceCatalog.Instance.GetResource<DbService>(GlobalConstants.ServerWorkspaceID, dbActivityAsActivity.ServiceName);
+                }
+            }
+            if(service != null)
+            {
+                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                             ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                if(source != null)
+                {
+                    if(source.ServerType == enSourceType.MySqlDatabase)
+                    {
+                        var dsfMySqlDatabaseActivity = ActivityUtils.GetDsfMySqlDatabaseActivity(dbActivity, source, service);
+                        if(forEachActivity != null)
+                        {
+                            forEachActivity.DataFunc.Handler = dsfMySqlDatabaseActivity;
+                        }
+                        else
+                        {
+                            flowStep.Action = dsfMySqlDatabaseActivity;
+                        }
+                    }
+                    else if(source.ServerType == enSourceType.SqlDatabase)
+                    {
+                        var dsfSqlServerDatabaseActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity(dbActivity, service, source);
+                        if(forEachActivity != null)
+                        {
+                            forEachActivity.DataFunc.Handler = dsfSqlServerDatabaseActivity;
+                        }
+                        else
+                        {
+                            flowStep.Action = dsfSqlServerDatabaseActivity;
+                        }
+                    }
+                }
+            }
+            return updated;
         }
 
         private static void UpdateXaml(Flowchart chart, IResource resource)
@@ -1827,11 +2034,15 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
+            if(!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                DirectoryHelper.Copy(Path.Combine(EnvironmentVariables.ApplicationPath,"Resources"),EnvironmentVariables.ResourcePath,true);
+            }
         }
 
         static void ValidatResourceFolder()
         {
-            var folder = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            var folder = EnvironmentVariables.ResourcePath;
             if(!Directory.Exists(folder))
             Directory.CreateDirectory(folder);
         }
@@ -1850,7 +2061,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Dev2.ServerLifecycleManager - Error Migrating", ex);
+                Dev2Logger.Error("Dev2.ServerLifecycleManager - Error Migrating", ex);
             }
         }
 
@@ -1976,11 +2187,11 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
-                Dev2Logger.Log.Info(message);
+                Dev2Logger.Info(message);
             }
             else
             {
-                Dev2Logger.Log.Info(message);
+                Dev2Logger.Info(message);
             }
 
         }
@@ -1990,11 +2201,11 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.Write(message);
-                Dev2Logger.Log.Info(message);
+                Dev2Logger.Info(message);
             }
             else
             {
-                Dev2Logger.Log.Info(message);
+                Dev2Logger.Info(message);
             }
         }
 
@@ -2011,12 +2222,12 @@ namespace Dev2
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
             }
         }
         static void LogException(Exception ex)
         {
-            Dev2Logger.Log.Error("Dev2.ServerLifecycleManager", ex);
+            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex);
         }
     }
 }

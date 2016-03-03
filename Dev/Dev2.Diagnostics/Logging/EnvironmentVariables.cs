@@ -47,7 +47,7 @@ namespace Dev2.Common
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Info("ApplicationPath Error -> " + e.Message);
+                        Dev2Logger.Info("ApplicationPath Error -> " + e.Message);
                         _appPath = Directory.GetCurrentDirectory(); // fail safe ;)
                     }
 
@@ -61,9 +61,76 @@ namespace Dev2.Common
         {
             get
             {
+                var resourcePath = Path.Combine(AppDataPath, "Resources");                
+                return resourcePath;
+            }
+        }
+        private static string AppDataPath
+        {
+            get
+            {
+                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create),"Warewolf");
+                if(!Directory.Exists(appDataPath))
+                {
+                    Directory.CreateDirectory(appDataPath);
+                }
+                return appDataPath;
+            }
+        }
 
-                return Path.Combine(ApplicationPath, "Resources");
-              
+        public static string ServerSettingsFolder
+        {
+            get
+            {
+                var serverSettingsFolder = Path.Combine(AppDataPath, "Server Settings");
+                if (!Directory.Exists(serverSettingsFolder))
+                {
+                    Directory.CreateDirectory(serverSettingsFolder);
+                }
+                return serverSettingsFolder;
+            }
+        }
+
+        public static string ServerLogSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "Settings.config");
+                return serverLogSettings;
+            }
+        }
+
+        public static string ServerPerfmonSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "Perfmon.config");
+                return serverLogSettings;
+            }
+        }
+        public static string ServerResourcePerfmonSettingsFile
+        {
+            get
+            {
+                var serverLogSettings = Path.Combine(ServerSettingsFolder, "ResourcesPerfmon.config");
+                return serverLogSettings;
+            }
+        }
+
+        public static string ServerSecuritySettingsFile
+        {
+            get
+            {
+                var severSecurityFile = Path.Combine(ServerSettingsFolder, "secure.config");
+                return severSecurityFile;
+            }
+        }
+
+        public static string ServerLogFile
+        {
+            get
+            {
+                return Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
             }
         }
 
@@ -77,7 +144,12 @@ namespace Dev2.Common
         {
             get
             {
-                return Path.Combine(ApplicationPath, "Workspaces");
+                var workspacePath = Path.Combine(AppDataPath, "Workspaces");
+                if (!Directory.Exists(workspacePath))
+                {
+                    Directory.CreateDirectory(workspacePath);
+                }
+                return workspacePath;
             }
         }
 
@@ -89,7 +161,7 @@ namespace Dev2.Common
         public static string GetWorkspacePath(Guid workspaceID)
         {
             return workspaceID == Guid.Empty
-                       ? Path.Combine(ApplicationPath, "Resources")
+                       ? Path.Combine(AppDataPath, "Resources")
                        : Path.Combine( Path.Combine(WorkspacePath, workspaceID.ToString()),"Resources");
         }
 

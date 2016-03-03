@@ -13,6 +13,7 @@ using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Warewolf.Testing;
 
 namespace Warewolf.AcceptanceTesting.SaveDialog
 {
@@ -25,8 +26,8 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             Utils.SetupResourceDictionary();
             var explorerRepository = new Mock<IExplorerRepository>();
             explorerRepository.Setup(repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
-            var view = new RequestServiceNameView();
-            var viewModel = await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new ServerForTesting(explorerRepository), new Mock<IShellViewModel>().Object), view, "", "");
+            IRequestServiceNameView view = new RequestServiceNameView();
+            var viewModel = await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new ServerForTesting(explorerRepository), new Mock<IShellViewModel>().Object), "", "");
             view.DataContext = viewModel;
             var window = new Window {Content = view};
             var app = Application.Current;
@@ -88,7 +89,7 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
         public void WhenIAttemptToSaveAWorkflowAs(string p0)
         {
             IRequestServiceNameView saveView;
-            var gotView = ScenarioContext.Current.TryGetValue("saveView", out saveView);
+            ScenarioContext.Current.TryGetValue("saveView", out saveView);
             saveView.Save();
         }
         [Then(@"an error message appear with the value ""(.*)""")]
@@ -305,7 +306,7 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             var view = ScenarioContext.Current.Get<IRequestServiceNameView>("saveView");
             var explorerRepository = new Mock<IExplorerRepository>();
             explorerRepository.Setup(repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
-            var viewModel = await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new ServerForTesting(explorerRepository),new Mock<IShellViewModel>().Object), view, "", "");
+            var viewModel = await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new ServerForTesting(explorerRepository),new Mock<IShellViewModel>().Object), "", "");
             view.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");
             FeatureContext.Current.Add("viewModel", viewModel);

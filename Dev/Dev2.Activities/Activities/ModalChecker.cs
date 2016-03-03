@@ -36,11 +36,11 @@ namespace Dev2.Activities
         public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
         private delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
         [DllImport("user32")]
-        private extern static int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
+        private static extern int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
         [DllImport("user32", CharSet = CharSet.Auto)]
-        private extern static uint GetWindowLong(IntPtr hWnd, int nIndex);
+        private static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32")]
-        private extern static uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
         [DllImport("user32")]
         static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
         [DllImport("user32")]

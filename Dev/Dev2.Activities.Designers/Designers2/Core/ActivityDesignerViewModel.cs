@@ -415,12 +415,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             TitleBarToggles.Clear();
 
-            //_modelItem.PropertyChanged -= OnModelItemPropertyChanged;
+            _modelItem.PropertyChanged -= OnModelItemPropertyChanged;
            
             OnDispose();
-//            CEventHelper.RemoveAllEventHandlers(this);
-//            CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
-//            CEventHelper.RemoveAllEventHandlers(ModelItem);
+            CEventHelper.RemoveAllEventHandlers(this);
+            CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
+            CEventHelper.RemoveAllEventHandlers(ModelItem);
            GC.SuppressFinalize(this);
         }
 

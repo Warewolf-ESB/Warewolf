@@ -365,11 +365,21 @@ Scenario: Import data into table with blank data
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
 
+#Wolf-1359
+Scenario: Edit DB Source
+	Given I have "DB Source" as "DemoDB"
+	And table as "dbo.[Country]" 
+	And I have this data
+	| InputData                  | ToField     | Type        |
+	| [[Country(*).CountryID]]   | CountryID   | int         |
+	| [[Country(*).Description]] | Description | varchar(50) |
+	When I click "Edit"
+	Then the "DemoDB" tab is opened
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Saving results in recordsets
-	Given I have DB as "DemoDB"
+	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"
 	And I have this data
 	| InputData                  | ToField     | Type        |
@@ -387,9 +397,10 @@ Scenario Outline: Saving results in recordsets
 	| [[rec([[int]]).a]],[[int]] =3 | Success |
 
 
-#Complex Types
+#Complex Types WOLF-1042
+@ignore
 Scenario Outline: Saving results in complex types
-	Given I have DB as "DemoDB"
+	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"
 	And I have this data
 	| InputData                          | ToField     | Type        |

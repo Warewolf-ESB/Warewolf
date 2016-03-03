@@ -28,7 +28,6 @@ Scenario: Ensuring decision text is visible under tool
 	And a decision variable "[[A]]" operation "=" right  "123 234" position "0"
 	And "Done" is selected
 	Then the Decision tool window is closed
-	And "If [[A]] Is = a123 234" is visible in tool
 	
 Scenario: Ensure Decision window caches correctly
 	Given I have a workflow "New Workflow"
