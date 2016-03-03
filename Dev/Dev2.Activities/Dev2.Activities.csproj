@@ -145,6 +145,8 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Activities" />
@@ -191,7 +193,6 @@
     <Compile Include="Activities\DsfDateTimeActivity.cs" />
     <Compile Include="Activities\DsfDateTimeDifferenceActivity.cs" />
     <Compile Include="Activities\DsfExecuteCommandLineActivity.cs" />
-    <Compile Include="Activities\DsfFindRecordsActivity.cs" />
     <Compile Include="Activities\DsfFlowDecisionActivity.cs" />
     <Compile Include="Activities\DsfFlowNodeActivity.cs" />
     <Compile Include="Activities\DsfFlowSwitchActivity.cs" />
@@ -211,15 +212,21 @@
     <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />
     <Compile Include="Activities\DsfSwitch.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
+    <Compile Include="Activities\DsfWebActivityBase.cs" />
+    <Compile Include="Activities\DsfWebDeleteActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
+    <Compile Include="Activities\DsfWebPostActivity.cs" />
+    <Compile Include="Activities\DsfWebPutActivity.cs" />
     <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />
     <Compile Include="Activities\FindRecordsTO.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
+    <Compile Include="Activities\HttpClientCredentialManager.cs" />
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
@@ -250,6 +257,7 @@
     <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
     <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
+    <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
@@ -404,10 +412,6 @@
     <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
       <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
       <Name>Dev2.Services.Execution</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj">
-      <Project>{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}</Project>
-      <Name>Dev2.TaskScheduler.Wrappers.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>

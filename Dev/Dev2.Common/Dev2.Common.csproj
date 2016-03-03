@@ -145,6 +145,7 @@
     <Compile Include="Utils\StringTransform.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
+    <Compile Include="WorkflowExecutionWatcher.cs" />
     <Compile Include="Wrappers\DirectoryEntriesWrapper.cs" />
     <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />

@@ -307,7 +307,8 @@ namespace Dev2.Core.Tests
 
                 foreach (var error in memo.Errors)
                 {
-                    var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
+                    var error1 = error;
+                    var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error1.ErrorType && me.Message == error1.Message);
                     Assert.AreSame(error, modelError, "OnDesignValidationReceived did not set the error.");
                 }
             };
@@ -469,7 +470,7 @@ namespace Dev2.Core.Tests
             var serviceDefinition = model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, serviceDefinition.ToString());
+            Assert.IsTrue(serviceDefinition==null||string.IsNullOrEmpty(serviceDefinition.ToString()));
         }
 
         [TestMethod]

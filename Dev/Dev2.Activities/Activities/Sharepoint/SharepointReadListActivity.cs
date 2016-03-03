@@ -12,7 +12,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -90,10 +89,10 @@ namespace Dev2.Activities.Sharepoint
                 var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
-                    var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                    var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
                     if (sharepointSource == null)
                     {
-                        var contents = ResourceCatalog.Instance.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                        var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
                         sharepointSource = new SharepointSource(contents.ToXElement());
                     }
                     var env = dataObject.Environment;
@@ -134,7 +133,7 @@ namespace Dev2.Activities.Sharepoint
                                     }
                                     catch (Exception e)
                                     {
-                                        Dev2Logger.Log.Error(e);
+                                        Dev2Logger.Error(e);
                                         //Ignore sharepoint exception on retrieval not all fields can be retrieved.
                                     }
                                     var correctedVariable = variableName;
@@ -154,7 +153,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointReadListActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

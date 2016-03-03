@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Calculate Exception", ex);
+                Dev2Logger.Error("Calculate Exception", ex);
                 allErrors.AddError(ex.Message);
             }
             finally

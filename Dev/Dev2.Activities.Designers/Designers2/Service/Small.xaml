@@ -5,20 +5,28 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Grid.Column="0"
-                      Grid.IsSharedSizeScope="True"
-                      ItemsSource="{Binding Path=Properties}">
+        <ItemsControl Grid.Column="0" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Path=Properties}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,-4,0,-4">
@@ -33,9 +41,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <ContentControl Grid.Column="1"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right">
+        <ContentControl Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <ContentControl.ToolTip>
                 <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}"
                               ItemTemplate="{StaticResource ErrorListTemplate}" />

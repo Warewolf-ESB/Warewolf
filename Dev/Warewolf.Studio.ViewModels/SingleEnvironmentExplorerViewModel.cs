@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => SearchText);
             }
         }
-        public bool FilterByType { get; set; }
+        private bool FilterByType { get; set; }
 
         protected override void Refresh()
         {

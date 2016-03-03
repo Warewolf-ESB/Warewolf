@@ -21,6 +21,14 @@
 *.manifest
 *.log
 *.cer
+*.vssscc
+*.testsettings
+
+####################################################################################
+# Compile outputs
+####################################################################################
+obj
+bin
 
 ####################################################################################
 # Build working directories
@@ -28,26 +36,4 @@
 /Dev/packages/**
 /Dev/TestResults/**
 /TestResults/**
-/Logs/**
-
-####################################################################################
-# Compile outputs
-####################################################################################
-obj
-**/bin/*
-!/Dev/Dev2.Server/bin/Debug
-/Dev/Dev2.Server/bin/Debug/*
-!/Dev/Dev2.Server/bin/Debug/Resources
-/Dev/Dev2.Server/bin/Debug/Resources/**/VersionControl
-
-####################################################################################
-# These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
-####################################################################################
-/Dev/Dev2.Server/bin/Debug/Resources/Examples/**
-/Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Shared Resources Server.xml
-
-####################################################################################
-# For lack of SpecFlow.CodedUI nuget package. (I can't find it anywhere! - Ashley)
-####################################################################################
-!Dev/Warewolf.Studio.UISpecs/fnr.exe
+.sonarqube

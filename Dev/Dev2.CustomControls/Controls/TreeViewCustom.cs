@@ -23,20 +23,20 @@ namespace Dev2.CustomControls.Controls
             {
                 if (value)
                 {
-                    if (this.Items != null)
+                    if (Items != null)
                     {
-                        this.Items.Add(String.Empty); //Dummy item
+                        Items.Add(String.Empty); //Dummy item
                     }
                 }
                 else
                 {
-                    if (this.Items != null)
+                    if (Items != null)
                     {
-                        this.Items.Clear();
+                        Items.Clear();
                     }
                 }
 
-                base.SetValue(HasChildrenProperty, value);
+                SetValue(HasChildrenProperty, value);
             }
         }
     }

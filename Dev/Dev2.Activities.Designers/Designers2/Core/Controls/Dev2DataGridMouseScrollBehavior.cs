@@ -25,12 +25,12 @@ namespace Dev2.Activities.Designers2.Core.Controls
         {
             base.OnAttached();
 
-            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-            AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
+            AssociatedObject.SelectionChanged -= AssociatedObjectSelectionChanged;
+            AssociatedObject.PreviewMouseWheel -= AssociatedObjectDoCustomScroll;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
-            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
-            AssociatedObject.PreviewMouseWheel += AssociatedObject_doCustomScroll;
+            AssociatedObject.SelectionChanged += AssociatedObjectSelectionChanged;
+            AssociatedObject.PreviewMouseWheel += AssociatedObjectDoCustomScroll;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
         }
 
@@ -38,8 +38,8 @@ namespace Dev2.Activities.Designers2.Core.Controls
         {
             base.OnDetaching();
 
-            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-            AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
+            AssociatedObject.SelectionChanged -= AssociatedObjectSelectionChanged;
+            AssociatedObject.PreviewMouseWheel -= AssociatedObjectDoCustomScroll;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
 
@@ -67,13 +67,13 @@ namespace Dev2.Activities.Designers2.Core.Controls
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-            AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
+            AssociatedObject.SelectionChanged -= AssociatedObjectSelectionChanged;
+            AssociatedObject.PreviewMouseWheel -= AssociatedObjectDoCustomScroll;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             routedEventArgs.Handled = true;
         }
 
-        void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void AssociatedObjectSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(sender is Dev2DataGrid)
             {
@@ -98,7 +98,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             }
         }
 
-        private void AssociatedObject_doCustomScroll(object sender, MouseWheelEventArgs e)
+        private void AssociatedObjectDoCustomScroll(object sender, MouseWheelEventArgs e)
         {
             var theGrid = sender as Dev2DataGrid;
 

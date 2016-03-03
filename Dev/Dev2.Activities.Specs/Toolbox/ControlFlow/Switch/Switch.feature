@@ -20,7 +20,7 @@ Scenario: Ensure that a negative index throws an error
 
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Ensure that a variable/recordset evaluates to the value on the datalist
 	Given I need to switch on variable "<variable>" with the value "<val>"		
 	When the switch tool is executed
@@ -39,7 +39,7 @@ Examples:
 #error on [[rec(*).a]] - unable to varify tool not working
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Ensure that an object evaluates to the value on the datalist
 	Given I need to switch on variable "<object>" with the value "<val>"		
 	When the switch tool is executed

@@ -152,7 +152,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                Dev2Logger.Log.Error("FileIO", ex);
+                Dev2Logger.Error("FileIO", ex);
                 throw;
             }
             return result;

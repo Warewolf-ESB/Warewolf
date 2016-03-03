@@ -68,9 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
             {
                 RemovedFilesCreatedForTesting();
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                
+                Console.Write(e.Message);
               
             }
            

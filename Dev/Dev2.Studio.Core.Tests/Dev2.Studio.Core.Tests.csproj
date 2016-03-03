@@ -186,9 +186,7 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
-    <Compile Include="ActivityDropView\DsfActivityDropViewModelTests.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehaviorTests.cs" />
-    <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
     <Compile Include="AppResources\Comparers\ContexttualResourceModelEqualityComparerTests.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
@@ -204,7 +202,6 @@
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverterTests.cs" />
     <Compile Include="ClientExplorerRepositoryTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -229,8 +226,6 @@
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
-    <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
-    <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
     <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
@@ -463,7 +458,11 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717E42-DF21-45A4-9527-F0BB95D7135D}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
@@ -477,6 +476,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ActivityDropView\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
     <Folder Include="ViewModelTests\Configuration\" />

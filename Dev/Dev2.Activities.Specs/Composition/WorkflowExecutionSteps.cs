@@ -23,7 +23,6 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
-using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -59,7 +58,9 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
-using Dev2.Runtime.Hosting;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.PerformanceCounters.Counters;
+using Dev2.PerformanceCounters.Management;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -226,6 +227,60 @@ namespace Dev2.Activities.Specs.Composition
             Add("resourceRepo", environmentModel.ResourceRepository);
             Add("debugStates", new List<IDebugState>());
         }
+
+        [Given(@"I have reset local perfromance Counters")]
+        public void GivenIHaveResetLocalPerfromanceCounters()
+        {
+           
+                try
+                {
+                    try
+                    {
+                        PerformanceCounterCategory.Delete("Warewolf");
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch { }
+
+                    WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
+                                                                new WarewolfNumberOfErrors(),   
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
+                                                                new WarewolfNumberOfAuthErrors(),
+                                                                new WarewolfServicesNotFoundCounter()
+                                                            }, new List<IResourcePerformanceCounter>());
+
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
+                }
+                catch 
+                {
+                    // ignored
+                    Assert.Fail("failed to delete existing counters");
+                }
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+        
+               
+        
+
+        [Then(@"the perfcounter raw values are")]
+        public void ThenThePerfcounterRawValuesAre(Table table)
+        {
+           var counters =  new PerformanceCounterCategory("Warewolf").GetCounters();
+           
+            foreach(var tableRow in table.Rows)
+            {
+                if(tableRow[1]=="x")
+                Assert.AreNotEqual(counters.First(a=>a.CounterName==tableRow[0]).RawValue,0);
+                else
+                {
+                    Assert.AreEqual(counters.First(a => a.CounterName == tableRow[0]).RawValue, int.Parse( tableRow[1]));
+                }
+              
+            }
+        }
+
+
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int Timeout)
         {
@@ -409,9 +464,11 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true);
-
-
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName),true,true);
+            if (resource == null)
+            {
+                throw new Exception("Local Warewolf service " + serviceName + " not found.");
+            }
             var activity = GetServiceActivity(serviceType);
             if(activity != null)
             {
@@ -428,21 +485,49 @@ namespace Dev2.Activities.Specs.Composition
                 activity.OutputMapping = outputMapping;
                 activity.InputMapping = inputMapping;
 
-                var service = new DbService(resource.WorkflowXaml.ToXElement());
-
-                var source = service.Source as DbSource;
-
-                Activity mysqlActivity = null;
-                switch(serviceType)
+                if (resource.ServerResourceType == "DbService")
                 {
-                    case "mysql database":
-                        mysqlActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
-                        break;
-                    case "sqlserver database":
-                        mysqlActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
-                        break;
+                    var xml = resource.ToServiceDefinition(true).ToXElement();
+                    var service = new DbService(xml);
+                    var source = service.Source as DbSource;
+                    Activity updatedActivity = null;
+                    switch(serviceType)
+                    {
+                        case "mysql database":
+                            updatedActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                            break;
+                        case "sqlserver database":
+                            updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
+                    }
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
-                CommonSteps.AddActivityToActivityList(wf, serviceName, mysqlActivity);
+                else if(resource.ServerResourceType == "WebService")
+                {
+                    var updatedActivity = new DsfWebGetActivity();
+                    var xml = resource.ToServiceDefinition(true).ToXElement();
+                    var service = new WebService(xml);
+                    var source = service.Source as WebSource;
+                    updatedActivity.Headers = new List<INameValue>();
+                    if(service.Headers != null)
+                    {
+                        service.Headers.AddRange(service.Headers);                        
+                    }
+                    updatedActivity.OutputDescription = service.OutputDescription;
+                    updatedActivity.QueryString = service.RequestUrl;
+                    updatedActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                    updatedActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                    updatedActivity.DisplayName = serviceName;
+                    if(source != null)
+                    {
+                        updatedActivity.SourceId = source.ResourceID;
+                    }
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
+                }
+                else
+                {
+                    CommonSteps.AddActivityToActivityList(wf, serviceName, activity);
+                }
             }
         }
 
@@ -491,6 +576,10 @@ namespace Dev2.Activities.Specs.Composition
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
+                }
+                else
+                {
+                    throw new Exception("Remote Warewolf service " + remoteWf + " not found on server " + server + ".");
                 }
             }
             else
@@ -1198,7 +1287,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity, DisplayName = nestedWF };
             forEachAct.DataFunc = activityFunction;
-            //ScenarioContext.Current.Pending();
         }
 
 
@@ -1455,7 +1543,7 @@ namespace Dev2.Activities.Specs.Composition
                 !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
                 return;
 
-            var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel, LogSize = 200};
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogLevel = logLevel,EventLogLoggerLogLevel = logLevel, FileLoggerLogSize = 200};
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());

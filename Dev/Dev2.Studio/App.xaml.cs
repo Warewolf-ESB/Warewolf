@@ -79,8 +79,17 @@ namespace Dev2.Studio
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
-            InitializeComponent();
-            AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+
+            try
+            {
+                AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+                InitializeComponent();
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error(e.Message,e);
+                AppSettings.LocalHost = "http://localhost:3142";
+            }
         }
 
         public static bool IsAutomationMode
@@ -162,6 +171,7 @@ namespace Dev2.Studio
                 {
                     File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
                 }
+                Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Studio");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
             }
@@ -186,6 +196,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };

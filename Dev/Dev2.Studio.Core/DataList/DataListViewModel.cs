@@ -732,7 +732,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void CheckForEmptyRecordset()
         {
-            foreach(var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || (c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].Name)) && !string.IsNullOrEmpty(c.Name)))
+            foreach(var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].Name) && !string.IsNullOrEmpty(c.Name)))
             {
                 recordset.SetError(StringResources.ErrorMessageEmptyRecordSet);
             }
@@ -740,7 +740,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void CheckForFixedEmptyRecordsets()
         {
-            foreach(var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && (c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name))))
+            foreach(var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name)))
             {
                 if(recset.ErrorMessage != StringResources.ErrorMessageDuplicateRecordset || recset.ErrorMessage != StringResources.ErrorMessageInvalidChar)
                 {
@@ -1044,7 +1044,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
             
 
@@ -1337,7 +1337,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         continue;
                     }
-                    if((dataListItem.Children.Count > 0))
+                    if(dataListItem.Children.Count > 0)
                     {
                         if(partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
@@ -1357,7 +1357,7 @@ namespace Dev2.Studio.ViewModels.DataList
                                 foreach(var child in dataListItem.Children)
                                 // ReSharper restore LoopCanBeConvertedToQuery
                                 {
-                                    if(!(String.IsNullOrEmpty(child.Name)))
+                                    if(!String.IsNullOrEmpty(child.Name))
                                     {
                                         //19.09.2012: massimo.guerrera - Added in the description to creating the part
                                         if(dataListItem.IsEditable)
@@ -1444,7 +1444,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
-            if(!(part.IsScalar))
+            if(!part.IsScalar)
             {
                 var recset = DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
                 if(!recset.Any())

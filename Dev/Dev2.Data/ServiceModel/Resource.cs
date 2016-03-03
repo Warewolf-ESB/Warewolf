@@ -549,11 +549,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             if(ResourceType == ResourceType.WorkflowService)
             {
                 GetDependenciesForWorkflowService(xml);
-            }
-            else
-            {
-                GetDependenciesForWorkerService(xml);
-            }
+            }            
         }
 
         void GetDependenciesForWorkflowService(XElement xml)
@@ -572,9 +568,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                     var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
                     var dependenciesFromXml = from desc in elementToUse.Descendants()
                                               where
-                                                  (desc.Name.LocalName.Contains("DsfDatabaseActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfPluginActivity") ||
-                                                   desc.Name.LocalName.Contains("DsfWebserviceActivity") ||
+                                                  (desc.Name.LocalName.Contains("DsfMySqlDatabaseActivity") ||
+                                                  desc.Name.LocalName.Contains("DsfSqlServerDatabaseActivity") ||
+                                                   desc.Name.LocalName.Contains("DsfDotNetDllActivity") ||
+                                                   desc.Name.LocalName.Contains("DsfWebGetActivity") ||
                                                    desc.Name.LocalName.Contains("DsfActivity")) &&
                                                   desc.Attribute("UniqueID") != null
                                               select desc;
@@ -586,10 +583,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                         xElements.ForEach(element =>
                             {
                                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
-                                var resourceIdAsString = element.AttributeSafe("ResourceID");
-                                var resourceName = element.AttributeSafe("ServiceName");
                                 var actionTypeStr = element.AttributeSafe("Type");
                                 var resourceType = GetResourceTypeFromString(actionTypeStr);
+                                if (resourceType == ResourceType.Unknown)
+                                {
+                                    resourceType = GetResourceTypeFromName(element.Name.LocalName);
+                                }
+                                var resourceIdAsString = element.AttributeSafe(resourceType == ResourceType.WorkflowService ? "ResourceID" : "SourceId");
+                                var resourceName = element.AttributeSafe("ServiceName");
                                 Guid uniqueId;
                                 Guid.TryParse(uniqueIdAsString, out uniqueId);
                                 Guid resId;
@@ -607,6 +608,21 @@ namespace Dev2.Runtime.ServiceModel.Data
                     errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
                 }
             }
+        }
+
+        private ResourceType GetResourceTypeFromName(string localName)
+        {
+            switch(localName)
+            {
+                case "DsfMySqlDatabaseActivity":
+                case "DsfSqlServerDatabaseActivity":
+                    return ResourceType.DbService;
+                case "DsfDotNetDllActivity":
+                    return ResourceType.PluginService;
+                case "DsfWebGetActivity":
+                    return ResourceType.WebService;
+            }
+            return ResourceType.Unknown;
         }
 
         void AddDatabaseSourcesForSqlBulkInsertTool(XElement elementToUse)

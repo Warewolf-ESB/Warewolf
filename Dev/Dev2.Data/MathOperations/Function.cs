@@ -148,7 +148,7 @@ namespace Dev2.MathOperations
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Function", ex);
+                Dev2Logger.Error("Function", ex);
                 custCalculation = null;
                 isSucessfullyCreated = false;
             }

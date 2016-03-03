@@ -353,7 +353,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
             if(allScalars && WorkflowInputs.Count > 0)
             {
-                return WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=") + workflowInput.Value + "&").TrimEnd('&');
+                return WorkflowInputs.Aggregate("", (current, workflowInput) => current + workflowInput.Field + "=" + workflowInput.Value + "&").TrimEnd('&');
             }
             return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
         }

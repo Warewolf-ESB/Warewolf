@@ -1,8 +1,5 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+﻿using System.Windows;
+using System.Windows.Input;
 using Infragistics.Controls.Grids;
 
 namespace Dev2.Activities.Designers2.Core
@@ -12,9 +9,6 @@ namespace Dev2.Activities.Designers2.Core
     /// </summary>
     public partial class ManageServiceInputView
     {
-        Grid _blackoutGrid;
-        Window _window;
-
         public ManageServiceInputView()
         {
             InitializeComponent();
@@ -23,68 +17,78 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ShowView()
         {
-            IsModal = true;
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
-
-            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640, MinHeight = 480, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
-            _window.ShowDialog();
-        }
-
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
+            Show();
         }
 
         public void RequestClose()
         {
-            RemoveBlackOutEffect();
-            _window.Close();
+            Close();
         }
 
-        #region Implementation of IComponentConnector
-
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
+        public void OutputDataGridResize()
         {
+            if (OutputsDataGrid != null && OutputsDataGrid.Columns != null && OutputsDataGrid.Columns.Count > 10)
+            {
+                OutputsDataGrid.ColumnWidth = ColumnWidth.SizeToHeader;
+            }
         }
-
-        #endregion
 
         void TestActionButton_OnClick(object sender, RoutedEventArgs e)
         {
             DoneButton.IsEnabled = true;
         }
 
-        void OutputsDataGrid_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        void ManageServiceInputView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var grid = sender as XamGrid;
-
-            if (grid != null)
-            {
-                if (grid.Columns != null && grid.Columns.Count > 10)
-                {
-                    grid.ColumnWidth = ColumnWidth.SizeToHeader;
-                }
-            }
+            DragMove();
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

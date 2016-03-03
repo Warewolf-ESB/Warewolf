@@ -17,6 +17,8 @@
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
                                Height="250"
@@ -26,6 +28,14 @@
                                d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance createJson:CreateJsonDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -35,7 +45,7 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    
+
     <Grid x:Name="ContentGrid" Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -56,9 +66,7 @@
                 <DataGridTemplateColumn Width="27" IsReadOnly="True" Header="#">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={local:RowToIndexConverter}}" />
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={local:RowToIndexConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -134,7 +142,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
-        
+
         <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -160,7 +168,6 @@
             </ui:IntellisenseTextBox>
         </Grid>
 
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="2"/>
+        <errors:OnError Grid.Column="0" Grid.Row="2"/>
     </Grid>
 </core:ActivityDesignerTemplate>

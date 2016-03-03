@@ -106,8 +106,6 @@
     <Compile Include="CheckBoxColumnContentProvider.cs" />
     <Compile Include="CustomViewModel.cs" />
     <Compile Include="DebugConverter.cs" />
-    <Compile Include="IntellisenseTextBoxColumn.cs" />
-    <Compile Include="IntellisenseTextColumnContentProvider.cs" />
     <Compile Include="NavigationItemViewModelDragDropBehavior.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />

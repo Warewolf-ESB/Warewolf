@@ -53,7 +53,7 @@ namespace Dev2.CustomControls.Panels
         /// <summary>
         ///     Adds the child element to the logical tree.
         /// </summary>
-        protected override sealed void OnChildAdded(UIElement child)
+        protected sealed override void OnChildAdded(UIElement child)
         {
             // if the child does not have a logical parent, assume the role
             if (LogicalTreeHelper.GetParent(child) == null)
@@ -66,7 +66,7 @@ namespace Dev2.CustomControls.Panels
         /// <summary>
         ///     Removes the child element from the logical tree.
         /// </summary>
-        protected override sealed void OnChildRemoved(UIElement child)
+        protected sealed override void OnChildRemoved(UIElement child)
         {
             // if this panel is the logical parent, remove that relationship
 // ReSharper disable PossibleUnintendedReferenceComparison

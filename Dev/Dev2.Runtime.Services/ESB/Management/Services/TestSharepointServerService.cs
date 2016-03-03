@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new ExecuteMessage();
                 res.HasError = true;
                 res.SetMessage("No sharepoint server set");
-                Dev2Logger.Log.Debug("No sharepoint server set.");
+                Dev2Logger.Debug("No sharepoint server set.");
                 return serializer.SerializeToBuilder(res);
             }
             try
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 msg.Message = serializer.SerializeToBuilder(ex.Message);
             }
             return serializer.SerializeToBuilder(msg);

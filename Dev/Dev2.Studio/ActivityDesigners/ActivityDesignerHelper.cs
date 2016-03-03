@@ -58,6 +58,10 @@ using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
+using Dev2.Activities.Designers2.WebServiceGet;
+using Dev2.Activities.Designers2.Web_Service_Delete;
+using Dev2.Activities.Designers2.Web_Service_Post;
+using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
@@ -121,9 +125,12 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
+                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
+                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
+                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
+                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
-                { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
@@ -133,8 +140,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
                 //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
                 //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
-
-                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);

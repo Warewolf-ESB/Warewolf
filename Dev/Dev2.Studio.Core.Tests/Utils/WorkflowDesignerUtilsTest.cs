@@ -186,8 +186,8 @@ namespace Dev2.Core.Tests.Utils
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
             EventPublishers.Aggregator = aggregator.Object;
 
@@ -216,8 +216,8 @@ namespace Dev2.Core.Tests.Utils
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
+                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
+                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
             });
             EventPublishers.Aggregator = aggregator.Object;
 

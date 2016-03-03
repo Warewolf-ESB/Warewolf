@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Delete
         public DeleteDesignerViewModel(ModelItem modelItem)
             : base(modelItem, "File or Folder", string.Empty)
         {
+            AddTitleBarLargeToggle();
         }
 
         public override void Validate()

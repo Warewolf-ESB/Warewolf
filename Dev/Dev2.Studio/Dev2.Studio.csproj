@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
@@ -37,6 +37,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -261,6 +263,10 @@
     <Reference Include="WPFTextBoxAutoComplete">
       <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.0\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
     </Reference>
+    <Reference Include="XamlSpy, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlSpyLibs.3.0.3\lib\net4\XamlSpy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -271,35 +277,8 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
-    <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
-      <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml.cs">
-      <DependentUpon>DsfCheckpointActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
-      <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml.cs">
       <DependentUpon>DsfScriptingJavaScriptDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfAssertActivityDesigner.xaml.cs">
-      <DependentUpon>DsfAssertActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfFileForEachActivityDesigner.xaml.cs">
-      <DependentUpon>DsfFileForEachActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfHttpActivityDesigner.xaml.cs">
-      <DependentUpon>DsfHttpActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfRemoveActivityDesigner.xaml.cs">
-      <DependentUpon>DsfRemoveActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfTagCountActivityDesigner.xaml.cs">
-      <DependentUpon>DsfTagCountActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfTransformActivityDesigner.xaml.cs">
-      <DependentUpon>DsfTransformActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
@@ -336,7 +315,6 @@
     <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="ActivityDesigners\BaseActivityDesigner.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
@@ -410,12 +388,19 @@
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
     <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">
+      <DependentUpon>PerfCounterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
     <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
@@ -579,45 +564,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfAssertActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfFileForEachActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfHttpActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfRemoveActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfTagCountActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfTransformActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -654,6 +603,10 @@
     <Page Include="Settings\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Perfcounters\PerfCounterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Scheduler\SchedulerView.xaml">
       <SubType>Designer</SubType>
@@ -872,6 +825,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1050,7 +1004,7 @@
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewol.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>

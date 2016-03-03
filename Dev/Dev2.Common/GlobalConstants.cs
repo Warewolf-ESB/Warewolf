@@ -57,7 +57,7 @@ namespace Dev2.Common
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
-                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log\" />" +
     "<!-- Example using environment variables in params -->" +
     "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
     "<appendToFile value=\"true\" />" +
@@ -74,10 +74,35 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<threshold value=\"ERROR\" />" +
+                                              "<mapping>"+
+                                                "<level value=\"ERROR\" />"+
+                                                "<eventLogEntryType value=\"Error\" />"+
+                                              "</mapping>"+
+                                              "<mapping>"+
+                                                 "<level value=\"DEBUG\" />"+
+                                                 "<eventLogEntryType value=\"Information\" />"+
+                                               "</mapping>"+
+                                                "<mapping>" +
+                                                "<level value=\"INFO\" />" +
+                                                "<eventLogEntryType value=\"Information\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"WARN\" />" +
+                                                 "<eventLogEntryType value=\"Warning\" />" +
+                                               "</mapping>" +
+                                             "<logName value=\"Warewolf\"/>" +
+                                             "<applicationName value=\"Warewolf Server\"/>" +
+                                             "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                              "</layout>"+
+                                             "</appender>"+
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
                                              "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<appender-ref ref=\"EventLogLogger\"/>" +
                                              "</root>" +
                                              "</log4net>";
 
@@ -100,11 +125,35 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
+                                             "<threshold value=\"ERROR\" />"+
+                                             "<mapping>" +
+                                                "<level value=\"ERROR\" />" +
+                                                "<eventLogEntryType value=\"Error\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"DEBUG\" />" +
+                                                 "<eventLogEntryType value=\"Information\" />" +
+                                               "</mapping>" +
+                                                "<mapping>" +
+                                                "<level value=\"INFO\" />" +
+                                                "<eventLogEntryType value=\"Information\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"WARN\" />" +
+                                                 "<eventLogEntryType value=\"Warning\" />" +
+                                               "</mapping>" +
+                                             "<logName value=\"Warewolf\"/>"+
+                                             "<applicationName value=\"Warewolf Studio\"/>"+
+                                             "<layout type=\"log4net.Layout.PatternLayout\">" +
+                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                              "</layout>" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +
-                                           
+                                             "<appender-ref ref=\"LogFileAppender\" />" +                                           
+                                             "<appender-ref ref=\"EventLogLogger\"/>"+
                                              "</root>" +
                                              "</log4net>";
 
@@ -117,6 +166,8 @@ namespace Dev2.Common
         // ReSharper disable InconsistentNaming
         public const int MAX_BUFFER_SIZE = 35000;
         // ReSharper restore InconsistentNaming
+
+        public const double DesignHeightTolerance = 0.00000001;
 
         // Force Webserver Constants
         // ReSharper disable UnusedMember.Global
@@ -439,7 +490,8 @@ or type_desc LIKE '%Procedure%'";
         }
         public static int AddPopupTimeDelay = 2000;
         static GenericPrincipal _user;
-
+        public static double RowHeight = 30;
+        public static double RowHeaderHeight=30;
 
         public static IPrincipal GenericPrincipal
         {
@@ -500,6 +552,9 @@ public static int MinCompressVersionMinor
             }
    
         }
+        public static string GlobalCounterName = "All";
+        public static string Warewolf = "Warewolf";
+        public static string WarewolfServices = "Warewolf Services";
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

@@ -8,6 +8,7 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d"
              x:Class="Warewolf.Studio.Views.ToolboxView"
              x:Name="UserControl"
@@ -23,7 +24,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+              <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         <CollectionViewSource x:Key="ToolViewSource" Source="{Binding Tools}">
             <!-- Grouping -->
@@ -94,7 +95,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" Margin="{StaticResource ContainerBorder}">
+    <Grid x:Name="LayoutRoot" Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -107,7 +108,7 @@
         <!--  TOOL SEARCH BOX  -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="29"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

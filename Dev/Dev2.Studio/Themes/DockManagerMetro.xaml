@@ -3,12 +3,13 @@
     xmlns:igWindows="http://infragistics.com/Windows"
     xmlns:igDock="http://infragistics.com/DockManager"
     xmlns:igWinThemes="http://infragistics.com/Themes"
-    xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework">
+    xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
+    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerMetroBrushes.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
+        <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
+        <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerMetroBrushes.xaml"/>
+        <luna:SharedResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- ========== ToolWindow ========== -->

@@ -36,7 +36,7 @@ Scenario: Workflow with multiple tools executing against the server
 
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestWFWithDBService"
-	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
+	 And "TestWFWithDBService" contains a "sqlserver database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
 	 And "TestWFWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
@@ -66,60 +66,32 @@ Scenario: Simple workflow executing against the server with a database service
 Scenario: Workflow with an assign and webservice
 	 Given I have a workflow "TestWebServiceWF"
 	 And "TestWebServiceWF" contains an Assign "Inputs" as
-	  | variable   | value |
-	  | [[ext]]    | json  |
-	  | [[prefix]] | a     |
+	  | variable      | value |
+	  | [[extension]] | json  |
+	  | [[prefix]]    | a     |
 	 And "TestWebServiceWF" contains a "webservice" service "InternalCountriesServiceTest" with mappings
 	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[ext]]       | Countries(*).CountryID   | [[Countries().CountryID]]   |
+	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
 	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
 	  When "TestWebServiceWF" is executed
 	  Then the workflow execution has "NO" error
 	   And the 'Inputs' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  | # | Variable     | New Value |
-	  | 1 | [[ext]] =    | json      |
-	  | 2 | [[prefix]] = | a         |
+	  | # | Variable        | New Value |
+	  | 1 | [[extension]] = | json      |
+	  | 2 | [[prefix]] =    | a         |
 	  And the 'Inputs' in Workflow 'TestWebServiceWF' debug outputs as    
-	  | # |                |
-	  | 1 | [[ext]] = json |
-	  | 2 | [[prefix]] = a |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
-	  |  |
-	  | [[extension]] = json |
-	  | [[prefix]] = a |
+	  | # |                      |
+	  | 1 | [[extension]] = json |
+	  | 2 | [[prefix]] = a       |
+	   And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
+	  | #            |                                                  |
+	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
+	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
+	  | Headers      |                                                  |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
-
-Scenario: Workflow with an assign and webservice different mappings
-	 Given I have a workflow "TestWebServiceDiffMappings"
-	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
-	  | variable   | value |
-	  | [[ext]]    | json  |
-	  | [[prefix]] | a     |
-	 And "TestWebServiceDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[ext]]       | Countries(*).CountryID   | [[MyCountries().ID]]   |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]] |
-	  When "TestWebServiceDiffMappings" is executed
-	  Then the workflow execution has "NO" error
-	   And the 'Inputs' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  | # | Variable     | New Value |
-	  | 1 | [[ext]] =    | json      |
-	  | 2 | [[prefix]] = | a         |
-	  And the 'Inputs' in Workflow 'TestWebServiceDiffMappings' debug outputs as    
-	  | # |                |
-	  | 1 | [[ext]] = json |
-	  | 2 | [[prefix]] = a |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
-	  |  |
-	  | [[extension]] = json |
-	  | [[prefix]] = a |
-	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
-	  |                                            |
-	  | [[MyCountries(10).ID]] = 10           |
-	  | [[Name]] = Azerbaijan |
 
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteNoError1"
@@ -155,9 +127,10 @@ Scenario: Workflow with an assign and remote workflow
 	  | 3 | [[values(1).low]] = hello |	  	 
 	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' debug outputs as
 	  |                           |
-	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  | [[output]] = HELLO        |
+	  
 	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemoteNoError1' has a debug Server Name of ""Remote Connection Integration""
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
@@ -3871,17 +3844,19 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
+
+#Need steps to create the source as the service will not be created for this
 Scenario Outline: Database SqlDB  service using * indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
-	  |                      |
-	  | [[rec(1).name]] = String |
+	  |                           |
+	  | [[rec(1).name]] = String  |
 	  | [[rec(1).email]] = String |	 
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
@@ -3908,13 +3883,13 @@ Scenario Outline: Database SqlDB  service using int indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
-	  |                      |
-	  | [[rec(1).name]] = dora |
+	  |                                         |
+	  | [[rec(1).name]] = dora                  |
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
@@ -3933,23 +3908,23 @@ Scenario Outline: Database MySqlDB Database service using int indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
  Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
-	  |                      |
-	  | [[rec(1).name]] = dora |
+	  |                                         |
+	  | [[rec(1).name]] = dora                  |
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | WorkflowName              | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
 
 Scenario Outline: Database MySqlDB Database service last  indexes
@@ -3972,24 +3947,24 @@ Examples:
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
-	  |                      |
-	  | [[name]] = dora |
+	  |                                  |
+	  | [[name]] = dora                  |
 	  | [[email]] = dora@explorers.co.za |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestWFWithDBServiceMails5 | SqlEmail    | [[name]] | [[email]] | NO           |
+    | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
+    | TestWFWithDBServiceMails5 | SqlEmail    | [[name]]     | [[email]]     | NO           |
 
 Scenario Outline: Database MySqlDB Database service scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
@@ -3997,15 +3972,15 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[name]] = Monk |
 	  | [[email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                   | ServiceName | nameVariable | emailVariable | errorOccured |
+    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 Examples: 
@@ -4017,8 +3992,8 @@ Examples:
 Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable    |
-	  | name                | afg%      | [[countries(*).countryid]] | <nameVariable> |
+	  | Input to Service | From Variable | Output from Service          | To Variable     |
+	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
@@ -4029,23 +4004,23 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	  | [[countries(1).description]] = Afghanistan |
 	  | [[countries(2).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithDBServiceMails15 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | Prefix           | afg           | [[countries(*).countryid]]         | <nameVariable>  |
+	  | Prefix           | afg           | [[countries(*).countryid]]   | <nameVariable>  |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
-	  |                      |
+	  |                                            |
 	  | [[countries(1).id]] = 1                    |
 	  | [[countries(1).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
+    | WorkflowName                         | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestSqlWFWithDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
  Scenario Outline: Database SqlDB  service DBErrors
@@ -4060,7 +4035,7 @@ Examples:
      | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
 
-@ignore
+
  Scenario: Executing Asynchrounous testing workflow volume
 	  Given I have a workflow "Testing - Async Test Master Testv"
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
@@ -4092,17 +4067,225 @@ Scenario: Executing Asynchrounous testing workflow error
 	  |                      |
 	  | [[Result]] = Pass |
 
-#Scenario: Server Persisted Connection
-## Note that the result is viewed in the browser
-#Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
-#When "SQL Persisted DB Connection Test" is exceuted
-#Then the execution has "NO" error
-#And the debug Result is <Result>
-#Examples: 
-# | #     | DbService | Result |
-# | SQL   | SQL       | Pass   |
-# | MySQL | MySQL     | Pass   |  
-#
+
+# MySQL Execution specs
+
+Scenario: MYSQL No Action to be loaded Error
+	Given I have a workflow "NoStoredProceedure"
+	And "NoStoredProceedure" contains "Testing/MySQLEmpty" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "NoStoredProceedure" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySQLEmpty' in Workflow 'NoStoredProceedure' debug outputs as
+	  |                                                                  |
+	  | Error: The selected database does not contain actions to perform |
+
+
+Scenario: MYSQL Passing Null Input value
+	Given I have a workflow "PassingNullValue"
+	And "PassingNullValue" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | [[value]]                  | a         | True          |
+	When "PassingNullValue" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'PassingNullValue' debug outputs as
+	  |                                       |
+	  | Error: Scalar value { value } is NULL |
+
+
+Scenario: MYSQL Mapped To Recordsets incorrect
+	Given I have a workflow "WillAlwaysError"
+	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	And "WillAlwaysError" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with Mapping To as
+	| Mapped From | Mapped To               |
+	| 1           | [[willalwayserror().1]] |
+	When "WillAlwaysError" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'WillAlwaysError' debug outputs as
+	  |                                                                    |
+	  | [[willalwayserror()]]: Recordset must contain one or more field(s) |
+
+
+
+Scenario: MYSQL Parameter not found in the collection
+	Given I have a workflow "BadMySqlParameterName"
+	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
+	     |                            | `p_startswith` | false         |
+	When "BadMySqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	  |                                                      |
+	  | Parameter 'p_startswith' not found in the collection |
+
+
+
+Scenario: MYSQL Recordset has invalid character
+	Given I have a workflow "RenameRecordsetIncorrectly"
+	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "RenameRecordsetIncorrectly" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/mysqlSource' in Workflow 'RenameRecordsetIncorrectly' debug outputs as
+	  |                                                              |
+	  | [[getCountrie.s().id]] : Recordset name has invalid format   |
+	  | [[getCountrie.s().value]]: Recordset name has invalid format |
+
+
+#Wolf-1262
+
+Scenario: MYSQL backward Compatiblity
+	Given I have a workflow "MySQLMigration"
+	And "MySQLMigration" contains "MySQLDATA" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      |                  |               | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "MySQLMigration" is executed
+	Then the workflow execution has "NO" error
+
+
+# SQL Tool Execution specs
+
+Scenario: SQL No Action to be loaded Error
+	Given I have a workflow "NoStoredProceedureToLoad"
+	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "NoStoredProceedureToLoad" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
+	  |                                                                  |
+	  | Error: The selected database does not contain actions to perform |
+
+
+Scenario: SQL Passing Null Input values
+	Given I have a workflow "PassingNullInputValue"
+	And "PassingNullInputValue" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | [[value]]                  | a         | True          |
+	When "PassingNullInputValue" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'PassingNullInputValue' debug outputs as
+	  |                                       |
+	  | Error: Scalar value { value } is NULL |
+
+
+Scenario: SQL Mapped To Recordsets incorrect
+	Given I have a workflow "BadSqlParameterName"
+	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     |                            | ProductId | True          |
+	And And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with Mapping To as
+	| Mapped From | Mapped To                      |
+	| Column1     | [[dbo_ImportOrder()..Column1]] |
+	When "BadSqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
+	  |                               |
+	  | Error: Sql Error: parse error |
+
+
+
+#Needs Work
+Scenario: Parameter not found in the collection
+	Given I have a workflow "BadMySqlParameterName"
+	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
+	     |                            | `p_startswith` | false         |
+	When "BadMySqlParameterName" is executed
+	Then the workflow execution has "An" error
+	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	  |                                                      |
+	  | Parameter 'p_startswith' not found in the collection |
+
+
+
+Scenario: SQL Recordset has invalid character
+	Given I have a workflow "MappingHasIncorrectCharacter"
+	And "MappingHasIncorrectCharacter" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	     | 1                          | charValue | True          |
+	When "MappingHasIncorrectCharacter" is executed
+	Then the workflow execution has "An" error
+	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'MappingHasIncorrectCharacter' debug outputs as
+	  |                                                                    |
+	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
+	  
+
+
+#Wolf-1262
+Scenario: backward Compatiblity
+	Given I have a workflow "DataMigration"
+	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                | To Variable                    |
+      | [[ProductId]]    | productId     | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
+      |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
+	When "DataMigration" is executed
+	Then the workflow execution has "NO" error
+
+#Wolf-1371
+Scenario: Mappings from nested workflow
+	Given I have a workflow "OutterWolf1371"
+	And "OutterWolf1371" contains "Wolf-1371" from server "localhost" with mapping as
+         | Input to Service | From Variable | Output from Service | To Variable |
+         | [[b]]            | b             | a                   | [[a]]       |
+	When "OutterWolf1371" is executed
+	Then the workflow execution has "NO" error
+
+#Wolf-1265
+Scenario: backward Compatiblity2
+	Given I have a workflow "PluginMigration"
+	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service      | To Variable          |
+      | [[s]]            | s             | [[PrimitiveReturnValue]] | PrimitiveReturnValue |
+	When "PluginMigration" is executed
+	Then the workflow execution has "NO" error
+
+
+Scenario: Dual Query
+	Given I have a workflow "DualSelectStatements"
+	And "DualSelectStatements" contains "Testing\DbIFQuery" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service                         | To Variable |
+      | [[ID]]           | rowID         | [[dbo_DuelQueryReturnMultiple().firstName]] | firstName   |
+      |                  |               | [[dbo_DuelQueryReturnMultiple().lastName]]  | lastName    |
+	When "DualSelectStatements" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Dual Query MYSQL
+	Given I have a workflow "DualQuery"
+	And "DualQuery" contains "Testing\DualQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| CountryID                 | Description                 | ID                 |
+	| [[DualQuery().CountryID]] | [[DualQuery().Description]] | [[DualQuery().ID]] |
+	When "DualQuery" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 5     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | username                     | password                     | lastAccessDate                     |
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | [[dbo_DualQuery().username]] | [[dbo_DualQuery().password]] | [[dbo_DualQuery().lastAccessDate]] |
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
+Scenario: Query with an IF Statement which returns different results based on input
+	Given I have a workflow "QueryWithIFStatement"
+	And "QueryWithIFStatement" contains "Testing\DbIFQuery" from server "localhost" with input mapping as
+      | rowID | DumbylengthFieldtoTestDisplay |
+      | 1     |                               |
+	And output mappings are
+	| firstName                     | lastName                     | 
+	| [[dbo_DualQuery().firstName]] | [[dbo_DualQuery().lastName]] | 
+	When "QueryWithIFStatement" is executed
+	Then the workflow execution has "NO" error
+
+#Unknown spec possibly made by Leon
+
 # Scenario: Exceution Engine Test with number of runs
 #	 Given I have a workflow "Exceution Engine Test"
 #	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
@@ -4130,10 +4313,10 @@ Scenario: workflow without StackOverflow exception check
          Then the workflow execution has "NO" error      
 
 Scenario: Executing WF on a remote server 
-         Given I have a workflow "TestRemoteTools"
-         And "Testing - LoopTest" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+         Given I have a workflow "Testing - TestRemoteTools"
+         And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
          | Input to Service | From Variable | Output from Service | To Variable      |
-         When "TestRemoteTools" is executed
+         When "Testing - TestRemoteTools" is executed
          Then the workflow execution has "NO" error     
 
 		 
@@ -4148,8 +4331,24 @@ Scenario: ForEach with NestedStarTest and Inner WF
 	  |                      |
 	  | [[Result]] = Pass |
 
+#Wolf-1235
+Scenario: Workflow with Performance counters
+	  Given I have a workflow "PerfCounterTest"
+	  And I have reset local perfromance Counters
+	  And "PerfCounterTest" contains "PerfCounter" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "PerfCounterTest" is executed
+	Then the perfcounter raw values are
+	| Name                                              | Value |
+	| Average workflow execution time                   | x     |
+	| Concurrent requests currently executing           | 0     |
+	| Count of Not Authorised errors                    | 0     |
+	| Total Errors                                      | 4     |
+	| Request Per Second                                | x     |
+	| Count of requests for workflows which don’t exist | 9     |
+
 #flickering test
-@ignore
 Scenario: Time Zone Changes
 	  Given I have a workflow "TimeZoneChangeTest"
 	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
@@ -4217,8 +4416,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-#FOREACH - Huggs: @Leroy Please check MasterTest workflow and ensure it is correct. Once correct unignore this test and commit the code.
-@ignore
+
 Scenario: ForEach Acceptance Tests
 	  Given I have a workflow "ForEachMasterTest"
 	  And "ForEachMasterTest" contains "Testing/For Each/MasterTest" from server "localhost" with mapping as
@@ -4230,7 +4428,9 @@ Scenario: ForEach Acceptance Tests
 	  And the 'Testing/For Each/MasterTest' in Workflow 'ForEachMasterTest' debug outputs as
 	  |                   |
 	  | [[Result]] = Pass |
-#show dependacies
+
+#show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
+#Wolf-1415
 @ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
@@ -4243,6 +4443,8 @@ Scenario: View Dependancies on a workflow with no dependancies
 	And "Hello World" is visible
 	And "Hello World" has no dependancies
 
+#show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow with multiple dependancies
 	Given I have a workflow "11365_WebService"	
@@ -4256,6 +4458,8 @@ Scenario: View workflow with multiple dependancies
 	Then "FetchCities" is shown as the first level of dependancy
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
+#show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: View workflow based on nested levels
 	Given I have a workflow "11365_WebService"	
@@ -4272,6 +4476,8 @@ Scenario: View workflow based on nested levels
 	Then "FetchCities" is shown as the first level of dependancy
 	And "Dev2GetCountriesWebService" is shown as the second level of dependancy
 
+#show dependacies possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Viewing Depenancies
 	Given I have a workflow "11365_WebService"	
@@ -4282,6 +4488,8 @@ Scenario: Viewing Depenancies
 	And I double click "Dev2GetCountriesWebService"
 	Then the "Edit - Dev2GetCountriesWebService" tab is opened
 
+#studio persist possibly meant to be coded ui
+#Wolf-1415
 	@ignore
 Scenario: Studio persistence 
 	Given I  have the Warewolf studio opened
@@ -4292,9 +4500,45 @@ Scenario: Studio persistence
 	Then the studio side menu is "Locked"
 	And the Tool Box window is in the right panel in the studio 
 
+#Wolf-1415
+	@ignore
+Scenario: Rename workflow 
+	Given I have a workflow "11365_WebService"	
+	When I right-click on "11365_WebService" to view the context menu
+	Then I click "Rename"
+	And I change "11365_WebService" to "WebService_11365"
+	When I double click "WebService_11365"
+	Then "WebService_11365" tab is opened 
+
+#Wolf-1415
+	@ignore
+Scenario: Create a nested folder 
+	Given I have a folder "My Category"	
+	When I right-click on "My Category" to view the context menu
+	Then I click "New Folder"
+	And a New Folder is visible in "My Category" in the "Edit" State
+	When I name the Folder "My Sub Category"
+	Then "My Sub Category" is visible in path "localhost\My Category\My Sub Category" 
+
+#Wolf-1415
+	@ignore
+Scenario: Move workflow 
+	Given I have a workflow "Hello World"
+	And "Hello World" is visible on "Localhost"
+	And I move "Hello World" to folder "My Category"
+	Then "Hello World" is visible as "My Category\Hello World"
+
+#Wolf-1415
+	@ignore
+Scenario: Delete workflow 
+	Given I have a workflow "Test"
+	And "Test" is visible on "Localhost"
+	When I right-click on "Test" to view the context menu
+	And I click "Delete"
+	Then "Test" is "Not" visible 
+
 
 #Wolf-1102
-@ignore
 Scenario: Recordsets in Debug Output windpw
 	Given I have a workflow "RecordsetDebugOutput"
 	And "RecordsetDebugOutput" contains "Testing/For Each/DateTimeDifference" from server "localhost" with mapping as
@@ -4309,7 +4553,7 @@ Scenario: Recordsets in Debug Output windpw
 	  | [[Date(2).Difference]] = 13  |
 
 #Wolf-402
-@ignore
+
 Scenario: Ensure that End this Workflow is working 
 	  Given I have a workflow "EndNestedWorkflows"
 	  And "EndNestedWorkflows" contains "Testing/Bugs/wolf-402" from server "localhost" with mapping as
@@ -4320,7 +4564,7 @@ Scenario: Ensure that End this Workflow is working
 
 
 #Wolf-829
-@ignore
+
 Scenario: Xml Serialisation bug when returning xml
 	Given I have a workflow "XmlSerialisation"
 	And "XmlSerialisation" contains "Testing/Bugs/wolf-829" from server "localhost" with mapping as
@@ -4330,7 +4574,7 @@ Scenario: Xml Serialisation bug when returning xml
 	Then the workflow execution has "NO" error
 
 #Wolf-860
-@ignore
+
 Scenario: Mixing Scalar And Recordset bug 
 	Given I have a workflow "MixingScalarAndRecordset"
 	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
@@ -4360,9 +4604,9 @@ Scenario: Error not bubbling up
 	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
 	And the 'ErrorHandled' in Workflow 'Wolf-1212_Test' debug outputs as
-	  |                   |
-	  | [[Result]] = Pass |
-	  | [[Error]] = <InnerError>Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)</InnerError> |
+	  |                                                                                                                                     |
+	  | [[Result]] = Fail                                                                                                                   |
+	  | [[Error]] = Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
 
 
 Scenario: Error not bubbling up error message
@@ -4376,7 +4620,7 @@ Scenario: Error not bubbling up error message
 	  |                   |
 	  | [[Result]] = Pass |
 
-@ignore
+
 Scenario: ForEach using * and Database Connector
 	  Given I have a workflow "DBConnInForEach_3"
 	  And "DBConnInForEach_3" contains "ForeachDBCon" from server "localhost" with mapping as
@@ -4387,3 +4631,13 @@ Scenario: ForEach using * and Database Connector
 	  And the 'ForeachDBCon' in Workflow 'DBConnInForEach_3' debug outputs as
 	  |                   |
 	  | [[Result]] = pass |
+
+
+#Wolf-1370
+Scenario: Mixing Scalar And Recordset bug 2
+	Given I have a workflow "OutterWorkflow"
+	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
+      | Input to Service | From Variable | Output from Service | To Variable |
+      | [[reg(*).a]]     | [[a]]         | [[rec().a]]         | [[re]]      |
+	When "OutterWorkflow" is executed
+	Then the workflow execution has "NO" error

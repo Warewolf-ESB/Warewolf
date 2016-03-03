@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
 using Dev2.Util;
 using DropNet;
 using DropNet.Models;
@@ -80,7 +79,7 @@ namespace Dev2.Activities
          {
              if (SelectedSource != null)
              {
-                 var oauthSource = ResourceCatalog.Instance.GetResource<OauthSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
+                 var oauthSource = ResourceCatalog.GetResource<OauthSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
                  if (oauthSource == null || oauthSource.ResourceType!=ResourceType.OauthSource)
                  {
                      return "Failure: Source has been deleted.";
@@ -100,10 +99,10 @@ namespace Dev2.Activities
                  var output = DropNetClient.UploadFile(destinationPath, destinationFileName, File.ReadAllBytes(evaluatedValues["SourceFile"]));
                  if (output == null)
                  {
-                     Dev2Logger.Log.Error("Unable to upload. Result is null. This indicates that there is no internet connection");
+                     Dev2Logger.Error("Unable to upload. Result is null. This indicates that there is no internet connection");
                      return "Failure";
                  }
-                 Dev2Logger.Log.Debug(String.Format("File uploaded to dropbox {0}", output.Path));
+                 Dev2Logger.Debug(String.Format("File uploaded to dropbox {0}", output.Path));
                  return "Success";
              }
                  // ReSharper disable RedundantIfElseBlock
@@ -114,7 +113,7 @@ namespace Dev2.Activities
 
                  File.WriteAllBytes(destinationFileName, DropNetClient.GetFile(evaluatedValues["DestinationPath"]));
 
-                 Dev2Logger.Log.Debug(String.Format("File written to local file system {0}", destinationFileName));
+                 Dev2Logger.Debug(String.Format("File written to local file system {0}", destinationFileName));
                  return "Success"; 
              }
              return "Failure";

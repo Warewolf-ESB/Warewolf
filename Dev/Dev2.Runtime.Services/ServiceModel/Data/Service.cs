@@ -20,12 +20,15 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
+// ReSharper disable ConvertToAutoProperty
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     // DO NOT override ToXml() here!
     public class Service : Resource
     {
+        private IOutputDescription _outputDescription;
+
         #region CTOR
 
         public Service()
@@ -41,7 +44,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public ServiceMethod Method { get; set; }
         [JsonIgnore]
-        public IOutputDescription OutputDescription { get; set; }
+        public IOutputDescription OutputDescription
+        {
+            get
+            {
+                return _outputDescription;
+            }
+            set
+            {
+                _outputDescription = value;
+            }
+        }
         [JsonIgnore]
         public string OutputSpecification { get; set; }
         public Resource Source { get; set; }
@@ -115,8 +128,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region CreateInputsMethod
 
-        // BUG 9626 - 2013.06.11 - TWR : refactored
-        // BUG 10532 - Removed static and made public for testing ;)
         public ServiceMethod CreateInputsMethod(XElement action)
         {
             var result = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>(), ExecuteAction = String.IsNullOrEmpty(action.AttributeSafe("ExecuteAction")) ? action.AttributeSafe("SourceMethod") : action.AttributeSafe("ExecuteAction") };

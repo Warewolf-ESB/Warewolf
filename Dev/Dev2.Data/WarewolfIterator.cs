@@ -126,7 +126,7 @@ namespace Dev2.Data
                     catch (Exception err)
                     {
 
-                        Dev2Logger.Log.Warn(err);
+                        Dev2Logger.Warn(err);
                     }
                 }
                 if (!tryEvaluateFunction)

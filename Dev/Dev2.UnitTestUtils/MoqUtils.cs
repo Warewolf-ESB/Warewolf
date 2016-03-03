@@ -32,7 +32,7 @@ namespace Dev2.UnitTestUtils
 
        public static IEnumerable<Mock<T>> SetupExpectationsOnEnumerableWithReturnValues<T,TA>(this IEnumerable<Mock<T>> values,IEnumerable<TA> returns, Expression<Func<T,TA>> expectation ) where T : class
         {
-            return values.Zip(returns, ((x, y) => new Tuple<Mock<T>, TA>(x, y))).Select(v =>
+            return values.Zip(returns, (x, y) => new Tuple<Mock<T>, TA>(x, y)).Select(v =>
                 {
                     v.Item1.Setup(expectation).Returns(v.Item2); return v.Item1;
                 }).ToList();

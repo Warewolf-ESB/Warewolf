@@ -71,8 +71,8 @@ namespace Dev2.Studio.Views
                     {
                         _savedLayout = null;
                         File.Delete(FilePath);
-                        Dev2Logger.Log.Error("Unable to load layout");
-                        Dev2Logger.Log.Error(err);
+                        Dev2Logger.Error("Unable to load layout");
+                        Dev2Logger.Error(err);
                     }
                 }
             }
@@ -120,7 +120,7 @@ namespace Dev2.Studio.Views
 
         private void Maximise()
         {
-            var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
+            var handle = new WinInterop.WindowInteropHelper(this).Handle;
             var handleSource = WinInterop.HwndSource.FromHwnd(handle);
             if (handleSource == null)
                 return;

@@ -5,7 +5,10 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.SqlServerDatabase"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="250"
+                               MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:SqlServerDatabaseDesignerViewModel}">
@@ -13,7 +16,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
@@ -34,8 +37,8 @@
                             <ColumnDefinition SharedSizeGroup="A" />
                             <ColumnDefinition SharedSizeGroup="B" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -22,6 +22,8 @@ using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
 {
+
+
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         // ReSharper disable once InconsistentNaming
@@ -179,19 +181,19 @@ namespace Dev2.Services.Security
             if(principal.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                Dev2Logger.Log.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
             }
             else
             // ReSharper disable HeuristicUnreachableCode
             {
-                Dev2Logger.Log.Error("PERM DUMP FOR [ NULL USER ]");
+                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]");
             }
             // ReSharper restore HeuristicUnreachableCode
 
             foreach(var perm in _securityService.Permissions)
             {
-                Dev2Logger.Log.Error("PERM -> " + perm.WindowsGroup);
-                Dev2Logger.Log.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
+                Dev2Logger.Error("PERM -> " + perm.WindowsGroup);
+                Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
             }
         }
 

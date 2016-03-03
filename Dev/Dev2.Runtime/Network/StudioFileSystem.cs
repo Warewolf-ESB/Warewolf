@@ -79,7 +79,7 @@ namespace Dev2.DynamicServices
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                     currentDir = null;
                 }
 
@@ -91,7 +91,7 @@ namespace Dev2.DynamicServices
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Log.Error(ex);
+                        Dev2Logger.Error(ex);
                         currentDir = null;
                     }
                     if(currentDir != null) actualEnsuredDirectories.Add(currentDir);
@@ -127,7 +127,7 @@ namespace Dev2.DynamicServices
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Log.Error(ex);
+                        Dev2Logger.Error(ex);
                         fileName = null;
                     }
 
@@ -140,7 +140,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 tempPath = relativePath;
             }
 
@@ -181,7 +181,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 return null;
             }
 
@@ -205,7 +205,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
+                Dev2Logger.Error(ex);
                 path = null;
             }
 

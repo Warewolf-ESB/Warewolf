@@ -236,18 +236,18 @@ Scenario Outline: Sort 2 columns backwards
 	When the sort records tool is executed
 	Then the execution has '<error>' error
 	Examples: 
-	| input                    | direction | error                                    |
-	| [[rs(*).a]],[[rs(*).a]] | Backwards | You can only sort on one field at a time |
-	| [[rs(*).a]],[[rs(*).a]] | Forward   | You can only sort on one field at a time |
-	| [[rs(*)]]                | Backwards | Please provide a field to sort on        |
-	| [[rs(*)]]                | Forward   | Please provide a field to sort on        |
-	| [[va]] = tree            | Forward   | Only recordsets can be sorted            |
-	| ""                       | Forward   | No recordset given                       |
-	| asdas                    | Forward   | Only recordsets can be sorted            |
-	| 99                       | Forward   | Only recordsets can be sorted            |
-	| [[a]]                    | Forward   | Only recordsets can be sorted            |
+	| input                   | direction | error                                                               |
+	| [[rs(*).a]],[[rs(*).a]] | Backwards | Only recordsets that contain recordset columns can be sorted |
+	| [[rs(*).a]],[[rs(*).a]] | Forward   | Only recordsets that contain recordset columns can be sorted |
+	| [[rs(*)]]               | Backwards | Only recordsets that contain recordset columns can be sorted                                   |
+	| [[rs(*)]]               | Forward   | Only recordsets that contain recordset columns can be sorted                                   |
+	| [[va]] = tree           | Forward   | Only recordsets that contain recordset columns can be sorted |
+	| ""                      | Forward   | Only recordsets that contain recordset columns can be sorted                                                  |
+	| asdas                   | Forward   | Only recordsets that contain recordset columns can be sorted |
+	| 99                      | Forward   | Only recordsets that contain recordset columns can be sorted |
+	| [[a]]                   | Forward   | Only recordsets that contain recordset columns can be sorted |
 
-#Audit
+#Audit Wolf-1419
 @ignore
 Scenario Outline: Sort recordset
 	Given I have the following recordset to sort
@@ -266,7 +266,7 @@ Scenario Outline: Sort recordset
 	| [[rs([[int]]).a]], [[int]] = 2 | Forward   | America, Australia |
 
 
-#Complex Types
+#Complex Types WOLF-1042
 @ignore
 Scenario Outline: Sort recordset using complex types
 	Given I have the following recordset to sort

@@ -85,8 +85,6 @@ namespace Dev2.Activities.Designers2.Service
             }
             AddTitleBarMappingToggle();
 
-            // PBI 6690 - 2013.07.04 - TWR : added
-            // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -716,7 +714,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     catch (XmlException xe)
                     {
-                        Dev2Logger.Log.Error(xe);
+                        Dev2Logger.Error(xe);
                         // invalid xml, we need to extract the sourceID another way ;)
                         srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
@@ -1108,7 +1106,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(e);
+                    Dev2Logger.Error(e);
                 }
             }
 
@@ -1157,7 +1155,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
             }
 
             return new List<IInputOutputViewModel>();

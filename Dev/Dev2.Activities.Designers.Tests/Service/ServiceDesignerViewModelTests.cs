@@ -368,25 +368,6 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
 
-        [TestMethod]
-        [TestCategory("ServiceDesignerViewModel_Constructor")]
-        [Description("ServiceDesignerViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_Constructor_ResourceNotFoundInRepository_InitializesPropertiesCorrectly()
-        // ReSharper restore InconsistentNaming
-        {
-            var instanceID = Guid.NewGuid();
-
-            var vm = CreateServiceDesignerViewModel(instanceID, true, null);
-
-            Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
-            Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
-            Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
-            Assert.IsTrue(vm.IsFixed);
-            Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
-        }
-
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -546,64 +527,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
             Assert.AreEqual(1, model.DesignValidationErrors.Count);
             Assert.AreEqual(ErrorType.None, model.DesignValidationErrors[0].ErrorType);
-
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
-        public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasNoSource_ErrorMessageAdded()
-        {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IEnvironmentModel> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
-            mockRepo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns((IContextualResourceModel)null);
-            environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
-            environment.Setup(a => a.HasLoadedResources).Returns(true);
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
-            //------------Execute Test---------------------------
-            var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreEqual(ErrorType.Warning, model.DesignValidationErrors[0].ErrorType);
-            Assert.AreEqual(FixType.Delete, model.DesignValidationErrors[0].FixType);
-
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
-        public void ServiceDesignerViewModel_HandleUpdateResourceMessage_SourceMatchesSourceID_ErrorMessageRemoved()
-        {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IEnvironmentModel> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
-            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
-            mockRepo.Setup(repository => repository.LoadContextualResourceModel(sourceID)).Returns(resourceModel.Object);
-            environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
-            environment.Setup(a => a.HasLoadedResources).Returns(true);
-
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
-            var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
-            //------------Assert Preconditions--------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
-            Assert.AreEqual(ErrorType.Warning, model.DesignValidationErrors[0].ErrorType);
-            Assert.AreEqual(FixType.Delete, model.DesignValidationErrors[0].FixType);
-            //------------Execute Test---------------------------
-            var sourceModelInMessage = new Mock<IContextualResourceModel>();
-            sourceModelInMessage.Setup(contextualResourceModel => contextualResourceModel.ID).Returns(sourceID);
-            model.Handle(new UpdateResourceMessage(sourceModelInMessage.Object));
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, model.DesignValidationErrors.Count);
 
         }
 
@@ -1375,7 +1298,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             worker.Verify(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()));
@@ -1472,7 +1395,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1572,7 +1495,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1673,7 +1596,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1762,7 +1685,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.Count == 0);
@@ -1874,7 +1797,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.IsConnected).Returns(true);
 
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
+            environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
 

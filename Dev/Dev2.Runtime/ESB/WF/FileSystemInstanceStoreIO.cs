@@ -84,7 +84,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return isExistingInstance;
@@ -120,7 +120,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -218,7 +218,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
 
@@ -307,7 +307,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -334,7 +334,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return instanceId;
@@ -355,7 +355,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                Dev2Logger.Log.Error(exception);
+                Dev2Logger.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }

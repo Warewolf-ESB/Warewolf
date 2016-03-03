@@ -19,7 +19,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         public Large()
         {
             InitializeComponent();
-            DataGrid = LargeDataGrid;
             SetInitialFocus();
         }
 
@@ -27,7 +26,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return SourcesComboBox;
+            return MainGrid;
         }
 
         #endregion

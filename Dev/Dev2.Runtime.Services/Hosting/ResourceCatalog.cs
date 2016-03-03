@@ -30,6 +30,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
@@ -43,8 +44,8 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.ResourceManagement;
-using Dev2.Services.Sql;
-using System.Security.Cryptography;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
@@ -52,12 +53,14 @@ using System.Security.Cryptography;
 namespace Dev2.Runtime.Hosting
 {
 
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ResourceCatalog : IResourceCatalog
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
         readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
         readonly ConcurrentDictionary<string, object> _fileLocks = new ConcurrentDictionary<string, object>();
         readonly object _loadLock = new object();
+        readonly IPerformanceCounter _perfCounter;
 
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
@@ -115,6 +118,18 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             // MUST load management services BEFORE server workspace!!
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+
+            }
+                // ReSharper disable once EmptyGeneralCatchClause
+            catch(Exception)
+            {
+                
+                
+            }
+         
             _versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
             if(managementServices != null)
             {
@@ -129,6 +144,18 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
             // MUST load management services BEFORE server workspace!!
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+
+            }
+                // ReSharper disable once EmptyGeneralCatchClause
+            catch (Exception)
+            {
+
+
+            }
+         
             _versioningRepository = serverVersionRepository;
             if(managementServices != null)
             {
@@ -705,7 +732,7 @@ namespace Dev2.Runtime.Hosting
               
                     var resource = new Resource(xml);
                     GlobalConstants.InvalidateCache(resource.ResourceID);
-                    Dev2Logger.Log.Info("Save Resource." + resource);
+                    Dev2Logger.Info("Save Resource." + resource);
                     _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
                     resource.UpgradeXml(xml, resource);
@@ -717,7 +744,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Save Error", err);
+                Dev2Logger.Error("Save Error", err);
                 throw;
             }
         }
@@ -824,7 +851,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, string userRoles = null, bool deleteVersions = true)
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true)
         {
             try
             {
@@ -838,12 +865,8 @@ namespace Dev2.Runtime.Hosting
                         throw new InvalidDataContractException("ResourceID or Type is missing from the request");
                     }
 
-                    var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
-
                     var workspaceResources = GetResources(workspaceID);
-                    var resources = workspaceResources.FindAll(r =>
-                        Equals(r.ResourceID, resourceID)
-                        && resourceTypes.Contains(r.ResourceType));
+                    var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
 
                     switch(resources.Count)
                     {
@@ -868,7 +891,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Delete Error", err);
+                Dev2Logger.Error("Delete Error", err);
                 throw;
             }
         }
@@ -1122,7 +1145,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("Error getting resources",e);
+                Dev2Logger.Error("Error getting resources",e);
                 throw;
             }
         }
@@ -1135,10 +1158,8 @@ namespace Dev2.Runtime.Hosting
                 lock (workspaceLock)
                 {
                     List<IResource> resources;
-                
                     if (_workspaceResources.TryGetValue(workspaceID, out resources))
                     {
-                       
                         foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
                     }
 
@@ -1146,7 +1167,6 @@ namespace Dev2.Runtime.Hosting
                     {
                         if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                         {
-                           
                             foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
                         }
                     }
@@ -1154,8 +1174,13 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Error("Error getting resource",e);
+                Dev2Logger.Error("Error getting resource",e);
             }
+            if(foundResource==null)
+                if(_perfCounter != null)
+                {
+                    _perfCounter.Increment();
+                }
             return foundResource;
         }
 
@@ -1312,7 +1337,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         var resources = GetResources(workspaceID);
                         var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
-                        if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
+                        if(conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                         {
                             saveResult = new ResourceCatalogResult
                             {
@@ -1321,15 +1346,15 @@ namespace Dev2.Runtime.Hosting
                             };
                             return;
                         }
-                    if (resource.ResourcePath.EndsWith("\\"))
-                    {
-                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
-                    }
+                        if(resource.ResourcePath.EndsWith("\\"))
+                        {
+                            resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                        }
                         var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
                         var originalRes = resource.ResourcePath ?? "";
                         int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
                         var resPath = resource.ResourcePath;
-                        if (indexOfName >= 0)
+                        if(indexOfName >= 0)
                             resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
                         var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
 
@@ -1337,18 +1362,18 @@ namespace Dev2.Runtime.Hosting
 
                         #region Save to disk
 
-                        if (!Directory.Exists(directoryName))
+                        if(!Directory.Exists(directoryName))
                         {
                             Directory.CreateDirectory(directoryName);
                         }
 
 
 
-                        if (File.Exists(resource.FilePath))
+                        if(File.Exists(resource.FilePath))
                         {
                             // Remove readonly attribute if it is set
                             var attributes = File.GetAttributes(resource.FilePath);
-                            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                            if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                             {
                                 File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
                             }
@@ -1356,7 +1381,7 @@ namespace Dev2.Runtime.Hosting
 
                         XElement xml = contents.ToXElement();
                         xml = resource.UpgradeXml(xml, resource);
-                        if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+                        if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
                         {
                             var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
                             resource.ResourcePath = resourcePath;
@@ -1367,7 +1392,7 @@ namespace Dev2.Runtime.Hosting
 
                         var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-                        lock (GetFileLock(resource.FilePath))
+                        lock(GetFileLock(resource.FilePath))
                         {
 
                             signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
@@ -1377,26 +1402,27 @@ namespace Dev2.Runtime.Hosting
 
                         #region Add to catalog
 
-                    var index = resources.IndexOf(resource);
-                    var updated = false;
-                    if (index != -1)
-                    {
-                        var existing = resources[index];
-                        if(existing.FilePath!= resource.FilePath)
+                        var index = resources.IndexOf(resource);
+                        var updated = false;
+                        if(index != -1)
                         {
-                            fileManager.Delete(existing.FilePath);
+                            var existing = resources[index];
+                            if(existing.FilePath != resource.FilePath)
+                            {
+                                fileManager.Delete(existing.FilePath);
+                            }
+                            resources.RemoveAt(index);
+                            updated = true;
                         }
-                        resources.RemoveAt(index);
-                        updated = true;
-                    }
-                    resource.GetInputsOutputs(xml);
-                    resource.ReadDataList(xml);
-                    resource.SetIsNew(xml);
-                    resource.UpdateErrorsBasedOnXML(xml);
+                        resource.GetInputsOutputs(xml);
+                        resource.ReadDataList(xml);
+                        resource.SetIsNew(xml);
+                        resource.UpdateErrorsBasedOnXML(xml);
 
                         resources.Add(resource);
 
                         #endregion
+
                         RemoveFromResourceActivityCache(workspaceID, resource);
                         AddOrUpdateToResourceActivityCache(workspaceID, resource);
                         tx.Complete();
@@ -1406,7 +1432,7 @@ namespace Dev2.Runtime.Hosting
                             Message = string.Format("{0} {1} '{2}'", updated ? "Updated" : "Added", resource.ResourceType, resource.ResourceName)
                         };
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         Transaction.Current.Rollback();
                         throw;
@@ -1710,7 +1736,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 else
                 {
-                    Dev2Logger.Log.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
+                    Dev2Logger.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {
@@ -1813,7 +1839,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
@@ -1968,16 +1994,13 @@ namespace Dev2.Runtime.Hosting
             VerifyArguments(oldCategory, newCategory);
             try
             {
-                var resourcesToUpdate = Instance.GetResources(workspaceID, resource =>
-                {
-                    return resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase);
-                }).ToList();
+                var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
 
                 return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Rename Category error", err);
+                Dev2Logger.Error("Rename Category error", err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
@@ -2026,7 +2049,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception err)
             {
-                Dev2Logger.Log.Error("Rename Category error", err);
+                Dev2Logger.Error("Rename Category error", err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,

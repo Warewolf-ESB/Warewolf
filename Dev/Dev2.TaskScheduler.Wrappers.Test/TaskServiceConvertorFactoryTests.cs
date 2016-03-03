@@ -47,7 +47,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);
             AssertTriggerValues<IDailyTrigger, DailyTrigger>(sanitised, trig,
-                                                             ((a, b) => a.DaysInterval == b.DaysInterval));
+                                                             (a, b) => a.DaysInterval == b.DaysInterval);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);
             AssertTriggerValues<IMonthlyTrigger, MonthlyTrigger>(sanitised, trig,
-                                                            ((a, b) => a.DaysOfMonth.FirstOrDefault() == b.DaysOfMonth.FirstOrDefault() && a.MonthsOfYear==b.MonthsOfYear  ));
+                                                            (a, b) => a.DaysOfMonth.FirstOrDefault() == b.DaysOfMonth.FirstOrDefault() && a.MonthsOfYear==b.MonthsOfYear);
 
         }
 
@@ -107,7 +107,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);
             AssertTriggerValues<IMonthlyDOWTrigger, MonthlyDOWTrigger>(sanitised, trig,
-                                                            ((a, b) => a.DaysOfWeek == b.DaysOfWeek && a.MonthsOfYear == b.MonthsOfYear && a.RandomDelay == b.RandomDelay && a.WeeksOfMonth==b.WeeksOfMonth));
+                                                            (a, b) => a.DaysOfWeek == b.DaysOfWeek && a.MonthsOfYear == b.MonthsOfYear && a.RandomDelay == b.RandomDelay && a.WeeksOfMonth==b.WeeksOfMonth);
 
         }
 
@@ -151,7 +151,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);
             AssertTriggerValues<ITimeTrigger, TimeTrigger>(sanitised, trig,
-                                                       ((a, b) => a.StartBoundary==b.StartBoundary));
+                                                       (a, b) => a.StartBoundary==b.StartBoundary);
 
 
         }
@@ -167,7 +167,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);
             AssertTriggerValues<IWeeklyTrigger, WeeklyTrigger>(sanitised, trig,
-                                                       ((a, b) => a.DaysOfWeek == b.DaysOfWeek));
+                                                       (a, b) => a.DaysOfWeek == b.DaysOfWeek);
 
 
         }

@@ -73,7 +73,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // now process headers ;)
                 if(headers != null)
                 {
-                    Dev2Logger.Log.Debug("Remote Invoke");
+                    Dev2Logger.Debug("Remote Invoke");
 
                     var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
                     var remoteId = headers.Get(HttpRequestHeader.From.ToString());
@@ -106,7 +106,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         if (loc > 0)
                         {
-                            var typeOf = serviceName.Substring((loc + 1)).ToUpper();
+                            var typeOf = serviceName.Substring(loc + 1).ToUpper();
                             EmitionTypes myType;
                             if (Enum.TryParse(typeOf, out myType))
                             {
@@ -191,7 +191,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
                 }
-                Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+                Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
                 var executionDlid = GlobalConstants.NullDataListID;
                 if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
@@ -287,7 +287,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
 
-                Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
+                Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
 
 
                 // JSON Data ;)
@@ -299,7 +299,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
                         start += GlobalConstants.OpenJSON.Length;
 
-                        executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
+                        executePayload = CleanupHtml(executePayload.Substring(start, end - start));
                         if(!String.IsNullOrEmpty(executePayload))
                         {
                             return new StringResponseWriter(executePayload, ContentTypes.Json);
@@ -351,7 +351,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                 if(startIdx > 0)
                 {
-                    var payload = baseStr.Substring((startIdx + 1));
+                    var payload = baseStr.Substring(startIdx + 1);
                     if(payload.IsXml() || payload.IsJSON())
                     {
                         return payload;
@@ -406,7 +406,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Log.Error("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex);
                     }
                 }
             }
@@ -465,7 +465,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             ErrorResultTO errors = new ErrorResultTO();
 
 
-            Dev2Logger.Log.Error(errors.MakeDisplayReady());
+            Dev2Logger.Error(errors.MakeDisplayReady());
 
             return string.Empty;
         }

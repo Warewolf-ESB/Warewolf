@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -24,29 +19,33 @@ namespace Warewolf.Studio.CustomControls
         public WatermarkAdorner(UIElement adornedElement, object watermark) :
             base(adornedElement)
         {
-            this.IsHitTestVisible = false;
+            IsHitTestVisible = false;
 
-            this.contentPresenter = new ContentPresenter();
-            TextBlock textBlock = new TextBlock();
-            textBlock.FontStyle = FontStyles.Italic;
-            textBlock.VerticalAlignment = VerticalAlignment.Top;
-            textBlock.Text = watermark.ToString();
-            textBlock.Padding = new Thickness(4);
-            this.contentPresenter.Content = textBlock;
-            this.contentPresenter.Opacity = 0.5;
-            this.contentPresenter.Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0);
-
-            if (this.Control is ItemsControl && !(this.Control is ComboBox))
+            contentPresenter = new ContentPresenter();
+            TextBlock textBlock = new TextBlock
             {
-                this.contentPresenter.VerticalAlignment = VerticalAlignment.Center;
-                this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
+                FontStyle = FontStyles.Italic,
+                VerticalAlignment = VerticalAlignment.Top,
+                Text = watermark.ToString(),
+                Padding = new Thickness(4)
+            };
+            contentPresenter.Content = textBlock;
+            contentPresenter.Opacity = 0.5;
+            contentPresenter.Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0);
+
+            if (Control is ItemsControl && !(Control is ComboBox))
+            {
+                contentPresenter.VerticalAlignment = VerticalAlignment.Center;
+                contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
             }
 
             // Hide the control adorner when the adorned element is hidden
-            Binding binding = new Binding("IsVisible");
-            binding.Source = adornedElement;
-            binding.Converter = new BooleanToVisibilityConverter();
-            this.SetBinding(VisibilityProperty, binding);
+            Binding binding = new Binding("IsVisible")
+            {
+                Source = adornedElement,
+                Converter = new BooleanToVisibilityConverter()
+            };
+            SetBinding(VisibilityProperty, binding);
         }
 
         #endregion
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.CustomControls
 
         private Control Control
         {
-            get { return (Control)this.AdornedElement; }
+            get { return (Control)AdornedElement; }
         }
 
         #endregion
@@ -73,19 +72,19 @@ namespace Warewolf.Studio.CustomControls
 
         protected override Visual GetVisualChild(int index)
         {
-            return this.contentPresenter;
+            return contentPresenter;
         }
 
         protected override Size MeasureOverride(Size constraint)
         {
             // Here's the secret to getting the adorner to cover the whole control
-            this.contentPresenter.Measure(Control.RenderSize);
+            contentPresenter.Measure(Control.RenderSize);
             return Control.RenderSize;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.contentPresenter.Arrange(new Rect(finalSize));
+            contentPresenter.Arrange(new Rect(finalSize));
             return finalSize;
         }
 

@@ -106,7 +106,7 @@ namespace Dev2.Activities
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');
@@ -124,7 +124,7 @@ namespace Dev2.Activities
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Log.Error(ex);
+                    Dev2Logger.Error(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');

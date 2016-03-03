@@ -139,7 +139,7 @@ Scenario: Recordset length for invalid recordset
 	|                |
 
 @ignore
-#Audit
+#Audit Wolf-1419
 Scenario Outline: Ensure Recordset length inputs work as expected 
 	Given I get  the length from a recordset that looks like with this shape
 	| rs        |   |
@@ -170,7 +170,7 @@ Examples:
 
 
 @ignore
-#Complex Types
+#Complex Types WOLF-1042
 Scenario Outline: Ensure the Complex type length inputs work as expected 
 	Given I get  the length from a object that looks like with this shape
 	| rs             |   |

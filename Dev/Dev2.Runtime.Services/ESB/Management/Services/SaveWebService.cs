@@ -18,14 +18,11 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
-using Dev2.Converters.Graph.DataTable;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -40,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
 
@@ -71,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Recordsets = recordsetList,
                     Source = source,
                     Headers = src.Headers,
-                    RequestMethod = (WebRequestMethod)src.Method,
+                    RequestMethod = src.Method,
                     RequestResponse = src.Response
      
                 };
@@ -89,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Log.Error(err);
+                Dev2Logger.Error(err);
 
             }
 

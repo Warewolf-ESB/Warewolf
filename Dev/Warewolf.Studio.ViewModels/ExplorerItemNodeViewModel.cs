@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return new ObservableCollection<ExplorerItemNodeViewModel>(Children.Select((a => a as ExplorerItemNodeViewModel)));
+                return new ObservableCollection<ExplorerItemNodeViewModel>(Children.Select(a => a as ExplorerItemNodeViewModel));
             }
         }
 

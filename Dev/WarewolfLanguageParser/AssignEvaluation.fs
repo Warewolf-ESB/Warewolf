@@ -38,10 +38,10 @@ let rec AddToRecordSet (env:WarewolfEnvironment) (name:RecordSetIdentifier) (upd
     then
         let recordset = env.RecordSets.[name.Name]
         let recsetAdded = match name.Index with
-                          | IntIndex a -> AddAtomToRecordSet recordset name.Column value a
+                          | IntIndex a -> addAtomToRecordSet recordset name.Column value a
                           | Star -> UpdateColumnWithValue recordset name.Column value 
-                          | Last -> AddAtomToRecordSet recordset name.Column value (recordset.LastIndex+1)
-                          | IndexExpression a -> AddAtomToRecordSet recordset name.Column value (EvalIndex env update ( LanguageExpressionToString a ))
+                          | Last -> addAtomToRecordSet recordset name.Column value (recordset.LastIndex+1)
+                          | IndexExpression a -> addAtomToRecordSet recordset name.Column value (evalIndex env update ( languageExpressionToString a ))
         let recsets = Map.remove name.Name env.RecordSets |> fun a-> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets}
     else
@@ -57,13 +57,13 @@ and AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (v
     then
         let recordset = env.RecordSets.[name.Name]
         let recsetAdded = match name.Index with
-                          | IntIndex a -> AddAtomToRecordSetWithFraming recordset name.Column value a false
+                          | IntIndex a -> addAtomToRecordSetWithFraming recordset name.Column value a false
                           | Star ->  if recordset.Count =0 then
-                                        AddAtomToRecordSetWithFraming recordset name.Column value 1 false
+                                        addAtomToRecordSetWithFraming recordset name.Column value 1 false
                                      else
                                         UpdateColumnWithValue recordset name.Column value 
-                          | Last -> AddAtomToRecordSetWithFraming recordset name.Column value (getPositionFromRecset recordset  name.Column) true
-                          | IndexExpression a -> AddAtomToRecordSetWithFraming recordset name.Column value (EvalIndex env 0 ( LanguageExpressionToString a )) false
+                          | Last -> addAtomToRecordSetWithFraming recordset name.Column value (getPositionFromRecset recordset  name.Column) true
+                          | IndexExpression a -> addAtomToRecordSetWithFraming recordset name.Column value (evalIndex env 0 ( languageExpressionToString a )) false
         let recsets = Map.remove name.Name env.RecordSets |> fun a-> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets}
     else
@@ -78,23 +78,23 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
         let recordset =  if data.Data.ContainsKey( name.Column) 
                          then  data
                          else 
-                            { data with Data=  Map.add name.Column (CreateEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
+                            { data with Data=  Map.add name.Column (createEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
         let recsetAdded = match name.Index with
-                          | IntIndex a -> AddAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
+                          | IntIndex a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
                           | Star -> 
                                     let countVals = Seq.length value 
                                     let mutable recsetmutated = recordset
                                     let mutable index = 1 
                                     match  shouldUseLast with  
                                            | false->    for a in value do  
-                                                            recsetmutated<-AddAtomToRecordSetWithFraming recsetmutated name.Column a index false  
+                                                            recsetmutated<-addAtomToRecordSetWithFraming recsetmutated name.Column a index false  
                                                             index<-index+1
                                                         recsetmutated
                                            | true ->        
                                                        let col = recsetmutated.Data.[name.Column]
                                                        let valueToChange = Seq.last value
                                                        for a in [0..col.Count-1]  do  
-                                                            recsetmutated<-AddAtomToRecordSetWithFraming recsetmutated name.Column valueToChange (a+1) false  
+                                                            recsetmutated<-addAtomToRecordSetWithFraming recsetmutated name.Column valueToChange (a+1) false  
                                                             index<-index+1
                                                        recsetmutated                                   
                                         
@@ -103,15 +103,15 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
                                     let mutable recsetmutated = recordset
                                     let mutable index = recordset.LastIndex+1   
                                     for a in value do  
-                                        recsetmutated<-AddAtomToRecordSetWithFraming recordset name.Column a index false  
+                                        recsetmutated<-addAtomToRecordSetWithFraming recordset name.Column a index false  
                                         index<-index+1
                                     recsetmutated   
                           | IndexExpression b -> 
-                                   let res = Eval env update (LanguageExpressionToString b ) |> EvalResultToString
+                                   let res = eval env update (languageExpressionToString b ) |> evalResultToString
                                    match b,assignValue with 
                                         | WarewolfAtomAtomExpression atom,_ ->
                                                     match atom with
-                                                    | Int a ->  AddAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
+                                                    | Int a ->  addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
                                                     | _ -> failwith "Invalid index"
                                         | _, Some av  ->   let data = (EvalAssignWithFrame  (new WarewolfParserInterop.AssignValue( (sprintf "[[%s(%s).%s]]" name.Name res name.Column), av.Value)) update env) :WarewolfEnvironment
                                                            data.RecordSets.[name.Name] 
@@ -123,18 +123,18 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
         AddToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast update assignValue
 
 and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) =
-    let l = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name update
+    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update
     let left = match l with 
                     |ComplexExpression a -> if List.exists (fun a -> match a with
                                                                             | ScalarExpression a -> true
                                                                             | RecordSetExpression a -> true
-                                                                            | _->false) a then    l  else LanguageExpression.WarewolfAtomAtomExpression  (LanguageExpressionToString l|> DataString )                         
+                                                                            | _->false) a then    l  else LanguageExpression.WarewolfAtomAtomExpression  (languageExpressionToString l|> DataString )                         
                     | _-> l
     let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
-                     else WarewolfDataEvaluationCommon.ParseLanguageExpression value.Value  update
+                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
     
     let right = if value.Value=null then WarewolfAtomResult Nothing
-                else WarewolfDataEvaluationCommon.Eval env update value.Value 
+                else WarewolfDataEvaluationCommon.eval env update value.Value 
     let shouldUseLast =  match rightParse with
                             | RecordSetExpression a ->
                                         match a.Index with
@@ -149,7 +149,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                             |   ScalarExpression a -> AddToScalars env a x
                             |   RecordSetExpression b -> AddToRecordSetFramed env b x
                             |   WarewolfAtomAtomExpression a -> failwith (sprintf "invalid variable assigned to%s" value.Name)
-                            |   _ -> let expression = (EvalToExpression env update value.Name)
+                            |   _ -> let expression = (evalToExpression env update value.Name)
                                      if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
                                      else
@@ -166,7 +166,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
  
 
                         |   WarewolfAtomAtomExpression _ ->  failwith "invalid variabe assigned to"
-                        |    _ -> let expression = (EvalToExpression env update value.Name)
+                        |    _ -> let expression = (evalToExpression env update value.Name)
                                   if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
                                   else
@@ -174,14 +174,16 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
 and EvalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (update:int) (shouldUseLast: bool)=
-    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp update
+    let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
     match left with 
         |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  value shouldUseLast update None
-        |    _ ->   failwith "only recsets"
+        |   ScalarExpression s ->   let value = System.String.Join("," ,Seq.map (fun a-> a.ToString()) value |> Array.ofSeq) |> WarewolfAtom.DataString
+                                    AddToScalars env s value
+        |    _ ->   failwith "Only recsets and scalars can be assigned from a list"
 
 
 and EvalDataShape (exp:string) (update:int) (env:WarewolfEnvironment) =
-    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp update
+    let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
     match left with 
     |   ScalarExpression a -> match env.Scalar.TryFind a with
                               | None -> AddToScalars env a Nothing
@@ -192,13 +194,13 @@ and EvalDataShape (exp:string) (update:int) (env:WarewolfEnvironment) =
                                                 let recordset =  if data.Data.ContainsKey( name.Column) 
                                                                  then  data
                                                                  else 
-                                                                    { data with Data=  Map.add name.Column (CreateEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
+                                                                    { data with Data=  Map.add name.Column (createEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
                                                 ReplaceDataset env recordset name.Name
                                         
                                       | Some data -> let recordset =  if data.Data.ContainsKey( name.Column)  then  
                                                                          data
                                                                       else 
-                                                                          { data with Data=  Map.add name.Column (CreateEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
+                                                                          { data with Data=  Map.add name.Column (createEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
                                                      ReplaceDataset env recordset name.Name
 
     |   WarewolfAtomAtomExpression a -> env
@@ -220,7 +222,7 @@ and  UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: 
                 x.[i]<-value;    
             rset 
         else 
-        {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
+        {rset with Data=  Map.add columnName ( createFilled rset.Count value)  rset.Data    }
 
 
 
@@ -233,4 +235,4 @@ let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
-let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;
+let AtomtoString a = WarewolfDataEvaluationCommon.atomtoString a;

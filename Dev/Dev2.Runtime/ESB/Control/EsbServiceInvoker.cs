@@ -143,7 +143,7 @@ namespace Dev2.Runtime.ESB
                     try
                     {
                         var sl = new ServiceLocator();
-                        Dev2Logger.Log.Debug("Finding service");
+                        Dev2Logger.Debug("Finding service");
                         var theService = serviceId == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceId, _workspace.ID);
 
                         if(theService == null)
@@ -159,14 +159,14 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
-                            Dev2Logger.Log.Debug("Mapping Action Dependencies");
+                            Dev2Logger.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, sl);
 
                             // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
-                                Dev2Logger.Log.Debug("Getting container");
+                                Dev2Logger.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, update);
@@ -196,7 +196,7 @@ namespace Dev2.Runtime.ESB
 
                         if(errors.HasErrors())
                         {
-                            Dev2Logger.Log.Error(errors.MakeDisplayReady());
+                            Dev2Logger.Error(errors.MakeDisplayReady());
                         }
                     }
                 }
@@ -220,7 +220,7 @@ namespace Dev2.Runtime.ESB
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
@@ -258,7 +258,7 @@ namespace Dev2.Runtime.ESB
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
         /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
@@ -276,7 +276,7 @@ namespace Dev2.Runtime.ESB
                     ServiceLocator sl = new ServiceLocator();
                     var resourceId = dataObject.ResourceID;
                     DynamicService theService = GetService(serviceName, resourceId, sl);
-                    EsbExecutionContainer executionContainer = null;
+                    IEsbExecutionContainer executionContainer = null;
 
 
                     if (theService != null && theService.Actions.Any())
@@ -302,7 +302,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-                Dev2Logger.Log.Debug(string.Format("Getting DynamicService: {0}", serviceName));
+                Dev2Logger.Debug(string.Format("Getting DynamicService: {0}", serviceName));
                 if(resourceId == Guid.Empty)
                 {
                     return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
@@ -315,34 +315,25 @@ namespace Dev2.Runtime.ESB
             }
         }
 
-        private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
+        private IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
         {
             // set the ID for later use ;)
             dataObj.WorkspaceID = _workspace.ID;
 
-            EsbExecutionContainer result = null;
+            IEsbExecutionContainer result = null;
 
             switch(serviceAction.ActionType)
             {
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
-                    result = new DatabaseServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                    break;
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
                     result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
 
-                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
-                    result = new PluginServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                    break;
-
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
-                    result = new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
+                    result = new PerfmonExecutionContainer( new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
                     break;
-
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                     break;

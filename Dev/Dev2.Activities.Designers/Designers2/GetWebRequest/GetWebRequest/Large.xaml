@@ -13,6 +13,8 @@
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinHeight="300"
                                MinWidth="315"
                                Width="315"
@@ -21,8 +23,16 @@
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:GetWebRequestDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
-          <core:ActivityDesignerButton x:Name="DoneButton"
+        <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"

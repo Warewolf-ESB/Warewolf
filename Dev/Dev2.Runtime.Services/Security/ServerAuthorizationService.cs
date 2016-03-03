@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Services.Security;
 
@@ -28,11 +29,23 @@ namespace Dev2.Runtime.Security
         public static IAuthorizationService Instance { get { return TheInstance.Value; } }
 
         readonly TimeSpan _timeOutPeriod;
+        private readonly IPerformanceCounter _perfCounter;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
         {
             _timeOutPeriod = securityService.TimeOutPeriod;
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
+            }
+            catch(Exception e)
+            {
+                
+                Dev2Logger.Error(e);
+            }
+            
+   
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
@@ -72,7 +85,11 @@ namespace Dev2.Runtime.Security
                 authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
                 _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
             }
-
+            if(!authorized)
+                if(_perfCounter != null)
+                {
+                    _perfCounter.Increment();
+                }
             return authorized;
         }
 
@@ -143,7 +160,7 @@ namespace Dev2.Runtime.Security
                 }
 
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Log.Error( "AUTH ERROR FOR USER : " + user);
+                Dev2Logger.Error( "AUTH ERROR FOR USER : " + user);
                 // ReSharper restore InvokeAsExtensionMethod
 
             }

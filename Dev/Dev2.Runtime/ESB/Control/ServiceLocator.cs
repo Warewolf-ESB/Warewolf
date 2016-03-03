@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 
@@ -22,6 +23,8 @@ namespace Dev2.Runtime.ESB.Control
     /// </summary>
     public class ServiceLocator
     {
+        readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+
         #region New Mgt Methods
 
         /// <summary>
@@ -40,7 +43,10 @@ namespace Dev2.Runtime.ESB.Control
             }
 
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
-            return services.FirstOrDefault();
+            var ret = services.FirstOrDefault();
+            if(ret==null)
+                _perfCounter.Increment();
+            return ret;
         }
 
         /// <summary>
@@ -68,6 +74,9 @@ namespace Dev2.Runtime.ESB.Control
                     action.ServiceID = serviceID;
                 });
             }
+            if (firstOrDefault == null)
+                _perfCounter.Increment();
+    
             return firstOrDefault;
         }
 
@@ -93,4 +102,6 @@ namespace Dev2.Runtime.ESB.Control
         #endregion
 
     }
+
+
 }

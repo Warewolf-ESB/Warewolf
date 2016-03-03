@@ -304,7 +304,7 @@ namespace Dev2.Activities
                     string expressiomToStringValue;
                     try
                     {
-                         expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0,true));
+                         expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression, 0));
                     }
                     catch(NullValueInVariableException)
                     {

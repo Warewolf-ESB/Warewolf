@@ -1,46 +1,56 @@
 ﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Comment.Large"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-             xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
-             xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-             xmlns:comment="clr-namespace:Dev2.Activities.Designers2.Comment"
-             xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             mc:Ignorable="d" 
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:comment="clr-namespace:Dev2.Activities.Designers2.Comment"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               mc:Ignorable="d" 
                                MinWidth="250"
                                MinHeight="50"
                                Width="250"
                                MaxWidth="350"
                                MaxHeight="700"
-             d:DesignHeight="300" d:DesignWidth="300"
+                               d:DesignHeight="300" d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance comment:CommentDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                            Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            AllowMultilinePaste="True"
-                            AcceptsReturn="True"
-                            AllowUserInsertLine="True"
-                            MinHeight="30px"
-                            MinWidth="18px"
-                            Height="Auto"
-                            TextWrapping="Wrap"
-                            VerticalContentAlignment="Stretch"
-                            ToolTip="{x:Static help:HelpTextResources.CommentToolTipComment}"
-                            attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                AllowMultilinePaste="True"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MinHeight="30px"
+                                MinWidth="18px"
+                                Height="Auto"
+                                TextWrapping="Wrap"
+                                VerticalContentAlignment="Stretch"
+                                ToolTip="{x:Static help:HelpTextResources.CommentToolTipComment}"
+                                attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.CommentHelpComment}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                 SourcePropertyName="Path=ModelItem.Text"
-                                 SourcePropertyValue="{Binding  Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
-                                 Target="{Binding}" />
+                                     SourcePropertyName="Path=ModelItem.Text"
+                                     SourcePropertyValue="{Binding  Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
     </Grid>

@@ -17,7 +17,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -27,7 +26,6 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Messages;
 using Dev2.Services.Security;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -110,22 +108,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.IsNotNull(workSurfaceContextViewModel.DebugOutputViewModel);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkSurfaceContextViewModel_Constructor")]
-        public void WorkSurfaceContextViewModel_Constructor_SchedularWorksurfaceContext_DebugOutputViewModelNotNull()
-        {
-            //------------Setup for test--------------------------
-            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
-            CustomContainer.Register<IShellViewModel>(new Mock<IShellViewModel>().Object);
-            var mockWorkSurfaceViewModel = new SchedulerViewModel();
-        
-            //------------Execute Test---------------------------
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, mockWorkSurfaceViewModel);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(workSurfaceContextViewModel);
-            Assert.IsNotNull(workSurfaceContextViewModel.DebugOutputViewModel);
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

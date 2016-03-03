@@ -16,6 +16,8 @@
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
                                Height="250"
@@ -25,6 +27,14 @@
                                d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance core:ActivityCollectionDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -33,10 +43,11 @@
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
-    
+
     <Grid x:Name="ContentGrid" Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -71,21 +82,15 @@
 
             <DataGrid.Columns>
 
-                <DataGridTemplateColumn Width="27"
-                                        IsReadOnly="True"
-                                        Header="#">
+                <DataGridTemplateColumn Width="27" IsReadOnly="True" Header="#">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={local:RowToIndexConverter}}" />
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={local:RowToIndexConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        Header="Variable"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn Width="*" Header="Variable" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
@@ -106,8 +111,7 @@
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -116,20 +120,15 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn IsReadOnly="True"
-                                        Width="20"
-                                        Header="=">
+                <DataGridTemplateColumn IsReadOnly="True" Width="20" Header="=">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="="
-                                   VerticalAlignment="Center" />
+                            <TextBlock Text="=" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        Header="New Value"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn Width="*" Header="New Value" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
@@ -157,8 +156,7 @@
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValue_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -181,5 +179,8 @@
                    Foreground="{StaticResource BrushDisabledForeground}"
                    Text="Right click to insert or delete rows." />
         </StackPanel>
+        <errors:OnError Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

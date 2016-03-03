@@ -83,7 +83,6 @@
       <DependentUpon>Email Source.feature</DependentUpon>
     </Compile>
     <Compile Include="EmailSourceSteps.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>

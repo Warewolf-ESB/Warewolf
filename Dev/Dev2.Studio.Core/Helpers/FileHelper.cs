@@ -51,28 +51,28 @@ namespace Dev2.Studio.Core.Helpers
         /// <date>2013/01/15</date>
         public static void CreateTextFile(string outputTxt, string outputPath)
         {
-            Dev2Logger.Log.Info("");
+            Dev2Logger.Info("");
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
             using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Dev2Logger.Log.Info("Writing a text file");
+                Dev2Logger.Info("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
 
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
-            Dev2Logger.Log.Info("");
+            Dev2Logger.Info("");
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
             using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Dev2Logger.Log.Info("Writing a text file");
+                Dev2Logger.Info("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
@@ -201,11 +201,11 @@ namespace Dev2.Studio.Core.Helpers
 
         public static string GetDebugItemTempFilePath(string uri)
         {
-            Dev2Logger.Log.Info("");
+            Dev2Logger.Info("");
 
             if(String.IsNullOrEmpty(uri))
             {
-                Dev2Logger.Log.Info("Uri is empty, an exception is thrown");
+                Dev2Logger.Info("Uri is empty, an exception is thrown");
                 throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
 

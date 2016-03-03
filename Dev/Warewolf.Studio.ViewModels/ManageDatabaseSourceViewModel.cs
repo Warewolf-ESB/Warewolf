@@ -34,7 +34,7 @@ using WpfControls.Editors;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageDatabaseSourceViewModel : SourceBaseImpl<IDbSource>, IManageDatabaseSourceViewModel, IDisposable
+    public class ManageDatabaseSourceViewModel : SourceBaseImpl<IDbSource>, IManageDatabaseSourceViewModel
     {
         public IAsyncWorker AsyncWorker { get; set; }
         private NameValue _serverType;
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
-            Types = new List<NameValue> { new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() }, new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() }, new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() } };
+            Types = new List<NameValue> { new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() }, new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() } };
             ServerType = Types[0];
             _testPassed = false;
             _testFailed = false;
@@ -462,7 +462,7 @@ namespace Warewolf.Studio.ViewModels
             SaveConnection();
         }
 
-        Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+        public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
         public IList<NameValue> Types { get; set; }
 
@@ -674,7 +674,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty { get { return ServerName != null && (String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password)); } }
+        public bool IsEmpty { get { return ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
         public IDbSource DBSource
         {
             get
@@ -687,16 +687,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
 
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
+
+        protected override void OnDispose()
+        {
+            if (RequestServiceNameViewModel != null)
+            {
+                if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
+                RequestServiceNameViewModel.Dispose();
+            }
+          Dispose(true);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -716,7 +716,7 @@ namespace Warewolf.Studio.ViewModels
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _token.Dispose();
+                    if (_token != null) _token.Dispose();
                 }
 
                 // Dispose unmanaged resources.

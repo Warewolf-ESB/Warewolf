@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for Directory parameter.");
             }
-            Dev2Logger.Log.Info("Get Directories Relative to Server. "+directory);
+            Dev2Logger.Info("Get Directories Relative to Server. "+directory);
             result.Append("<JSON>");
             var explorerItem = ServerExplorerRepo.Load(ResourceType.Folder, string.Empty);
             var jsonTreeNode = new JsonTreeNode(explorerItem);
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error(e);
+                Dev2Logger.Error(e);
                 throw;
             }
         }

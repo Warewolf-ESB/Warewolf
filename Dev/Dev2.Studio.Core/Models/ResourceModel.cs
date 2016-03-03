@@ -480,7 +480,6 @@ namespace Dev2.Studio.Core.Models
             NotifyOfPropertyChange(() => IsValid);
         }
 
-        public event EventHandler<DesignValidationMemo> OnEnvironmentValidationReceived;
 
         // BUG 9634 - 2013.07.17 - TWR : added
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
@@ -488,11 +487,7 @@ namespace Dev2.Studio.Core.Models
             foreach (var error in memo.Errors)
             {
                 _errors.Add(error);
-            }
-            if (OnEnvironmentValidationReceived != null)
-            {
-                OnEnvironmentValidationReceived(this, memo);
-            }
+            }            
         }
 
         public IList<IErrorInfo> GetErrors(Guid instanceId)
@@ -577,10 +572,8 @@ namespace Dev2.Studio.Core.Models
             IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
         }
 
-        // TODO: cjr: would be best to have this non default to false, so that will be the next step once it all works
         public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
         {
-            //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
             StringBuilder result = new StringBuilder();
 
             if(ResourceType == ResourceType.WorkflowService)
@@ -619,16 +612,18 @@ namespace Dev2.Studio.Core.Models
                     result = completeDefintion.ToStringBuilder();
                 }
 
-                //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
-                var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
-                var endNode = result.IndexOf("</Category>", 0, true);
-                if(endNode > startNode)
+                if(result != null)
                 {
-                    var len = (endNode - startNode);
-                    var oldCategory = result.Substring(startNode, len);
-                    if(oldCategory != Category)
+                    var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
+                    var endNode = result.IndexOf("</Category>", 0, true);
+                    if(endNode > startNode)
                     {
-                        result = result.Replace(oldCategory, Category);
+                        var len = endNode - startNode;
+                        var oldCategory = result.Substring(startNode, len);
+                        if(oldCategory != Category)
+                        {
+                            result = result.Replace(oldCategory, Category);
+                        }
                     }
                 }
             }
@@ -645,7 +640,7 @@ namespace Dev2.Studio.Core.Models
             XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
@@ -677,7 +672,7 @@ namespace Dev2.Studio.Core.Models
             var contentElement = content.ToXElement();
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),

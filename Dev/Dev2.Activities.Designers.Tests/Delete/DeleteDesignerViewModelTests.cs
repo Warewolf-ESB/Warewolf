@@ -40,6 +40,7 @@ namespace Dev2.Activities.Designers.Tests.Delete
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
             Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:themes="http://infragistics.com/Themes"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+
+    <ResourceDictionary.MergedDictionaries>
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+
+        <themes:ResourceSetLoader Locator="{x:Static themes:DockManagerMetroDark.Location}" />
+
+
+        <themes:ResourceWasher AutoWash="True" WashMode="HueSaturationReplacement">
+            <themes:ResourceWasher.SourceDictionary>
+                <themes:DockManagerWashBaseLight />
+            </themes:ResourceWasher.SourceDictionary>
+            <themes:ResourceWasher.WashGroups>
+                <themes:WashGroupCollection>
+                    <themes:WashGroup Name="ThemeColor" WashColor="{StaticResource Color_003}" />
+                    <themes:WashGroup Name="AlternateColor" WashColor="{StaticResource Color_004}" />
+                </themes:WashGroupCollection>
+            </themes:ResourceWasher.WashGroups>
+        </themes:ResourceWasher>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

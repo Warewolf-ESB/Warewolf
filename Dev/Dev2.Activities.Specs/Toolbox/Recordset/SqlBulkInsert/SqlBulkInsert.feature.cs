@@ -2606,20 +2606,17 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void SavingResultsInRecordsets(string result, string value, string[] exampleTags)
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Edit DB Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void EditDBSource()
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in recordsets", @__tags);
-#line 371
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit DB Source", ((string[])(null)));
+#line 369
 this.ScenarioSetup(scenarioInfo);
-#line 372
- testRunner.Given("I have DB as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 373
+#line 370
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 371
  testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2634,15 +2631,53 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Country(*).Description]]",
                         "Description",
                         "varchar(50)"});
-#line 374
+#line 372
  testRunner.And("I have this data", ((string)(null)), table45, "And ");
-#line 378
- testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
- testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 376
+ testRunner.When("I click \"Edit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 377
+ testRunner.Then("the \"DemoDB\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void SavingResultsInRecordsets(string result, string value, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in recordsets", @__tags);
 #line 381
+this.ScenarioSetup(scenarioInfo);
+#line 382
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 383
+ testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+                        "InputData",
+                        "ToField",
+                        "Type"});
+            table46.AddRow(new string[] {
+                        "[[Country(*).CountryID]]",
+                        "CountryID",
+                        "int"});
+            table46.AddRow(new string[] {
+                        "[[Country(*).Description]]",
+                        "Description",
+                        "varchar(50)"});
+#line 384
+ testRunner.And("I have this data", ((string)(null)), table46, "And ");
+#line 388
+ testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 389
+ testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 390
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 391
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2698,35 +2733,41 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void SavingResultsInComplexTypes(string result, string value, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in complex types", exampleTags);
-#line 391
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in complex types", @__tags);
+#line 402
 this.ScenarioSetup(scenarioInfo);
-#line 392
- testRunner.Given("I have DB as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 393
+#line 403
+ testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 404
  testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "InputData",
                         "ToField",
                         "Type"});
-            table46.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "[[Country(*).CountryID().value]]",
                         "CountryID",
                         "int"});
-            table46.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "[[Country(*).Description().value]]",
                         "Description",
                         "varchar(50)"});
-#line 394
- testRunner.And("I have this data", ((string)(null)), table46, "And ");
-#line 398
+#line 405
+ testRunner.And("I have this data", ((string)(null)), table47, "And ");
+#line 409
  testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
+#line 410
  testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 400
+#line 411
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 401
+#line 412
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2735,6 +2776,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Saving results in complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Success")]

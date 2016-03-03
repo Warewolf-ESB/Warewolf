@@ -75,11 +75,26 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             ScenarioContext.Current.Add("to", to.Replace('"', ' ').Trim());
         }
 
-        [Given(@"I want to show (.*) decimals with value (.*)") ]
-        public void GivenIWantToShowDecimals(string decimalToShow)
+        //[Given(@"I want to show (.*) decimals with value (.*)") ]
+        //public void GivenIWantToShowDecimals(string decimalToShow)
+        //{
+        //    ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
+        //}
+
+        [Given(@"I want to show (.*) decimals with value ""(.*)""")]
+        public void GivenIWantToShowDecimalsWithValue(string p0, string decimalToShow)
         {
             ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
         }
+
+
+        [Given(@"I want to show ""(.*)"" decimals with values ""(.*)""")]
+        public void GivenIWantToShowDecimalsWithValues(string p0, string decimalToShow)
+        {
+            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
+
+        }
+
 
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
         public void GivenIHaveAFormatnumberVariableEqualTo(string variable, string value)

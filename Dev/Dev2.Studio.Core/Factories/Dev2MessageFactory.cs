@@ -24,7 +24,7 @@ namespace Dev2.Studio.Core.Factories
             if(stringToJoin.Count > 0)
             {
                 resultString = " \r\n " + labelName + ": ";
-                resultString += (string.Join(charsToSeperateWith, stringToJoin));
+                resultString += string.Join(charsToSeperateWith, stringToJoin);
                 resultString += "\r\n-------------------------------------------------";
             }
             return resultString;

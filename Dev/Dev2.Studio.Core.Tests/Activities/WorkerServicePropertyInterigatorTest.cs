@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.IsNull(((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.IsNull(((Literal<string>)activity.Type.Expression).Value);
             Assert.IsNull(activity.FriendlySourceName);
             Assert.IsNull(activity.ActionName);
         }
@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("TheType", ((Literal<string>)activity.Type.Expression).Value);
             Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
             Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("TheType", ((Literal<string>)activity.Type.Expression).Value);
             Assert.AreEqual("bob", activity.FriendlySourceName.Expression.ToString());
             Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
@@ -129,7 +129,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("TheType", ((Literal<string>)activity.Type.Expression).Value);
             Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
             Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
@@ -152,7 +152,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.IsNull(((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.IsNull(((Literal<string>)activity.Type.Expression).Value);
             Assert.IsNull(activity.FriendlySourceName);
             Assert.IsNull(activity.ActionName);
         }

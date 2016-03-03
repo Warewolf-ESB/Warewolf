@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Studio.Core.Activities.Services;
-
 namespace Dev2.Activities.Designers2.MySqlDatabase
 {
     public partial class MySqlDatabaseDesigner
@@ -22,8 +20,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         protected override MySqlDatabaseDesignerViewModel CreateViewModel()
         {
-            var designerManagementService = Context.Services.GetService<IDesignerManagementService>();
-            return new MySqlDatabaseDesignerViewModel(ModelItem, designerManagementService.GetRootResourceModel());
+            return new MySqlDatabaseDesignerViewModel(ModelItem);
         }
 
     }

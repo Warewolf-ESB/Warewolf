@@ -16,12 +16,22 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="290"
                                MaxWidth="290"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance sharepointListUpdate:SharepointListUpdateDesignerViewModel}"
                                d:DesignWidth="230">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -109,7 +119,7 @@
                                ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-            <DataGrid.Columns>              
+            <DataGrid.Columns>
                 <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="[[Variable]]"

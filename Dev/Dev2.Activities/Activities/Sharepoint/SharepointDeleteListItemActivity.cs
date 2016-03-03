@@ -11,7 +11,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.TO;
 using Dev2.Util;
 using Microsoft.SharePoint.Client;
@@ -93,10 +92,10 @@ namespace Dev2.Activities.Sharepoint
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
                 if (sharepointSource == null)
                 {
-                    var contents = ResourceCatalog.Instance.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                    var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
                     sharepointSource = new SharepointSource(contents.ToXElement());
                 }
                 var env = dataObject.Environment;
@@ -133,7 +132,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointDeleteListItemActivity", e);
+                Dev2Logger.Error("SharepointDeleteListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally
