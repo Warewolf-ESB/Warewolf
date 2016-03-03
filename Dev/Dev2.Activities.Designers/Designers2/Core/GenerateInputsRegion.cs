@@ -17,8 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         double _inputsHeight;
         double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
-        private const double BaseHeight = 90;
-        private const double ListBoxHeight = 15;
+        private const double BaseHeight = 30;
 
         public GenerateInputsRegion()
         {
@@ -103,34 +102,25 @@ namespace Dev2.Activities.Designers2.Core
         void ResetInputsHeight()
         {
             SetInitialHeight();
-            InputsHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+            InputsHeight = Inputs.Count * GlobalConstants.RowHeight;
             MaxInputsHeight = InputsHeight;
-            if (Inputs.Count == 3)
+            if (Inputs.Count >= 3)
             {
-                MinHeight = BaseHeight;
-                MaxHeight = (Inputs.Count * GlobalConstants.RowHeight) + GlobalConstants.RowHeaderHeight;
+                MinHeight = 3 * GlobalConstants.RowHeight;
+                MaxHeight = Inputs.Count * GlobalConstants.RowHeight;
                 InputsHeight = MinHeight;
-                MaxInputsHeight = (Inputs.Count * GlobalConstants.RowHeight) + GlobalConstants.RowHeaderHeight;
-                CurrentHeight = MinHeight;
-            }
-            else if (Inputs.Count > 3)
-            {
-                MinHeight = BaseHeight;
-                MaxHeight = (Inputs.Count * GlobalConstants.RowHeight) + ListBoxHeight;
-                InputsHeight = MinHeight;
-                MaxInputsHeight = (Inputs.Count * GlobalConstants.RowHeight) + ListBoxHeight;
+                MaxInputsHeight = MaxHeight;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
+                CurrentHeight = Inputs.Count * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;
                 }
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
             }
         }
 

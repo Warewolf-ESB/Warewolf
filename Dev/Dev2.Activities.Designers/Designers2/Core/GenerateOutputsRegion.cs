@@ -16,8 +16,9 @@ namespace Dev2.Activities.Designers2.Core
         double _maxOutputsHeight;
         ICollection<IServiceOutputMapping> _outputs;
         bool _isVisible;
+        private int _outputRowCount;
 
-        private const double BaseHeight = 130;
+        private const double BaseHeight = 60;
 
         public GenerateOutputsRegion()
         {
@@ -107,25 +108,25 @@ namespace Dev2.Activities.Designers2.Core
         void ResetOutputsHeight()
         {
             SetInitialHeight();
-            OutputsHeight = GlobalConstants.RowHeaderHeight + Outputs.Count * GlobalConstants.RowHeight;
+            OutputsHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
             MaxOutputsHeight = OutputsHeight;
-            if (Outputs.Count >= 3)
+            if (OutputRowCount >= 3)
             {
-                MinHeight = BaseHeight;
-                MaxHeight = BaseHeight;
+                MinHeight = 3 * GlobalConstants.RowHeight;
+                MaxHeight = (OutputRowCount * GlobalConstants.RowHeight) + 15;
                 OutputsHeight = MinHeight;
-                MaxOutputsHeight = BaseHeight;
+                MaxOutputsHeight = MaxHeight;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + Outputs.Count * GlobalConstants.RowHeight;
+                CurrentHeight = GlobalConstants.RowHeaderHeight + OutputRowCount * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;
                 }
                 MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight;
+                MaxHeight = CurrentHeight + 15;
             }
             OnHeightChanged(this);
         }
@@ -168,6 +169,18 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _maxOutputsHeight = value;
                 OnPropertyChanged();
+            }
+        }
+        public int OutputRowCount
+        {
+            get
+            {
+                return _outputRowCount;
+            }
+            set
+            {
+                _outputRowCount = value;
+                ResetOutputsHeight();
             }
         }
 

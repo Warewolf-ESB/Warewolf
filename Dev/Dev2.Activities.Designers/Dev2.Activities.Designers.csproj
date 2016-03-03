@@ -722,7 +722,6 @@
     <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.xaml.cs">
       <DependentUpon>SqlServerDatabaseDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModelOld.cs" />
     <Compile Include="Designers2\SqlServerDatabase\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
