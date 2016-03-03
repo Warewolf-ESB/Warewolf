@@ -1,8 +1,5 @@
 using System.Activities;
-using System.Net;
-using System.Net.Http;
 using Dev2.Common.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Activities
 {
@@ -32,22 +29,5 @@ namespace Dev2.Activities
         public string DisplayName { get; set; }
         public InArgument<string> Type { get; set; }
     }
-
-    public class HttpClientCredentialManager
-    {
-        private HttpClientCredentialManager()
-        {
-
-        }
-
-        public static HttpClientHandler SetCredentialOnHandler(WebSource source, HttpClientHandler httpClientHandler)
-        {
-            if (source.AuthenticationType == AuthenticationType.User && httpClientHandler != null)
-            {
-                httpClientHandler.Credentials = new NetworkCredential(source.UserName, source.Password);
-                return httpClientHandler;
-            }
-            return httpClientHandler;
-        }
-    }
+    
 }
