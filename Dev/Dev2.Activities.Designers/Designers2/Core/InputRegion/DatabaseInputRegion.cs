@@ -99,6 +99,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsVisible = false;
             if(_action != null && _action.SelectedAction != null)
             {
+            
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsVisible = true;

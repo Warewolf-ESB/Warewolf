@@ -113,7 +113,7 @@
                               Grid.Column="1"
                               Margin="{StaticResource ControlBorderRight}"
                               ItemsSource="{Binding ActionRegion.Actions}"
-                              DisplayMemberPath="Method" 
+                              DisplayMemberPath="FullName" 
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                               ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
                               IsEditable="False"
@@ -475,52 +475,9 @@
                        Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
-
-    <ControlTemplate x:Key="GenerateOutputsTextTemplateDotNet" d:DataContext="{d:DesignInstance core1:ManagePluginServiceInputViewModel}">
-        <Grid x:Name="OutputsGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
-            <Border Grid.Row="1" 
-                    Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
-                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                <ScrollViewer VerticalAlignment="Top">
-                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                        <TextBlock Text="{Binding TestResults}" 
-                                   Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
-                                   TextWrapping="Wrap"
-                                   Height="{Binding OutputArea.CurrentHeight}"
-                                   MinHeight="{Binding OutputArea.MinHeight}"
-                                   MaxHeight="{Binding OutputArea.MaxHeight}"
-                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                   HorizontalAlignment="Stretch" 
-                                   VerticalAlignment="Stretch">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </TextBlock>
-                    </Grid>
-                </ScrollViewer>
-            </Border>
-            <TextBlock Grid.Row="1"
-                       Text="None" 
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top" 
-                       Margin="0,0,0,-3"
-                       Style="{StaticResource MenuTextBlockStyle}"
-                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
-        </Grid>
-    </ControlTemplate>
-
+    
     <ControlTemplate x:Key="GenerateOutputsTextTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="OutputsGrid">
+        <Grid x:Name="OutputsGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -529,20 +486,18 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{x:Static languages:Core.OutputsLabel}" FontWeight="Bold" Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}" />
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
-                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                <ScrollViewer VerticalAlignment="Top">
+                    Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
+                <ScrollViewer VerticalAlignment="Top"
+                              HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto"
+                              Height="110"
+                              Visibility="{Binding ManageServiceInputViewModel.TestResultsAvailable,Converter={StaticResource BoolToVis}}">
                     <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                        <TextBlock Text="{Binding TestResults}" 
-                                   Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
+                        <TextBlock Text="{Binding ManageServiceInputViewModel.TestResults}" 
                                    TextWrapping="Wrap"
-                                   Height="{Binding OutputArea.CurrentHeight}"
-                                   MinHeight="{Binding OutputArea.MinHeight}"
-                                   MaxHeight="{Binding OutputArea.MaxHeight}"
-                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                    HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch">
                             <i:Interaction.Behaviors>
@@ -555,13 +510,13 @@
             <TextBlock Grid.Row="1"
                        Text="None" 
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center" 
-                       Visibility="{Binding IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
+                           VerticalAlignment="Center" 
+                           Visibility="{Binding ManageServiceInputViewModel.IsTestResultsEmptyRows,Converter={StaticResource BoolToVis}}" />
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="GenerateResponseTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="ResponseGrid">
+        <Grid x:Name="ResponseGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -574,7 +529,7 @@
 
             <TextBox Grid.Row="1"
                      Height="110"
-                         Text="{Binding TestResults}" 
+                         Text="{Binding ManageServiceInputViewModel.TestResults}" 
                          x:Name="ResponseTextbox"
                          Style="{StaticResource StretchedTextBoxStyle}"
                          customControls:WatermarkTextBox.Watermark="Paste response here"
@@ -596,10 +551,10 @@
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="True">
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="False">
+                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -610,10 +565,10 @@
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="True">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="False">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -738,182 +693,27 @@
 
             <Grid Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="{Binding OutputsHeight}"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplate}" 
-                     Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                     Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
 
                 <Control Grid.Row="0" Template="{StaticResource GenerateResponseTemplate}" 
-                     Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>
+                     Visibility="{Binding ManageServiceInputViewModel.PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
                     <Button x:Name="GenerateOutputsDoneButton" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"
                         Margin="{StaticResource ControlBorderRight}"
-                        Command="{Binding OkCommand}"
+                        Command="{Binding ManageServiceInputViewModel.OkCommand}"
                         Width="46"
                         Content="Done"/>
                     <Button HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom"
-                        Command="{Binding CloseCommand}"
-                        Width="46"
-                        Content="Cancel"/>
-                </StackPanel>
-            </Grid>
-        </Grid>
-    </ControlTemplate>
-    <ControlTemplate x:Key="GenerateOutputsViewDotNet"  d:DataContext="{d:DesignInstance core1:ManagePluginServiceInputViewModel}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="False">
-                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="False">
-                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
-
-                <Border Grid.Row="1" 
-                        Grid.Column="0"  BorderThickness="1" >
-                    <Border.Style>
-                        <Style>
-                            <Setter Property="Border.BorderBrush" Value="{StaticResource WarewolfHeaderWatermarkGreyBrush}"/>
-                            <Style.Triggers>
-                                <Trigger Property="Border.IsMouseOver" Value="True">
-                                    <Setter Property="Border.BorderBrush" Value="{StaticResource WareWolfOrangeBrush}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" CanContentScroll="True" >
-                        <ItemsControl x:Name="InputsList" 
-                                      Margin="{StaticResource ControlBorderTop}"
-                                      Grid.IsSharedSizeScope="True" 
-                                      ItemsSource="{Binding InputArea.Inputs}" 
-                                      BorderBrush="{StaticResource WareWolfWhiteBrush}" 
-                                      HorizontalContentAlignment="Stretch"
-                                      VerticalAlignment="Top"
-                                      Background="{StaticResource WareWolfWhiteBrush}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="True" MinWidth="25" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock x:Name="InputName" 
-                                                   Margin="{StaticResource ControlBorderTop}" 
-                                                   Text="{Binding Path=Name}" 
-                                                   TextTrimming="CharacterEllipsis" 
-                                                   MinWidth="25"
-                                                   MaxWidth="125"
-                                                   HorizontalAlignment="Stretch" 
-                                                   ToolTip="{Binding Path=Name}"/>
-                                        <TextBox Margin="{StaticResource ControlBorderTopRight}" 
-                                                 Grid.Column="1"
-                                                 Text="{Binding Path=Value}" 
-                                                 HorizontalAlignment="Stretch" 
-                                                 AcceptsReturn="True"
-                                                 Height="Auto"
-                                                 MaxHeight="45"
-                                                 MinWidth="50"
-                                                 TextWrapping="Wrap"
-                                                 VerticalAlignment="Stretch"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 HorizontalScrollBarVisibility="Auto"
-                                                 customControls:WatermarkTextBox.Watermark="Test Data"
-                                                 ToolTip="{x:Static languages:Core.ManageDbServiceInputValueTooltip}">
-                                            <!--<i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}" DataContext="{Binding}" />
-                                    </i:Interaction.Behaviors>-->
-                                        </TextBox>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Border>
-                <TextBlock Text="None"
-                           Grid.Row="1" 
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           Margin="0,0,0,-3"
-                           Style="{StaticResource MenuTextBlockStyle}"
-                           Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
-                    <customControls:CircularProgressBar Width="25"
-                                                    HorizontalAlignment="Right" 
-                                                    Margin="{StaticResource ControlBorderRight}"
-                                                    Height="25"
-                                                    Padding="2.5"
-                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
-                    <Button x:Name="TestActionButton" 
-                        HorizontalAlignment="Right" 
-                        Command="{Binding TestCommand}" 
-                        ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                        Content="Test"
-                        Width="46">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="1" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Control Grid.Row="0" Template="{StaticResource GenerateOutputsTextTemplateDotNet}" 
-                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Right">
-                    <Button x:Name="GenerateOutputsDoneButton" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Bottom"
-                        Margin="{StaticResource ControlBorderRight}"
-                        Command="{Binding OkCommand}"
-                        Width="46"
-                        Content="Done"/>
-                    <Button HorizontalAlignment="Right" 
-                        VerticalAlignment="Bottom"
-                        Command="{Binding CloseCommand}"
+                        Command="{Binding ManageServiceInputViewModel.CloseCommand}"
                         Width="46"
                         Content="Cancel"/>
                 </StackPanel>

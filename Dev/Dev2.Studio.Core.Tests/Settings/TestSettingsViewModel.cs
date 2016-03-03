@@ -18,6 +18,7 @@ using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Logging;
+using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
 using Moq;
@@ -27,6 +28,7 @@ namespace Dev2.Core.Tests.Settings
     public class TestSettingsViewModel : SettingsViewModel
     {
         private SecurityViewModel _theSecurityViewModel;
+        private PerfcounterViewModel _thePerfcounterViewModel;
 
         public TestSettingsViewModel()
         {
@@ -60,6 +62,23 @@ namespace Dev2.Core.Tests.Settings
         protected override SecurityViewModel CreateSecurityViewModel()
         {
             return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, ()=> new Mock<IResourcePickerDialog>().Object);
+        }
+
+        protected override PerfcounterViewModel CreatePerfmonViewModel()
+        {
+            return ThePerfcounterViewModel ?? new PerfcounterViewModel(Settings.PerfCounters, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+        }
+
+        public PerfcounterViewModel ThePerfcounterViewModel
+        {
+            get
+            {
+                return _thePerfcounterViewModel;
+            }
+            set
+            {
+                _thePerfcounterViewModel = value;
+            }
         }
 
         protected override LogSettingsViewModel CreateLoggingViewModel()

@@ -3,7 +3,7 @@ using System.Net.Http;
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.Activities.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
     public class HttpClientCredentialManagerTests

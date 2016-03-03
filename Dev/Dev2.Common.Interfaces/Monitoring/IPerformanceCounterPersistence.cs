@@ -9,5 +9,7 @@ namespace Dev2.Common.Interfaces.Monitoring
         IList<IPerformanceCounter> LoadOrCreate();
 
         void Save(IList<IPerformanceCounter> _resourceCounters, string p);
+
+        void Save(IList<IResourcePerformanceCounter> resourceCounters);
     }
 }

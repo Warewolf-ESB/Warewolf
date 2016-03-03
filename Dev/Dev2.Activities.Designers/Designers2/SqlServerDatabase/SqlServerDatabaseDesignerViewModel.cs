@@ -339,8 +339,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
                 regions.Add(ActionRegion);
+           
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
+               
                 OutputsRegion = new OutputsRegion(ModelItem);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
