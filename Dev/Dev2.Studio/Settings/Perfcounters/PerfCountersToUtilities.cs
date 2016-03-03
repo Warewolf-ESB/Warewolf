@@ -9,13 +9,15 @@ namespace Dev2.Settings.Perfcounters
     {
         public  static  IList<IPerformanceCountersByMachine> FromTo( this IPerformanceCounterTo to)
         {
-            var  result = new PerformanceCountersByMachine();
-            result.AverageExecutionTime = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.AverageExecutionTime && a.IsActive);
-            result.ConcurrentRequests = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ConcurrentRequests && a.IsActive);
-            result.NotAuthorisedErrors = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.NotAuthorisedErrors && a.IsActive);
-            result.RequestPerSecond = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.RequestsPerSecond && a.IsActive);
-            result.TotalErrors = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ExecutionErrors && a.IsActive);
-            result.WorkFlowsNotFound = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ServicesNotFound && a.IsActive);
+            var result = new PerformanceCountersByMachine
+            {
+                AverageExecutionTime = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.AverageExecutionTime && a.IsActive),
+                ConcurrentRequests = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ConcurrentRequests && a.IsActive),
+                NotAuthorisedErrors = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.NotAuthorisedErrors && a.IsActive),
+                RequestPerSecond = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.RequestsPerSecond && a.IsActive),
+                TotalErrors = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ExecutionErrors && a.IsActive),
+                WorkFlowsNotFound = to.NativeCounters.Any(a => a.PerfCounterType == WarewolfPerfCounterType.ServicesNotFound && a.IsActive)
+            };
             return new List<IPerformanceCountersByMachine>{ result};
         }
 
@@ -29,7 +31,7 @@ namespace Dev2.Settings.Perfcounters
                 var current = res.FirstOrDefault(a => a.ResourceId == resourcePerformanceCounter.ResourceId);
                 if (current == null)
                 {
-                    current = new PerformanceCountersByResource() { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.CategoryInstanceName };
+                    current = new PerformanceCountersByResource { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.CategoryInstanceName };
                     res.Add(current);
                 }
                 switch(resourcePerformanceCounter.PerfCounterType)

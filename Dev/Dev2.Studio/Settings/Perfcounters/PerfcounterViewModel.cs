@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -29,7 +30,7 @@ namespace Dev2.Settings.Perfcounters
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
 
-        internal PerfcounterViewModel(IPerformanceCounterTo counters, IWin32Window parentWindow, IEnvironmentModel environment)
+        public PerfcounterViewModel(IPerformanceCounterTo counters, IWin32Window parentWindow, IEnvironmentModel environment)
             : this(counters, parentWindow, environment,null)
         {
         }
@@ -59,17 +60,10 @@ namespace Dev2.Settings.Perfcounters
 
         public PerfcounterViewModel(IPerformanceCounterTo securitySettings,  IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
         {
-
-
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             VerifyArgument.IsNotNull("environment", environment);
-
             _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
-   
-
             _environment = environment;
-
-
             PickResourceCommand = new DelegateCommand(PickResource);
 
             InitializeHelp();
@@ -79,8 +73,52 @@ namespace Dev2.Settings.Perfcounters
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
         {
-            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>(nativeCounters.FromTo());
-            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>(nativeCounters.FromTO());
+            var performanceCountersByMachines = nativeCounters.FromTo();
+            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
+            foreach(var performanceCountersByMachine in performanceCountersByMachines)
+            {
+                RegisterPropertyChanged(performanceCountersByMachine);
+                ServerCounters.Add(performanceCountersByMachine);
+            }
+            var performanceCountersByResources = nativeCounters.FromTO();
+            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
+            foreach(var performanceCountersByResource in performanceCountersByResources)
+            {
+                RegisterPropertyChanged(performanceCountersByResource);
+                ResourceCounters.Add(performanceCountersByResource);
+            }
+            ResourceCounters.Add(CreateNewCounter());
+        }
+
+        void RegisterPropertyChanged(IPerformanceCounters counter)
+        {
+            counter.PropertyChanged += OnPermissionPropertyChanged;
+        }
+
+        void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            IsDirty = true;
+            if (args.PropertyName == "CounterName")
+            {
+                var countersByResource = (IPerformanceCountersByResource)sender;
+
+                if (countersByResource.IsNew)
+                {
+                    {
+                        countersByResource.IsNew = false;
+                        var newPermission = CreateNewCounter();
+                        ResourceCounters.Add(newPermission);
+                    }
+                }
+                else
+                {
+                    var isEmpty = string.IsNullOrEmpty(countersByResource.CounterName);
+                    if (isEmpty)
+                    {
+                        ResourceCounters.Remove(countersByResource);
+                    }
+                }
+            }
         }
 
         public ObservableCollection<IPerformanceCountersByMachine> ServerCounters { get;  set; }
@@ -90,9 +128,7 @@ namespace Dev2.Settings.Perfcounters
         public ActivityDesignerToggle ServerHelpToggle { get; private set; }
 
         public ActivityDesignerToggle ResourceHelpToggle { get; private set; }
-
-
-
+        
         public ICommand PickResourceCommand { get; private set; }
 
         public bool IsServerHelpVisible
@@ -124,45 +160,39 @@ namespace Dev2.Settings.Perfcounters
         public virtual void Save(SecuritySettingsTO securitySettings)
         {
             VerifyArgument.IsNotNull("securitySettings", securitySettings);
-
-
         }
-
-
 
         void InitializeHelp()
         {
             ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
             ResourceHelpToggle = CreateHelpToggle(IsResourceHelpVisibleProperty);
         }
-
- 
-
+        
         void PickResource(object obj)
         {
-            var permission = obj as WindowsGroupPermission;
-            if(permission == null)
+            var counter = obj as IPerformanceCountersByResource;
+            if(counter == null)
             {
                 return;
             }
 
-            var resourceModel = PickResource(permission);
+            var resourceModel = PickResource(counter);
             if(resourceModel == null)
             {
                 return;
             }
 
-            permission.ResourceID = resourceModel.ResourceId;
-            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.ResourcePath, resourceModel.ResourceName);
+            counter.ResourceId = resourceModel.ResourceId;
+            counter.CounterName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.ResourcePath, resourceModel.ResourceName);
         }
 
-        IExplorerTreeItem PickResource(WindowsGroupPermission permission)
+        IExplorerTreeItem PickResource(IPerformanceCountersByResource counter)
         {
-            if(permission != null && permission.ResourceID != Guid.Empty)
+            if(counter != null && counter.ResourceId != Guid.Empty)
             {
                 if(_environment.ResourceRepository != null)
                 {
-                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
+                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == counter.ResourceId);
                     if(foundResourceModel != null)
                     {
                         _resourcePicker.SelectResource( foundResourceModel.ID);
@@ -178,22 +208,10 @@ namespace Dev2.Settings.Perfcounters
             throw  new Exception("Server does not exist");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-    
-
         PerformanceCountersByResource CreateNewCounter()
         {
-            var counter = new PerformanceCountersByResource(); 
+            var counter = new PerformanceCountersByResource { IsNew = true };
+            RegisterPropertyChanged(counter);
             return counter;
         }
 

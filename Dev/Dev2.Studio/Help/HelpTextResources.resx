@@ -135,6 +135,72 @@
   <data name="ExplorerSecurityToolTipView" xml:space="preserve">
     <value>You are authorized to open and inspect this resource</value>
   </data>
+  <data name="SettingsPerfCounterResourceHelpAvgExecTime" xml:space="preserve">
+    <value>SettingsPerfCounterResourceHelpAvgExecTime</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpConReq" xml:space="preserve">
+    <value>SettingsPerfCounterResourceHelpConReq</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpReqPerSec" xml:space="preserve">
+    <value>SettingsPerfCounterResourceHelpReqPerSec</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpResource" xml:space="preserve">
+    <value>SettingsPerfCounterResourceHelpResource</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpTotErrors" xml:space="preserve">
+    <value>SettingsPerfCounterResourceHelpTotErrors</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipAvgExecTime" xml:space="preserve">
+    <value>SettingsPerfCounterResourceToolTipAvgExecTime</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipConReq" xml:space="preserve">
+    <value>SettingsPerfCounterResourceToolTipConReq</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipReqPerSec" xml:space="preserve">
+    <value>SettingsPerfCounterResourceToolTipReqPerSec</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipResource" xml:space="preserve">
+    <value>SettingsPerfCounterResourceToolTipResource</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipTotErrors" xml:space="preserve">
+    <value>SettingsPerfCounterResourceToolTipTotErrors</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpAvgExecTime" xml:space="preserve">
+    <value>SettingsPerfCounterServerAvgExecTime</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpConcurrentReq" xml:space="preserve">
+    <value>SettingsPerfCounterServerHelpConcurrentReq</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpNotAuthErrors" xml:space="preserve">
+    <value>SettingsPerfCounterServerHelpNotAuthErrors</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpReqPerSec" xml:space="preserve">
+    <value>SettingsPerfCounterServerHelpReqPerSec</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpTotalErrors" xml:space="preserve">
+    <value>SettingsPerfCounterServerHelpTotalErrors</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpWfNotFound" xml:space="preserve">
+    <value>SettingsPerfCounterServerHelpWfNotFound</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipAvgExecTime" xml:space="preserve">
+    <value>SettingsPerfCounterServerToolTipAvgExecTime</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipConcurrentReq" xml:space="preserve">
+    <value>SettingsPerfCounterServerToolTipConcurrentReq</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipNotAuthErrors" xml:space="preserve">
+    <value>SettingsPerfCounterServerToolTipNotAuthErrors</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipReqPerSec" xml:space="preserve">
+    <value>SettingsPerCounterServerToolTipReqPerSec</value>
+  </data>
+  <data name="SettingsPerfCounterServerTooltipTotalErrors" xml:space="preserve">
+    <value>SettingsPerfCounterServerTooltipTotalErrors</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipWfNotFound" xml:space="preserve">
+    <value>SettingsPerfCounterServerToolTipWfNotFound</value>
+  </data>
   <data name="SettingsSecurityResourceHelpContribute" xml:space="preserve">
     <value>By Default this group will be able to Edit or Delete this resource. 
 To do this they can also View and Execute.</value>

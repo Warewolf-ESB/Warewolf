@@ -11,14 +11,18 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
+using Dev2.Diagnostics.Test;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
@@ -688,13 +692,6 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             var viewModel = new TestSettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, popupController, new SynchronousAsyncWorker(), new Mock<IWin32Window>().Object, environment) { TheSecurityViewModel = securityViewModel };
 
-         
-
-      
-
-
-            
-    
             // simulate auto-loading of ConnectControl ComboBox
       
 
@@ -705,69 +702,86 @@ You need Administrator permission.", viewModel.Errors);
         {
             var settings = new Data.Settings.Settings
             {
-                Logging = new LoggingSettingsTo
-                {
-                    FileLoggerLogLevel = "DEBUG",
-                    FileLoggerLogSize = 20
-                },
-                Security = new SecuritySettingsTO(new[]
-                {
-                    new WindowsGroupPermission
-                    {
-                        IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
-                        View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
-                    },
-                    new WindowsGroupPermission 
-                    { 
-                        IsServer = true, WindowsGroup = "Deploy Admins", 
-                        View = false, Execute = false, Contribute = false, DeployTo = true, DeployFrom = true, Administrator = false 
-                    },
-
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                        WindowsGroup = "Windows Group 1", View = false, Execute = true, Contribute = false
-                    },
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                        WindowsGroup = "Windows Group 2", View = false, Execute = false, Contribute = true
-                    },
-
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow2",
-                        WindowsGroup = "Windows Group 1", View = true, Execute = true, Contribute = false
-                    },
-
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
-                        WindowsGroup = "Windows Group 3", View = true, Execute = false, Contribute = false
-                    },
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
-                        WindowsGroup = "Windows Group 4", View = false, Execute = true, Contribute = false
-                    },
-
-
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow4",
-                        WindowsGroup = "Windows Group 3", View = false, Execute = false, Contribute = true
-                    },
-                    new WindowsGroupPermission
-                    {
-                        ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                        WindowsGroup = "Windows Group 4", View = false, Execute = false, Contribute = true
-                    }
-                })
-                {
-                    CacheTimeout = GlobalConstants.DefaultTimeoutValue
-                }
+                Logging = CreateLoggingSettings(),
+                Security = CreateSecuritySettings(),
+                PerfCounters = CreatePerfCounterSettings()
             };
             return settings;
+        }
+
+        private static IPerformanceCounterTo CreatePerfCounterSettings()
+        {
+            var performanceCounterTo = new PerformanceCounterTo();
+            return performanceCounterTo;
+        }
+
+        private static LoggingSettingsTo CreateLoggingSettings()
+        {
+            return new LoggingSettingsTo
+            {
+                FileLoggerLogLevel = "DEBUG",
+                FileLoggerLogSize = 20
+            };
+        }
+
+        private static SecuritySettingsTO CreateSecuritySettings()
+        {
+            return new SecuritySettingsTO(new[]
+            {
+                new WindowsGroupPermission
+                {
+                    IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
+                    View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
+                },
+                new WindowsGroupPermission 
+                { 
+                    IsServer = true, WindowsGroup = "Deploy Admins", 
+                    View = false, Execute = false, Contribute = false, DeployTo = true, DeployFrom = true, Administrator = false 
+                },
+
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
+                    WindowsGroup = "Windows Group 1", View = false, Execute = true, Contribute = false
+                },
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
+                    WindowsGroup = "Windows Group 2", View = false, Execute = false, Contribute = true
+                },
+
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow2",
+                    WindowsGroup = "Windows Group 1", View = true, Execute = true, Contribute = false
+                },
+
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
+                    WindowsGroup = "Windows Group 3", View = true, Execute = false, Contribute = false
+                },
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
+                    WindowsGroup = "Windows Group 4", View = false, Execute = true, Contribute = false
+                },
+
+
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow4",
+                    WindowsGroup = "Windows Group 3", View = false, Execute = false, Contribute = true
+                },
+                new WindowsGroupPermission
+                {
+                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
+                    WindowsGroup = "Windows Group 4", View = false, Execute = false, Contribute = true
+                }
+            })
+            {
+                CacheTimeout = GlobalConstants.DefaultTimeoutValue
+            };
         }
 
         [TestMethod]

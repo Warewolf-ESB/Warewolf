@@ -1,6 +1,7 @@
-﻿namespace Dev2.Common.Interfaces
+﻿
+namespace Dev2.Common.Interfaces
 {
-    public interface IPerformanceCountersByMachine
+    public interface IPerformanceCountersByMachine : IPerformanceCounters
     {
         string MachineName { get; set; }
         bool RequestPerSecond { get; set; }
