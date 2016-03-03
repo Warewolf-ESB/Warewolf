@@ -17,6 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         ICollection<IServiceOutputMapping> _outputs;
         bool _isVisible;
         private int _outputRowCount;
+        private bool _textResults;
 
         private const double BaseHeight = 60;
 
@@ -181,6 +182,18 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _outputRowCount = value;
                 ResetOutputsHeight();
+            }
+        }
+        public bool TextResults
+        {
+            get
+            {
+                return _textResults;
+            }
+            set
+            {
+                _textResults = value;
+                OnPropertyChanged();
             }
         }
 
