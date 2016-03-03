@@ -78,8 +78,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             SetInitialHeight();
-            Inputs = new List<IServiceInput>();
-            UpdateOnActionSelection();
+            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
+            Inputs = new List<IServiceInput>(inputsFromModel??new List<IServiceInput>());
+            if(inputsFromModel == null)
+                UpdateOnActionSelection();
             IsVisible = _action != null && _action.SelectedAction != null;
         }
 
@@ -226,10 +228,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 Inputs.Clear();
                 if (region.Inputs != null)
                 {
-                    Inputs = region.Inputs;
+                    foreach(var serviceInput in region.Inputs)
+                    {
+                        Inputs.Add(serviceInput);
+                    }
+                   
                 }
-
+                OnPropertyChanged("Inputs");
                 ResetInputsHeight();
+                IsInputsEmptyRows = Inputs == null ||Inputs.Count == 0;
             }
         }
 

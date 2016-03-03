@@ -101,9 +101,9 @@ namespace Warewolf.Core
             }
         }
 
-        public  string GetHashCodeBySource(Guid srcId)
+        public  string GetHashCodeBySource()
         {
-            return srcId + Name;
+            return SourceId + Name;
             
         }
         public static bool operator ==(DbAction left, DbAction right)
