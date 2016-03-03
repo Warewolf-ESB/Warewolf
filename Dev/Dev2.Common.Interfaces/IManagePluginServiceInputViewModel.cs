@@ -15,8 +15,6 @@ namespace Dev2.Common.Interfaces
         IGenerateOutputArea OutputArea { get; set; }
         IOutputDescription Description { get; set; }
         IGenerateInputArea InputArea { get; set; }
-        bool PasteResponseVisible { get; set; }
-        bool PasteResponseAvailable { get; }
 
         void SetInitialVisibility();
     }

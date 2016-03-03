@@ -44,7 +44,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
         {
             LabelWidth = 46;
-            ToolRegionName = "ActionRegion";
             ToolRegionName = "DbActionRegion";
             _modelItem = modelItem;
             _model = model;

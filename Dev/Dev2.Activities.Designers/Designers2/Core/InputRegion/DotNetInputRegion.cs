@@ -9,12 +9,13 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 // ReSharper disable NotAccessedField.Local
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetInputRegion : IDotNetInputRegion
     {
-         private readonly ModelItem _modelItem;
+        private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IPluginAction> _action;
         private double _minHeight;
         private double _currentHeight;
@@ -28,7 +29,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public DotNetInputRegion()
         {
-            ToolRegionName = "DatabaseInputRegion";
+            ToolRegionName = "DotNetInputRegion";
             SetInitialHeight();
         }
 
@@ -51,6 +52,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
                 MaxHeadersHeight = 115;
                 CurrentHeight = MinHeight;
+                OnPropertyChanged("Inputs");
             }
             else
             {
@@ -62,33 +64,42 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
                 OnHeightChanged(this);
+                OnPropertyChanged("Inputs");
             }
         }
 
         public DotNetInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
         {
-            ToolRegionName = "DatabaseInputRegion";
+            ToolRegionName = "DotNetInputRegion";
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             SetInitialHeight();
             Inputs = new List<IServiceInput>();
+            UpdateOnActionSelection();
             IsVisible = action != null && action.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if (_action != null && _action.SelectedAction != null)
+            UpdateOnActionSelection();
+            // ReSharper disable once ExplicitCallerInfoArgument
+            OnPropertyChanged(@"Inputs");
+            OnPropertyChanged(@"IsVisible");
+            OnHeightChanged(this);
+        }
+
+        private void UpdateOnActionSelection()
+        {
+            Inputs.Clear();
+            IsVisible = false;
+            if(_action != null && _action.SelectedAction != null)
             {
-                Inputs.Clear();
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsVisible = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
         }
 
         public bool IsInputsEmptyRows
