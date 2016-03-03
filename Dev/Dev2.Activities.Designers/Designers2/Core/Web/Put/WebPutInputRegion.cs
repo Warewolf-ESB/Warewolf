@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core.Web.Put
 {
@@ -30,7 +31,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class WebPutInputRegion : IWebPutInputArea
     {
-        private const double BaseHeight = 265;
+        private const double BaseHeight = 60;
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
         private double _currentHeight;
@@ -266,28 +267,17 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             MaxHeadersHeight = HeadersHeight;
             if (Headers.Count >= 3)
             {
-                MinHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeadersHeight = 120;
+                MinHeight = 115;
+                MaxHeight = 115;
+                MaxHeadersHeight = 115;
                 CurrentHeight = MinHeight;
             }
             else
             {
-                var count = 0;
-                if (Headers.Count > 0)
-                {
-                    // Remove the header from the count
-                    count = Headers.Count - 1;
-                }
-                CurrentHeight = GlobalConstants.RowHeaderHeight + count * GlobalConstants.RowHeight;
+                CurrentHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
                 if (CurrentHeight < BaseHeight)
                 {
                     CurrentHeight = BaseHeight;
-                    // Check if the count is greater than 0 before adding the RowHeight
-                    if (count > 0)
-                    {
-                        CurrentHeight += GlobalConstants.RowHeight;
-                    }
                 }
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;

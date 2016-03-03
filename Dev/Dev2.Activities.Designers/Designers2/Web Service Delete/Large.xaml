@@ -7,17 +7,12 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:webServiceDelete="clr-namespace:Dev2.Activities.Designers2.Web_Service_Delete"
-                               xmlns:ig="http://schemas.infragistics.com/xaml"
-                               xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
-                               xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
@@ -90,7 +85,6 @@
 
                     <Grid x:Name="HeadersGrid" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -99,13 +93,8 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
-                        <Border Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Grid.Row="1" 
-                                BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
-                                BorderThickness="1" >
                             <controls:Dev2DataGrid x:Name="Headers"
-                                   Grid.Row="0"
+                                   Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
@@ -188,7 +177,6 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </controls:Dev2DataGrid>
-                        </Border>
                     </Grid>
 
                     <Grid x:Name="UrlGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
@@ -225,8 +213,8 @@
                         </Button>
                     </Grid>
                 </Grid>
-                
-                <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource OutputsGrid}"/>
+
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource OutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
                       Grid.Row="3"
@@ -237,7 +225,7 @@
             </Grid>
 
             <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Control Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
+                <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
             </Grid>
         </Grid>
     </Grid>

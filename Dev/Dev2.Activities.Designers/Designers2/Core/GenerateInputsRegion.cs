@@ -17,6 +17,7 @@ namespace Dev2.Activities.Designers2.Core
         double _inputsHeight;
         double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
+        private bool _isWeb;
         private const double BaseHeight = 30;
 
         public GenerateInputsRegion()
@@ -122,6 +123,12 @@ namespace Dev2.Activities.Designers2.Core
                 MinHeight = CurrentHeight;
                 MaxHeight = CurrentHeight;
             }
+            if (IsWeb)
+            {
+                CurrentHeight += 30;
+                MinHeight += 30;
+                MaxHeight += 30;
+            }
         }
 
         #endregion
@@ -162,6 +169,18 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _maxInputsHeight = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsWeb
+        {
+            get
+            {
+                return _isWeb;
+            }
+            set
+            {
+                _isWeb = value;
                 OnPropertyChanged();
             }
         }
