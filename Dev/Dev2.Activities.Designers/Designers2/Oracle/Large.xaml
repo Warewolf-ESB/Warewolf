@@ -273,19 +273,19 @@
                         </DataTemplate>
                     </ig:TextColumn.AddNewRowEditorTemplate>
                 </ig:TextColumn>
-                <customControls:IntellisenseTextBoxColumn Key="MappedTo" HeaderText="Mapped To"  MinimumWidth="100" Watermark="Mapped To">
-                    <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                        <DataTemplate DataType="db:IServiceOutputMapping">
-                            <ui:IntellisenseTextBox Text="{Binding MappedTo}" ToolTip="{Binding Path=MappedTo}">
-                                <ui:IntellisenseTextBox.IntellisenseProvider>
-                                    <interfaceImplementors:CompositeIntellisenseProvider>
-                                        <interfaceImplementors:DefaultIntellisenseProvider />
-                                    </interfaceImplementors:CompositeIntellisenseProvider>
-                                </ui:IntellisenseTextBox.IntellisenseProvider>
-                            </ui:IntellisenseTextBox>
-                        </DataTemplate>
-                    </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>
-                </customControls:IntellisenseTextBoxColumn>
+<!--                <customControls:IntellisenseTextBoxColumn Key="MappedTo" HeaderText="Mapped To"  MinimumWidth="100" Watermark="Mapped To">-->
+<!--                    <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>-->
+<!--                        <DataTemplate DataType="db:IServiceOutputMapping">-->
+<!--                            <ui:IntellisenseTextBox Text="{Binding MappedTo}" ToolTip="{Binding Path=MappedTo}">-->
+<!--                                <ui:IntellisenseTextBox.IntellisenseProvider>-->
+<!--                                    <interfaceImplementors:CompositeIntellisenseProvider>-->
+<!--                                        <interfaceImplementors:DefaultIntellisenseProvider />-->
+<!--                                    </interfaceImplementors:CompositeIntellisenseProvider>-->
+<!--                                </ui:IntellisenseTextBox.IntellisenseProvider>-->
+<!--                            </ui:IntellisenseTextBox>-->
+<!--                        </DataTemplate>-->
+<!--                    </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>-->
+<!--                </customControls:IntellisenseTextBoxColumn>-->
             </ig:XamGrid.Columns>
             <ig:XamGrid.SortingSettings>
                 <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
