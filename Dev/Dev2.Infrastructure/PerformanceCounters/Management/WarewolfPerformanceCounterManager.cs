@@ -117,6 +117,19 @@ namespace Dev2.PerformanceCounters.Management
             _resourceCounters = resourceCounters.Cast<IPerformanceCounter>().ToList();
         }
 
+        public void ResetCounters()
+        {
+            foreach(var performanceCounter in _resourceCounters)
+            {
+                performanceCounter.Reset();
+            }
+
+            foreach (var performanceCounter in _counters)
+            {
+                performanceCounter.Reset();
+            }
+        }
+
         #endregion
     }
 }
