@@ -105,6 +105,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.0.5\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -313,6 +317,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\Data\RecordsetNode.cs" />

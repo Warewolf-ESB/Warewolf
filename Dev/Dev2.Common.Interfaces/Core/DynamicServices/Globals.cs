@@ -116,6 +116,13 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         ///     A Oracle database
         /// </summary>
         Oracle,
+
+        /// <summary>
+        ///     A PostgreSql database
+        /// </summary>
+        PostgreSql,
+
+
         /// <summary>
         ///     A SOAP based Web Service: REST web services are not supported
         /// </summary>

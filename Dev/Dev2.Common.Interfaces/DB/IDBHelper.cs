@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces.DB
         MSSQL,
         MySQL,
         Oracle,
+        PostgreSql,
         ODBC
     }
 
