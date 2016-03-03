@@ -165,6 +165,7 @@
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDropBoxFileActivityTest.cs" />
     <Compile Include="ActivityTests\DsfWebDeleteActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfWebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
     <Compile Include="ActivityTests\HttpClientCredentialManagerTests.cs" />
+    <Compile Include="ActivityTests\TestUtils.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\SqlBulkInserterTests.cs" />

@@ -61,6 +61,7 @@ using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WebServiceGet;
 using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Post;
+using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
@@ -123,6 +124,7 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
+                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },

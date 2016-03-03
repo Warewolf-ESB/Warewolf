@@ -20,13 +20,6 @@ namespace Dev2.Activities
 
         }
 
-        #region Properties
-
-
-
-        #endregion
-
-
         #region Overrides
 
 
@@ -46,7 +39,7 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData: string.Empty);
+            var webRequestResult = PerformWebPostRequest(head, query, url, putData: string.Empty);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 
