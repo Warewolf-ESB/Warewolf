@@ -82,6 +82,8 @@ namespace Dev2.Settings.Perfcounters
             
             PickResourceCommand = new DelegateCommand(PickResource);
             ResetCountersCommand = new DelegateCommand(ResetCounters);
+            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
+            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
             InitializeTos(counters);
 
         }
@@ -105,19 +107,20 @@ namespace Dev2.Settings.Perfcounters
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
         {
+            ServerCounters.Clear();
+            ResourceCounters.Clear();
             var performanceCountersByMachines = nativeCounters.GetServerCountersTo();
-            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
             foreach(var performanceCountersByMachine in performanceCountersByMachines)
             {
                 RegisterPropertyChanged(performanceCountersByMachine);
                 ServerCounters.Add(performanceCountersByMachine);
             }
             var performanceCountersByResources = nativeCounters.GetResourceCountersTo();
-            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
-            foreach(var performanceCountersByResource in performanceCountersByResources)
+            foreach (var performanceCountersByResource in performanceCountersByResources)
             {
                 RegisterPropertyChanged(performanceCountersByResource);
                 ResourceCounters.Add(performanceCountersByResource);
+
             }
             ResourceCounters.Add(CreateNewCounter());
         }
@@ -126,7 +129,6 @@ namespace Dev2.Settings.Perfcounters
         {
             UpdateServerCounter(perfCounterTo);
             UpdateResourceCounter(perfCounterTo);
-
             InitializeTos(perfCounterTo);
         }
 

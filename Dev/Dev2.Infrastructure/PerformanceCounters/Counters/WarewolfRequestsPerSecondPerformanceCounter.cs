@@ -47,9 +47,10 @@ namespace Dev2.PerformanceCounters.Counters
         public void Increment()
         {
             if (IsActive)
-
+            {
                 Setup();
                 _counter.Increment();
+            }
       
         }
 
