@@ -293,7 +293,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
-                //SelectedAction = region.SelectedAction;
+                SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);
                 MinHeight = region.MinHeight;
                 CurrentHeight = region.CurrentHeight;
@@ -406,7 +406,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
     }
 
-    class DbActionMemento:IActionToolRegion<IDbAction>
+    public class DbActionMemento:IActionToolRegion<IDbAction>
     {
         private IDbAction _selectedAction;
 

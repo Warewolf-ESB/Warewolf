@@ -104,6 +104,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             region.HeightChanged += (a, b) => { called = true; };
+            region.MaxHeight += 10;
             Assert.IsTrue(called);
         }
 
@@ -193,7 +194,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
 
             sourceRegion.SelectedSource = lst[0];
-            Assert.AreEqual(region.Inputs, "Dave");
+            Assert.AreEqual(region.Inputs.Count, 0);
         }
     }
 }
