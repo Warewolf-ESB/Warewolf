@@ -540,7 +540,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
                 if (isOutputVisible)
                 {
-                    DesignMaxHeight += 25;
+                    DesignMaxHeight += 15;
                     DesignHeight += 30;
                     DesignMinHeight += 30;
                 }
