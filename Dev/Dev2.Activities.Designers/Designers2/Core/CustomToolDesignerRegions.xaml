@@ -204,14 +204,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
+<!--            MaxHeight="{Binding InputArea.MaxHeight}"-->
             <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                    Grid.Row="0"
                                    ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
-                                   MinHeight="{Binding InputArea.MinHeight}"
-                                   MaxHeight="{Binding InputArea.MaxHeight}"
+                                   MinHeight="100"
                                    Margin="{StaticResource ControlBorderTop}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -311,7 +310,8 @@
                     Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
         </Grid>
     </ControlTemplate>
-
+<!--    MaxHeight="{Binding MaxHeight}"-->
+    <!-- MinHeight="{Binding MinHeight}" -->
     <ControlTemplate x:Key="OutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
         <Grid VerticalAlignment="Stretch" 
               x:Name="OutputsTemplate"
@@ -333,8 +333,6 @@
                                        ItemsSource="{Binding Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}"
                                        Height="Auto"
-                                       MinHeight="{Binding MinHeight}"
-                                       MaxHeight="{Binding MaxHeight}"
                                        IsEnabled="{Binding IsVisible}"
                                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                        Margin="{StaticResource ControlBorderTop}">
