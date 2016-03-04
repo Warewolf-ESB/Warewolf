@@ -117,13 +117,7 @@ namespace Dev2.PerformanceCounters.Management
         {
             get
             {
-                return new List<IResourcePerformanceCounter>{
-                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, ""),
-                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, ""),
-
-                                                    };
+                return new List<IResourcePerformanceCounter>();
             }
         }
 
