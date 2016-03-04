@@ -21,9 +21,11 @@ namespace Dev2.PerformanceCounters.Counters
         {
             try
             {
-                _counter.Setup();
-                _counter.Increment();
-
+                if (_counter.IsActive)
+                {
+                    _counter.Setup();
+                    _counter.Increment();
+                }
             }
             catch(Exception e)
             {

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:help="clr-namespace:Dev2.Help"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
@@ -297,7 +296,7 @@
                                 <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              IsEnabled="{Binding Path=true}"
+                                              IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipAvgExecTime}">
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpAvgExecTime}"
