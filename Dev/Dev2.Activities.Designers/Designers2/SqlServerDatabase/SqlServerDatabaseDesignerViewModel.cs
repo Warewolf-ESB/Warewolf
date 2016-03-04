@@ -521,11 +521,16 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             if (_regions != null)
             {
                 bool isInputVisible = false;
+                bool isOutputVisible = false;
                 foreach (var toolRegion in _regions)
                 {
                     if (toolRegion.ToolRegionName == "DatabaseInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
+                    }
+                    if (toolRegion.ToolRegionName == "OutputsRegion")
+                    {
+                        isOutputVisible = toolRegion.IsVisible;
                     }
                 }
 
@@ -533,6 +538,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
                 DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
 
+                if (isOutputVisible)
+                {
+                    DesignMaxHeight += 15;
+                    DesignHeight += 30;
+                    DesignMinHeight += 30;
+                }
                 if (isInputVisible && !GenerateOutputsVisible)
                 {
                     DesignMaxHeight += 30;

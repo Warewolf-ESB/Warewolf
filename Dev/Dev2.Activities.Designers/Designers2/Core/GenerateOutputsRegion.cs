@@ -116,7 +116,6 @@ namespace Dev2.Activities.Designers2.Core
                 MinHeight = 3 * GlobalConstants.RowHeight;
                 MaxHeight = (OutputRowCount * GlobalConstants.RowHeight) + 15;
                 OutputsHeight = MinHeight;
-                MaxOutputsHeight = MaxHeight;
                 CurrentHeight = MinHeight;
             }
             else
