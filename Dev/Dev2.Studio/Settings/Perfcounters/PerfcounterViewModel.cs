@@ -4,13 +4,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
+using Dev2.Controller;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -24,21 +26,20 @@ using Warewolf.Studio.ViewModels;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable InconsistentNaming
 namespace Dev2.Settings.Perfcounters
 {
     public class PerfcounterViewModel : SettingsItemViewModel, IHelpSource
     {
-        IResourcePickerDialog _resourcePicker;
-
-     
+        protected IResourcePickerDialog _resourcePicker;
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
         private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
         
-        internal PerfcounterViewModel(IPerformanceCounterTo counters, IWin32Window parentWindow, IEnvironmentModel environment)
-            : this(counters, parentWindow, environment,null)
+        internal PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment)
+            : this(counters, environment,null)
         {
         }
 
@@ -59,23 +60,47 @@ namespace Dev2.Settings.Perfcounters
             if (server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
-                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                if(environment.AuthorizationService != null)
+                {
+                    if(environment.AuthorizationService.SecurityService != null)
+                    {
+                        server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                    }
+                }
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             return env;
         }
 
-        public PerfcounterViewModel(IPerformanceCounterTo counters,  IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        public PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
         {
-            VerifyArgument.IsNotNull("parentWindow", parentWindow);
+            VerifyArgument.IsNotNull("counters", counters);
             VerifyArgument.IsNotNull("environment", environment);
             _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
             _environment = environment;
+            
             PickResourceCommand = new DelegateCommand(PickResource);
-
+            ResetCountersCommand = new DelegateCommand(ResetCounters);
             InitializeHelp();
-
             InitializeTos(counters);
+
+        }
+
+        public ICommand ResetCountersCommand { get; set; }
+
+        private void ResetCounters(object obj)
+        {
+            var controller = CommunicationController;
+            controller.ServiceName = "ResetPerformanceCounters";
+            var message = controller.ExecuteCommand<ExecuteMessage>(_environment.Connection, Guid.Empty);
+            if (!message.HasError)
+            {
+                CustomContainer.Get<IPopupController>().Show("Performance Counters have been reset.", "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.None, "", false, true, false, false);
+            }
+            else
+            {
+                CustomContainer.Get<IPopupController>().Show("Error reseting counters: "+Environment.NewLine+message.Message, "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.Information, "", false, true, false, false);
+            }
         }
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
@@ -234,8 +259,20 @@ namespace Dev2.Settings.Perfcounters
             get { return (bool)GetValue(IsResourceHelpVisibleProperty); }
             set { SetValue(IsResourceHelpVisibleProperty, value); }
         }
+        public CommunicationController CommunicationController
+        {
+            get
+            {
+                return _communicationController ?? new CommunicationController();
+            }
+            set
+            {
+                _communicationController = value;
+            }
+        }
 
         public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register("IsResourceHelpVisible", typeof(bool), typeof(PerfcounterViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
+        private CommunicationController _communicationController;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -285,7 +322,7 @@ namespace Dev2.Settings.Perfcounters
             {
                 return hasResult ? _resourcePicker.SelectedResource : null;
             }
-            throw  new Exception("Server does not exist");
+            return null;
         }
 
         PerformanceCountersByResource CreateNewCounter()

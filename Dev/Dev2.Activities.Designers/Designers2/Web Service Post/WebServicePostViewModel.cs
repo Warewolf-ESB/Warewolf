@@ -252,6 +252,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             if (SourceRegion.SelectedSource != null)
             {
                 var service = ToModel();
+                ManageServiceInputViewModel.InputArea.IsWeb = true;
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 

@@ -96,7 +96,13 @@ namespace Dev2.PerformanceCounters.Counters
                 return "Count of Not Authorised errors";
             }
         }
-
+        public void Reset()
+        {
+            if (_counter != null)
+            {
+                _counter.RawValue = 0;
+            }
+        }
         #endregion
     }
 }

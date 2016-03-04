@@ -79,6 +79,10 @@ namespace Dev2.PerformanceCounters.Counters
             _counter.Setup();
         }
 
+        public void Reset()
+        {
+            _counter.Reset();
+        }
         #endregion
     }
 
