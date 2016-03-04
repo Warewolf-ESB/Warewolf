@@ -46,9 +46,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
-            Assert.AreEqual(465, webget.DesignMaxHeight);
-            Assert.AreEqual(465, webget.DesignMinHeight);
-            Assert.AreEqual(465, webget.DesignHeight);
+            Assert.AreEqual(470, webget.DesignMaxHeight);
+            Assert.AreEqual(455, webget.DesignMinHeight);
+            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -134,9 +134,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
-            Assert.AreEqual(330, webget.DesignMaxHeight);
-            Assert.AreEqual(330, webget.DesignMinHeight);
-            Assert.AreEqual(330, webget.DesignHeight);
+            Assert.AreEqual(315, webget.DesignMaxHeight);
+            Assert.AreEqual(315, webget.DesignMinHeight);
+            Assert.AreEqual(315, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -167,9 +167,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(465, webget.DesignMaxHeight);
-            Assert.AreEqual(440, webget.DesignMinHeight);
-            Assert.AreEqual(440, webget.DesignHeight);
+            Assert.AreEqual(440, webget.DesignMaxHeight);
+            Assert.AreEqual(425, webget.DesignMinHeight);
+            Assert.AreEqual(425, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -256,9 +256,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(495, webget.DesignMaxHeight);
-            Assert.AreEqual(470, webget.DesignMinHeight);
-            Assert.AreEqual(470, webget.DesignHeight);
+            Assert.AreEqual(470, webget.DesignMaxHeight);
+            Assert.AreEqual(455, webget.DesignMinHeight);
+            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -291,9 +291,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(495, webget.DesignMaxHeight);
-            Assert.AreEqual(470, webget.DesignMinHeight);
-            Assert.AreEqual(470, webget.DesignHeight);
+            Assert.AreEqual(470, webget.DesignMaxHeight);
+            Assert.AreEqual(455, webget.DesignMinHeight);
+            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -328,9 +328,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(495, webget.DesignMaxHeight);
-            Assert.AreEqual(470, webget.DesignMinHeight);
-            Assert.AreEqual(470, webget.DesignHeight);
+            Assert.AreEqual(470, webget.DesignMaxHeight);
+            Assert.AreEqual(455, webget.DesignMinHeight);
+            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);

@@ -534,7 +534,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 bool isOutputVisible = false;
                 foreach (var toolRegion in _regions)
                 {
-                    if (toolRegion.ToolRegionName == "GetInputRegion")
+                    if (toolRegion.ToolRegionName == "PostInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }
