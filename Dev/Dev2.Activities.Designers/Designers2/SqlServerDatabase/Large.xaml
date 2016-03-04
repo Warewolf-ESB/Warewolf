@@ -12,7 +12,6 @@
                                MinHeight="{Binding DesignMinHeight}"
                                Height="{Binding DesignHeight}"
                                MaxWidth="Infinity"
-                               MaxHeight="{Binding DesignMaxHeight}"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
