@@ -21,8 +21,8 @@ namespace Dev2.Activities
 
         public DsfPostgreSqlActivity()
         {
-            Type = "MySQL Database Connector";
-            DisplayName = "MySQL Database Connector";
+            Type = "PostgreSql Database Connector";
+            DisplayName = "PostgreSql Database Connector";
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
