@@ -43,7 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
                 // ReSharper disable MaximumChainedReferences
                 ServiceModel.Services services = new ServiceModel.Services();
-                var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
+                
+var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                
                 if (dbSource.Type == enSourceType.ODBC) {
                     DbSource db = new DbSource();
