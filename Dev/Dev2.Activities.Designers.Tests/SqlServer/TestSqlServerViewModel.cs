@@ -47,9 +47,9 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(355, sqlServer.DesignMinHeight);
-            Assert.AreEqual(355, sqlServer.DesignHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMinHeight);
+            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.ActionRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -166,12 +166,12 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel.Model = new DatabaseService() { Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" } };
 
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
-       #pragma warning restore 4014
+#pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(355, sqlServer.DesignMinHeight);
-            Assert.AreEqual(355, sqlServer.DesignHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMinHeight);
+            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -233,9 +233,9 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(355, sqlServer.DesignMinHeight);
-            Assert.AreEqual(355, sqlServer.DesignHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMinHeight);
+            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -269,9 +269,9 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(355, sqlServer.DesignMinHeight);
-            Assert.AreEqual(355, sqlServer.DesignHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMinHeight);
+            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -288,7 +288,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var mod = new SqlServerModel(); 
+            var mod = new SqlServerModel();
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
@@ -307,9 +307,9 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(355, sqlServer.DesignMinHeight);
-            Assert.AreEqual(355, sqlServer.DesignHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMinHeight);
+            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);

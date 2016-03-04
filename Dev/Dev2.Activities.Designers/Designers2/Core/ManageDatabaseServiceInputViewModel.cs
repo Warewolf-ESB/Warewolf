@@ -68,6 +68,12 @@ namespace Dev2.Activities.Designers2.Core
             {
                 InputCountExpandAllowed = _generateInputArea.Inputs.Count > 3;
                 IsGenerateInputsEmptyRows = _generateInputArea.Inputs.Count < 1;
+                if (_generateInputArea.Inputs.Count < 1)
+                {
+                    minInputHeight += 10;
+                    inputHeight += 10;
+                    maxInputHeight += 10;
+                }
             }
             if (_generateOutputArea.Outputs != null)
             {
@@ -198,6 +204,7 @@ namespace Dev2.Activities.Designers2.Core
                     TestResultsAvailable = TestResults.Rows.Count != 0;
                     IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
                     _generateOutputArea.IsVisible = true;
+                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
                     _generateOutputArea.OutputRowCount = TestResults.Rows.Count;
                     IsTesting = false;
                 }
