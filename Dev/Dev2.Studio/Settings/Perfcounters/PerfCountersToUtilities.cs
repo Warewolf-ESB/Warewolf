@@ -55,7 +55,7 @@ namespace Dev2.Settings.Perfcounters
         public static IList<IResourcePerformanceCounter> GetResourceCounters(this List<IPerformanceCountersByResource> to)
         {
             var res = new List<IResourcePerformanceCounter>();
-            foreach (var resourcePerformanceCounter in to.Where(resource => !resource.IsDeleted))
+            foreach (var resourcePerformanceCounter in to.Where(resource => !resource.IsDeleted && !string.IsNullOrEmpty(resource.CounterName)))
             {
                 if (resourcePerformanceCounter.TotalErrors)
                 {

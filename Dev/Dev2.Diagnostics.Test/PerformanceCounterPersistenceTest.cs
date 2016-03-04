@@ -34,11 +34,11 @@ namespace Dev2.Diagnostics.Test
             PerfCounterType = WarewolfPerfCounterType.AverageExecutionTime;
         }
 
-        public TestCounter(WarewolfPerfCounterType warewolfPerfCounterType)
+        public TestCounter(WarewolfPerfCounterType warewolfPerfCounterType,bool isActive=true)
         {
             Category = "";
             Name = "bob";
-            IsActive = true;
+            IsActive = isActive;
             PerfCounterType = warewolfPerfCounterType;
         }
 
