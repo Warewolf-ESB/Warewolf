@@ -7,7 +7,7 @@ namespace Dev2.Common.Interfaces.DB
     {
         IList<IServiceInput> Inputs { get; set; }
         string Name { get; set; }
-
-        string GetHashCodeBySource(Guid srcId);
+        Guid SourceId { get; set; }
+        string GetHashCodeBySource();
     }
 }

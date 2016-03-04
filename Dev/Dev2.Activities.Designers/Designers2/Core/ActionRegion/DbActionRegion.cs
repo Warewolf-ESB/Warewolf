@@ -9,6 +9,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Core;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ExplicitCallerInfoArgument
@@ -121,33 +123,39 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedAction.Name))
-                    StorePreviousValues( _selectedAction.GetHashCodeBySource(_source.SelectedSource.Id));
-                }
+                //if (!Equals(value, _selectedAction) && _selectedAction != null)
+                //{
+                //    if (!String.IsNullOrEmpty(_selectedAction.Name))
+                //    StorePreviousValues( _selectedAction.GetHashCodeBySource());
+                //}
 
-                if (IsAPreviousValue(value) && _selectedAction != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedAction(value);
-                }
-                else
-                {
-                    SetSelectedAction(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
-                var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if (delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
-
-                _selectedAction = value;
+                RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
         }
+
+        private void RestoreIfPrevious(IDbAction value)
+        {
+            //if(IsAPreviousValue(value) && _selectedAction != null)
+            //{
+            //    RestorePreviousValues(value);
+            //    SetSelectedAction(value);
+            //}
+            //else
+            //{
+            SetSelectedAction(value);
+            SourceChangedAction();
+            OnSomethingChanged(this);
+            //}
+            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+            if(delegateCommand != null)
+            {
+                delegateCommand.RaiseCanExecuteChanged();
+            }
+
+            _selectedAction = value;
+        }
+
         public ICollection<IDbAction> Actions
         {
             get
@@ -267,26 +275,39 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new DbActionRegion
+            var action = new DbActionMemento
             {
                 MaxHeight = MaxHeight,
                 MinHeight = MinHeight,
                 IsVisible = IsVisible,
-                SelectedAction = SelectedAction,
-                CurrentHeight = CurrentHeight
+                CurrentHeight = CurrentHeight,
+                SelectedAction = (SelectedAction == null ? null : new DbAction 
+                { Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a=>new ServiceInput(a.Name,a.Value) as IServiceInput).ToList(), Name = SelectedAction.Name, SourceId = SelectedAction.SourceId })
             };
+            return action;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DbActionRegion;
+            var region = toRestore as DbActionMemento;
             if (region != null)
             {
                 MaxHeight = region.MaxHeight;
                 SelectedAction = region.SelectedAction;
+                RestoreIfPrevious(region.SelectedAction);
                 MinHeight = region.MinHeight;
                 CurrentHeight = region.CurrentHeight;
                 IsVisible = region.IsVisible;
+                OnPropertyChanged("SelectedAction");
+                //if (IsAPreviousValue(_selectedAction) && _selectedAction != null)
+                //{
+                //    RestorePreviousValues(_selectedAction);
+
+                //}
+                //else
+                //{
+                //    OnSomethingChanged(this);
+                //}
             }
         }
 
@@ -321,7 +342,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestorePreviousValues(IDbAction value)
         {
-            var toRestore = _previousRegions[value.GetHashCodeBySource(_source.SelectedSource.Id)];
+            var toRestore = _previousRegions[value.GetHashCodeBySource()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -330,7 +351,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IDbAction value)
         {
-            return value!=null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource(_source.SelectedSource.Id));
+            return value!=null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
         }
 
         public IList<string> Errors
@@ -381,6 +402,88 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (handler != null)
             {
                 handler(this, args);
+            }
+        }
+    }
+
+    public class DbActionMemento:IActionToolRegion<IDbAction>
+    {
+        private IDbAction _selectedAction;
+
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Implementation of IToolRegion
+
+        public string ToolRegionName { get; set; }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
+        public event HeightChanged HeightChanged;
+        public IList<IToolRegion> Dependants { get; set; }
+        public IList<string> Errors { get;  set; }
+
+        public IToolRegion CloneRegion()
+        {
+            return null;
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+        }
+
+        #endregion
+
+        #region Implementation of IActionToolRegion<IDbAction>
+
+        public IDbAction SelectedAction
+        {
+            get
+            {
+                return _selectedAction;
+            }
+            set
+            {
+                _selectedAction = value;
+            }
+        }
+        public ICollection<IDbAction> Actions { get; set; }
+        public ICommand RefreshActionsCommand { get; set; }
+        public bool IsActionEnabled { get; set; }
+        public bool IsRefreshing { get; set; }
+        public event SomethingChanged SomethingChanged;
+        public double LabelWidth { get; set; }
+
+        #endregion
+
+        protected virtual void OnSomethingChanged(IToolRegion args)
+        {
+            var handler = SomethingChanged;
+            if(handler != null)
+            {
+                handler(this, args);
+            }
+        }
+
+        protected virtual void OnHeightChanged(IToolRegion args)
+        {
+            var handler = HeightChanged;
+            if(handler != null)
+            {
+                handler(this, args);
+            }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
