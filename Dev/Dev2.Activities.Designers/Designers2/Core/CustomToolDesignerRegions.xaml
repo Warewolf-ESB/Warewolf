@@ -522,7 +522,7 @@
     </ControlTemplate>
     
     <ControlTemplate x:Key="GenerateOutputsTextTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="OutputsGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Grid x:Name="OutputsGrid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -535,14 +535,15 @@
             <Border Grid.Row="1" 
                     Grid.Column="0"  BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" BorderThickness="1" 
                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}">
-                <ScrollViewer VerticalAlignment="Top">
-                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                        <TextBlock Text="{Binding TestResults}" 
-                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                   Height="{Binding OutputArea.CurrentHeight}"
+                <ScrollViewer VerticalAlignment="Top"
+                              Height="{Binding OutputArea.CurrentHeight}"
                                    MinHeight="{Binding OutputArea.MinHeight}"
                                    MaxHeight="{Binding OutputArea.MaxHeight}"
+                              HorizontalScrollBarVisibility="Auto" 
+                                   VerticalScrollBarVisibility="Auto">
+                    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                        <TextBlock Text="{Binding TestResults}" 
+                                   
                                    Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Stretch" 

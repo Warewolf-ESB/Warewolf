@@ -86,9 +86,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsFalse(inputview.OutputArea.IsVisible);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count == 0);
         }
 
         [TestMethod]
@@ -238,20 +238,20 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
             Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsFalse(inputview.OutputArea.IsVisible);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+            Assert.IsTrue(inputview.OutputArea.Outputs.Count == 0);
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.AreEqual(405, webget.DesignMaxHeight);
-            Assert.AreEqual(405, webget.DesignMinHeight);
-            Assert.AreEqual(405, webget.DesignHeight);
+            Assert.AreEqual(175, webget.DesignMaxHeight);
+            Assert.AreEqual(175, webget.DesignMinHeight);
+            Assert.AreEqual(175, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsFalse(webget.InputArea.IsVisible);
+            Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
