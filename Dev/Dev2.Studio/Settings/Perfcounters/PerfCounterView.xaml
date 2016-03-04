@@ -7,9 +7,9 @@
              xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:help="clr-namespace:Dev2.Help"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:help1="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance perfcounters:PerfcounterViewModel}"
@@ -63,11 +63,13 @@
                 <ig:XamGrid Grid.Row="1"
                         x:Name="ServerPermissionsDataGrid"
                         AutoGenerateColumns="False"
-                        ColumnSorting="ServerColumnSorting"
                         ItemsSource="{Binding ServerCounters}">
+                    <ig:XamGrid.ColumnResizingSettings>
+                        <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
+                    </ig:XamGrid.ColumnResizingSettings>
 
                 <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
+                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="*" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
@@ -77,7 +79,7 @@
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipAvgExecTime}">
                                                 <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -91,7 +93,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="*" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
@@ -100,7 +102,7 @@
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipConcurrentReq}">
                                                 <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpConcurrentReq}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpConcurrentReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -114,7 +116,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
@@ -123,7 +125,7 @@
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipReqPerSec}">
                                                 <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpReqPerSec}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -138,7 +140,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=TotalErrors, Path=ActualWidth}">
@@ -147,7 +149,7 @@
                                           IsEnabled="True"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerTooltipTotalErrors}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpTotalErrors}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpTotalErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -162,7 +164,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
@@ -171,7 +173,7 @@
                                           IsEnabled="True"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipWfNotFound}">
                                                 <i:Interaction.Behaviors>
-                                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpWfNotFound}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpWfNotFound}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -185,7 +187,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=NotAuthorisedErrors, Path=ActualWidth}">
@@ -194,7 +196,7 @@
                                           IsEnabled="true"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipNotAuthErrors}">
                                                 <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpNotAuthErrors}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpNotAuthErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                 </i:Interaction.Behaviors>
                                                 <AutomationProperties.AutomationId>
@@ -212,7 +214,7 @@
 
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
-                        <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
+                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                     </ig:XamGrid.SortingSettings>
                 </ig:XamGrid>
             </Grid>
@@ -243,8 +245,11 @@
                         AutoGenerateColumns="False"
                         ColumnSorting="ResourceColumnSorting"
                         ItemsSource="{Binding ResourceCounters}">
-                    <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
+                <ig:XamGrid.ColumnResizingSettings>
+                    <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
+                </ig:XamGrid.ColumnResizingSettings>
+                <ig:XamGrid.Columns>
+                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MaximumWidth="250" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
@@ -254,9 +259,9 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0"
                                                Text="{Binding Path=CounterName, Mode=TwoWay}"
-                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
+                                               ToolTip="{Binding Path=CounterName, Mode=TwoWay}">
                                       <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpResource}"
+                                        <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpResource}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
@@ -295,7 +300,7 @@
                                               IsEnabled="{Binding Path=true}"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipAvgExecTime}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpAvgExecTime}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -323,7 +328,7 @@
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipConReq}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpConReq}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpConReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -351,7 +356,7 @@
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipReqPerSec}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpReqPerSec}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -379,7 +384,7 @@
                                           IsEnabled="True"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipTotErrors}">
                                             <i:Interaction.Behaviors>
-                                                <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpTotErrors}"
+                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpTotErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
