@@ -115,8 +115,10 @@
     <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
     <Compile Include="Core\Database\ManageDatabaseServiceInputViewModelTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
+    <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />

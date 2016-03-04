@@ -85,6 +85,9 @@ namespace Dev2.Activities.Designers2.Core
             if (_generateOutputArea.Outputs != null)
             {
                 OutputCountExpandAllowed = _generateOutputArea.Outputs.Count > 3;
+                maxOutputHeight += 15;
+                minOutputHeight += 15;
+                outputHeight += 15;
             }
 
             MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
