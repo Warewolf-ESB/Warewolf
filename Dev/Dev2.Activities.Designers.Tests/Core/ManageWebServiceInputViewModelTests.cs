@@ -248,9 +248,9 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.AreEqual(405, webget.DesignMaxHeight);
-            Assert.AreEqual(405, webget.DesignMinHeight);
-            Assert.AreEqual(405, webget.DesignHeight);
+            Assert.AreEqual(410, webget.DesignMaxHeight);
+            Assert.AreEqual(410, webget.DesignMinHeight);
+            Assert.AreEqual(410, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
