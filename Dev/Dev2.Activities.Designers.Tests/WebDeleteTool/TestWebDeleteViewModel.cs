@@ -70,8 +70,8 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(470, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(470, deleteViewModel.DesignHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -186,9 +186,9 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(445, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(445, deleteViewModel.DesignHeight);
+            Assert.AreEqual(440, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(425, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(425, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -271,9 +271,9 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignHeight);
+            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -308,9 +308,9 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignHeight);
+            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -345,9 +345,9 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(475, deleteViewModel.DesignHeight);
+            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
+            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);

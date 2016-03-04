@@ -71,8 +71,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.AreEqual(470, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(470, postViewModel.DesignMinHeight);
-            Assert.AreEqual(470, postViewModel.DesignHeight);
+            Assert.AreEqual(455, postViewModel.DesignMinHeight);
+            Assert.AreEqual(455, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -192,9 +192,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(445, postViewModel.DesignMinHeight);
-            Assert.AreEqual(445, postViewModel.DesignHeight);
+            Assert.AreEqual(440, postViewModel.DesignMaxHeight);
+            Assert.AreEqual(425, postViewModel.DesignMinHeight);
+            Assert.AreEqual(425, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -277,9 +277,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
+            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, postViewModel.DesignMinHeight);
+            Assert.AreEqual(455, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -314,9 +314,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
+            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, postViewModel.DesignMinHeight);
+            Assert.AreEqual(455, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -351,9 +351,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
+            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
+            Assert.AreEqual(455, postViewModel.DesignMinHeight);
+            Assert.AreEqual(455, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
