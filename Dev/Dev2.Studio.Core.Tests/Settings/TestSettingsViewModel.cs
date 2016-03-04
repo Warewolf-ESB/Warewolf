@@ -66,7 +66,7 @@ namespace Dev2.Core.Tests.Settings
 
         protected override PerfcounterViewModel CreatePerfmonViewModel()
         {
-            return ThePerfcounterViewModel ?? new PerfcounterViewModel(Settings.PerfCounters, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            return ThePerfcounterViewModel ?? new PerfcounterViewModel(Settings.PerfCounters, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
         }
 
         public PerfcounterViewModel ThePerfcounterViewModel

@@ -45,7 +45,9 @@ namespace Dev2.PerformanceCounters.Counters
         }
 
         #endregion
-
+        public void Reset()
+        {            
+        }
         #region Implementation of IResourcePerformanceCounter
 
         public Guid ResourceId { get;  set; }

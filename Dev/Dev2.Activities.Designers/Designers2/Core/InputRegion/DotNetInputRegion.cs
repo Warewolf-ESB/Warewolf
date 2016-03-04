@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public DotNetInputRegion()
         {
-            ToolRegionName = "DatabaseInputRegion";
+            ToolRegionName = "DotNetInputRegion";
             SetInitialHeight();
         }
 
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public DotNetInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
         {
-            ToolRegionName = "DatabaseInputRegion";
+            ToolRegionName = "DotNetInputRegion";
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;

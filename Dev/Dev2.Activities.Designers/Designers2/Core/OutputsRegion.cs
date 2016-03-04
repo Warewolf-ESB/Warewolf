@@ -181,24 +181,6 @@ namespace Dev2.Activities.Designers2.Core
 
         private void ReCalculateHeight()
         {
-            // Need to add custom height due to Infragistics XamGrid doing its own thing again
-            //const double XamGridHeight = 15;
-            //MaxHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
-            //MinHeight = (GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight) + XamGridHeight;
-            //OutputCountExpandAllowed = false;
-            //if(_outputs.Count == 0)
-            //{
-            //    MaxHeight = BaseHeight;
-            //    MinHeight = BaseHeight;
-            //}
-            //if(_outputs.Count >= 3)
-            //{
-            //    MinHeight = 110;
-            //    OutputCountExpandAllowed = true;
-            //}
-            //IsOutputsEmptyRows = _outputs == null || _outputs.Count == 0;
-            //CurrentHeight = MinHeight;
-
             OutputCountExpandAllowed = false;
             if (_outputs.Count >= 3)
             {
