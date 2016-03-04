@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Dev2.Activities.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
+// ReSharper disable UnusedMember.Local
 
 namespace Dev2.Activities.Designers2.Core.Web.Delete
 {

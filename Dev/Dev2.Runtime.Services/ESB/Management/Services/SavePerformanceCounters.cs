@@ -12,13 +12,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SavePerformanceCounters : IEsbManagementEndpoint
     {
+        private IPerformanceCounterRepository _manager;
 
         public string HandlesType()
         {
             return "SavePerformanceCounters";
         }
-
-
         /// <summary>
         /// Executes the service
         /// </summary>
@@ -47,9 +46,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private IPerformanceCounterRepository Manager
+        public IPerformanceCounterRepository Manager
         {
-            get { return CustomContainer.Get<IPerformanceCounterRepository>(); }
+            private get { return _manager ?? CustomContainer.Get<IPerformanceCounterRepository>(); }
+            set { _manager = value; }
 
         }
         /// <summary>
