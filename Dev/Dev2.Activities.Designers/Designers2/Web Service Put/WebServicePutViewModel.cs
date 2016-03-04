@@ -562,7 +562,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                     {
                         isInputVisible = toolRegion.IsVisible;
                     }
-                    if (toolRegion.ToolRegionName != null && toolRegion.ToolRegionName.ToUpper() == "OutputsRegionKK".ToUpper())
+                    if (toolRegion.ToolRegionName == "OutputsRegion")
                     {
                         isOutputVisible = toolRegion.IsVisible;
                     }
