@@ -36,6 +36,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.AreEqual(25, region.MinHeight);
             Assert.AreEqual(1, region.Errors.Count);
             Assert.IsTrue(region.IsVisible);
+            Assert.AreEqual(region.LabelWidth, 46);
         }
 
         [TestMethod]
@@ -110,8 +111,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             region.SelectedSource = dbsrc;
 
             //------------Assert Results-------------------------
-            dep1.Verify(a => a.RestoreRegion(clone1.Object));
-            dep2.Verify(a => a.RestoreRegion(clone2.Object));
+            dep1.Verify(a => a.RestoreRegion(clone1.Object),Times.Never);
+            dep2.Verify(a => a.RestoreRegion(clone2.Object), Times.Never);
         }
 
         [TestMethod]

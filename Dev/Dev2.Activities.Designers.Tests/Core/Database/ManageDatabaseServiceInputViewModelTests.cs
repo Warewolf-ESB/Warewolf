@@ -86,9 +86,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsFalse(inputview.OutputArea.IsVisible);
-            Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count == 0);
+            Assert.IsTrue(inputview.OutputArea.IsVisible);
+
         }
 
         [TestMethod]
@@ -163,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         public void ManageDatabaseServiceInputViewModelTestAction_Exception()
         {
             //------------Setup for test--------------------------
-            var mod = new SqlServerModel();
+            var mod = new SqlServerModel(){ThrowsTestError = true};
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
@@ -234,24 +233,21 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.Model = new DatabaseService();
+            inputview.Model = new DatabaseService(){Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsFalse(inputview.OutputArea.IsVisible);
-            Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count == 0);
+
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.AreEqual(175, webget.DesignMaxHeight);
-            Assert.AreEqual(175, webget.DesignMinHeight);
-            Assert.AreEqual(175, webget.DesignHeight);
+            Assert.AreEqual(395, webget.DesignMaxHeight);
+            Assert.AreEqual(385, webget.DesignMinHeight);
+            Assert.AreEqual(385, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.InputArea.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.InputArea.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
 
             //------------Assert Results-------------------------
         }
