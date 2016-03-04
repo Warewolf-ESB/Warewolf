@@ -219,16 +219,6 @@
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
-    <Compile Include="Designers2\Core\ManageServiceInputView.xaml.cs">
-      <DependentUpon>ManageServiceInputView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\Core\ManageServiceInputViewModel.cs" />
-    <Compile Include="Designers2\Core\ManageWebServiceInputView.xaml.cs">
-      <DependentUpon>ManageWebServiceInputView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\Core\ManagePluginServiceInputView.xaml.cs">
-      <DependentUpon>ManagePluginServiceInputView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
@@ -1017,22 +1007,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Core\CustomToolDesignerRegions.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\Core\CustomToolDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\Core\ManageServiceInputView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\Core\ManageWebServiceInputView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\Core\ManagePluginServiceInputView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

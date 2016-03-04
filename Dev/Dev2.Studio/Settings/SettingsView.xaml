@@ -68,7 +68,7 @@
                     <TabItem Style="{StaticResource TabItemStyle}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
-                                <fa:FontAwesome Icon="Table" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <fa:FontAwesome Icon="Tachometer" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
                                 <TextBlock FontSize="15" Text="{Binding PerfmonHeader}"/>
                             </StackPanel>
                         </TabItem.Header>

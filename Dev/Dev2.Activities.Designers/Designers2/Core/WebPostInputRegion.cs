@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -27,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
         double _maxHeadersHeight;
         bool _isVisible;
         string _postData;
-        private const double BaseHeight = 265;
+        private const double BaseHeight = 160;
 
         public WebPostInputRegion()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
@@ -55,7 +56,7 @@ namespace Dev2.Settings.Perfcounters
         public static IList<IResourcePerformanceCounter> GetResourceCounters(this List<IPerformanceCountersByResource> to)
         {
             var res = new List<IResourcePerformanceCounter>();
-            foreach (var resourcePerformanceCounter in to.Where(resource => !resource.IsDeleted))
+            foreach (var resourcePerformanceCounter in to.Where(resource => !resource.IsDeleted && !string.IsNullOrEmpty(resource.CounterName)))
             {
                 if (resourcePerformanceCounter.TotalErrors)
                 {
@@ -86,6 +87,17 @@ namespace Dev2.Settings.Perfcounters
 
     public class CounterByResoureEqualityComparer : IEqualityComparer<IResourcePerformanceCounter>, IComparer
     {
+
+        readonly int _direction;
+        readonly string _sortMemberPath;
+
+        public CounterByResoureEqualityComparer(ListSortDirection direction, string sortMemberPath)
+        {
+            VerifyArgument.IsNotNull("sortMemberPath", sortMemberPath);
+            _direction = direction == ListSortDirection.Ascending ? 1 : -1;
+            _sortMemberPath = sortMemberPath;
+        }
+
         #region Implementation of IEqualityComparer<in IResourcePerformanceCounter>
 
         /// <summary>
@@ -130,7 +142,36 @@ namespace Dev2.Settings.Perfcounters
             {
                 return 1;
             }
-            return String.Compare(px.CounterName, py.CounterName, StringComparison.InvariantCulture);
+            if (px.IsNew)
+            {
+                // px is greater than py
+                return int.MaxValue;
+            }
+            if (py.IsNew)
+            {
+                // px is less than py
+                return int.MinValue;
+            }
+            var result = 0;
+            switch (_sortMemberPath)
+            {
+                case "CounterName":
+                    result = String.Compare(px.CounterName, py.CounterName, StringComparison.InvariantCulture);
+                    break;
+                case "AverageExecutionTime":
+                    result = px.AverageExecutionTime.CompareTo(py.AverageExecutionTime);
+                    break;
+                case "ConcurrentRequests":
+                    result = px.ConcurrentRequests.CompareTo(py.ConcurrentRequests);
+                    break;
+                case "RequestPerSecond":
+                    result = px.RequestPerSecond.CompareTo(py.RequestPerSecond);
+                    break;
+                case "TotalErrors":
+                    result = px.TotalErrors.CompareTo(py.RequestPerSecond);
+                    break;
+            }
+            return _direction * result;
         }
 
         #endregion
