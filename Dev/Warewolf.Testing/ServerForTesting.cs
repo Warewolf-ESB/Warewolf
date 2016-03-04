@@ -26,6 +26,17 @@ namespace Warewolf.Testing
             _updateManager = new Mock<IStudioUpdateManager>().Object;
         }
 
+        public ServerForTesting(Mock<IExplorerRepository> explorerRepository,Mock<IQueryManager> mockQueryManager)
+        {
+            MockExplorerRepo = explorerRepository;
+            _explorerProxy = explorerRepository.Object;
+            ResourceName = "localhost";
+            DisplayName = "localhost";
+            ServerID = Guid.Empty;
+            _updateManager = new Mock<IStudioUpdateManager>().Object;
+            _queryManager = mockQueryManager.Object;
+        }
+
         public ServerForTesting(Mock<IExplorerRepository> explorerRepository, WindowsGroupPermission permission)
         {
             MockExplorerRepo = explorerRepository;
@@ -143,6 +154,7 @@ namespace Warewolf.Testing
         int i = 1;
         private bool _canDeployTo;
         private bool _canDeployFrom;
+        private IQueryManager _queryManager;
 
         private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
@@ -210,7 +222,14 @@ namespace Warewolf.Testing
         [JsonIgnore]
         public IQueryManager QueryProxy
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (_queryManager != null)
+                {
+                    return _queryManager;
+                }
+                return new Mock<IQueryManager>().Object;
+            }
         }
 
         public bool IsConnected
