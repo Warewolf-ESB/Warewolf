@@ -504,39 +504,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
         }
 
-        private IList<IServiceInput> InputsFromModel()
-        {
-            var dt = new List<IServiceInput>();
-            foreach (var nameValue in InputArea.Inputs)
-            {
-                GetValue(nameValue.Name, dt);
-                GetValue(nameValue.Value, dt);
-            }
-            return dt;
-        }
 
-        private static void GetValue(string s, List<IServiceInput> dt)
-        {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
-            if (exp.IsComplexExpression)
-            {
-                var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
-                dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
-            }
-            if (exp.IsScalarExpression)
-            {
 
-                dt.Add(new ServiceInput(s, ""));
-            }
-            if (exp.IsRecordSetExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-        }
-
-        private IDbServiceModel Model { get; set; }
+        public IDbServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {
@@ -551,11 +521,16 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             if (_regions != null)
             {
                 bool isInputVisible = false;
+                bool isOutputVisible = false;
                 foreach (var toolRegion in _regions)
                 {
                     if (toolRegion.ToolRegionName == "DatabaseInputRegion")
                     {
                         isInputVisible = toolRegion.IsVisible;
+                    }
+                    if (toolRegion.ToolRegionName == "OutputsRegion")
+                    {
+                        isOutputVisible = toolRegion.IsVisible;
                     }
                 }
 
@@ -563,6 +538,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
                 DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
 
+                if (isOutputVisible)
+                {
+                    DesignMaxHeight += 15;
+                    DesignHeight += 30;
+                    DesignMinHeight += 30;
+                }
                 if (isInputVisible && !GenerateOutputsVisible)
                 {
                     DesignMaxHeight += 30;

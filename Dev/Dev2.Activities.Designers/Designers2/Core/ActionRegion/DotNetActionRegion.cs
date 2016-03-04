@@ -334,7 +334,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName));
+            return value != null && _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName));
         }
 
         public IList<string> Errors

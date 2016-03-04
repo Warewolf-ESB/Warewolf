@@ -2,18 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Dialogs;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -29,20 +29,20 @@ using Warewolf.Studio.ViewModels;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Settings.Perfcounters
 {
-    public class PerfcounterViewModel : SettingsItemViewModel, IHelpSource
+    public class PerfcounterViewModel : SettingsItemViewModel, IUpdatesHelp
     {
         protected IResourcePickerDialog _resourcePicker;
         readonly IEnvironmentModel _environment;
-        bool _isUpdatingHelpText;
         private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
-        
+        [ExcludeFromCodeCoverage]
         internal PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment)
             : this(counters, environment,null)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         IResourcePickerDialog CreateResourcePickerDialog()
         {
             var env = GetEnvironment();
@@ -51,6 +51,7 @@ namespace Dev2.Settings.Perfcounters
             return res;
         }
 
+        [ExcludeFromCodeCoverage]
         static IEnvironmentViewModel GetEnvironment()
         {
             var environment = EnvironmentRepository.Instance.ActiveEnvironment;
@@ -81,7 +82,8 @@ namespace Dev2.Settings.Perfcounters
             
             PickResourceCommand = new DelegateCommand(PickResource);
             ResetCountersCommand = new DelegateCommand(ResetCounters);
-            InitializeHelp();
+            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
+            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
             InitializeTos(counters);
 
         }
@@ -92,10 +94,10 @@ namespace Dev2.Settings.Perfcounters
         {
             var controller = CommunicationController;
             controller.ServiceName = "ResetPerformanceCounters";
-            var message = controller.ExecuteCommand<ExecuteMessage>(_environment.Connection, Guid.Empty);
+            var message = controller.ExecuteCommand<IExecuteMessage>(_environment.Connection, Guid.Empty);
             if (!message.HasError)
             {
-                CustomContainer.Get<IPopupController>().Show("Performance Counters have been reset.", "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.None, "", false, true, false, false);
+                CustomContainer.Get<IPopupController>().Show("Performance Counters have been reset.", "Reset Performance Counters", MessageBoxButton.OK, MessageBoxImage.None, "", false, false, true, false);
             }
             else
             {
@@ -105,28 +107,28 @@ namespace Dev2.Settings.Perfcounters
 
         private void InitializeTos(IPerformanceCounterTo nativeCounters)
         {
+            ServerCounters.Clear();
+            ResourceCounters.Clear();
             var performanceCountersByMachines = nativeCounters.GetServerCountersTo();
-            ServerCounters = new ObservableCollection<IPerformanceCountersByMachine>();
             foreach(var performanceCountersByMachine in performanceCountersByMachines)
             {
                 RegisterPropertyChanged(performanceCountersByMachine);
                 ServerCounters.Add(performanceCountersByMachine);
             }
             var performanceCountersByResources = nativeCounters.GetResourceCountersTo();
-            ResourceCounters = new ObservableCollection<IPerformanceCountersByResource>();
-            foreach(var performanceCountersByResource in performanceCountersByResources)
+            foreach (var performanceCountersByResource in performanceCountersByResources)
             {
                 RegisterPropertyChanged(performanceCountersByResource);
                 ResourceCounters.Add(performanceCountersByResource);
+
             }
             ResourceCounters.Add(CreateNewCounter());
         }
 
-        public virtual void Save(IPerformanceCounterTo perfCounterTo)
+        public void Save(IPerformanceCounterTo perfCounterTo)
         {
             UpdateServerCounter(perfCounterTo);
             UpdateResourceCounter(perfCounterTo);
-
             InitializeTos(perfCounterTo);
         }
 
@@ -235,31 +237,11 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public ActivityDesignerToggle ServerHelpToggle { get; private set; }
-
-        public ActivityDesignerToggle ResourceHelpToggle { get; private set; }
         
         public ICommand PickResourceCommand { get; private set; }
 
-        public bool IsServerHelpVisible
-        {
-            get { return (bool)GetValue(IsServerHelpVisibleProperty); }
-            set { SetValue(IsServerHelpVisibleProperty, value); }
-        }
 
-        public static readonly DependencyProperty IsServerHelpVisibleProperty = DependencyProperty.Register("IsServerHelpVisible", typeof(bool), typeof(PerfcounterViewModel), new PropertyMetadata(false, IsServerHelpVisiblePropertyChanged));
-
-        static void IsServerHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            ((PerfcounterViewModel)d).UpdateHelpText(HelpType.Server);
-        }
-
-        public bool IsResourceHelpVisible
-        {
-            get { return (bool)GetValue(IsResourceHelpVisibleProperty); }
-            set { SetValue(IsResourceHelpVisibleProperty, value); }
-        }
-        public CommunicationController CommunicationController
+        public ICommunicationController CommunicationController
         {
             get
             {
@@ -271,20 +253,9 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register("IsResourceHelpVisible", typeof(bool), typeof(PerfcounterViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
-        private CommunicationController _communicationController;
+        private ICommunicationController _communicationController;
 
-        static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            ((PerfcounterViewModel)d).UpdateHelpText(HelpType.Resource);
-        }
 
-        void InitializeHelp()
-        {
-            ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
-            ResourceHelpToggle = CreateHelpToggle(IsResourceHelpVisibleProperty);
-        }
-        
         void PickResource(object obj)
         {
             var counter = obj as IPerformanceCountersByResource;
@@ -300,29 +271,17 @@ namespace Dev2.Settings.Perfcounters
             }
 
             counter.ResourceId = resourceModel.ResourceId;
-            counter.CounterName = resourceModel.ResourcePath+"\\"+resourceModel.ResourceName;
+            counter.CounterName = resourceModel.ResourcePath;
         }
 
         IExplorerTreeItem PickResource(IPerformanceCountersByResource counter)
         {
-            if(counter != null && counter.ResourceId != Guid.Empty)
+            if (counter != null && counter.ResourceId != Guid.Empty)
             {
-                if(_environment.ResourceRepository != null)
-                {
-                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == counter.ResourceId);
-                    if(foundResourceModel != null)
-                    {
-                        _resourcePicker.SelectResource( foundResourceModel.ID);
-                    }
-                }
+                _resourcePicker.SelectResource(counter.ResourceId);
             }
             var hasResult = _resourcePicker.ShowDialog(_environment);
-
-            if(_environment.ResourceRepository != null)
-            {
-                return hasResult ? _resourcePicker.SelectedResource : null;
-            }
-            return null;
+            return hasResult ? _resourcePicker.SelectedResource : null;
         }
 
         PerformanceCountersByResource CreateNewCounter()
@@ -332,55 +291,25 @@ namespace Dev2.Settings.Perfcounters
             return counter;
         }
 
-        ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
-        {
-            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle", this, targetProperty
-                );
+        #region Implementation of IUpdatesHelp
 
-            return toggle;
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
 
+        #endregion
+
+        #region Overrides of SettingsItemViewModel
+        [ExcludeFromCodeCoverage] //Not used but needed due to base class
         protected override void CloseHelp()
         {
-            IsServerHelpVisible = false;
-            IsResourceHelpVisible = false;
         }
 
-        void UpdateHelpText(HelpType helpType)
-        {
-            if(_isUpdatingHelpText)
-            {
-                return;
-            }
-            _isUpdatingHelpText = true;
-            try
-            {
-                switch(helpType)
-                {
-                    case HelpType.Server:
-                        IsResourceHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityServerHelpWindowsGroup;
-                        break;
-
-                    case HelpType.Resource:
-                        IsServerHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityResourceHelpResource;
-                        break;
-                }
-            }
-            finally
-            {
-                _isUpdatingHelpText = false;
-            }
-        }
-
-        enum HelpType
-        {
-            Server,
-            Resource
-        }
-
-
-
+        #endregion
     }
 }
