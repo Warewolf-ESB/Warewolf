@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -32,6 +33,9 @@ namespace Dev2.Activities.Designers2.Core.Source
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;
+        private string _sourcesHelpText;
+        private string _editSourceHelpText;
+        private string _newSourceHelpText;
 
         public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
         {
@@ -46,9 +50,52 @@ namespace Dev2.Activities.Designers2.Core.Source
             IsVisible = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
+            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceTypesHelp;
+            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceEditSourceHelp;
+            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceNewSourceHelp;
             if (SourceId != Guid.Empty)
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string NewSourceHelpText
+        {
+            get
+            {
+                return _newSourceHelpText;
+            }
+            set
+            {
+                _newSourceHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string EditSourceHelpText
+        {
+            get
+            {
+                return _editSourceHelpText;
+            }
+            set
+            {
+                _editSourceHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string SourcesHelpText
+        {
+            get
+            {
+                return _sourcesHelpText;
+            }
+            set
+            {
+                _sourcesHelpText = value;
+                OnPropertyChanged();
             }
         }
 
