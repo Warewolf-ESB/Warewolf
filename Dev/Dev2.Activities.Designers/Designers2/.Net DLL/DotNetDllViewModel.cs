@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Plugin get must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
@@ -344,7 +344,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
                 regions.Add(SourceRegion);
                 NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsVisible = false; } };
-                regions.Add(SourceRegion);
+                regions.Add(NamespaceRegion);
                 ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
