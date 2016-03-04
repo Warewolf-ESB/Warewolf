@@ -54,6 +54,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     break;
                 case "PostgreSql":
                     ServerType = enSourceType.PostgreSql;
+                    
                     break;
                 default:
                     ServerType = enSourceType.Unknown;
@@ -168,6 +169,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     switch(prm[0].ToLowerInvariant())
                     {
                         case "server":
+                        case "host":
                         case "data source":
                             var arr = prm[1].Split(','); // may include port number after comma
                             Server = arr[0];
@@ -179,9 +181,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 }
 
                             }
-
-                           
-                           
                             break;
                         case "port":
                             if(Int32.TryParse(prm[1], out port))
@@ -199,6 +198,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             break;
                         case "user id":
                         case "uid":
+                        case "username":
                             AuthenticationType = AuthenticationType.User;
                             UserID = prm[1];
                             break;

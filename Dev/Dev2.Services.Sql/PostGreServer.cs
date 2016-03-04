@@ -281,6 +281,15 @@ namespace Dev2.Services.Sql
             {
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            var res = reader[i].ToString();
+                        }
+                    }
+                   
+
                     return handler(reader);
                 }
             }
@@ -312,7 +321,7 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryMySql;
+            const string CommandText = GlobalConstants.SchemaQueryPostgreSql;
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);

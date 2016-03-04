@@ -359,6 +359,11 @@ namespace Dev2.Runtime.ServiceModel
                     var broker = new  MySqlDatabaseBroker();
                     return broker.GetServiceMethods(dbSource);
                 }
+                case enSourceType.PostgreSql:
+                    {
+                        var broker = new PostgreSqlDataBaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                    }
                 default:
                 {
                             var broker = CreateDatabaseBroker();
