@@ -27,8 +27,9 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private const string MediaType = "application/x-www-form-urlencoded";
-        private const string UserAgent = "User-Agent";
+        private IOutputDescription _outputDescription;
+        protected const string MediaType = "application/x-www-form-urlencoded";
+        protected const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -39,7 +40,17 @@ namespace Dev2.Activities
 
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
-        public IOutputDescription OutputDescription { get; set; }
+        public IOutputDescription OutputDescription
+        {
+            get
+            {
+                return _outputDescription;
+            }
+            set
+            {
+                _outputDescription = value;
+            }
+        }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -119,7 +130,7 @@ namespace Dev2.Activities
             }
         }
 
-        public HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        public virtual HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)
@@ -130,7 +141,8 @@ namespace Dev2.Activities
 
             if (head != null)
             {
-                foreach (var nameValue in head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value)))
+                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.Add(nameValue.Name, nameValue.Value);
                 }
@@ -193,7 +205,9 @@ namespace Dev2.Activities
                     var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                     return message;
                 }
-                taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(putData));
+                HttpContent httpContent = new StringContent(putData);
+                //httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                taskOfResponseMessage = httpClient.PutAsync(new Uri(address), httpContent);
                 var resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                 return resultAsString;
             }

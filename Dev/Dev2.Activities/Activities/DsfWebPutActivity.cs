@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
@@ -54,6 +58,46 @@ namespace Dev2.Activities
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, putData);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
+        }
+        public override HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        {
+            var httpClient = new HttpClient();
+            if (source.AuthenticationType == AuthenticationType.User)
+            {
+                var byteArray = Encoding.ASCII.GetBytes(String.Format("{0}:{1}", source.UserName, source.Password));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            }
+
+            if (head != null)
+            {
+                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                foreach (var nameValue in nameValues)
+                {
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation(nameValue.Name, nameValue.Value);
+                }
+            }
+
+           // httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaType));
+            //httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
+
+            var address = source.Address;
+            if (!string.IsNullOrEmpty(query))
+            {
+                address = address + query;
+            }
+            try
+            {
+                var baseAddress = new Uri(address);
+                httpClient.BaseAddress = baseAddress;
+            }
+            catch (UriFormatException e)
+            {
+                //CurrentDataObject.Environment.AddError(e.Message);// To investigate this
+                Dev2Logger.Error(e.Message, e); // Error must be added on the environment
+                return httpClient;
+            }
+
+            return httpClient;
         }
 
         
