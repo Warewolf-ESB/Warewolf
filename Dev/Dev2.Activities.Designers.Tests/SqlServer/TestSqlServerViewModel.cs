@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(395, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
             Assert.AreEqual(385, sqlServer.DesignMinHeight);
             Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
@@ -169,7 +169,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(395, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
             Assert.AreEqual(385, sqlServer.DesignMinHeight);
             Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(395, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
             Assert.AreEqual(385, sqlServer.DesignMinHeight);
             Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
@@ -269,7 +269,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(395, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
             Assert.AreEqual(385, sqlServer.DesignMinHeight);
             Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
@@ -307,7 +307,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(395, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
             Assert.AreEqual(385, sqlServer.DesignMinHeight);
             Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
