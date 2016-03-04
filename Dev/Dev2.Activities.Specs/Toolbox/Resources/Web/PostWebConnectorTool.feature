@@ -122,7 +122,8 @@ Scenario: Changing Sources
 
 
 
-#wolf-1034
+#wolf-1034 re-opened worked as a connector not as a tool
+@ignore
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
