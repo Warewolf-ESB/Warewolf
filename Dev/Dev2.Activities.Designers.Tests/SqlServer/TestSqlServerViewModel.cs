@@ -46,9 +46,9 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(280, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(280, sqlServer.DesignMinHeight);
-            Assert.AreEqual(280, sqlServer.DesignHeight);
+            Assert.AreEqual(295, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(295, sqlServer.DesignMinHeight);
+            Assert.AreEqual(295, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.ActionRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
