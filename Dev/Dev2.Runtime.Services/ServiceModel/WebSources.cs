@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -42,7 +43,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public WebSources(IResourceCatalog resourceCatalog)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -60,13 +61,13 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if(!string.IsNullOrEmpty(xmlStr))
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
                     result = new WebSource(xml);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -85,14 +86,14 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<WebSource>(args);
 
                 _resourceCatalog.SaveResource(workspaceId, source);
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
                 }
 
                 return source.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
@@ -111,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<WebSource>(args);
                 return CanConnectServer(source);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
@@ -145,13 +146,13 @@ namespace Dev2.Runtime.ServiceModel
                     Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out errors)
                 };
             }
-            catch(WebException wex)
+            catch (WebException wex)
             {
                 RaiseError(wex);
 
                 var errors = new StringBuilder();
                 Exception ex = wex;
-                while(ex != null)
+                while (ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
                     ex = ex.InnerException;
@@ -180,15 +181,15 @@ namespace Dev2.Runtime.ServiceModel
 
         private static string GetAddress(WebSource source, string relativeUri)
         {
-            if(source == null)
+            if (source == null)
             {
-                if(string.IsNullOrEmpty(relativeUri))
+                if (string.IsNullOrEmpty(relativeUri))
                 {
                     return "";
                 }
                 return relativeUri;
             }
-            if(!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
+            if (!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
             {
                 return relativeUri;
             }
@@ -211,7 +212,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();
-            switch(method)
+            switch (method)
             {
                 case WebRequestMethod.Get:
                     return client.DownloadData(address);
@@ -224,10 +225,23 @@ namespace Dev2.Runtime.ServiceModel
         static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
         {
             EnsureContentType(client);
+            if (method == WebRequestMethod.Put)
+            {
+                if (data != null)
+                {
+                    var deserializeObject = JsonConvert.DeserializeObject(data);
+                    if (deserializeObject != null)
+                    {
+                        client.Headers["Content-Type"] = "application/json";
+                    }
+                }
+
+
+            }
             errors = new ErrorResultTO();
             try
             {
-                switch(method)
+                switch (method)
                 {
                     case WebRequestMethod.Get:
                         return FixResponse(client.DownloadString(address));
@@ -236,10 +250,10 @@ namespace Dev2.Runtime.ServiceModel
                         return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errors.AddError(e.Message);
-                if(throwError)
+                if (throwError)
                 {
                     throw;
                 }
@@ -256,7 +270,7 @@ namespace Dev2.Runtime.ServiceModel
         static void EnsureContentType(WebClient client)
         {
             var contentType = client.Headers["Content-Type"];
-            if(string.IsNullOrEmpty(contentType))
+            if (string.IsNullOrEmpty(contentType))
             {
                 contentType = "application/x-www-form-urlencoded";
             }
@@ -278,24 +292,24 @@ namespace Dev2.Runtime.ServiceModel
 
         public static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
-            if(source != null && source.Client != null)
+            if (source != null && source.Client != null)
             {
                 return;
             }
 
-            if(source != null)
+            if (source != null)
             {
                 source.Client = new WebClient();
 
-                if(source.AuthenticationType == AuthenticationType.User)
+                if (source.AuthenticationType == AuthenticationType.User)
                 {
                     source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
                 }
-                source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString );
+                source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString);
 
-                if(headers != null)
+                if (headers != null)
                 {
-                    foreach(var header in headers)
+                    foreach (var header in headers)
                     {
                         source.Client.Headers.Add(header.Trim());
                     }
