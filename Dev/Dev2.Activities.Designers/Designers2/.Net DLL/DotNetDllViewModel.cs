@@ -31,6 +31,8 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
@@ -57,6 +59,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
         // ReSharper restore UnusedMember.Local
 
+        [ExcludeFromCodeCoverage]
         public DotNetDllViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -106,7 +109,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
@@ -187,7 +189,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsVisible)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
@@ -306,10 +308,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         [ExcludeFromCodeCoverage]
         private void FixErrors()
-        {
-        }
-
-        void InitializeImageSource()
         {
         }
 
@@ -497,11 +495,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
         }
 
-        public void ValidateTestComplete()
-        {
-            OutputsRegion.IsVisible = true;
-        }
-
         public void SetDisplayName(string outputFieldName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
@@ -520,38 +513,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             if (!string.IsNullOrWhiteSpace(outputFieldName))
             {
                 DisplayName = displayName + outputFieldName;
-            }
-        }
-
-        private IList<IServiceInput> InputsFromModel()
-        {
-            var dt = new List<IServiceInput>();
-            foreach (var nameValue in InputArea.Inputs)
-            {
-                GetValue(nameValue.Name, dt);
-                GetValue(nameValue.Value, dt);
-            }
-            return dt;
-        }
-
-        private static void GetValue(string s, List<IServiceInput> dt)
-        {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
-            if (exp.IsComplexExpression)
-            {
-                var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
-                dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
-            }
-            if (exp.IsScalarExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-            if (exp.IsRecordSetExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
             }
         }
 
