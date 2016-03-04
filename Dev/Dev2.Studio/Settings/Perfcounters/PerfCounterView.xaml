@@ -63,11 +63,13 @@
                 <ig:XamGrid Grid.Row="1"
                         x:Name="ServerPermissionsDataGrid"
                         AutoGenerateColumns="False"
-                        ColumnSorting="ServerColumnSorting"
                         ItemsSource="{Binding ServerCounters}">
+                    <ig:XamGrid.ColumnResizingSettings>
+                        <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
+                    </ig:XamGrid.ColumnResizingSettings>
 
                 <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
+                    <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="*" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
@@ -91,7 +93,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="*" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
@@ -114,7 +116,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
@@ -138,7 +140,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=TotalErrors, Path=ActualWidth}">
@@ -162,7 +164,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
@@ -185,7 +187,7 @@
                                 </DataTemplate>
                             </ig:TemplateColumn.ItemTemplate>
                         </ig:TemplateColumn>
-                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
+                    <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                 <Grid Width="{Binding ElementName=NotAuthorisedErrors, Path=ActualWidth}">
@@ -212,7 +214,7 @@
 
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
-                        <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
+                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                     </ig:XamGrid.SortingSettings>
                 </ig:XamGrid>
             </Grid>
@@ -243,8 +245,11 @@
                         AutoGenerateColumns="False"
                         ColumnSorting="ResourceColumnSorting"
                         ItemsSource="{Binding ResourceCounters}">
-                    <ig:XamGrid.Columns>
-                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
+                <ig:XamGrid.ColumnResizingSettings>
+                    <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
+                </ig:XamGrid.ColumnResizingSettings>
+                <ig:XamGrid.Columns>
+                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MaximumWidth="250" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
                             <ig:TemplateColumn.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
@@ -254,7 +259,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0"
                                                Text="{Binding Path=CounterName, Mode=TwoWay}"
-                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
+                                               ToolTip="{Binding Path=CounterName, Mode=TwoWay}">
                                       <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpResource}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
