@@ -28,8 +28,8 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("SqlServer_MethodName")]
-        public void SqlServer_MethodName_Scenerio_Result()
+        [TestCategory("SqlServer_Ctor")]
+        public void SqlServer_Ctor_AssertCorrectSetup()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
@@ -39,16 +39,17 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
                 SourceId = mod.Sources[0].Id,
                 Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                ServiceName = "dsfBob"
+                ServiceName = "dsfBob",
+               ProcedureName = "mob"
             };
 
             //------------Execute Test---------------------------
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(280, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(280, sqlServer.DesignMinHeight);
-            Assert.AreEqual(280, sqlServer.DesignHeight);
+            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(355, sqlServer.DesignMinHeight);
+            Assert.AreEqual(355, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.ActionRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -162,13 +163,15 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
             sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            sqlServer.ManageServiceInputViewModel.Model = new DatabaseService() { Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" } };
+
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
-#pragma warning restore 4014
+       #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(175, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(175, sqlServer.DesignMinHeight);
-            Assert.AreEqual(175, sqlServer.DesignHeight);
+            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(355, sqlServer.DesignMinHeight);
+            Assert.AreEqual(355, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -203,32 +206,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
         }
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SqlServer_MethodName")]
-        public void SqlServer_TestActionSetSourceAndTestClickOkHasserialisationIssue()
-        {
-            //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
-            var mod = new SqlServerModel();
-            var act = new DsfSqlServerDatabaseActivity();
-
-            //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
-            sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
-            sqlServer.ActionRegion.SelectedAction = sqlServer.ActionRegion.Actions.First();
-#pragma warning disable 4014
-            sqlServer.TestInputCommand.Execute();
-            sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
-            sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
-#pragma warning restore 4014
-            
-            //------------Assert Results-------------------------
-            Assert.AreEqual(sqlServer.OutputsRegion.Outputs.First().MappedFrom, "Result");
-        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -256,14 +233,14 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(400, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(375, sqlServer.DesignMinHeight);
-            Assert.AreEqual(375, sqlServer.DesignHeight);
+            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(355, sqlServer.DesignMinHeight);
+            Assert.AreEqual(355, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
             Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
-            Assert.AreEqual(1, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.AreEqual(2, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
         }
         [TestMethod]
@@ -292,26 +269,26 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(400, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(375, sqlServer.DesignMinHeight);
-            Assert.AreEqual(375, sqlServer.DesignHeight);
+            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(355, sqlServer.DesignMinHeight);
+            Assert.AreEqual(355, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
             Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
-            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
+            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("SqlServer_MethodName")]
-        public void SqlServer_TestActionSetSourceAndTestClickOkHasQueryStringAndHeadersRecSet()
+        [TestCategory("SqlServer_TestAction")]
+        public void SqlServer_TestActionSetSourceHasRecSet()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var mod = new SqlServerModel();
+            var mod = new SqlServerModel(); 
             var act = new DsfSqlServerDatabaseActivity();
 
             //------------Execute Test---------------------------
@@ -330,15 +307,15 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(400, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(375, sqlServer.DesignMinHeight);
-            Assert.AreEqual(375, sqlServer.DesignHeight);
+            Assert.AreEqual(370, sqlServer.DesignMaxHeight);
+            Assert.AreEqual(355, sqlServer.DesignMinHeight);
+            Assert.AreEqual(355, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
             Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
-            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
+            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }
 
@@ -373,7 +350,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
         {
             new DbAction()
             {
-                Name = "",
+                Name = "mob",
                 Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") }
             }
         };
@@ -419,7 +396,15 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         public DataTable TestService(IDatabaseService inputValues)
         {
-            return _updateRepository.TestDbService(inputValues);
+            if(ThrowsTestError)
+                throw new Exception("bob");
+            DataTable dt = new DataTable();
+            dt.Columns.Add("a");
+            dt.Columns.Add("b");
+            dt.Columns.Add("c");
+            dt.TableName = "bob";
+            return dt;
+
         }
 
         public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
@@ -438,6 +423,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
                 return _updateRepository;
             }
         }
+        public bool ThrowsTestError { get; set; }
 
         #endregion
     }
