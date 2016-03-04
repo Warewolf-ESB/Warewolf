@@ -330,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private bool IsAPreviousValue(INamespaceItem value)
         {
-            return _previousRegions.Keys.Any(a => a == value.FullName);
+            return value != null && _previousRegions.Keys.Any(a => a == value.FullName);
         }
 
         public IList<string> Errors
