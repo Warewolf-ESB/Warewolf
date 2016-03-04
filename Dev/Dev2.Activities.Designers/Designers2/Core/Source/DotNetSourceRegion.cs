@@ -13,7 +13,7 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
-    class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
+    public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
         private double _minHeight;
         private double _currentHeight;
