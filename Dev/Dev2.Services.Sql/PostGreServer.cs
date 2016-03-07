@@ -281,15 +281,6 @@ namespace Dev2.Services.Sql
             {
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            var res = reader[i].ToString();
-                        }
-                    }
-                   
-
                     return handler(reader);
                 }
             }
@@ -369,55 +360,50 @@ namespace Dev2.Services.Sql
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
+
+            var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
+                JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
+                WHERE routines.specific_schema='public' and routine_name ='{0}'
+                ORDER BY routines.routine_name, parameters.ordinal_position;", procedureName);
+
             command.CommandType = CommandType.Text;
-            command.CommandText =
-                string.Format(
-                    "SELECT param_list FROM postgre.proc WHERE db='{0}' AND name='{1}'",
-                    dbName, procedureName);
+            command.CommandText = proc;
+             
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 if (row != null)
                 {
-                    var bytes = row[0] as byte[];
-                    if (bytes != null)
+                    var value = row[0].ToString();
+                    var datatype = row[1].ToString();
+                    var direction = row[2].ToString();
+
+                    if (!string.IsNullOrEmpty(value))
                     {
-                        var parameterName = Encoding.Default.GetString(bytes);
-                        parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
-                        var parameternames = parameterName.Split(',');
-                        foreach (var parameter in parameternames)
+                        NpgsqlDbType sqlType;
+
+                        Enum.TryParse(datatype, true, out sqlType);
+
+                        var sqlParameter = new NpgsqlParameter(value, sqlType);
+
+                        bool isout = false;
+
+                        if (direction.Contains("OUT "))
+                            isout = true;
+                        if (direction.Contains("IN"))
+                            isout = false;
+
+                        if (!isout)
                         {
-                            bool isout = false;
-                            //const ParameterDirection direction = ParameterDirection.Input;
-                            if (parameter.Contains("OUT "))
-                                isout = true;
-                            if (parameter.Contains("INOUT"))
-                                isout = false;
-                            var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
-                            if (!string.IsNullOrEmpty(parameterName))
-                            {
-                                var split = parameterx.Split(' ');
-
-                                NpgsqlDbType sqlType;
-                                Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out sqlType);
-
-                                var sqlParameter = new NpgsqlParameter(split.First(a => a.Trim().Length > 0), sqlType);
-                                if (!isout)
-                                {
-                                    command.Parameters.Add(sqlParameter);
-                                    parameters.Add(sqlParameter);
-                                }
-                                else
-                                {
-                                    sqlParameter.Direction = ParameterDirection.Output;
-                                    outParams.Add(sqlParameter);
-                                    sqlParameter.Value = "@a";
-                                    command.Parameters.Add(sqlParameter);
-                                }
-                                if (parameterName.ToLower() == "@return_value")
-                                {
-                                }
-                            }
+                            command.Parameters.Add(sqlParameter);
+                            parameters.Add(sqlParameter);
+                        }
+                        else
+                        {
+                            sqlParameter.Direction = ParameterDirection.Output;
+                            outParams.Add(sqlParameter);
+                            sqlParameter.Value = "@a";
+                            command.Parameters.Add(sqlParameter);
                         }
                     }
                 }
