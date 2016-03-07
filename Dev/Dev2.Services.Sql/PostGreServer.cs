@@ -181,7 +181,6 @@ namespace Dev2.Services.Sql
 
             DataTable proceduresDataTable = GetSchema(_connection);
 
-
             // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
 
             foreach (DataRow row in proceduresDataTable.Rows)
@@ -200,8 +199,6 @@ namespace Dev2.Services.Sql
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
-
-
                         }
                         catch (Exception)
                         {
@@ -363,12 +360,12 @@ namespace Dev2.Services.Sql
 
             var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
                 JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
-                WHERE routines.specific_schema='public' and routine_name ='{0}'
+                WHERE routines.specific_schema='public' and routine_name ='{0}' and parameters.parameter_mode = 'IN'
                 ORDER BY routines.routine_name, parameters.ordinal_position;", procedureName);
 
             command.CommandType = CommandType.Text;
             command.CommandText = proc;
-             
+
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
@@ -409,37 +406,8 @@ namespace Dev2.Services.Sql
                 }
             }
             command.CommandText = originalCommandText;
+
             return parameters;
-        }
-
-        public static bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-            return row[procedureTypeColumn].ToString().Equals("SQL_STORED_PROCEDURE") ||
-                   row[procedureTypeColumn].ToString().Equals("CLR_STORED_PROCEDURE");
-        }
-
-        public static bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-
-            return row[procedureTypeColumn].ToString().Equals("SQL_SCALAR_FUNCTION");
-        }
-
-        public static bool IsTableValueFunction(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-
-            return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
         #region IDisposable

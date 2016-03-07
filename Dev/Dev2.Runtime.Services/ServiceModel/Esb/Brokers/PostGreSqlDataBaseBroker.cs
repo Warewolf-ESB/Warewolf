@@ -144,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     // ReSharper disable PossibleNullReferenceException
-                    var outParams = server.GetProcedureOutParams(dbService.Method.Name, (dbService.Source as DbSource).DatabaseName);
+                    var outParams = server.GetProcedureOutParams(command.CommandText, (dbService.Source as DbSource).DatabaseName);
                     // ReSharper restore PossibleNullReferenceException
                     foreach (var dbDataParameter in outParams)
                     {
@@ -192,7 +192,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         dbService.Method.OutParameters.Add(new MethodParameter { Name = dbDataParameter.ParameterName, Value = dbDataParameter.Value.ToString() });
                     }
-
                 }
                 finally
                 {
