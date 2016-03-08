@@ -210,8 +210,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+
             var inputs2 = new List<IServiceInput>(Inputs);
             return new DatabaseInputRegionClone
             {
@@ -225,7 +224,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var region = toRestore as DatabaseInputRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
                 Inputs.Clear();
                 if (region.Inputs != null)
                 {
