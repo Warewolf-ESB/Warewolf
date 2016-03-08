@@ -414,6 +414,12 @@
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
     <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs" />
     <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
       <AutoGen>True</AutoGen>
@@ -668,6 +674,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
@@ -837,6 +847,10 @@
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+      <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
+      <Name>Warewolf.Testing</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
