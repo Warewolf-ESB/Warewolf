@@ -108,12 +108,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                //if (!Equals(value, _selectedAction) && _selectedAction != null)
-                //{
-                //    if (!String.IsNullOrEmpty(_selectedAction.Name))
-                //    StorePreviousValues( _selectedAction.GetHashCodeBySource());
-                //}
-
+                if (!Equals(value, _selectedAction) && _selectedAction != null)
+                {
+                    if (!String.IsNullOrEmpty(_selectedAction.Name))
+                        StorePreviousValues(_selectedAction.GetHashCodeBySource());
+                }
+                var outputs = Dependants.FirstOrDefault(a=>a is IOutputsToolRegion) ;
+                var region = outputs as OutputsRegion;
+                if(region != null)
+                {
+                    region.Outputs = null;
+                    region.RecordsetName = String.Empty;
+                   
+                }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
@@ -121,17 +128,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestoreIfPrevious(IDbAction value)
         {
-            //if(IsAPreviousValue(value) && _selectedAction != null)
-            //{
-            //    RestorePreviousValues(value);
-            //    SetSelectedAction(value);
-            //}
-            //else
-            //{
+            if(IsAPreviousValue(value) && _selectedAction != null)
+            {
+                RestorePreviousValues(value);
+                SetSelectedAction(value);
+            }
+            else
+            {
             SetSelectedAction(value);
             SourceChangedAction();
             OnSomethingChanged(this);
-            //}
+            }
             var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
             if (delegateCommand != null)
             {
@@ -240,15 +247,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 RestoreIfPrevious(region.SelectedAction);
                 IsVisible = region.IsVisible;
                 OnPropertyChanged("SelectedAction");
-                //if (IsAPreviousValue(_selectedAction) && _selectedAction != null)
-                //{
-                //    RestorePreviousValues(_selectedAction);
 
-                //}
-                //else
-                //{
-                //    OnSomethingChanged(this);
-                //}
             }
         }
 
