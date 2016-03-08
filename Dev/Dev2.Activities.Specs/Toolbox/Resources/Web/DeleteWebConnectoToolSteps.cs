@@ -142,19 +142,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [Then(@"Delete Body is Enabled")]
         public void ThenDeleteBodyIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Delete Url is Visible")]
         public void ThenDeleteUrlIsVisible()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Delete Query is Enabled")]
         public void ThenDeleteQueryIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Delete Generate Outputs is Enabled")]
@@ -169,23 +169,23 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         {
             var webServiceDeleteViewModel = GetViewModel();
             Assert.IsTrue(webServiceDeleteViewModel.GenerateOutputsVisible);
-            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
-            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.IsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Delete Variables are Enabled")]
         public void ThenDeleteVariablesAreEnabled()
         {
             var webServiceDeleteViewModel = GetViewModel();
-            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
         }
 
         [Then(@"the Delete response is loaded")]
         public void ThenTheDeleteResponseIsLoaded()
         {
             var webServiceDeleteViewModel = GetViewModel();
-            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
         }
 
 
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenDeleteMappingIsEnabled()
         {
             var webServiceDeleteViewModel = GetViewModel();
-            Assert.IsTrue(webServiceDeleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(webServiceDeleteViewModel.OutputsRegion.IsEnabled);
         }
 
         [Then(@"I enter ""(.*)"" as Delete Query String")]
@@ -276,7 +276,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenDeleteMappingsIsDisabled()
         {
             var webServiceDeleteViewModel = GetViewModel();
-            Assert.IsFalse(webServiceDeleteViewModel.OutputsRegion.IsVisible);
+            Assert.IsFalse(webServiceDeleteViewModel.OutputsRegion.IsEnabled);
         }
 
 

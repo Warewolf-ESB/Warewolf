@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _queryString;
         private string _requestUrl;
         private ObservableCollection<INameValue> _headers;
-        bool _isVisible;
+        bool _isEnabled;
 
         public WebGetInputRegion()
         {
@@ -67,12 +67,12 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            IsVisible = false;
+            IsEnabled = false;
             SetupHeaders(modelItem);
             if (source != null && source.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
@@ -89,10 +89,10 @@ namespace Dev2.Activities.Designers2.Core
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         #region Implementation of IWebGetInputArea
@@ -141,15 +141,15 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -169,7 +169,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as WebGetInputRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();

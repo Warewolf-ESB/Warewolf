@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IDbSource> _source;
-        private bool _isVisible;
+        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsRefreshing = false;
             }, CanRefresh);
 
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
         }
 
@@ -80,10 +80,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Actions = _model.GetActions(_source.SelectedSource);
                 SelectedAction = null;
                 IsActionEnabled = true;
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         string ProcedureName
@@ -214,15 +214,15 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -232,7 +232,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             var action = new DbActionMemento
             {
-                IsVisible = IsVisible,
+                IsEnabled = IsEnabled,
                 SelectedAction = (SelectedAction == null ? null : new DbAction { Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), Name = SelectedAction.Name, SourceId = SelectedAction.SourceId })
             };
             return action;
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 OnPropertyChanged("SelectedAction");
 
             }
@@ -349,7 +349,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; set; }
 

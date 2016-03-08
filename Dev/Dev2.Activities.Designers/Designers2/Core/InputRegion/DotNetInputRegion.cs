@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
     {
          private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IPluginAction> _action;
-        bool _isVisible;
+        bool _isEnabled;
         private IList<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
             Inputs = new List<IServiceInput>();
-            IsVisible = action != null && action.SelectedAction != null;
+            IsEnabled = action != null && action.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -42,10 +42,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 Inputs.Clear();
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         public bool IsInputsEmptyRows
@@ -64,15 +64,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             return new DotNetInputRegionClone
             {
                 Inputs = inputs2,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var region = toRestore as DotNetInputRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 Inputs.Clear();
                 if (region.Inputs != null)
                 {

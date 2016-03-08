@@ -86,8 +86,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsTrue(inputview.InputArea.IsEnabled);
+            Assert.IsTrue(inputview.OutputArea.IsEnabled);
 
         }
 
@@ -218,11 +218,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -243,11 +243,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.ExecuteClose();
             //------------Execute Ok---------------------------
             Assert.IsNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }

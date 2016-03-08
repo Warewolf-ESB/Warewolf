@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
 
-            Assert.AreEqual(false, region.IsVisible);
+            Assert.AreEqual(false, region.IsEnabled);
             Assert.AreEqual(0, region.Errors.Count);
         }
         private DsfWebPutActivity CreatePutActivity()
@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPostInputRegion();
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -77,12 +77,12 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             region.PutData = "bob";
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebPutInputRegion;
             if(clone != null)
             {
-                Assert.AreEqual(clone.IsVisible, false);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
                 Assert.AreEqual(clone.PutData,"bob");
             }
@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebPutRegionClone();
-            regionToRestore.IsVisible = true;
+            regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
             regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------

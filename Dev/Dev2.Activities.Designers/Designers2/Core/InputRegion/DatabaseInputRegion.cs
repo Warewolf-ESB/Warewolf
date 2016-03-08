@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
     {
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
-        bool _isVisible;
+        bool _isEnabled;
         private IList<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             Inputs = new List<IServiceInput>(inputsFromModel??new List<IServiceInput>());
             if(inputsFromModel == null)
                 UpdateOnActionSelection();
-            IsVisible = _action != null && _action.SelectedAction != null;
+            IsEnabled = _action != null && _action.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -49,19 +49,19 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             UpdateOnActionSelection();
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"Inputs");
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void UpdateOnActionSelection()
         {
             Inputs.Clear();
-            IsVisible = false;
+            IsEnabled = false;
             if(_action != null && _action.SelectedAction != null)
             {
             
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
@@ -81,15 +81,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             return new DatabaseInputRegionClone
             {
                 Inputs = inputs2,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 

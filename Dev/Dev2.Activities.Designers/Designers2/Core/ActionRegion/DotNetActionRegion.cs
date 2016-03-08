@@ -19,7 +19,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IPluginSource> _source;
         private readonly INamespaceToolRegion<INamespaceItem> _namespace;
-        private bool _isVisible;
+        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsRefreshing = false;
             }, CanRefresh);
 
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
         }
 
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             UpdateBasedOnNamespace();
             SelectedAction = null;
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void UpdateBasedOnNamespace()
@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 IsActionEnabled = true;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
@@ -203,15 +203,15 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -221,7 +221,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             return new DotNetActionRegion
             {
-                IsVisible = IsVisible,
+                IsEnabled = IsEnabled,
                 SelectedAction = SelectedAction
             };
         }
@@ -232,7 +232,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (region != null)
             {
                 SelectedAction = region.SelectedAction;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
             }
         }
 

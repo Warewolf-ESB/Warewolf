@@ -17,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
-        private bool _isVisible;
+        private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
         public OutputsRegion(ModelItem modelItem)
         {
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
                 if(current == null)
                 {
-                    IsVisible = false;
+                    IsEnabled = false;
                 }
                 var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
                 outputs.CollectionChanged += OutputsCollectionChanged;
@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             else
             {
-                IsVisible = true;
+                IsEnabled = true;
                 var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
@@ -66,15 +66,15 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
-                IsVisible = toRestore.IsVisible;
+                IsEnabled = toRestore.IsEnabled;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }

@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, region.Errors.Count);
-            Assert.IsTrue(region.IsVisible);
+            Assert.IsTrue(region.IsEnabled);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.IsVisible, region.IsVisible);
+            Assert.AreEqual(cloned.IsEnabled, region.IsEnabled);
             Assert.AreEqual(((DotNetSourceRegion)cloned).SelectedSource, region.SelectedSource);
         }
 
@@ -180,14 +180,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             // ReSharper disable once UseObjectOrCollectionInitializer
             DotNetSourceRegion regionToRestore = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            regionToRestore.IsVisible = false;
+            regionToRestore.IsEnabled = false;
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(region.SelectedSource, s2);
-            Assert.IsFalse(region.IsVisible);
+            Assert.IsFalse(region.IsEnabled);
         }
     }
 }
