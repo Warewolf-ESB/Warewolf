@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(sqlServer.Errors.Count, 1);
+            Assert.AreEqual(sqlServer.Errors.Count, 2);
             Assert.AreEqual(sqlServer.DesignValidationErrors.Count, 2);
         }
 

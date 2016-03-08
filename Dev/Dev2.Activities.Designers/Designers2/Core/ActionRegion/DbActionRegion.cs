@@ -134,6 +134,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     region.Outputs = null;
                     region.RecordsetName = String.Empty;
+                   
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();

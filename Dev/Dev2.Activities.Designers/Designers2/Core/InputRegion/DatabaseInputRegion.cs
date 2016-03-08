@@ -1,6 +1,7 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common;
@@ -225,13 +226,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (region != null)
             {
                 Inputs.Clear();
-                if (region.Inputs != null)
+                if(region.Inputs != null)
                 {
-                    foreach(var serviceInput in region.Inputs)
-                    {
-                        Inputs.Add(serviceInput);
-                    }
-                   
+                    var inp = region.Inputs.ToList();
+
+                    Inputs = inp;
                 }
                 OnPropertyChanged("Inputs");
                 ResetInputsHeight();
