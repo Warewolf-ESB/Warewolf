@@ -91,9 +91,9 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as OutputsRegion;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
+                IsVisible = toRestore.IsVisible;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
@@ -115,6 +115,12 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _outputs.Clear();
+                    _modelItem.SetProperty("Outputs", _outputs.ToList());
                     OnPropertyChanged();
                 }
             }

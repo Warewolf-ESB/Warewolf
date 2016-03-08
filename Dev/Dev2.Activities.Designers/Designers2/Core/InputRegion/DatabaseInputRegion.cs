@@ -1,6 +1,7 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
@@ -97,8 +98,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+
             var inputs2 = new List<IServiceInput>(Inputs);
             return new DatabaseInputRegionClone
             {
@@ -112,15 +112,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var region = toRestore as DatabaseInputRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
                 Inputs.Clear();
-                if (region.Inputs != null)
+                if(region.Inputs != null)
                 {
-                    foreach(var serviceInput in region.Inputs)
-                    {
-                        Inputs.Add(serviceInput);
-                    }
-                   
+                    var inp = region.Inputs.ToList();
+
+                    Inputs = inp;
                 }
                 OnPropertyChanged("Inputs");
                 IsInputsEmptyRows = Inputs == null ||Inputs.Count == 0;
