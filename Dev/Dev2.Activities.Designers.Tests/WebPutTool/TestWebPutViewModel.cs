@@ -70,9 +70,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(555, postViewModel.DesignMinHeight);
-            Assert.AreEqual(555, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -135,9 +132,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             var postViewModel = CreateViewModel(act, mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(150, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(150, postViewModel.DesignMinHeight);
-            Assert.AreEqual(150, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
             Assert.IsFalse(postViewModel.InputArea.IsVisible);
@@ -159,9 +153,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(415, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(415, postViewModel.DesignMinHeight);
-            Assert.AreEqual(415, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -186,15 +177,11 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(540, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(525, postViewModel.DesignMinHeight);
-            Assert.AreEqual(525, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -218,7 +205,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
@@ -245,7 +231,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
@@ -271,15 +256,11 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(555, postViewModel.DesignMinHeight);
-            Assert.AreEqual(555, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -307,16 +288,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(555, postViewModel.DesignMinHeight);
-            Assert.AreEqual(555, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);
@@ -344,16 +321,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(570, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(555, postViewModel.DesignMinHeight);
-            Assert.AreEqual(555, postViewModel.DesignHeight);
             Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(postViewModel.InputArea.IsVisible);

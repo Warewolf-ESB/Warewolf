@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -248,9 +249,6 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.AreEqual(410, webget.DesignMaxHeight);
-            Assert.AreEqual(395, webget.DesignMinHeight);
-            Assert.AreEqual(395, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);

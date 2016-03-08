@@ -69,9 +69,6 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -129,9 +126,6 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(150, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(150, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(150, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsFalse(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsFalse(deleteViewModel.InputArea.IsVisible);
@@ -153,9 +147,6 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(315, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(315, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(315, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsFalse(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -180,15 +171,11 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(440, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(425, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(425, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -212,7 +199,6 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
@@ -239,7 +225,6 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
@@ -265,15 +250,11 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -301,16 +282,12 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);
@@ -338,16 +315,12 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
             deleteViewModel.ManageServiceInputViewModel.IsVisible = true;
-            deleteViewModel.ManageServiceInputViewModel.SetInitialVisibility();
             deleteViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             deleteViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, deleteViewModel.DesignMaxHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignMinHeight);
-            Assert.AreEqual(455, deleteViewModel.DesignHeight);
             Assert.IsTrue(deleteViewModel.SourceRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.OutputsRegion.IsVisible);
             Assert.IsTrue(deleteViewModel.InputArea.IsVisible);

@@ -268,7 +268,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 ManageServiceInputViewModel.Model = service;
 
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }

@@ -46,43 +46,10 @@ namespace Dev2.Activities.Designers2.Core
             OkCommand = new DelegateCommand(ExecuteOk);
             TestCommand = new DelegateCommand(ExecuteTest);
             _generateOutputArea = new GenerateOutputsRegion();
-            _generateOutputArea.HeightChanged += GenerateAreaHeightChanged;
             _generateInputArea = new GenerateInputsRegion();
-            _generateInputArea.HeightChanged += GenerateAreaHeightChanged;
             Errors = new List<string>();
             _viewmodel = model;
             _serverModel = serviceModel;
-        }
-
-        private void SetInitialHeight()
-        {
-            var maxInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MaxHeight : 0;
-            var minInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MinHeight : 0;
-            var inputHeight = _generateInputArea.IsVisible ? _generateInputArea.CurrentHeight : 0;
-
-            var maxOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MaxHeight : 0;
-            var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
-            var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
-
-            if (_generateInputArea.Inputs != null)
-            {
-                InputCountExpandAllowed = _generateInputArea.Inputs.Count > 3;
-                IsGenerateInputsEmptyRows = _generateInputArea.Inputs.Count < 1;
-                if (_generateInputArea.Inputs.Count < 1)
-                {
-                    minInputHeight += 10;
-                    inputHeight += 10;
-                    maxInputHeight += 10;
-                }
-            }
-            if (_generateOutputArea.Outputs != null)
-            {
-                OutputCountExpandAllowed = _generateOutputArea.Outputs.Count > 3;
-            }
-
-            MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
-            MinHeight = BaseHeight + minInputHeight + minOutputHeight;
-            CurrentHeight = BaseHeight + inputHeight + outputHeight;
         }
 
         public bool OutputCountExpandAllowed
@@ -109,12 +76,6 @@ namespace Dev2.Activities.Designers2.Core
                 _inputCountExpandAllowed = value;
                 OnPropertyChanged();
             }
-        }
-
-        void GenerateAreaHeightChanged(object sender, IToolRegion args)
-        {
-            SetInitialHeight();
-            OnHeightChanged(this);
         }
 
         void ResetOutputsView()
@@ -205,10 +166,15 @@ namespace Dev2.Activities.Designers2.Core
                     IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
                     _generateOutputArea.IsVisible = true;
                     OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+
+                    if (!OutputCountExpandAllowed)
+                    {
+                        InputCountExpandAllowed = true;
+                    }
+
                     _generateOutputArea.OutputRowCount = TestResults.Rows.Count;
                     IsTesting = false;
                 }
-                SetInitialHeight();
             }
             catch (Exception e)
             {
@@ -440,7 +406,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public void SetInitialVisibility()
         {
-            SetInitialHeight();
             IsVisible = true;
             InputArea.IsVisible = true;
             OutputArea.IsVisible = false;

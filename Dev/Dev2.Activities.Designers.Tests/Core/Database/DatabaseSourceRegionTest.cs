@@ -31,11 +31,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(25, region.CurrentHeight);
-            Assert.AreEqual(25, region.MaxHeight);
-            Assert.AreEqual(25, region.MinHeight);
             Assert.AreEqual(1, region.Errors.Count);
-            Assert.IsTrue(region.IsVisible);
             Assert.AreEqual(region.LabelWidth, 46);
         }
 
@@ -166,10 +162,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.CurrentHeight, region.CurrentHeight);
-            Assert.AreEqual(cloned.MaxHeight, region.MaxHeight);
-            Assert.AreEqual(cloned.IsVisible, region.IsVisible);
-            Assert.AreEqual(cloned.MinHeight, region.MinHeight);
             Assert.AreEqual(((DatabaseSourceRegion)cloned).SelectedSource, region.SelectedSource);
         }
 
@@ -190,20 +182,12 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             // ReSharper disable once UseObjectOrCollectionInitializer
             DatabaseSourceRegion regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
-            regionToRestore.MaxHeight = 144;
-            regionToRestore.MinHeight = 133;
-            regionToRestore.CurrentHeight = 111;
-            regionToRestore.IsVisible = false;
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(region.MaxHeight, 144);
-            Assert.AreEqual(region.MinHeight, 133);
-            Assert.AreEqual(region.CurrentHeight, 111);
             Assert.AreEqual(region.SelectedSource, s2);
-            Assert.IsFalse(region.IsVisible);
         }
     }
 }

@@ -273,7 +273,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ManageServiceInputViewModel.Model = service;
 
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }

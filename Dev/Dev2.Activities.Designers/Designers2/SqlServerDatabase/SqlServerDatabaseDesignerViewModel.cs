@@ -112,7 +112,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                     OutputsRegion.IsVisible = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -261,8 +260,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }
@@ -358,23 +360,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -442,7 +430,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                     ManageServiceInputViewModel.InputArea.IsVisible = true;
                     ManageServiceInputViewModel.OutputArea.IsVisible = false;
                     SetRegionVisibility(false);
-
                 }
                 else
                 {
@@ -452,7 +439,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -504,8 +490,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
         }
 
-
-
         public IDbServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
@@ -518,39 +502,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         public override void ReCalculateHeight()
         {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                bool isOutputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "DatabaseInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                    if (toolRegion.ToolRegionName == "OutputsRegion")
-                    {
-                        isOutputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isOutputVisible)
-                {
-                    DesignMaxHeight += 15;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += 30;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-            }
+            
         }
 
         #endregion

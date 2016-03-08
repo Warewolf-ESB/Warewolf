@@ -16,10 +16,9 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="{Binding DesignMinHeight}"
-                               Height="{Binding DesignHeight}"
+                               MinHeight="430"
+                               Height="430"
                                MaxWidth="Infinity"
-                               MaxHeight="{Binding DesignMaxHeight}"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -56,7 +55,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MinHeight="169"/>
                     <RowDefinition>
                         <RowDefinition.Style>
                             <Style>
@@ -74,22 +73,18 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Control Template="{StaticResource SelectionGrid}"/>
+                <Control Template="{StaticResource NewSelectionGrid}"/>
 
-                <Grid Grid.Row="1" Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-
+                <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Grid x:Name="HeadersGrid" Margin="{StaticResource ControlBorderTop}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
@@ -99,7 +94,6 @@
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
                                    IsEnabled="{Binding InputArea.IsVisible}"
-                                   MaxHeight="{Binding InputArea.MaxHeadersHeight}"
                                    ColumnWidth="*"
                                    Margin="{StaticResource ControlBorderTop}">
 
@@ -140,8 +134,8 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="SizeToCells"
-                                            MinWidth="100"
+                                <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
                                             Header="Value"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
@@ -178,16 +172,15 @@
                             </DataGrid.Columns>
                         </controls:Dev2DataGrid>
                     </Grid>
-
-                    <Grid x:Name="UrlGrid" Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid x:Name="UrlGrid" Grid.Row="1" IsEnabled="{Binding InputArea.IsVisible}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
@@ -204,7 +197,6 @@
                                 Width="Auto"
                                 Margin="{StaticResource ControlBorderTop}"
                                 ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                                Visibility="{Binding InputArea.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                 HorizontalAlignment="Right"
                                 Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
                             <i:Interaction.Behaviors>
@@ -214,7 +206,7 @@
                     </Grid>
                 </Grid>
 
-                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource OutputsGrid}"/>
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
                       Grid.Row="3"
@@ -225,7 +217,7 @@
             </Grid>
 
             <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource GenerateOutputsView}" Margin="0,0,0,-5"/>
+                <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource NewGenerateOutputsView}" Margin="0,0,0,-5"/>
             </Grid>
         </Grid>
     </Grid>
