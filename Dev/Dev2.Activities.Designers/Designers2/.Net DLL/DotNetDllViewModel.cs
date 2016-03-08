@@ -271,8 +271,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }
