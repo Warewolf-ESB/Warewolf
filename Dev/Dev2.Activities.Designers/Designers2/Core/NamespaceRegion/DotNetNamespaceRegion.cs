@@ -19,7 +19,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IPluginSource> _source;
-        private bool _isVisible;
+        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedNamespace;
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 IsRefreshing = false;
             }, CanRefresh);
 
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
         }
         INamespaceItem Namespace
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             UpdateBasedOnSource();
             SelectedNamespace = null;
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void UpdateBasedOnSource()
@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
                 IsNamespaceEnabled = true;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
@@ -200,15 +200,15 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         {
             return new DotNetNamespaceRegion
             {
-                IsVisible = IsVisible,
+                IsEnabled = IsEnabled,
                 SelectedNamespace = SelectedNamespace
             };
         }
@@ -230,7 +230,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             if (region != null)
             {
                 SelectedNamespace = region.SelectedNamespace;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
             }
         }
 

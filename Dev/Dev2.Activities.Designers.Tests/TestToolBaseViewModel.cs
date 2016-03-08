@@ -16,20 +16,20 @@ namespace Dev2.Activities.Designers.Tests
 
     class Region : IToolRegion
     {
-        private bool _isVisible;
+        private bool _isEnabled;
 
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
             }
         }
 
@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests
 
         public override IList<IToolRegion> BuildRegions()
         {
-            return new List<IToolRegion> { new Region() { IsVisible = true } };
+            return new List<IToolRegion> { new Region() { IsEnabled = true } };
         }
 
         #endregion
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers.Tests
         public void CustomToolWithRegionBase_Ctor_ValidRegions_HasCorrectHeights()
         {
             //------------Setup for test--------------------------
-            var b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()), new List<IToolRegion> { new Region() { IsVisible = true }, new Region() { IsVisible = true } });
+            var b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()), new List<IToolRegion> { new Region() { IsEnabled = true }, new Region() { IsEnabled = true } });
 
             //------------Execute Test---------------------------
 

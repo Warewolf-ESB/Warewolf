@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _pasteResponseAvailable;
         IGenerateOutputArea _generateOutputArea;
         IGenerateInputArea _generateInputArea;
-        bool _isVisible;
+        bool _isEnabled;
         IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
-            OutputArea.IsVisible = true;
+            OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;
 
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers2.Core
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
-                _generateOutputArea.IsVisible = true;
+                _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
                 
                 
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
-                _generateOutputArea.IsVisible = false;
+                _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
@@ -146,8 +146,8 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecutePaste()
         {
-            OutputArea.IsVisible = true;
-            _generateOutputArea.IsVisible = true;
+            OutputArea.IsEnabled = true;
+            _generateOutputArea.IsEnabled = true;
             _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
             PasteResponseVisible = true;
         }
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
 
                 _viewmodel.OutputsRegion.Description = Description;
-                _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
                 ResetOutputsView();
             }
             catch (Exception e)
@@ -194,11 +194,11 @@ namespace Dev2.Activities.Designers2.Core
 
         void ResetOutputsView()
         {
-            IsVisible = false;
+            IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
             PasteResponseVisible = false;
-            InputArea.IsVisible = false;
-            OutputArea.IsVisible = false;
+            InputArea.IsEnabled = false;
+            OutputArea.IsEnabled = false;
             TestResults = String.Empty;
             TestResultsAvailable = false;
 
@@ -208,7 +208,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+            _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
                 TestResultsAvailable = TestResults != null;
@@ -335,9 +335,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public void SetInitialVisibility()
         {
-            IsVisible = true;
-            InputArea.IsVisible = true;
-            OutputArea.IsVisible = false;
+            IsEnabled = true;
+            InputArea.IsEnabled = true;
+            OutputArea.IsEnabled = false;
         }
 
         [ExcludeFromCodeCoverage]
@@ -397,15 +397,15 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }

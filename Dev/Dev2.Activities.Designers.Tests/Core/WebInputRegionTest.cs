@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),srcreg);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count,0);
         }
 
@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion();
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -62,12 +62,12 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebGetInputRegion;
             if(clone != null)
             {
-                Assert.AreEqual(clone.IsVisible, false);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
             }
         }
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebGetInputRegionClone();
-            regionToRestore.IsVisible = true;
+            regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
             regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------

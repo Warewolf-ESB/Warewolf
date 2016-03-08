@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dbActionRegion.Errors.Count);
-            Assert.IsTrue(dbActionRegion.IsVisible);
+            Assert.IsTrue(dbActionRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var cloned = dbActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.IsVisible, dbActionRegion.IsVisible);
+            Assert.AreEqual(cloned.IsEnabled, dbActionRegion.IsEnabled);
             Assert.AreEqual(((DbActionMemento)cloned).SelectedAction, dbActionRegion.SelectedAction);
         }
 
@@ -206,14 +206,14 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             DbActionMemento dbActionRegionToRestore = new DbActionMemento();
-            dbActionRegionToRestore.IsVisible = false;
+            dbActionRegionToRestore.IsEnabled = false;
             dbActionRegionToRestore.SelectedAction = action;
 
             dbActionRegion.RestoreRegion(dbActionRegionToRestore);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dbActionRegion.SelectedAction, action);
-            Assert.IsFalse(dbActionRegion.IsVisible);
+            Assert.IsFalse(dbActionRegion.IsEnabled);
         }
     }
 }

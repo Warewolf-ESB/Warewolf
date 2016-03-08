@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         private string _queryString;
         private string _requestUrl;
         private ObservableCollection<INameValue> _headers;
-        bool _isVisible;
+        bool _isEnabled;
 
         public WebDeleteInputRegion()
         {
@@ -34,12 +34,12 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            IsVisible = false;
+            IsEnabled = false;
             SetupHeaders(modelItem);
             if (source != null && source.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -55,10 +55,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
         private void SetupHeaders(ModelItem modelItem)
         {
@@ -112,15 +112,15 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             var region = toRestore as WebDeleteRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();

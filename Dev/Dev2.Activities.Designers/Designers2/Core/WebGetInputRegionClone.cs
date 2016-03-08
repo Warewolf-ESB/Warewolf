@@ -14,7 +14,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }

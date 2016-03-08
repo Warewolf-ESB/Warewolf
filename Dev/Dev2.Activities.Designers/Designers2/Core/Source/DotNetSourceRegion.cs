@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
-        private bool _isVisible;
+        private bool _isEnabled;
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
             SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.PluginServiceSourcesHelp;
@@ -106,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         private void SetInitialValues()
         {
-            IsVisible = true;
+            IsEnabled = true;
         }
 
         public DotNetSourceRegion()
@@ -154,15 +154,15 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -172,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             return new DotNetSourceRegion
             {
-                IsVisible = IsVisible,
+                IsEnabled = IsEnabled,
                 SelectedSource = SelectedSource
             };
         }
@@ -183,7 +183,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (region != null)
             {
                 SelectedSource = region.SelectedSource;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
             }
         }
 

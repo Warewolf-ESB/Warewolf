@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dotNetNamespaceRegion.Errors.Count);
-            Assert.IsTrue(dotNetNamespaceRegion.IsVisible);
+            Assert.IsTrue(dotNetNamespaceRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -180,7 +180,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var cloned = dotNetNamespaceRegion.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.IsVisible, dotNetNamespaceRegion.IsVisible);
+            Assert.AreEqual(cloned.IsEnabled, dotNetNamespaceRegion.IsEnabled);
             Assert.AreEqual(((DotNetNamespaceRegion)cloned).SelectedNamespace, dotNetNamespaceRegion.SelectedNamespace);
         }
 
@@ -204,14 +204,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetNamespaceRegion dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             DotNetNamespaceRegion dotNetNamespaceRegionToRestore = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            dotNetNamespaceRegionToRestore.IsVisible = false;
+            dotNetNamespaceRegionToRestore.IsEnabled = false;
             dotNetNamespaceRegionToRestore.SelectedNamespace = namespaceItem;
 
             dotNetNamespaceRegion.RestoreRegion(dotNetNamespaceRegionToRestore);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dotNetNamespaceRegion.SelectedNamespace, namespaceItem);
-            Assert.IsFalse(dotNetNamespaceRegion.IsVisible);
+            Assert.IsFalse(dotNetNamespaceRegion.IsEnabled);
         }
     }
 }

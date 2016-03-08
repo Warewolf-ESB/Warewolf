@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
         }
 
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
 
             var region = new DatabaseInputRegion();
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -63,12 +63,12 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as DatabaseInputRegion;
             if (clone != null)
             {
-                Assert.AreEqual(clone.IsVisible, false);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
             }
         }
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             var regionToRestore = new DatabaseInputRegionClone();
-            regionToRestore.IsVisible = true;
+            regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------

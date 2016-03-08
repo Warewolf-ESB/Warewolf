@@ -14,13 +14,13 @@ namespace Dev2.Activities.Designers2.Core
         public GenerateInputsRegion()
         {
             ToolRegionName = "GenerateInputsRegion";
-            IsVisible = true;
+            IsEnabled = true;
         }
 
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
         public bool IsInputCountEmpty { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors

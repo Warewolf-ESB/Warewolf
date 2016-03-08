@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dotNetActionRegion.Errors.Count);
-            Assert.IsTrue(dotNetActionRegion.IsVisible);
+            Assert.IsTrue(dotNetActionRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var cloned = dotNetActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.IsVisible, dotNetActionRegion.IsVisible);
+            Assert.AreEqual(cloned.IsEnabled, dotNetActionRegion.IsEnabled);
             Assert.AreEqual(((DotNetActionRegion)cloned).SelectedAction, dotNetActionRegion.SelectedAction);
         }
 
@@ -235,14 +235,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetActionRegion dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             DotNetActionRegion dotNetActionRegionToRestore = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
-            dotNetActionRegionToRestore.IsVisible = false;
+            dotNetActionRegionToRestore.IsEnabled = false;
             dotNetActionRegionToRestore.SelectedAction = action;
 
             dotNetActionRegion.RestoreRegion(dotNetActionRegionToRestore);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dotNetActionRegion.SelectedAction, action);
-            Assert.IsFalse(dotNetActionRegion.IsVisible);
+            Assert.IsFalse(dotNetActionRegion.IsEnabled);
         }
     }
 }

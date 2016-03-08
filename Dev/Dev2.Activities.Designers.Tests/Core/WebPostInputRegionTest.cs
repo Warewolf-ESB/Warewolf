@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
         }
 
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             var region = new WebPostInputRegion();
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
         [TestMethod]
@@ -51,12 +51,12 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg) { PostData = "bob" };
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebPostInputRegion;
             if (clone != null)
             {
-                Assert.AreEqual(clone.IsVisible, false);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
                 Assert.AreEqual(clone.PostData, "bob");
             }
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebPostInputRegionClone
             {
-                IsVisible = true,
+                IsEnabled = true,
                 QueryString = "blob",
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") }
             };

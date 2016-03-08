@@ -10,7 +10,7 @@ namespace Dev2.Activities.Designers2.Core
         public ErrorRegion()
         {
             ToolRegionName = "ErrorRegion";
-            IsVisible = true;
+            IsEnabled = true;
             Dependants = new List<IToolRegion>();
         }
 
@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
 
         public IList<IToolRegion> Dependants { get; set; }
 

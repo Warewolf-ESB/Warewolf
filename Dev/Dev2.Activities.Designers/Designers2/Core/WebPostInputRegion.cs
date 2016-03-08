@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _queryString;
         private string _requestUrl;
         private ObservableCollection<INameValue> _headers;
-        bool _isVisible;
+        bool _isEnabled;
         string _postData;
 
         public WebPostInputRegion()
@@ -34,12 +34,12 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            IsVisible = false;
+            IsEnabled = false;
             SetupHeaders(modelItem);
             if (source != null && source.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -56,10 +56,10 @@ namespace Dev2.Activities.Designers2.Core
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
         private void SetupHeaders(ModelItem modelItem)
         {
@@ -113,15 +113,15 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible
+        public bool IsEnabled
         {
             get
             {
-                return _isVisible;
+                return _isEnabled;
             }
             set
             {
-                _isVisible = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers2.Core
                 PostData = PostData,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
@@ -152,7 +152,7 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as WebPostInputRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 PostData = region.PostData;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;

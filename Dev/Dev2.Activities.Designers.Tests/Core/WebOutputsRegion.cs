@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
             
             //------------Execute Test---------------------------
-            Assert.IsTrue(outputsRegion.IsVisible);
+            Assert.IsTrue(outputsRegion.IsEnabled);
             //------------Assert Results-------------------------
         }
 
@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
 
             //------------Execute Test---------------------------
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
             //------------Assert Results-------------------------
         }
 
@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
             //------------Assert Results-------------------------
         }
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
 
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             //------------Assert Results-------------------------
@@ -94,15 +94,15 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             
             //------------Execute Test---------------------------
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
 
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             outputsRegion.Outputs.Clear();
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
 
             //------------Assert Results-------------------------
             outputsRegion.RestoreRegion(x);
-            Assert.IsFalse(outputsRegion.IsVisible);
+            Assert.IsFalse(outputsRegion.IsEnabled);
         }
     }
 }

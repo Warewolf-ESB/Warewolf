@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
             SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceTypesHelp;
@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
