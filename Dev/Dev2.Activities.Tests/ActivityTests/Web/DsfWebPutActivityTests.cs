@@ -456,7 +456,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var httpClient = DsfWebPutActivity.CreateClient(null, String.Empty, TestUtils.CreateWebSourceWithCredentials());
             //---------------Test Result -----------------------
             var actualHeaderCount = httpClient.DefaultRequestHeaders.Count();
-            Assert.AreEqual(3, actualHeaderCount);
+            Assert.AreEqual(1, actualHeaderCount);
         }
 
         [TestMethod]
@@ -471,9 +471,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var userAgentCollection = httpClient.DefaultRequestHeaders.UserAgent;
             var count = userAgentCollection.Count;
             //---------------Test Result -----------------------
-            Assert.AreEqual(2, count);
-            Assert.AreEqual(userAgent1, userAgentCollection.First().ToString());
-            Assert.AreEqual(userAgent2, userAgentCollection.Last().ToString());
+            Assert.AreEqual(0, count);
+   
         }
 
         [TestMethod]
@@ -528,7 +527,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var httpClient = deleteActivityFromBase.CreateClient(headers, String.Empty, TestUtils.CreateWebSourceWithAnonymousAuthentication());
             //---------------Test Result -----------------------
             var actualHeaderCount = httpClient.DefaultRequestHeaders.Count();
-            Assert.AreEqual(3, actualHeaderCount);
+            Assert.AreEqual(1, actualHeaderCount);
             IEnumerable<string> allContentValues = httpClient.DefaultRequestHeaders.Single(pair => pair.Key == "Content").Value;
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
