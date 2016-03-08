@@ -302,6 +302,86 @@
                                                         Visibility="{Binding ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NewDotNetActionGrid">
+        <Grid x:Name="ActionsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ActionRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="ActionsComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding ActionRegion.Actions}"
+                              DisplayMemberPath="Method" 
+                              IsEnabled="{Binding ActionRegion.IsActionEnabled}"
+                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding ActionRegion.SelectedAction}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="ActionRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=ActionRegion.RefreshActionsCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="25"
+                                                        Height="25"
+                                                        Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewNamespaceGrid">
+        <Grid x:Name="ActionsGrid" 
+                      Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding NamespaceRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="NamespaceLabel" Text="Namespace" Margin="{StaticResource ControlBorderRight}" />
+            <ComboBox x:Name="NamespaceComboBox"
+                              Grid.Column="1"
+                              Margin="{StaticResource ControlBorderRight}"
+                              ItemsSource="{Binding NamespaceRegion.Namespaces}"
+                              DisplayMemberPath="FullName" 
+                              IsEnabled="{Binding NamespaceRegion.IsNamespaceEnabled}"
+                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              IsEditable="False"
+                              SelectedItem="{Binding NamespaceRegion.SelectedNamespace}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button x:Name="NamespaceRefreshButton" 
+                            Grid.Column="2"
+                            Command="{Binding Path=NamespaceRegion.RefreshNamespaceCommand, Mode=TwoWay}"
+                            Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceRefreshHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh"/>
+                </Button.Content>
+            </Button>
+            <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
+                                                        Grid.Column="2"
+                                                        Width="25"
+                                                        Height="25"
+                                                        Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NewSelectionActionGrid">
         <Grid>
             <Grid.RowDefinitions>
@@ -312,6 +392,21 @@
             <Control Template="{StaticResource NewSelectionGrid}"/>
 
             <Control Template="{StaticResource NewActionGrid}" Grid.Row="1"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewSelectionNamespaceGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewNamespaceGrid}" Grid.Row="1"/>
+
+            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewInputsGrid">
@@ -428,6 +523,7 @@
                     Grid.Row="1" 
                     Content="Generate Outputs" 
                     Width="Auto" 
+                    IsEnabled="{Binding InputArea.IsVisible}"
                     Margin="{StaticResource ControlBorderTop}"
                     ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                     HorizontalAlignment="Right"
@@ -1881,6 +1977,179 @@
                 <Control Grid.Row="0" Template="{StaticResource NewGenerateResponseTemplate}" 
                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>
                 
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button x:Name="GenerateOutputsDoneButton" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom"
+                            Margin="{StaticResource ControlBorderRight}"
+                            Command="{Binding OkCommand}"
+                            Width="46"
+                            Content="Done">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                    <Button HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom"
+                            Command="{Binding CloseCommand}"
+                            Width="46"
+                            Content="Cancel">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="NewGenerateOutputsViewDotNet"  d:DataContext="{d:DesignInstance core1:ManagePluginServiceInputViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=InputCountExpandAllowed}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=OutputCountExpandAllowed}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
+
+                <controls:Dev2DataGrid x:Name="LargeDataGrid"
+                                   Grid.Row="1"
+                                   ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Height="Auto"
+                                   MinHeight="100"
+                                   Margin="{StaticResource ControlBorderTop}">
+
+                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="65"
+                                            Header="Parameter"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <TextBlock Text="{Binding Path=Name}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"
+                                           Padding="3,0"
+                                           ToolTip="{Binding OutputColumn.ColumnName}">
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="Test Data"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ui:IntellisenseTextBox DefaultText="Test Data"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="Value"
+                                                         SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </controls:Dev2DataGrid>
+                
+                <TextBlock Text="None"
+                           Grid.Row="1" 
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+                    <customControls:CircularProgressBar Width="25"
+                                                    HorizontalAlignment="Right" 
+                                                    Margin="{StaticResource ControlBorderRight}"
+                                                    Height="25"
+                                                    Padding="2.5"
+                                                    Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
+                    <Button x:Name="TestActionButton" 
+                            HorizontalAlignment="Right" 
+                            Command="{Binding TestCommand}" 
+                            ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                            Content="Test"
+                            Width="46">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Grid.Row="0" Template="{StaticResource NewGenerateOutputsTextTemplate}" 
+                     Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button x:Name="GenerateOutputsDoneButton" 
                             HorizontalAlignment="Right" 

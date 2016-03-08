@@ -223,7 +223,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                     OutputsRegion.IsVisible = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         public int LabelWidth { get; set; }
@@ -255,6 +254,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 ManageServiceInputViewModel.InputArea.IsWeb = true;
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
+
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
 
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
@@ -359,23 +361,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += ToolRegionHeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        private void ToolRegionHeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -513,7 +501,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -527,40 +514,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
 
         public override void ReCalculateHeight()
         {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                bool isOutputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "PostInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                    if (toolRegion.ToolRegionName == "OutputsRegion")
-                    {
-                        isOutputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isOutputVisible)
-                {
-                    DesignMaxHeight += 20;
-                    DesignHeight += 20;
-                    DesignMinHeight += 20;
-                }
-
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += BaseHeight;
-                    DesignHeight += BaseHeight;
-                    DesignMinHeight += BaseHeight;
-                }
-            }
+            
         }
 
         #endregion
