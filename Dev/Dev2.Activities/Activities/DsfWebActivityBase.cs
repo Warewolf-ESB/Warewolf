@@ -19,6 +19,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -27,9 +28,9 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private IOutputDescription _outputDescription;
-        protected const string MediaType = "application/x-www-form-urlencoded";
-        protected const string UserAgent = "User-Agent";
+        private MediaTypeWithQualityHeaderValue _mediaTypeWithQualityHeaderValue;
+        private const string MediaType = "application/x-www-form-urlencoded";
+        private const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -40,17 +41,7 @@ namespace Dev2.Activities
 
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
-        public IOutputDescription OutputDescription
-        {
-            get
-            {
-                return _outputDescription;
-            }
-            set
-            {
-                _outputDescription = value;
-            }
-        }
+        public IOutputDescription OutputDescription { get; set; }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -93,6 +84,11 @@ namespace Dev2.Activities
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
+            }
+            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try
@@ -148,7 +144,8 @@ namespace Dev2.Activities
                 }
             }
 
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaType));
+            _mediaTypeWithQualityHeaderValue = new MediaTypeWithQualityHeaderValue(MediaType);
+            httpClient.DefaultRequestHeaders.Accept.Add(_mediaTypeWithQualityHeaderValue);
             httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
 
             var address = source.Address;
@@ -179,7 +176,8 @@ namespace Dev2.Activities
         [ExcludeFromCodeCoverage]
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
-            var httpClient = CreateClient(head, query, source);
+            var headerValues = head as NameValue[] ?? head.ToArray();
+            var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {
                 var address = source.Address;
@@ -205,9 +203,17 @@ namespace Dev2.Activities
                     var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                     return message;
                 }
-                HttpContent httpContent = new StringContent(putData);
-                //httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                taskOfResponseMessage = httpClient.PutAsync(new Uri(address), httpContent);
+                HttpContent httpContent = new StringContent(putData,Encoding.UTF8);
+                var contentType = headerValues.FirstOrDefault(value => value.Name.ToLower() == "Content-Type".ToLower());
+                if (contentType != null)
+                {
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType.Value);
+                }
+                var httpRequest = new HttpRequestMessage(HttpMethod.Put, new Uri(address))
+                {
+                    Content = httpContent
+                };
+                taskOfResponseMessage = httpClient.SendAsync(httpRequest);
                 var resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                 return resultAsString;
             }
