@@ -259,7 +259,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 ManageServiceInputViewModel.Model = service;
 
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }

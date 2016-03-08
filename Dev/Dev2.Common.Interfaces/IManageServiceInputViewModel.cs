@@ -37,7 +37,8 @@ namespace Dev2.Common.Interfaces
         IGenerateOutputArea OutputArea { get; set; }
         IOutputDescription Description { get; set; }
         IGenerateInputArea InputArea { get; set; }
-
-        void SetInitialVisibility();
+        bool OutputCountExpandAllowed { get; set; }
+        bool InputCountExpandAllowed { get; set; }
+        bool IsGenerateInputsEmptyRows { get; set; }
     }
 }

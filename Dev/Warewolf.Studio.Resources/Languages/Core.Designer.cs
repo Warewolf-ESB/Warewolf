@@ -5400,6 +5400,53 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input some test data to execute the procedure.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///This data will not be stored and the execution will be rolled back if supported by the database..
+        /// </summary>
+        public static string ServiceInputsHelp {
+            get {
+                return ResourceManager.GetString("ServiceInputsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the procedure or function.
+        /// </summary>
+        public static string ServiceTestActionTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestActionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestCancelButtonHelp.
+        /// </summary>
+        public static string ServiceTestCancelButtonHelp {
+            get {
+                return ResourceManager.GetString("ServiceTestCancelButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestDoneButtonHelp.
+        /// </summary>
+        public static string ServiceTestDoneButtonHelp {
+            get {
+                return ResourceManager.GetString("ServiceTestDoneButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the execution of this resource..
+        /// </summary>
+        public static string ServiceTestHelp {
+            get {
+                return ResourceManager.GetString("ServiceTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings..
         /// </summary>
         public static string SettingsChangedDescription {
