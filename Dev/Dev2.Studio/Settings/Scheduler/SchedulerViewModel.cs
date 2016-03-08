@@ -96,6 +96,7 @@ namespace Dev2.Settings.Scheduler
         Task<IResourcePickerDialog> _task;
         IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
+        private bool _errorShown;
 
         #endregion
 
@@ -494,9 +495,21 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-                if (ScheduledResourceModel != null)
+                try
                 {
-                    return ScheduledResourceModel.ScheduledResources;
+                    if (ScheduledResourceModel != null)
+                    {
+                        return ScheduledResourceModel.ScheduledResources;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    if (!_errorShown)
+                    {
+                        _popupController.Show("Unable to retrieve tasks - " + ex.Message, "Scheduler load error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                        Dev2Logger.Error(ex);
+                        _errorShown = true;
+                    }
                 }
                 return new ObservableCollection<IScheduledResource>();
             }
