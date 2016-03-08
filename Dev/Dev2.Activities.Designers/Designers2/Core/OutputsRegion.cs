@@ -149,6 +149,7 @@ namespace Dev2.Activities.Designers2.Core
 
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
+                IsVisible = toRestore.IsVisible;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
