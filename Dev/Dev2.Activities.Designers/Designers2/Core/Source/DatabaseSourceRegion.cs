@@ -21,15 +21,10 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DatabaseSourceRegion : ISourceToolRegion<IDbSource>
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 25;
         private IDbSource _selectedSource;
         private ICollection<IDbSource> _sources;
         private readonly ModelItem _modelItem;
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;
@@ -41,7 +36,6 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
@@ -99,17 +93,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetInitialValues()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
-        }
-
         public DatabaseSourceRegion()
         {
-            SetInitialValues();
+            
         }
 
         Guid SourceId
@@ -164,54 +150,10 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
         public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
@@ -219,11 +161,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             return new DatabaseSourceRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                SelectedSource = SelectedSource,
-                CurrentHeight = CurrentHeight
+                SelectedSource = SelectedSource
             };
         }
 
@@ -232,11 +170,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             var region = toRestore as DatabaseSourceRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedSource = region.SelectedSource;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
             }
         }
 
@@ -252,7 +186,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-
                 SetSelectedSource(value);
                 SourceChangedAction();
                 OnSomethingChanged(this);
@@ -272,12 +205,8 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.Id;
             }
-
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedSource");
         }
-
-
 
         public ICollection<IDbSource> Sources
         {

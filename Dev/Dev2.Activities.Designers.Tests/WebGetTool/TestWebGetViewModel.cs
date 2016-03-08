@@ -46,9 +46,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
-            Assert.AreEqual(470, webget.DesignMaxHeight);
-            Assert.AreEqual(455, webget.DesignMinHeight);
-            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -109,9 +106,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
-            Assert.AreEqual(150, webget.DesignMaxHeight);
-            Assert.AreEqual(150, webget.DesignMinHeight);
-            Assert.AreEqual(150, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsFalse(webget.InputArea.IsVisible);
@@ -134,9 +128,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
-            Assert.AreEqual(315, webget.DesignMaxHeight);
-            Assert.AreEqual(315, webget.DesignMinHeight);
-            Assert.AreEqual(315, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsFalse(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -162,14 +153,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(440, webget.DesignMaxHeight);
-            Assert.AreEqual(425, webget.DesignMinHeight);
-            Assert.AreEqual(425, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -197,7 +184,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
@@ -224,7 +210,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
@@ -251,14 +236,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(470, webget.DesignMaxHeight);
-            Assert.AreEqual(455, webget.DesignMinHeight);
-            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -286,14 +267,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(470, webget.DesignMaxHeight);
-            Assert.AreEqual(455, webget.DesignMinHeight);
-            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);
@@ -323,14 +300,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
             webget.ManageServiceInputViewModel.IsVisible = true;
-            webget.ManageServiceInputViewModel.SetInitialVisibility();
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.AreEqual(470, webget.DesignMaxHeight);
-            Assert.AreEqual(455, webget.DesignMinHeight);
-            Assert.AreEqual(455, webget.DesignHeight);
             Assert.IsTrue(webget.SourceRegion.IsVisible);
             Assert.IsTrue(webget.OutputsRegion.IsVisible);
             Assert.IsTrue(webget.InputArea.IsVisible);

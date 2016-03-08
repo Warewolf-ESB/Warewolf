@@ -19,6 +19,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -27,10 +28,9 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private IOutputDescription _outputDescription;
         private MediaTypeWithQualityHeaderValue _mediaTypeWithQualityHeaderValue;
-        protected const string MediaType = "application/x-www-form-urlencoded";
-        protected const string UserAgent = "User-Agent";
+        private const string MediaType = "application/x-www-form-urlencoded";
+        private const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -41,17 +41,7 @@ namespace Dev2.Activities
 
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
-        public IOutputDescription OutputDescription
-        {
-            get
-            {
-                return _outputDescription;
-            }
-            set
-            {
-                _outputDescription = value;
-            }
-        }
+        public IOutputDescription OutputDescription { get; set; }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -94,6 +84,11 @@ namespace Dev2.Activities
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
+            }
+            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try

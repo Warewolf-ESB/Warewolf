@@ -20,11 +20,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class WebSourceRegion : ISourceToolRegion<IWebServiceSource>
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 25;
         private IWebServiceSource _selectedSource;
         private ICollection<IWebServiceSource> _sources;
         private readonly ModelItem _modelItem;
@@ -40,7 +35,6 @@ namespace Dev2.Activities.Designers2.Core
         {
             LabelWidth = 46;
             ToolRegionName = "SourceRegion";
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
@@ -99,17 +93,8 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void SetInitialValues()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
-        }
-
         public WebSourceRegion()
         {
-            SetInitialValues();
         }
 
         Guid SourceId
@@ -164,54 +149,10 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
+        public double MinHeight { get; set; }
+        public double CurrentHeight { get; set; }
+        public bool IsVisible { get; set; }
+        public double MaxHeight { get; set; }
         public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
@@ -219,11 +160,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             return new WebSourceRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                SelectedSource = SelectedSource,
-                CurrentHeight = CurrentHeight
+                SelectedSource = SelectedSource
             };
         }
 
@@ -232,11 +169,7 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as WebSourceRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedSource = region.SelectedSource;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
             }
         }
 
@@ -285,8 +218,6 @@ namespace Dev2.Activities.Designers2.Core
                 SavedSource = value;
                 SourceId = value.Id;
             }
-
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedSource");
         }
 
