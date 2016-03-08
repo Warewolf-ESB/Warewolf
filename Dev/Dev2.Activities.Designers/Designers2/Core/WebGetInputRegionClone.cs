@@ -14,11 +14,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
-        public double MinHeight { get; set; }
-        public double CurrentHeight { get; set; }
         public bool IsVisible { get; set; }
-        public double MaxHeight { get; set; }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IList<string> Errors { get; private set; }
@@ -41,12 +37,6 @@ namespace Dev2.Activities.Designers2.Core
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        [ExcludeFromCodeCoverage]
-        private void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null) handler(this, args);
         }
     }
 }

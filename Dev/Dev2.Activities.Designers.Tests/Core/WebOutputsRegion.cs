@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -22,9 +23,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             
             //------------Execute Test---------------------------
             Assert.IsTrue(outputsRegion.IsVisible);
-            Assert.AreEqual(outputsRegion.CurrentHeight,60);
-            Assert.AreEqual(outputsRegion.MaxHeight, 75);
-            Assert.AreEqual(outputsRegion.MinHeight, 60);
             //------------Assert Results-------------------------
         }
 
@@ -40,9 +38,6 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(60,outputsRegion.CurrentHeight);
-            Assert.AreEqual(60,outputsRegion.MaxHeight);
-            Assert.AreEqual(60,outputsRegion.MinHeight);
             //------------Assert Results-------------------------
         }
 
@@ -60,9 +55,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(90, outputsRegion.CurrentHeight);
-            Assert.AreEqual(135, outputsRegion.MaxHeight);
-            Assert.AreEqual(90, outputsRegion.MinHeight);
             //------------Assert Results-------------------------
         }
 
@@ -81,17 +73,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(90, outputsRegion.CurrentHeight);
-            Assert.AreEqual(135, outputsRegion.MaxHeight);
-            Assert.AreEqual(90, outputsRegion.MinHeight);
 
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             //------------Assert Results-------------------------
             Assert.IsNotNull(x, "x != null");
             Assert.AreEqual(x.Outputs.Count,4);
-            Assert.AreEqual(x.CurrentHeight,outputsRegion.CurrentHeight);
-            Assert.AreEqual(x.MaxHeight, outputsRegion.MaxHeight);
-            Assert.AreEqual(x.MinHeight, outputsRegion.MinHeight);
         }
 
         [TestMethod]
@@ -109,25 +95,14 @@ namespace Dev2.Activities.Designers.Tests.Core
             
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(90, outputsRegion.CurrentHeight);
-            Assert.AreEqual(135, outputsRegion.MaxHeight);
-            Assert.AreEqual(90, outputsRegion.MinHeight);
 
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             outputsRegion.Outputs.Clear();
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(60, outputsRegion.CurrentHeight);
-            Assert.AreEqual(75, outputsRegion.MaxHeight);
-            Assert.AreEqual(60, outputsRegion.MinHeight);
 
             //------------Assert Results-------------------------
             outputsRegion.RestoreRegion(x);
             Assert.IsFalse(outputsRegion.IsVisible);
-            Assert.AreEqual(90, outputsRegion.CurrentHeight);
-            Assert.AreEqual(135, outputsRegion.MaxHeight);
-            Assert.AreEqual(90, outputsRegion.MinHeight);
         }
-
-
     }
 }

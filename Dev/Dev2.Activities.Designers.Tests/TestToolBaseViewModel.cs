@@ -14,37 +14,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests
 {
 
-    class Region : IToolRegion {
-        private double _minHeight;
-        private double _currentHeight;
+    class Region : IToolRegion
+    {
         private bool _isVisible;
-        private double _maxHeight;
 
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-            }
-        }
         public bool IsVisible
         {
             get
@@ -54,17 +30,6 @@ namespace Dev2.Activities.Designers.Tests
             set
             {
                 _isVisible = value;
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
             }
         }
 
@@ -87,13 +52,8 @@ namespace Dev2.Activities.Designers.Tests
             }
         }
 
-        public event HeightChanged HeightChanged;
-
-
         public void HeightChangedNow()
         {
-            if (HeightChanged != null)
-                HeightChanged(this, this);
         }
         #endregion
 
@@ -102,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -110,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests
     }
 
 
-    class ImplRegionBase:CustomToolWithRegionBase
+    class ImplRegionBase : CustomToolWithRegionBase
     {
         public ImplRegionBase(ModelItem modelItem)
             : base(modelItem)
@@ -143,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests
 
         public override IList<IToolRegion> BuildRegions()
         {
-            return new List<IToolRegion>{new Region(){CurrentHeight = 25,IsVisible = true,MaxHeight = 33,MinHeight = 2}};
+            return new List<IToolRegion> { new Region() { IsVisible = true } };
         }
 
         #endregion
@@ -156,12 +116,7 @@ namespace Dev2.Activities.Designers.Tests
         public void CustomToolWithRegionBase_Ctor()
         {
             CustomToolWithRegionBase b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()));
-            b.Regions=b.BuildRegions();
-            b.ReCalculateHeight();
-            Assert.AreEqual(33,b.DesignMaxHeight);
-            Assert.AreEqual(2, b.DesignMinHeight);
-            Assert.AreEqual(25, b.DesignHeight);
-
+            b.Regions = b.BuildRegions();
         }
 
         [TestMethod]
@@ -170,13 +125,9 @@ namespace Dev2.Activities.Designers.Tests
         public void CustomToolWithRegionBase_Ctor_ValidRegions_HasCorrectHeights()
         {
             //------------Setup for test--------------------------
-            var b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()), new List<IToolRegion> { new Region() { CurrentHeight = 25, IsVisible = true, MaxHeight = 33, MinHeight = 2 }, new Region() { CurrentHeight = 69, IsVisible = true, MaxHeight = 85, MinHeight = 3 } });
-            
+            var b = new ImplRegionBase(ModelItemUtils.CreateModelItem(new DsfFileRead()), new List<IToolRegion> { new Region() { IsVisible = true }, new Region() { IsVisible = true } });
+
             //------------Execute Test---------------------------
-           
-            Assert.AreEqual(118, b.DesignMaxHeight);
-            Assert.AreEqual(5, b.DesignMinHeight);
-            Assert.AreEqual(94, b.DesignHeight);
 
             //------------Assert Results-------------------------
         }

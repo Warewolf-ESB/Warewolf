@@ -8,6 +8,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -94,29 +95,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(inputview.OutputArea.IsVisible);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageWebServiceInputViewModel_HeightChangedHandler()
-        {
-            //------------Setup for test--------------------------
-            var mod = new MyWebModel();
-
-            var act = new DsfWebGetActivity();
-            var called = false;
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.HeightChanged += (sender, args) => called = true;
-            inputview.Model = new WebServiceDefinition();
-            //------------Execute Test---------------------------
-            inputview.ExecuteTest();
-            
-            //------------Assert Results-------------------------
-            Assert.IsTrue(called);
-
-            
         }
 
         [TestMethod]

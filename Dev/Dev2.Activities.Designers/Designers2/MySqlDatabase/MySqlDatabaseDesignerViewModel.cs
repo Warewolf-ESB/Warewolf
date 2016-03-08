@@ -541,11 +541,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             SourceRegion.IsVisible = value;
         }
 
-        public override void ReCalculateHeight()
-        {
-            
-        }
-
         #endregion
     }
 }

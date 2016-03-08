@@ -150,11 +150,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight { get; set; }
-        public double CurrentHeight { get; set; }
         public bool IsVisible { get; set; }
-        public double MaxHeight { get; set; }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -251,15 +247,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

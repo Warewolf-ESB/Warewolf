@@ -253,7 +253,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             if (SourceRegion.SelectedSource != null)
             {
                 var service = ToModel();
-                ManageServiceInputViewModel.InputArea.IsWeb = true;
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
@@ -509,11 +508,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
             ErrorRegion.IsVisible = value;
             SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            
         }
 
         #endregion
