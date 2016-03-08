@@ -28,10 +28,9 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private IOutputDescription _outputDescription;
         private MediaTypeWithQualityHeaderValue _mediaTypeWithQualityHeaderValue;
-        protected const string MediaType = "application/x-www-form-urlencoded";
-        protected const string UserAgent = "User-Agent";
+        private const string MediaType = "application/x-www-form-urlencoded";
+        private const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
