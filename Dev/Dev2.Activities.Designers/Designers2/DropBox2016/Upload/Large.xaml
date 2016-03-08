@@ -1,0 +1,8 @@
+﻿<Window x:Class="Dev2.Activities.Designers2.DropBox2016.Upload.Large"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Large" Height="300" Width="300">
+    <Grid>
+        
+    </Grid>
+</Window>
