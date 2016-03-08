@@ -123,7 +123,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                     OutputsRegion.IsVisible = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -272,6 +271,10 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
             }
@@ -365,23 +368,9 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -459,7 +448,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -555,39 +543,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         public override void ReCalculateHeight()
         {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                bool isOutputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "DatabaseInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                    if (toolRegion.ToolRegionName == "OutputsRegion")
-                    {
-                        isOutputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isOutputVisible)
-                {
-                    DesignMaxHeight += 15;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += 30;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-            }
+            
         }
 
         #endregion

@@ -9,10 +9,9 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="{Binding DesignMinHeight}"
-                               Height="{Binding DesignHeight}"
+                               MinHeight="410"
+                               Height="410"
                                MaxWidth="Infinity"
-                               MaxHeight="{Binding DesignMaxHeight}"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -48,28 +47,15 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition>
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="True">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=InputArea.IsVisible}" Value="False">
-                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.OutputCountExpandAllowed}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.OutputCountExpandAllowed}" Value="False">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -81,9 +67,9 @@
 
             <Control Template="{StaticResource SelectionActionGrid}"/>
 
-            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource InputsGrid}"/>
+            <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
 
-            <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource OutputsGrid}"/>
+            <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
 
             <Grid x:Name="ErrorGrid"
                       Grid.Row="3"
@@ -94,7 +80,7 @@
         </Grid>
 
         <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-            <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource GenerateOutputsViewDB}" Margin="0,0,0,-5"/>
+            <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource NewGenerateOutputsViewDB}" Margin="0,0,0,-5"/>
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>
