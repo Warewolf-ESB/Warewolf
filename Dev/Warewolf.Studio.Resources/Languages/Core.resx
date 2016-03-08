@@ -1045,6 +1045,25 @@ This data will not be stored and the execution will be rolled back if supported 
   <data name="DatabaseServiceTestHelp" xml:space="preserve">
     <value>Test the execution of this resource.</value>
   </data>
+
+  <data name="ServiceTestActionTooltip" xml:space="preserve">
+    <value>Test the procedure or function</value>
+  </data>
+  <data name="ServiceInputsHelp" xml:space="preserve">
+    <value>Input some test data to execute the procedure.&lt;br/&gt;
+&lt;br/&gt;
+This data will not be stored and the execution will be rolled back if supported by the database.</value>
+  </data>
+  <data name="ServiceTestHelp" xml:space="preserve">
+    <value>Test the execution of this resource.</value>
+  </data>
+  <data name="ServiceTestDoneButtonHelp" xml:space="preserve">
+    <value>ServiceTestDoneButtonHelp</value>
+  </data>
+  <data name="ServiceTestCancelButtonHelp" xml:space="preserve">
+    <value>ServiceTestCancelButtonHelp</value>
+  </data>
+
   <data name="SharepointServiceSourceServerHelp" xml:space="preserve">
     <value>SharepointServiceSourceServerHelp</value>
   </data>

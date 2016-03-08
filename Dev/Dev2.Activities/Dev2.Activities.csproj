@@ -166,6 +166,7 @@
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
+    <Compile Include="Activities\DropBox2016\DsfDropBoxUploadAcivtity.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />

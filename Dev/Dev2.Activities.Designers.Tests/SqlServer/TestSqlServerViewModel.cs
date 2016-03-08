@@ -47,9 +47,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(385, sqlServer.DesignMinHeight);
-            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.ActionRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -109,9 +106,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(175, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(175, sqlServer.DesignMinHeight);
-            Assert.AreEqual(175, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsFalse(sqlServer.OutputsRegion.IsVisible);
             Assert.IsFalse(sqlServer.InputArea.IsVisible);
@@ -134,9 +128,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(175, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(175, sqlServer.DesignMinHeight);
-            Assert.AreEqual(175, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsFalse(sqlServer.OutputsRegion.IsVisible);
             Assert.IsFalse(sqlServer.InputArea.IsVisible);
@@ -161,7 +152,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.Model = new DatabaseService() { Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" } };
 
@@ -169,9 +159,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(385, sqlServer.DesignMinHeight);
-            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -198,7 +185,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
@@ -227,15 +213,11 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(385, sqlServer.DesignMinHeight);
-            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -263,15 +245,11 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(385, sqlServer.DesignMinHeight);
-            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);
@@ -301,15 +279,11 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
             sqlServer.ManageServiceInputViewModel.IsVisible = true;
-            sqlServer.ManageServiceInputViewModel.SetInitialVisibility();
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(385, sqlServer.DesignMaxHeight);
-            Assert.AreEqual(385, sqlServer.DesignMinHeight);
-            Assert.AreEqual(385, sqlServer.DesignHeight);
             Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
             Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
             Assert.IsTrue(sqlServer.InputArea.IsVisible);

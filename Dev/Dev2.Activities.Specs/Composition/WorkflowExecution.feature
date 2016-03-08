@@ -4643,7 +4643,7 @@ Scenario: Mixing Scalar And Recordset bug 2
 	Then the workflow execution has "NO" error
 
 #Wolf-1034
-Scenario: ForEach using * and Database Connector
+Scenario: ForEach using * and Database Connector2
 	  Given I have a workflow "Wolf-1034-ReturnsText"
 	  And "Wolf-1034-ReturnsText" contains "TestingReturnText" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |

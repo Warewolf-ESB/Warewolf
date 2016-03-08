@@ -17,6 +17,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -87,9 +88,15 @@ namespace Dev2.Activities
                 AddDebugInputItem(new DebugEvalResult(query, "URL", dataObject.Environment, update));
                 AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
             }
-            var client = CreateClient(head, query, url);
-            var result = client.DownloadString(url.Address+query);
+            var result = PerformWebRequest(head, query, url);
             PushXmlIntoEnvironment(result, update,dataObject);
+        }
+
+        protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
+        {
+            var client = CreateClient(head, query, url);
+            var result = client.DownloadString(url.Address + query);
+            return result;
         }
 
         private void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
@@ -103,6 +110,11 @@ namespace Dev2.Activities
             if(OutputDescription == null)
             {
                 dataObj.Environment.AddError("There are no outputs");
+                return;
+            }
+            if (OutputDescription.DataSourceShapes.Count==1&& OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+               dataObj.Environment.Assign(Outputs.First().MappedTo,input,update); 
                 return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
@@ -225,6 +237,7 @@ namespace Dev2.Activities
 
         #endregion
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public DsfWebGetActivity()
         {
             Type = "Web Get Request Connector";
