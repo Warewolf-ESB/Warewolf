@@ -9,7 +9,6 @@ namespace Dev2.Activities.Designers2.Core
     public class GenerateOutputsRegion : IGenerateOutputArea
     {
         ICollection<IServiceOutputMapping> _outputs;
-        bool _isEnabled;
         private bool _textResults;
 
         public GenerateOutputsRegion()
@@ -21,18 +20,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsEnabled
-        {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                _isEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors
         {

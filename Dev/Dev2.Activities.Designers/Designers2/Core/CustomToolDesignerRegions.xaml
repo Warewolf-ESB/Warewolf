@@ -708,7 +708,7 @@
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewGenerateResponseTemplate" d:DataContext="{d:DesignInstance core1:ManageWebServiceInputViewModel}">
-        <Grid x:Name="ResponseGrid" Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Grid x:Name="ResponseGrid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -720,7 +720,6 @@
             <TextBlock Text="Paste Response" FontWeight="Bold" />
 
             <TextBox Grid.Row="1"
-                     Height="110"
                          Text="{Binding TestResults}" 
                          x:Name="ResponseTextbox"
                          Style="{StaticResource StretchedTextBoxStyle}"
@@ -888,7 +887,7 @@
                      Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                 <Control Grid.Row="0" Template="{StaticResource NewGenerateResponseTemplate}" 
-                     Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"></Control>
+                         Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button x:Name="GenerateOutputsDoneButton" 
