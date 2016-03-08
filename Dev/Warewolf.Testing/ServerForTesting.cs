@@ -210,7 +210,7 @@ namespace Warewolf.Testing
         [JsonIgnore]
         public IQueryManager QueryProxy
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
 
         public bool IsConnected
