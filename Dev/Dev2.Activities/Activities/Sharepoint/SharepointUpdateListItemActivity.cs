@@ -128,8 +128,11 @@ namespace Dev2.Activities.Sharepoint
                             ctx.ExecuteQuery();
                         }
                     }
-                    env.Assign(Result, "Success",update);
-                    AddOutputDebug(dataObject, env,update);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        env.Assign(Result, "Success", update);
+                        AddOutputDebug(dataObject, env, update);
+                    }
                 }
             }
             catch (Exception e)
