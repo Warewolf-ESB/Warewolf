@@ -3,7 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net;
 using System.Net.Http.Headers;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
@@ -15,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var httpClient = deleteActivityFromBase.CreateClient(null, String.Empty, webSource);
             //---------------Test Result -----------------------
             Assert.IsNotNull(httpClient);
-            NetworkCredential networkCredentialFromWebSource = new NetworkCredential(webSource.UserName, webSource.Password);
+       
 
             AuthenticationHeaderValue webClientCredentials = httpClient.DefaultRequestHeaders.Authorization;
             Assert.IsNotNull(webClientCredentials);
@@ -307,9 +307,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source,
             string putData)
         {
-            Head = head;
-            QueryRes = query;
-            PostValue = putData;
             return ResponseFromWeb;
         }
 
@@ -317,12 +314,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             PushXmlIntoEnvironment(input, update, dataObj);
         }
-
-        public string PostValue { get; private set; }
-
-        public string QueryRes { get; private set; }
-
-        public IEnumerable<NameValue> Head { get; private set; }
 
         #endregion
     }
