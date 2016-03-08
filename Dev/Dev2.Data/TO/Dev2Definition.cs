@@ -69,6 +69,8 @@ namespace Dev2.DataList.Contract
         public string RawValue { get; set; }
 
         public bool EmptyToNull { get; set; }
+        public bool IsTextResponse { get;  set; }
+
         #endregion
     }
 }
