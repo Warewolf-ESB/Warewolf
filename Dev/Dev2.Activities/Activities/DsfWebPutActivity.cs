@@ -77,9 +77,6 @@ namespace Dev2.Activities
                 }
             }
 
-           // httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaType));
-            //httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
-
             var address = source.Address;
             if (!string.IsNullOrEmpty(query))
             {

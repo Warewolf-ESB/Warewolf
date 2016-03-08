@@ -1273,12 +1273,12 @@ namespace Warewolf.Studio.UISpecs
         public void Close_New_Workflow_Tab_Without_Saving()
         {
             #region Variable Declarations
-            WpfButton uIItemButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.UIItemButton;
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
             WpfButton nOButton = this.MessageBoxWindow.NOButton;
             #endregion
 
-            // Click '' button
-            Mouse.Click(uIItemButton, new Point(12, 7));
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(12, 7));
 
             // Click 'No' button
             Mouse.Click(nOButton, new Point(32, 5));
@@ -3624,23 +3624,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Cut' menu item
             Mouse.Click(cut, new Point(53, 16));
-        }
-        
-        /// <summary>
-        /// Select_Data_Source_Droplist
-        /// </summary>
-        public void Select_Data_Source_Droplist()
-        {
-            #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
-            WpfCustom uIGreenPointCustom = this.UIWarewolfDEV2LEROYWARWindow.UIGreenPointCustom;
-            #endregion
-
-            // Click 'SourcesComboBox' custom control
-            Mouse.Click(sourcesComboBox, new Point(228, 12));
-
-            // Click 'GreenPoint' custom control
-            Mouse.Click(uIGreenPointCustom, new Point(187, 8));
         }
         
         /// <summary>
@@ -8830,28 +8813,10 @@ namespace Warewolf.Studio.UISpecs
                 return this.mWorkSurfaceContext;
             }
         }
-        
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
-                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
         #endregion
         
         #region Fields
         private WorkSurfaceContext3 mWorkSurfaceContext;
-        
-        private WpfButton mUIItemButton;
         #endregion
     }
     

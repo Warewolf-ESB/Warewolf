@@ -1757,7 +1757,7 @@ namespace Dev2
                                         var flowStep = flowNode as FlowStep;
                                         if(flowStep != null)
                                         {
-                                            var updated = MigrateDatabaseActivity(flowStep) || MigratePluginActivity(flowStep);
+                                            var updated = MigrateDatabaseActivity(flowStep) || MigratePluginActivity(flowStep) || MigrateWebActivity(flowStep);
                                             if(updated)
                                             {
                                                 mustUpdate = true;
@@ -1778,6 +1778,246 @@ namespace Dev2
                     }
                 }
             }
+        }
+
+        private bool MigrateWebActivity(FlowStep flowStep)
+        {
+            var webActivity = flowStep.Action as DsfWebserviceActivity;
+            var forEachActivity = flowStep.Action as DsfForEachActivity;
+            DsfActivity webAct = null;
+            var updated = false;
+            if (webActivity == null)
+            {
+                if (forEachActivity != null)
+                {
+                    webActivity = forEachActivity.DataFunc.Handler as DsfWebserviceActivity;
+                }
+            }
+
+            WebService service = null;
+            if (webActivity != null)
+            {
+                updated = true;
+                var id = webActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(webActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, id);
+            }
+            else
+            {
+                webAct = flowStep.Action as DsfActivity;
+                if (webAct == null)
+                {
+                    forEachActivity = flowStep.Action as DsfForEachActivity;
+                    if (forEachActivity != null)
+                    {
+                        webAct = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if (webAct != null && webAct.Type.Expression.ToString() == "Webservice")
+                {
+                    updated = true;
+                    var id = webAct.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(webAct.ResourceID.Expression.ToString());
+                    service = ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, id) ??
+                              ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, webAct.ServiceName);
+                }
+            }
+
+            if (service != null)
+            {
+                var source = ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
+                             ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
+                if (source != null)
+                {
+                    MigrateGetWebService(flowStep, service, webActivity, webAct, source, forEachActivity);                
+                    MigratePostWebService(flowStep, service, webActivity, webAct, source, forEachActivity);
+                    MigrateDeleteWebService(flowStep, service, webActivity, webAct, source, forEachActivity);
+                    MigratePutWebService(flowStep, service, webActivity, webAct, source, forEachActivity);                
+                }
+            }
+            return updated;
+        }
+
+        private static void MigrateGetWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        {
+            if(service.RequestMethod == WebRequestMethod.Get)
+            {
+                DsfWebGetActivity webGetActivty = new DsfWebGetActivity();
+
+                string inputMapping;
+                string outputMapping;
+                if(webActivity != null)
+                {
+                    inputMapping = webActivity.InputMapping;
+                    outputMapping = webActivity.OutputMapping;
+                    UpdateActivity(webGetActivty, webActivity);
+                }
+                else
+                {
+                    inputMapping = webAct.InputMapping;
+                    outputMapping = webAct.OutputMapping;
+                    UpdateActivity(webGetActivty, webAct);
+                }
+                if(service.Headers != null)
+                {
+                    webGetActivty.Headers = new List<INameValue>(service.Headers);
+                }
+                webGetActivty.QueryString = service.RequestUrl;
+                webGetActivty.OutputDescription = service.OutputDescription;
+                webGetActivty.SourceId = source.ResourceID;
+                webGetActivty.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                webGetActivty.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                if(forEachActivity != null)
+                {
+                    forEachActivity.DataFunc.Handler = webGetActivty;
+                }
+                else
+                {
+                    flowStep.Action = webGetActivty;
+                }
+            }
+        }
+
+        private static void MigrateDeleteWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        {
+            if (service.RequestMethod == WebRequestMethod.Delete)
+            {
+                var webDeleteActivity = new DsfWebDeleteActivity();
+
+                string inputMapping;
+                string outputMapping;
+                if (webActivity != null)
+                {
+                    inputMapping = webActivity.InputMapping;
+                    outputMapping = webActivity.OutputMapping;
+                    UpdateActivity(webDeleteActivity, webActivity);
+                }
+                else
+                {
+                    inputMapping = webAct.InputMapping;
+                    outputMapping = webAct.OutputMapping;
+                    UpdateActivity(webDeleteActivity, webAct);
+                }
+                if(service.Headers != null)
+                {
+                    webDeleteActivity.Headers = new List<INameValue>(service.Headers);
+                }
+                webDeleteActivity.QueryString = service.RequestUrl;
+                webDeleteActivity.OutputDescription = service.OutputDescription;
+                webDeleteActivity.SourceId = source.ResourceID;
+                webDeleteActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                webDeleteActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                if (forEachActivity != null)
+                {
+                    forEachActivity.DataFunc.Handler = webDeleteActivity;
+                }
+                else
+                {
+                    flowStep.Action = webDeleteActivity;
+                }
+            }
+        }
+
+        private static void MigratePostWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        {
+            if (service.RequestMethod == WebRequestMethod.Post)
+            {
+                var dsfWebPostActivity = new DsfWebPostActivity();
+
+                string inputMapping;
+                string outputMapping;
+                if (webActivity != null)
+                {
+                    inputMapping = webActivity.InputMapping;
+                    outputMapping = webActivity.OutputMapping;
+                    UpdateActivity(dsfWebPostActivity, webActivity);
+                }
+                else
+                {
+                    inputMapping = webAct.InputMapping;
+                    outputMapping = webAct.OutputMapping;
+                    UpdateActivity(dsfWebPostActivity, webAct);
+                }
+                if(service.Headers != null)
+                {
+                    dsfWebPostActivity.Headers = new List<INameValue>(service.Headers);
+                }
+                dsfWebPostActivity.QueryString = service.RequestUrl;
+                dsfWebPostActivity.OutputDescription = service.OutputDescription;
+                dsfWebPostActivity.SourceId = source.ResourceID;
+                dsfWebPostActivity.PostData = service.RequestBody;
+                dsfWebPostActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                dsfWebPostActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                if (forEachActivity != null)
+                {
+                    forEachActivity.DataFunc.Handler = dsfWebPostActivity;
+                }
+                else
+                {
+                    flowStep.Action = dsfWebPostActivity;
+                }
+            }
+        }
+
+        private static void MigratePutWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        {
+            if (service.RequestMethod == WebRequestMethod.Put)
+            {
+                var webPutActivity = new DsfWebPutActivity();
+
+                string inputMapping;
+                string outputMapping;
+                if (webActivity != null)
+                {
+                    inputMapping = webActivity.InputMapping;
+                    outputMapping = webActivity.OutputMapping;
+                    UpdateActivity(webPutActivity, webActivity);
+                }
+                else
+                {
+                    inputMapping = webAct.InputMapping;
+                    outputMapping = webAct.OutputMapping;
+                    UpdateActivity(webPutActivity, webAct);
+                }
+                if(service.Headers != null)
+                {
+                    webPutActivity.Headers = new List<INameValue>(service.Headers);
+                }
+                webPutActivity.QueryString = service.RequestUrl;
+                webPutActivity.OutputDescription = service.OutputDescription;
+                webPutActivity.SourceId = source.ResourceID;
+                webPutActivity.PutData = service.RequestBody;
+                webPutActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
+                webPutActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
+                if (forEachActivity != null)
+                {
+                    forEachActivity.DataFunc.Handler = webPutActivity;
+                }
+                else
+                {
+                    flowStep.Action = webPutActivity;
+                }
+            }
+        }
+
+        private static void UpdateActivity(DsfActivity webGetActivty, DsfActivity webActivity)
+        {
+            webGetActivty.UniqueID = webActivity.UniqueID;
+            webGetActivty.ToolboxFriendlyName = webActivity.ToolboxFriendlyName;
+            webGetActivty.IconPath = webActivity.IconPath;
+            webGetActivty.ServiceName = webActivity.ServiceName;
+            webGetActivty.DataTags = webActivity.DataTags;
+            webGetActivty.ResultValidationRequiredTags = webActivity.ResultValidationRequiredTags;
+            webGetActivty.ResultValidationExpression = webActivity.ResultValidationExpression;
+            webGetActivty.FriendlySourceName = webActivity.FriendlySourceName;
+            webGetActivty.EnvironmentID = webActivity.EnvironmentID;
+            webGetActivty.Type = webActivity.Type;
+            webGetActivty.RunWorkflowAsync = webActivity.RunWorkflowAsync;
+            webGetActivty.Category = webActivity.Category;
+            webGetActivty.ServiceUri = webActivity.ServiceUri;
+            webGetActivty.ServiceServer = webActivity.ServiceServer;
+            webGetActivty.ParentServiceName = webActivity.ParentServiceName;
+            webGetActivty.ParentServiceID = webActivity.ParentServiceID;
+            webGetActivty.ParentWorkflowInstanceId = webActivity.ParentWorkflowInstanceId;
+            webGetActivty.ParentInstanceID = webActivity.ParentInstanceID;
         }
 
         private bool MigratePluginActivity(FlowStep flowStep)
