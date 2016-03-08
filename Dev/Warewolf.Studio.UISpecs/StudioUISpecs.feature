@@ -1184,6 +1184,7 @@ Scenario: Get Web Request tool
 	Then I 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
 
 Scenario: Testing New Custom Action Recordings
-	#Given I 'Assert the control exists'
-	When I right click 'localhost\Examples' in the explorer tree
+	Given I 'Assert_Database_Source_Dropdownlist_Exists'
+	When I 'Select_Data_Source_Droplist'
+	When I select 'Customer' from the dropdown list
 	#Then I 'Assert something happenned'
